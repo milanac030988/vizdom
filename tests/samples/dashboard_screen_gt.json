@@ -1,0 +1,254 @@
+{
+  "elements": [
+    {
+      "type": "icon",
+      "bounds": [
+        15,
+        13,
+        39,
+        37
+      ],
+      "text": "menu"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        50,
+        18,
+        150,
+        32
+      ],
+      "text": "Dashboard"
+    },
+    {
+      "type": "icon",
+      "bounds": [
+        750,
+        13,
+        774,
+        37
+      ],
+      "text": "search"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        20,
+        80,
+        61,
+        90
+      ],
+      "text": "Home"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        20,
+        125,
+        82,
+        135
+      ],
+      "text": "Analytics"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        20,
+        170,
+        75,
+        180
+      ],
+      "text": "Reports"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        20,
+        215,
+        77,
+        225
+      ],
+      "text": "Settings"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        20,
+        260,
+        51,
+        270
+      ],
+      "text": "Help"
+    },
+    {
+      "type": "container",
+      "bounds": [
+        220,
+        70,
+        390,
+        170
+      ],
+      "text": ""
+    },
+    {
+      "type": "text",
+      "bounds": [
+        235,
+        91,
+        271,
+        100
+      ],
+      "text": "Users"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        235,
+        114,
+        299,
+        130
+      ],
+      "text": "1,234"
+    },
+    {
+      "type": "container",
+      "bounds": [
+        410,
+        70,
+        580,
+        170
+      ],
+      "text": ""
+    },
+    {
+      "type": "text",
+      "bounds": [
+        425,
+        91,
+        459,
+        100
+      ],
+      "text": "Sales"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        425,
+        114,
+        503,
+        130
+      ],
+      "text": "$5,678"
+    },
+    {
+      "type": "container",
+      "bounds": [
+        600,
+        70,
+        770,
+        170
+      ],
+      "text": ""
+    },
+    {
+      "type": "text",
+      "bounds": [
+        615,
+        91,
+        668,
+        100
+      ],
+      "text": "Revenue"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        615,
+        114,
+        707,
+        130
+      ],
+      "text": "$12,345"
+    },
+    {
+      "type": "container",
+      "bounds": [
+        220,
+        190,
+        780,
+        390
+      ],
+      "text": ""
+    },
+    {
+      "type": "text",
+      "bounds": [
+        240,
+        208,
+        356,
+        220
+      ],
+      "text": "Recent Activity"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        240,
+        241,
+        332,
+        250
+      ],
+      "text": "Activity item 1"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        240,
+        271,
+        332,
+        280
+      ],
+      "text": "Activity item 2"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        240,
+        301,
+        332,
+        310
+      ],
+      "text": "Activity item 3"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        240,
+        331,
+        332,
+        340
+      ],
+      "text": "Activity item 4"
+    },
+    {
+      "type": "button",
+      "bounds": [
+        220,
+        420,
+        340,
+        455
+      ],
+      "text": "Add New"
+    },
+    {
+      "type": "button",
+      "bounds": [
+        360,
+        420,
+        480,
+        455
+      ],
+      "text": "Export"
+    }
+  ]
+}

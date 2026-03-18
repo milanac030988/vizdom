@@ -1,0 +1,135 @@
+{
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        30,
+        180,
+        374,
+        504
+      ],
+      "visual_type": "block",
+      "confidence": 0.8,
+      "children_ids": [
+        "E2",
+        "E3",
+        "E4",
+        "E7",
+        "E9"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        50,
+        410,
+        351,
+        456
+      ],
+      "visual_type": "unknown",
+      "confidence": 0.5,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        50,
+        310,
+        351,
+        351
+      ],
+      "visual_type": "unknown",
+      "confidence": 0.5,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        50,
+        230,
+        351,
+        271
+      ],
+      "visual_type": "unknown",
+      "confidence": 0.5,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        19,
+        17,
+        87,
+        49
+      ],
+      "visual_type": "button",
+      "confidence": 0.6
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        0,
+        57,
+        400,
+        61
+      ],
+      "visual_type": "input_field",
+      "confidence": 0.7
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        50,
+        370,
+        69,
+        389
+      ],
+      "visual_type": "checkbox",
+      "confidence": 0.6,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        363,
+        21,
+        382,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 0.7
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        211,
+        425,
+        230,
+        442
+      ],
+      "visual_type": "checkbox",
+      "confidence": 0.6,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        248,
+        105,
+        259,
+        121
+      ],
+      "visual_type": "unknown",
+      "confidence": 0.5
+    }
+  ],
+  "image_size": {
+    "width": 400,
+    "height": 600
+  },
+  "stats": {
+    "text_detected": 0,
+    "uied_detected": 10,
+    "final_count": 10
+  }
+}

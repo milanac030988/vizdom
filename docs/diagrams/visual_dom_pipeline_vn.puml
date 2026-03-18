@@ -1,0 +1,91 @@
+@startuml Visual_DOM_Pipeline_VN
+
+!theme plain
+skinparam backgroundColor white
+skinparam defaultFontSize 12
+skinparam defaultFontName Arial
+skinparam ArrowThickness 2
+skinparam RectangleBorderThickness 2
+
+skinparam rectangle {
+    RoundCorner 15
+}
+
+title **Kiến trúc hệ thống Visual DOM Generator**\n
+
+' ===== INPUT =====
+rectangle "**Ảnh chụp màn hình**\n(Screenshot)" as input #E3F2FD
+
+' ===== PHASE 1 =====
+package "**Giai đoạn 1: Trích xuất đặc trưng CV**" as phase1 #FFF8E1 {
+    rectangle "**Tiền xử lý ảnh**\n• Chuyển grayscale\n• Giảm nhiễu\n• Tăng tương phản" as preprocess #FFE0B2
+
+    rectangle "**Phát hiện cạnh**\n• Thuật toán Canny\n• Phân tích gradient" as edge #FFE0B2
+
+    rectangle "**Phân tích đường viền**\n• Tìm contours\n• Trích xuất vùng bao\n• Lọc theo diện tích" as contour #FFE0B2
+
+    rectangle "**Xử lý hình thái**\n• Giãn nở (Dilation)\n• Co (Erosion)\n• Tách vùng chồng lấn" as morph #FFE0B2
+}
+
+' ===== PHASE 2 =====
+package "**Giai đoạn 2: Nhận dạng văn bản (OCR)**" as phase2 #E8F5E9 {
+    rectangle "**EasyOCR**\n• Hỗ trợ đa ngôn ngữ\n• Phát hiện vùng text\n• Độ chính xác cao" as ocr #C8E6C9
+
+    rectangle "**Xử lý văn bản**\n• Trích xuất tọa độ\n• Lọc theo độ tin cậy\n• Liên kết với vùng UI" as text_proc #C8E6C9
+}
+
+' ===== PHASE 3 =====
+package "**Giai đoạn 3: Xây dựng cấu trúc thô**" as phase3 #FCE4EC {
+    rectangle "**Phân tích không gian**\n• Quan hệ vị trí\n• Phát hiện căn lề\n• Suy luận layout" as spatial #F8BBD9
+
+    rectangle "**Phát hiện chứa đựng**\n• Quan hệ cha-con\n• Phần tử lồng nhau\n• Xác định container" as contain #F8BBD9
+
+    rectangle "**Phân loại dựa trên quy tắc**\n• Heuristics kích thước\n• Mẫu phổ biến\n• Đoán loại element" as rules #F8BBD9
+}
+
+' ===== PHASE 4 =====
+package "**Giai đoạn 4: Tinh chỉnh bằng LLM**" as phase4 #F3E5F5 {
+    rectangle "**Xây dựng Prompt**\n• Ngữ cảnh element\n• Thông tin lân cận\n• Bằng chứng thị giác" as prompt #E1BEE7
+
+    rectangle "**Mô hình ngôn ngữ nhỏ**\n**Qwen2.5-3B**\n(qua Ollama)\n• Chế độ JSON\n• Chạy cục bộ" as llm #E1BEE7
+
+    rectangle "**Phân loại ngữ nghĩa**\n• button, input_field\n• text, icon, checkbox\n• dropdown, container" as semantic #E1BEE7
+}
+
+' ===== PHASE 5 =====
+package "**Giai đoạn 5: Biên dịch DOM**" as phase5 #E0F7FA {
+    rectangle "**Xây dựng cây DOM**\n• Tạo ID duy nhất\n• Tính toán thuộc tính\n• Tối ưu cấu trúc" as compiler #B2EBF2
+
+    rectangle "**Visual DOM**\n(JSON)" as output #B2EBF2
+}
+
+' ===== ROBOT FRAMEWORK =====
+rectangle "**Thư viện Robot Framework**\n• Click Element By Text\n• Input Text To Field\n• Verify Element Exists" as robot #DCEDC8
+
+' ===== CONNECTIONS =====
+
+input --> preprocess
+
+preprocess --> edge
+preprocess --> ocr
+
+edge --> contour
+contour --> morph
+
+ocr --> text_proc
+text_proc --> spatial
+
+morph --> spatial
+spatial --> contain
+contain --> rules
+
+rules --> prompt
+prompt --> llm
+llm --> semantic
+
+semantic --> compiler
+compiler --> output
+
+output --> robot
+
+@enduml

@@ -1,0 +1,572 @@
+{
+  "root": {
+    "id": "ROOT",
+    "element_id": "ROOT",
+    "bounds": [
+      20,
+      18,
+      384,
+      560
+    ],
+    "visual_type": "container",
+    "confidence": 0.0,
+    "role": "root",
+    "children": [
+      {
+        "id": "E1",
+        "element_id": "E1",
+        "bounds": [
+          20,
+          20,
+          87,
+          38
+        ],
+        "visual_type": "text",
+        "confidence": 0.0,
+        "role": "Button",
+        "text": "Login",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E2",
+        "element_id": "E2",
+        "bounds": [
+          360,
+          18,
+          384,
+          42
+        ],
+        "visual_type": "icon",
+        "confidence": 0.0,
+        "role": "ImageView",
+        "text": "close",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E3",
+        "element_id": "E3",
+        "bounds": [
+          140,
+          104,
+          299,
+          120
+        ],
+        "visual_type": "text",
+        "confidence": 0.0,
+        "role": "Button",
+        "text": "Welcome Back",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E4",
+        "element_id": "E4",
+        "bounds": [
+          120,
+          140,
+          258,
+          150
+        ],
+        "visual_type": "text",
+        "confidence": 0.0,
+        "role": "Button",
+        "text": "Sign in to continue",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E5",
+        "element_id": "E5",
+        "bounds": [
+          30,
+          180,
+          370,
+          500
+        ],
+        "visual_type": "container",
+        "confidence": 0.0,
+        "role": "ViewGroup",
+        "parent_id": "ROOT",
+        "children": [
+          {
+            "id": "E11",
+            "element_id": "E11",
+            "bounds": [
+              50,
+              410,
+              350,
+              455
+            ],
+            "visual_type": "button",
+            "confidence": 0.0,
+            "role": "Button",
+            "text": "Sign In",
+            "parent_id": "E5",
+            "label_id": "E12"
+          },
+          {
+            "id": "E7",
+            "element_id": "E7",
+            "bounds": [
+              50,
+              230,
+              350,
+              270
+            ],
+            "visual_type": "input_field",
+            "confidence": 0.0,
+            "role": "EditText",
+            "text": "Enter your email",
+            "hint": "Email",
+            "parent_id": "E5",
+            "label_id": "E6"
+          },
+          {
+            "id": "E9",
+            "element_id": "E9",
+            "bounds": [
+              50,
+              310,
+              350,
+              350
+            ],
+            "visual_type": "input_field",
+            "confidence": 0.0,
+            "role": "EditText",
+            "text": "Enter password",
+            "hint": "Password",
+            "parent_id": "E5",
+            "label_id": "E8"
+          },
+          {
+            "id": "E12",
+            "element_id": "E12",
+            "bounds": [
+              110,
+              471,
+              223,
+              480
+            ],
+            "visual_type": "text",
+            "confidence": 0.0,
+            "role": "TextView",
+            "text": "Forgot Password?",
+            "parent_id": "E5"
+          },
+          {
+            "id": "E8",
+            "element_id": "E8",
+            "bounds": [
+              50,
+              290,
+              117,
+              300
+            ],
+            "visual_type": "text",
+            "confidence": 0.0,
+            "role": "TextView",
+            "text": "Password",
+            "parent_id": "E5"
+          },
+          {
+            "id": "E6",
+            "element_id": "E6",
+            "bounds": [
+              50,
+              210,
+              89,
+              220
+            ],
+            "visual_type": "text",
+            "confidence": 0.0,
+            "role": "TextView",
+            "text": "Email",
+            "parent_id": "E5"
+          },
+          {
+            "id": "E10",
+            "element_id": "E10",
+            "bounds": [
+              50,
+              370,
+              68,
+              388
+            ],
+            "visual_type": "checkbox",
+            "confidence": 0.0,
+            "role": "CheckBox",
+            "text": "Remember me",
+            "parent_id": "E5"
+          }
+        ]
+      },
+      {
+        "id": "E13",
+        "element_id": "E13",
+        "bounds": [
+          120,
+          551,
+          328,
+          560
+        ],
+        "visual_type": "text",
+        "confidence": 0.0,
+        "role": "Button",
+        "text": "Don't have an account? Sign Up",
+        "parent_id": "ROOT"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "E1",
+      "element_id": "E1",
+      "bounds": [
+        20,
+        20,
+        87,
+        38
+      ],
+      "visual_type": "text",
+      "confidence": 0.0,
+      "role": "Button",
+      "text": "Login",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E2",
+      "element_id": "E2",
+      "bounds": [
+        360,
+        18,
+        384,
+        42
+      ],
+      "visual_type": "icon",
+      "confidence": 0.0,
+      "role": "ImageView",
+      "text": "close",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E3",
+      "element_id": "E3",
+      "bounds": [
+        140,
+        104,
+        299,
+        120
+      ],
+      "visual_type": "text",
+      "confidence": 0.0,
+      "role": "Button",
+      "text": "Welcome Back",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E4",
+      "element_id": "E4",
+      "bounds": [
+        120,
+        140,
+        258,
+        150
+      ],
+      "visual_type": "text",
+      "confidence": 0.0,
+      "role": "Button",
+      "text": "Sign in to continue",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E5",
+      "element_id": "E5",
+      "bounds": [
+        30,
+        180,
+        370,
+        500
+      ],
+      "visual_type": "container",
+      "confidence": 0.0,
+      "role": "ViewGroup",
+      "parent_id": "ROOT",
+      "children": [
+        {
+          "id": "E11",
+          "element_id": "E11",
+          "bounds": [
+            50,
+            410,
+            350,
+            455
+          ],
+          "visual_type": "button",
+          "confidence": 0.0,
+          "role": "Button",
+          "text": "Sign In",
+          "parent_id": "E5",
+          "label_id": "E12"
+        },
+        {
+          "id": "E7",
+          "element_id": "E7",
+          "bounds": [
+            50,
+            230,
+            350,
+            270
+          ],
+          "visual_type": "input_field",
+          "confidence": 0.0,
+          "role": "EditText",
+          "text": "Enter your email",
+          "hint": "Email",
+          "parent_id": "E5",
+          "label_id": "E6"
+        },
+        {
+          "id": "E9",
+          "element_id": "E9",
+          "bounds": [
+            50,
+            310,
+            350,
+            350
+          ],
+          "visual_type": "input_field",
+          "confidence": 0.0,
+          "role": "EditText",
+          "text": "Enter password",
+          "hint": "Password",
+          "parent_id": "E5",
+          "label_id": "E8"
+        },
+        {
+          "id": "E12",
+          "element_id": "E12",
+          "bounds": [
+            110,
+            471,
+            223,
+            480
+          ],
+          "visual_type": "text",
+          "confidence": 0.0,
+          "role": "TextView",
+          "text": "Forgot Password?",
+          "parent_id": "E5"
+        },
+        {
+          "id": "E8",
+          "element_id": "E8",
+          "bounds": [
+            50,
+            290,
+            117,
+            300
+          ],
+          "visual_type": "text",
+          "confidence": 0.0,
+          "role": "TextView",
+          "text": "Password",
+          "parent_id": "E5"
+        },
+        {
+          "id": "E6",
+          "element_id": "E6",
+          "bounds": [
+            50,
+            210,
+            89,
+            220
+          ],
+          "visual_type": "text",
+          "confidence": 0.0,
+          "role": "TextView",
+          "text": "Email",
+          "parent_id": "E5"
+        },
+        {
+          "id": "E10",
+          "element_id": "E10",
+          "bounds": [
+            50,
+            370,
+            68,
+            388
+          ],
+          "visual_type": "checkbox",
+          "confidence": 0.0,
+          "role": "CheckBox",
+          "text": "Remember me",
+          "parent_id": "E5"
+        }
+      ]
+    },
+    {
+      "id": "E6",
+      "element_id": "E6",
+      "bounds": [
+        50,
+        210,
+        89,
+        220
+      ],
+      "visual_type": "text",
+      "confidence": 0.0,
+      "role": "TextView",
+      "text": "Email",
+      "parent_id": "E5"
+    },
+    {
+      "id": "E7",
+      "element_id": "E7",
+      "bounds": [
+        50,
+        230,
+        350,
+        270
+      ],
+      "visual_type": "input_field",
+      "confidence": 0.0,
+      "role": "EditText",
+      "text": "Enter your email",
+      "hint": "Email",
+      "parent_id": "E5",
+      "label_id": "E6"
+    },
+    {
+      "id": "E8",
+      "element_id": "E8",
+      "bounds": [
+        50,
+        290,
+        117,
+        300
+      ],
+      "visual_type": "text",
+      "confidence": 0.0,
+      "role": "TextView",
+      "text": "Password",
+      "parent_id": "E5"
+    },
+    {
+      "id": "E9",
+      "element_id": "E9",
+      "bounds": [
+        50,
+        310,
+        350,
+        350
+      ],
+      "visual_type": "input_field",
+      "confidence": 0.0,
+      "role": "EditText",
+      "text": "Enter password",
+      "hint": "Password",
+      "parent_id": "E5",
+      "label_id": "E8"
+    },
+    {
+      "id": "E10",
+      "element_id": "E10",
+      "bounds": [
+        50,
+        370,
+        68,
+        388
+      ],
+      "visual_type": "checkbox",
+      "confidence": 0.0,
+      "role": "CheckBox",
+      "text": "Remember me",
+      "parent_id": "E5"
+    },
+    {
+      "id": "E11",
+      "element_id": "E11",
+      "bounds": [
+        50,
+        410,
+        350,
+        455
+      ],
+      "visual_type": "button",
+      "confidence": 0.0,
+      "role": "Button",
+      "text": "Sign In",
+      "parent_id": "E5",
+      "label_id": "E12"
+    },
+    {
+      "id": "E12",
+      "element_id": "E12",
+      "bounds": [
+        110,
+        471,
+        223,
+        480
+      ],
+      "visual_type": "text",
+      "confidence": 0.0,
+      "role": "TextView",
+      "text": "Forgot Password?",
+      "parent_id": "E5"
+    },
+    {
+      "id": "E13",
+      "element_id": "E13",
+      "bounds": [
+        120,
+        551,
+        328,
+        560
+      ],
+      "visual_type": "text",
+      "confidence": 0.0,
+      "role": "Button",
+      "text": "Don't have an account? Sign Up",
+      "parent_id": "ROOT"
+    }
+  ],
+  "label_associations": {
+    "E7": "E6",
+    "E9": "E8",
+    "E11": "E12"
+  },
+  "groups": [
+    {
+      "type": "row",
+      "parent_id": null,
+      "members": [
+        "E1",
+        "E2"
+      ]
+    },
+    {
+      "type": "column",
+      "parent_id": null,
+      "members": [
+        "E3",
+        "E13"
+      ]
+    },
+    {
+      "type": "column",
+      "parent_id": "E5",
+      "members": [
+        "E6",
+        "E8",
+        "E10"
+      ]
+    },
+    {
+      "type": "column",
+      "parent_id": "E5",
+      "members": [
+        "E7",
+        "E9",
+        "E11"
+      ]
+    }
+  ]
+}

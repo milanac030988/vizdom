@@ -1,0 +1,1000 @@
+{
+  "image_path": "tests\\samples\\login_screen.png",
+  "image_size": {
+    "width": 400,
+    "height": 600
+  },
+  "cv_stats": {
+    "text_detected": 16,
+    "uied_detected": 10,
+    "final_count": 19
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        30,
+        180,
+        374,
+        504
+      ],
+      "visual_type": "block",
+      "confidence": 0.8,
+      "ocr_text": "Email email Enter your Password Enter password Vv) Remember me Forgot Password?",
+      "children_ids": [
+        "E2",
+        "E3",
+        "E4",
+        "E12",
+        "E15"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        50,
+        410,
+        351,
+        456
+      ],
+      "visual_type": "unknown",
+      "confidence": 0.5,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        50,
+        310,
+        351,
+        351
+      ],
+      "visual_type": "unknown",
+      "confidence": 0.5,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        50,
+        230,
+        351,
+        271
+      ],
+      "visual_type": "unknown",
+      "confidence": 0.5,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        141,
+        105,
+        298,
+        121
+      ],
+      "visual_type": "text",
+      "confidence": 0.95,
+      "ocr_text": "Welcome Back",
+      "children_ids": [
+        "E17"
+      ]
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        19,
+        17,
+        87,
+        49
+      ],
+      "visual_type": "button",
+      "confidence": 0.6
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        0,
+        57,
+        400,
+        61
+      ],
+      "visual_type": "input_field",
+      "confidence": 0.7
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        121,
+        140,
+        168,
+        154
+      ],
+      "visual_type": "text",
+      "confidence": 0.96,
+      "ocr_text": "Sign in"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        199,
+        140,
+        256,
+        151
+      ],
+      "visual_type": "text",
+      "confidence": 0.95,
+      "ocr_text": "continue"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        122,
+        552,
+        187,
+        561
+      ],
+      "visual_type": "text",
+      "confidence": 0.8,
+      "ocr_text": "Don't have"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        216,
+        552,
+        271,
+        561
+      ],
+      "visual_type": "text",
+      "confidence": 0.78,
+      "ocr_text": "account?"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        50,
+        370,
+        69,
+        389
+      ],
+      "visual_type": "checkbox",
+      "confidence": 0.6,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        363,
+        21,
+        382,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 0.7
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        279,
+        551,
+        304,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 0.95,
+      "ocr_text": "Sign"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        211,
+        425,
+        230,
+        442
+      ],
+      "visual_type": "checkbox",
+      "confidence": 0.6,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        312,
+        552,
+        327,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 0.96,
+      "ocr_text": "Up"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        248,
+        105,
+        259,
+        121
+      ],
+      "visual_type": "unknown",
+      "confidence": 0.5,
+      "parent_id": "E5"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        177,
+        141,
+        190,
+        151
+      ],
+      "visual_type": "text",
+      "confidence": 0.95,
+      "ocr_text": "to"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        194,
+        554,
+        208,
+        561
+      ],
+      "visual_type": "text",
+      "confidence": 0.89,
+      "ocr_text": "an"
+    }
+  ],
+  "hierarchy": {
+    "id": "ROOT",
+    "element_id": "ROOT",
+    "bounds": [
+      0,
+      17,
+      400,
+      564
+    ],
+    "visual_type": "container",
+    "confidence": 0.0,
+    "role": "root",
+    "children": [
+      {
+        "id": "E1",
+        "element_id": "E1",
+        "bounds": [
+          30,
+          180,
+          374,
+          504
+        ],
+        "visual_type": "block",
+        "confidence": 0.8,
+        "role": "ViewGroup",
+        "text": "Email email Enter your Password Enter password Vv) Remember me Forgot Password?",
+        "parent_id": "ROOT",
+        "children": [
+          {
+            "id": "E2",
+            "element_id": "E2",
+            "bounds": [
+              50,
+              410,
+              351,
+              456
+            ],
+            "visual_type": "unknown",
+            "confidence": 0.5,
+            "role": "View",
+            "parent_id": "E1",
+            "children": [
+              {
+                "id": "E15",
+                "element_id": "E15",
+                "bounds": [
+                  211,
+                  425,
+                  230,
+                  442
+                ],
+                "visual_type": "checkbox",
+                "confidence": 0.6,
+                "role": "CheckBox",
+                "parent_id": "E2"
+              }
+            ]
+          },
+          {
+            "id": "E3",
+            "element_id": "E3",
+            "bounds": [
+              50,
+              310,
+              351,
+              351
+            ],
+            "visual_type": "unknown",
+            "confidence": 0.5,
+            "role": "View",
+            "parent_id": "E1"
+          },
+          {
+            "id": "E4",
+            "element_id": "E4",
+            "bounds": [
+              50,
+              230,
+              351,
+              271
+            ],
+            "visual_type": "unknown",
+            "confidence": 0.5,
+            "role": "View",
+            "parent_id": "E1"
+          },
+          {
+            "id": "E12",
+            "element_id": "E12",
+            "bounds": [
+              50,
+              370,
+              69,
+              389
+            ],
+            "visual_type": "checkbox",
+            "confidence": 0.6,
+            "role": "CheckBox",
+            "parent_id": "E1"
+          }
+        ]
+      },
+      {
+        "id": "E5",
+        "element_id": "E5",
+        "bounds": [
+          141,
+          105,
+          298,
+          121
+        ],
+        "visual_type": "text",
+        "confidence": 0.95,
+        "role": "Button",
+        "text": "Welcome Back",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E6",
+        "element_id": "E6",
+        "bounds": [
+          19,
+          17,
+          87,
+          49
+        ],
+        "visual_type": "button",
+        "confidence": 0.6,
+        "role": "Button",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E7",
+        "element_id": "E7",
+        "bounds": [
+          0,
+          57,
+          400,
+          61
+        ],
+        "visual_type": "input_field",
+        "confidence": 0.7,
+        "role": "EditText",
+        "hint": "Welcome Back",
+        "parent_id": "ROOT",
+        "label_id": "E5"
+      },
+      {
+        "id": "E8",
+        "element_id": "E8",
+        "bounds": [
+          121,
+          140,
+          168,
+          154
+        ],
+        "visual_type": "text",
+        "confidence": 0.96,
+        "role": "Button",
+        "text": "Sign in",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E9",
+        "element_id": "E9",
+        "bounds": [
+          199,
+          140,
+          256,
+          151
+        ],
+        "visual_type": "text",
+        "confidence": 0.95,
+        "role": "TextView",
+        "text": "continue",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E10",
+        "element_id": "E10",
+        "bounds": [
+          122,
+          552,
+          187,
+          561
+        ],
+        "visual_type": "text",
+        "confidence": 0.8,
+        "role": "TextView",
+        "text": "Don't have",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E11",
+        "element_id": "E11",
+        "bounds": [
+          216,
+          552,
+          271,
+          561
+        ],
+        "visual_type": "text",
+        "confidence": 0.78,
+        "role": "TextView",
+        "text": "account?",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E13",
+        "element_id": "E13",
+        "bounds": [
+          363,
+          21,
+          382,
+          40
+        ],
+        "visual_type": "icon",
+        "confidence": 0.7,
+        "role": "ImageView",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E14",
+        "element_id": "E14",
+        "bounds": [
+          279,
+          551,
+          304,
+          564
+        ],
+        "visual_type": "text",
+        "confidence": 0.95,
+        "role": "Button",
+        "text": "Sign",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E16",
+        "element_id": "E16",
+        "bounds": [
+          312,
+          552,
+          327,
+          564
+        ],
+        "visual_type": "text",
+        "confidence": 0.96,
+        "role": "TextView",
+        "text": "Up",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E17",
+        "element_id": "E17",
+        "bounds": [
+          248,
+          105,
+          259,
+          121
+        ],
+        "visual_type": "unknown",
+        "confidence": 0.5,
+        "role": "View",
+        "parent_id": "ROOT",
+        "label_id": "E9"
+      },
+      {
+        "id": "E18",
+        "element_id": "E18",
+        "bounds": [
+          177,
+          141,
+          190,
+          151
+        ],
+        "visual_type": "text",
+        "confidence": 0.95,
+        "role": "TextView",
+        "text": "to",
+        "parent_id": "ROOT"
+      },
+      {
+        "id": "E19",
+        "element_id": "E19",
+        "bounds": [
+          194,
+          554,
+          208,
+          561
+        ],
+        "visual_type": "text",
+        "confidence": 0.89,
+        "role": "TextView",
+        "text": "an",
+        "parent_id": "ROOT"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "E1",
+      "element_id": "E1",
+      "bounds": [
+        30,
+        180,
+        374,
+        504
+      ],
+      "visual_type": "block",
+      "confidence": 0.8,
+      "role": "ViewGroup",
+      "text": "Email email Enter your Password Enter password Vv) Remember me Forgot Password?",
+      "parent_id": "ROOT",
+      "children": [
+        {
+          "id": "E2",
+          "element_id": "E2",
+          "bounds": [
+            50,
+            410,
+            351,
+            456
+          ],
+          "visual_type": "unknown",
+          "confidence": 0.5,
+          "role": "View",
+          "parent_id": "E1",
+          "children": [
+            {
+              "id": "E15",
+              "element_id": "E15",
+              "bounds": [
+                211,
+                425,
+                230,
+                442
+              ],
+              "visual_type": "checkbox",
+              "confidence": 0.6,
+              "role": "CheckBox",
+              "parent_id": "E2"
+            }
+          ]
+        },
+        {
+          "id": "E3",
+          "element_id": "E3",
+          "bounds": [
+            50,
+            310,
+            351,
+            351
+          ],
+          "visual_type": "unknown",
+          "confidence": 0.5,
+          "role": "View",
+          "parent_id": "E1"
+        },
+        {
+          "id": "E4",
+          "element_id": "E4",
+          "bounds": [
+            50,
+            230,
+            351,
+            271
+          ],
+          "visual_type": "unknown",
+          "confidence": 0.5,
+          "role": "View",
+          "parent_id": "E1"
+        },
+        {
+          "id": "E12",
+          "element_id": "E12",
+          "bounds": [
+            50,
+            370,
+            69,
+            389
+          ],
+          "visual_type": "checkbox",
+          "confidence": 0.6,
+          "role": "CheckBox",
+          "parent_id": "E1"
+        }
+      ]
+    },
+    {
+      "id": "E2",
+      "element_id": "E2",
+      "bounds": [
+        50,
+        410,
+        351,
+        456
+      ],
+      "visual_type": "unknown",
+      "confidence": 0.5,
+      "role": "View",
+      "parent_id": "E1",
+      "children": [
+        {
+          "id": "E15",
+          "element_id": "E15",
+          "bounds": [
+            211,
+            425,
+            230,
+            442
+          ],
+          "visual_type": "checkbox",
+          "confidence": 0.6,
+          "role": "CheckBox",
+          "parent_id": "E2"
+        }
+      ]
+    },
+    {
+      "id": "E3",
+      "element_id": "E3",
+      "bounds": [
+        50,
+        310,
+        351,
+        351
+      ],
+      "visual_type": "unknown",
+      "confidence": 0.5,
+      "role": "View",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "element_id": "E4",
+      "bounds": [
+        50,
+        230,
+        351,
+        271
+      ],
+      "visual_type": "unknown",
+      "confidence": 0.5,
+      "role": "View",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "element_id": "E5",
+      "bounds": [
+        141,
+        105,
+        298,
+        121
+      ],
+      "visual_type": "text",
+      "confidence": 0.95,
+      "role": "Button",
+      "text": "Welcome Back",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E6",
+      "element_id": "E6",
+      "bounds": [
+        19,
+        17,
+        87,
+        49
+      ],
+      "visual_type": "button",
+      "confidence": 0.6,
+      "role": "Button",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E7",
+      "element_id": "E7",
+      "bounds": [
+        0,
+        57,
+        400,
+        61
+      ],
+      "visual_type": "input_field",
+      "confidence": 0.7,
+      "role": "EditText",
+      "hint": "Welcome Back",
+      "parent_id": "ROOT",
+      "label_id": "E5"
+    },
+    {
+      "id": "E8",
+      "element_id": "E8",
+      "bounds": [
+        121,
+        140,
+        168,
+        154
+      ],
+      "visual_type": "text",
+      "confidence": 0.96,
+      "role": "Button",
+      "text": "Sign in",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E9",
+      "element_id": "E9",
+      "bounds": [
+        199,
+        140,
+        256,
+        151
+      ],
+      "visual_type": "text",
+      "confidence": 0.95,
+      "role": "TextView",
+      "text": "continue",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E10",
+      "element_id": "E10",
+      "bounds": [
+        122,
+        552,
+        187,
+        561
+      ],
+      "visual_type": "text",
+      "confidence": 0.8,
+      "role": "TextView",
+      "text": "Don't have",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E11",
+      "element_id": "E11",
+      "bounds": [
+        216,
+        552,
+        271,
+        561
+      ],
+      "visual_type": "text",
+      "confidence": 0.78,
+      "role": "TextView",
+      "text": "account?",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E12",
+      "element_id": "E12",
+      "bounds": [
+        50,
+        370,
+        69,
+        389
+      ],
+      "visual_type": "checkbox",
+      "confidence": 0.6,
+      "role": "CheckBox",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "element_id": "E13",
+      "bounds": [
+        363,
+        21,
+        382,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 0.7,
+      "role": "ImageView",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E14",
+      "element_id": "E14",
+      "bounds": [
+        279,
+        551,
+        304,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 0.95,
+      "role": "Button",
+      "text": "Sign",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E15",
+      "element_id": "E15",
+      "bounds": [
+        211,
+        425,
+        230,
+        442
+      ],
+      "visual_type": "checkbox",
+      "confidence": 0.6,
+      "role": "CheckBox",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E16",
+      "element_id": "E16",
+      "bounds": [
+        312,
+        552,
+        327,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 0.96,
+      "role": "TextView",
+      "text": "Up",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E17",
+      "element_id": "E17",
+      "bounds": [
+        248,
+        105,
+        259,
+        121
+      ],
+      "visual_type": "unknown",
+      "confidence": 0.5,
+      "role": "View",
+      "parent_id": "ROOT",
+      "label_id": "E9"
+    },
+    {
+      "id": "E18",
+      "element_id": "E18",
+      "bounds": [
+        177,
+        141,
+        190,
+        151
+      ],
+      "visual_type": "text",
+      "confidence": 0.95,
+      "role": "TextView",
+      "text": "to",
+      "parent_id": "ROOT"
+    },
+    {
+      "id": "E19",
+      "element_id": "E19",
+      "bounds": [
+        194,
+        554,
+        208,
+        561
+      ],
+      "visual_type": "text",
+      "confidence": 0.89,
+      "role": "TextView",
+      "text": "an",
+      "parent_id": "ROOT"
+    }
+  ],
+  "label_associations": {
+    "E7": "E5",
+    "E17": "E9"
+  },
+  "groups": [
+    {
+      "type": "column",
+      "parent_id": "E1",
+      "members": [
+        "E4",
+        "E3"
+      ]
+    },
+    {
+      "type": "row",
+      "parent_id": null,
+      "members": [
+        "E6",
+        "E13"
+      ]
+    },
+    {
+      "type": "row",
+      "parent_id": null,
+      "members": [
+        "E5",
+        "E17"
+      ]
+    },
+    {
+      "type": "row",
+      "parent_id": null,
+      "members": [
+        "E8",
+        "E18",
+        "E9"
+      ]
+    },
+    {
+      "type": "row",
+      "parent_id": null,
+      "members": [
+        "E10",
+        "E19",
+        "E11",
+        "E14",
+        "E16"
+      ]
+    },
+    {
+      "type": "column",
+      "parent_id": null,
+      "members": [
+        "E8",
+        "E10"
+      ]
+    },
+    {
+      "type": "column",
+      "parent_id": null,
+      "members": [
+        "E7",
+        "E19"
+      ]
+    },
+    {
+      "type": "column",
+      "parent_id": null,
+      "members": [
+        "E5",
+        "E9"
+      ]
+    },
+    {
+      "type": "column",
+      "parent_id": null,
+      "members": [
+        "E17",
+        "E11"
+      ]
+    }
+  ]
+}

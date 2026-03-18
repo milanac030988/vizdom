@@ -1,0 +1,89 @@
+@startuml Visual_DOM_Sequence
+
+!theme plain
+skinparam backgroundColor white
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+skinparam SequenceMessageAlignment center
+
+skinparam participant {
+    BackgroundColor<<input>> #E3F2FD
+    BackgroundColor<<cv>> #FFE0B2
+    BackgroundColor<<ocr>> #C8E6C9
+    BackgroundColor<<builder>> #F8BBD9
+    BackgroundColor<<llm>> #E1BEE7
+    BackgroundColor<<output>> #B2EBF2
+}
+
+title **Visual DOM Generation - Sequence Diagram**\n//Luồng xử lý dữ liệu//
+
+participant "Screenshot" as img <<input>>
+participant "CV Pipeline" as cv <<cv>>
+participant "EasyOCR" as ocr <<ocr>>
+participant "Coarse Builder" as builder <<builder>>
+participant "LLM (Qwen2.5)" as llm <<llm>>
+participant "DOM Compiler" as compiler <<output>>
+
+== Phase 1: Evidence Extraction ==
+
+img -> cv: Load image
+activate cv
+cv -> cv: Preprocess (grayscale, denoise)
+cv -> cv: Edge detection (Canny)
+cv -> cv: Find contours
+cv -> cv: Extract bounding boxes
+cv --> img: CV Evidence\n(regions, edges, colors)
+deactivate cv
+
+img -> ocr: Load image
+activate ocr
+ocr -> ocr: Detect text regions
+ocr -> ocr: Recognize text
+ocr --> img: OCR Results\n(text, bboxes, confidence)
+deactivate ocr
+
+== Phase 2: Coarse Hierarchy ==
+
+img -> builder: CV Evidence + OCR Results
+activate builder
+builder -> builder: Merge overlapping regions
+builder -> builder: Spatial analysis
+builder -> builder: Containment detection
+builder -> builder: Rules-based classification
+builder --> img: Coarse DOM\n(initial hierarchy)
+deactivate builder
+
+== Phase 3: LLM Refinement ==
+
+img -> llm: Coarse DOM + Context
+activate llm
+llm -> llm: Build prompt with evidence
+llm -> llm: Call Ollama (JSON mode)
+llm -> llm: Parse response
+llm -> llm: Validate classifications
+llm --> img: Refined Elements\n(semantic types)
+deactivate llm
+
+== Phase 4: DOM Compilation ==
+
+img -> compiler: Refined Elements
+activate compiler
+compiler -> compiler: Build tree structure
+compiler -> compiler: Assign unique IDs
+compiler -> compiler: Calculate properties
+compiler -> compiler: Export to JSON
+compiler --> img: **Visual DOM**\n(final JSON)
+deactivate compiler
+
+note over img, compiler
+  **Output: Visual DOM JSON**
+  {
+    "screen": {"width": 1920, "height": 1080},
+    "elements": [
+      {"id": "elem_001", "type": "button", "bbox": [...], "text": "OK"},
+      {"id": "elem_002", "type": "input_field", "bbox": [...], "text": ""}
+    ]
+  }
+end note
+
+@enduml

@@ -1,0 +1,129 @@
+@startuml Visual_DOM_Architecture
+
+!theme plain
+skinparam backgroundColor #FAFAFA
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+skinparam PackageBorderThickness 2
+skinparam ComponentBorderThickness 2
+
+skinparam component {
+    BackgroundColor<<cv>> #FFE0B2
+    BackgroundColor<<ocr>> #C8E6C9
+    BackgroundColor<<builder>> #F8BBD9
+    BackgroundColor<<llm>> #E1BEE7
+    BackgroundColor<<compiler>> #B2EBF2
+    BackgroundColor<<robot>> #DCEDC8
+}
+
+skinparam database {
+    BackgroundColor #E3F2FD
+}
+
+title **Visual DOM Generator - System Architecture**\n//Kiến trúc hệ thống chi tiết//
+
+' ===== INPUT =====
+database "Screenshot\n(PNG/JPG)" as screenshot
+
+' ===== CV PIPELINE =====
+package "CV Evidence Extraction" as cv_pkg #FFF8E1 {
+    component [**Preprocessor**\n---\nGrayscale\nNoise Reduction\nContrast Enhancement] as preprocess <<cv>>
+
+    component [**Edge Detector**\n---\nCanny Algorithm\nGradient Analysis\nEdge Map] as edge <<cv>>
+
+    component [**Contour Analyzer**\n---\nFindContours\nBounding Boxes\nArea Filtering] as contour <<cv>>
+
+    component [**Morphology**\n---\nDilation\nErosion\nOpening/Closing] as morph <<cv>>
+
+    component [**Color Analyzer**\n---\nBackground Detection\nColor Features\nContrast Analysis] as color <<cv>>
+}
+
+' ===== OCR =====
+package "Text Detection" as ocr_pkg #E8F5E9 {
+    component [**EasyOCR**\n---\nMulti-language\nGPU Accelerated\nHigh Accuracy] as easyocr <<ocr>>
+
+    component [**Text Processor**\n---\nBBox Extraction\nConfidence Filter\nText Cleaning] as text_proc <<ocr>>
+}
+
+' ===== COARSE BUILDER =====
+package "Coarse Hierarchy Builder" as coarse_pkg #FCE4EC {
+    component [**Spatial Analyzer**\n---\nPosition Relations\nAlignment Detection\nLayout Inference] as spatial <<builder>>
+
+    component [**Containment Detector**\n---\nParent-Child\nNesting Levels\nContainer Finding] as contain <<builder>>
+
+    component [**Rule Engine**\n---\nType Classification\nSize Heuristics\nPattern Matching] as rules <<builder>>
+}
+
+' ===== LLM =====
+package "LLM Refinement" as llm_pkg #F3E5F5 {
+    component [**Prompt Builder**\n---\nContext Assembly\nEvidence Formatting\nJSON Schema] as prompt <<llm>>
+
+    component [**Ollama Runtime**\n---\nQwen2.5-3B\nJSON Mode\nLocal Inference] as ollama <<llm>>
+
+    component [**Response Parser**\n---\nJSON Validation\nError Recovery\nType Mapping] as parser <<llm>>
+}
+
+' ===== COMPILER =====
+package "DOM Compilation" as compiler_pkg #E0F7FA {
+    component [**Tree Builder**\n---\nHierarchy Assembly\nID Generation\nProperty Calc] as tree <<compiler>>
+
+    component [**JSON Exporter**\n---\nSchema Validation\nFormatting\nFile Output] as exporter <<compiler>>
+}
+
+' ===== OUTPUT =====
+database "Visual DOM\n(JSON)" as dom_output
+
+' ===== ROBOT FRAMEWORK =====
+package "Robot Framework Library" as robot_pkg #DCEDC8 {
+    component [**Screen Capture**\n---\nPlatform Adapters\nADB/Windows/Linux] as capture <<robot>>
+
+    component [**Element Finder**\n---\nBy Text\nBy Type\nBy Location] as finder <<robot>>
+
+    component [**Action Executor**\n---\nClick\nInput Text\nVerify] as actions <<robot>>
+}
+
+' ===== DATA FLOW =====
+
+screenshot --> preprocess
+
+preprocess --> edge
+preprocess --> color
+preprocess --> easyocr
+
+edge --> contour
+contour --> morph
+
+morph --> spatial
+color --> rules
+easyocr --> text_proc
+text_proc --> spatial
+
+spatial --> contain
+contain --> rules
+
+rules --> prompt
+prompt --> ollama
+ollama --> parser
+
+parser --> tree
+tree --> exporter
+
+exporter --> dom_output
+
+dom_output --> finder
+
+capture --> preprocess
+finder --> actions
+
+' ===== LEGEND =====
+legend right
+  |= Color |= Component |
+  | <#FFE0B2> | Computer Vision |
+  | <#C8E6C9> | OCR Engine |
+  | <#F8BBD9> | Rules Engine |
+  | <#E1BEE7> | LLM Processing |
+  | <#B2EBF2> | DOM Compiler |
+  | <#DCEDC8> | Robot Framework |
+endlegend
+
+@enduml

@@ -1,0 +1,134 @@
+{
+  "elements": [
+    {
+      "type": "text",
+      "bounds": [
+        20,
+        20,
+        87,
+        38
+      ],
+      "text": "Login"
+    },
+    {
+      "type": "icon",
+      "bounds": [
+        360,
+        18,
+        384,
+        42
+      ],
+      "text": "close"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        140,
+        104,
+        299,
+        120
+      ],
+      "text": "Welcome Back"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        120,
+        140,
+        258,
+        150
+      ],
+      "text": "Sign in to continue"
+    },
+    {
+      "type": "container",
+      "bounds": [
+        30,
+        180,
+        370,
+        500
+      ],
+      "text": ""
+    },
+    {
+      "type": "text",
+      "bounds": [
+        50,
+        210,
+        89,
+        220
+      ],
+      "text": "Email"
+    },
+    {
+      "type": "input_field",
+      "bounds": [
+        50,
+        230,
+        350,
+        270
+      ],
+      "text": "Enter your email"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        50,
+        290,
+        117,
+        300
+      ],
+      "text": "Password"
+    },
+    {
+      "type": "input_field",
+      "bounds": [
+        50,
+        310,
+        350,
+        350
+      ],
+      "text": "Enter password"
+    },
+    {
+      "type": "checkbox",
+      "bounds": [
+        50,
+        370,
+        68,
+        388
+      ],
+      "text": "Remember me"
+    },
+    {
+      "type": "button",
+      "bounds": [
+        50,
+        410,
+        350,
+        455
+      ],
+      "text": "Sign In"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        110,
+        471,
+        223,
+        480
+      ],
+      "text": "Forgot Password?"
+    },
+    {
+      "type": "text",
+      "bounds": [
+        120,
+        551,
+        328,
+        560
+      ],
+      "text": "Don't have an account? Sign Up"
+    }
+  ]
+}

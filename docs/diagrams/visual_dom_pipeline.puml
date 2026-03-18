@@ -1,0 +1,151 @@
+@startuml Visual_DOM_Pipeline
+
+!theme plain
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontSize 12
+skinparam defaultFontName Arial
+skinparam ArrowColor #333333
+skinparam ArrowThickness 2
+
+skinparam rectangle {
+    BackgroundColor<<input>> #E3F2FD
+    BackgroundColor<<cv>> #FFF3E0
+    BackgroundColor<<ocr>> #E8F5E9
+    BackgroundColor<<coarse>> #FCE4EC
+    BackgroundColor<<llm>> #F3E5F5
+    BackgroundColor<<output>> #E0F7FA
+    BorderColor #666666
+    RoundCorner 15
+}
+
+skinparam note {
+    BackgroundColor #FFFDE7
+    BorderColor #FBC02D
+}
+
+title **Visual DOM Generator Pipeline**\n//Xây dựng Visual DOM từ ảnh chụp màn hình//
+
+' ===== INPUT =====
+rectangle "**Screenshot**\n(PNG/JPG)" as input <<input>> {
+}
+
+' ===== CV EVIDENCE EXTRACTION =====
+package "**Phase 1: CV Evidence Extraction**" as phase1 #FFF8E1 {
+
+    rectangle "**Preprocessing**\n• Grayscale conversion\n• Noise reduction\n• Contrast enhancement" as preprocess <<cv>>
+
+    rectangle "**Edge Detection**\n• Canny edge detector\n• Gradient analysis" as edge <<cv>>
+
+    rectangle "**Contour Analysis**\n• Find contours\n• Bounding box extraction\n• Area filtering" as contour <<cv>>
+
+    rectangle "**Morphological Ops**\n• Dilation/Erosion\n• Region separation" as morph <<cv>>
+
+    rectangle "**Color Analysis**\n• Background detection\n• Element color features" as color <<cv>>
+}
+
+' ===== OCR =====
+package "**Phase 2: Text Detection (OCR)**" as phase2 #E8F5E9 {
+
+    rectangle "**EasyOCR Engine**\n• Multi-language support\n• Text region detection" as ocr_engine <<ocr>>
+
+    rectangle "**Text Extraction**\n• Bounding boxes\n• Confidence scores\n• Text content" as text_extract <<ocr>>
+
+    rectangle "**Text-Region Association**\n• Link text to UI regions\n• Merge overlapping" as text_assoc <<ocr>>
+}
+
+' ===== COARSE HIERARCHY =====
+package "**Phase 3: Coarse Hierarchy Builder**" as phase3 #FCE4EC {
+
+    rectangle "**Spatial Analysis**\n• Position relationships\n• Alignment detection\n• Grid/Layout inference" as spatial <<coarse>>
+
+    rectangle "**Containment Detection**\n• Parent-child relationships\n• Nested elements\n• Container identification" as contain <<coarse>>
+
+    rectangle "**Initial Classification**\n• Rule-based type guess\n• Size/shape heuristics\n• Common patterns" as init_class <<coarse>>
+
+    rectangle "**Coarse DOM Tree**\n(Intermediate JSON)" as coarse_dom <<coarse>>
+}
+
+' ===== LLM REFINEMENT =====
+package "**Phase 4: LLM Hierarchy Refinement**" as phase4 #F3E5F5 {
+
+    rectangle "**Prompt Construction**\n• Element context\n• Neighbor info\n• Visual evidence" as prompt <<llm>>
+
+    rectangle "**Qwen2.5-3B**\n(via Ollama)\n• JSON mode\n• Local inference" as llm_model <<llm>>
+
+    rectangle "**Semantic Classification**\n• button, input_field\n• text, icon, checkbox\n• dropdown, container" as semantic <<llm>>
+
+    rectangle "**Hierarchy Optimization**\n• Merge/split elements\n• Fix parent-child\n• Add metadata" as hierarchy_opt <<llm>>
+}
+
+' ===== OUTPUT =====
+package "**Phase 5: DOM Compilation**" as phase5 #E0F7FA {
+
+    rectangle "**DOM Compiler**\n• Build final tree\n• Assign unique IDs\n• Calculate properties" as compiler <<output>>
+
+    rectangle "**Visual DOM**\n(JSON Output)" as output_dom <<output>>
+}
+
+' ===== ROBOT FRAMEWORK =====
+rectangle "**Robot Framework Library**\n• Click Element By Text\n• Input Text To Field\n• Verify Element Exists" as robot <<output>>
+
+' ===== CONNECTIONS =====
+
+input --> preprocess
+
+preprocess --> edge
+preprocess --> color
+edge --> contour
+contour --> morph
+morph --> spatial
+
+preprocess --> ocr_engine
+ocr_engine --> text_extract
+text_extract --> text_assoc
+text_assoc --> spatial
+
+color --> init_class
+spatial --> contain
+contain --> init_class
+init_class --> coarse_dom
+
+coarse_dom --> prompt
+prompt --> llm_model
+llm_model --> semantic
+semantic --> hierarchy_opt
+hierarchy_opt --> compiler
+
+compiler --> output_dom
+output_dom --> robot
+
+' ===== NOTES =====
+note right of phase1
+  **Computer Vision**
+  OpenCV-based
+  processing
+end note
+
+note right of phase2
+  **OCR Engine**
+  EasyOCR for
+  multi-language
+end note
+
+note right of phase4
+  **Small LLM**
+  Runs locally
+  via Ollama
+  ~3GB VRAM
+end note
+
+note bottom of output_dom
+  **Visual DOM JSON Structure**
+  {
+    "screen": {...},
+    "elements": [
+      {"id": "...", "type": "button",
+       "bbox": [...], "text": "..."}
+    ]
+  }
+end note
+
+@enduml
