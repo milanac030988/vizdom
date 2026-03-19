@@ -14,6 +14,18 @@ from dataclasses import dataclass
 
 
 @dataclass
+class ColorFeatures:
+    """Color-based features for a UI element region."""
+    mean_color: Tuple[float, float, float]  # Mean BGR
+    color_std: float            # Overall color variation
+    distinct_colors: int        # Number of distinct color clusters
+    bg_contrast: float          # Contrast against surrounding background
+    saturation_mean: float      # Mean saturation (0=gray, 255=vivid)
+    is_uniform: bool            # Mostly one color (button-like)
+    has_border: bool            # Distinct border detected
+
+
+@dataclass
 class ProcessedImage:
     """Container for processed image variants."""
     original: np.ndarray      # Original BGR image
@@ -70,6 +82,89 @@ def preprocess_image(image: np.ndarray) -> ProcessedImage:
         gradient=gradient,
         height=height,
         width=width
+    )
+
+
+def extract_color_features(
+    image: np.ndarray,
+    bbox: Tuple[int, int, int, int],
+    padding: int = 5,
+) -> ColorFeatures:
+    """
+    Extract color-based features for a UI element region.
+
+    Args:
+        image: Original BGR image
+        bbox: Element bounding box (x1, y1, x2, y2)
+        padding: Pixels around bbox to sample background
+
+    Returns:
+        ColorFeatures for the region
+    """
+    x1, y1, x2, y2 = bbox
+    h, w = image.shape[:2]
+
+    # Extract element region
+    region = image[y1:y2, x1:x2]
+    if region.size == 0:
+        return ColorFeatures(
+            mean_color=(0, 0, 0), color_std=0, distinct_colors=0,
+            bg_contrast=0, saturation_mean=0, is_uniform=True, has_border=False,
+        )
+
+    # Mean color (BGR)
+    mean_color = tuple(float(v) for v in cv2.mean(region)[:3])
+
+    # Color variation (std across all channels)
+    color_std = float(np.std(region))
+
+    # Distinct colors: quantize to 8 levels per channel, count unique
+    quantized = (region // 32).reshape(-1, 3)
+    distinct_colors = len(np.unique(quantized, axis=0))
+
+    # Saturation from HSV
+    hsv_region = cv2.cvtColor(region, cv2.COLOR_BGR2HSV)
+    saturation_mean = float(np.mean(hsv_region[:, :, 1]))
+
+    # Uniform check: low color variation indicates button/solid fill
+    is_uniform = color_std < 35
+
+    # Background contrast: compare element mean to surrounding area
+    pad_x1 = max(0, x1 - padding)
+    pad_y1 = max(0, y1 - padding)
+    pad_x2 = min(w, x2 + padding)
+    pad_y2 = min(h, y2 + padding)
+
+    # Create mask for surrounding pixels only
+    surround = image[pad_y1:pad_y2, pad_x1:pad_x2]
+    surround_mean = cv2.mean(surround)[:3]
+    bg_contrast = float(np.sqrt(sum(
+        (a - b) ** 2 for a, b in zip(mean_color, surround_mean)
+    )))
+
+    # Border detection: check if edges form a rectangle around the region
+    gray_region = cv2.cvtColor(region, cv2.COLOR_BGR2GRAY)
+    rh, rw = gray_region.shape
+    has_border = False
+    if rh >= 4 and rw >= 4:
+        # Sample border pixels (2px inward from edges)
+        top = gray_region[0:2, :].mean()
+        bottom = gray_region[-2:, :].mean()
+        left = gray_region[:, 0:2].mean()
+        right = gray_region[:, -2:].mean()
+        interior = gray_region[3:-3, 3:-3].mean() if rh > 6 and rw > 6 else gray_region.mean()
+        border_mean = (top + bottom + left + right) / 4
+        # Border is distinct from interior
+        has_border = abs(border_mean - interior) > 20
+
+    return ColorFeatures(
+        mean_color=mean_color,
+        color_std=color_std,
+        distinct_colors=distinct_colors,
+        bg_contrast=bg_contrast,
+        saturation_mean=saturation_mean,
+        is_uniform=is_uniform,
+        has_border=has_border,
     )
 
 

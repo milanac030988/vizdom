@@ -20,6 +20,8 @@ from enum import Enum
 from .image_processing import (
     preprocess_image,
     ProcessedImage,
+    ColorFeatures,
+    extract_color_features,
     find_contours,
     contour_to_bbox,
     merge_close_bboxes,
@@ -99,6 +101,9 @@ class UIEDDetector:
     6. Build containment hierarchy
     """
 
+    # Reference height for threshold scaling (1080p)
+    REFERENCE_HEIGHT = 1080
+
     def __init__(
         self,
         min_element_area: int = 100,
@@ -111,8 +116,8 @@ class UIEDDetector:
         Initialize UIED detector.
 
         Args:
-            min_element_area: Minimum area for elements
-            min_block_area: Minimum area for blocks
+            min_element_area: Minimum area for elements (at 1080p reference)
+            min_block_area: Minimum area for blocks (at 1080p reference)
             block_padding: Padding when extracting block regions
             merge_distance: Distance threshold for merging close boxes
             nms_threshold: IoU threshold for NMS
@@ -124,11 +129,20 @@ class UIEDDetector:
         self.nms_threshold = nms_threshold
 
         self._element_counter = 0
+        self._scale = 1.0
 
     def _next_id(self, prefix: str = "E") -> str:
         """Generate next element ID."""
         self._element_counter += 1
         return f"{prefix}{self._element_counter}"
+
+    def _scaled(self, value: float) -> float:
+        """Scale a pixel value relative to current image resolution."""
+        return value * self._scale
+
+    def _scaled_area(self, value: float) -> float:
+        """Scale an area value (pixels squared) relative to current image resolution."""
+        return value * self._scale * self._scale
 
     def detect(self, image: np.ndarray) -> List[DetectedElement]:
         """
@@ -141,6 +155,10 @@ class UIEDDetector:
             List of detected elements with hierarchy
         """
         self._element_counter = 0
+
+        # Compute scale factor relative to 1080p reference
+        # Clamp to minimum 1.0 so small images keep original thresholds
+        self._scale = max(1.0, image.shape[0] / self.REFERENCE_HEIGHT)
 
         # Step 1: Preprocess
         processed = preprocess_image(image)
@@ -181,7 +199,7 @@ class UIEDDetector:
         # Find contours
         contours = find_contours(
             closed,
-            min_area=self.min_block_area,
+            min_area=int(self._scaled_area(self.min_block_area)),
             max_area_ratio=0.95
         )
 
@@ -250,7 +268,7 @@ class UIEDDetector:
             # Find contours in region
             contours = find_contours(
                 region_binary,
-                min_area=self.min_element_area,
+                min_area=int(self._scaled_area(self.min_element_area)),
                 max_area_ratio=0.8
             )
 
@@ -348,19 +366,24 @@ class UIEDDetector:
                 h = bbox[3] - bbox[1]
                 area = w * h
 
-                if area < self.min_element_area:
+                if area < self._scaled_area(self.min_element_area):
                     continue
 
                 aspect_ratio = w / h if h > 0 else 0
 
-                # Classify rectangle type
-                if 15 <= w <= 30 and 15 <= h <= 30:
+                # Classify rectangle type (thresholds scaled to resolution)
+                cb_min = self._scaled(15)
+                cb_max = self._scaled(30)
+                input_max_h = self._scaled(60)
+                btn_max_area = self._scaled_area(50000)
+
+                if cb_min <= w <= cb_max and cb_min <= h <= cb_max:
                     # Small square: checkbox
                     rect_type = "checkbox"
-                elif aspect_ratio > 2.5 and h < 60:
+                elif aspect_ratio > 2.5 and h < input_max_h:
                     # Wide and short: input field
                     rect_type = "input"
-                elif 0.5 < aspect_ratio < 4 and area < 50000:
+                elif 0.5 < aspect_ratio < 4 and area < btn_max_area:
                     # Medium rectangle: button
                     rect_type = "button"
                 else:
@@ -377,6 +400,9 @@ class UIEDDetector:
     ) -> Tuple[ElementType, float]:
         """
         Classify element type based on visual features.
+
+        Uses fast grayscale/edge features first, then color features
+        only when needed to resolve ambiguous cases.
 
         Args:
             processed: Processed image
@@ -396,36 +422,41 @@ class UIEDDetector:
         if region.size == 0:
             return ElementType.UNKNOWN, 0.5
 
-        # Feature extraction
-        mean_intensity = np.mean(region)
+        # Fast grayscale features (always computed)
         std_intensity = np.std(region)
         edge_density = np.sum(processed.edges[y1:y2, x1:x2] > 0) / max(area, 1)
 
-        # Classification rules (can be replaced with CNN)
+        # Classification rules (all pixel thresholds scaled to resolution)
+
+        # Thin horizontal element: divider
+        if aspect_ratio > 10 and h < self._scaled(10):
+            return ElementType.DIVIDER, 0.7
 
         # Small square with high edge density: icon or checkbox
-        if 10 <= w <= 50 and 10 <= h <= 50 and 0.7 < aspect_ratio < 1.4:
+        icon_min = self._scaled(10)
+        icon_max = self._scaled(50)
+        if icon_min <= w <= icon_max and icon_min <= h <= icon_max and 0.7 < aspect_ratio < 1.4:
             if edge_density > 0.3:
                 return ElementType.ICON, 0.7
             else:
                 return ElementType.CHECKBOX, 0.6
 
         # Wide rectangle with border: input field
-        if aspect_ratio > 3 and h < 80 and edge_density > 0.1:
+        if aspect_ratio > 3 and h < self._scaled(80) and edge_density > 0.1:
             return ElementType.INPUT_FIELD, 0.7
 
         # Medium rectangle with distinct background: button
-        if 1000 < area < 30000 and 0.3 < aspect_ratio < 5:
+        if self._scaled_area(1000) < area < self._scaled_area(30000) and 0.3 < aspect_ratio < 5:
             if std_intensity < 30:  # Uniform color (button background)
                 return ElementType.BUTTON, 0.6
+            # Ambiguous — use color to refine
+            color = extract_color_features(processed.original, bbox)
+            if color.is_uniform and color.bg_contrast > 20:
+                return ElementType.BUTTON, 0.7
 
         # Large area: block/container
-        if area > 50000:
+        if area > self._scaled_area(50000):
             return ElementType.BLOCK, 0.8
-
-        # Thin horizontal element: divider
-        if aspect_ratio > 10 and h < 10:
-            return ElementType.DIVIDER, 0.7
 
         # Default: unknown
         return ElementType.UNKNOWN, 0.5

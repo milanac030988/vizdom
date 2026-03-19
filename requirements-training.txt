@@ -1,0 +1,15 @@
+# VizDOM - Training dependencies (LLM fine-tuning + CV model training)
+# Install: pip install -r requirements-training.txt
+
+-r requirements-llm.txt
+
+# LLM fine-tuning (LoRA)
+peft>=0.7.0
+datasets>=2.14.0
+accelerate>=0.25.0
+bitsandbytes>=0.41.0
+scipy>=1.10.0
+
+# CV model training (YOLOv8)
+ultralytics>=8.0.0
+albumentations>=1.3.0

@@ -1,0 +1,18 @@
+# VizDOM - Optional tools dependencies
+# Install: pip install -r requirements-tools.txt
+
+-r requirements.txt
+
+# Visual DOM Viewer (PyQt5 GUI)
+PyQt5>=5.15.0
+
+# Desktop automation adapter
+pyautogui>=0.9.54
+
+# Annotation tools
+flask>=2.0.0
+label-studio>=1.10.0
+
+# OCR - PaddleOCR (alternative backend)
+paddlepaddle>=2.5.0
+paddleocr>=2.7.0

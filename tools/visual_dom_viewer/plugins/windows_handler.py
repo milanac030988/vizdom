@@ -48,6 +48,8 @@ if IS_WINDOWS:
     user32.ShowWindow.argtypes = [wintypes.HWND, ctypes.c_int]
     user32.SetWindowPos.argtypes = [wintypes.HWND, wintypes.HWND, ctypes.c_int, ctypes.c_int, ctypes.c_int, ctypes.c_int, wintypes.UINT]
     user32.GetClientRect.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.RECT)]
+    user32.ClientToScreen.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.POINT)]
+    user32.ClientToScreen.restype = wintypes.BOOL
     user32.GetDC.argtypes = [wintypes.HWND]
     user32.GetWindowDC.argtypes = [wintypes.HWND]
     user32.ReleaseDC.argtypes = [wintypes.HWND, wintypes.HDC]
@@ -239,8 +241,36 @@ class WindowsPlatformHandler(PlatformHandler):
         self._connected = False
         self._last_screenshot = None
 
+    def _get_client_rect_on_screen(self, hwnd: int) -> Optional[Tuple[int, int, int, int]]:
+        """
+        Get the client area rectangle in screen coordinates.
+
+        Uses ClientToScreen to get the exact client area, excluding
+        window frame, title bar, and shadow borders.
+
+        Returns:
+            (x, y, width, height) or None
+        """
+        try:
+            # Get client area size
+            client_rect = wintypes.RECT()
+            user32.GetClientRect(hwnd, ctypes.byref(client_rect))
+            client_w = client_rect.right - client_rect.left
+            client_h = client_rect.bottom - client_rect.top
+
+            if client_w <= 0 or client_h <= 0:
+                return None
+
+            # Convert client (0,0) to screen coordinates
+            point = wintypes.POINT(0, 0)
+            user32.ClientToScreen(hwnd, ctypes.byref(point))
+
+            return (point.x, point.y, client_w, client_h)
+        except Exception:
+            return None
+
     def capture_screenshot(self) -> Optional[bytes]:
-        """Capture screenshot of target window."""
+        """Capture screenshot of target window (client area only, no frame/shadow)."""
         if not IS_WINDOWS or not self._target_hwnd:
             return None
 
@@ -252,7 +282,15 @@ class WindowsPlatformHandler(PlatformHandler):
             import time
             time.sleep(0.1)  # Brief delay to let window render
 
-            # Get window rect
+            # Try client area capture first (excludes frame and shadow)
+            client = self._get_client_rect_on_screen(hwnd)
+            if client:
+                x, y, width, height = client
+                screenshot = self._capture_from_desktop(x, y, width, height)
+                if screenshot:
+                    return screenshot
+
+            # Fallback: full window rect (includes frame)
             rect = wintypes.RECT()
             user32.GetWindowRect(hwnd, ctypes.byref(rect))
 
@@ -262,7 +300,6 @@ class WindowsPlatformHandler(PlatformHandler):
             if width <= 0 or height <= 0:
                 return None
 
-            # Method 1: Try desktop DC capture (most reliable for modern apps)
             screenshot = self._capture_from_desktop(rect.left, rect.top, width, height)
             if screenshot:
                 return screenshot

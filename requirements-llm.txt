@@ -1,0 +1,7 @@
+# VizDOM - LLM/Deep Learning dependencies
+# Install: pip install -r requirements-llm.txt
+
+-r requirements.txt
+
+torch>=2.0.0
+transformers>=4.35.0

@@ -80,6 +80,9 @@ class VisualDOMPipeline:
     - Containment-based hierarchy
     """
 
+    # Reference height for threshold scaling (1080p)
+    REFERENCE_HEIGHT = 1080
+
     def __init__(
         self,
         ocr_engine: str = "easyocr",
@@ -100,8 +103,8 @@ class VisualDOMPipeline:
             use_gpu: Use GPU acceleration
             confidence_threshold: Minimum confidence to keep detections (default: 0.3)
             iou_threshold: IoU threshold for NMS (default: 0.5)
-            min_element_area: Minimum element area in pixels (default: 100)
-            min_element_size: Minimum width/height in pixels (default: 10)
+            min_element_area: Minimum element area in pixels at 1080p (default: 100)
+            min_element_size: Minimum width/height in pixels at 1080p (default: 10)
             max_elements: Maximum number of elements to return (default: 200)
         """
         self.confidence_threshold = confidence_threshold
@@ -124,11 +127,20 @@ class VisualDOMPipeline:
         )
 
         self._element_counter = 0
+        self._scale = 1.0
 
     def _next_id(self) -> str:
         """Generate next element ID."""
         self._element_counter += 1
         return f"E{self._element_counter}"
+
+    def _scaled(self, value: float) -> float:
+        """Scale a pixel value relative to current image resolution."""
+        return value * self._scale
+
+    def _scaled_area(self, value: float) -> float:
+        """Scale an area value (pixels squared) relative to current image resolution."""
+        return value * self._scale * self._scale
 
     def process(
         self,
@@ -160,6 +172,10 @@ class VisualDOMPipeline:
             raise ValueError("Could not load image")
 
         height, width = image.shape[:2]
+
+        # Compute scale factor relative to 1080p reference
+        # Clamp to minimum 1.0 so small images keep original thresholds
+        self._scale = max(1.0, height / self.REFERENCE_HEIGHT)
 
         all_elements: List[UIElement] = []
 
@@ -391,7 +407,7 @@ class VisualDOMPipeline:
             # Skip pure block elements with no content
             if uied_elem.visual_type == "block" and not overlapping_text:
                 # Keep blocks only if they have reasonable size
-                if uied_elem.area > 5000:
+                if uied_elem.area > self._scaled_area(5000):
                     merged.append(uied_elem)
             else:
                 merged.append(uied_elem)
@@ -404,8 +420,10 @@ class VisualDOMPipeline:
         return merged
 
     def _filter_elements(self, elements: List[UIElement]) -> List[UIElement]:
-        """Filter elements by size and confidence."""
+        """Filter elements by size and confidence (resolution-aware)."""
         filtered = []
+        scaled_min_area = self._scaled_area(self.min_element_area)
+        scaled_min_size = self._scaled(self.min_element_size)
 
         for elem in elements:
             # Skip elements below confidence threshold
@@ -413,13 +431,13 @@ class VisualDOMPipeline:
                 continue
 
             # Skip elements below minimum area
-            if elem.area < self.min_element_area:
+            if elem.area < scaled_min_area:
                 # Exception: keep text elements even if small
                 if elem.visual_type != "text":
                     continue
 
             # Skip elements below minimum size
-            if elem.width < self.min_element_size or elem.height < self.min_element_size:
+            if elem.width < scaled_min_size or elem.height < scaled_min_size:
                 continue
 
             # Skip very thin elements (likely noise/lines)
