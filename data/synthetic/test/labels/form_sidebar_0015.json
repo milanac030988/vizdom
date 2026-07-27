@@ -1,0 +1,484 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        21,
+        18,
+        210,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Update Center"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        0,
+        68,
+        340,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E7",
+        "E9",
+        "E8",
+        "E4",
+        "E5",
+        "E6",
+        "E11"
+      ]
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        28,
+        95,
+        119,
+        116
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Calendar",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        28,
+        145,
+        100,
+        170
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Logout",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        28,
+        195,
+        89,
+        215
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Home",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        28,
+        245,
+        158,
+        266
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notifications",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        28,
+        295,
+        110,
+        320
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Support",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        28,
+        345,
+        129,
+        370
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Messages",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        28,
+        395,
+        73,
+        416
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Files",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        385,
+        95,
+        594,
+        130
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Configuration"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        385,
+        149,
+        1875,
+        151
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        385,
+        176,
+        457,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Created"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        385,
+        208,
+        1112,
+        262
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "C:\\Users\\admin"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        1148,
+        176,
+        1274,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "MAC Address"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        1148,
+        208,
+        1875,
+        262
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search..."
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        385,
+        284,
+        459,
+        304
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Address"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        385,
+        316,
+        1112,
+        370
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Comments"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        1148,
+        284,
+        1204,
+        303
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Name"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1148,
+        316,
+        1875,
+        370
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        385,
+        392,
+        430,
+        412
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Time"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        385,
+        424,
+        1112,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Offline"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        1148,
+        392,
+        1253,
+        417
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Expiry Date"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        1148,
+        424,
+        1875,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Phone number"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        385,
+        500,
+        474,
+        524
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Company"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        385,
+        532,
+        1112,
+        586
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Company"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        1148,
+        500,
+        1198,
+        520
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Email"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        1148,
+        532,
+        1875,
+        586
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Website"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        385,
+        608,
+        429,
+        627
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Date"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        385,
+        640,
+        1112,
+        694
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Phone number"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        1148,
+        608,
+        1216,
+        628
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "License"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        1148,
+        640,
+        1875,
+        694
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Enter name"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        385,
+        716,
+        432,
+        735
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "State"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        385,
+        748,
+        1112,
+        802
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "admin"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        1148,
+        716,
+        1210,
+        735
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Owner"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        1148,
+        748,
+        1875,
+        802
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Company"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        385,
+        990,
+        547,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        565,
+        990,
+        727,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        745,
+        990,
+        907,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Reset"
+    }
+  ],
+  "stats": {
+    "text_detected": 36,
+    "uied_detected": 38,
+    "final_count": 38
+  },
+  "source": "synthetic"
+}

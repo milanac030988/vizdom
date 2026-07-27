@@ -1,0 +1,378 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        72
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E13",
+        "E14",
+        "E15",
+        "E16",
+        "E2",
+        "E4",
+        "E6",
+        "E8",
+        "E9",
+        "E10",
+        "E11",
+        "E12",
+        "E3",
+        "E5",
+        "E7"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        14,
+        10,
+        65,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        79,
+        7,
+        80,
+        9
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        93,
+        10,
+        144,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        158,
+        7,
+        159,
+        9
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        172,
+        10,
+        223,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        237,
+        7,
+        238,
+        9
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        251,
+        10,
+        302,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "close",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        316,
+        10,
+        367,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        381,
+        10,
+        432,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "close",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        446,
+        10,
+        497,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        511,
+        10,
+        562,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        1794,
+        9,
+        1902,
+        63
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Apply",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        1676,
+        9,
+        1784,
+        63
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Close",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        1558,
+        9,
+        1666,
+        63
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Share",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        1440,
+        9,
+        1548,
+        63
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Print",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        36,
+        108,
+        260,
+        133
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Document Editor"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        36,
+        171,
+        509,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "sed amet elit sit consectetur tempor eiusmod dolor"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        36,
+        207,
+        268,
+        232
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "tempor sit amet eiusmod"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        36,
+        243,
+        367,
+        268
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "sed ipsum eiusmod amet adipiscing"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        36,
+        279,
+        409,
+        304
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "eiusmod ipsum consectetur dolor Lorem"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        36,
+        315,
+        439,
+        340
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "adipiscing consectetur sed dolor do tempor"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        36,
+        351,
+        392,
+        376
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Lorem tempor consectetur dolor do sit"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        36,
+        387,
+        308,
+        412
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "sed consectetur ipsum Lorem"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        36,
+        423,
+        519,
+        448
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "sed sit ipsum Lorem consectetur adipiscing eiusmod"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        36,
+        459,
+        498,
+        484
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "consectetur adipiscing amet tempor elit do sit sed"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        36,
+        495,
+        362,
+        520
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "tempor consectetur ipsum amet do"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        36,
+        531,
+        523,
+        556
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "dolor sit ipsum consectetur eiusmod amet elit Lorem"
+    }
+  ],
+  "stats": {
+    "text_detected": 24,
+    "uied_detected": 28,
+    "final_count": 28
+  },
+  "source": "synthetic"
+}

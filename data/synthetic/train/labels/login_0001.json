@@ -1,0 +1,153 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        700,
+        182,
+        1220,
+        898
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E9",
+        "E4",
+        "E6",
+        "E8",
+        "E2",
+        "E3",
+        "E10",
+        "E7",
+        "E5"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        736,
+        218,
+        982,
+        249
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Welcome Back",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        736,
+        308,
+        920,
+        329
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Confirm Password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        736,
+        340,
+        1184,
+        397
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "confirm password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        736,
+        415,
+        833,
+        436
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        736,
+        447,
+        1184,
+        504
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        736,
+        522,
+        839,
+        542
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Username",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        736,
+        554,
+        1184,
+        611
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "username",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        736,
+        629,
+        1184,
+        693
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Continue",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        736,
+        783,
+        885,
+        805
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Forgot password?",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 9,
+    "uied_detected": 10,
+    "final_count": 10
+  },
+  "source": "synthetic"
+}

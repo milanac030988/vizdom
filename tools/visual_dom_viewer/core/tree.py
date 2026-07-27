@@ -480,6 +480,11 @@ class DOMTree:
             'scrollable': elem_data.get('scrollable', False),
             'center': elem_data.get('center', []),
         }
+        # Semantic label + interactability (ADR-016)
+        if elem_data.get('label'):
+            properties['label'] = elem_data['label']
+        if elem_data.get('interactable') is not None:
+            properties['interactable'] = elem_data['interactable']
         # Include locators if present
         if elem_data.get('locators'):
             properties['locators'] = elem_data['locators']

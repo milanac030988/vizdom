@@ -64,6 +64,12 @@ def process_image(
     visualize_path: str = None,
     llm_model: str = None,
     llm_host: str = "http://localhost:11434",
+    slm_backend: str = None,
+    slm_model: str = None,
+    detector: str = "uied",
+    detector_kwargs: dict = None,
+    text_ensemble: bool = True,
+    merge_oversegmented: bool = True,
 ) -> dict:
     """
     Process a GUI image and return hierarchy JSON.
@@ -102,10 +108,26 @@ def process_image(
     if ocr_engine:
         print(f"  OCR engine: {ocr_engine}")
 
+    if detector != "uied":
+        print(f"  Detector: {detector}")
+
+    detector_kwargs = dict(detector_kwargs or {})
+    # "hybrid" merges YOLO + UIED and takes the YOLO weights via a dedicated
+    # param rather than through the pluggable-backend kwargs.
+    yolo_model_path = detector_kwargs.pop("model_path", None) if detector == "hybrid" else None
+
     pipeline = VisualDOMPipeline(
         ocr_engine=ocr_engine,
         use_gpu=use_gpu,
         confidence_threshold=confidence_threshold,
+        slm_backend=slm_backend,
+        slm_model=slm_model,
+        slm_host=llm_host,
+        detector=detector,
+        yolo_model_path=yolo_model_path,
+        detector_kwargs=detector_kwargs,
+        text_ensemble=text_ensemble,
+        merge_oversegmented=merge_oversegmented,
     )
 
     detect_text = ocr_engine is not None
@@ -295,7 +317,39 @@ Examples:
         """
     )
 
-    parser.add_argument("image", help="Path to GUI screenshot")
+    parser.add_argument(
+        "image", nargs="?", default=None,
+        help="Path to GUI screenshot (omit when using --capture)"
+    )
+    parser.add_argument(
+        "--capture",
+        default=None,
+        help="Grab the screenshot with a capture strategy instead of reading a "
+             "file (ADR-018): windows|linux|android|camera|grpc|<plugin>. "
+             "Use 'auto' for the OS default. See --list-captures."
+    )
+    parser.add_argument(
+        "--list-captures",
+        action="store_true",
+        help="List available capture strategies and exit"
+    )
+    parser.add_argument(
+        "--capture-target",
+        default=None,
+        help="host:port of a remote capture service (for --capture grpc)"
+    )
+    parser.add_argument(
+        "--capture-serial",
+        default=None,
+        help="android device serial (for --capture android)"
+    )
+    parser.add_argument(
+        "--capture-kw",
+        action="append",
+        default=[],
+        help="capture strategy constructor arg key=value (repeatable), "
+             "e.g. --capture camera --capture-kw device=0"
+    )
     parser.add_argument(
         "--ocr", "-o",
         choices=["tesseract", "easyocr", "paddleocr"],
@@ -344,8 +398,128 @@ Examples:
         default="http://localhost:11434",
         help="Ollama server URL (default: http://localhost:11434)"
     )
+    parser.add_argument(
+        "--slm",
+        default=None,
+        help="SLM backend for smart CV review (ollama, openai). Requires Ollama running."
+    )
+    parser.add_argument(
+        "--slm-model",
+        default=None,
+        help="SLM model name (default: qwen2.5:3b for ollama)"
+    )
+    parser.add_argument(
+        "--detector",
+        default="uied",
+        choices=["uied", "yolo", "omniparser", "hybrid", "grpc"],
+        help="Element detection backend (default: uied). 'grpc' delegates to a "
+             "remote detector service — see --detector-target."
+    )
+    parser.add_argument(
+        "--detector-target",
+        default="localhost:50051",
+        help="host:port of the remote detector service (for --detector grpc)"
+    )
+    parser.add_argument(
+        "--omniparser-root",
+        default=None,
+        help="Path to the OmniParser repo (or set OMNIPARSER_ROOT)"
+    )
+    parser.add_argument(
+        "--omniparser-icon-detect",
+        default=None,
+        help="Path to OmniParser icon_detect weights (.pt); or OMNIPARSER_ICON_DETECT"
+    )
+    parser.add_argument(
+        "--omniparser-icon-caption",
+        default=None,
+        help="Path to OmniParser icon_caption model dir; or OMNIPARSER_ICON_CAPTION"
+    )
+    parser.add_argument(
+        "--yolo-model",
+        default=None,
+        help="Path to YOLO .pt weights (for --detector yolo/hybrid)"
+    )
+    parser.add_argument(
+        "--no-text-ensemble",
+        action="store_true",
+        help="Disable the OCR text ensemble for --detector omniparser "
+             "(use OmniParser's original OCR only)"
+    )
+    parser.add_argument(
+        "--no-merge",
+        action="store_true",
+        help="Disable the rule-based smart-merge of over-segmented elements"
+    )
 
     args = parser.parse_args()
+
+    from visual_dom.capture import list_captures, create_capture, auto_select
+
+    # --list-captures: show strategies and exit
+    if args.list_captures:
+        print("Available capture strategies (ADR-018):")
+        for c in list_captures():
+            print(f"  {c['name']:<14} platform={c['platform']:<8} "
+                  f"available={c['available']}  {c['description']}")
+        sys.exit(0)
+
+    # --capture: grab a screenshot instead of reading a file
+    if args.capture:
+        name = auto_select() if args.capture == "auto" else args.capture
+        if not name:
+            print("Error: no capture strategy available; pass --capture <name>")
+            sys.exit(1)
+        cap_kwargs = {}
+        for pair in args.capture_kw:
+            if "=" not in pair:
+                print(f"Error: --capture-kw expects key=value, got {pair!r}")
+                sys.exit(1)
+            k, v = pair.split("=", 1)
+            cap_kwargs[k] = v
+        if args.capture_target:
+            cap_kwargs["target"] = args.capture_target
+        if args.capture_serial:
+            cap_kwargs["serial"] = args.capture_serial
+
+        import cv2
+        from datetime import datetime
+        captures_dir = Path(__file__).resolve().parent.parent / "output" / "captures"
+        captures_dir.mkdir(parents=True, exist_ok=True)
+        stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        grabbed_path = captures_dir / f"{name}_{stamp}.png"
+
+        print(f"Capturing screenshot via '{name}'...")
+        try:
+            cap = create_capture(name, **cap_kwargs)
+            frame = cap.capture()
+            cap.close()
+        except Exception as e:
+            print(f"Error: capture via '{name}' failed: {e}")
+            sys.exit(1)
+        cv2.imwrite(str(grabbed_path), frame)
+        h, w = frame.shape[:2]
+        print(f"  Captured {w}x{h} -> {grabbed_path}")
+        args.image = str(grabbed_path)
+
+    if not args.image:
+        print("Error: provide an image path or use --capture <name> "
+              "(see --list-captures)")
+        sys.exit(1)
+
+    # Assemble backend-specific kwargs for the pluggable detector
+    detector_kwargs = {}
+    if args.detector == "omniparser":
+        if args.omniparser_root:
+            detector_kwargs["omniparser_root"] = args.omniparser_root
+        if args.omniparser_icon_detect:
+            detector_kwargs["icon_detect_path"] = args.omniparser_icon_detect
+        if args.omniparser_icon_caption:
+            detector_kwargs["icon_caption_path"] = args.omniparser_icon_caption
+    elif args.detector in ("yolo", "hybrid") and args.yolo_model:
+        detector_kwargs["model_path"] = args.yolo_model
+    elif args.detector == "grpc":
+        detector_kwargs["target"] = args.detector_target
 
     # Check image exists
     if not os.path.exists(args.image):
@@ -374,6 +548,8 @@ Examples:
         print(f"OCR:    {args.ocr}")
     if args.llm:
         print(f"LLM:    {args.llm}")
+    if args.slm:
+        print(f"SLM:    {args.slm} ({args.slm_model or 'default'})")
 
     # Process image
     try:
@@ -385,6 +561,12 @@ Examples:
             visualize_path=args.visualize,
             llm_model=args.llm,
             llm_host=args.llm_host,
+            slm_backend=args.slm,
+            slm_model=args.slm_model,
+            detector=args.detector,
+            detector_kwargs=detector_kwargs,
+            text_ensemble=not args.no_text_ensemble,
+            merge_oversegmented=not args.no_merge,
         )
 
         # Save result

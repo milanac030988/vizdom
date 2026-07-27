@@ -1,0 +1,734 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        79
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3",
+        "E5",
+        "E7",
+        "E6",
+        "E2",
+        "E4"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        18,
+        18,
+        61,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        79,
+        25,
+        221,
+        50
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dashboard",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1809,
+        28,
+        1864,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Tasks",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1669,
+        28,
+        1770,
+        53
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Messages",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1529,
+        28,
+        1610,
+        54
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Projects",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1389,
+        28,
+        1472,
+        54
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        27,
+        108,
+        323,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E10",
+        "E9"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        45,
+        126,
+        116,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Memory",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        45,
+        165,
+        152,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "128 GB",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        341,
+        108,
+        637,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E12",
+        "E13"
+      ]
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        359,
+        126,
+        459,
+        148
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Throughput",
+      "parent_id": "E11"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        359,
+        165,
+        377,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "0",
+      "parent_id": "E11"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        655,
+        108,
+        951,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E15",
+        "E16"
+      ]
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        673,
+        126,
+        766,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "CPU Usage",
+      "parent_id": "E14"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        673,
+        165,
+        727,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "856",
+      "parent_id": "E14"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        969,
+        108,
+        1265,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E19",
+        "E18"
+      ]
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        987,
+        126,
+        1077,
+        148
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disk Space",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        987,
+        165,
+        1118,
+        200
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.2 Gbps",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        1283,
+        108,
+        1579,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E22",
+        "E21"
+      ]
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1301,
+        126,
+        1418,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Avg Response",
+      "parent_id": "E20"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        1301,
+        165,
+        1382,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3,421",
+      "parent_id": "E20"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        1597,
+        108,
+        1893,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E24",
+        "E25"
+      ]
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        1615,
+        126,
+        1705,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Requests/s",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        1615,
+        165,
+        1651,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "23",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        27,
+        270,
+        207,
+        299
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Recent Activity"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        41,
+        330,
+        59,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "ID"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        663,
+        330,
+        710,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Score"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        1285,
+        330,
+        1362,
+        351
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Category"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        41,
+        375,
+        81,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2783"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        663,
+        375,
+        777,
+        393
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        1285,
+        375,
+        1331,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "100%"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        27,
+        408,
+        1893,
+        410
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        41,
+        418,
+        81,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "4897"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        663,
+        418,
+        736,
+        436
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        1285,
+        418,
+        1329,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "42ms"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        27,
+        451,
+        1893,
+        453
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        41,
+        461,
+        81,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "7577"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        663,
+        461,
+        715,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Ready"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        1285,
+        461,
+        1357,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.2 Gbps"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        27,
+        494,
+        1893,
+        496
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        41,
+        504,
+        81,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "6477"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        663,
+        504,
+        707,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "42ms"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        1285,
+        504,
+        1305,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "12"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        27,
+        537,
+        1893,
+        539
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        41,
+        547,
+        81,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "8476"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        663,
+        547,
+        705,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        1285,
+        547,
+        1329,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "42ms"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        27,
+        580,
+        1893,
+        582
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        41,
+        590,
+        81,
+        607
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "9534"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        663,
+        590,
+        755,
+        612
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        1285,
+        590,
+        1329,
+        610
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3,421"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        27,
+        623,
+        1893,
+        625
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        41,
+        633,
+        81,
+        650
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "9091"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        663,
+        633,
+        755,
+        655
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        1285,
+        633,
+        1321,
+        650
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "45%"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        27,
+        666,
+        1893,
+        668
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    }
+  ],
+  "stats": {
+    "text_detected": 43,
+    "uied_detected": 57,
+    "final_count": 57
+  },
+  "source": "synthetic"
+}

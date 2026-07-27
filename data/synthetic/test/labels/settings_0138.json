@@ -1,0 +1,469 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        27,
+        21,
+        148,
+        56
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Settings"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        36,
+        99,
+        165,
+        124
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Advanced"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        54,
+        149,
+        152,
+        174
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Company"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1668,
+        142,
+        1884,
+        185
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        54,
+        203,
+        114,
+        223
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notes"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1668,
+        196,
+        1884,
+        239
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        54,
+        257,
+        118,
+        278
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Phone"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        1668,
+        250,
+        1884,
+        293
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        36,
+        311,
+        1884,
+        313
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        36,
+        338,
+        144,
+        362
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Account"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        54,
+        388,
+        115,
+        408
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Name"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        1704,
+        385,
+        1744,
+        405
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        54,
+        442,
+        102,
+        462
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Date"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        1704,
+        439,
+        1744,
+        459
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        36,
+        496,
+        1884,
+        498
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        36,
+        523,
+        115,
+        548
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Audio"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        54,
+        573,
+        115,
+        593
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Name"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        1668,
+        566,
+        1884,
+        609
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        54,
+        627,
+        164,
+        648
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "First Name"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1704,
+        624,
+        1744,
+        644
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        36,
+        681,
+        1884,
+        683
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        36,
+        708,
+        131,
+        739
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Privacy"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        54,
+        758,
+        118,
+        779
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Phone"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        1704,
+        755,
+        1744,
+        775
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        54,
+        812,
+        110,
+        833
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Email"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        1740,
+        809,
+        1768,
+        837
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        36,
+        866,
+        1884,
+        868
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        36,
+        893,
+        137,
+        918
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "General"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        54,
+        943,
+        118,
+        964
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Phone"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        1740,
+        940,
+        1768,
+        968
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        54,
+        997,
+        147,
+        1018
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Modified"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        1704,
+        994,
+        1744,
+        1014
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        54,
+        1051,
+        104,
+        1072
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Time"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        1668,
+        1044,
+        1884,
+        1087
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        54,
+        1105,
+        110,
+        1126
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Email"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        1704,
+        1102,
+        1744,
+        1122
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        36,
+        1159,
+        1884,
+        1161
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        1740,
+        999,
+        1884,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        1578,
+        999,
+        1722,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel"
+    }
+  ],
+  "stats": {
+    "text_detected": 26,
+    "uied_detected": 39,
+    "final_count": 39
+  },
+  "source": "synthetic"
+}

@@ -1,0 +1,646 @@
+{
+  "title": "Mail",
+  "theme": "light",
+  "elements": [
+    {
+      "type": "container",
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 56,
+      "elements": [
+        {
+          "type": "icon",
+          "icon": "menu",
+          "x": 16,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "Mail",
+          "x": 56,
+          "y": 14,
+          "w": 60,
+          "h": 28
+        },
+        {
+          "type": "input_field",
+          "text": "Search mail",
+          "x": 400,
+          "y": 12,
+          "w": 500,
+          "h": 32
+        },
+        {
+          "type": "icon",
+          "icon": "search",
+          "x": 870,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "settings",
+          "x": 1840,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "user",
+          "x": 1880,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 56,
+      "w": 240,
+      "h": 1024,
+      "elements": [
+        {
+          "type": "button",
+          "text": "Compose",
+          "x": 20,
+          "y": 72,
+          "w": 200,
+          "h": 40
+        },
+        {
+          "type": "text",
+          "text": "Inbox",
+          "x": 20,
+          "y": 132,
+          "w": 160,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "24",
+          "x": 190,
+          "y": 132,
+          "w": 30,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Starred",
+          "x": 20,
+          "y": 164,
+          "w": 160,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Snoozed",
+          "x": 20,
+          "y": 196,
+          "w": 160,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Sent",
+          "x": 20,
+          "y": 228,
+          "w": 160,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Drafts",
+          "x": 20,
+          "y": 260,
+          "w": 160,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "3",
+          "x": 190,
+          "y": 260,
+          "w": 30,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Spam",
+          "x": 20,
+          "y": 292,
+          "w": 160,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Trash",
+          "x": 20,
+          "y": 324,
+          "w": 160,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 360,
+          "w": 200,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Labels",
+          "x": 20,
+          "y": 376,
+          "w": 160,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Work",
+          "x": 20,
+          "y": 408,
+          "w": 160,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Personal",
+          "x": 20,
+          "y": 440,
+          "w": 160,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "x": 240,
+      "y": 56,
+      "w": 1,
+      "h": 1024
+    },
+    {
+      "type": "container",
+      "x": 241,
+      "y": 56,
+      "w": 559,
+      "h": 1024,
+      "elements": [
+        {
+          "type": "container",
+          "x": 241,
+          "y": 56,
+          "w": 559,
+          "h": 44,
+          "elements": [
+            {
+              "type": "checkbox",
+              "text": "",
+              "x": 256,
+              "y": 68,
+              "w": 20,
+              "h": 20
+            },
+            {
+              "type": "dropdown",
+              "text": "Newest",
+              "x": 660,
+              "y": 64,
+              "w": 120,
+              "h": 30
+            }
+          ]
+        },
+        {
+          "type": "separator",
+          "x": 241,
+          "y": 100,
+          "w": 559,
+          "h": 1
+        },
+        {
+          "type": "container",
+          "x": 241,
+          "y": 101,
+          "w": 559,
+          "h": 80,
+          "elements": [
+            {
+              "type": "checkbox",
+              "text": "",
+              "x": 256,
+              "y": 130,
+              "w": 20,
+              "h": 20
+            },
+            {
+              "type": "text",
+              "text": "Alice Johnson",
+              "x": 290,
+              "y": 112,
+              "w": 200,
+              "h": 18
+            },
+            {
+              "type": "text",
+              "text": "Project Update - Q2 Planning",
+              "x": 290,
+              "y": 134,
+              "w": 350,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "Hi team, please review the attached Q2 roadmap...",
+              "x": 290,
+              "y": 154,
+              "w": 450,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "10:42 AM",
+              "x": 720,
+              "y": 112,
+              "w": 65,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "type": "separator",
+          "x": 256,
+          "y": 181,
+          "w": 530,
+          "h": 1
+        },
+        {
+          "type": "container",
+          "x": 241,
+          "y": 182,
+          "w": 559,
+          "h": 80,
+          "elements": [
+            {
+              "type": "checkbox",
+              "text": "",
+              "x": 256,
+              "y": 212,
+              "w": 20,
+              "h": 20
+            },
+            {
+              "type": "text",
+              "text": "Bob Martinez",
+              "x": 290,
+              "y": 194,
+              "w": 200,
+              "h": 18
+            },
+            {
+              "type": "text",
+              "text": "Re: Design Review Feedback",
+              "x": 290,
+              "y": 216,
+              "w": 350,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "Thanks for the mockups. I have a few notes on...",
+              "x": 290,
+              "y": 236,
+              "w": 450,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "9:15 AM",
+              "x": 720,
+              "y": 194,
+              "w": 65,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "type": "separator",
+          "x": 256,
+          "y": 262,
+          "w": 530,
+          "h": 1
+        },
+        {
+          "type": "container",
+          "x": 241,
+          "y": 263,
+          "w": 559,
+          "h": 80,
+          "elements": [
+            {
+              "type": "checkbox",
+              "text": "",
+              "x": 256,
+              "y": 293,
+              "w": 20,
+              "h": 20
+            },
+            {
+              "type": "text",
+              "text": "GitHub",
+              "x": 290,
+              "y": 275,
+              "w": 200,
+              "h": 18
+            },
+            {
+              "type": "text",
+              "text": "[visual-dom] PR #47 merged",
+              "x": 290,
+              "y": 297,
+              "w": 350,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "Your pull request has been merged into main...",
+              "x": 290,
+              "y": 317,
+              "w": 450,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "Yesterday",
+              "x": 710,
+              "y": 275,
+              "w": 75,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "type": "separator",
+          "x": 256,
+          "y": 343,
+          "w": 530,
+          "h": 1
+        },
+        {
+          "type": "container",
+          "x": 241,
+          "y": 344,
+          "w": 559,
+          "h": 80,
+          "elements": [
+            {
+              "type": "checkbox",
+              "text": "",
+              "x": 256,
+              "y": 374,
+              "w": 20,
+              "h": 20
+            },
+            {
+              "type": "text",
+              "text": "Clara Wei",
+              "x": 290,
+              "y": 356,
+              "w": 200,
+              "h": 18
+            },
+            {
+              "type": "text",
+              "text": "Meeting Notes - Sprint Retro",
+              "x": 290,
+              "y": 378,
+              "w": 350,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "Attached are the notes from today's retro...",
+              "x": 290,
+              "y": 398,
+              "w": 450,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "Yesterday",
+              "x": 710,
+              "y": 356,
+              "w": 75,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "type": "separator",
+          "x": 256,
+          "y": 424,
+          "w": 530,
+          "h": 1
+        },
+        {
+          "type": "container",
+          "x": 241,
+          "y": 425,
+          "w": 559,
+          "h": 80,
+          "elements": [
+            {
+              "type": "checkbox",
+              "text": "",
+              "x": 256,
+              "y": 455,
+              "w": 20,
+              "h": 20
+            },
+            {
+              "type": "text",
+              "text": "Jira Notifications",
+              "x": 290,
+              "y": 437,
+              "w": 200,
+              "h": 18
+            },
+            {
+              "type": "text",
+              "text": "VDOM-312 moved to In Review",
+              "x": 290,
+              "y": 459,
+              "w": 350,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "The issue VDOM-312 has been transitioned to...",
+              "x": 290,
+              "y": 479,
+              "w": 450,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "Mar 31",
+              "x": 725,
+              "y": 437,
+              "w": 60,
+              "h": 16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "x": 800,
+      "y": 56,
+      "w": 1,
+      "h": 1024
+    },
+    {
+      "type": "container",
+      "x": 801,
+      "y": 56,
+      "w": 1119,
+      "h": 1024,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Project Update - Q2 Planning",
+          "x": 830,
+          "y": 76,
+          "w": 500,
+          "h": 28
+        },
+        {
+          "type": "separator",
+          "x": 830,
+          "y": 116,
+          "w": 1060,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Alice Johnson",
+          "x": 830,
+          "y": 132,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "to me, bob, clara",
+          "x": 830,
+          "y": 156,
+          "w": 200,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "Apr 2, 2026, 10:42 AM",
+          "x": 1700,
+          "y": 132,
+          "w": 180,
+          "h": 16
+        },
+        {
+          "type": "separator",
+          "x": 830,
+          "y": 184,
+          "w": 1060,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Hi team,",
+          "x": 830,
+          "y": 204,
+          "w": 300,
+          "h": 18
+        },
+        {
+          "type": "text",
+          "text": "Please review the attached Q2 roadmap and share your feedback",
+          "x": 830,
+          "y": 234,
+          "w": 700,
+          "h": 18
+        },
+        {
+          "type": "text",
+          "text": "by end of week. Key priorities include:",
+          "x": 830,
+          "y": 258,
+          "w": 500,
+          "h": 18
+        },
+        {
+          "type": "text",
+          "text": "- Finalize the CV pipeline integration tests",
+          "x": 850,
+          "y": 290,
+          "w": 500,
+          "h": 18
+        },
+        {
+          "type": "text",
+          "text": "- Complete SLM advisor benchmarking",
+          "x": 850,
+          "y": 314,
+          "w": 500,
+          "h": 18
+        },
+        {
+          "type": "text",
+          "text": "- Ship the session-based output feature",
+          "x": 850,
+          "y": 338,
+          "w": 500,
+          "h": 18
+        },
+        {
+          "type": "text",
+          "text": "Thanks,",
+          "x": 830,
+          "y": 378,
+          "w": 200,
+          "h": 18
+        },
+        {
+          "type": "text",
+          "text": "Alice",
+          "x": 830,
+          "y": 402,
+          "w": 200,
+          "h": 18
+        },
+        {
+          "type": "button",
+          "text": "Reply",
+          "x": 830,
+          "y": 460,
+          "w": 100,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Forward",
+          "x": 946,
+          "y": 460,
+          "w": 100,
+          "h": 36
+        }
+      ]
+    }
+  ]
+}

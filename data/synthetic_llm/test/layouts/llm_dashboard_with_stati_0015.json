@@ -1,0 +1,128 @@
+{
+  "title": "Analytics Dashboard",
+  "theme": "light",
+  "elements": [
+    {
+      "type": "container",
+      "x": 20,
+      "y": 20,
+      "w": 1840,
+      "h": 1040
+    },
+    {
+      "type": "text",
+      "x": 30,
+      "y": 40,
+      "text": "Statistics Overview"
+    },
+    {
+      "type": "container",
+      "x": 30,
+      "y": 70,
+      "w": 500,
+      "h": 200
+    },
+    {
+      "type": "card",
+      "x": 30,
+      "y": 80,
+      "w": 480,
+      "h": 180,
+      "bgColor": "#333"
+    },
+    {
+      "type": "text",
+      "x": 40,
+      "y": 100,
+      "text": "Total Users: 10,234"
+    },
+    {
+      "type": "icon",
+      "x": 340,
+      "y": 120,
+      "w": 20,
+      "h": 20
+    },
+    {
+      "type": "card",
+      "x": 30,
+      "y": 300,
+      "w": 480,
+      "h": 180,
+      "bgColor": "#333"
+    },
+    {
+      "type": "text",
+      "x": 40,
+      "y": 320,
+      "text": "New Users: 5,678 (56%)"
+    },
+    {
+      "type": "icon",
+      "x": 340,
+      "y": 340,
+      "w": 20,
+      "h": 20
+    },
+    {
+      "type": "card",
+      "x": 30,
+      "y": 500,
+      "w": 480,
+      "h": 180,
+      "bgColor": "#333"
+    },
+    {
+      "type": "text",
+      "x": 40,
+      "y": 520,
+      "text": "Bounce Rate: 25.6%"
+    },
+    {
+      "type": "icon",
+      "x": 340,
+      "y": 540,
+      "w": 20,
+      "h": 20
+    },
+    {
+      "type": "separator",
+      "x": 30,
+      "y": 580,
+      "w": 480,
+      "h": 2
+    },
+    {
+      "type": "container",
+      "x": 30,
+      "y": 600,
+      "w": 500,
+      "h": 200
+    },
+    {
+      "type": "chart",
+      "x": 30,
+      "y": 610,
+      "w": 480,
+      "h": 180
+    },
+    {
+      "type": "button",
+      "x": 530,
+      "y": 20,
+      "text": "Refresh Data"
+    },
+    {
+      "type": "dropdown",
+      "x": 630,
+      "y": 20,
+      "w": 200,
+      "h": 28,
+      "options": [
+        "Option 1",
+        "Option 2",
+        "Option 3"
+      ]
+    }
+  ]
+}

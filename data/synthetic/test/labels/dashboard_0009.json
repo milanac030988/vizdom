@@ -1,0 +1,757 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        79
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3",
+        "E7",
+        "E5",
+        "E2",
+        "E8",
+        "E4",
+        "E6"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        18,
+        18,
+        61,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        79,
+        25,
+        221,
+        50
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dashboard",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1781,
+        28,
+        1865,
+        48
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Account",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1641,
+        28,
+        1722,
+        54
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Projects",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1543,
+        28,
+        1588,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Files",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1333,
+        28,
+        1463,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notifications",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        1221,
+        28,
+        1293,
+        53
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Logout",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        27,
+        108,
+        385,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E11",
+        "E10"
+      ]
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        45,
+        126,
+        138,
+        144
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Total Users",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        45,
+        165,
+        152,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "128 GB",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        403,
+        108,
+        761,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E13",
+        "E14"
+      ]
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        421,
+        126,
+        521,
+        148
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Throughput",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        421,
+        165,
+        485,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "45%",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        779,
+        108,
+        1137,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E17",
+        "E16"
+      ]
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        797,
+        126,
+        887,
+        148
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disk Space",
+      "parent_id": "E15"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        797,
+        165,
+        928,
+        200
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.2 Gbps",
+      "parent_id": "E15"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        1155,
+        108,
+        1513,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E20",
+        "E19"
+      ]
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        1173,
+        126,
+        1234,
+        148
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Uptime",
+      "parent_id": "E18"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        1173,
+        165,
+        1272,
+        199
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "7 Days",
+      "parent_id": "E18"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1531,
+        108,
+        1889,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E22",
+        "E23"
+      ]
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        1549,
+        126,
+        1666,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Avg Response",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        1549,
+        165,
+        1640,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "99.9%",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        27,
+        270,
+        207,
+        299
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Recent Activity"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        41,
+        330,
+        92,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Count"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        414,
+        330,
+        462,
+        348
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Value"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        787,
+        330,
+        841,
+        348
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Action"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        1160,
+        330,
+        1207,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Score"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        1533,
+        330,
+        1595,
+        352
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Priority"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        41,
+        375,
+        81,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "5936"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        414,
+        375,
+        470,
+        393
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Online"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        787,
+        375,
+        842,
+        396
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "7 Days"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        1160,
+        375,
+        1219,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "128 GB"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        1533,
+        375,
+        1606,
+        393
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        27,
+        408,
+        1893,
+        410
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        41,
+        418,
+        81,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1552"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        414,
+        418,
+        494,
+        436
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        787,
+        418,
+        855,
+        436
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        1160,
+        418,
+        1206,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "100%"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        1533,
+        418,
+        1601,
+        436
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        27,
+        451,
+        1893,
+        453
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        41,
+        461,
+        81,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "7150"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        414,
+        461,
+        466,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Ready"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        787,
+        461,
+        857,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        1160,
+        461,
+        1274,
+        479
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        1533,
+        461,
+        1575,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        27,
+        494,
+        1893,
+        496
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        41,
+        504,
+        81,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "7945"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        414,
+        504,
+        464,
+        522
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        787,
+        504,
+        829,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        1160,
+        504,
+        1190,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "856"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        1533,
+        504,
+        1577,
+        524
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3,421"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        27,
+        537,
+        1893,
+        539
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        41,
+        547,
+        81,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "5468"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        414,
+        547,
+        506,
+        569
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        787,
+        547,
+        829,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        1160,
+        547,
+        1204,
+        567
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1,234"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        1533,
+        547,
+        1601,
+        565
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        27,
+        580,
+        1893,
+        582
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    }
+  ],
+  "stats": {
+    "text_detected": 48,
+    "uied_detected": 59,
+    "final_count": 59
+  },
+  "source": "synthetic"
+}

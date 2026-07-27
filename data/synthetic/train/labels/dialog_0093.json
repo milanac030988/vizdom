@@ -1,0 +1,124 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        591,
+        290,
+        1329,
+        789
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E5",
+        "E8",
+        "E7",
+        "E3",
+        "E6",
+        "E4",
+        "E2"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        1275,
+        304,
+        1311,
+        340
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "close",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        627,
+        326,
+        807,
+        354
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Information",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        627,
+        380,
+        1293,
+        382
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        627,
+        407,
+        1093,
+        433
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Please check your network connection and try",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        627,
+        439,
+        689,
+        465
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "again.",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1167,
+        696,
+        1293,
+        753
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Close",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        987,
+        696,
+        1149,
+        753
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Confirm",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 6,
+    "uied_detected": 8,
+    "final_count": 8
+  },
+  "source": "synthetic"
+}

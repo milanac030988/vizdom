@@ -1,0 +1,520 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        21,
+        18,
+        232,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "System Monitor"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        0,
+        68,
+        327,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E7",
+        "E10",
+        "E11",
+        "E4",
+        "E8",
+        "E6",
+        "E5"
+      ]
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        28,
+        95,
+        96,
+        116
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Admin",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        28,
+        145,
+        84,
+        165
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Users",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        28,
+        195,
+        89,
+        215
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Home",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        28,
+        245,
+        158,
+        266
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notifications",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        28,
+        295,
+        93,
+        316
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Profile",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        28,
+        345,
+        140,
+        366
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dashboard",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        28,
+        395,
+        112,
+        415
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Account",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        372,
+        95,
+        581,
+        130
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Configuration"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        372,
+        149,
+        1875,
+        151
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        372,
+        176,
+        483,
+        200
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Department"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        372,
+        208,
+        1105,
+        262
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Connected"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        1141,
+        176,
+        1234,
+        195
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Username"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        1141,
+        208,
+        1874,
+        262
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        372,
+        284,
+        408,
+        309
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "City"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        372,
+        316,
+        1105,
+        370
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "admin"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        1141,
+        284,
+        1240,
+        303
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Last Name"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1141,
+        316,
+        1874,
+        370
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search..."
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        372,
+        392,
+        470,
+        412
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "IP Address"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        372,
+        424,
+        1105,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search..."
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        1141,
+        392,
+        1230,
+        416
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Company"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        1141,
+        424,
+        1874,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        372,
+        500,
+        429,
+        519
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Status"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        372,
+        532,
+        1105,
+        586
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        1141,
+        500,
+        1210,
+        520
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        1141,
+        532,
+        1874,
+        586
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Zip code"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        372,
+        608,
+        446,
+        632
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Country"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        372,
+        640,
+        1105,
+        694
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Company"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        1141,
+        608,
+        1188,
+        627
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "State"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        1141,
+        640,
+        1874,
+        694
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Username"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        372,
+        716,
+        472,
+        736
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "First Name"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        372,
+        748,
+        1105,
+        802
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "john.doe@example.com"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        1141,
+        716,
+        1246,
+        741
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Description"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        1141,
+        748,
+        1874,
+        802
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Inactive"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        372,
+        824,
+        431,
+        844
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Phone"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        372,
+        856,
+        1105,
+        910
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "John Doe"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        1141,
+        824,
+        1207,
+        849
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Priority"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        1141,
+        856,
+        1874,
+        910
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        372,
+        990,
+        534,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        552,
+        990,
+        714,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel"
+    }
+  ],
+  "stats": {
+    "text_detected": 39,
+    "uied_detected": 41,
+    "final_count": 41
+  },
+  "source": "synthetic"
+}

@@ -1,0 +1,76 @@
+site_name: VizDOM — Visual DOM Generator
+site_description: Screenshot -> Visual DOM -> GUI Test Automation
+docs_dir: docs
+
+theme:
+  name: readthedocs   # left sidebar navigation
+
+extra_css:
+  - css/extra.css
+
+# Click a diagram -> fullscreen lightbox with zoom (wheel) + pan. Assets are
+# bundled locally by the plugin (no CDN), so it works offline / behind the proxy.
+plugins:
+  - search
+  - glightbox:
+      zoomable: true
+      draggable: true
+
+# PlantUML rendered locally via the vendored jar (tools/plantuml.jar). No server
+# (corporate proxy blocks plantuml.com) and no Graphviz (diagrams use the built-in
+# Smetana layout via `!pragma layout smetana`). Only Java is required.
+# base_dir lets `!include diagrams/*.puml` resolve from the docs/ folder.
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - plantuml_markdown:
+      # -Dplantuml.include.path lets `!include diagrams/*.puml` resolve (PlantUML
+      # resolves includes relative to the process CWD = repo root under -pipe, so
+      # the search path must point at docs/). Paths are relative to the repo root
+      # (the build CWD).
+      plantuml_cmd: java -Dplantuml.include.path=docs -jar tools/plantuml.jar
+      base_dir: docs
+      format: svg
+
+nav:
+  - Home: index.md
+  - Setup (uv): uv-setup.md
+  - Architecture: architecture.md
+  - CV Pipeline: PIPELINE.md
+  - OmniParser Setup: omniparser-setup.md
+  - Evaluation: EVALUATION.md
+  - Data Annotation: annotation_workflow.md
+  - Research:
+      - VLM Study: RESEARCH.md
+      - Related Work: related_work.md
+      - Model Comparisons:
+          - Overview: model-discussion.md
+          - Landscape 5-way (EN): discussion/landscape-comparison-en.md
+          - Landscape 5-way (VI): discussion/landscape-comparison-vi.md
+          - Aria-UI integration (EN): discussion/aria-ui-integration-en.md
+          - Aria-UI integration (VI): discussion/aria-ui-integration-vi.md
+          - ELAM-7B analysis (EN): discussion/elam-7b-analysis-en.md
+          - ELAM-7B analysis (VI): discussion/elam-7b-analysis-vi.md
+  - Commands: COMMANDS.md
+  - Thesis Proposal: DeCuong-Thacsi-Updated.md
+  - Architecture Decisions:
+      - Overview: adr/README.md
+      - 001 Visual DOM Architecture: adr/001-visual-dom-architecture.md
+      - 002 CV Pipeline Design: adr/002-cv-pipeline-design.md
+      - 003 Platform Handler Architecture: adr/003-platform-handler-architecture.md
+      - 004 DOM Compiler / JSON Format: adr/004-dom-compiler-json-format.md
+      - 005 Evaluation Framework: adr/005-evaluation-framework.md
+      - 006 Viewer Workflow Design: adr/006-viewer-workflow-design.md
+      - 007 CV Pipeline with LLM Refinement: adr/007-cv-pipeline-with-llm-refinement.md
+      - 008 Resolution-Aware Thresholds: adr/008-resolution-aware-thresholds.md
+      - 009 SLM Advisor + VLM Support: adr/009-slm-advisor-vlm-support.md
+      - 010 Smart Merge / Split / Dedup: adr/010-smart-merge-split-dedup.md
+      - 011 Symbol Detector: adr/011-symbol-detector.md
+      - 012 OCR Upscale + Dual Engine: adr/012-ocr-upscale-dual-engine.md
+      - 013 Session-Based Output: adr/013-session-based-output.md
+      - 014 Project Restructure: adr/014-project-restructure.md
+      - 015 Pluggable Detector Backends: adr/015-pluggable-detector-backends.md
+      - 016 Reading Order + Labels: adr/016-reading-order-and-labels.md
+      - 017 Distributed Hexagonal + gRPC: adr/017-distributed-hexagonal-grpc.md
+      - 018 Pluggable Capture Service: adr/018-pluggable-capture-service.md

@@ -1,0 +1,238 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        100,
+        50,
+        205,
+        67
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "User Registration"
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        100,
+        80,
+        600,
+        380
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E7",
+        "E10",
+        "E4",
+        "E6",
+        "E9",
+        "E12",
+        "E3",
+        "E5",
+        "E11",
+        "E8"
+      ]
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        110,
+        120,
+        176,
+        134
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "First Name",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        300,
+        120,
+        500,
+        148
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "parent_id": "E2"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        110,
+        160,
+        175,
+        174
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Last Name",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        300,
+        160,
+        500,
+        188
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "parent_id": "E2"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        100,
+        240,
+        600,
+        290
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E2"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        110,
+        260,
+        142,
+        274
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Email",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        300,
+        260,
+        500,
+        288
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "parent_id": "E2"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        100,
+        320,
+        600,
+        370
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E2"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        110,
+        340,
+        168,
+        354
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        300,
+        340,
+        500,
+        368
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "parent_id": "E2"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        100,
+        420,
+        600,
+        470
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E15",
+        "E14"
+      ]
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        110,
+        440,
+        221,
+        454
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Confirm Password",
+      "parent_id": "E13"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        300,
+        440,
+        500,
+        468
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "parent_id": "E13"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        350,
+        530,
+        470,
+        560
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Register"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        100,
+        590,
+        600,
+        592
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    }
+  ],
+  "stats": {
+    "text_detected": 7,
+    "uied_detected": 17,
+    "final_count": 17
+  },
+  "source": "synthetic",
+  "layout_title": "User Registration Form",
+  "layout_theme": "light"
+}

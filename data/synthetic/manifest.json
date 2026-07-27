@@ -1,0 +1,1831 @@
+{
+  "config": {
+    "num_samples": 200,
+    "width": 1920,
+    "height": 1080,
+    "templates": [
+      "login",
+      "settings",
+      "dashboard",
+      "toolbar",
+      "dialog",
+      "data_table",
+      "form_sidebar",
+      "info_panel"
+    ],
+    "themes": [
+      "light",
+      "dark",
+      "blue",
+      "high_contrast",
+      "green"
+    ],
+    "train_ratio": 0.8,
+    "seed": 42,
+    "generated_at": "2026-04-01T14:04:12.218980"
+  },
+  "train": [
+    {
+      "name": "login_0001",
+      "template": "login",
+      "theme": "blue",
+      "element_count": 10,
+      "text_count": 9,
+      "image": "train/images/login_0001.png",
+      "label": "train/labels/login_0001.json"
+    },
+    {
+      "name": "settings_0002",
+      "template": "settings",
+      "theme": "high_contrast",
+      "element_count": 35,
+      "text_count": 24,
+      "image": "train/images/settings_0002.png",
+      "label": "train/labels/settings_0002.json"
+    },
+    {
+      "name": "dashboard_0003",
+      "template": "dashboard",
+      "theme": "blue",
+      "element_count": 37,
+      "text_count": 30,
+      "image": "train/images/dashboard_0003.png",
+      "label": "train/labels/dashboard_0003.json"
+    },
+    {
+      "name": "toolbar_0004",
+      "template": "toolbar",
+      "theme": "blue",
+      "element_count": 20,
+      "text_count": 19,
+      "image": "train/images/toolbar_0004.png",
+      "label": "train/labels/toolbar_0004.json"
+    },
+    {
+      "name": "dialog_0005",
+      "template": "dialog",
+      "theme": "green",
+      "element_count": 6,
+      "text_count": 4,
+      "image": "train/images/dialog_0005.png",
+      "label": "train/labels/dialog_0005.json"
+    },
+    {
+      "name": "data_table_0006",
+      "template": "data_table",
+      "theme": "light",
+      "element_count": 98,
+      "text_count": 78,
+      "image": "train/images/data_table_0006.png",
+      "label": "train/labels/data_table_0006.json"
+    },
+    {
+      "name": "info_panel_0008",
+      "template": "info_panel",
+      "theme": "blue",
+      "element_count": 41,
+      "text_count": 38,
+      "image": "train/images/info_panel_0008.png",
+      "label": "train/labels/info_panel_0008.json"
+    },
+    {
+      "name": "login_0009",
+      "template": "login",
+      "theme": "blue",
+      "element_count": 10,
+      "text_count": 9,
+      "image": "train/images/login_0009.png",
+      "label": "train/labels/login_0009.json"
+    },
+    {
+      "name": "settings_0010",
+      "template": "settings",
+      "theme": "green",
+      "element_count": 25,
+      "text_count": 18,
+      "image": "train/images/settings_0010.png",
+      "label": "train/labels/settings_0010.json"
+    },
+    {
+      "name": "dashboard_0011",
+      "template": "dashboard",
+      "theme": "dark",
+      "element_count": 71,
+      "text_count": 56,
+      "image": "train/images/dashboard_0011.png",
+      "label": "train/labels/dashboard_0011.json"
+    },
+    {
+      "name": "toolbar_0012",
+      "template": "toolbar",
+      "theme": "green",
+      "element_count": 16,
+      "text_count": 15,
+      "image": "train/images/toolbar_0012.png",
+      "label": "train/labels/toolbar_0012.json"
+    },
+    {
+      "name": "dialog_0013",
+      "template": "dialog",
+      "theme": "dark",
+      "element_count": 8,
+      "text_count": 6,
+      "image": "train/images/dialog_0013.png",
+      "label": "train/labels/dialog_0013.json"
+    },
+    {
+      "name": "data_table_0014",
+      "template": "data_table",
+      "theme": "blue",
+      "element_count": 118,
+      "text_count": 96,
+      "image": "train/images/data_table_0014.png",
+      "label": "train/labels/data_table_0014.json"
+    },
+    {
+      "name": "settings_0018",
+      "template": "settings",
+      "theme": "dark",
+      "element_count": 33,
+      "text_count": 19,
+      "image": "train/images/settings_0018.png",
+      "label": "train/labels/settings_0018.json"
+    },
+    {
+      "name": "dashboard_0019",
+      "template": "dashboard",
+      "theme": "light",
+      "element_count": 44,
+      "text_count": 34,
+      "image": "train/images/dashboard_0019.png",
+      "label": "train/labels/dashboard_0019.json"
+    },
+    {
+      "name": "dialog_0021",
+      "template": "dialog",
+      "theme": "green",
+      "element_count": 6,
+      "text_count": 4,
+      "image": "train/images/dialog_0021.png",
+      "label": "train/labels/dialog_0021.json"
+    },
+    {
+      "name": "data_table_0022",
+      "template": "data_table",
+      "theme": "light",
+      "element_count": 125,
+      "text_count": 99,
+      "image": "train/images/data_table_0022.png",
+      "label": "train/labels/data_table_0022.json"
+    },
+    {
+      "name": "login_0025",
+      "template": "login",
+      "theme": "light",
+      "element_count": 13,
+      "text_count": 12,
+      "image": "train/images/login_0025.png",
+      "label": "train/labels/login_0025.json"
+    },
+    {
+      "name": "settings_0026",
+      "template": "settings",
+      "theme": "dark",
+      "element_count": 35,
+      "text_count": 20,
+      "image": "train/images/settings_0026.png",
+      "label": "train/labels/settings_0026.json"
+    },
+    {
+      "name": "dashboard_0027",
+      "template": "dashboard",
+      "theme": "blue",
+      "element_count": 50,
+      "text_count": 38,
+      "image": "train/images/dashboard_0027.png",
+      "label": "train/labels/dashboard_0027.json"
+    },
+    {
+      "name": "toolbar_0028",
+      "template": "toolbar",
+      "theme": "dark",
+      "element_count": 21,
+      "text_count": 19,
+      "image": "train/images/toolbar_0028.png",
+      "label": "train/labels/toolbar_0028.json"
+    },
+    {
+      "name": "dialog_0029",
+      "template": "dialog",
+      "theme": "light",
+      "element_count": 5,
+      "text_count": 3,
+      "image": "train/images/dialog_0029.png",
+      "label": "train/labels/dialog_0029.json"
+    },
+    {
+      "name": "data_table_0030",
+      "template": "data_table",
+      "theme": "high_contrast",
+      "element_count": 54,
+      "text_count": 45,
+      "image": "train/images/data_table_0030.png",
+      "label": "train/labels/data_table_0030.json"
+    },
+    {
+      "name": "login_0033",
+      "template": "login",
+      "theme": "dark",
+      "element_count": 10,
+      "text_count": 9,
+      "image": "train/images/login_0033.png",
+      "label": "train/labels/login_0033.json"
+    },
+    {
+      "name": "settings_0034",
+      "template": "settings",
+      "theme": "dark",
+      "element_count": 41,
+      "text_count": 25,
+      "image": "train/images/settings_0034.png",
+      "label": "train/labels/settings_0034.json"
+    },
+    {
+      "name": "data_table_0038",
+      "template": "data_table",
+      "theme": "green",
+      "element_count": 125,
+      "text_count": 112,
+      "image": "train/images/data_table_0038.png",
+      "label": "train/labels/data_table_0038.json"
+    },
+    {
+      "name": "form_sidebar_0039",
+      "template": "form_sidebar",
+      "theme": "high_contrast",
+      "element_count": 37,
+      "text_count": 35,
+      "image": "train/images/form_sidebar_0039.png",
+      "label": "train/labels/form_sidebar_0039.json"
+    },
+    {
+      "name": "info_panel_0040",
+      "template": "info_panel",
+      "theme": "dark",
+      "element_count": 42,
+      "text_count": 38,
+      "image": "train/images/info_panel_0040.png",
+      "label": "train/labels/info_panel_0040.json"
+    },
+    {
+      "name": "login_0041",
+      "template": "login",
+      "theme": "light",
+      "element_count": 17,
+      "text_count": 15,
+      "image": "train/images/login_0041.png",
+      "label": "train/labels/login_0041.json"
+    },
+    {
+      "name": "dashboard_0043",
+      "template": "dashboard",
+      "theme": "green",
+      "element_count": 43,
+      "text_count": 34,
+      "image": "train/images/dashboard_0043.png",
+      "label": "train/labels/dashboard_0043.json"
+    },
+    {
+      "name": "toolbar_0044",
+      "template": "toolbar",
+      "theme": "green",
+      "element_count": 14,
+      "text_count": 13,
+      "image": "train/images/toolbar_0044.png",
+      "label": "train/labels/toolbar_0044.json"
+    },
+    {
+      "name": "data_table_0046",
+      "template": "data_table",
+      "theme": "dark",
+      "element_count": 62,
+      "text_count": 50,
+      "image": "train/images/data_table_0046.png",
+      "label": "train/labels/data_table_0046.json"
+    },
+    {
+      "name": "form_sidebar_0047",
+      "template": "form_sidebar",
+      "theme": "light",
+      "element_count": 32,
+      "text_count": 30,
+      "image": "train/images/form_sidebar_0047.png",
+      "label": "train/labels/form_sidebar_0047.json"
+    },
+    {
+      "name": "login_0049",
+      "template": "login",
+      "theme": "blue",
+      "element_count": 10,
+      "text_count": 9,
+      "image": "train/images/login_0049.png",
+      "label": "train/labels/login_0049.json"
+    },
+    {
+      "name": "dashboard_0051",
+      "template": "dashboard",
+      "theme": "dark",
+      "element_count": 52,
+      "text_count": 41,
+      "image": "train/images/dashboard_0051.png",
+      "label": "train/labels/dashboard_0051.json"
+    },
+    {
+      "name": "toolbar_0052",
+      "template": "toolbar",
+      "theme": "dark",
+      "element_count": 24,
+      "text_count": 21,
+      "image": "train/images/toolbar_0052.png",
+      "label": "train/labels/toolbar_0052.json"
+    },
+    {
+      "name": "dialog_0053",
+      "template": "dialog",
+      "theme": "green",
+      "element_count": 7,
+      "text_count": 5,
+      "image": "train/images/dialog_0053.png",
+      "label": "train/labels/dialog_0053.json"
+    },
+    {
+      "name": "data_table_0054",
+      "template": "data_table",
+      "theme": "blue",
+      "element_count": 62,
+      "text_count": 50,
+      "image": "train/images/data_table_0054.png",
+      "label": "train/labels/data_table_0054.json"
+    },
+    {
+      "name": "form_sidebar_0055",
+      "template": "form_sidebar",
+      "theme": "green",
+      "element_count": 38,
+      "text_count": 36,
+      "image": "train/images/form_sidebar_0055.png",
+      "label": "train/labels/form_sidebar_0055.json"
+    },
+    {
+      "name": "info_panel_0056",
+      "template": "info_panel",
+      "theme": "green",
+      "element_count": 41,
+      "text_count": 38,
+      "image": "train/images/info_panel_0056.png",
+      "label": "train/labels/info_panel_0056.json"
+    },
+    {
+      "name": "login_0057",
+      "template": "login",
+      "theme": "dark",
+      "element_count": 13,
+      "text_count": 11,
+      "image": "train/images/login_0057.png",
+      "label": "train/labels/login_0057.json"
+    },
+    {
+      "name": "toolbar_0060",
+      "template": "toolbar",
+      "theme": "high_contrast",
+      "element_count": 26,
+      "text_count": 24,
+      "image": "train/images/toolbar_0060.png",
+      "label": "train/labels/toolbar_0060.json"
+    },
+    {
+      "name": "data_table_0062",
+      "template": "data_table",
+      "theme": "high_contrast",
+      "element_count": 45,
+      "text_count": 33,
+      "image": "train/images/data_table_0062.png",
+      "label": "train/labels/data_table_0062.json"
+    },
+    {
+      "name": "form_sidebar_0063",
+      "template": "form_sidebar",
+      "theme": "blue",
+      "element_count": 27,
+      "text_count": 25,
+      "image": "train/images/form_sidebar_0063.png",
+      "label": "train/labels/form_sidebar_0063.json"
+    },
+    {
+      "name": "info_panel_0064",
+      "template": "info_panel",
+      "theme": "green",
+      "element_count": 28,
+      "text_count": 26,
+      "image": "train/images/info_panel_0064.png",
+      "label": "train/labels/info_panel_0064.json"
+    },
+    {
+      "name": "settings_0066",
+      "template": "settings",
+      "theme": "green",
+      "element_count": 21,
+      "text_count": 13,
+      "image": "train/images/settings_0066.png",
+      "label": "train/labels/settings_0066.json"
+    },
+    {
+      "name": "dashboard_0067",
+      "template": "dashboard",
+      "theme": "green",
+      "element_count": 75,
+      "text_count": 61,
+      "image": "train/images/dashboard_0067.png",
+      "label": "train/labels/dashboard_0067.json"
+    },
+    {
+      "name": "toolbar_0068",
+      "template": "toolbar",
+      "theme": "light",
+      "element_count": 23,
+      "text_count": 20,
+      "image": "train/images/toolbar_0068.png",
+      "label": "train/labels/toolbar_0068.json"
+    },
+    {
+      "name": "dialog_0069",
+      "template": "dialog",
+      "theme": "light",
+      "element_count": 9,
+      "text_count": 7,
+      "image": "train/images/dialog_0069.png",
+      "label": "train/labels/dialog_0069.json"
+    },
+    {
+      "name": "data_table_0070",
+      "template": "data_table",
+      "theme": "blue",
+      "element_count": 53,
+      "text_count": 42,
+      "image": "train/images/data_table_0070.png",
+      "label": "train/labels/data_table_0070.json"
+    },
+    {
+      "name": "form_sidebar_0071",
+      "template": "form_sidebar",
+      "theme": "light",
+      "element_count": 27,
+      "text_count": 25,
+      "image": "train/images/form_sidebar_0071.png",
+      "label": "train/labels/form_sidebar_0071.json"
+    },
+    {
+      "name": "info_panel_0072",
+      "template": "info_panel",
+      "theme": "dark",
+      "element_count": 28,
+      "text_count": 26,
+      "image": "train/images/info_panel_0072.png",
+      "label": "train/labels/info_panel_0072.json"
+    },
+    {
+      "name": "login_0073",
+      "template": "login",
+      "theme": "blue",
+      "element_count": 17,
+      "text_count": 15,
+      "image": "train/images/login_0073.png",
+      "label": "train/labels/login_0073.json"
+    },
+    {
+      "name": "settings_0074",
+      "template": "settings",
+      "theme": "green",
+      "element_count": 31,
+      "text_count": 19,
+      "image": "train/images/settings_0074.png",
+      "label": "train/labels/settings_0074.json"
+    },
+    {
+      "name": "dashboard_0075",
+      "template": "dashboard",
+      "theme": "green",
+      "element_count": 60,
+      "text_count": 48,
+      "image": "train/images/dashboard_0075.png",
+      "label": "train/labels/dashboard_0075.json"
+    },
+    {
+      "name": "toolbar_0076",
+      "template": "toolbar",
+      "theme": "light",
+      "element_count": 22,
+      "text_count": 20,
+      "image": "train/images/toolbar_0076.png",
+      "label": "train/labels/toolbar_0076.json"
+    },
+    {
+      "name": "dialog_0077",
+      "template": "dialog",
+      "theme": "green",
+      "element_count": 7,
+      "text_count": 5,
+      "image": "train/images/dialog_0077.png",
+      "label": "train/labels/dialog_0077.json"
+    },
+    {
+      "name": "form_sidebar_0079",
+      "template": "form_sidebar",
+      "theme": "high_contrast",
+      "element_count": 29,
+      "text_count": 27,
+      "image": "train/images/form_sidebar_0079.png",
+      "label": "train/labels/form_sidebar_0079.json"
+    },
+    {
+      "name": "info_panel_0080",
+      "template": "info_panel",
+      "theme": "green",
+      "element_count": 42,
+      "text_count": 38,
+      "image": "train/images/info_panel_0080.png",
+      "label": "train/labels/info_panel_0080.json"
+    },
+    {
+      "name": "login_0081",
+      "template": "login",
+      "theme": "green",
+      "element_count": 9,
+      "text_count": 8,
+      "image": "train/images/login_0081.png",
+      "label": "train/labels/login_0081.json"
+    },
+    {
+      "name": "settings_0082",
+      "template": "settings",
+      "theme": "dark",
+      "element_count": 23,
+      "text_count": 14,
+      "image": "train/images/settings_0082.png",
+      "label": "train/labels/settings_0082.json"
+    },
+    {
+      "name": "dashboard_0083",
+      "template": "dashboard",
+      "theme": "green",
+      "element_count": 49,
+      "text_count": 38,
+      "image": "train/images/dashboard_0083.png",
+      "label": "train/labels/dashboard_0083.json"
+    },
+    {
+      "name": "toolbar_0084",
+      "template": "toolbar",
+      "theme": "light",
+      "element_count": 25,
+      "text_count": 22,
+      "image": "train/images/toolbar_0084.png",
+      "label": "train/labels/toolbar_0084.json"
+    },
+    {
+      "name": "dialog_0085",
+      "template": "dialog",
+      "theme": "blue",
+      "element_count": 7,
+      "text_count": 5,
+      "image": "train/images/dialog_0085.png",
+      "label": "train/labels/dialog_0085.json"
+    },
+    {
+      "name": "data_table_0086",
+      "template": "data_table",
+      "theme": "blue",
+      "element_count": 59,
+      "text_count": 39,
+      "image": "train/images/data_table_0086.png",
+      "label": "train/labels/data_table_0086.json"
+    },
+    {
+      "name": "form_sidebar_0087",
+      "template": "form_sidebar",
+      "theme": "dark",
+      "element_count": 40,
+      "text_count": 38,
+      "image": "train/images/form_sidebar_0087.png",
+      "label": "train/labels/form_sidebar_0087.json"
+    },
+    {
+      "name": "info_panel_0088",
+      "template": "info_panel",
+      "theme": "light",
+      "element_count": 42,
+      "text_count": 39,
+      "image": "train/images/info_panel_0088.png",
+      "label": "train/labels/info_panel_0088.json"
+    },
+    {
+      "name": "login_0089",
+      "template": "login",
+      "theme": "high_contrast",
+      "element_count": 17,
+      "text_count": 15,
+      "image": "train/images/login_0089.png",
+      "label": "train/labels/login_0089.json"
+    },
+    {
+      "name": "settings_0090",
+      "template": "settings",
+      "theme": "dark",
+      "element_count": 31,
+      "text_count": 19,
+      "image": "train/images/settings_0090.png",
+      "label": "train/labels/settings_0090.json"
+    },
+    {
+      "name": "dashboard_0091",
+      "template": "dashboard",
+      "theme": "high_contrast",
+      "element_count": 58,
+      "text_count": 44,
+      "image": "train/images/dashboard_0091.png",
+      "label": "train/labels/dashboard_0091.json"
+    },
+    {
+      "name": "toolbar_0092",
+      "template": "toolbar",
+      "theme": "blue",
+      "element_count": 20,
+      "text_count": 18,
+      "image": "train/images/toolbar_0092.png",
+      "label": "train/labels/toolbar_0092.json"
+    },
+    {
+      "name": "dialog_0093",
+      "template": "dialog",
+      "theme": "dark",
+      "element_count": 8,
+      "text_count": 6,
+      "image": "train/images/dialog_0093.png",
+      "label": "train/labels/dialog_0093.json"
+    },
+    {
+      "name": "data_table_0094",
+      "template": "data_table",
+      "theme": "green",
+      "element_count": 87,
+      "text_count": 74,
+      "image": "train/images/data_table_0094.png",
+      "label": "train/labels/data_table_0094.json"
+    },
+    {
+      "name": "form_sidebar_0095",
+      "template": "form_sidebar",
+      "theme": "light",
+      "element_count": 35,
+      "text_count": 33,
+      "image": "train/images/form_sidebar_0095.png",
+      "label": "train/labels/form_sidebar_0095.json"
+    },
+    {
+      "name": "info_panel_0096",
+      "template": "info_panel",
+      "theme": "high_contrast",
+      "element_count": 46,
+      "text_count": 43,
+      "image": "train/images/info_panel_0096.png",
+      "label": "train/labels/info_panel_0096.json"
+    },
+    {
+      "name": "login_0097",
+      "template": "login",
+      "theme": "high_contrast",
+      "element_count": 12,
+      "text_count": 11,
+      "image": "train/images/login_0097.png",
+      "label": "train/labels/login_0097.json"
+    },
+    {
+      "name": "dashboard_0099",
+      "template": "dashboard",
+      "theme": "dark",
+      "element_count": 35,
+      "text_count": 27,
+      "image": "train/images/dashboard_0099.png",
+      "label": "train/labels/dashboard_0099.json"
+    },
+    {
+      "name": "toolbar_0100",
+      "template": "toolbar",
+      "theme": "light",
+      "element_count": 23,
+      "text_count": 20,
+      "image": "train/images/toolbar_0100.png",
+      "label": "train/labels/toolbar_0100.json"
+    },
+    {
+      "name": "dialog_0101",
+      "template": "dialog",
+      "theme": "green",
+      "element_count": 8,
+      "text_count": 6,
+      "image": "train/images/dialog_0101.png",
+      "label": "train/labels/dialog_0101.json"
+    },
+    {
+      "name": "data_table_0102",
+      "template": "data_table",
+      "theme": "green",
+      "element_count": 64,
+      "text_count": 53,
+      "image": "train/images/data_table_0102.png",
+      "label": "train/labels/data_table_0102.json"
+    },
+    {
+      "name": "info_panel_0104",
+      "template": "info_panel",
+      "theme": "light",
+      "element_count": 42,
+      "text_count": 38,
+      "image": "train/images/info_panel_0104.png",
+      "label": "train/labels/info_panel_0104.json"
+    },
+    {
+      "name": "login_0105",
+      "template": "login",
+      "theme": "light",
+      "element_count": 15,
+      "text_count": 13,
+      "image": "train/images/login_0105.png",
+      "label": "train/labels/login_0105.json"
+    },
+    {
+      "name": "settings_0106",
+      "template": "settings",
+      "theme": "light",
+      "element_count": 19,
+      "text_count": 14,
+      "image": "train/images/settings_0106.png",
+      "label": "train/labels/settings_0106.json"
+    },
+    {
+      "name": "dashboard_0107",
+      "template": "dashboard",
+      "theme": "green",
+      "element_count": 60,
+      "text_count": 48,
+      "image": "train/images/dashboard_0107.png",
+      "label": "train/labels/dashboard_0107.json"
+    },
+    {
+      "name": "toolbar_0108",
+      "template": "toolbar",
+      "theme": "green",
+      "element_count": 23,
+      "text_count": 20,
+      "image": "train/images/toolbar_0108.png",
+      "label": "train/labels/toolbar_0108.json"
+    },
+    {
+      "name": "dialog_0109",
+      "template": "dialog",
+      "theme": "light",
+      "element_count": 6,
+      "text_count": 4,
+      "image": "train/images/dialog_0109.png",
+      "label": "train/labels/dialog_0109.json"
+    },
+    {
+      "name": "info_panel_0112",
+      "template": "info_panel",
+      "theme": "dark",
+      "element_count": 41,
+      "text_count": 38,
+      "image": "train/images/info_panel_0112.png",
+      "label": "train/labels/info_panel_0112.json"
+    },
+    {
+      "name": "login_0113",
+      "template": "login",
+      "theme": "blue",
+      "element_count": 17,
+      "text_count": 15,
+      "image": "train/images/login_0113.png",
+      "label": "train/labels/login_0113.json"
+    },
+    {
+      "name": "dashboard_0115",
+      "template": "dashboard",
+      "theme": "green",
+      "element_count": 47,
+      "text_count": 38,
+      "image": "train/images/dashboard_0115.png",
+      "label": "train/labels/dashboard_0115.json"
+    },
+    {
+      "name": "toolbar_0116",
+      "template": "toolbar",
+      "theme": "light",
+      "element_count": 24,
+      "text_count": 21,
+      "image": "train/images/toolbar_0116.png",
+      "label": "train/labels/toolbar_0116.json"
+    },
+    {
+      "name": "dialog_0117",
+      "template": "dialog",
+      "theme": "light",
+      "element_count": 6,
+      "text_count": 4,
+      "image": "train/images/dialog_0117.png",
+      "label": "train/labels/dialog_0117.json"
+    },
+    {
+      "name": "data_table_0118",
+      "template": "data_table",
+      "theme": "dark",
+      "element_count": 98,
+      "text_count": 80,
+      "image": "train/images/data_table_0118.png",
+      "label": "train/labels/data_table_0118.json"
+    },
+    {
+      "name": "form_sidebar_0119",
+      "template": "form_sidebar",
+      "theme": "dark",
+      "element_count": 41,
+      "text_count": 39,
+      "image": "train/images/form_sidebar_0119.png",
+      "label": "train/labels/form_sidebar_0119.json"
+    },
+    {
+      "name": "info_panel_0120",
+      "template": "info_panel",
+      "theme": "green",
+      "element_count": 27,
+      "text_count": 25,
+      "image": "train/images/info_panel_0120.png",
+      "label": "train/labels/info_panel_0120.json"
+    },
+    {
+      "name": "login_0121",
+      "template": "login",
+      "theme": "high_contrast",
+      "element_count": 13,
+      "text_count": 11,
+      "image": "train/images/login_0121.png",
+      "label": "train/labels/login_0121.json"
+    },
+    {
+      "name": "settings_0122",
+      "template": "settings",
+      "theme": "dark",
+      "element_count": 33,
+      "text_count": 22,
+      "image": "train/images/settings_0122.png",
+      "label": "train/labels/settings_0122.json"
+    },
+    {
+      "name": "dashboard_0123",
+      "template": "dashboard",
+      "theme": "green",
+      "element_count": 54,
+      "text_count": 42,
+      "image": "train/images/dashboard_0123.png",
+      "label": "train/labels/dashboard_0123.json"
+    },
+    {
+      "name": "toolbar_0124",
+      "template": "toolbar",
+      "theme": "blue",
+      "element_count": 26,
+      "text_count": 23,
+      "image": "train/images/toolbar_0124.png",
+      "label": "train/labels/toolbar_0124.json"
+    },
+    {
+      "name": "dialog_0125",
+      "template": "dialog",
+      "theme": "blue",
+      "element_count": 8,
+      "text_count": 6,
+      "image": "train/images/dialog_0125.png",
+      "label": "train/labels/dialog_0125.json"
+    },
+    {
+      "name": "data_table_0126",
+      "template": "data_table",
+      "theme": "blue",
+      "element_count": 86,
+      "text_count": 73,
+      "image": "train/images/data_table_0126.png",
+      "label": "train/labels/data_table_0126.json"
+    },
+    {
+      "name": "form_sidebar_0127",
+      "template": "form_sidebar",
+      "theme": "light",
+      "element_count": 28,
+      "text_count": 26,
+      "image": "train/images/form_sidebar_0127.png",
+      "label": "train/labels/form_sidebar_0127.json"
+    },
+    {
+      "name": "info_panel_0128",
+      "template": "info_panel",
+      "theme": "green",
+      "element_count": 41,
+      "text_count": 38,
+      "image": "train/images/info_panel_0128.png",
+      "label": "train/labels/info_panel_0128.json"
+    },
+    {
+      "name": "login_0129",
+      "template": "login",
+      "theme": "light",
+      "element_count": 12,
+      "text_count": 11,
+      "image": "train/images/login_0129.png",
+      "label": "train/labels/login_0129.json"
+    },
+    {
+      "name": "settings_0130",
+      "template": "settings",
+      "theme": "light",
+      "element_count": 39,
+      "text_count": 27,
+      "image": "train/images/settings_0130.png",
+      "label": "train/labels/settings_0130.json"
+    },
+    {
+      "name": "dashboard_0131",
+      "template": "dashboard",
+      "theme": "dark",
+      "element_count": 64,
+      "text_count": 53,
+      "image": "train/images/dashboard_0131.png",
+      "label": "train/labels/dashboard_0131.json"
+    },
+    {
+      "name": "toolbar_0132",
+      "template": "toolbar",
+      "theme": "dark",
+      "element_count": 24,
+      "text_count": 22,
+      "image": "train/images/toolbar_0132.png",
+      "label": "train/labels/toolbar_0132.json"
+    },
+    {
+      "name": "dialog_0133",
+      "template": "dialog",
+      "theme": "light",
+      "element_count": 8,
+      "text_count": 6,
+      "image": "train/images/dialog_0133.png",
+      "label": "train/labels/dialog_0133.json"
+    },
+    {
+      "name": "data_table_0134",
+      "template": "data_table",
+      "theme": "light",
+      "element_count": 62,
+      "text_count": 50,
+      "image": "train/images/data_table_0134.png",
+      "label": "train/labels/data_table_0134.json"
+    },
+    {
+      "name": "form_sidebar_0135",
+      "template": "form_sidebar",
+      "theme": "high_contrast",
+      "element_count": 28,
+      "text_count": 26,
+      "image": "train/images/form_sidebar_0135.png",
+      "label": "train/labels/form_sidebar_0135.json"
+    },
+    {
+      "name": "info_panel_0136",
+      "template": "info_panel",
+      "theme": "green",
+      "element_count": 37,
+      "text_count": 34,
+      "image": "train/images/info_panel_0136.png",
+      "label": "train/labels/info_panel_0136.json"
+    },
+    {
+      "name": "dashboard_0139",
+      "template": "dashboard",
+      "theme": "blue",
+      "element_count": 65,
+      "text_count": 52,
+      "image": "train/images/dashboard_0139.png",
+      "label": "train/labels/dashboard_0139.json"
+    },
+    {
+      "name": "form_sidebar_0143",
+      "template": "form_sidebar",
+      "theme": "blue",
+      "element_count": 32,
+      "text_count": 30,
+      "image": "train/images/form_sidebar_0143.png",
+      "label": "train/labels/form_sidebar_0143.json"
+    },
+    {
+      "name": "info_panel_0144",
+      "template": "info_panel",
+      "theme": "blue",
+      "element_count": 40,
+      "text_count": 37,
+      "image": "train/images/info_panel_0144.png",
+      "label": "train/labels/info_panel_0144.json"
+    },
+    {
+      "name": "login_0145",
+      "template": "login",
+      "theme": "light",
+      "element_count": 10,
+      "text_count": 9,
+      "image": "train/images/login_0145.png",
+      "label": "train/labels/login_0145.json"
+    },
+    {
+      "name": "settings_0146",
+      "template": "settings",
+      "theme": "green",
+      "element_count": 35,
+      "text_count": 22,
+      "image": "train/images/settings_0146.png",
+      "label": "train/labels/settings_0146.json"
+    },
+    {
+      "name": "dashboard_0147",
+      "template": "dashboard",
+      "theme": "green",
+      "element_count": 57,
+      "text_count": 43,
+      "image": "train/images/dashboard_0147.png",
+      "label": "train/labels/dashboard_0147.json"
+    },
+    {
+      "name": "toolbar_0148",
+      "template": "toolbar",
+      "theme": "light",
+      "element_count": 20,
+      "text_count": 16,
+      "image": "train/images/toolbar_0148.png",
+      "label": "train/labels/toolbar_0148.json"
+    },
+    {
+      "name": "dialog_0149",
+      "template": "dialog",
+      "theme": "high_contrast",
+      "element_count": 8,
+      "text_count": 6,
+      "image": "train/images/dialog_0149.png",
+      "label": "train/labels/dialog_0149.json"
+    },
+    {
+      "name": "data_table_0150",
+      "template": "data_table",
+      "theme": "light",
+      "element_count": 78,
+      "text_count": 64,
+      "image": "train/images/data_table_0150.png",
+      "label": "train/labels/data_table_0150.json"
+    },
+    {
+      "name": "form_sidebar_0151",
+      "template": "form_sidebar",
+      "theme": "high_contrast",
+      "element_count": 37,
+      "text_count": 35,
+      "image": "train/images/form_sidebar_0151.png",
+      "label": "train/labels/form_sidebar_0151.json"
+    },
+    {
+      "name": "info_panel_0152",
+      "template": "info_panel",
+      "theme": "green",
+      "element_count": 43,
+      "text_count": 39,
+      "image": "train/images/info_panel_0152.png",
+      "label": "train/labels/info_panel_0152.json"
+    },
+    {
+      "name": "login_0153",
+      "template": "login",
+      "theme": "light",
+      "element_count": 12,
+      "text_count": 10,
+      "image": "train/images/login_0153.png",
+      "label": "train/labels/login_0153.json"
+    },
+    {
+      "name": "settings_0154",
+      "template": "settings",
+      "theme": "blue",
+      "element_count": 33,
+      "text_count": 24,
+      "image": "train/images/settings_0154.png",
+      "label": "train/labels/settings_0154.json"
+    },
+    {
+      "name": "dashboard_0155",
+      "template": "dashboard",
+      "theme": "light",
+      "element_count": 61,
+      "text_count": 48,
+      "image": "train/images/dashboard_0155.png",
+      "label": "train/labels/dashboard_0155.json"
+    },
+    {
+      "name": "toolbar_0156",
+      "template": "toolbar",
+      "theme": "blue",
+      "element_count": 27,
+      "text_count": 23,
+      "image": "train/images/toolbar_0156.png",
+      "label": "train/labels/toolbar_0156.json"
+    },
+    {
+      "name": "dialog_0157",
+      "template": "dialog",
+      "theme": "green",
+      "element_count": 5,
+      "text_count": 3,
+      "image": "train/images/dialog_0157.png",
+      "label": "train/labels/dialog_0157.json"
+    },
+    {
+      "name": "data_table_0158",
+      "template": "data_table",
+      "theme": "light",
+      "element_count": 125,
+      "text_count": 99,
+      "image": "train/images/data_table_0158.png",
+      "label": "train/labels/data_table_0158.json"
+    },
+    {
+      "name": "form_sidebar_0159",
+      "template": "form_sidebar",
+      "theme": "dark",
+      "element_count": 36,
+      "text_count": 34,
+      "image": "train/images/form_sidebar_0159.png",
+      "label": "train/labels/form_sidebar_0159.json"
+    },
+    {
+      "name": "info_panel_0160",
+      "template": "info_panel",
+      "theme": "green",
+      "element_count": 40,
+      "text_count": 37,
+      "image": "train/images/info_panel_0160.png",
+      "label": "train/labels/info_panel_0160.json"
+    },
+    {
+      "name": "login_0161",
+      "template": "login",
+      "theme": "dark",
+      "element_count": 16,
+      "text_count": 14,
+      "image": "train/images/login_0161.png",
+      "label": "train/labels/login_0161.json"
+    },
+    {
+      "name": "settings_0162",
+      "template": "settings",
+      "theme": "light",
+      "element_count": 29,
+      "text_count": 18,
+      "image": "train/images/settings_0162.png",
+      "label": "train/labels/settings_0162.json"
+    },
+    {
+      "name": "dialog_0165",
+      "template": "dialog",
+      "theme": "high_contrast",
+      "element_count": 7,
+      "text_count": 5,
+      "image": "train/images/dialog_0165.png",
+      "label": "train/labels/dialog_0165.json"
+    },
+    {
+      "name": "data_table_0166",
+      "template": "data_table",
+      "theme": "dark",
+      "element_count": 64,
+      "text_count": 56,
+      "image": "train/images/data_table_0166.png",
+      "label": "train/labels/data_table_0166.json"
+    },
+    {
+      "name": "form_sidebar_0167",
+      "template": "form_sidebar",
+      "theme": "green",
+      "element_count": 36,
+      "text_count": 34,
+      "image": "train/images/form_sidebar_0167.png",
+      "label": "train/labels/form_sidebar_0167.json"
+    },
+    {
+      "name": "info_panel_0168",
+      "template": "info_panel",
+      "theme": "blue",
+      "element_count": 31,
+      "text_count": 28,
+      "image": "train/images/info_panel_0168.png",
+      "label": "train/labels/info_panel_0168.json"
+    },
+    {
+      "name": "login_0169",
+      "template": "login",
+      "theme": "dark",
+      "element_count": 14,
+      "text_count": 13,
+      "image": "train/images/login_0169.png",
+      "label": "train/labels/login_0169.json"
+    },
+    {
+      "name": "dashboard_0171",
+      "template": "dashboard",
+      "theme": "green",
+      "element_count": 61,
+      "text_count": 48,
+      "image": "train/images/dashboard_0171.png",
+      "label": "train/labels/dashboard_0171.json"
+    },
+    {
+      "name": "toolbar_0172",
+      "template": "toolbar",
+      "theme": "blue",
+      "element_count": 23,
+      "text_count": 20,
+      "image": "train/images/toolbar_0172.png",
+      "label": "train/labels/toolbar_0172.json"
+    },
+    {
+      "name": "dialog_0173",
+      "template": "dialog",
+      "theme": "light",
+      "element_count": 7,
+      "text_count": 5,
+      "image": "train/images/dialog_0173.png",
+      "label": "train/labels/dialog_0173.json"
+    },
+    {
+      "name": "data_table_0174",
+      "template": "data_table",
+      "theme": "blue",
+      "element_count": 58,
+      "text_count": 51,
+      "image": "train/images/data_table_0174.png",
+      "label": "train/labels/data_table_0174.json"
+    },
+    {
+      "name": "form_sidebar_0175",
+      "template": "form_sidebar",
+      "theme": "blue",
+      "element_count": 28,
+      "text_count": 26,
+      "image": "train/images/form_sidebar_0175.png",
+      "label": "train/labels/form_sidebar_0175.json"
+    },
+    {
+      "name": "login_0177",
+      "template": "login",
+      "theme": "high_contrast",
+      "element_count": 11,
+      "text_count": 10,
+      "image": "train/images/login_0177.png",
+      "label": "train/labels/login_0177.json"
+    },
+    {
+      "name": "settings_0178",
+      "template": "settings",
+      "theme": "green",
+      "element_count": 21,
+      "text_count": 14,
+      "image": "train/images/settings_0178.png",
+      "label": "train/labels/settings_0178.json"
+    },
+    {
+      "name": "dashboard_0179",
+      "template": "dashboard",
+      "theme": "light",
+      "element_count": 56,
+      "text_count": 43,
+      "image": "train/images/dashboard_0179.png",
+      "label": "train/labels/dashboard_0179.json"
+    },
+    {
+      "name": "toolbar_0180",
+      "template": "toolbar",
+      "theme": "high_contrast",
+      "element_count": 24,
+      "text_count": 21,
+      "image": "train/images/toolbar_0180.png",
+      "label": "train/labels/toolbar_0180.json"
+    },
+    {
+      "name": "dialog_0181",
+      "template": "dialog",
+      "theme": "light",
+      "element_count": 8,
+      "text_count": 6,
+      "image": "train/images/dialog_0181.png",
+      "label": "train/labels/dialog_0181.json"
+    },
+    {
+      "name": "form_sidebar_0183",
+      "template": "form_sidebar",
+      "theme": "blue",
+      "element_count": 26,
+      "text_count": 24,
+      "image": "train/images/form_sidebar_0183.png",
+      "label": "train/labels/form_sidebar_0183.json"
+    },
+    {
+      "name": "settings_0186",
+      "template": "settings",
+      "theme": "light",
+      "element_count": 33,
+      "text_count": 22,
+      "image": "train/images/settings_0186.png",
+      "label": "train/labels/settings_0186.json"
+    },
+    {
+      "name": "dashboard_0187",
+      "template": "dashboard",
+      "theme": "blue",
+      "element_count": 59,
+      "text_count": 47,
+      "image": "train/images/dashboard_0187.png",
+      "label": "train/labels/dashboard_0187.json"
+    },
+    {
+      "name": "toolbar_0188",
+      "template": "toolbar",
+      "theme": "light",
+      "element_count": 23,
+      "text_count": 20,
+      "image": "train/images/toolbar_0188.png",
+      "label": "train/labels/toolbar_0188.json"
+    },
+    {
+      "name": "dialog_0189",
+      "template": "dialog",
+      "theme": "green",
+      "element_count": 7,
+      "text_count": 5,
+      "image": "train/images/dialog_0189.png",
+      "label": "train/labels/dialog_0189.json"
+    },
+    {
+      "name": "data_table_0190",
+      "template": "data_table",
+      "theme": "high_contrast",
+      "element_count": 62,
+      "text_count": 50,
+      "image": "train/images/data_table_0190.png",
+      "label": "train/labels/data_table_0190.json"
+    },
+    {
+      "name": "form_sidebar_0191",
+      "template": "form_sidebar",
+      "theme": "green",
+      "element_count": 39,
+      "text_count": 37,
+      "image": "train/images/form_sidebar_0191.png",
+      "label": "train/labels/form_sidebar_0191.json"
+    },
+    {
+      "name": "info_panel_0192",
+      "template": "info_panel",
+      "theme": "blue",
+      "element_count": 44,
+      "text_count": 41,
+      "image": "train/images/info_panel_0192.png",
+      "label": "train/labels/info_panel_0192.json"
+    },
+    {
+      "name": "login_0193",
+      "template": "login",
+      "theme": "blue",
+      "element_count": 13,
+      "text_count": 12,
+      "image": "train/images/login_0193.png",
+      "label": "train/labels/login_0193.json"
+    },
+    {
+      "name": "toolbar_0196",
+      "template": "toolbar",
+      "theme": "green",
+      "element_count": 27,
+      "text_count": 23,
+      "image": "train/images/toolbar_0196.png",
+      "label": "train/labels/toolbar_0196.json"
+    },
+    {
+      "name": "dialog_0197",
+      "template": "dialog",
+      "theme": "light",
+      "element_count": 7,
+      "text_count": 5,
+      "image": "train/images/dialog_0197.png",
+      "label": "train/labels/dialog_0197.json"
+    },
+    {
+      "name": "data_table_0198",
+      "template": "data_table",
+      "theme": "high_contrast",
+      "element_count": 50,
+      "text_count": 43,
+      "image": "train/images/data_table_0198.png",
+      "label": "train/labels/data_table_0198.json"
+    },
+    {
+      "name": "form_sidebar_0199",
+      "template": "form_sidebar",
+      "theme": "light",
+      "element_count": 40,
+      "text_count": 38,
+      "image": "train/images/form_sidebar_0199.png",
+      "label": "train/labels/form_sidebar_0199.json"
+    },
+    {
+      "name": "info_panel_0200",
+      "template": "info_panel",
+      "theme": "dark",
+      "element_count": 41,
+      "text_count": 38,
+      "image": "train/images/info_panel_0200.png",
+      "label": "train/labels/info_panel_0200.json"
+    }
+  ],
+  "test": [
+    {
+      "name": "form_sidebar_0007",
+      "template": "form_sidebar",
+      "theme": "blue",
+      "element_count": 40,
+      "text_count": 38,
+      "image": "test/images/form_sidebar_0007.png",
+      "label": "test/labels/form_sidebar_0007.json"
+    },
+    {
+      "name": "form_sidebar_0015",
+      "template": "form_sidebar",
+      "theme": "blue",
+      "element_count": 38,
+      "text_count": 36,
+      "image": "test/images/form_sidebar_0015.png",
+      "label": "test/labels/form_sidebar_0015.json"
+    },
+    {
+      "name": "info_panel_0016",
+      "template": "info_panel",
+      "theme": "green",
+      "element_count": 45,
+      "text_count": 42,
+      "image": "test/images/info_panel_0016.png",
+      "label": "test/labels/info_panel_0016.json"
+    },
+    {
+      "name": "login_0017",
+      "template": "login",
+      "theme": "blue",
+      "element_count": 12,
+      "text_count": 11,
+      "image": "test/images/login_0017.png",
+      "label": "test/labels/login_0017.json"
+    },
+    {
+      "name": "toolbar_0020",
+      "template": "toolbar",
+      "theme": "dark",
+      "element_count": 21,
+      "text_count": 20,
+      "image": "test/images/toolbar_0020.png",
+      "label": "test/labels/toolbar_0020.json"
+    },
+    {
+      "name": "form_sidebar_0023",
+      "template": "form_sidebar",
+      "theme": "green",
+      "element_count": 42,
+      "text_count": 40,
+      "image": "test/images/form_sidebar_0023.png",
+      "label": "test/labels/form_sidebar_0023.json"
+    },
+    {
+      "name": "info_panel_0024",
+      "template": "info_panel",
+      "theme": "blue",
+      "element_count": 42,
+      "text_count": 39,
+      "image": "test/images/info_panel_0024.png",
+      "label": "test/labels/info_panel_0024.json"
+    },
+    {
+      "name": "form_sidebar_0031",
+      "template": "form_sidebar",
+      "theme": "high_contrast",
+      "element_count": 41,
+      "text_count": 39,
+      "image": "test/images/form_sidebar_0031.png",
+      "label": "test/labels/form_sidebar_0031.json"
+    },
+    {
+      "name": "info_panel_0032",
+      "template": "info_panel",
+      "theme": "light",
+      "element_count": 24,
+      "text_count": 22,
+      "image": "test/images/info_panel_0032.png",
+      "label": "test/labels/info_panel_0032.json"
+    },
+    {
+      "name": "dashboard_0035",
+      "template": "dashboard",
+      "theme": "high_contrast",
+      "element_count": 47,
+      "text_count": 38,
+      "image": "test/images/dashboard_0035.png",
+      "label": "test/labels/dashboard_0035.json"
+    },
+    {
+      "name": "toolbar_0036",
+      "template": "toolbar",
+      "theme": "high_contrast",
+      "element_count": 21,
+      "text_count": 19,
+      "image": "test/images/toolbar_0036.png",
+      "label": "test/labels/toolbar_0036.json"
+    },
+    {
+      "name": "dialog_0037",
+      "template": "dialog",
+      "theme": "high_contrast",
+      "element_count": 6,
+      "text_count": 4,
+      "image": "test/images/dialog_0037.png",
+      "label": "test/labels/dialog_0037.json"
+    },
+    {
+      "name": "settings_0042",
+      "template": "settings",
+      "theme": "high_contrast",
+      "element_count": 37,
+      "text_count": 26,
+      "image": "test/images/settings_0042.png",
+      "label": "test/labels/settings_0042.json"
+    },
+    {
+      "name": "dialog_0045",
+      "template": "dialog",
+      "theme": "dark",
+      "element_count": 7,
+      "text_count": 5,
+      "image": "test/images/dialog_0045.png",
+      "label": "test/labels/dialog_0045.json"
+    },
+    {
+      "name": "info_panel_0048",
+      "template": "info_panel",
+      "theme": "light",
+      "element_count": 43,
+      "text_count": 39,
+      "image": "test/images/info_panel_0048.png",
+      "label": "test/labels/info_panel_0048.json"
+    },
+    {
+      "name": "settings_0050",
+      "template": "settings",
+      "theme": "blue",
+      "element_count": 41,
+      "text_count": 29,
+      "image": "test/images/settings_0050.png",
+      "label": "test/labels/settings_0050.json"
+    },
+    {
+      "name": "settings_0058",
+      "template": "settings",
+      "theme": "dark",
+      "element_count": 39,
+      "text_count": 28,
+      "image": "test/images/settings_0058.png",
+      "label": "test/labels/settings_0058.json"
+    },
+    {
+      "name": "dashboard_0059",
+      "template": "dashboard",
+      "theme": "green",
+      "element_count": 55,
+      "text_count": 44,
+      "image": "test/images/dashboard_0059.png",
+      "label": "test/labels/dashboard_0059.json"
+    },
+    {
+      "name": "dialog_0061",
+      "template": "dialog",
+      "theme": "dark",
+      "element_count": 7,
+      "text_count": 5,
+      "image": "test/images/dialog_0061.png",
+      "label": "test/labels/dialog_0061.json"
+    },
+    {
+      "name": "login_0065",
+      "template": "login",
+      "theme": "dark",
+      "element_count": 19,
+      "text_count": 17,
+      "image": "test/images/login_0065.png",
+      "label": "test/labels/login_0065.json"
+    },
+    {
+      "name": "data_table_0078",
+      "template": "data_table",
+      "theme": "light",
+      "element_count": 98,
+      "text_count": 88,
+      "image": "test/images/data_table_0078.png",
+      "label": "test/labels/data_table_0078.json"
+    },
+    {
+      "name": "settings_0098",
+      "template": "settings",
+      "theme": "dark",
+      "element_count": 31,
+      "text_count": 17,
+      "image": "test/images/settings_0098.png",
+      "label": "test/labels/settings_0098.json"
+    },
+    {
+      "name": "form_sidebar_0103",
+      "template": "form_sidebar",
+      "theme": "dark",
+      "element_count": 31,
+      "text_count": 29,
+      "image": "test/images/form_sidebar_0103.png",
+      "label": "test/labels/form_sidebar_0103.json"
+    },
+    {
+      "name": "data_table_0110",
+      "template": "data_table",
+      "theme": "high_contrast",
+      "element_count": 74,
+      "text_count": 61,
+      "image": "test/images/data_table_0110.png",
+      "label": "test/labels/data_table_0110.json"
+    },
+    {
+      "name": "form_sidebar_0111",
+      "template": "form_sidebar",
+      "theme": "light",
+      "element_count": 30,
+      "text_count": 28,
+      "image": "test/images/form_sidebar_0111.png",
+      "label": "test/labels/form_sidebar_0111.json"
+    },
+    {
+      "name": "settings_0114",
+      "template": "settings",
+      "theme": "high_contrast",
+      "element_count": 21,
+      "text_count": 14,
+      "image": "test/images/settings_0114.png",
+      "label": "test/labels/settings_0114.json"
+    },
+    {
+      "name": "login_0137",
+      "template": "login",
+      "theme": "light",
+      "element_count": 16,
+      "text_count": 14,
+      "image": "test/images/login_0137.png",
+      "label": "test/labels/login_0137.json"
+    },
+    {
+      "name": "settings_0138",
+      "template": "settings",
+      "theme": "dark",
+      "element_count": 39,
+      "text_count": 26,
+      "image": "test/images/settings_0138.png",
+      "label": "test/labels/settings_0138.json"
+    },
+    {
+      "name": "toolbar_0140",
+      "template": "toolbar",
+      "theme": "green",
+      "element_count": 24,
+      "text_count": 23,
+      "image": "test/images/toolbar_0140.png",
+      "label": "test/labels/toolbar_0140.json"
+    },
+    {
+      "name": "dialog_0141",
+      "template": "dialog",
+      "theme": "high_contrast",
+      "element_count": 8,
+      "text_count": 6,
+      "image": "test/images/dialog_0141.png",
+      "label": "test/labels/dialog_0141.json"
+    },
+    {
+      "name": "data_table_0142",
+      "template": "data_table",
+      "theme": "high_contrast",
+      "element_count": 125,
+      "text_count": 112,
+      "image": "test/images/data_table_0142.png",
+      "label": "test/labels/data_table_0142.json"
+    },
+    {
+      "name": "dashboard_0163",
+      "template": "dashboard",
+      "theme": "blue",
+      "element_count": 65,
+      "text_count": 52,
+      "image": "test/images/dashboard_0163.png",
+      "label": "test/labels/dashboard_0163.json"
+    },
+    {
+      "name": "toolbar_0164",
+      "template": "toolbar",
+      "theme": "blue",
+      "element_count": 24,
+      "text_count": 21,
+      "image": "test/images/toolbar_0164.png",
+      "label": "test/labels/toolbar_0164.json"
+    },
+    {
+      "name": "settings_0170",
+      "template": "settings",
+      "theme": "green",
+      "element_count": 25,
+      "text_count": 17,
+      "image": "test/images/settings_0170.png",
+      "label": "test/labels/settings_0170.json"
+    },
+    {
+      "name": "info_panel_0176",
+      "template": "info_panel",
+      "theme": "light",
+      "element_count": 46,
+      "text_count": 43,
+      "image": "test/images/info_panel_0176.png",
+      "label": "test/labels/info_panel_0176.json"
+    },
+    {
+      "name": "data_table_0182",
+      "template": "data_table",
+      "theme": "high_contrast",
+      "element_count": 98,
+      "text_count": 88,
+      "image": "test/images/data_table_0182.png",
+      "label": "test/labels/data_table_0182.json"
+    },
+    {
+      "name": "info_panel_0184",
+      "template": "info_panel",
+      "theme": "light",
+      "element_count": 42,
+      "text_count": 38,
+      "image": "test/images/info_panel_0184.png",
+      "label": "test/labels/info_panel_0184.json"
+    },
+    {
+      "name": "login_0185",
+      "template": "login",
+      "theme": "green",
+      "element_count": 13,
+      "text_count": 12,
+      "image": "test/images/login_0185.png",
+      "label": "test/labels/login_0185.json"
+    },
+    {
+      "name": "settings_0194",
+      "template": "settings",
+      "theme": "high_contrast",
+      "element_count": 37,
+      "text_count": 27,
+      "image": "test/images/settings_0194.png",
+      "label": "test/labels/settings_0194.json"
+    },
+    {
+      "name": "dashboard_0195",
+      "template": "dashboard",
+      "theme": "high_contrast",
+      "element_count": 46,
+      "text_count": 37,
+      "image": "test/images/dashboard_0195.png",
+      "label": "test/labels/dashboard_0195.json"
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+@startuml Component_Diagram
+!pragma layout smetana
+
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam componentStyle rectangle
+skinparam component {
+    BorderColor #555555
+    ArrowColor #333333
+}
+
+title VizDOM - Component Diagram
+
+package "visual_dom.cv" #FFF3E0 {
+    [pipeline\nVisualDOMPipeline] as pipeline
+    [text_detector] as textd
+    [symbol_detector] as symd
+    [screen_detector] as scrd
+    [image_processing] as imgp
+    [slm_advisor\nSLMAdvisor] as slm
+
+    package "detectors" #FFE0B2 {
+        [base\nDetectorBackend, Detection] as dbase
+        [registry\ncreate_detector] as dreg
+        [uied_backend] as duied
+        [yolo_backend] as dyolo
+        [omniparser_backend] as domni
+        [grpc_backend\nGrpcDetectorBackend] as dgrpc
+        [uied_detection\nUIEDDetector] as uiedcore
+    }
+}
+
+package "visual_dom.capture (ADR-018)" #E1F5FE {
+    [base\nCaptureStrategy] as cbase
+    [registry\ncreate_capture, discover] as creg
+    [builtin\nwindows/linux/android/camera] as cbuiltin
+    [builtin.grpc_remote\nGrpcCaptureStrategy] as cgrpc
+    [plugins/capture/*\n(user, auto-loaded)] as cplugins
+}
+
+package "visual_dom.rpc" #EDE7F6 {
+    [detector_server\nDetector gRPC] as dsrv
+    [capture_server\nCapture gRPC] as csrv
+}
+
+package "visual_dom (shared)" #ECEFF1 {
+    [reading_order] as rorder
+    [logging_utils] as logx
+    [schema\ndom_schema] as schema
+}
+
+package "visual_dom.hierarchy" #FCE4EC {
+    [coarse_builder\nCoarseHierarchyBuilder] as coarse
+    [llm_refiner] as llm
+}
+
+package "visual_dom.compiler" #E0F7FA {
+    [dom_compiler\nDOMCompiler] as compiler
+}
+
+package "visual_dom.evaluation" #E8F5E9 {
+    [evaluator] as evalr
+    [metrics] as metrics
+    [report] as report
+}
+
+package "visual_gui_library (Robot Framework)" #F3E5F5 {
+    [locators\nLocator] as loc
+    [keywords\nactions/assertions/capture] as kw
+    [adapters\nbase/android/desktop] as adp
+}
+
+package "tools" #F5F5F5 {
+    [visual_dom_viewer\n(PyQt5)] as viewer
+    [dashboard\n(Streamlit)] as dash
+    [annotator] as annot
+}
+
+cloud "External" #FAFAFA {
+    [OmniParser repo\n+ Florence-2 weights] as extomni
+    [Ollama\n(minicpm-v / qwen2.5)] as extollama
+    [EasyOCR / PaddleOCR / Tesseract] as extocr
+    [Ultralytics YOLO] as extyolo
+}
+
+' --- dependencies ---
+pipeline --> dreg
+pipeline --> textd
+pipeline --> symd
+pipeline --> scrd
+pipeline --> slm
+pipeline --> rorder
+pipeline --> logx
+dreg --> dbase
+dreg --> duied
+dreg --> dyolo
+dreg --> domni
+dreg --> dgrpc
+dgrpc --> dsrv : gRPC
+duied --> uiedcore
+uiedcore --> imgp
+domni --> textd : ocr_provider (ensemble)
+domni --> logx
+
+textd --> extocr
+dyolo --> extyolo
+domni --> extomni
+slm --> extollama
+
+pipeline ..> coarse : (via caller)
+coarse --> rorder
+coarse ..> compiler
+llm --> extollama
+compiler --> schema
+
+compiler --> loc
+loc --> kw
+kw --> adp
+
+viewer --> pipeline
+viewer --> coarse
+viewer --> compiler
+dash --> pipeline
+
+' capture: registry discovers built-ins + remote client + user plugins;
+' CLI/Viewer acquire the image via it; the gRPC servers wrap the registries.
+creg --> cbase
+creg --> cbuiltin
+creg --> cgrpc
+creg --> cplugins
+cgrpc --> csrv : gRPC
+csrv --> creg
+dsrv --> dreg
+viewer --> creg : acquire image
+
+evalr --> metrics
+evalr --> report
+@enduml

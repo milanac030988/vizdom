@@ -140,6 +140,7 @@ python research/test_llm_refinement.py screenshot.png --backend ollama --json re
 4. Which LLM backend works best for this task?
 
 **Supported Backends**:
+
 | Backend | Model | Local/Cloud | Notes |
 |---------|-------|-------------|-------|
 | `ollama` | qwen2.5:3b | Local | Recommended for testing |
@@ -192,6 +193,7 @@ python research/test_qwen_vl.py screenshot.png --model 2b --no-gpu
 ```
 
 **Detection Modes**:
+
 | Mode | Description | Output |
 |------|-------------|--------|
 | `simple` | Natural language description | Text description |

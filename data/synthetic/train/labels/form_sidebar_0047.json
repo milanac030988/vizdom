@@ -1,0 +1,418 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        21,
+        18,
+        239,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Service Manager"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        0,
+        68,
+        302,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E13",
+        "E10",
+        "E8",
+        "E14",
+        "E5",
+        "E9",
+        "E7",
+        "E11",
+        "E12",
+        "E4"
+      ]
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        28,
+        95,
+        73,
+        116
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Files",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        28,
+        145,
+        112,
+        165
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Account",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        28,
+        195,
+        93,
+        216
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Profile",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        28,
+        245,
+        107,
+        270
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Reports",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        28,
+        295,
+        96,
+        316
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Admin",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        28,
+        345,
+        110,
+        370
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Support",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        28,
+        395,
+        83,
+        416
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Tasks",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        28,
+        445,
+        84,
+        465
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Users",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        28,
+        495,
+        109,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Projects",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        28,
+        545,
+        100,
+        570
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Logout",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        347,
+        95,
+        502,
+        130
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Properties"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        347,
+        149,
+        1875,
+        151
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        347,
+        176,
+        416,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        347,
+        208,
+        1093,
+        262
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Enter value"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        1129,
+        176,
+        1203,
+        200
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Country"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        1129,
+        208,
+        1875,
+        262
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        347,
+        284,
+        383,
+        309
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "City"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        347,
+        316,
+        1093,
+        370
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Type here"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        1129,
+        284,
+        1229,
+        304
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "First Name"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        1129,
+        316,
+        1875,
+        370
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Type here"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        347,
+        392,
+        415,
+        412
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "License"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        347,
+        424,
+        1093,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "admin"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        1129,
+        392,
+        1234,
+        417
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Description"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        1129,
+        424,
+        1875,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Enter value"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        347,
+        500,
+        391,
+        519
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Date"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        347,
+        532,
+        1093,
+        586
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "C:\\Users\\admin"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        1129,
+        500,
+        1185,
+        519
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Name"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        1129,
+        532,
+        1875,
+        586
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Password"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        347,
+        990,
+        509,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        527,
+        990,
+        689,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel"
+    }
+  ],
+  "stats": {
+    "text_detected": 30,
+    "uied_detected": 32,
+    "final_count": 32
+  },
+  "source": "synthetic"
+}

@@ -49,6 +49,14 @@ DOM_SCHEMA = {
                              "container", "image", "text", "unknown"]
                 },
                 "ocr_text": {"type": "string"},
+                "label": {
+                    "type": "string",
+                    "description": "Semantic name: own text, or the associated nearby label (left/above)"
+                },
+                "interactable": {
+                    "type": "boolean",
+                    "description": "Whether the element is actionable (set by detectors that predict it, e.g. OmniParser)"
+                },
                 "confidence": {"type": "number", "minimum": 0, "maximum": 1}
             }
         },
@@ -64,6 +72,10 @@ DOM_SCHEMA = {
                 },
                 "text": {"type": "string"},
                 "hint": {"type": "string"},
+                "label": {
+                    "type": "string",
+                    "description": "Resolved semantic name (own text or associated label)"
+                },
                 "clickable": {"type": "boolean", "default": False},
                 "editable": {"type": "boolean", "default": False},
                 "scrollable": {"type": "boolean", "default": False},

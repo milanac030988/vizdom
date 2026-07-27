@@ -1,0 +1,943 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        48
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E58",
+        "E12",
+        "E17",
+        "E6",
+        "E7"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        16,
+        12,
+        40,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        56,
+        12,
+        202,
+        34
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "StreamView Player",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        700,
+        8,
+        1100,
+        40
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search videos...",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1112,
+        12,
+        1136,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1832,
+        12,
+        1856,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1872,
+        12,
+        1896,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        0,
+        48,
+        1400,
+        836
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E9",
+        "E16",
+        "E11",
+        "E28",
+        "E33",
+        "E38",
+        "E43",
+        "E48",
+        "E66",
+        "E67",
+        "E60",
+        "E68",
+        "E61",
+        "E62",
+        "E63",
+        "E64",
+        "E65",
+        "E55",
+        "E54",
+        "E56",
+        "E52",
+        "E37",
+        "E32",
+        "E53",
+        "E42",
+        "E47",
+        "E10"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        20,
+        10,
+        1380,
+        690
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E8",
+      "children_ids": [
+        "E4",
+        "E14",
+        "E29",
+        "E34",
+        "E39",
+        "E44",
+        "E49",
+        "E59",
+        "E20",
+        "E21",
+        "E30",
+        "E3",
+        "E18",
+        "E22",
+        "E31",
+        "E35",
+        "E50",
+        "E40",
+        "E45",
+        "E23",
+        "E19",
+        "E25",
+        "E27",
+        "E26",
+        "E15",
+        "E2",
+        "E5",
+        "E13",
+        "E36",
+        "E41",
+        "E46",
+        "E51"
+      ]
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        640,
+        310,
+        656,
+        331
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "▶",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        20,
+        700,
+        1380,
+        736
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        0,
+        0,
+        1360,
+        2
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        10,
+        10,
+        45,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "12:34",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        70,
+        14,
+        1250,
+        24
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E9"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        1260,
+        10,
+        1306,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1:02:17",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        20,
+        740,
+        1380,
+        780
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        10,
+        4,
+        50,
+        36
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "⏮",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        60,
+        4,
+        160,
+        36
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "⏸ Pause",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        170,
+        4,
+        210,
+        36
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "⏭",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        230,
+        4,
+        350,
+        36
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "🔊 Volume",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1040,
+        4,
+        1160,
+        36
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "1.0x Speed",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        1170,
+        4,
+        1270,
+        36
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "1080p",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        1280,
+        4,
+        1360,
+        36
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Fullscreen",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        1400,
+        48,
+        1920,
+        836
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        20,
+        12,
+        74,
+        34
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Playlist",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        400,
+        14,
+        459,
+        28
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "24 videos",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        16,
+        44,
+        504,
+        46
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E9"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        10,
+        54,
+        510,
+        126
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        8,
+        8,
+        120,
+        64
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E9"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        130,
+        8,
+        336,
+        25
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "▶ Introduction to Design Systems",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        130,
+        30,
+        311,
+        47
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Now Playing · 12:34 / 1:02:17",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        130,
+        50,
+        200,
+        64
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Sarah Chen",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        10,
+        134,
+        510,
+        206
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        8,
+        8,
+        120,
+        64
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E9"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        130,
+        8,
+        311,
+        25
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Building Component Libraries",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        130,
+        30,
+        165,
+        44
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "45:22",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        130,
+        50,
+        216,
+        64
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Marcus Rivera",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        10,
+        214,
+        510,
+        286
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        8,
+        8,
+        120,
+        64
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E9"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        130,
+        8,
+        299,
+        25
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Responsive Layout Patterns",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        130,
+        30,
+        165,
+        44
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "38:15",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        130,
+        50,
+        197,
+        64
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Aisha Patel",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        10,
+        294,
+        510,
+        366
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        8,
+        8,
+        120,
+        64
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E9"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        130,
+        8,
+        289,
+        25
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Accessibility Best Practices",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        130,
+        30,
+        165,
+        44
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "52:08",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        130,
+        50,
+        189,
+        64
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "James Liu",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        10,
+        374,
+        510,
+        446
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        8,
+        8,
+        120,
+        64
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E9"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        130,
+        8,
+        336,
+        22
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Animation and Micro-interactions",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        130,
+        30,
+        165,
+        44
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "29:44",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        130,
+        50,
+        218,
+        64
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Elena Kowalski",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        16,
+        456,
+        504,
+        458
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        20,
+        468,
+        122,
+        488
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Autoplay",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        20,
+        498,
+        144,
+        518
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Loop Playlist",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        20,
+        530,
+        87,
+        550
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Shuffle",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        0,
+        836,
+        1920,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        0,
+        0,
+        1920,
+        2
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        20,
+        16,
+        271,
+        38
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Introduction to Design Systems",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        20,
+        48,
+        339,
+        63
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Sarah Chen · Published Mar 15, 2026 · 14,302 views",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        20,
+        78,
+        120,
+        112
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "👍 1.2K",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        130,
+        78,
+        220,
+        112
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "👎 23",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        232,
+        78,
+        322,
+        112
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Share",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E64",
+      "bounds": [
+        332,
+        78,
+        422,
+        112
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E65",
+      "bounds": [
+        20,
+        124,
+        1380,
+        126
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E66",
+      "bounds": [
+        20,
+        138,
+        1100,
+        155
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "A comprehensive walkthrough of modern design systems, covering tokens, components, documentation, and governance. Perfect for teams looking to scale their UI consistency.",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E67",
+      "bounds": [
+        20,
+        168,
+        334,
+        185
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Tags: #design-systems #ui #components #frontend",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E68",
+      "bounds": [
+        20,
+        196,
+        140,
+        228
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Show More",
+      "parent_id": "E8"
+    }
+  ],
+  "stats": {
+    "text_detected": 45,
+    "uied_detected": 68,
+    "final_count": 68
+  },
+  "source": "synthetic",
+  "layout_title": "StreamView Player",
+  "layout_theme": "dark"
+}

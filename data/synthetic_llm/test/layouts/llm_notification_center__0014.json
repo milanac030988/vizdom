@@ -1,0 +1,134 @@
+{
+  "title": "Notification Center",
+  "theme": "light",
+  "elements": [
+    {
+      "type": "container",
+      "text": "",
+      "x": 10,
+      "y": 20,
+      "w": 1900,
+      "h": 40
+    },
+    {
+      "type": "text",
+      "text": "Notifications",
+      "x": 20,
+      "y": 60,
+      "w": 100,
+      "h": 16
+    },
+    {
+      "type": "separator",
+      "text": "",
+      "x": 130,
+      "y": 80,
+      "w": 1,
+      "h": 10
+    },
+    {
+      "type": "container",
+      "text": "",
+      "x": 20,
+      "y": 100,
+      "w": 1600,
+      "h": 900
+    },
+    {
+      "type": "text",
+      "text": "New Message from John Doe",
+      "x": 30,
+      "y": 120,
+      "w": 150,
+      "h": 20
+    },
+    {
+      "type": "icon",
+      "text": "",
+      "x": 200,
+      "y": 130,
+      "w": 24,
+      "h": 24
+    },
+    {
+      "type": "container",
+      "text": "",
+      "x": 250,
+      "y": 120,
+      "w": 1000,
+      "h": 50
+    },
+    {
+      "type": "button",
+      "text": "Read More",
+      "x": 260,
+      "y": 170,
+      "w": 150,
+      "h": 30
+    },
+    {
+      "type": "separator",
+      "text": "",
+      "x": 420,
+      "y": 200,
+      "w": 1,
+      "h": 10
+    },
+    {
+      "type": "container",
+      "text": "",
+      "x": 20,
+      "y": 220,
+      "w": 1900,
+      "h": 40
+    },
+    {
+      "type": "text",
+      "text": "New Comment from Jane Doe",
+      "x": 30,
+      "y": 240,
+      "w": 150,
+      "h": 20
+    },
+    {
+      "type": "icon",
+      "text": "",
+      "x": 200,
+      "y": 250,
+      "w": 24,
+      "h": 24
+    },
+    {
+      "type": "container",
+      "text": "",
+      "x": 250,
+      "y": 240,
+      "w": 1000,
+      "h": 50
+    },
+    {
+      "type": "button",
+      "text": "Read More",
+      "x": 260,
+      "y": 290,
+      "w": 150,
+      "h": 30
+    },
+    {
+      "type": "separator",
+      "text": "",
+      "x": 420,
+      "y": 320,
+      "w": 1,
+      "h": 10
+    },
+    {
+      "type": "button",
+      "text": "Mark All as Read",
+      "x": 20,
+      "y": 340,
+      "w": 150,
+      "h": 30
+    }
+  ]
+}

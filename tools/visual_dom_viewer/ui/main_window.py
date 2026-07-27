@@ -19,7 +19,7 @@ try:
         QAction, QFileDialog, QLabel, QStatusBar, QMessageBox,
         QHeaderView, QAbstractItemView, QMenu, QLineEdit, QCheckBox,
         QPushButton, QGroupBox, QFormLayout, QListWidget, QListWidgetItem,
-        QFrame, QTabWidget, QScrollArea, QProgressBar
+        QFrame, QTabWidget, QScrollArea, QProgressBar, QComboBox
     )
     from PyQt5.QtCore import Qt, QAbstractItemModel, QModelIndex, pyqtSignal, QPoint
     from PyQt5.QtGui import (
@@ -805,7 +805,135 @@ class VisualDOMViewerWindow(QMainWindow):
 
         toolbar.addSeparator()
 
+        # ========== Camera Mode ==========
+        toolbar.addSeparator()
+        self._camera_mode_checkbox = QCheckBox("Camera")
+        self._camera_mode_checkbox.setToolTip(
+            "Camera mode: auto-detect and rectify screen region\n"
+            "from photos taken of a monitor/display"
+        )
+        toolbar.addWidget(self._camera_mode_checkbox)
+
+        # ========== Capture Source Section (ADR-018) ==========
+        toolbar.addSeparator()
+        src_label = QLabel("Src:")
+        toolbar.addWidget(src_label)
+
+        self._capture_source_combo = QComboBox()
+        # "window (handler)" = existing platform-handler path (needs Connect).
+        # Everything else is a pluggable CaptureStrategy (ADR-018): grab directly,
+        # no connection needed.
+        self._capture_source_combo.addItem("window (handler)")
+        try:
+            from visual_dom.capture import list_captures
+            for c in list_captures():
+                label = c["name"] if c["available"] else f"{c['name']} (n/a)"
+                self._capture_source_combo.addItem(label, c["name"])
+        except Exception as e:
+            print(f"[Viewer] capture strategy discovery failed: {e}")
+        self._capture_source_combo.setToolTip(
+            "Capture source (ADR-018):\n"
+            "window (handler) = capture the connected target window (needs Connect)\n"
+            "windows/linux = full-screen grab\n"
+            "android = adb device (set arg = serial)\n"
+            "camera = capture card / webcam (set arg = device index or URL)\n"
+            "grpc = remote capture service (set arg = host:port)\n"
+            "<plugin> = your custom strategy from plugins/capture/"
+        )
+        self._capture_source_combo.setMaximumWidth(150)
+        self._capture_source_combo.currentIndexChanged.connect(self._on_capture_source_changed)
+        toolbar.addWidget(self._capture_source_combo)
+
+        # Optional arg for the selected strategy (target host:port / device / serial)
+        self._capture_arg_edit = QLineEdit("")
+        self._capture_arg_edit.setToolTip(
+            "Argument for the capture source:\n"
+            "grpc -> host:port   camera -> device index or URL   android -> serial"
+        )
+        self._capture_arg_edit.setMaximumWidth(140)
+        self._capture_arg_edit.setPlaceholderText("host:port / device")
+        toolbar.addWidget(self._capture_arg_edit)
+
+        # ========== Detector Section ==========
+        toolbar.addSeparator()
+        det_label = QLabel("Det:")
+        toolbar.addWidget(det_label)
+
+        self._detector_combo = QComboBox()
+        self._detector_combo.addItems(["uied", "yolo", "hybrid", "omniparser", "grpc"])
+        self._detector_combo.setToolTip(
+            "Element detector:\n"
+            "uied = traditional CV (no model needed)\n"
+            "yolo = YOLOv8 model (needs .pt file)\n"
+            "hybrid = YOLO + UIED merged\n"
+            "omniparser = Microsoft OmniParser (needs repo+weights; set OMNIPARSER_* env vars)\n"
+            "grpc = remote detector service (set the target host:port field)"
+        )
+        self._detector_combo.setMaximumWidth(110)
+        toolbar.addWidget(self._detector_combo)
+
+        # Remote detector target (only used when detector = grpc)
+        self._grpc_target_edit = QLineEdit("localhost:50051")
+        self._grpc_target_edit.setToolTip("Remote detector service host:port (for detector = grpc)")
+        self._grpc_target_edit.setMaximumWidth(140)
+        self._grpc_target_edit.setPlaceholderText("host:port")
+        toolbar.addWidget(self._grpc_target_edit)
+
+        # ========== OCR Engine Section ==========
+        toolbar.addSeparator()
+        ocr_label = QLabel("OCR:")
+        toolbar.addWidget(ocr_label)
+
+        self._ocr_combo = QComboBox()
+        self._ocr_combo.addItems([
+            "easyocr",      # Best text region detection, weaker on custom fonts
+            "tesseract",    # Better for system/custom fonts, needs install
+            "paddleocr",    # Fast, good for multi-language
+        ])
+        self._ocr_combo.setToolTip("OCR engine for text detection")
+        self._ocr_combo.setMaximumWidth(100)
+        toolbar.addWidget(self._ocr_combo)
+
+        # ========== Text Ensemble Section (OmniParser only) ==========
+        toolbar.addSeparator()
+        self._text_ensemble_checkbox = QCheckBox("Text+")
+        self._text_ensemble_checkbox.setChecked(True)
+        self._text_ensemble_checkbox.setToolTip(
+            "Text ensemble (OmniParser only):\n"
+            "ON  = feed our upscaling OCR into OmniParser (recovers missed text)\n"
+            "OFF = OmniParser's original OCR only"
+        )
+        toolbar.addWidget(self._text_ensemble_checkbox)
+
+        # ========== Smart-merge Section ==========
+        self._merge_checkbox = QCheckBox("Merge")
+        self._merge_checkbox.setChecked(True)
+        self._merge_checkbox.setToolTip(
+            "Smart-merge over-segmented elements:\n"
+            "ON  = merge fragment boxes that form one element (multi-line button, split text line)\n"
+            "OFF = keep raw detections"
+        )
+        toolbar.addWidget(self._merge_checkbox)
+
+        # ========== SLM Section ==========
+        toolbar.addSeparator()
+        self._slm_checkbox = QCheckBox("SLM")
+        self._slm_checkbox.setToolTip("Use language model to improve detection (requires Ollama)")
+        toolbar.addWidget(self._slm_checkbox)
+
+        self._slm_model_combo = QComboBox()
+        self._slm_model_combo.addItems([
+            "qwen2.5:3b",       # Text-only (fast, retype only)
+            "minicpm-v",        # VLM (best for UI, ~5.5GB)
+            "qwen2.5-vl:3b",   # VLM (small, ~2.4GB)
+            "llava:7b",         # VLM (general purpose)
+        ])
+        self._slm_model_combo.setToolTip("SLM model (vision models can see the screenshot)")
+        self._slm_model_combo.setMaximumWidth(130)
+        toolbar.addWidget(self._slm_model_combo)
+
         # ========== Export Section ==========
+        toolbar.addSeparator()
         # Export action
         export_action = QAction("Export to Robot", self)
         export_action.setShortcut("Ctrl+E")
@@ -1022,8 +1150,75 @@ class VisualDOMViewerWindow(QMainWindow):
         self._progress_bar.hide()
         self._progress_bar.setRange(0, 100)
 
+    def _selected_capture_strategy(self):
+        """Return (strategy_name, kwargs) for the toolbar selection, or (None, {})
+        when the default window-handler path is selected."""
+        idx = self._capture_source_combo.currentIndex()
+        if idx <= 0:  # "window (handler)"
+            return None, {}
+        name = self._capture_source_combo.itemData(idx)
+        arg = self._capture_arg_edit.text().strip()
+        kwargs = {}
+        if arg:
+            if name == "grpc":
+                kwargs["target"] = arg
+            elif name == "camera":
+                # numeric device index if it looks like one, else a stream URL
+                kwargs["device"] = int(arg) if arg.isdigit() else arg
+            elif name == "android":
+                kwargs["serial"] = arg
+        return name, kwargs
+
+    def _on_capture_source_changed(self, _idx):
+        """Enable Capture & Analyze for strategy sources (no Connect needed);
+        for the window handler, fall back to the connection state."""
+        name, _ = self._selected_capture_strategy()
+        if name is None:
+            self._capture_action.setEnabled(self._platform_manager.is_connected)
+        else:
+            self._capture_action.setEnabled(True)
+
+    def _capture_via_strategy(self, name, kwargs):
+        """Grab one frame via a CaptureStrategy and return PNG bytes."""
+        import cv2
+        from visual_dom.capture import create_capture
+        cap = create_capture(name, **kwargs)
+        try:
+            frame = cap.capture()
+        finally:
+            try:
+                cap.close()
+            except Exception:
+                pass
+        ok, buf = cv2.imencode(".png", frame)
+        if not ok:
+            raise RuntimeError("could not encode captured frame")
+        return buf.tobytes()
+
     def _capture_and_analyze(self):
         """Capture screenshot and analyze with Visual DOM pipeline."""
+        strategy_name, strategy_kwargs = self._selected_capture_strategy()
+
+        # Pluggable capture strategy (ADR-018): grab directly, no window handler.
+        if strategy_name is not None:
+            try:
+                self._show_progress(f"Capturing via '{strategy_name}'...", 30)
+                QApplication.processEvents()
+                screenshot = self._capture_via_strategy(strategy_name, strategy_kwargs)
+            except Exception as e:
+                self._hide_progress()
+                QMessageBox.warning(self, "Capture Failed",
+                                    f"Capture via '{strategy_name}' failed: {e}")
+                return
+            self._show_progress("Loading screenshot...", 50)
+            self._model.set_screenshot_data(screenshot)
+            self._canvas.load_image_data(screenshot)
+            self._refresh_action.setEnabled(True)
+            self._show_progress("Analyzing with Visual DOM...", 70)
+            self._do_analyze_screenshot(screenshot)
+            return
+
+        # Default path: capture the connected target window via the platform handler.
         if not self._platform_manager.is_connected:
             QMessageBox.warning(self, "Not Connected", "Please connect to a target first.")
             return
@@ -1099,16 +1294,28 @@ class VisualDOMViewerWindow(QMainWindow):
     def _do_analyze_screenshot(self, screenshot: bytes):
         """Internal method to analyze screenshot."""
         try:
-            # Save screenshot temporarily
             import tempfile
             import os
             import sys
+            import json as _json
+            from datetime import datetime
 
-            print("[Viewer] Saving screenshot to temp file...")
-            with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as f:
+            # Generate session ID and create output folder
+            session_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+            project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+            session_dir = os.path.join(project_root, 'output', 'sessions', session_id)
+            os.makedirs(session_dir, exist_ok=True)
+            print(f"[Viewer] Session: {session_id}")
+            print(f"[Viewer] Output folder: {session_dir}")
+
+            # Save screenshot to session folder
+            screenshot_path = os.path.join(session_dir, 'screenshot.png')
+            with open(screenshot_path, 'wb') as f:
                 f.write(screenshot)
-                temp_path = f.name
-            print(f"[Viewer] Temp file: {temp_path}")
+            print(f"[Viewer] Screenshot saved: {screenshot_path}")
+
+            # Also save as temp file for pipeline processing
+            temp_path = screenshot_path
 
             try:
                 # Add src to path if needed
@@ -1145,12 +1352,91 @@ class VisualDOMViewerWindow(QMainWindow):
                     gpu_available = False
                     print("[Viewer] PyTorch not found - using CPU")
 
+                # Get selected OCR engine
+                ocr_engine = self._ocr_combo.currentText()
+                print(f"[Viewer] OCR engine: {ocr_engine}")
+
+                # Check if SLM review is enabled
+                slm_backend = None
+                slm_model = None
+                if self._slm_checkbox.isChecked():
+                    slm_backend = "ollama"
+                    slm_model = self._slm_model_combo.currentText()
+                    print(f"[Viewer] SLM review ENABLED (ollama, model={slm_model})")
+
+                # Check camera mode
+                camera_mode = self._camera_mode_checkbox.isChecked()
+                if camera_mode:
+                    print("[Viewer] Camera mode ENABLED (screen detection + rectification)")
+
+                # Check detector mode
+                detector_mode = self._detector_combo.currentText()
+                yolo_model_path = None
+                detector_kwargs = {}
+                if detector_mode in ("yolo", "hybrid"):
+                    # Look for YOLO model in standard locations
+                    yolo_candidates = [
+                        os.path.join(project_root, "models", "pretrained", "yolo_ui_best.pt"),
+                        os.path.join(project_root, "models", "cv_detection", "vizdom_ui", "weights", "best.pt"),
+                    ]
+                    for candidate in yolo_candidates:
+                        if os.path.exists(candidate):
+                            yolo_model_path = candidate
+                            break
+                    if yolo_model_path:
+                        print(f"[Viewer] YOLO model: {yolo_model_path}")
+                    else:
+                        print("[Viewer] Warning: No YOLO model found, falling back to UIED")
+                        detector_mode = "uied"
+                elif detector_mode == "omniparser":
+                    # Resolve OmniParser weights from env vars, then standard locations.
+                    icon_detect = os.environ.get("OMNIPARSER_ICON_DETECT")
+                    icon_caption = os.environ.get("OMNIPARSER_ICON_CAPTION")
+                    op_root = os.environ.get("OMNIPARSER_ROOT")
+                    if not icon_detect:
+                        cand = os.path.join(project_root, "models", "omniparser",
+                                            "icon_detect", "model.pt")
+                        if os.path.exists(cand):
+                            icon_detect = cand
+                    if not icon_caption:
+                        cand = os.path.join(project_root, "models", "omniparser",
+                                            "icon_caption_florence")
+                        if os.path.isdir(cand):
+                            icon_caption = cand
+                    if not op_root:
+                        cand = os.path.join(project_root, "third_party", "OmniParser")
+                        if os.path.isdir(cand):
+                            op_root = cand
+                    if icon_detect and icon_caption:
+                        if op_root:
+                            detector_kwargs["omniparser_root"] = op_root
+                        detector_kwargs["icon_detect_path"] = icon_detect
+                        detector_kwargs["icon_caption_path"] = icon_caption
+                        print(f"[Viewer] OmniParser weights: {icon_detect}")
+                    else:
+                        print("[Viewer] Warning: OmniParser weights not found "
+                              "(set OMNIPARSER_ICON_DETECT / OMNIPARSER_ICON_CAPTION), "
+                              "falling back to UIED")
+                        detector_mode = "uied"
+                elif detector_mode == "grpc":
+                    target = self._grpc_target_edit.text().strip() or "localhost:50051"
+                    detector_kwargs["target"] = target
+                    print(f"[Viewer] Remote gRPC detector target: {target}")
+
                 pipeline = VisualDOMPipeline(
-                    ocr_engine="easyocr",
+                    ocr_engine=ocr_engine,
                     use_gpu=gpu_available,
                     confidence_threshold=0.3,
+                    slm_backend=slm_backend,
+                    slm_model=slm_model,
+                    camera_mode=camera_mode,
+                    detector=detector_mode,
+                    yolo_model_path=yolo_model_path,
+                    detector_kwargs=detector_kwargs,
+                    text_ensemble=self._text_ensemble_checkbox.isChecked(),
+                    merge_oversegmented=self._merge_checkbox.isChecked(),
                 )
-                print(f"[Viewer] Pipeline initialized (GPU={gpu_available})")
+                print(f"[Viewer] Pipeline initialized (Det={detector_mode}, OCR={ocr_engine}, GPU={gpu_available}, SLM={slm_model or 'off'})")
 
                 self._show_progress("Running CV pipeline (OCR + Element Detection)...", 80)
                 print("[Viewer] Running pipeline.process() - this may take 10-30 seconds...")
@@ -1158,6 +1444,15 @@ class VisualDOMViewerWindow(QMainWindow):
 
                 result = pipeline.process(temp_path)
                 print(f"[Viewer] Pipeline complete. Found {len(result.get('elements', []))} elements")
+
+                # Save CV pipeline result (before hierarchy/SLM)
+                try:
+                    cv_result_path = os.path.join(session_dir, 'cv_pipeline_result.json')
+                    with open(cv_result_path, 'w', encoding='utf-8') as f:
+                        _json.dump(result, f, indent=2, ensure_ascii=False)
+                    print(f"[Viewer] CV result saved: {cv_result_path}")
+                except Exception as e:
+                    print(f"[Viewer] Warning: could not save CV result: {e}")
 
                 self._show_progress("Building element tree...", 90)
                 QApplication.processEvents()
@@ -1198,9 +1493,40 @@ class VisualDOMViewerWindow(QMainWindow):
                     dom_data = {
                         "image_size": image_size,
                         "source": "visual_dom",
+                        "session_id": session_id,
                         "cv_stats": result.get("stats", {}),
                         "dom": dom_result
                     }
+
+                    # Save final DOM result
+                    try:
+                        dom_result_path = os.path.join(session_dir, 'dom_result.json')
+                        with open(dom_result_path, 'w', encoding='utf-8') as f:
+                            _json.dump(dom_data, f, indent=2, ensure_ascii=False)
+                        print(f"[Viewer] DOM result saved: {dom_result_path}")
+                    except Exception as e:
+                        print(f"[Viewer] Warning: could not save DOM result: {e}")
+
+                    # Save session info
+                    try:
+                        session_info = {
+                            "session_id": session_id,
+                            "timestamp": datetime.now().isoformat(),
+                            "image_size": image_size,
+                            "ocr_engine": ocr_engine,
+                            "camera_mode": camera_mode,
+                            "slm_enabled": slm_backend is not None,
+                            "slm_model": slm_model,
+                            "gpu_available": gpu_available,
+                            "element_count": len(elements),
+                            "cv_stats": result.get("stats", {}),
+                        }
+                        info_path = os.path.join(session_dir, 'session_info.json')
+                        with open(info_path, 'w', encoding='utf-8') as f:
+                            _json.dump(session_info, f, indent=2)
+                        print(f"[Viewer] Session info saved: {info_path}")
+                    except Exception as e:
+                        print(f"[Viewer] Warning: could not save session info: {e}")
 
                     print("[Viewer] Creating DOMTree from compiled data...")
                     dom_tree = DOMTree.from_dict(dom_data)
@@ -1210,9 +1536,9 @@ class VisualDOMViewerWindow(QMainWindow):
                     stats = result.get("stats", {})
                     self._hide_progress()
                     self._statusbar.showMessage(
-                        f"Analysis complete: {dom_tree.get_element_count()} elements detected "
-                        f"(Text: {stats.get('text_detected', 0)}, UI: {stats.get('uied_detected', 0)}). "
-                        f"Select elements to define them for export."
+                        f"[{session_id}] {dom_tree.get_element_count()} elements "
+                        f"(Text: {stats.get('text_detected', 0)}, UI: {stats.get('uied_detected', 0)}) "
+                        f"— output/sessions/{session_id}/"
                     )
                 else:
                     self._hide_progress()
@@ -1220,8 +1546,7 @@ class VisualDOMViewerWindow(QMainWindow):
                     print("[Viewer] No elements detected in result")
 
             finally:
-                os.unlink(temp_path)
-                print("[Viewer] Temp file cleaned up")
+                pass  # Screenshot kept in session folder
 
         except ImportError as e:
             self._hide_progress()

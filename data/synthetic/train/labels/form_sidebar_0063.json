@@ -1,0 +1,352 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        21,
+        18,
+        153,
+        43
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Calculator"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        0,
+        68,
+        349,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E6",
+        "E8",
+        "E5",
+        "E4",
+        "E11",
+        "E9",
+        "E7"
+      ]
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        28,
+        95,
+        93,
+        116
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Profile",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        28,
+        145,
+        96,
+        166
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Admin",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        28,
+        195,
+        158,
+        216
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notifications",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        28,
+        245,
+        73,
+        266
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Files",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        28,
+        295,
+        107,
+        320
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Reports",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        28,
+        345,
+        83,
+        366
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Tasks",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        28,
+        395,
+        76,
+        421
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Help",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        394,
+        95,
+        549,
+        130
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Properties"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        394,
+        149,
+        1875,
+        151
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        394,
+        176,
+        477,
+        201
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Zip Code"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        394,
+        208,
+        1116,
+        262
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "C:\\Users\\admin"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        1152,
+        176,
+        1278,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "MAC Address"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        1152,
+        208,
+        1874,
+        262
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Website"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        394,
+        284,
+        444,
+        304
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Email"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        394,
+        316,
+        1116,
+        370
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Type here"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        1152,
+        284,
+        1252,
+        304
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "First Name"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1152,
+        316,
+        1874,
+        370
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Inactive"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        394,
+        392,
+        483,
+        416
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Company"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        394,
+        424,
+        1116,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "C:\\Users\\admin"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        1152,
+        392,
+        1197,
+        412
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Time"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        1152,
+        424,
+        1874,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        394,
+        500,
+        460,
+        525
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Priority"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        394,
+        532,
+        1116,
+        586
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        394,
+        990,
+        556,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        574,
+        990,
+        736,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel"
+    }
+  ],
+  "stats": {
+    "text_detected": 25,
+    "uied_detected": 27,
+    "final_count": 27
+  },
+  "source": "synthetic"
+}

@@ -1,0 +1,226 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        10,
+        20,
+        1910,
+        60
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        20,
+        60,
+        96,
+        74
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notifications"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        130,
+        80,
+        140,
+        82
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        20,
+        100,
+        1620,
+        1000
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E10",
+        "E7",
+        "E13",
+        "E8",
+        "E14",
+        "E16",
+        "E5",
+        "E11",
+        "E6",
+        "E12",
+        "E9",
+        "E15"
+      ]
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        30,
+        120,
+        210,
+        137
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "New Message from John Doe",
+      "parent_id": "E4"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        200,
+        130,
+        224,
+        154
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E4"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        250,
+        120,
+        1250,
+        170
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E4"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        260,
+        170,
+        410,
+        200
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Read More",
+      "parent_id": "E4"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        420,
+        200,
+        430,
+        202
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E4"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        20,
+        220,
+        1920,
+        260
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E4"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        30,
+        240,
+        215,
+        254
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "New Comment from Jane Doe",
+      "parent_id": "E4"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        200,
+        250,
+        224,
+        274
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E4"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        250,
+        240,
+        1250,
+        290
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E4"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        260,
+        290,
+        410,
+        320
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Read More",
+      "parent_id": "E4"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        420,
+        320,
+        430,
+        322
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E4"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        20,
+        340,
+        170,
+        370
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Mark All as Read",
+      "parent_id": "E4"
+    }
+  ],
+  "stats": {
+    "text_detected": 8,
+    "uied_detected": 16,
+    "final_count": 16
+  },
+  "source": "synthetic",
+  "layout_title": "Notification Center",
+  "layout_theme": "light"
+}

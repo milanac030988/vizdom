@@ -1,0 +1,512 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        21,
+        18,
+        153,
+        43
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Calculator"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        0,
+        68,
+        336,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E8",
+        "E11",
+        "E7",
+        "E12",
+        "E13",
+        "E5",
+        "E6",
+        "E10",
+        "E9"
+      ]
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        28,
+        95,
+        112,
+        115
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Account",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        28,
+        145,
+        83,
+        166
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Tasks",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        28,
+        195,
+        111,
+        221
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Settings",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        28,
+        245,
+        120,
+        271
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Analytics",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        28,
+        295,
+        73,
+        316
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Files",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        28,
+        345,
+        84,
+        365
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Users",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        28,
+        395,
+        140,
+        416
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dashboard",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        28,
+        445,
+        119,
+        466
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Calendar",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        28,
+        495,
+        100,
+        520
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Logout",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        381,
+        95,
+        483,
+        123
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Details"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        381,
+        149,
+        1875,
+        151
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        381,
+        176,
+        453,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Created"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        381,
+        208,
+        1110,
+        262
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        1146,
+        176,
+        1246,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "First Name"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        1146,
+        208,
+        1875,
+        262
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Type here"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        381,
+        284,
+        468,
+        304
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        381,
+        316,
+        1110,
+        370
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "john.doe@example.com"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        1146,
+        284,
+        1239,
+        303
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Username"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        1146,
+        316,
+        1875,
+        370
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        381,
+        392,
+        486,
+        417
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Expiry Date"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        381,
+        424,
+        1110,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Offline"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        1146,
+        392,
+        1208,
+        411
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Owner"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        1146,
+        424,
+        1875,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        381,
+        500,
+        486,
+        525
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Description"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        381,
+        532,
+        1110,
+        586
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        1146,
+        500,
+        1187,
+        520
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Role"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        1146,
+        532,
+        1875,
+        586
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Password"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        381,
+        608,
+        436,
+        627
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notes"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        381,
+        640,
+        1110,
+        694
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Acme Corp"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        1146,
+        608,
+        1235,
+        632
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Company"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        1146,
+        640,
+        1875,
+        694
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Zip code"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        381,
+        716,
+        450,
+        736
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        381,
+        748,
+        1110,
+        802
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "City"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        1146,
+        716,
+        1193,
+        735
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "State"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        1146,
+        748,
+        1875,
+        802
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Website"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        381,
+        990,
+        543,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        561,
+        990,
+        723,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        741,
+        990,
+        903,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Reset"
+    }
+  ],
+  "stats": {
+    "text_detected": 38,
+    "uied_detected": 40,
+    "final_count": 40
+  },
+  "source": "synthetic"
+}

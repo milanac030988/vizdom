@@ -1,0 +1,249 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        10,
+        30,
+        1910,
+        80
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E2"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        20,
+        60,
+        85,
+        74
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Text Editor",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        10,
+        90,
+        1910,
+        140
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E4",
+        "E8"
+      ]
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        20,
+        120,
+        63,
+        134
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "toolbar",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        190,
+        130,
+        290,
+        156
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "New File"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        310,
+        130,
+        410,
+        156
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Open File"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        430,
+        130,
+        530,
+        156
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save File"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        550,
+        130,
+        560,
+        132
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E3"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        560,
+        130,
+        640,
+        156
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cut"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        650,
+        130,
+        730,
+        156
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Copy"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        740,
+        130,
+        820,
+        156
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Paste"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        10,
+        170,
+        1910,
+        220
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E14",
+        "E13"
+      ]
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        20,
+        200,
+        48,
+        214
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Text:",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        130,
+        198,
+        380,
+        226
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        10,
+        240,
+        1910,
+        290
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E16",
+        "E18",
+        "E17"
+      ]
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        20,
+        270,
+        170,
+        294
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Font Family",
+      "parent_id": "E15"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        200,
+        270,
+        240,
+        290
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E15"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        330,
+        270,
+        410,
+        296
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Bold",
+      "parent_id": "E15"
+    }
+  ],
+  "stats": {
+    "text_detected": 11,
+    "uied_detected": 18,
+    "final_count": 18
+  },
+  "source": "synthetic",
+  "layout_title": "Text Editor",
+  "layout_theme": "light"
+}

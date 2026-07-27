@@ -1,0 +1,218 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        10,
+        10,
+        86,
+        27
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Video Player"
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        10,
+        40,
+        1910,
+        140
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E5",
+        "E3",
+        "E4",
+        "E7"
+      ]
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        20,
+        60,
+        100,
+        90
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Play",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        110,
+        60,
+        190,
+        90
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Pause",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        10,
+        100,
+        1910,
+        102
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E2"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        10,
+        110,
+        1910,
+        210
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E9",
+        "E8",
+        "E11"
+      ]
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        20,
+        120,
+        109,
+        134
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Current Video:",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        230,
+        120,
+        330,
+        150
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Video Options",
+      "parent_id": "E6"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        10,
+        140,
+        1910,
+        142
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E6"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        10,
+        150,
+        110,
+        650
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E12"
+      ]
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        20,
+        160,
+        65,
+        177
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Playlist:",
+      "parent_id": "E6"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        20,
+        190,
+        120,
+        220
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "+ Add Video",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        120,
+        150,
+        1920,
+        650
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E15",
+        "E14"
+      ]
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        130,
+        160,
+        193,
+        174
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Video List:",
+      "parent_id": "E13"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        1300,
+        190,
+        1400,
+        220
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "- Remove Video",
+      "parent_id": "E13"
+    }
+  ],
+  "stats": {
+    "text_detected": 9,
+    "uied_detected": 15,
+    "final_count": 15
+  },
+  "source": "synthetic",
+  "layout_title": "Video Player",
+  "layout_theme": "light"
+}

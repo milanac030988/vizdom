@@ -1,0 +1,138 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        614,
+        294,
+        1305,
+        786
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E5",
+        "E9",
+        "E7",
+        "E8",
+        "E6",
+        "E3",
+        "E2",
+        "E4"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        1251,
+        308,
+        1287,
+        344
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "close",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        650,
+        330,
+        726,
+        357
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        650,
+        384,
+        1269,
+        386
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        650,
+        411,
+        1070,
+        437
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Do you want to save your changes before",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        650,
+        443,
+        733,
+        469
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "closing?",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1179,
+        693,
+        1269,
+        750
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Yes",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        1089,
+        693,
+        1161,
+        750
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "OK",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        927,
+        693,
+        1071,
+        750
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 7,
+    "uied_detected": 9,
+    "final_count": 9
+  },
+  "source": "synthetic"
+}

@@ -1,0 +1,831 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        48
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E18",
+        "E3",
+        "E19",
+        "E40",
+        "E22",
+        "E41",
+        "E8",
+        "E2",
+        "E4",
+        "E5",
+        "E6"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        16,
+        12,
+        40,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        56,
+        12,
+        284,
+        34
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Network Configuration Panel",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1832,
+        12,
+        1856,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1868,
+        12,
+        1892,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1880,
+        12,
+        1904,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        0,
+        48,
+        260,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E9",
+        "E15",
+        "E10",
+        "E11",
+        "E24",
+        "E44",
+        "E42"
+      ]
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        20,
+        20,
+        85,
+        34
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "NETWORK",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        20,
+        48,
+        110,
+        70
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Ethernet",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        20,
+        88,
+        76,
+        109
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Wi-Fi",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        20,
+        128,
+        66,
+        149
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "VPN",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        20,
+        176,
+        240,
+        178
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E21"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        20,
+        192,
+        93,
+        206
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "ADVANCED",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        20,
+        220,
+        161,
+        247
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "DNS Settings",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        20,
+        260,
+        78,
+        287
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Proxy",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        20,
+        300,
+        100,
+        322
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Firewall",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        260,
+        48,
+        1920,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E21",
+        "E39",
+        "E27",
+        "E31",
+        "E36",
+        "E58",
+        "E59",
+        "E20",
+        "E57",
+        "E51",
+        "E35",
+        "E47",
+        "E26",
+        "E49",
+        "E45",
+        "E54",
+        "E56",
+        "E43",
+        "E30"
+      ]
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        40,
+        30,
+        281,
+        52
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Ethernet — IPv4 Configuration",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        1480,
+        32,
+        1623,
+        52
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Enable Interface",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        40,
+        72,
+        1620,
+        74
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E17"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        40,
+        92,
+        800,
+        512
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E17",
+      "children_ids": [
+        "E25",
+        "E29",
+        "E34",
+        "E38",
+        "E14",
+        "E37",
+        "E33",
+        "E16",
+        "E28",
+        "E55",
+        "E32",
+        "E52",
+        "E50",
+        "E46",
+        "E48",
+        "E53",
+        "E13",
+        "E12"
+      ]
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        20,
+        16,
+        108,
+        33
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "IP Assignment",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        20,
+        44,
+        360,
+        76
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Manual (Static)"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        20,
+        96,
+        85,
+        110
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "IP Address",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        20,
+        118,
+        360,
+        150
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "192.168.1.100",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        390,
+        96,
+        470,
+        110
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Subnet Mask",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        390,
+        118,
+        730,
+        150
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "255.255.255.0",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        20,
+        170,
+        121,
+        187
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Default Gateway",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        20,
+        192,
+        360,
+        224
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "192.168.1.1",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        390,
+        170,
+        429,
+        184
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Metric",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        390,
+        192,
+        730,
+        224
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Automatic",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        20,
+        244,
+        730,
+        246
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E21"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        20,
+        264,
+        149,
+        278
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Preferred DNS Server",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        20,
+        286,
+        360,
+        318
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "8.8.8.8",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        390,
+        264,
+        519,
+        278
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Alternate DNS Server",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        390,
+        286,
+        730,
+        318
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "8.8.4.4",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        20,
+        338,
+        203,
+        358
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Validate settings upon exit",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        20,
+        368,
+        304,
+        388
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Register this connection's addresses in DNS",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        840,
+        92,
+        1600,
+        512
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E17"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        20,
+        16,
+        132,
+        30
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Connection Status",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        20,
+        44,
+        730,
+        46
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        20,
+        64,
+        58,
+        78
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Status",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        400,
+        64,
+        466,
+        78
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Connected",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        20,
+        92,
+        57,
+        109
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Speed",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        400,
+        92,
+        455,
+        109
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.0 Gbps",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        20,
+        120,
+        104,
+        134
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "MAC Address",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        400,
+        120,
+        513,
+        134
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "A4:B1:C2:3D:4E:5F",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        20,
+        148,
+        99,
+        162
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "DHCP Server",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        400,
+        148,
+        473,
+        162
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "192.168.1.1",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        20,
+        176,
+        115,
+        190
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Lease Obtained",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        400,
+        176,
+        534,
+        190
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-04-02 08:14:32",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        20,
+        212,
+        730,
+        214
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E21"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        20,
+        232,
+        97,
+        246
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Packets Sent",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        400,
+        232,
+        462,
+        247
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1,248,036",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        20,
+        260,
+        123,
+        274
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Packets Received",
+      "parent_id": "E21"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        400,
+        260,
+        462,
+        275
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3,571,889",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        40,
+        532,
+        1620,
+        534
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E17"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        1380,
+        552,
+        1490,
+        588
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Apply",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        1502,
+        552,
+        1612,
+        588
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel",
+      "parent_id": "E17"
+    }
+  ],
+  "stats": {
+    "text_detected": 48,
+    "uied_detected": 59,
+    "final_count": 59
+  },
+  "source": "synthetic",
+  "layout_title": "Network Configuration",
+  "layout_theme": "dark"
+}

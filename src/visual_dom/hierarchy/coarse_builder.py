@@ -14,6 +14,8 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional, Tuple, Set
 from enum import Enum
 
+from ..reading_order import order_tree
+
 
 class GroupType(Enum):
     """Type of element grouping."""
@@ -39,6 +41,7 @@ class TreeNode:
     parent_id: Optional[str] = None
     group_type: Optional[GroupType] = None
     associated_label_id: Optional[str] = None
+    label: Optional[str] = None  # resolved semantic name (own text or associated label)
 
     @property
     def width(self) -> int:
@@ -80,6 +83,8 @@ class TreeNode:
             result["group_type"] = self.group_type.value
         if self.associated_label_id:
             result["label_id"] = self.associated_label_id
+        if self.label:
+            result["label"] = self.label
         if self.children:
             result["children"] = [c.to_dict() for c in self.children]
         return result
@@ -149,11 +154,28 @@ class CoarseHierarchyBuilder:
         # Step 3: Associate labels with input elements
         label_associations = self._associate_labels(nodes)
 
+        # Step 3b: Fill in labels from own text where none was associated
+        self._assign_own_text_labels(nodes)
+
+        # Step 3c: Propagate resolved labels back onto the source element dicts,
+        # so downstream stages (DOM compiler, viewer) surface them. `elements` is
+        # the same list the caller passes on to the compiler.
+        elem_by_id = {e.get("id"): e for e in elements}
+        for n in nodes:
+            if n.label and n.element_id in elem_by_id:
+                elem_by_id[n.element_id]["label"] = n.label
+
         # Step 4: Detect alignment groups (rows/columns)
         groups = self._detect_groups(nodes)
 
         # Step 5: Create root node
         root = self._create_root_node(nodes)
+
+        # Step 5b: Reading-order the tree so siblings read top->bottom/left->right
+        # within each parent. order_tree sets nested child lists in place but
+        # returns the ordered top-level list, which must be assigned back.
+        if root is not None and root.children:
+            root.children = order_tree(root.children, get_bounds=lambda n: n.bounds)
 
         # Step 6: Assign roles based on visual type and context
         self._assign_roles(nodes, label_associations)
@@ -300,11 +322,26 @@ class CoarseHierarchyBuilder:
                 associations[labelable.id] = best_label.id
                 labelable.associated_label_id = best_label.id
 
-                # Set hint from label text
+                # Set hint + resolved label from a label positioned above/left
+                # (the conventional label position for a control).
                 if best_position in ("above", "left"):
                     labelable.hint = best_label.text
+                    labelable.label = best_label.text
 
         return associations
+
+    def _assign_own_text_labels(self, nodes: List[TreeNode]) -> None:
+        """
+        Give elements a `label` from their own text when no nearby label was
+        associated. A button reading "OK" is labelled "OK"; a text node is its
+        own label. Association (label to the left/above) already set `label` for
+        controls without intrinsic text, so we only fill the gaps here.
+        """
+        for node in nodes:
+            if node.label:
+                continue
+            if node.text and node.text.strip():
+                node.label = node.text.strip()
 
     def _label_distance(
         self,

@@ -1,0 +1,124 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        591,
+        363,
+        1329,
+        717
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E5",
+        "E8",
+        "E7",
+        "E3",
+        "E6",
+        "E4",
+        "E2"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        1275,
+        377,
+        1311,
+        413
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "close",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        627,
+        399,
+        756,
+        434
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Warning",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        627,
+        453,
+        1293,
+        455
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        627,
+        480,
+        1034,
+        506
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "An error occurred while processing your",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        627,
+        512,
+        709,
+        536
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "request.",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1167,
+        624,
+        1293,
+        681
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Retry",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        1005,
+        624,
+        1149,
+        681
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 6,
+    "uied_detected": 8,
+    "final_count": 8
+  },
+  "source": "synthetic"
+}

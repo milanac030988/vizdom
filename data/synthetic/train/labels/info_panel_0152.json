@@ -1,0 +1,526 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        27,
+        19,
+        87,
+        44
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Chat"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        1763,
+        10,
+        1893,
+        60
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Details"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1633,
+        10,
+        1749,
+        60
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Export"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        36,
+        93,
+        152,
+        117
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Software"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        36,
+        136,
+        1884,
+        138
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        50,
+        150,
+        126,
+        171
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        351,
+        150,
+        452,
+        171
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.0.0-beta"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        50,
+        196,
+        125,
+        217
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "License"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        351,
+        196,
+        395,
+        217
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Trial"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        50,
+        242,
+        187,
+        268
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Last Updated"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        351,
+        242,
+        465,
+        262
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-01-20"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        50,
+        288,
+        165,
+        309
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Install Date"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        351,
+        288,
+        465,
+        308
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2025-06-15"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        50,
+        334,
+        181,
+        360
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Auto Update"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        351,
+        334,
+        441,
+        355
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        36,
+        401,
+        140,
+        431
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Security"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        36,
+        444,
+        1884,
+        446
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        50,
+        458,
+        140,
+        479
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Antivirus"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        351,
+        458,
+        482,
+        479
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Not installed"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        50,
+        504,
+        159,
+        530
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Encryption"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        351,
+        504,
+        480,
+        525
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "BitLocker On"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        50,
+        550,
+        226,
+        576
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password Expires"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        351,
+        550,
+        442,
+        575
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "139 Days"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        50,
+        596,
+        189,
+        622
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Admin Rights"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        351,
+        596,
+        441,
+        617
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        50,
+        642,
+        154,
+        668
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Last Login"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        351,
+        642,
+        524,
+        662
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-03-28 17:30"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        36,
+        709,
+        149,
+        733
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Network"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        36,
+        752,
+        1884,
+        754
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        50,
+        766,
+        109,
+        786
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "DHCP"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        351,
+        766,
+        441,
+        787
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        50,
+        812,
+        189,
+        833
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "MAC Address"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        351,
+        812,
+        538,
+        832
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "AA:BB:CC:DD:EE:FF"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        50,
+        858,
+        183,
+        879
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Subnet Mask"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        351,
+        858,
+        462,
+        878
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "255.255.0.0"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        36,
+        925,
+        129,
+        954
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "System"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        36,
+        968,
+        1884,
+        970
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        50,
+        982,
+        161,
+        1003
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "OS Version"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        351,
+        982,
+        533,
+        1003
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Windows 11 23H2"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        36,
+        999,
+        149,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Apply"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        167,
+        999,
+        336,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Check Now"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        354,
+        999,
+        453,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        471,
+        999,
+        584,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Reset"
+    }
+  ],
+  "stats": {
+    "text_detected": 39,
+    "uied_detected": 43,
+    "final_count": 43
+  },
+  "source": "synthetic"
+}

@@ -1,0 +1,900 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        56
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E4",
+        "E49",
+        "E55",
+        "E30",
+        "E43",
+        "E3",
+        "E24",
+        "E37",
+        "E9",
+        "E2",
+        "E5",
+        "E6",
+        "E7",
+        "E10"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        20,
+        16,
+        44,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        60,
+        14,
+        161,
+        31
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Smart Home",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        760,
+        12,
+        1160,
+        44
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search devices...",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1128,
+        16,
+        1152,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1832,
+        16,
+        1856,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1872,
+        16,
+        1896,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        0,
+        56,
+        260,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E11",
+        "E12",
+        "E13",
+        "E14",
+        "E15",
+        "E16",
+        "E19",
+        "E20",
+        "E21",
+        "E46",
+        "E52",
+        "E28",
+        "E47",
+        "E41",
+        "E33",
+        "E38",
+        "E39",
+        "E50",
+        "E40",
+        "E25",
+        "E59",
+        "E26",
+        "E53",
+        "E60",
+        "E45",
+        "E27",
+        "E44",
+        "E32",
+        "E51",
+        "E35",
+        "E57",
+        "E56",
+        "E31",
+        "E18",
+        "E58",
+        "E17"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        20,
+        20,
+        77,
+        37
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Rooms",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        20,
+        52,
+        240,
+        54
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        16,
+        64,
+        244,
+        100
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "All Devices",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        16,
+        108,
+        244,
+        144
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Living Room",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        16,
+        152,
+        244,
+        188
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Bedroom",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        16,
+        196,
+        244,
+        232
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Kitchen",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        16,
+        240,
+        244,
+        276
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Garage",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        16,
+        284,
+        244,
+        320
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Garden",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        20,
+        340,
+        240,
+        342
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        20,
+        356,
+        74,
+        373
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Scenes",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        16,
+        390,
+        244,
+        426
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Good Morning",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        16,
+        434,
+        244,
+        470
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Movie Night",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        16,
+        478,
+        244,
+        514
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Away Mode",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        300,
+        80,
+        400,
+        101
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Living Room"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        300,
+        124,
+        680,
+        324
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        20,
+        16,
+        84,
+        38
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Lighting",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        20,
+        56,
+        142,
+        76
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Ceiling Light",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        20,
+        92,
+        136,
+        112
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Floor Lamp",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        20,
+        128,
+        123,
+        148
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "LED Strip",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        20,
+        164,
+        220,
+        192
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Brightness: 80%",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        700,
+        124,
+        1080,
+        324
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        20,
+        16,
+        143,
+        34
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Climate Control",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        20,
+        54,
+        104,
+        68
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Current: 22°C",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        20,
+        88,
+        141,
+        105
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Target Temperature",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        20,
+        112,
+        170,
+        144
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "22",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        190,
+        112,
+        360,
+        144
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Mode: Auto"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        20,
+        160,
+        114,
+        180
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "AC Unit",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        1100,
+        124,
+        1480,
+        324
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        20,
+        16,
+        82,
+        37
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Security",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        20,
+        56,
+        165,
+        76
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Front Door Lock",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        20,
+        92,
+        156,
+        112
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Motion Sensor",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        20,
+        128,
+        147,
+        148
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Camera Feed",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        20,
+        164,
+        180,
+        196
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "View Cameras",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        300,
+        344,
+        680,
+        544
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        20,
+        16,
+        130,
+        33
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Entertainment",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        20,
+        56,
+        123,
+        76
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Smart TV",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        20,
+        92,
+        127,
+        112
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Soundbar",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        20,
+        128,
+        220,
+        158
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Input: HDMI 1",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        20,
+        168,
+        220,
+        196
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Volume: 45%",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        700,
+        344,
+        1080,
+        544
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        20,
+        16,
+        155,
+        34
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Blinds & Curtains",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        20,
+        56,
+        155,
+        76
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Window Blinds",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        20,
+        92,
+        117,
+        112
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Curtains",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        20,
+        128,
+        220,
+        158
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Position: 50%",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        20,
+        172,
+        130,
+        192
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Auto schedule",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        1100,
+        344,
+        1480,
+        544
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        20,
+        16,
+        128,
+        37
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Energy Usage",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        20,
+        54,
+        123,
+        71
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Today: 12.4 kWh",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        20,
+        82,
+        153,
+        96
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "This Month: 342 kWh",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        20,
+        114,
+        360,
+        116
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        20,
+        128,
+        157,
+        145
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Solar Output: 8.1 kWh",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        20,
+        160,
+        130,
+        180
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Eco Mode",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        300,
+        564,
+        1480,
+        566
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        300,
+        584,
+        409,
+        603
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Quick Actions"
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        300,
+        620,
+        460,
+        658
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "All Lights Off"
+    },
+    {
+      "id": "E64",
+      "bounds": [
+        476,
+        620,
+        636,
+        658
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Lock All Doors"
+    },
+    {
+      "id": "E65",
+      "bounds": [
+        652,
+        620,
+        812,
+        658
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Arm Security"
+    },
+    {
+      "id": "E66",
+      "bounds": [
+        828,
+        620,
+        988,
+        658
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Goodnight"
+    }
+  ],
+  "stats": {
+    "text_detected": 54,
+    "uied_detected": 66,
+    "final_count": 66
+  },
+  "source": "synthetic",
+  "layout_title": "Smart Home Control Panel",
+  "layout_theme": "dark"
+}

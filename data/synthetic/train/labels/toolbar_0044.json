@@ -1,0 +1,197 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        80
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E8",
+        "E7",
+        "E6",
+        "E2",
+        "E3",
+        "E4",
+        "E5"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        14,
+        10,
+        73,
+        69
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        87,
+        10,
+        146,
+        69
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        160,
+        10,
+        219,
+        69
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        233,
+        10,
+        292,
+        69
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1810,
+        9,
+        1902,
+        71
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Back",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1692,
+        9,
+        1800,
+        71
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Print",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        1542,
+        9,
+        1682,
+        71
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Disable",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        36,
+        116,
+        260,
+        141
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Document Editor"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        36,
+        179,
+        587,
+        204
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "consectetur eiusmod sed do dolor Lorem tempor adipiscing"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        36,
+        215,
+        544,
+        240
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "consectetur eiusmod adipiscing ipsum sit amet tempor"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        36,
+        251,
+        380,
+        276
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "eiusmod Lorem do adipiscing elit sed"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        36,
+        287,
+        394,
+        312
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "tempor amet eiusmod sed consectetur"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        36,
+        323,
+        353,
+        348
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "elit tempor ipsum adipiscing dolor"
+    }
+  ],
+  "stats": {
+    "text_detected": 13,
+    "uied_detected": 14,
+    "final_count": 14
+  },
+  "source": "synthetic"
+}

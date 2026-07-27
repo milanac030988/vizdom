@@ -1,0 +1,503 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        27,
+        19,
+        239,
+        50
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Device Manager"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        1805,
+        10,
+        1893,
+        60
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Help"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1661,
+        10,
+        1791,
+        60
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Details"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        36,
+        93,
+        149,
+        117
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Network"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        36,
+        136,
+        1884,
+        138
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        50,
+        150,
+        164,
+        170
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "DNS Server"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        351,
+        150,
+        414,
+        170
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.1.1.1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        50,
+        196,
+        183,
+        217
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Subnet Mask"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        351,
+        196,
+        486,
+        216
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "255.255.255.0"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        50,
+        242,
+        163,
+        262
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "VPN Status"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        351,
+        242,
+        461,
+        263
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Connected"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        36,
+        309,
+        152,
+        333
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Software"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        36,
+        352,
+        1884,
+        354
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        50,
+        366,
+        195,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Update Status"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        351,
+        366,
+        460,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Up to date"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        50,
+        412,
+        165,
+        433
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Install Date"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        351,
+        412,
+        465,
+        432
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2024-11-01"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        50,
+        458,
+        187,
+        484
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Last Updated"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        351,
+        458,
+        465,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-03-15"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        50,
+        504,
+        126,
+        525
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        351,
+        504,
+        445,
+        524
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "22.04 LTS"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        36,
+        571,
+        140,
+        601
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Security"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        36,
+        614,
+        1884,
+        616
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        50,
+        628,
+        140,
+        649
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Antivirus"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        351,
+        628,
+        460,
+        654
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Up to date"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        50,
+        674,
+        154,
+        700
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Last Login"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        351,
+        674,
+        524,
+        694
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-03-29 08:15"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        50,
+        720,
+        226,
+        746
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password Expires"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        351,
+        720,
+        442,
+        745
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "139 Days"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        50,
+        766,
+        128,
+        787
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Firewall"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        351,
+        766,
+        434,
+        787
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        50,
+        812,
+        159,
+        838
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Encryption"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        351,
+        812,
+        482,
+        833
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "BitLocker Off"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        50,
+        858,
+        189,
+        884
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Admin Rights"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        351,
+        858,
+        441,
+        879
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        50,
+        904,
+        213,
+        925
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Protection Level"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        351,
+        904,
+        521,
+        929
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Untrusted (2311)"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        36,
+        999,
+        149,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Close"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        167,
+        999,
+        280,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Apply"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        298,
+        999,
+        397,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        415,
+        999,
+        528,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Reset"
+    }
+  ],
+  "stats": {
+    "text_detected": 38,
+    "uied_detected": 41,
+    "final_count": 41
+  },
+  "source": "synthetic"
+}

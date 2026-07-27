@@ -38,6 +38,7 @@ class DOMNode:
     visual_type: str = "unknown"
     text: Optional[str] = None
     hint: Optional[str] = None
+    label: Optional[str] = None  # semantic name (own text or associated label)
     clickable: bool = False
     editable: bool = False
     scrollable: bool = False
@@ -78,6 +79,8 @@ class DOMNode:
             result["text"] = self.text
         if self.hint:
             result["hint"] = self.hint
+        if self.label:
+            result["label"] = self.label
         if self.locators:
             result["locators"] = self.locators
         if self.children:
@@ -177,6 +180,7 @@ class DOMCompiler:
             visual_type=visual_type,
             text=elem.get("ocr_text") or elem.get("text"),
             hint=elem.get("hint"),
+            label=elem.get("label"),
             clickable=clickable,
             editable=editable,
             confidence=elem.get("confidence", 1.0),

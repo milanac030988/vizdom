@@ -1,0 +1,191 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        20,
+        10,
+        103,
+        27
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Photo Gallery"
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        30,
+        40,
+        1830,
+        940
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E6",
+        "E11",
+        "E3",
+        "E8",
+        "E4",
+        "E13",
+        "E5",
+        "E10",
+        "E7",
+        "E9",
+        "E12"
+      ]
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        20,
+        100,
+        220,
+        128
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Select Album",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        250,
+        120,
+        400,
+        150
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Upload Photos",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        20,
+        170,
+        1820,
+        172
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E2"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        30,
+        190,
+        1830,
+        990
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E2"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        20,
+        340,
+        100,
+        376
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "<<",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        110,
+        340,
+        260,
+        376
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Slide Show",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        270,
+        340,
+        350,
+        376
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": ">",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        20,
+        400,
+        1820,
+        402
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E2"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        30,
+        420,
+        1830,
+        920
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E2"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        20,
+        520,
+        60,
+        534
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Slide 1",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        240,
+        540,
+        390,
+        570
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Delete Slide",
+      "parent_id": "E2"
+    }
+  ],
+  "stats": {
+    "text_detected": 8,
+    "uied_detected": 13,
+    "final_count": 13
+  },
+  "source": "synthetic",
+  "layout_title": "Photo Gallery",
+  "layout_theme": "light"
+}

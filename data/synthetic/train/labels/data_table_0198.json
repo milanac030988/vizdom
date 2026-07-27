@@ -1,0 +1,607 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        27,
+        27,
+        304,
+        61
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Data Management"
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        1761,
+        24,
+        1893,
+        74
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Export"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        1599,
+        24,
+        1747,
+        74
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Add New"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        27,
+        90,
+        537,
+        140
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search..."
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        37,
+        172,
+        88,
+        191
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Score"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        611,
+        172,
+        655,
+        191
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Date"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        1185,
+        172,
+        1254,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        1759,
+        172,
+        1828,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Actions"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        27,
+        208,
+        1893,
+        210
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        37,
+        221,
+        67,
+        238
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "453"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        611,
+        221,
+        707,
+        238
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-05-27"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        1185,
+        221,
+        1238,
+        239
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "admin"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        1756,
+        214,
+        1813,
+        250
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        1820,
+        214,
+        1877,
+        250
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        27,
+        255,
+        1893,
+        257
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        37,
+        268,
+        67,
+        285
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "671"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        611,
+        268,
+        707,
+        285
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-12-06"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        1185,
+        268,
+        1256,
+        290
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1756,
+        261,
+        1813,
+        297
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        1820,
+        261,
+        1877,
+        297
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        27,
+        302,
+        1893,
+        304
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        37,
+        315,
+        67,
+        332
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "598"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        611,
+        315,
+        707,
+        332
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-11-16"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        1185,
+        315,
+        1238,
+        333
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "admin"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        1756,
+        308,
+        1813,
+        344
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        1820,
+        308,
+        1877,
+        344
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        27,
+        349,
+        1893,
+        351
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        37,
+        362,
+        57,
+        379
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "84"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        611,
+        362,
+        707,
+        379
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-02-10"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        1185,
+        362,
+        1250,
+        380
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Inactive"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        1756,
+        355,
+        1813,
+        391
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        1820,
+        355,
+        1877,
+        391
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        27,
+        396,
+        1893,
+        398
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        37,
+        409,
+        67,
+        426
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "748"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        611,
+        409,
+        707,
+        426
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-02-16"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        1185,
+        409,
+        1314,
+        429
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "C:\\Users\\admin"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        1756,
+        402,
+        1813,
+        438
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        1820,
+        402,
+        1877,
+        438
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        27,
+        443,
+        1893,
+        445
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        37,
+        456,
+        57,
+        473
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "32"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        611,
+        456,
+        707,
+        473
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-12-22"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        1185,
+        456,
+        1258,
+        474
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        1756,
+        449,
+        1813,
+        485
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        1820,
+        449,
+        1877,
+        485
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        27,
+        490,
+        1893,
+        492
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        27,
+        509,
+        190,
+        531
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Showing 1-6 of 483"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        1816,
+        502,
+        1893,
+        541
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Prev"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        1774,
+        502,
+        1809,
+        541
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "1"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        1732,
+        502,
+        1767,
+        541
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "2"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        1648,
+        502,
+        1725,
+        541
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Next"
+    }
+  ],
+  "stats": {
+    "text_detected": 43,
+    "uied_detected": 50,
+    "final_count": 50
+  },
+  "source": "synthetic"
+}

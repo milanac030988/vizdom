@@ -144,6 +144,7 @@ List[DetectedElement]:
 ```
 
 ### Element Types
+
 | Type | Classification Criteria |
 |------|------------------------|
 | `button` | Rectangular, small-medium size, may have text |
@@ -324,6 +325,7 @@ Use a language model to refine and fix common detection errors.
 | GPT-4o-mini | Cloud | OpenAI API | ~1-2 sec |
 
 ### Operations
+
 | Operation | Purpose | Example |
 |-----------|---------|---------|
 | **MERGE** | Combine split text | "Sub" + "mit" → "Submit" |
@@ -379,6 +381,7 @@ LLMHierarchyRefiner(
 ```
 
 ### Current Status
+
 | Feature | Status |
 |---------|--------|
 | Implementation | ✅ Complete |
@@ -403,6 +406,7 @@ Generate final JSON output with locators for UI automation.
 5. Generate multiple locator strategies
 
 ### Role Mapping
+
 | Visual Type | Accessibility Role |
 |-------------|-------------------|
 | button | Button |
@@ -413,6 +417,7 @@ Generate final JSON output with locators for UI automation.
 | container | ViewGroup |
 
 ### Locator Strategies
+
 | Locator Type | Format | Example |
 |--------------|--------|---------|
 | id | Element ID | `"E42"` |

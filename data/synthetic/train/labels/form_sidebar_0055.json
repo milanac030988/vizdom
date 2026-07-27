@@ -1,0 +1,488 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        21,
+        18,
+        218,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Project Tracker"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        0,
+        68,
+        340,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E8",
+        "E10",
+        "E12",
+        "E9",
+        "E7",
+        "E11",
+        "E5",
+        "E13",
+        "E4"
+      ]
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        28,
+        95,
+        73,
+        116
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Files",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        28,
+        145,
+        76,
+        171
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Help",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        28,
+        195,
+        96,
+        216
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Admin",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        28,
+        245,
+        129,
+        270
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Messages",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        28,
+        295,
+        107,
+        320
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Reports",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        28,
+        345,
+        109,
+        371
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Projects",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        28,
+        395,
+        93,
+        416
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Profile",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        28,
+        445,
+        110,
+        470
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Support",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        28,
+        495,
+        84,
+        515
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Users",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        385,
+        95,
+        487,
+        123
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Details"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        385,
+        149,
+        1875,
+        151
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        385,
+        176,
+        472,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        385,
+        208,
+        1112,
+        262
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Enter name"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        1148,
+        176,
+        1203,
+        195
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notes"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        1148,
+        208,
+        1875,
+        262
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Type here"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        385,
+        284,
+        430,
+        304
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Time"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        385,
+        316,
+        1112,
+        370
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Website"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        1148,
+        284,
+        1247,
+        303
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Last Name"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        1148,
+        316,
+        1875,
+        370
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Acme Corp"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        385,
+        392,
+        444,
+        412
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Phone"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        385,
+        424,
+        1112,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Password"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        1148,
+        392,
+        1274,
+        412
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "MAC Address"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        1148,
+        424,
+        1875,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        385,
+        500,
+        453,
+        520
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "License"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        385,
+        532,
+        1112,
+        586
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Website"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        1148,
+        500,
+        1205,
+        519
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Status"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        1148,
+        532,
+        1875,
+        586
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Zip code"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        385,
+        608,
+        459,
+        628
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Address"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        385,
+        640,
+        1112,
+        694
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Connected"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        1148,
+        608,
+        1184,
+        633
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "City"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        1148,
+        640,
+        1875,
+        694
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        385,
+        716,
+        496,
+        740
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Department"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        385,
+        748,
+        1112,
+        802
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "10001"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        385,
+        990,
+        547,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        565,
+        990,
+        727,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        745,
+        990,
+        907,
+        1051
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Reset"
+    }
+  ],
+  "stats": {
+    "text_detected": 36,
+    "uied_detected": 38,
+    "final_count": 38
+  },
+  "source": "synthetic"
+}

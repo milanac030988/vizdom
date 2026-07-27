@@ -1,0 +1,718 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        79
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3",
+        "E6",
+        "E5",
+        "E2",
+        "E7",
+        "E4"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        18,
+        18,
+        61,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        79,
+        25,
+        221,
+        50
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dashboard",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1809,
+        28,
+        1864,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Tasks",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1683,
+        28,
+        1762,
+        53
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Reports",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1543,
+        28,
+        1626,
+        54
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1417,
+        28,
+        1482,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Profile",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        0,
+        79,
+        319,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E11",
+        "E12",
+        "E10",
+        "E13",
+        "E16",
+        "E15",
+        "E9",
+        "E14"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        27,
+        108,
+        88,
+        128
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Home",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        27,
+        158,
+        110,
+        184
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Settings",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        27,
+        208,
+        119,
+        234
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Analytics",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        27,
+        258,
+        139,
+        279
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dashboard",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        27,
+        308,
+        108,
+        334
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Projects",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        27,
+        358,
+        72,
+        379
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Files",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        27,
+        408,
+        106,
+        433
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Reports",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        27,
+        458,
+        109,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Support",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        346,
+        108,
+        588,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E19",
+        "E18"
+      ]
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        364,
+        126,
+        425,
+        148
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Uptime",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        364,
+        165,
+        418,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "856",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        606,
+        108,
+        848,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E21",
+        "E22"
+      ]
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        624,
+        126,
+        751,
+        144
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active Sessions",
+      "parent_id": "E20"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        624,
+        165,
+        706,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "100%",
+      "parent_id": "E20"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        866,
+        108,
+        1108,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E25",
+        "E24"
+      ]
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        884,
+        126,
+        991,
+        148
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Errors Today",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        884,
+        165,
+        983,
+        199
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "7 Days",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        1126,
+        108,
+        1368,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E28",
+        "E27"
+      ]
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        1144,
+        126,
+        1234,
+        148
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disk Space",
+      "parent_id": "E26"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        1144,
+        165,
+        1225,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3,421",
+      "parent_id": "E26"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        1386,
+        108,
+        1628,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E31",
+        "E30"
+      ]
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        1404,
+        126,
+        1494,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Requests/s",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        1404,
+        165,
+        1511,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "128 GB",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        1646,
+        108,
+        1888,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E33",
+        "E34"
+      ]
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        1664,
+        126,
+        1735,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Memory",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        1664,
+        165,
+        1682,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "0",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        346,
+        270,
+        526,
+        299
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Recent Activity"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        360,
+        330,
+        422,
+        352
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Priority"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        875,
+        330,
+        939,
+        348
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        1390,
+        330,
+        1466,
+        348
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Modified"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        360,
+        375,
+        400,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3139"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        875,
+        375,
+        989,
+        393
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        1390,
+        375,
+        1441,
+        393
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        346,
+        408,
+        1893,
+        410
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        360,
+        418,
+        400,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "8648"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        875,
+        418,
+        917,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        1390,
+        418,
+        1482,
+        440
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        346,
+        451,
+        1893,
+        453
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        360,
+        461,
+        400,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "5828"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        875,
+        461,
+        919,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "42ms"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        1390,
+        461,
+        1449,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "128 GB"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        346,
+        494,
+        1893,
+        496
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        360,
+        504,
+        400,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3383"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        875,
+        504,
+        927,
+        526
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Ready"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        1390,
+        504,
+        1463,
+        522
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        346,
+        537,
+        1893,
+        539
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    }
+  ],
+  "stats": {
+    "text_detected": 42,
+    "uied_detected": 54,
+    "final_count": 54
+  },
+  "source": "synthetic"
+}

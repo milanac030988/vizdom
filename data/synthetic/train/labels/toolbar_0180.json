@@ -1,0 +1,327 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        72
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E10",
+        "E12",
+        "E11",
+        "E13",
+        "E14",
+        "E2",
+        "E3",
+        "E4",
+        "E5",
+        "E7",
+        "E9",
+        "E6",
+        "E8"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        14,
+        10,
+        65,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        79,
+        10,
+        130,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        144,
+        10,
+        195,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        209,
+        10,
+        260,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        274,
+        7,
+        275,
+        9
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        288,
+        10,
+        339,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        353,
+        7,
+        354,
+        9
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        367,
+        10,
+        418,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        450,
+        10,
+        755,
+        61
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search...",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        1794,
+        9,
+        1902,
+        63
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Apply",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        1644,
+        9,
+        1784,
+        63
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Confirm",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        1542,
+        9,
+        1634,
+        63
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Send",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        1440,
+        9,
+        1532,
+        63
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Stop",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        36,
+        108,
+        260,
+        133
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Document Editor"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        36,
+        171,
+        263,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "ipsum dolor Lorem amet"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        36,
+        207,
+        199,
+        227
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "sit amet elit dolor"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        36,
+        243,
+        360,
+        268
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "dolor amet tempor eiusmod sit sed"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        36,
+        279,
+        471,
+        304
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "consectetur adipiscing Lorem tempor sed amet"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        36,
+        315,
+        245,
+        340
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "amet sit tempor ipsum"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        36,
+        351,
+        371,
+        376
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "tempor elit sed dolor ipsum amet sit"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        36,
+        387,
+        416,
+        412
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "tempor sit amet elit do dolor consectetur"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        36,
+        423,
+        519,
+        448
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "tempor eiusmod elit adipiscing sit dolor amet Lorem"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        36,
+        459,
+        391,
+        484
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "elit adipiscing ipsum dolor sit eiusmod"
+    }
+  ],
+  "stats": {
+    "text_detected": 21,
+    "uied_detected": 24,
+    "final_count": 24
+  },
+  "source": "synthetic"
+}

@@ -1,0 +1,127 @@
+{
+  "title": "Melodia",
+  "theme": "light",
+  "elements": [
+    {
+      "type": "text",
+      "text": "Melodia Music Player",
+      "x": 20,
+      "y": 10,
+      "w": 250,
+      "h": 40
+    },
+    {
+      "type": "container",
+      "x": 10,
+      "y": 60,
+      "w": 1900,
+      "h": 80
+    },
+    {
+      "type": "text",
+      "text": "Now Playing:",
+      "x": 20,
+      "y": 120,
+      "w": 100,
+      "h": 20
+    },
+    {
+      "type": "container",
+      "x": 150,
+      "y": 140,
+      "w": 1800,
+      "h": 30
+    },
+    {
+      "type": "text",
+      "text": "Song Title",
+      "x": 20,
+      "y": 160,
+      "w": 200,
+      "h": 16
+    },
+    {
+      "type": "container",
+      "x": 10,
+      "y": 220,
+      "w": 1900,
+      "h": 30
+    },
+    {
+      "type": "text",
+      "text": "Artist Name",
+      "x": 20,
+      "y": 240,
+      "w": 200,
+      "h": 16
+    },
+    {
+      "type": "separator",
+      "x": 10,
+      "y": 280,
+      "w": 1800,
+      "h": 10
+    },
+    {
+      "type": "container",
+      "x": 10,
+      "y": 300,
+      "w": 1900,
+      "h": 30
+    },
+    {
+      "type": "button",
+      "text": "<<",
+      "x": 20,
+      "y": 320,
+      "w": 80,
+      "h": 36
+    },
+    {
+      "type": "button",
+      "text": ">>",
+      "x": 110,
+      "y": 320,
+      "w": 80,
+      "h": 36
+    },
+    {
+      "type": "toggle",
+      "text": "Loop",
+      "x": 200,
+      "y": 320,
+      "w": 150,
+      "h": 30
+    },
+    {
+      "type": "separator",
+      "x": 10,
+      "y": 360,
+      "w": 1800,
+      "h": 10
+    },
+    {
+      "type": "container",
+      "x": 10,
+      "y": 370,
+      "w": 1900,
+      "h": 30
+    },
+    {
+      "type": "text",
+      "text": "Playlist:",
+      "x": 20,
+      "y": 390,
+      "w": 100,
+      "h": 16
+    },
+    {
+      "type": "dropdown",
+      "text": "Select Playlist",
+      "x": 130,
+      "y": 390,
+      "w": 200,
+      "h": 30
+    }
+  ]
+}

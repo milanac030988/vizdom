@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+// VizDOM remote capture service (ADR-018 Phase 2).
+// Runs on the host/device under test and serves screenshots, so capture happens
+// where the app-under-test is while the pipeline runs elsewhere.
+package visualdom.capture.v1;
+
+service Capture {
+  // Grab one screenshot from the server's configured CaptureStrategy.
+  rpc Grab(GrabRequest) returns (GrabResponse);
+  // Liveness/readiness + which strategy is loaded.
+  rpc HealthCheck(HealthRequest) returns (HealthResponse);
+}
+
+message GrabRequest {
+  string request_id = 1;   // correlation id for cross-service tracing
+}
+
+message GrabResponse {
+  bytes image = 1;         // encoded image bytes
+  string image_format = 2; // "png"
+  int32 width = 3;
+  int32 height = 4;
+  string strategy = 5;     // e.g. "windows", "android", "camera"
+  string request_id = 6;
+  double grab_ms = 7;      // server-side capture time (ms)
+}
+
+message HealthRequest {}
+
+message HealthResponse {
+  bool ready = 1;
+  string strategy = 2;
+  string platform = 3;
+}

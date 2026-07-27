@@ -1,0 +1,514 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        27,
+        19,
+        232,
+        50
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Printer Settings"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        1805,
+        10,
+        1893,
+        60
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Help"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1675,
+        10,
+        1791,
+        60
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Export"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        36,
+        93,
+        129,
+        122
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "System"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        36,
+        136,
+        1884,
+        138
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        50,
+        150,
+        148,
+        170
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Processor"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        351,
+        150,
+        505,
+        171
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Intel i7-12800H"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        50,
+        196,
+        161,
+        217
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "OS Version"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        351,
+        196,
+        568,
+        217
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Windows Server 2022"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        50,
+        242,
+        219,
+        267
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Computer Name"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        351,
+        242,
+        475,
+        262
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "HC-C-004CE"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        50,
+        288,
+        130,
+        309
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Domain"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        351,
+        288,
+        492,
+        308
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "WORKGROUP"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        36,
+        355,
+        149,
+        379
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Network"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        36,
+        398,
+        1884,
+        400
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        50,
+        412,
+        183,
+        433
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Subnet Mask"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        351,
+        412,
+        486,
+        432
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "255.255.255.0"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        50,
+        458,
+        139,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Gateway"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        351,
+        458,
+        426,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "10.0.0.1"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        50,
+        504,
+        164,
+        524
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "DNS Server"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        351,
+        504,
+        414,
+        524
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.1.1.1"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        36,
+        571,
+        152,
+        595
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Software"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        36,
+        614,
+        1884,
+        616
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        50,
+        628,
+        165,
+        649
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Install Date"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        351,
+        628,
+        465,
+        648
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2025-06-15"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        50,
+        674,
+        195,
+        700
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Update Status"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        351,
+        674,
+        460,
+        700
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Checking..."
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        50,
+        720,
+        187,
+        746
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Last Updated"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        351,
+        720,
+        411,
+        740
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Never"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        50,
+        766,
+        181,
+        792
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Auto Update"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        351,
+        766,
+        441,
+        787
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        50,
+        812,
+        126,
+        833
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        351,
+        812,
+        445,
+        832
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "22.04 LTS"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        36,
+        879,
+        140,
+        909
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Security"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        36,
+        922,
+        1884,
+        924
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        50,
+        936,
+        159,
+        962
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Encryption"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        351,
+        936,
+        480,
+        957
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "BitLocker On"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        50,
+        982,
+        189,
+        1008
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Admin Rights"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        351,
+        982,
+        414,
+        1003
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        36,
+        999,
+        149,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Reset"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        167,
+        999,
+        280,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Close"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        298,
+        999,
+        411,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Apply"
+    }
+  ],
+  "stats": {
+    "text_detected": 38,
+    "uied_detected": 42,
+    "final_count": 42
+  },
+  "source": "synthetic"
+}

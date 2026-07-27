@@ -1,0 +1,1161 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        56
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E8",
+        "E43",
+        "E48",
+        "E45",
+        "E44",
+        "E46",
+        "E33",
+        "E17",
+        "E3",
+        "E27",
+        "E31",
+        "E13",
+        "E39",
+        "E7",
+        "E29",
+        "E5",
+        "E6",
+        "E69",
+        "E19",
+        "E21",
+        "E37",
+        "E23",
+        "E41",
+        "E2",
+        "E9",
+        "E10",
+        "E11",
+        "E70",
+        "E14",
+        "E4"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        20,
+        16,
+        44,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        60,
+        14,
+        140,
+        32
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "FormCraft",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        190,
+        12,
+        200,
+        14
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        210,
+        18,
+        272,
+        35
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "My Forms",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        310,
+        18,
+        372,
+        35
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Templates",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        415,
+        18,
+        479,
+        35
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Responses",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        1480,
+        12,
+        1740,
+        44
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search forms...",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        1710,
+        16,
+        1734,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        1820,
+        16,
+        1844,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        1868,
+        16,
+        1892,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        0,
+        56,
+        260,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E85",
+        "E16",
+        "E18",
+        "E20",
+        "E22",
+        "E26",
+        "E28",
+        "E30",
+        "E32",
+        "E36",
+        "E38",
+        "E40",
+        "E73",
+        "E75",
+        "E77",
+        "E83",
+        "E67",
+        "E66",
+        "E57",
+        "E65",
+        "E78",
+        "E79",
+        "E58",
+        "E71",
+        "E61",
+        "E63",
+        "E59",
+        "E60",
+        "E53",
+        "E55",
+        "E81",
+        "E15",
+        "E51",
+        "E74",
+        "E25",
+        "E72",
+        "E76",
+        "E35",
+        "E80",
+        "E84",
+        "E82",
+        "E24",
+        "E34"
+      ]
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        20,
+        16,
+        111,
+        30
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Form Elements",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        16,
+        46,
+        244,
+        48
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        20,
+        60,
+        103,
+        74
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "BASIC FIELDS",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        16,
+        84,
+        244,
+        122
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        16,
+        10,
+        102,
+        27
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Aa  Text Input",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        16,
+        130,
+        244,
+        168
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        16,
+        10,
+        91,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "¶   Text Area",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        16,
+        176,
+        244,
+        214
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        16,
+        10,
+        86,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "#   Number",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        16,
+        222,
+        244,
+        260
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        16,
+        10,
+        73,
+        25
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "@   Email",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        16,
+        276,
+        244,
+        278
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        20,
+        290,
+        89,
+        304
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "SELECTION",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        16,
+        314,
+        244,
+        352
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        16,
+        10,
+        100,
+        27
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "v   Dropdown",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        16,
+        360,
+        244,
+        398
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        16,
+        10,
+        93,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "☑  Checkbox",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        16,
+        406,
+        244,
+        444
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        16,
+        10,
+        113,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "◉  Radio Button",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        16,
+        452,
+        244,
+        490
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        16,
+        10,
+        121,
+        27
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "⇅   Toggle Switch",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        16,
+        506,
+        244,
+        508
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        20,
+        520,
+        73,
+        534
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "LAYOUT",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        16,
+        544,
+        244,
+        582
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        16,
+        10,
+        81,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "—  Divider",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        16,
+        590,
+        244,
+        628
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        16,
+        10,
+        89,
+        27
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "H   Heading",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        16,
+        636,
+        244,
+        674
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        16,
+        10,
+        77,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "⬒  Section",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        260,
+        56,
+        1610,
+        106
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        20,
+        14,
+        235,
+        36
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Customer Feedback Survey",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        1040,
+        9,
+        1130,
+        43
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Preview",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        1142,
+        9,
+        1242,
+        43
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save Draft",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        1254,
+        9,
+        1334,
+        43
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Publish",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        460,
+        126,
+        1140,
+        1026
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        40,
+        30,
+        255,
+        52
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Customer Feedback Survey",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        40,
+        66,
+        371,
+        83
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "We value your feedback. Please fill out this short form."
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        40,
+        100,
+        640,
+        102
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        40,
+        120,
+        111,
+        134
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Full Name *",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        40,
+        142,
+        640,
+        176
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Enter your full name"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        40,
+        192,
+        135,
+        206
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Email Address *",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        40,
+        214,
+        640,
+        248
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "you@example.com"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        40,
+        264,
+        114,
+        281
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Department",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        40,
+        286,
+        640,
+        320
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Select department..."
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        40,
+        340,
+        277,
+        357
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "How satisfied are you with our service?",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        40,
+        366,
+        147,
+        386
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Very Satisfied",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        40,
+        396,
+        117,
+        416
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Satisfied",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        40,
+        426,
+        111,
+        446
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Neutral",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        40,
+        456,
+        134,
+        476
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Dissatisfied",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        40,
+        496,
+        640,
+        498
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        40,
+        516,
+        173,
+        530
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Additional Comments",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E64",
+      "bounds": [
+        40,
+        538,
+        640,
+        572
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Share your thoughts here..."
+    },
+    {
+      "id": "E65",
+      "bounds": [
+        40,
+        592,
+        226,
+        612
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Subscribe to newsletter",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E66",
+      "bounds": [
+        40,
+        630,
+        283,
+        650
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "I agree to the terms and conditions *",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E67",
+      "bounds": [
+        40,
+        672,
+        200,
+        710
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Submit Feedback",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E68",
+      "bounds": [
+        1610,
+        56,
+        1920,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E69",
+      "bounds": [
+        20,
+        16,
+        82,
+        33
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Properties",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E70",
+      "bounds": [
+        16,
+        46,
+        294,
+        48
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E71",
+      "bounds": [
+        20,
+        62,
+        162,
+        76
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Selected: Email Address",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E72",
+      "bounds": [
+        20,
+        100,
+        84,
+        114
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Field Label",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E73",
+      "bounds": [
+        20,
+        122,
+        290,
+        154
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Email Address",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E74",
+      "bounds": [
+        20,
+        170,
+        90,
+        184
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Placeholder",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E75",
+      "bounds": [
+        20,
+        192,
+        290,
+        224
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "you@example.com",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E76",
+      "bounds": [
+        20,
+        244,
+        81,
+        258
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Validation",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E77",
+      "bounds": [
+        20,
+        266,
+        290,
+        298
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Email format",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E78",
+      "bounds": [
+        20,
+        318,
+        152,
+        338
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Required field",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E79",
+      "bounds": [
+        20,
+        352,
+        129,
+        372
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Read only",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E80",
+      "bounds": [
+        16,
+        390,
+        294,
+        392
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E81",
+      "bounds": [
+        20,
+        406,
+        92,
+        423
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Appearance",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E82",
+      "bounds": [
+        20,
+        436,
+        57,
+        450
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Width",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E83",
+      "bounds": [
+        20,
+        458,
+        290,
+        490
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Full width",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E84",
+      "bounds": [
+        16,
+        510,
+        294,
+        512
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    },
+    {
+      "id": "E85",
+      "bounds": [
+        20,
+        530,
+        290,
+        566
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Delete Field",
+      "parent_id": "E12"
+    }
+  ],
+  "stats": {
+    "text_detected": 60,
+    "uied_detected": 85,
+    "final_count": 85
+  },
+  "source": "synthetic",
+  "layout_title": "FormCraft - Drag & Drop Form Builder",
+  "layout_theme": "light"
+}

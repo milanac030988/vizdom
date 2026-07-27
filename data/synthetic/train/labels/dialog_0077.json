@@ -1,0 +1,110 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        641,
+        294,
+        1279,
+        786
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E4",
+        "E5",
+        "E2",
+        "E7",
+        "E6",
+        "E3"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        677,
+        330,
+        895,
+        365
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Save Changes?",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        677,
+        384,
+        1243,
+        386
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        677,
+        411,
+        1122,
+        437
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Your changes have been saved successfully.",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1099,
+        693,
+        1243,
+        750
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1009,
+        693,
+        1081,
+        750
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "No",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        865,
+        693,
+        991,
+        750
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Close",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 5,
+    "uied_detected": 7,
+    "final_count": 7
+  },
+  "source": "synthetic"
+}

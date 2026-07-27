@@ -1,0 +1,401 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        27,
+        21,
+        148,
+        56
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Settings"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        36,
+        99,
+        137,
+        124
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "General"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        54,
+        149,
+        121,
+        169
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Owner"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1668,
+        142,
+        1884,
+        185
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Pending"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        54,
+        203,
+        157,
+        223
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Username"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1740,
+        200,
+        1768,
+        228
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        54,
+        257,
+        146,
+        283
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Zip Code"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        1668,
+        250,
+        1884,
+        293
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        36,
+        311,
+        1884,
+        313
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        36,
+        338,
+        144,
+        362
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Account"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        54,
+        388,
+        102,
+        408
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Date"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        1740,
+        385,
+        1768,
+        413
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        54,
+        442,
+        152,
+        467
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Company"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        1668,
+        435,
+        1884,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Connected"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        54,
+        496,
+        115,
+        516
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Name"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        1740,
+        493,
+        1768,
+        521
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        54,
+        550,
+        114,
+        570
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notes"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        1668,
+        543,
+        1884,
+        586
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        36,
+        604,
+        1884,
+        606
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        36,
+        631,
+        133,
+        662
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Display"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        54,
+        681,
+        99,
+        702
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Role"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        1704,
+        678,
+        1744,
+        698
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        54,
+        735,
+        114,
+        755
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notes"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        1704,
+        732,
+        1744,
+        752
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        54,
+        789,
+        128,
+        815
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Priority"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        1668,
+        782,
+        1884,
+        825
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        54,
+        843,
+        115,
+        863
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Name"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        1668,
+        836,
+        1884,
+        879
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        54,
+        897,
+        137,
+        918
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Address"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        1704,
+        894,
+        1744,
+        914
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        36,
+        951,
+        1884,
+        953
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        1740,
+        999,
+        1884,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        1578,
+        999,
+        1722,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel"
+    }
+  ],
+  "stats": {
+    "text_detected": 24,
+    "uied_detected": 33,
+    "final_count": 33
+  },
+  "source": "synthetic"
+}

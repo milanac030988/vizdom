@@ -1,0 +1,110 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        684,
+        356,
+        1235,
+        723
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E4",
+        "E7",
+        "E6",
+        "E2",
+        "E5",
+        "E3"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        720,
+        392,
+        832,
+        419
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Success",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        720,
+        446,
+        1199,
+        448
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        720,
+        473,
+        1140,
+        499
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Do you want to save your changes before",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        720,
+        505,
+        803,
+        531
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "closing?",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1127,
+        630,
+        1199,
+        687
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "OK",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        983,
+        630,
+        1109,
+        687
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Retry",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 5,
+    "uied_detected": 7,
+    "final_count": 7
+  },
+  "source": "synthetic"
+}

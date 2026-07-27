@@ -1,0 +1,771 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        27,
+        27,
+        304,
+        61
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Data Management"
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        1761,
+        24,
+        1893,
+        74
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Export"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        1599,
+        24,
+        1747,
+        74
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Add New"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        27,
+        90,
+        554,
+        140
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search..."
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        37,
+        172,
+        120,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Modified"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        503,
+        172,
+        575,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Created"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        969,
+        172,
+        1038,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        1435,
+        172,
+        1491,
+        191
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Name"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        27,
+        208,
+        1893,
+        210
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        37,
+        221,
+        67,
+        238
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "446"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        503,
+        221,
+        582,
+        239
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "John Doe"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        969,
+        221,
+        1081,
+        238
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "192.168.1.100"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        1435,
+        221,
+        1486,
+        239
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        27,
+        255,
+        1893,
+        257
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        37,
+        268,
+        67,
+        285
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "854"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        503,
+        268,
+        582,
+        286
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "John Doe"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        969,
+        268,
+        1020,
+        286
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        1435,
+        268,
+        1553,
+        287
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "APAC\\USER01"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        27,
+        302,
+        1893,
+        304
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        37,
+        315,
+        67,
+        332
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "892"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        503,
+        315,
+        617,
+        333
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        969,
+        315,
+        1065,
+        332
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-01-15"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        1435,
+        315,
+        1564,
+        335
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "C:\\Users\\admin"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        27,
+        349,
+        1893,
+        351
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        37,
+        362,
+        67,
+        379
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "270"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        503,
+        362,
+        594,
+        380
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Connected"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        969,
+        362,
+        1083,
+        380
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        1435,
+        362,
+        1508,
+        380
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        27,
+        396,
+        1893,
+        398
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        37,
+        409,
+        57,
+        426
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "53"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        503,
+        409,
+        576,
+        431
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Warning"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        969,
+        409,
+        1124,
+        431
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "john.doe@exampl"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        1435,
+        409,
+        1505,
+        431
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        27,
+        443,
+        1893,
+        445
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        37,
+        456,
+        67,
+        473
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "964"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        503,
+        456,
+        568,
+        474
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Inactive"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        969,
+        456,
+        1098,
+        476
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "C:\\Users\\admin"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        1435,
+        456,
+        1503,
+        474
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        27,
+        490,
+        1893,
+        492
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        37,
+        503,
+        67,
+        520
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "421"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        503,
+        503,
+        599,
+        520
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-01-15"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        969,
+        503,
+        1040,
+        525
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        1435,
+        503,
+        1485,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        27,
+        537,
+        1893,
+        539
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        37,
+        550,
+        67,
+        567
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "279"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        503,
+        550,
+        568,
+        568
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Inactive"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        969,
+        550,
+        1037,
+        568
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        1435,
+        550,
+        1526,
+        568
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Connected"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        27,
+        584,
+        1893,
+        586
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        37,
+        597,
+        67,
+        614
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "178"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        503,
+        597,
+        632,
+        617
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "C:\\Users\\admin"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        969,
+        597,
+        1019,
+        615
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        1435,
+        597,
+        1488,
+        615
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "admin"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        27,
+        631,
+        1893,
+        633
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        37,
+        644,
+        67,
+        661
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "836"
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        503,
+        644,
+        595,
+        666
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        969,
+        644,
+        1019,
+        662
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E64",
+      "bounds": [
+        1435,
+        644,
+        1515,
+        662
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E65",
+      "bounds": [
+        27,
+        678,
+        1893,
+        680
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E66",
+      "bounds": [
+        27,
+        697,
+        200,
+        719
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Showing 1-10 of 317"
+    },
+    {
+      "id": "E67",
+      "bounds": [
+        1816,
+        690,
+        1893,
+        729
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Prev"
+    },
+    {
+      "id": "E68",
+      "bounds": [
+        1774,
+        690,
+        1809,
+        729
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "1"
+    },
+    {
+      "id": "E69",
+      "bounds": [
+        1732,
+        690,
+        1767,
+        729
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "2"
+    },
+    {
+      "id": "E70",
+      "bounds": [
+        1648,
+        690,
+        1725,
+        729
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Next"
+    }
+  ],
+  "stats": {
+    "text_detected": 53,
+    "uied_detected": 64,
+    "final_count": 64
+  },
+  "source": "synthetic"
+}

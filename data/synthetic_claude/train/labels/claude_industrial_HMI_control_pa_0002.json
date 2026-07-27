@@ -1,0 +1,1869 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        48
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E87",
+        "E3",
+        "E111",
+        "E49",
+        "E30",
+        "E68",
+        "E11",
+        "E5",
+        "E135",
+        "E88",
+        "E112",
+        "E133",
+        "E131",
+        "E134",
+        "E132",
+        "E4",
+        "E12",
+        "E31",
+        "E50",
+        "E69",
+        "E2",
+        "E6",
+        "E7",
+        "E8"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        16,
+        12,
+        40,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        56,
+        12,
+        367,
+        30
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "PlantVision HMI — Line 4 Control Panel",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        820,
+        14,
+        882,
+        28
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "RUNNING",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1540,
+        14,
+        1667,
+        31
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Operator: J. Kowalski",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1730,
+        12,
+        1754,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1770,
+        12,
+        1794,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        1810,
+        12,
+        1834,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        0,
+        48,
+        1920,
+        50
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        16,
+        64,
+        476,
+        384
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E114",
+        "E81",
+        "E92",
+        "E129",
+        "E27",
+        "E46",
+        "E65",
+        "E23",
+        "E42",
+        "E61",
+        "E128",
+        "E25",
+        "E26",
+        "E44",
+        "E45",
+        "E63",
+        "E64",
+        "E116",
+        "E120",
+        "E70",
+        "E72",
+        "E74",
+        "E76",
+        "E82",
+        "E84",
+        "E83",
+        "E47",
+        "E28",
+        "E66",
+        "E78",
+        "E53",
+        "E32",
+        "E118",
+        "E51",
+        "E85",
+        "E19",
+        "E57",
+        "E55",
+        "E119",
+        "E36",
+        "E115",
+        "E117",
+        "E113",
+        "E41",
+        "E13",
+        "E15",
+        "E97",
+        "E17",
+        "E89",
+        "E22",
+        "E38",
+        "E34",
+        "E60",
+        "E21",
+        "E40",
+        "E59",
+        "E80",
+        "E93",
+        "E71",
+        "E73",
+        "E75",
+        "E77",
+        "E79",
+        "E94",
+        "E96",
+        "E91",
+        "E43",
+        "E16",
+        "E37",
+        "E24",
+        "E18",
+        "E20",
+        "E54",
+        "E56",
+        "E98",
+        "E35",
+        "E95",
+        "E62",
+        "E39",
+        "E58"
+      ]
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        20,
+        14,
+        170,
+        31
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Motor Drive Unit A",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        20,
+        44,
+        440,
+        46
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        20,
+        60,
+        98,
+        77
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Speed (RPM)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        340,
+        58,
+        372,
+        72
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1485",
+      "parent_id": "E114"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        20,
+        90,
+        97,
+        107
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Torque (Nm)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        340,
+        88,
+        375,
+        102
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "247.3",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        20,
+        120,
+        88,
+        136
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Current (A)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        340,
+        118,
+        367,
+        132
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "18.6",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        20,
+        150,
+        124,
+        167
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Temperature (°C)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        340,
+        148,
+        367,
+        162
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "72.1",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        20,
+        180,
+        440,
+        182
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E10"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        20,
+        196,
+        80,
+        213
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Set Speed",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        140,
+        192,
+        300,
+        222
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "1500",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        310,
+        196,
+        339,
+        210
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "RPM",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        20,
+        240,
+        150,
+        276
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "START",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        162,
+        240,
+        292,
+        276
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "STOP",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        304,
+        240,
+        440,
+        276
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "E-STOP",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        20,
+        290,
+        136,
+        310
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Auto Mode",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        492,
+        64,
+        952,
+        384
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E107",
+        "E108",
+        "E109",
+        "E102",
+        "E104",
+        "E106",
+        "E123",
+        "E127",
+        "E125",
+        "E124",
+        "E126",
+        "E122",
+        "E105",
+        "E101",
+        "E103"
+      ]
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        20,
+        14,
+        174,
+        35
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Conveyor System B",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        20,
+        44,
+        440,
+        46
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        20,
+        60,
+        136,
+        77
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Belt Speed (m/min)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        340,
+        58,
+        367,
+        72
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "12.4",
+      "parent_id": "E114"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        20,
+        90,
+        77,
+        107
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Load (kg)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        340,
+        88,
+        364,
+        102
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "385",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        20,
+        120,
+        116,
+        136
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Belt Tension (N)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        340,
+        118,
+        372,
+        132
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2140",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        20,
+        150,
+        82,
+        166
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Items/min",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        340,
+        148,
+        356,
+        162
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "48",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        20,
+        180,
+        440,
+        182
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E10"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        20,
+        196,
+        100,
+        213
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Target Speed",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        140,
+        192,
+        300,
+        222
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "12.5",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        310,
+        196,
+        350,
+        212
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "m/min",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        20,
+        240,
+        150,
+        276
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "RUN",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        162,
+        240,
+        292,
+        276
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "PAUSE",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        304,
+        240,
+        440,
+        276
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "RESET",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        20,
+        290,
+        139,
+        310
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Sync to Line",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        968,
+        64,
+        1428,
+        384
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        20,
+        14,
+        211,
+        32
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Pressure & Flow Control",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        20,
+        44,
+        440,
+        46
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        20,
+        60,
+        135,
+        76
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Inlet Pressure (bar)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        340,
+        58,
+        367,
+        72
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "4.82",
+      "parent_id": "E114"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        20,
+        90,
+        147,
+        106
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Outlet Pressure (bar)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        340,
+        88,
+        367,
+        102
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3.15",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        20,
+        120,
+        126,
+        136
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Flow Rate (L/min)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        340,
+        118,
+        367,
+        132
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "67.2",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        20,
+        150,
+        129,
+        166
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Valve Position (%)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        340,
+        148,
+        356,
+        162
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "78",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        20,
+        180,
+        440,
+        182
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E10"
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        20,
+        196,
+        71,
+        213
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Setpoint",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        140,
+        192,
+        300,
+        222
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "4.50",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        310,
+        196,
+        330,
+        210
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "bar",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        20,
+        240,
+        150,
+        276
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "OPEN",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E64",
+      "bounds": [
+        162,
+        240,
+        292,
+        276
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "CLOSE",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E65",
+      "bounds": [
+        304,
+        240,
+        440,
+        276
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "PURGE",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E66",
+      "bounds": [
+        20,
+        290,
+        136,
+        310
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "PID Control",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E67",
+      "bounds": [
+        1444,
+        64,
+        1904,
+        384
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E68",
+      "bounds": [
+        20,
+        14,
+        148,
+        36
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Alarm Summary",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E69",
+      "bounds": [
+        20,
+        44,
+        440,
+        46
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E70",
+      "bounds": [
+        20,
+        60,
+        237,
+        77
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "WARN  Motor A bearing temp high",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E71",
+      "bounds": [
+        360,
+        60,
+        414,
+        74
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "14:32:07",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E72",
+      "bounds": [
+        20,
+        86,
+        227,
+        103
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "INFO  Conveyor B speed adjusted",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E73",
+      "bounds": [
+        360,
+        86,
+        414,
+        100
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "14:28:51",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E74",
+      "bounds": [
+        20,
+        112,
+        220,
+        129
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "WARN  Inlet pressure fluctuation",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E75",
+      "bounds": [
+        360,
+        112,
+        414,
+        126
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "14:15:22",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E76",
+      "bounds": [
+        20,
+        138,
+        208,
+        155
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "INFO  Shift changeover logged",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E77",
+      "bounds": [
+        360,
+        138,
+        414,
+        152
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "14:00:00",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E78",
+      "bounds": [
+        20,
+        164,
+        171,
+        178
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "INFO  PLC heartbeat OK",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E79",
+      "bounds": [
+        360,
+        164,
+        414,
+        178
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "13:59:58",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E80",
+      "bounds": [
+        20,
+        194,
+        440,
+        196
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E10"
+    },
+    {
+      "id": "E81",
+      "bounds": [
+        20,
+        210,
+        220,
+        240
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Filter: All Alarms",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E82",
+      "bounds": [
+        240,
+        210,
+        340,
+        240
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "ACK ALL",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E83",
+      "bounds": [
+        352,
+        210,
+        440,
+        240
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "SILENCE",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E84",
+      "bounds": [
+        20,
+        258,
+        167,
+        278
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Show acknowledged",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E85",
+      "bounds": [
+        220,
+        258,
+        311,
+        278
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Auto-scroll",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E86",
+      "bounds": [
+        16,
+        400,
+        952,
+        700
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E87",
+      "bounds": [
+        20,
+        14,
+        362,
+        32
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Process Overview — Batch #20260402-047",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E88",
+      "bounds": [
+        20,
+        44,
+        916,
+        46
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E89",
+      "bounds": [
+        20,
+        60,
+        96,
+        74
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Batch Status",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E90",
+      "bounds": [
+        180,
+        58,
+        264,
+        72
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "IN PROGRESS",
+      "parent_id": "E114"
+    },
+    {
+      "id": "E91",
+      "bounds": [
+        20,
+        90,
+        59,
+        107
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Recipe",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E92",
+      "bounds": [
+        180,
+        84,
+        380,
+        114
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "STD-MIX-004",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E93",
+      "bounds": [
+        20,
+        126,
+        66,
+        143
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Elapsed",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E94",
+      "bounds": [
+        180,
+        124,
+        234,
+        138
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "01:42:18",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E95",
+      "bounds": [
+        20,
+        156,
+        43,
+        170
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "ETA",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E96",
+      "bounds": [
+        180,
+        154,
+        234,
+        168
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "00:38:42",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E97",
+      "bounds": [
+        20,
+        186,
+        91,
+        203
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completion",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E98",
+      "bounds": [
+        180,
+        184,
+        207,
+        198
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "72%",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E99",
+      "bounds": [
+        460,
+        54,
+        470,
+        56
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E100",
+      "bounds": [
+        480,
+        60,
+        587,
+        77
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Stage Parameters"
+    },
+    {
+      "id": "E101",
+      "bounds": [
+        480,
+        90,
+        566,
+        107
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Mix Temp (°C)",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E102",
+      "bounds": [
+        680,
+        84,
+        830,
+        114
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "85.0",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E103",
+      "bounds": [
+        480,
+        126,
+        570,
+        142
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Mix Time (min)",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E104",
+      "bounds": [
+        680,
+        120,
+        830,
+        150
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "45",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E105",
+      "bounds": [
+        480,
+        166,
+        571,
+        183
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Agitator (RPM)",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E106",
+      "bounds": [
+        680,
+        160,
+        830,
+        190
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "220",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E107",
+      "bounds": [
+        680,
+        204,
+        830,
+        238
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "APPLY",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E108",
+      "bounds": [
+        480,
+        252,
+        620,
+        286
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "HOLD BATCH",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E109",
+      "bounds": [
+        632,
+        252,
+        772,
+        286
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "ABORT BATCH",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E110",
+      "bounds": [
+        968,
+        400,
+        1904,
+        700
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E111",
+      "bounds": [
+        20,
+        14,
+        192,
+        36
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "System Configuration",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E112",
+      "bounds": [
+        20,
+        44,
+        916,
+        46
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E113",
+      "bounds": [
+        20,
+        62,
+        118,
+        76
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "PLC Connection",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E114",
+      "bounds": [
+        200,
+        56,
+        450,
+        86
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "PLC-04 (192.168.1.40)",
+      "parent_id": "E10",
+      "children_ids": [
+        "E90",
+        "E14",
+        "E33",
+        "E52"
+      ]
+    },
+    {
+      "id": "E115",
+      "bounds": [
+        20,
+        100,
+        109,
+        116
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Scan Rate (ms)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E116",
+      "bounds": [
+        200,
+        94,
+        350,
+        124
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "250",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E117",
+      "bounds": [
+        20,
+        138,
+        103,
+        155
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Data Logging",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E118",
+      "bounds": [
+        200,
+        138,
+        297,
+        158
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Enabled",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E119",
+      "bounds": [
+        20,
+        170,
+        111,
+        187
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Log Interval (s)",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E120",
+      "bounds": [
+        200,
+        164,
+        350,
+        194
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "5",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E121",
+      "bounds": [
+        480,
+        54,
+        490,
+        56
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E122",
+      "bounds": [
+        500,
+        62,
+        600,
+        79
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Safety Interlocks",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E123",
+      "bounds": [
+        500,
+        90,
+        657,
+        110
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Over-temperature trip",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E124",
+      "bounds": [
+        500,
+        118,
+        636,
+        138
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Over-pressure trip",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E125",
+      "bounds": [
+        500,
+        146,
+        640,
+        166
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Low-flow shutdown",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E126",
+      "bounds": [
+        500,
+        174,
+        632,
+        194
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Door open inhibit",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E127",
+      "bounds": [
+        500,
+        202,
+        648,
+        222
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Emergency chain OK",
+      "parent_id": "E29"
+    },
+    {
+      "id": "E128",
+      "bounds": [
+        20,
+        252,
+        160,
+        286
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "EXPORT LOG",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E129",
+      "bounds": [
+        172,
+        252,
+        322,
+        286
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "DIAGNOSTICS",
+      "parent_id": "E10"
+    },
+    {
+      "id": "E130",
+      "bounds": [
+        0,
+        1040,
+        1920,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E131",
+      "bounds": [
+        20,
+        10,
+        131,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "PLC: CONNECTED",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E132",
+      "bounds": [
+        200,
+        10,
+        277,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Scan: 248ms",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E133",
+      "bounds": [
+        340,
+        10,
+        444,
+        26
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "I/O: 128/128 OK",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E134",
+      "bounds": [
+        520,
+        10,
+        618,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active Alarms: 2",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E135",
+      "bounds": [
+        1740,
+        10,
+        1878,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-04-02  14:34:51",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 114,
+    "uied_detected": 135,
+    "final_count": 135
+  },
+  "source": "synthetic",
+  "layout_title": "Industrial HMI Control Panel",
+  "layout_theme": "dark"
+}

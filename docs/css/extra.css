@@ -1,0 +1,39 @@
+/* Use the full width next to the sidebar (RTD caps content ~800px, leaving a
+   big empty gutter on wide screens and clipping wide diagrams/tables). */
+.wy-nav-content {
+    max-width: none;
+}
+
+/* Diagrams are clickable (glightbox) — hint it. */
+a.glightbox img.uml,
+img.uml {
+    cursor: zoom-in;
+}
+
+/* Make embedded diagrams scale to the content width instead of overflowing.
+   plantuml-markdown embeds SVG as <img class="uml">. */
+.rst-content img,
+img.uml,
+.rst-content svg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Very wide diagrams: let them scroll horizontally within their own box
+   rather than pushing the page wider. */
+.rst-content p:has(> img.uml) {
+    overflow-x: auto;
+}
+
+/* Wide tables scroll inside their own container. */
+.rst-content table.docutils,
+.rst-content table {
+    display: block;
+    overflow-x: auto;
+    white-space: normal;
+}
+
+/* Code blocks wrap/scroll instead of stretching the layout. */
+.rst-content pre {
+    overflow-x: auto;
+}

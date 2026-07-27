@@ -1,0 +1,485 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        79
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3",
+        "E5",
+        "E6",
+        "E8",
+        "E4",
+        "E2",
+        "E7"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        18,
+        18,
+        61,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        79,
+        25,
+        221,
+        50
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dashboard",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1767,
+        28,
+        1850,
+        54
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1557,
+        28,
+        1687,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notifications",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1417,
+        28,
+        1518,
+        53
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Messages",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1319,
+        28,
+        1375,
+        48
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Users",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        1165,
+        28,
+        1277,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dashboard",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        27,
+        108,
+        637,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E11",
+        "E10"
+      ]
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        45,
+        126,
+        172,
+        144
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active Sessions",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        45,
+        165,
+        144,
+        199
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "7 Days",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        655,
+        108,
+        1265,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E14",
+        "E13"
+      ]
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        673,
+        126,
+        744,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Memory",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        673,
+        165,
+        752,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "42ms",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        1283,
+        108,
+        1893,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E17",
+        "E16"
+      ]
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        1301,
+        126,
+        1394,
+        144
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Total Users",
+      "parent_id": "E15"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        1301,
+        165,
+        1392,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "99.9%",
+      "parent_id": "E15"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        27,
+        270,
+        207,
+        299
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Recent Activity"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        41,
+        330,
+        92,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Count"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        507,
+        330,
+        563,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Owner"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        973,
+        330,
+        1046,
+        351
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Progress"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        1439,
+        330,
+        1486,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Score"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        41,
+        375,
+        81,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "6322"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        507,
+        375,
+        551,
+        395
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3,421"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        973,
+        375,
+        1065,
+        397
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        1439,
+        375,
+        1449,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "0"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        27,
+        408,
+        1893,
+        410
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        41,
+        418,
+        81,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "5892"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        507,
+        418,
+        587,
+        436
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        973,
+        418,
+        1045,
+        440
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.2 Gbps"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        1439,
+        418,
+        1509,
+        440
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        27,
+        451,
+        1893,
+        453
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        41,
+        461,
+        81,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "9718"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        507,
+        461,
+        578,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        973,
+        461,
+        993,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "12"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        1439,
+        461,
+        1511,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.2 Gbps"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        27,
+        494,
+        1893,
+        496
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    }
+  ],
+  "stats": {
+    "text_detected": 30,
+    "uied_detected": 37,
+    "final_count": 37
+  },
+  "source": "synthetic"
+}

@@ -1,0 +1,192 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        660,
+        246,
+        1259,
+        834
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E8",
+        "E4",
+        "E6",
+        "E11",
+        "E12",
+        "E2",
+        "E5",
+        "E7",
+        "E10",
+        "E3",
+        "E9"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        696,
+        282,
+        939,
+        321
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Account Login",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        696,
+        372,
+        793,
+        393
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        696,
+        404,
+        1223,
+        461
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        696,
+        479,
+        880,
+        500
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Confirm Password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        696,
+        511,
+        1223,
+        568
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "confirm password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        696,
+        586,
+        818,
+        614
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Remember me",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        696,
+        636,
+        1223,
+        700
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Sign In",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        696,
+        718,
+        1223,
+        720
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        905,
+        745,
+        1025,
+        767
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "or sign in with",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        696,
+        790,
+        950,
+        844
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "GitHub",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        968,
+        790,
+        1222,
+        844
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Microsoft",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        696,
+        862,
+        845,
+        884
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Forgot password?"
+    }
+  ],
+  "stats": {
+    "text_detected": 11,
+    "uied_detected": 13,
+    "final_count": 13
+  },
+  "source": "synthetic"
+}

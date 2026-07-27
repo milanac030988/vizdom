@@ -1,0 +1,21 @@
+@echo off
+REM VizDOM Capture gRPC Service (ADR-018)
+REM Runs screenshot capture as a service ON THE HOST/DEVICE UNDER TEST, so the
+REM pipeline running elsewhere can pull frames from where the app-under-test is.
+REM Point clients at this host with the `grpc` capture strategy and
+REM VIZDOM_CAPTURE_TARGET=<this-host>:50053 (or target=<host:port>).
+REM
+REM Prerequisites (once, in the app's Python 3.9):
+REM   "D:\Python\python39\python.exe" -m pip install grpcio grpcio-tools
+REM   generate stubs (see docs/adr/018-pluggable-capture-service.md).
+REM
+REM Usage:
+REM   start_capture.bat                       (OS auto-select strategy, port 50053)
+REM   start_capture.bat --strategy windows
+REM   start_capture.bat --strategy android --serial <device>
+REM   start_capture.bat --strategy camera --kw device=0
+REM   start_capture.bat --list                (show discovered strategies)
+
+cd /d "%~dp0"
+set PYTHONPATH=%~dp0src
+"D:\Python\python39\python.exe" -m visual_dom.rpc.capture_server %*

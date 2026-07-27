@@ -1,0 +1,349 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        77
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E10",
+        "E13",
+        "E12",
+        "E11",
+        "E2",
+        "E3",
+        "E4",
+        "E6",
+        "E8",
+        "E9",
+        "E5",
+        "E7"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        14,
+        10,
+        70,
+        66
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        84,
+        10,
+        140,
+        66
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        154,
+        10,
+        210,
+        66
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        224,
+        7,
+        225,
+        9
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        238,
+        10,
+        294,
+        66
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        308,
+        7,
+        309,
+        9
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        322,
+        10,
+        378,
+        66
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        392,
+        10,
+        448,
+        66
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        1714,
+        9,
+        1902,
+        68
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Disconnect",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        1612,
+        9,
+        1704,
+        68
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Redo",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        1494,
+        9,
+        1602,
+        68
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Apply",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        1328,
+        9,
+        1484,
+        68
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Continue",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        36,
+        113,
+        260,
+        138
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Document Editor"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        36,
+        176,
+        202,
+        201
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "do sit amet ipsum"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        36,
+        212,
+        251,
+        237
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "adipiscing do dolor sed"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        36,
+        248,
+        323,
+        273
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Lorem amet consectetur ipsum"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        36,
+        284,
+        247,
+        309
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "sed Lorem amet ipsum"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        36,
+        320,
+        281,
+        345
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Lorem amet sit tempor elit"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        36,
+        356,
+        533,
+        381
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "tempor do Lorem elit consectetur adipiscing ipsum sit"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        36,
+        392,
+        515,
+        417
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "dolor adipiscing sed eiusmod amet Lorem ipsum do"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        36,
+        428,
+        362,
+        453
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "dolor adipiscing ipsum Lorem amet"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        36,
+        464,
+        462,
+        489
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "eiusmod sed adipiscing ipsum consectetur elit"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        36,
+        500,
+        273,
+        525
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "amet do Lorem ipsum elit"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        36,
+        536,
+        309,
+        561
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "amet dolor tempor adipiscing"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        36,
+        572,
+        418,
+        597
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Lorem consectetur dolor sit adipiscing do"
+    }
+  ],
+  "stats": {
+    "text_detected": 23,
+    "uied_detected": 26,
+    "final_count": 26
+  },
+  "source": "synthetic"
+}

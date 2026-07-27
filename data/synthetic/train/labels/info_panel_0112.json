@@ -1,0 +1,503 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        27,
+        19,
+        159,
+        44
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Calculator"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        1763,
+        10,
+        1893,
+        60
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Details"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1661,
+        10,
+        1749,
+        60
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Help"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1531,
+        10,
+        1647,
+        60
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Export"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        36,
+        93,
+        140,
+        123
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Security"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        36,
+        136,
+        1884,
+        138
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        50,
+        150,
+        128,
+        171
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Firewall"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        351,
+        150,
+        441,
+        171
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        50,
+        196,
+        226,
+        222
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password Expires"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        351,
+        196,
+        430,
+        221
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "30 Days"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        50,
+        242,
+        213,
+        263
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Protection Level"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        351,
+        242,
+        521,
+        267
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Untrusted (2311)"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        50,
+        288,
+        140,
+        309
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Antivirus"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        351,
+        288,
+        460,
+        314
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Up to date"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        50,
+        334,
+        189,
+        360
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Admin Rights"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        351,
+        334,
+        462,
+        359
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Temporary"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        50,
+        380,
+        159,
+        406
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Encryption"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        351,
+        380,
+        482,
+        401
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "BitLocker Off"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        50,
+        426,
+        154,
+        452
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Last Login"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        351,
+        426,
+        524,
+        446
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-03-29 08:15"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        36,
+        493,
+        129,
+        522
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "System"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        36,
+        536,
+        1884,
+        538
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        50,
+        550,
+        219,
+        575
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Computer Name"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        351,
+        550,
+        493,
+        570
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "SRV-PROD-01"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        50,
+        596,
+        160,
+        622
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disk Space"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        351,
+        596,
+        492,
+        616
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "256 GB NVMe"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        50,
+        642,
+        100,
+        662
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "RAM"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        351,
+        642,
+        410,
+        662
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "16 GB"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        36,
+        709,
+        149,
+        733
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Network"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        36,
+        752,
+        1884,
+        754
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        50,
+        766,
+        163,
+        786
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "VPN Status"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        351,
+        766,
+        490,
+        787
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        50,
+        812,
+        164,
+        832
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "DNS Server"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        351,
+        812,
+        414,
+        832
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.1.1.1"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        50,
+        858,
+        189,
+        879
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "MAC Address"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        351,
+        858,
+        538,
+        878
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "AA:BB:CC:DD:EE:FF"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        50,
+        904,
+        183,
+        925
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Subnet Mask"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        351,
+        904,
+        462,
+        924
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "255.255.0.0"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        36,
+        999,
+        149,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Close"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        167,
+        999,
+        266,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        284,
+        999,
+        397,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Reset"
+    }
+  ],
+  "stats": {
+    "text_detected": 38,
+    "uied_detected": 41,
+    "final_count": 41
+  },
+  "source": "synthetic"
+}

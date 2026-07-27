@@ -1,0 +1,242 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        694,
+        186,
+        1226,
+        893
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E11",
+        "E5",
+        "E7",
+        "E9",
+        "E2",
+        "E3",
+        "E6",
+        "E10",
+        "E13",
+        "E8",
+        "E4",
+        "E12"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        730,
+        222,
+        973,
+        261
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Account Login",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        730,
+        294,
+        952,
+        320
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enter your credentials",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        730,
+        357,
+        786,
+        378
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Email",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        730,
+        389,
+        1190,
+        446
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "email",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        730,
+        464,
+        914,
+        485
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Confirm Password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        730,
+        496,
+        1190,
+        553
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "confirm password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        730,
+        571,
+        827,
+        592
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        730,
+        603,
+        1190,
+        660
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        730,
+        678,
+        852,
+        706
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Remember me",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        730,
+        728,
+        1190,
+        792
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Sign In",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        730,
+        810,
+        1190,
+        812
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        906,
+        837,
+        1026,
+        859
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "or sign in with",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        730,
+        882,
+        871,
+        936
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Apple"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        889,
+        882,
+        1030,
+        936
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Microsoft"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        1048,
+        882,
+        1189,
+        936
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Google"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        730,
+        954,
+        879,
+        976
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Forgot password?"
+    }
+  ],
+  "stats": {
+    "text_detected": 15,
+    "uied_detected": 17,
+    "final_count": 17
+  },
+  "source": "synthetic"
+}

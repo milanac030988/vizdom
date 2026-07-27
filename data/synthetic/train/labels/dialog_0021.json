@@ -1,0 +1,96 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        633,
+        323,
+        1286,
+        757
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E2",
+        "E4",
+        "E6",
+        "E5",
+        "E3"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        669,
+        359,
+        978,
+        394
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Permission Required",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        669,
+        413,
+        1250,
+        415
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        669,
+        440,
+        1058,
+        466
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "The selected item will be permanently",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        669,
+        472,
+        752,
+        493
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "deleted.",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1160,
+        664,
+        1250,
+        721
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Yes",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 4,
+    "uied_detected": 6,
+    "final_count": 6
+  },
+  "source": "synthetic"
+}

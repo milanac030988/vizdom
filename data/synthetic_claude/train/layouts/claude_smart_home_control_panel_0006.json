@@ -1,0 +1,538 @@
+{
+  "title": "Smart Home Control Panel",
+  "theme": "dark",
+  "elements": [
+    {
+      "type": "container",
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 56,
+      "elements": [
+        {
+          "type": "icon",
+          "icon": "menu",
+          "x": 20,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "Smart Home",
+          "x": 60,
+          "y": 14,
+          "w": 180,
+          "h": 28
+        },
+        {
+          "type": "input_field",
+          "text": "Search devices...",
+          "x": 760,
+          "y": 12,
+          "w": 400,
+          "h": 32
+        },
+        {
+          "type": "icon",
+          "icon": "search",
+          "x": 1128,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "settings",
+          "x": 1832,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "user",
+          "x": 1872,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 56,
+      "w": 260,
+      "h": 1024,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Rooms",
+          "x": 20,
+          "y": 20,
+          "w": 220,
+          "h": 22
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 52,
+          "w": 220,
+          "h": 1
+        },
+        {
+          "type": "button",
+          "text": "All Devices",
+          "x": 16,
+          "y": 64,
+          "w": 228,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Living Room",
+          "x": 16,
+          "y": 108,
+          "w": 228,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Bedroom",
+          "x": 16,
+          "y": 152,
+          "w": 228,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Kitchen",
+          "x": 16,
+          "y": 196,
+          "w": 228,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Garage",
+          "x": 16,
+          "y": 240,
+          "w": 228,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Garden",
+          "x": 16,
+          "y": 284,
+          "w": 228,
+          "h": 36
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 340,
+          "w": 220,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Scenes",
+          "x": 20,
+          "y": 356,
+          "w": 220,
+          "h": 22
+        },
+        {
+          "type": "button",
+          "text": "Good Morning",
+          "x": 16,
+          "y": 390,
+          "w": 228,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Movie Night",
+          "x": 16,
+          "y": 434,
+          "w": 228,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Away Mode",
+          "x": 16,
+          "y": 478,
+          "w": 228,
+          "h": 36
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "text": "Living Room",
+      "x": 300,
+      "y": 80,
+      "w": 300,
+      "h": 28
+    },
+    {
+      "type": "container",
+      "x": 300,
+      "y": 124,
+      "w": 380,
+      "h": 200,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Lighting",
+          "x": 20,
+          "y": 16,
+          "w": 160,
+          "h": 22
+        },
+        {
+          "type": "toggle",
+          "text": "Ceiling Light",
+          "x": 20,
+          "y": 56,
+          "w": 340,
+          "h": 24
+        },
+        {
+          "type": "toggle",
+          "text": "Floor Lamp",
+          "x": 20,
+          "y": 92,
+          "w": 340,
+          "h": 24
+        },
+        {
+          "type": "toggle",
+          "text": "LED Strip",
+          "x": 20,
+          "y": 128,
+          "w": 340,
+          "h": 24
+        },
+        {
+          "type": "dropdown",
+          "text": "Brightness: 80%",
+          "x": 20,
+          "y": 164,
+          "w": 200,
+          "h": 28
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 700,
+      "y": 124,
+      "w": 380,
+      "h": 200,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Climate Control",
+          "x": 20,
+          "y": 16,
+          "w": 200,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "Current: 22°C",
+          "x": 20,
+          "y": 54,
+          "w": 160,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Target Temperature",
+          "x": 20,
+          "y": 88,
+          "w": 160,
+          "h": 18
+        },
+        {
+          "type": "input_field",
+          "text": "22",
+          "x": 20,
+          "y": 112,
+          "w": 150,
+          "h": 32
+        },
+        {
+          "type": "dropdown",
+          "text": "Mode: Auto",
+          "x": 190,
+          "y": 112,
+          "w": 170,
+          "h": 32
+        },
+        {
+          "type": "toggle",
+          "text": "AC Unit",
+          "x": 20,
+          "y": 160,
+          "w": 340,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 1100,
+      "y": 124,
+      "w": 380,
+      "h": 200,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Security",
+          "x": 20,
+          "y": 16,
+          "w": 160,
+          "h": 22
+        },
+        {
+          "type": "toggle",
+          "text": "Front Door Lock",
+          "x": 20,
+          "y": 56,
+          "w": 340,
+          "h": 24
+        },
+        {
+          "type": "toggle",
+          "text": "Motion Sensor",
+          "x": 20,
+          "y": 92,
+          "w": 340,
+          "h": 24
+        },
+        {
+          "type": "toggle",
+          "text": "Camera Feed",
+          "x": 20,
+          "y": 128,
+          "w": 340,
+          "h": 24
+        },
+        {
+          "type": "button",
+          "text": "View Cameras",
+          "x": 20,
+          "y": 164,
+          "w": 160,
+          "h": 32
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 300,
+      "y": 344,
+      "w": 380,
+      "h": 200,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Entertainment",
+          "x": 20,
+          "y": 16,
+          "w": 200,
+          "h": 22
+        },
+        {
+          "type": "toggle",
+          "text": "Smart TV",
+          "x": 20,
+          "y": 56,
+          "w": 340,
+          "h": 24
+        },
+        {
+          "type": "toggle",
+          "text": "Soundbar",
+          "x": 20,
+          "y": 92,
+          "w": 340,
+          "h": 24
+        },
+        {
+          "type": "dropdown",
+          "text": "Input: HDMI 1",
+          "x": 20,
+          "y": 128,
+          "w": 200,
+          "h": 30
+        },
+        {
+          "type": "dropdown",
+          "text": "Volume: 45%",
+          "x": 20,
+          "y": 168,
+          "w": 200,
+          "h": 28
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 700,
+      "y": 344,
+      "w": 380,
+      "h": 200,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Blinds & Curtains",
+          "x": 20,
+          "y": 16,
+          "w": 220,
+          "h": 22
+        },
+        {
+          "type": "toggle",
+          "text": "Window Blinds",
+          "x": 20,
+          "y": 56,
+          "w": 340,
+          "h": 24
+        },
+        {
+          "type": "toggle",
+          "text": "Curtains",
+          "x": 20,
+          "y": 92,
+          "w": 340,
+          "h": 24
+        },
+        {
+          "type": "dropdown",
+          "text": "Position: 50%",
+          "x": 20,
+          "y": 128,
+          "w": 200,
+          "h": 30
+        },
+        {
+          "type": "checkbox",
+          "text": "Auto schedule",
+          "x": 20,
+          "y": 172,
+          "w": 180,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 1100,
+      "y": 344,
+      "w": 380,
+      "h": 200,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Energy Usage",
+          "x": 20,
+          "y": 16,
+          "w": 200,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "Today: 12.4 kWh",
+          "x": 20,
+          "y": 54,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "This Month: 342 kWh",
+          "x": 20,
+          "y": 82,
+          "w": 220,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 114,
+          "w": 340,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Solar Output: 8.1 kWh",
+          "x": 20,
+          "y": 128,
+          "w": 240,
+          "h": 20
+        },
+        {
+          "type": "toggle",
+          "text": "Eco Mode",
+          "x": 20,
+          "y": 160,
+          "w": 340,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "x": 300,
+      "y": 564,
+      "w": 1180,
+      "h": 1
+    },
+    {
+      "type": "text",
+      "text": "Quick Actions",
+      "x": 300,
+      "y": 584,
+      "w": 200,
+      "h": 24
+    },
+    {
+      "type": "button",
+      "text": "All Lights Off",
+      "x": 300,
+      "y": 620,
+      "w": 160,
+      "h": 38
+    },
+    {
+      "type": "button",
+      "text": "Lock All Doors",
+      "x": 476,
+      "y": 620,
+      "w": 160,
+      "h": 38
+    },
+    {
+      "type": "button",
+      "text": "Arm Security",
+      "x": 652,
+      "y": 620,
+      "w": 160,
+      "h": 38
+    },
+    {
+      "type": "button",
+      "text": "Goodnight",
+      "x": 828,
+      "y": 620,
+      "w": 160,
+      "h": 38
+    }
+  ]
+}

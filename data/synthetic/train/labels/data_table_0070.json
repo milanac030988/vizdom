@@ -1,0 +1,639 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        27,
+        27,
+        304,
+        61
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Data Management"
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        1761,
+        24,
+        1893,
+        74
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Export"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        1599,
+        24,
+        1747,
+        74
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Add New"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        27,
+        90,
+        472,
+        140
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search..."
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        37,
+        172,
+        106,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        659,
+        172,
+        716,
+        191
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Status"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        1281,
+        172,
+        1364,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Modified"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        27,
+        208,
+        1893,
+        210
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        37,
+        221,
+        67,
+        238
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "142"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        659,
+        221,
+        729,
+        243
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        1281,
+        221,
+        1332,
+        239
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        27,
+        255,
+        1893,
+        257
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        37,
+        268,
+        67,
+        285
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "968"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        659,
+        268,
+        724,
+        286
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Inactive"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        1281,
+        268,
+        1374,
+        289
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Acme Corp"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        27,
+        302,
+        1893,
+        304
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        37,
+        315,
+        67,
+        332
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "495"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        659,
+        315,
+        724,
+        333
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Inactive"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1281,
+        315,
+        1332,
+        333
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        27,
+        349,
+        1893,
+        351
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        37,
+        362,
+        67,
+        379
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "338"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        659,
+        362,
+        710,
+        380
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        1281,
+        362,
+        1354,
+        380
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        27,
+        396,
+        1893,
+        398
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        37,
+        409,
+        67,
+        426
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "787"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        659,
+        409,
+        710,
+        427
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        1281,
+        409,
+        1323,
+        426
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        27,
+        443,
+        1893,
+        445
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        37,
+        456,
+        67,
+        473
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "416"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        659,
+        456,
+        730,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        1281,
+        456,
+        1386,
+        473
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "HC-C-004CE"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        27,
+        490,
+        1893,
+        492
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        37,
+        503,
+        67,
+        520
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "625"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        659,
+        503,
+        727,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        1281,
+        503,
+        1349,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        27,
+        537,
+        1893,
+        539
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        37,
+        550,
+        67,
+        567
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "306"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        659,
+        550,
+        709,
+        568
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        1281,
+        550,
+        1352,
+        572
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        27,
+        584,
+        1893,
+        586
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        37,
+        597,
+        57,
+        614
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "91"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        659,
+        597,
+        730,
+        619
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        1281,
+        597,
+        1346,
+        615
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Inactive"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        27,
+        631,
+        1893,
+        633
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        37,
+        644,
+        57,
+        661
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "78"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        659,
+        644,
+        751,
+        666
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        1281,
+        644,
+        1338,
+        662
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Offline"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        27,
+        678,
+        1893,
+        680
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        27,
+        697,
+        190,
+        719
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Showing 1-10 of 74"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        1816,
+        690,
+        1893,
+        729
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Prev"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        1774,
+        690,
+        1809,
+        729
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "1"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        1732,
+        690,
+        1767,
+        729
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "2"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        1648,
+        690,
+        1725,
+        729
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Next"
+    }
+  ],
+  "stats": {
+    "text_detected": 42,
+    "uied_detected": 53,
+    "final_count": 53
+  },
+  "source": "synthetic"
+}

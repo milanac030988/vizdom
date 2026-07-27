@@ -1,0 +1,96 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        626,
+        296,
+        1293,
+        783
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E5",
+        "E6",
+        "E3",
+        "E2",
+        "E4"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        1239,
+        310,
+        1275,
+        346
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "close",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        662,
+        332,
+        835,
+        360
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Delete Item",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        662,
+        386,
+        1257,
+        388
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        662,
+        413,
+        1107,
+        439
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Your changes have been saved successfully.",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1131,
+        690,
+        1257,
+        747
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Close",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 4,
+    "uied_detected": 6,
+    "final_count": 6
+  },
+  "source": "synthetic"
+}

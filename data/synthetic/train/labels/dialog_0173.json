@@ -1,0 +1,110 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        690,
+        369,
+        1230,
+        710
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E6",
+        "E5",
+        "E7",
+        "E3",
+        "E2",
+        "E4"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        1176,
+        383,
+        1212,
+        419
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "close",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        726,
+        405,
+        855,
+        440
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Warning",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        726,
+        459,
+        1194,
+        461
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        726,
+        486,
+        1079,
+        512
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Are you sure you want to proceed?",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1032,
+        617,
+        1194,
+        674
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Confirm",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        870,
+        617,
+        1014,
+        674
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 5,
+    "uied_detected": 7,
+    "final_count": 7
+  },
+  "source": "synthetic"
+}

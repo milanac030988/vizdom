@@ -1,0 +1,202 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        10,
+        20,
+        1810,
+        120
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3",
+        "E2",
+        "E6"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        25,
+        30,
+        124,
+        47
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Device Manager",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        10,
+        60,
+        1810,
+        62
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        20,
+        70,
+        1720,
+        160
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E5",
+        "E7"
+      ]
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        30,
+        100,
+        150,
+        130
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Refresh Devices",
+      "parent_id": "E4"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        170,
+        103,
+        190,
+        123
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        10,
+        140,
+        1810,
+        142
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E4"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        20,
+        150,
+        1720,
+        350
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E10",
+        "E9"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        30,
+        160,
+        112,
+        174
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Select Device:",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        180,
+        162,
+        380,
+        182
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Select...",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        10,
+        400,
+        1810,
+        402
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        20,
+        410,
+        1720,
+        710
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E14",
+        "E13"
+      ]
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        30,
+        420,
+        149,
+        434
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Device Information:",
+      "parent_id": "E12"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        180,
+        424,
+        380,
+        444
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "parent_id": "E12"
+    }
+  ],
+  "stats": {
+    "text_detected": 6,
+    "uied_detected": 14,
+    "final_count": 14
+  },
+  "source": "synthetic",
+  "layout_title": "Device Manager",
+  "layout_theme": "light"
+}

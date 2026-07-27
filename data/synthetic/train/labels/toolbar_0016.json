@@ -1,0 +1,299 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        65
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E12",
+        "E11",
+        "E2",
+        "E3",
+        "E4",
+        "E6",
+        "E7",
+        "E9",
+        "E10",
+        "E5",
+        "E8"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        14,
+        10,
+        58,
+        54
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        72,
+        10,
+        116,
+        54
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        130,
+        10,
+        174,
+        54
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        188,
+        7,
+        189,
+        9
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        202,
+        10,
+        246,
+        54
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        260,
+        10,
+        304,
+        54
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        318,
+        7,
+        319,
+        9
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        332,
+        10,
+        376,
+        54
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "close",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        390,
+        10,
+        434,
+        54
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        1794,
+        9,
+        1902,
+        56
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Share",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        1660,
+        9,
+        1784,
+        56
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Import",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        36,
+        101,
+        260,
+        126
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Document Editor"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        36,
+        164,
+        450,
+        189
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Lorem elit amet do adipiscing eiusmod dolor"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        36,
+        200,
+        554,
+        225
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "eiusmod dolor adipiscing consectetur sit do amet ipsum"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        36,
+        236,
+        451,
+        261
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "sit tempor eiusmod adipiscing amet dolor do"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        36,
+        272,
+        422,
+        297
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "sed eiusmod amet ipsum dolor tempor sit"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        36,
+        308,
+        484,
+        333
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Lorem consectetur elit tempor dolor ipsum amet"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        36,
+        344,
+        459,
+        369
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "adipiscing sit elit dolor sed ipsum consectetur"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        36,
+        380,
+        269,
+        400
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "amet sed consectetur elit"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        36,
+        416,
+        411,
+        441
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "dolor amet adipiscing sed tempor elit do"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        36,
+        452,
+        410,
+        477
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "ipsum sed elit adipiscing Lorem do amet"
+    }
+  ],
+  "stats": {
+    "text_detected": 19,
+    "uied_detected": 22,
+    "final_count": 22
+  },
+  "source": "synthetic"
+}

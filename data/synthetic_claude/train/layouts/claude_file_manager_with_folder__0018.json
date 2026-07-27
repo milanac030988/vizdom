@@ -1,0 +1,664 @@
+{
+  "title": "File Manager",
+  "theme": "light",
+  "elements": [
+    {
+      "type": "container",
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 48,
+      "elements": [
+        {
+          "type": "icon",
+          "icon": "menu",
+          "x": 16,
+          "y": 12,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "File Manager",
+          "x": 56,
+          "y": 12,
+          "w": 140,
+          "h": 24
+        },
+        {
+          "type": "input_field",
+          "text": "Search files and folders...",
+          "x": 660,
+          "y": 8,
+          "w": 400,
+          "h": 32
+        },
+        {
+          "type": "icon",
+          "icon": "search",
+          "x": 1032,
+          "y": 12,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "settings",
+          "x": 1840,
+          "y": 12,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "user",
+          "x": 1880,
+          "y": 12,
+          "w": 24,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 48,
+      "w": 1920,
+      "h": 44,
+      "elements": [
+        {
+          "type": "button",
+          "text": "New Folder",
+          "x": 16,
+          "y": 6,
+          "w": 110,
+          "h": 32
+        },
+        {
+          "type": "button",
+          "text": "Upload",
+          "x": 138,
+          "y": 6,
+          "w": 90,
+          "h": 32
+        },
+        {
+          "type": "button",
+          "text": "Download",
+          "x": 240,
+          "y": 6,
+          "w": 100,
+          "h": 32
+        },
+        {
+          "type": "button",
+          "text": "Delete",
+          "x": 352,
+          "y": 6,
+          "w": 86,
+          "h": 32
+        },
+        {
+          "type": "separator",
+          "x": 454,
+          "y": 8,
+          "w": 1,
+          "h": 28
+        },
+        {
+          "type": "dropdown",
+          "text": "Sort by: Name",
+          "x": 472,
+          "y": 6,
+          "w": 160,
+          "h": 32
+        },
+        {
+          "type": "toggle",
+          "text": "Show hidden",
+          "x": 1760,
+          "y": 12,
+          "w": 140,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 92,
+      "w": 1920,
+      "h": 32,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Home",
+          "x": 16,
+          "y": 6,
+          "w": 42,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": ">",
+          "x": 62,
+          "y": 6,
+          "w": 12,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Documents",
+          "x": 80,
+          "y": 6,
+          "w": 90,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": ">",
+          "x": 176,
+          "y": 6,
+          "w": 12,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Projects",
+          "x": 194,
+          "y": 6,
+          "w": 70,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "x": 0,
+      "y": 124,
+      "w": 1920,
+      "h": 1
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 125,
+      "w": 300,
+      "h": 955,
+      "elements": [
+        {
+          "type": "text",
+          "text": "FOLDERS",
+          "x": 16,
+          "y": 16,
+          "w": 80,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "▼ Home",
+          "x": 16,
+          "y": 46,
+          "w": 260,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "    ▼ Documents",
+          "x": 16,
+          "y": 76,
+          "w": 260,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "        ▶ Reports",
+          "x": 16,
+          "y": 106,
+          "w": 260,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "        ▼ Projects",
+          "x": 16,
+          "y": 136,
+          "w": 260,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "            webapp",
+          "x": 16,
+          "y": 166,
+          "w": 260,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "            mobile-app",
+          "x": 16,
+          "y": 196,
+          "w": 260,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "        ▶ Archives",
+          "x": 16,
+          "y": 226,
+          "w": 260,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "    ▶ Pictures",
+          "x": 16,
+          "y": 256,
+          "w": 260,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "    ▶ Downloads",
+          "x": 16,
+          "y": 286,
+          "w": 260,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "    ▶ Music",
+          "x": 16,
+          "y": 316,
+          "w": 260,
+          "h": 22
+        },
+        {
+          "type": "separator",
+          "x": 16,
+          "y": 352,
+          "w": 268,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "FAVORITES",
+          "x": 16,
+          "y": 368,
+          "w": 80,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "Desktop",
+          "x": 36,
+          "y": 398,
+          "w": 240,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "Recent Files",
+          "x": 36,
+          "y": 428,
+          "w": 240,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "Shared with me",
+          "x": 36,
+          "y": 458,
+          "w": 240,
+          "h": 22
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "x": 300,
+      "y": 125,
+      "w": 1,
+      "h": 955
+    },
+    {
+      "type": "container",
+      "x": 301,
+      "y": 125,
+      "w": 1619,
+      "h": 40,
+      "elements": [
+        {
+          "type": "checkbox",
+          "text": "Name",
+          "x": 16,
+          "y": 10,
+          "w": 500,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Size",
+          "x": 900,
+          "y": 10,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Type",
+          "x": 1100,
+          "y": 10,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Modified",
+          "x": 1350,
+          "y": 10,
+          "w": 200,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "x": 301,
+      "y": 165,
+      "w": 1619,
+      "h": 1
+    },
+    {
+      "type": "container",
+      "x": 301,
+      "y": 166,
+      "w": 1619,
+      "h": 914,
+      "elements": [
+        {
+          "type": "checkbox",
+          "text": "src",
+          "x": 16,
+          "y": 14,
+          "w": 500,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "—",
+          "x": 900,
+          "y": 14,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Folder",
+          "x": 1100,
+          "y": 14,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "2026-04-01 14:22",
+          "x": 1350,
+          "y": 14,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "assets",
+          "x": 16,
+          "y": 48,
+          "w": 500,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "—",
+          "x": 900,
+          "y": 48,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Folder",
+          "x": 1100,
+          "y": 48,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "2026-03-28 09:15",
+          "x": 1350,
+          "y": 48,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "README.md",
+          "x": 16,
+          "y": 82,
+          "w": 500,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "4.2 KB",
+          "x": 900,
+          "y": 82,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Markdown",
+          "x": 1100,
+          "y": 82,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "2026-04-02 08:30",
+          "x": 1350,
+          "y": 82,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "package.json",
+          "x": 16,
+          "y": 116,
+          "w": 500,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "1.8 KB",
+          "x": 900,
+          "y": 116,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "JSON",
+          "x": 1100,
+          "y": 116,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "2026-03-30 16:45",
+          "x": 1350,
+          "y": 116,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "index.html",
+          "x": 16,
+          "y": 150,
+          "w": 500,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "12.6 KB",
+          "x": 900,
+          "y": 150,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "HTML",
+          "x": 1100,
+          "y": 150,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "2026-04-01 11:02",
+          "x": 1350,
+          "y": 150,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "styles.css",
+          "x": 16,
+          "y": 184,
+          "w": 500,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "8.3 KB",
+          "x": 900,
+          "y": 184,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "CSS",
+          "x": 1100,
+          "y": 184,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "2026-03-29 13:58",
+          "x": 1350,
+          "y": 184,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "config.yaml",
+          "x": 16,
+          "y": 218,
+          "w": 500,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "956 B",
+          "x": 900,
+          "y": 218,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "YAML",
+          "x": 1100,
+          "y": 218,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "2026-03-25 10:30",
+          "x": 1350,
+          "y": 218,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "LICENSE",
+          "x": 16,
+          "y": 252,
+          "w": 500,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "1.1 KB",
+          "x": 900,
+          "y": 252,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Text",
+          "x": 1100,
+          "y": 252,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "2026-02-14 09:00",
+          "x": 1350,
+          "y": 252,
+          "w": 200,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 1044,
+      "w": 1920,
+      "h": 36,
+      "elements": [
+        {
+          "type": "text",
+          "text": "8 items  •  2 folders, 6 files  •  29.0 KB total",
+          "x": 16,
+          "y": 8,
+          "w": 400,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "312 GB free of 500 GB",
+          "x": 1720,
+          "y": 8,
+          "w": 180,
+          "h": 20
+        }
+      ]
+    }
+  ]
+}

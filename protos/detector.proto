@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+// VizDOM remote detector service (ADR-017).
+// Wraps a DetectorBackend (UIED / YOLO / OmniParser) behind gRPC so a warm,
+// GPU-resident model server can serve many lightweight clients.
+package visualdom.detector.v1;
+
+service Detector {
+  // Detect UI elements in a single screenshot.
+  rpc Detect(DetectRequest) returns (DetectResponse);
+  // Liveness/readiness + which backend/model is loaded.
+  rpc HealthCheck(HealthRequest) returns (HealthResponse);
+}
+
+message BBox {
+  int32 x1 = 1;
+  int32 y1 = 2;
+  int32 x2 = 3;
+  int32 y2 = 4;
+}
+
+// Mirrors visual_dom.cv.detectors.base.Detection. Field numbers are the
+// versioned contract — never renumber; only append new fields.
+message Detection {
+  BBox bounds = 1;
+  string visual_type = 2;
+  double confidence = 3;
+  optional string text = 4;
+  optional bool interactable = 5;
+  string source = 6;
+}
+
+message DetectParams {
+  // OmniParser: fold in client OCR / tune detection. Optional; server defaults apply.
+  optional bool text_ensemble = 1;
+  optional double box_threshold = 2;
+}
+
+message DetectRequest {
+  bytes image = 1;              // encoded image bytes
+  string image_format = 2;      // "png" (default) | "jpeg"
+  DetectParams params = 3;
+  string request_id = 4;        // correlation id for cross-service tracing
+}
+
+message DetectResponse {
+  repeated Detection detections = 1;
+  string backend = 2;           // e.g. "omniparser"
+  string request_id = 3;
+  double infer_ms = 4;          // server-side inference time (ms)
+}
+
+message HealthRequest {}
+
+message HealthResponse {
+  bool ready = 1;
+  string backend = 2;
+  string model_info = 3;
+}

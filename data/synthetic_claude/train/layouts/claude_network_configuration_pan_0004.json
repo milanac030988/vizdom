@@ -1,0 +1,380 @@
+{
+  "title": "Network Configuration",
+  "theme": "light",
+  "elements": [
+    {
+      "type": "container",
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 56,
+      "elements": [
+        {
+          "type": "icon",
+          "icon": "menu",
+          "x": 16,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "Network Configuration",
+          "x": 56,
+          "y": 14,
+          "w": 260,
+          "h": 28
+        },
+        {
+          "type": "icon",
+          "icon": "search",
+          "x": 1832,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "settings",
+          "x": 1868,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "user",
+          "x": 1880,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 56,
+      "w": 280,
+      "h": 1024,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Network Interfaces",
+          "x": 20,
+          "y": 72,
+          "w": 240,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 100,
+          "w": 240,
+          "h": 1
+        },
+        {
+          "type": "button",
+          "text": "Ethernet (eth0)",
+          "x": 16,
+          "y": 112,
+          "w": 248,
+          "h": 38
+        },
+        {
+          "type": "button",
+          "text": "Wi-Fi (wlan0)",
+          "x": 16,
+          "y": 158,
+          "w": 248,
+          "h": 38
+        },
+        {
+          "type": "button",
+          "text": "Loopback (lo)",
+          "x": 16,
+          "y": 204,
+          "w": 248,
+          "h": 38
+        },
+        {
+          "type": "button",
+          "text": "VPN (tun0)",
+          "x": 16,
+          "y": 250,
+          "w": 248,
+          "h": 38
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 280,
+      "y": 56,
+      "w": 1640,
+      "h": 1024,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Ethernet (eth0) — IPv4 Configuration",
+          "x": 320,
+          "y": 80,
+          "w": 450,
+          "h": 26
+        },
+        {
+          "type": "separator",
+          "x": 320,
+          "y": 116,
+          "w": 1560,
+          "h": 1
+        },
+        {
+          "type": "toggle",
+          "text": "Enable Interface",
+          "x": 320,
+          "y": 134,
+          "w": 160,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "Method",
+          "x": 320,
+          "y": 180,
+          "w": 100,
+          "h": 18
+        },
+        {
+          "type": "dropdown",
+          "text": "Manual",
+          "x": 320,
+          "y": 202,
+          "w": 280,
+          "h": 32
+        },
+        {
+          "type": "text",
+          "text": "IP Address",
+          "x": 320,
+          "y": 254,
+          "w": 120,
+          "h": 18
+        },
+        {
+          "type": "input_field",
+          "text": "192.168.1.100",
+          "x": 320,
+          "y": 276,
+          "w": 280,
+          "h": 32
+        },
+        {
+          "type": "text",
+          "text": "Subnet Mask",
+          "x": 620,
+          "y": 254,
+          "w": 130,
+          "h": 18
+        },
+        {
+          "type": "input_field",
+          "text": "255.255.255.0",
+          "x": 620,
+          "y": 276,
+          "w": 280,
+          "h": 32
+        },
+        {
+          "type": "text",
+          "text": "Default Gateway",
+          "x": 920,
+          "y": 254,
+          "w": 150,
+          "h": 18
+        },
+        {
+          "type": "input_field",
+          "text": "192.168.1.1",
+          "x": 920,
+          "y": 276,
+          "w": 280,
+          "h": 32
+        },
+        {
+          "type": "separator",
+          "x": 320,
+          "y": 330,
+          "w": 1560,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "DNS Settings",
+          "x": 320,
+          "y": 350,
+          "w": 140,
+          "h": 22
+        },
+        {
+          "type": "checkbox",
+          "text": "Obtain DNS server address automatically",
+          "x": 320,
+          "y": 384,
+          "w": 320,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Preferred DNS Server",
+          "x": 320,
+          "y": 420,
+          "w": 180,
+          "h": 18
+        },
+        {
+          "type": "input_field",
+          "text": "8.8.8.8",
+          "x": 320,
+          "y": 442,
+          "w": 280,
+          "h": 32
+        },
+        {
+          "type": "text",
+          "text": "Alternate DNS Server",
+          "x": 620,
+          "y": 420,
+          "w": 180,
+          "h": 18
+        },
+        {
+          "type": "input_field",
+          "text": "8.8.4.4",
+          "x": 620,
+          "y": 442,
+          "w": 280,
+          "h": 32
+        },
+        {
+          "type": "separator",
+          "x": 320,
+          "y": 496,
+          "w": 1560,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Advanced Options",
+          "x": 320,
+          "y": 516,
+          "w": 180,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "MTU",
+          "x": 320,
+          "y": 554,
+          "w": 60,
+          "h": 18
+        },
+        {
+          "type": "input_field",
+          "text": "1500",
+          "x": 320,
+          "y": 576,
+          "w": 180,
+          "h": 32
+        },
+        {
+          "type": "text",
+          "text": "MAC Address",
+          "x": 520,
+          "y": 554,
+          "w": 120,
+          "h": 18
+        },
+        {
+          "type": "input_field",
+          "text": "AA:BB:CC:DD:EE:FF",
+          "x": 520,
+          "y": 576,
+          "w": 280,
+          "h": 32
+        },
+        {
+          "type": "text",
+          "text": "Metric",
+          "x": 820,
+          "y": 554,
+          "w": 80,
+          "h": 18
+        },
+        {
+          "type": "input_field",
+          "text": "100",
+          "x": 820,
+          "y": 576,
+          "w": 180,
+          "h": 32
+        },
+        {
+          "type": "checkbox",
+          "text": "Use as default route",
+          "x": 320,
+          "y": 626,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "Enable DHCP fallback",
+          "x": 540,
+          "y": 626,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 320,
+          "y": 668,
+          "w": 1560,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Status: Connected — 1 Gbps",
+          "x": 320,
+          "y": 688,
+          "w": 280,
+          "h": 18
+        },
+        {
+          "type": "button",
+          "text": "Apply",
+          "x": 1680,
+          "y": 688,
+          "w": 100,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Cancel",
+          "x": 1560,
+          "y": 688,
+          "w": 100,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Reset",
+          "x": 1440,
+          "y": 688,
+          "w": 100,
+          "h": 36
+        }
+      ]
+    }
+  ]
+}

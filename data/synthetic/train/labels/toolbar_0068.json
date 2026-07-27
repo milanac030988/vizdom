@@ -1,0 +1,309 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        76
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E10",
+        "E11",
+        "E2",
+        "E3",
+        "E4",
+        "E6",
+        "E8",
+        "E9",
+        "E5",
+        "E7"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        14,
+        10,
+        69,
+        65
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        83,
+        10,
+        138,
+        65
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        152,
+        10,
+        207,
+        65
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        221,
+        7,
+        222,
+        9
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        235,
+        10,
+        290,
+        65
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        304,
+        7,
+        305,
+        9
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        318,
+        10,
+        373,
+        65
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        387,
+        10,
+        442,
+        65
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        1746,
+        9,
+        1902,
+        67
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Download",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        1612,
+        9,
+        1736,
+        67
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Import",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        36,
+        112,
+        260,
+        137
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Document Editor"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        36,
+        175,
+        431,
+        200
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "sed eiusmod adipiscing elit do consectetur"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        36,
+        211,
+        372,
+        236
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "ipsum adipiscing Lorem elit do amet"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        36,
+        247,
+        390,
+        272
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "sed amet do adipiscing eiusmod dolor"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        36,
+        283,
+        319,
+        303
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "sit dolor do consectetur Lorem"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        36,
+        319,
+        355,
+        344
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "sed Lorem tempor dolor elit ipsum"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        36,
+        355,
+        438,
+        380
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "eiusmod adipiscing amet do consectetur sit"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        36,
+        391,
+        319,
+        416
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "adipiscing sed dolor Lorem elit"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        36,
+        427,
+        321,
+        452
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "elit tempor adipiscing eiusmod"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        36,
+        463,
+        520,
+        488
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "eiusmod sit tempor elit do Lorem ipsum consectetur"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        36,
+        499,
+        286,
+        524
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "eiusmod adipiscing elit sed"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        36,
+        535,
+        422,
+        560
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "tempor eiusmod elit do amet ipsum dolor"
+    }
+  ],
+  "stats": {
+    "text_detected": 20,
+    "uied_detected": 23,
+    "final_count": 23
+  },
+  "source": "synthetic"
+}

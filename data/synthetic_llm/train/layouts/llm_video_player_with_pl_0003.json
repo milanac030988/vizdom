@@ -1,0 +1,120 @@
+{
+  "title": "Video Player",
+  "theme": "light",
+  "elements": [
+    {
+      "type": "text",
+      "text": "Video Player",
+      "x": 10,
+      "y": 10,
+      "w": 200,
+      "h": 20
+    },
+    {
+      "type": "container",
+      "x": 10,
+      "y": 40,
+      "w": 1900,
+      "h": 100
+    },
+    {
+      "type": "button",
+      "text": "Play",
+      "x": 20,
+      "y": 60,
+      "w": 80,
+      "h": 30
+    },
+    {
+      "type": "button",
+      "text": "Pause",
+      "x": 110,
+      "y": 60,
+      "w": 80,
+      "h": 30
+    },
+    {
+      "type": "separator",
+      "x": 10,
+      "y": 100,
+      "w": 1900,
+      "h": 2
+    },
+    {
+      "type": "container",
+      "x": 10,
+      "y": 110,
+      "w": 1900,
+      "h": 100
+    },
+    {
+      "type": "text",
+      "text": "Current Video:",
+      "x": 20,
+      "y": 120,
+      "w": 200,
+      "h": 16
+    },
+    {
+      "type": "dropdown",
+      "text": "Video Options",
+      "x": 230,
+      "y": 120,
+      "w": 100,
+      "h": 30
+    },
+    {
+      "type": "separator",
+      "x": 10,
+      "y": 140,
+      "w": 1900,
+      "h": 2
+    },
+    {
+      "type": "container",
+      "x": 10,
+      "y": 150,
+      "w": 100,
+      "h": 500
+    },
+    {
+      "type": "text",
+      "text": "Playlist:",
+      "x": 20,
+      "y": 160,
+      "w": 80,
+      "h": 16
+    },
+    {
+      "type": "button",
+      "text": "+ Add Video",
+      "x": 20,
+      "y": 190,
+      "w": 100,
+      "h": 30
+    },
+    {
+      "type": "container",
+      "x": 120,
+      "y": 150,
+      "w": 1800,
+      "h": 500
+    },
+    {
+      "type": "text",
+      "text": "Video List:",
+      "x": 130,
+      "y": 160,
+      "w": 200,
+      "h": 16
+    },
+    {
+      "type": "button",
+      "text": "- Remove Video",
+      "x": 1300,
+      "y": 190,
+      "w": 100,
+      "h": 30
+    }
+  ]
+}

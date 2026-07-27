@@ -1,0 +1,646 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        79
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3",
+        "E5",
+        "E4",
+        "E2",
+        "E6",
+        "E7"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        18,
+        18,
+        61,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        79,
+        25,
+        221,
+        50
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dashboard",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1767,
+        28,
+        1848,
+        54
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Projects",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1613,
+        28,
+        1705,
+        54
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Analytics",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1515,
+        28,
+        1583,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Admin",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1417,
+        28,
+        1473,
+        48
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Users",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        27,
+        108,
+        385,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E10",
+        "E9"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        45,
+        126,
+        138,
+        144
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Total Users",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        45,
+        165,
+        109,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "45%",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        403,
+        108,
+        761,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E12",
+        "E13"
+      ]
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        421,
+        126,
+        538,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Avg Response",
+      "parent_id": "E11"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        421,
+        165,
+        503,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "100%",
+      "parent_id": "E11"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        779,
+        108,
+        1137,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E15",
+        "E16"
+      ]
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        797,
+        126,
+        887,
+        148
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disk Space",
+      "parent_id": "E14"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        797,
+        165,
+        851,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "856",
+      "parent_id": "E14"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        1155,
+        108,
+        1513,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E19",
+        "E18"
+      ]
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        1173,
+        126,
+        1280,
+        148
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Errors Today",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        1173,
+        165,
+        1304,
+        200
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.2 Gbps",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        1531,
+        108,
+        1889,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E22",
+        "E21"
+      ]
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1549,
+        126,
+        1676,
+        144
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active Sessions",
+      "parent_id": "E20"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        1549,
+        165,
+        1630,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1,234",
+      "parent_id": "E20"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        27,
+        270,
+        207,
+        299
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Recent Activity"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        41,
+        330,
+        118,
+        351
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Category"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        663,
+        330,
+        697,
+        348
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Size"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        1285,
+        330,
+        1303,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "ID"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        41,
+        375,
+        81,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "4561"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        663,
+        375,
+        699,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "45%"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        1285,
+        375,
+        1329,
+        395
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3,421"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        27,
+        408,
+        1893,
+        410
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        41,
+        418,
+        81,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "9277"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        663,
+        418,
+        722,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "128 GB"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        1285,
+        418,
+        1353,
+        436
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        27,
+        451,
+        1893,
+        453
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        41,
+        461,
+        81,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "8161"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        663,
+        461,
+        755,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        1285,
+        461,
+        1365,
+        479
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        27,
+        494,
+        1893,
+        496
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        41,
+        504,
+        81,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "4557"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        663,
+        504,
+        754,
+        522
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Connected"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        1285,
+        504,
+        1355,
+        526
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        27,
+        537,
+        1893,
+        539
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        41,
+        547,
+        81,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "6297"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        663,
+        547,
+        743,
+        565
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        1285,
+        547,
+        1365,
+        565
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        27,
+        580,
+        1893,
+        582
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        41,
+        590,
+        81,
+        607
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1732"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        663,
+        590,
+        714,
+        608
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        1285,
+        590,
+        1355,
+        612
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        27,
+        623,
+        1893,
+        625
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    }
+  ],
+  "stats": {
+    "text_detected": 38,
+    "uied_detected": 50,
+    "final_count": 50
+  },
+  "source": "synthetic"
+}

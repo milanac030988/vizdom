@@ -1,0 +1,372 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        27,
+        21,
+        148,
+        56
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Settings"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        36,
+        99,
+        206,
+        124
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notifications"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        54,
+        149,
+        170,
+        175
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Expiry Date"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1704,
+        146,
+        1744,
+        166
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        54,
+        203,
+        151,
+        224
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1740,
+        200,
+        1768,
+        228
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        54,
+        257,
+        121,
+        277
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Owner"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        1740,
+        254,
+        1768,
+        282
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        36,
+        311,
+        1884,
+        313
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        36,
+        338,
+        150,
+        363
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Network"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        54,
+        388,
+        147,
+        409
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Modified"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        1704,
+        385,
+        1744,
+        405
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        54,
+        442,
+        118,
+        463
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Phone"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        1740,
+        439,
+        1768,
+        467
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        54,
+        496,
+        157,
+        516
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Username"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        1740,
+        493,
+        1768,
+        521
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        54,
+        550,
+        121,
+        570
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Owner"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        1704,
+        547,
+        1744,
+        567
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        54,
+        604,
+        117,
+        624
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Status"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1704,
+        601,
+        1744,
+        621
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        36,
+        658,
+        1884,
+        660
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        36,
+        685,
+        115,
+        710
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Audio"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        54,
+        735,
+        147,
+        756
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Modified"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        1704,
+        732,
+        1744,
+        752
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        54,
+        789,
+        121,
+        809
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Owner"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        1740,
+        786,
+        1768,
+        814
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        54,
+        843,
+        104,
+        864
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Time"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        1704,
+        840,
+        1744,
+        860
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        36,
+        897,
+        1884,
+        899
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        1740,
+        999,
+        1884,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        1578,
+        999,
+        1722,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel"
+    }
+  ],
+  "stats": {
+    "text_detected": 17,
+    "uied_detected": 31,
+    "final_count": 31
+  },
+  "source": "synthetic"
+}

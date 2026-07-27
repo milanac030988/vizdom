@@ -1,0 +1,831 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        79
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3",
+        "E7",
+        "E8",
+        "E2",
+        "E4",
+        "E5",
+        "E6"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        18,
+        18,
+        61,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        79,
+        25,
+        221,
+        50
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dashboard",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1823,
+        28,
+        1871,
+        54
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Help",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1725,
+        28,
+        1781,
+        48
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Users",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1627,
+        28,
+        1672,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Files",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1417,
+        28,
+        1547,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notifications",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        1277,
+        28,
+        1378,
+        53
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Messages",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        0,
+        79,
+        277,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E11",
+        "E12",
+        "E10",
+        "E13"
+      ]
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        27,
+        108,
+        106,
+        133
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Reports",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        27,
+        158,
+        139,
+        179
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dashboard",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        27,
+        208,
+        109,
+        233
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Support",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        27,
+        258,
+        72,
+        279
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Files",
+      "parent_id": "E9"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        304,
+        108,
+        687,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E16",
+        "E15"
+      ]
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        322,
+        126,
+        383,
+        148
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Uptime",
+      "parent_id": "E14"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        322,
+        165,
+        453,
+        200
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.2 Gbps",
+      "parent_id": "E14"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        705,
+        108,
+        1088,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E18",
+        "E19"
+      ]
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        723,
+        126,
+        816,
+        144
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Total Users",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        723,
+        165,
+        741,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "0",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        1106,
+        108,
+        1489,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E21",
+        "E22"
+      ]
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1124,
+        126,
+        1251,
+        144
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active Sessions",
+      "parent_id": "E20"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        1124,
+        165,
+        1188,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "45%",
+      "parent_id": "E20"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        1507,
+        108,
+        1890,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E25",
+        "E24"
+      ]
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        1525,
+        126,
+        1596,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Memory",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        1525,
+        165,
+        1624,
+        199
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "7 Days",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        304,
+        270,
+        484,
+        299
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Recent Activity"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        318,
+        330,
+        369,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Status"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        715,
+        330,
+        762,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Score"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        1112,
+        330,
+        1166,
+        348
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Action"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        1509,
+        330,
+        1543,
+        348
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Size"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        318,
+        375,
+        358,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "7072"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        715,
+        375,
+        757,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        1112,
+        375,
+        1132,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "12"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        1509,
+        375,
+        1581,
+        397
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.2 Gbps"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        304,
+        408,
+        1893,
+        410
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        318,
+        418,
+        358,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "4796"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        715,
+        418,
+        772,
+        436
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Offline"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        1112,
+        418,
+        1156,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "42ms"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        1509,
+        418,
+        1577,
+        436
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        304,
+        451,
+        1893,
+        453
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        318,
+        461,
+        358,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "4847"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        715,
+        461,
+        770,
+        482
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "7 Days"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        1112,
+        461,
+        1171,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "128 GB"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        1509,
+        461,
+        1579,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Pending"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        304,
+        494,
+        1893,
+        496
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        318,
+        504,
+        358,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "5301"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        715,
+        504,
+        795,
+        522
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        1112,
+        504,
+        1162,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "99.9%"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        1509,
+        504,
+        1589,
+        522
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        304,
+        537,
+        1893,
+        539
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        318,
+        547,
+        358,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3695"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        715,
+        547,
+        725,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "0"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        1112,
+        547,
+        1132,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "23"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        1509,
+        547,
+        1529,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "23"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        304,
+        580,
+        1893,
+        582
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        318,
+        590,
+        358,
+        607
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "5701"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        715,
+        590,
+        772,
+        608
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Offline"
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        1112,
+        590,
+        1164,
+        612
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Ready"
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        1509,
+        590,
+        1581,
+        612
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.2 Gbps"
+    },
+    {
+      "id": "E64",
+      "bounds": [
+        304,
+        623,
+        1893,
+        625
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E65",
+      "bounds": [
+        318,
+        633,
+        358,
+        650
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "9948"
+    },
+    {
+      "id": "E66",
+      "bounds": [
+        715,
+        633,
+        786,
+        655
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E67",
+      "bounds": [
+        1112,
+        633,
+        1148,
+        650
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "45%"
+    },
+    {
+      "id": "E68",
+      "bounds": [
+        1509,
+        633,
+        1580,
+        655
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E69",
+      "bounds": [
+        304,
+        666,
+        1893,
+        668
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    }
+  ],
+  "stats": {
+    "text_detected": 52,
+    "uied_detected": 65,
+    "final_count": 65
+  },
+  "source": "synthetic"
+}

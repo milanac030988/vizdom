@@ -47,12 +47,16 @@ class TextElement:
 class TextDetector:
     """Detect and extract text from GUI screenshots."""
 
+    # Images below this height get upscaled for better OCR on small text
+    UPSCALE_THRESHOLD = 1500
+
     def __init__(
         self,
         ocr_engine: str = "easyocr",
         languages: List[str] = None,
-        confidence_threshold: float = 0.5,
-        gpu: bool = True
+        confidence_threshold: float = 0.2,
+        gpu: bool = True,
+        upscale: bool = True,
     ):
         """
         Initialize text detector.
@@ -62,11 +66,13 @@ class TextDetector:
             languages: List of language codes (default: ["en"])
             confidence_threshold: Minimum confidence to accept detection
             gpu: Use GPU acceleration if available
+            upscale: Auto-upscale small images for better OCR accuracy
         """
         self.ocr_engine = ocr_engine
         self.languages = languages or ["en"]
         self.confidence_threshold = confidence_threshold
         self.gpu = gpu
+        self.upscale = upscale
         self._engine = None
         self._text_counter = 0
 
@@ -74,6 +80,125 @@ class TextDetector:
         """Generate next text element ID."""
         self._text_counter += 1
         return f"T{self._text_counter}"
+
+    def _enhance_for_ocr(self, image: np.ndarray) -> np.ndarray:
+        """
+        Enhance image contrast for better OCR on low-contrast text.
+
+        Applies CLAHE (Contrast Limited Adaptive Histogram Equalization)
+        to improve readability of gray text on white/light backgrounds.
+        """
+        # Convert to LAB color space for luminance-only enhancement
+        lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
+        l_channel, a_channel, b_channel = cv2.split(lab)
+
+        # Apply CLAHE to luminance channel
+        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+        l_enhanced = clahe.apply(l_channel)
+
+        # Merge back
+        enhanced_lab = cv2.merge([l_enhanced, a_channel, b_channel])
+        enhanced = cv2.cvtColor(enhanced_lab, cv2.COLOR_LAB2BGR)
+
+        return enhanced
+
+    def _retry_low_confidence_with_tesseract(
+        self,
+        image: np.ndarray,
+        results: List[TextElement],
+        scale_factor: float,
+    ) -> List[TextElement]:
+        """
+        Re-OCR low-confidence EasyOCR detections using Tesseract.
+
+        EasyOCR is good at finding text regions but sometimes can't read
+        certain fonts. Tesseract often handles system/custom fonts better.
+
+        Args:
+            image: The upscaled BGR image (same as what EasyOCR processed)
+            results: EasyOCR results with bounds already scaled back to original
+            scale_factor: The upscale factor applied to the image
+        """
+        try:
+            import os
+            tesseract_paths = [
+                r"C:\Program Files\Tesseract-OCR",
+                r"C:\Program Files (x86)\Tesseract-OCR",
+                r"D:\Program Files\Tesseract-OCR",
+            ]
+            tesseract_exe = None
+            for base in tesseract_paths:
+                exe = os.path.join(base, "tesseract.exe")
+                if os.path.exists(exe):
+                    tessdata = os.path.join(base, "tessdata")
+                    if os.path.exists(tessdata):
+                        os.environ["TESSDATA_PREFIX"] = tessdata
+                    tesseract_exe = exe
+                    break
+
+            if not tesseract_exe:
+                return results
+
+            import pytesseract
+            pytesseract.pytesseract.tesseract_cmd = tesseract_exe
+        except ImportError:
+            return results
+
+        retry_count = 0
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        img_h, img_w = gray.shape[:2]
+
+        # Retry threshold — re-OCR anything below this confidence
+        retry_threshold = 0.5
+
+        for elem in results:
+            if elem.confidence >= retry_threshold:
+                continue
+
+            # Convert bounds back to upscaled image coordinates
+            if scale_factor > 1.0:
+                x1 = int(elem.bounds[0] * scale_factor)
+                y1 = int(elem.bounds[1] * scale_factor)
+                x2 = int(elem.bounds[2] * scale_factor)
+                y2 = int(elem.bounds[3] * scale_factor)
+            else:
+                x1, y1, x2, y2 = elem.bounds
+
+            # Add proportional padding
+            rw = x2 - x1
+            rh = y2 - y1
+            pad_x = max(4, int(rw * 0.1))
+            pad_y = max(4, int(rh * 0.2))
+            x1 = max(0, x1 - pad_x)
+            y1 = max(0, y1 - pad_y)
+            x2 = min(img_w, x2 + pad_x)
+            y2 = min(img_h, y2 + pad_y)
+
+            region = gray[y1:y2, x1:x2]
+            if region.size == 0 or region.shape[0] < 5 or region.shape[1] < 5:
+                continue
+
+            # Run tesseract on this region
+            try:
+                tess_text = pytesseract.image_to_string(
+                    region, config='--psm 7'  # Single line mode
+                ).strip()
+
+                # Clean up tesseract output (remove trailing |, \n, etc.)
+                tess_text = tess_text.replace('|', '').replace('\n', ' ').strip()
+
+                if tess_text and len(tess_text) >= 1:
+                    elem.text = tess_text
+                    # Boost confidence so it survives the filter
+                    elem.confidence = max(elem.confidence, 0.3)
+                    retry_count += 1
+            except Exception:
+                continue
+
+        if retry_count > 0:
+            print(f"  Tesseract re-OCR improved {retry_count} low-confidence detections")
+
+        return results
 
     def _init_engine(self):
         """Lazy initialization of OCR engine."""
@@ -175,6 +300,21 @@ class TextDetector:
         if image is None:
             raise ValueError("Could not load image")
 
+        # Enhance contrast for low-contrast text (gray on white, etc.)
+        image = self._enhance_for_ocr(image)
+
+        # Upscale small images for better OCR accuracy on small text
+        scale_factor = 1.0
+        h, w = image.shape[:2]
+        if self.upscale and h < self.UPSCALE_THRESHOLD:
+            scale_factor = self.UPSCALE_THRESHOLD / h
+            # Cap at 3x to avoid excessive memory usage
+            scale_factor = min(scale_factor, 3.0)
+            new_w = int(w * scale_factor)
+            new_h = int(h * scale_factor)
+            image = cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_CUBIC)
+            print(f"  OCR upscale: {w}x{h} -> {new_w}x{new_h} ({scale_factor:.1f}x)")
+
         # Detect based on engine
         if self.ocr_engine == "easyocr":
             results = self._detect_easyocr(image)
@@ -184,6 +324,21 @@ class TextDetector:
             results = self._detect_tesseract(image)
         else:
             results = []
+
+        # Scale bounding boxes back to original coordinates
+        if scale_factor > 1.0:
+            for r in results:
+                x1, y1, x2, y2 = r.bounds
+                r.bounds = (
+                    int(x1 / scale_factor),
+                    int(y1 / scale_factor),
+                    int(x2 / scale_factor),
+                    int(y2 / scale_factor),
+                )
+
+        # For EasyOCR: re-OCR low confidence regions with Tesseract
+        if self.ocr_engine == "easyocr":
+            results = self._retry_low_confidence_with_tesseract(image, results, scale_factor)
 
         # Filter by confidence
         results = [r for r in results if r.confidence >= self.confidence_threshold]

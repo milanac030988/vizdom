@@ -1,0 +1,174 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        20,
+        10,
+        155,
+        31
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Login to My App"
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        20,
+        40,
+        120,
+        70
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3"
+      ]
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        30,
+        60,
+        95,
+        74
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Username:",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        140,
+        58,
+        340,
+        86
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        20,
+        100,
+        120,
+        130
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E6"
+      ]
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        30,
+        118,
+        91,
+        132
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password:",
+      "parent_id": "E5"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        140,
+        116,
+        340,
+        144
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        30,
+        150,
+        140,
+        166
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Remember me"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        20,
+        180,
+        120,
+        210
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        30,
+        220,
+        110,
+        256
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Login"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        130,
+        230,
+        140,
+        232
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        150,
+        220,
+        250,
+        256
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Forgot password?"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        30,
+        280,
+        230,
+        300
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Select..."
+    }
+  ],
+  "stats": {
+    "text_detected": 7,
+    "uied_detected": 13,
+    "final_count": 13
+  },
+  "source": "synthetic",
+  "layout_title": "My App",
+  "layout_theme": "light"
+}

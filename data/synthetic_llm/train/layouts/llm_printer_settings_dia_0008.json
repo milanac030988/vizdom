@@ -1,0 +1,142 @@
+{
+  "title": "Printer Settings",
+  "theme": "light",
+  "elements": [
+    {
+      "type": "container",
+      "text": "",
+      "x": 20,
+      "y": 50,
+      "w": 1820,
+      "h": 1000
+    },
+    {
+      "type": "text",
+      "text": "Printer Settings",
+      "x": 30,
+      "y": 80,
+      "w": 150,
+      "h": 20
+    },
+    {
+      "type": "separator",
+      "text": "",
+      "x": 10,
+      "y": 110,
+      "w": 1820,
+      "h": 2
+    },
+    {
+      "type": "container",
+      "text": "",
+      "x": 30,
+      "y": 120,
+      "w": 1820,
+      "h": 300
+    },
+    {
+      "type": "text",
+      "text": "Printer Name:",
+      "x": 50,
+      "y": 150,
+      "w": 100,
+      "h": 20
+    },
+    {
+      "type": "input_field",
+      "text": "",
+      "x": 200,
+      "y": 160,
+      "w": 250,
+      "h": 28
+    },
+    {
+      "type": "button",
+      "text": "Update",
+      "x": 480,
+      "y": 190,
+      "w": 100,
+      "h": 30
+    },
+    {
+      "type": "separator",
+      "text": "",
+      "x": 10,
+      "y": 220,
+      "w": 1820,
+      "h": 2
+    },
+    {
+      "type": "container",
+      "text": "",
+      "x": 30,
+      "y": 230,
+      "w": 1820,
+      "h": 300
+    },
+    {
+      "type": "text",
+      "text": "Paper Size:",
+      "x": 50,
+      "y": 260,
+      "w": 100,
+      "h": 20
+    },
+    {
+      "type": "dropdown",
+      "text": "",
+      "x": 200,
+      "y": 270,
+      "w": 150,
+      "h": 28
+    },
+    {
+      "type": "button",
+      "text": "Apply",
+      "x": 370,
+      "y": 300,
+      "w": 100,
+      "h": 30
+    },
+    {
+      "type": "separator",
+      "text": "",
+      "x": 10,
+      "y": 330,
+      "w": 1820,
+      "h": 2
+    },
+    {
+      "type": "container",
+      "text": "",
+      "x": 30,
+      "y": 340,
+      "w": 1820,
+      "h": 300
+    },
+    {
+      "type": "text",
+      "text": "Resolution:",
+      "x": 50,
+      "y": 370,
+      "w": 100,
+      "h": 20
+    },
+    {
+      "type": "toggle",
+      "text": "",
+      "x": 200,
+      "y": 380,
+      "w": 150,
+      "h": 30
+    },
+    {
+      "type": "button",
+      "text": "OK",
+      "x": 370,
+      "y": 410,
+      "w": 100,
+      "h": 36
+    }
+  ]
+}

@@ -1,0 +1,748 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        79
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3",
+        "E6",
+        "E2",
+        "E5",
+        "E7",
+        "E4"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        18,
+        18,
+        61,
+        61
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        79,
+        25,
+        221,
+        50
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dashboard",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1809,
+        28,
+        1865,
+        48
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Users",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1697,
+        28,
+        1769,
+        53
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Logout",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1543,
+        28,
+        1635,
+        54
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Analytics",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1445,
+        28,
+        1500,
+        49
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Tasks",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        27,
+        108,
+        480,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E9",
+        "E10"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        45,
+        126,
+        135,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Requests/s",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        45,
+        165,
+        99,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "856",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        498,
+        108,
+        951,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E12",
+        "E13"
+      ]
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        516,
+        126,
+        609,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "CPU Usage",
+      "parent_id": "E11"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        516,
+        165,
+        552,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "23",
+      "parent_id": "E11"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        969,
+        108,
+        1422,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E16",
+        "E15"
+      ]
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        987,
+        126,
+        1058,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Memory",
+      "parent_id": "E14"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        987,
+        165,
+        1069,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "100%",
+      "parent_id": "E14"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        1440,
+        108,
+        1893,
+        234
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E18",
+        "E19"
+      ]
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        1458,
+        126,
+        1585,
+        144
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active Sessions",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        1458,
+        165,
+        1537,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "42ms",
+      "parent_id": "E17"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        27,
+        270,
+        207,
+        299
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Recent Activity"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        41,
+        330,
+        59,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "ID"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        507,
+        330,
+        557,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Name"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        973,
+        330,
+        1024,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Status"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        1439,
+        330,
+        1487,
+        348
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Value"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        41,
+        375,
+        81,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2073"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        507,
+        375,
+        560,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2.4 GB"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        973,
+        375,
+        1065,
+        397
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        1439,
+        375,
+        1498,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "128 GB"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        27,
+        408,
+        1893,
+        410
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        41,
+        418,
+        81,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1368"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        507,
+        418,
+        553,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "100%"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        973,
+        418,
+        1044,
+        440
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        1439,
+        418,
+        1485,
+        435
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "100%"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        27,
+        451,
+        1893,
+        453
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        41,
+        461,
+        81,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "6560"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        507,
+        461,
+        577,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        973,
+        461,
+        1044,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        1439,
+        461,
+        1519,
+        479
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        27,
+        494,
+        1893,
+        496
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        41,
+        504,
+        81,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3241"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        507,
+        504,
+        543,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "45%"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        973,
+        504,
+        1038,
+        522
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Inactive"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        1439,
+        504,
+        1459,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "12"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        27,
+        537,
+        1893,
+        539
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        41,
+        547,
+        81,
+        564
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "9025"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        507,
+        547,
+        580,
+        565
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        973,
+        547,
+        1038,
+        565
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Inactive"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        1439,
+        547,
+        1495,
+        565
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Online"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        27,
+        580,
+        1893,
+        582
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        41,
+        590,
+        81,
+        607
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "7677"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        507,
+        590,
+        551,
+        610
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3,421"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        973,
+        590,
+        1023,
+        608
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        1439,
+        590,
+        1483,
+        610
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1,234"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        27,
+        623,
+        1893,
+        625
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        41,
+        633,
+        81,
+        650
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3705"
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        507,
+        633,
+        577,
+        655
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Pending"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        973,
+        633,
+        1024,
+        651
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        1439,
+        633,
+        1496,
+        651
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Offline"
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        27,
+        666,
+        1893,
+        668
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    }
+  ],
+  "stats": {
+    "text_detected": 47,
+    "uied_detected": 59,
+    "final_count": 59
+  },
+  "source": "synthetic"
+}

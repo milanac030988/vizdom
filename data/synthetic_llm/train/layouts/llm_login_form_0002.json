@@ -1,0 +1,107 @@
+{
+  "title": "My App",
+  "theme": "light",
+  "elements": [
+    {
+      "type": "text",
+      "text": "Login to My App",
+      "x": 20,
+      "y": 10,
+      "w": 240,
+      "h": 24
+    },
+    {
+      "type": "container",
+      "children": [],
+      "x": 20,
+      "y": 40
+    },
+    {
+      "type": "text",
+      "text": "Username:",
+      "x": 30,
+      "y": 60,
+      "w": 100,
+      "h": 16
+    },
+    {
+      "type": "input_field",
+      "text": "",
+      "x": 140,
+      "y": 58,
+      "w": 200,
+      "h": 28
+    },
+    {
+      "type": "container",
+      "children": [],
+      "x": 20,
+      "y": 100
+    },
+    {
+      "type": "text",
+      "text": "Password:",
+      "x": 30,
+      "y": 118,
+      "w": 100,
+      "h": 16
+    },
+    {
+      "type": "input_field",
+      "text": "",
+      "x": 140,
+      "y": 116,
+      "w": 200,
+      "h": 28
+    },
+    {
+      "type": "checkbox",
+      "text": "Remember me",
+      "x": 30,
+      "y": 150,
+      "w": 16,
+      "h": 16
+    },
+    {
+      "type": "container",
+      "children": [],
+      "x": 20,
+      "y": 180
+    },
+    {
+      "type": "button",
+      "text": "Login",
+      "x": 30,
+      "y": 220,
+      "w": 80,
+      "h": 36
+    },
+    {
+      "type": "separator",
+      "x": 130,
+      "y": 230,
+      "w": 1,
+      "h": 10
+    },
+    {
+      "type": "button",
+      "text": "Forgot password?",
+      "x": 150,
+      "y": 220,
+      "w": 100,
+      "h": 36
+    },
+    {
+      "type": "dropdown",
+      "options": [
+        "English",
+        "Spanish"
+      ],
+      "selected": "English",
+      "x": 30,
+      "y": 280,
+      "w": 200,
+      "h": 20
+    }
+  ]
+}

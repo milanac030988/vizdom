@@ -1,0 +1,1110 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        56
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E4",
+        "E3",
+        "E2",
+        "E5",
+        "E6",
+        "E7"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        16,
+        16,
+        40,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        56,
+        14,
+        89,
+        32
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Mail",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        400,
+        12,
+        900,
+        44
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search mail",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        870,
+        16,
+        894,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1840,
+        16,
+        1864,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1880,
+        16,
+        1904,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        0,
+        56,
+        240,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E9",
+        "E13",
+        "E22",
+        "E12",
+        "E17",
+        "E20",
+        "E15",
+        "E10",
+        "E18",
+        "E21",
+        "E19",
+        "E14",
+        "E11",
+        "E16"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        20,
+        72,
+        220,
+        112
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Compose",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        20,
+        132,
+        55,
+        146
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Inbox",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        190,
+        132,
+        206,
+        146
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "24",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        20,
+        164,
+        64,
+        178
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Starred",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        20,
+        196,
+        72,
+        210
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Snoozed",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        20,
+        228,
+        47,
+        242
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Sent",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        20,
+        260,
+        57,
+        274
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Drafts",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        190,
+        260,
+        198,
+        274
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        20,
+        292,
+        54,
+        309
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Spam",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        20,
+        324,
+        53,
+        338
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Trash",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        20,
+        360,
+        220,
+        362
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        20,
+        376,
+        58,
+        390
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Labels",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        20,
+        408,
+        53,
+        422
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Work",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        20,
+        440,
+        72,
+        454
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Personal",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        240,
+        56,
+        250,
+        58
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        241,
+        56,
+        800,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E29",
+        "E36",
+        "E43",
+        "E50",
+        "E57",
+        "E25",
+        "E33",
+        "E40",
+        "E47",
+        "E54",
+        "E61",
+        "E27",
+        "E32",
+        "E53",
+        "E46",
+        "E39",
+        "E60",
+        "E59",
+        "E31",
+        "E38",
+        "E28",
+        "E35",
+        "E42",
+        "E49",
+        "E56",
+        "E48",
+        "E55",
+        "E34",
+        "E52",
+        "E41",
+        "E62",
+        "E45",
+        "E26",
+        "E30",
+        "E37",
+        "E44",
+        "E51",
+        "E58",
+        "E23"
+      ]
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        241,
+        56,
+        800,
+        100
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        256,
+        68,
+        276,
+        88
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        660,
+        64,
+        780,
+        94
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Newest",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        241,
+        100,
+        800,
+        102
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        241,
+        101,
+        800,
+        181
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        256,
+        130,
+        276,
+        150
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        290,
+        112,
+        373,
+        126
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Alice Johnson",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        290,
+        134,
+        471,
+        151
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Project Update - Q2 Planning",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        290,
+        154,
+        598,
+        171
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Hi team, please review the attached Q2 roadmap...",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        720,
+        112,
+        781,
+        126
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "10:42 AM",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        256,
+        181,
+        786,
+        183
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        241,
+        182,
+        800,
+        262
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        256,
+        212,
+        276,
+        232
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        290,
+        194,
+        373,
+        208
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Bob Martinez",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        290,
+        216,
+        461,
+        233
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Re: Design Review Feedback",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        290,
+        236,
+        584,
+        253
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Thanks for the mockups. I have a few notes on...",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        720,
+        194,
+        773,
+        208
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "9:15 AM",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        256,
+        262,
+        786,
+        264
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        241,
+        263,
+        800,
+        343
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        256,
+        293,
+        276,
+        313
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        290,
+        275,
+        334,
+        289
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "GitHub",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        290,
+        297,
+        465,
+        314
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "[visual-dom] PR #47 merged",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        290,
+        317,
+        576,
+        334
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Your pull request has been merged into main...",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        710,
+        275,
+        770,
+        292
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Yesterday",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        256,
+        343,
+        786,
+        345
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        241,
+        344,
+        800,
+        424
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        256,
+        374,
+        276,
+        394
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        290,
+        356,
+        348,
+        370
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Clara Wei",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        290,
+        378,
+        468,
+        395
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Meeting Notes - Sprint Retro",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        290,
+        398,
+        554,
+        415
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Attached are the notes from today's retro...",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        710,
+        356,
+        770,
+        373
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Yesterday",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        256,
+        424,
+        786,
+        426
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        241,
+        425,
+        800,
+        505
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        256,
+        455,
+        276,
+        475
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        290,
+        437,
+        390,
+        451
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Jira Notifications",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        290,
+        459,
+        488,
+        473
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "VDOM-312 moved to In Review",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        290,
+        479,
+        585,
+        493
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "The issue VDOM-312 has been transitioned to...",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        725,
+        437,
+        770,
+        451
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Mar 31",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        800,
+        56,
+        810,
+        58
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E64"
+    },
+    {
+      "id": "E64",
+      "bounds": [
+        801,
+        56,
+        1920,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E72",
+        "E65",
+        "E74",
+        "E76",
+        "E75",
+        "E73",
+        "E79",
+        "E80",
+        "E69",
+        "E66",
+        "E70",
+        "E68",
+        "E67",
+        "E71",
+        "E77",
+        "E78",
+        "E63"
+      ]
+    },
+    {
+      "id": "E65",
+      "bounds": [
+        830,
+        76,
+        1061,
+        98
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Project Update - Q2 Planning",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E66",
+      "bounds": [
+        830,
+        116,
+        1890,
+        118
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E64"
+    },
+    {
+      "id": "E67",
+      "bounds": [
+        830,
+        132,
+        913,
+        146
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Alice Johnson",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E68",
+      "bounds": [
+        830,
+        156,
+        932,
+        171
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "to me, bob, clara",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E69",
+      "bounds": [
+        1700,
+        132,
+        1841,
+        149
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Apr 2, 2026, 10:42 AM",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E70",
+      "bounds": [
+        830,
+        184,
+        1890,
+        186
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E64"
+    },
+    {
+      "id": "E71",
+      "bounds": [
+        830,
+        204,
+        881,
+        219
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Hi team,",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E72",
+      "bounds": [
+        830,
+        234,
+        1228,
+        251
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Please review the attached Q2 roadmap and share your feedback",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E73",
+      "bounds": [
+        830,
+        258,
+        1059,
+        275
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "by end of week. Key priorities include:",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E74",
+      "bounds": [
+        850,
+        290,
+        1105,
+        307
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "- Finalize the CV pipeline integration tests",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E75",
+      "bounds": [
+        850,
+        314,
+        1089,
+        331
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "- Complete SLM advisor benchmarking",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E76",
+      "bounds": [
+        850,
+        338,
+        1093,
+        355
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "- Ship the session-based output feature",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E77",
+      "bounds": [
+        830,
+        378,
+        876,
+        393
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Thanks,",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E78",
+      "bounds": [
+        830,
+        402,
+        858,
+        416
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Alice",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E79",
+      "bounds": [
+        830,
+        460,
+        930,
+        496
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Reply",
+      "parent_id": "E64"
+    },
+    {
+      "id": "E80",
+      "bounds": [
+        946,
+        460,
+        1046,
+        496
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Forward",
+      "parent_id": "E64"
+    }
+  ],
+  "stats": {
+    "text_detected": 54,
+    "uied_detected": 80,
+    "final_count": 80
+  },
+  "source": "synthetic",
+  "layout_title": "Mail",
+  "layout_theme": "light"
+}

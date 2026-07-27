@@ -1,0 +1,511 @@
+{
+  "title": "Calendar & Events",
+  "theme": "light",
+  "elements": [
+    {
+      "type": "container",
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 56,
+      "elements": [
+        {
+          "type": "icon",
+          "icon": "menu",
+          "x": 20,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "Calendar & Events",
+          "x": 60,
+          "y": 14,
+          "w": 220,
+          "h": 28
+        },
+        {
+          "type": "input_field",
+          "text": "Search events...",
+          "x": 740,
+          "y": 12,
+          "w": 400,
+          "h": 32
+        },
+        {
+          "type": "icon",
+          "icon": "search",
+          "x": 1108,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "settings",
+          "x": 1832,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "user",
+          "x": 1872,
+          "y": 16,
+          "w": 24,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 56,
+      "w": 280,
+      "h": 1024,
+      "elements": [
+        {
+          "type": "button",
+          "text": "+ New Event",
+          "x": 20,
+          "y": 76,
+          "w": 240,
+          "h": 38
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 130,
+          "w": 240,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "My Calendars",
+          "x": 20,
+          "y": 148,
+          "w": 160,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "Personal",
+          "x": 20,
+          "y": 180,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "Work",
+          "x": 20,
+          "y": 210,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "Family",
+          "x": 20,
+          "y": 240,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "Holidays",
+          "x": 20,
+          "y": 270,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 306,
+          "w": 240,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "View",
+          "x": 20,
+          "y": 324,
+          "w": 80,
+          "h": 20
+        },
+        {
+          "type": "dropdown",
+          "text": "Month",
+          "x": 20,
+          "y": 354,
+          "w": 240,
+          "h": 32
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 402,
+          "w": 240,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Reminders",
+          "x": 20,
+          "y": 420,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "toggle",
+          "text": "Email notifications",
+          "x": 20,
+          "y": 452,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "toggle",
+          "text": "Push notifications",
+          "x": 20,
+          "y": 484,
+          "w": 200,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 280,
+      "y": 56,
+      "w": 1040,
+      "h": 1024,
+      "elements": [
+        {
+          "type": "text",
+          "text": "April 2026",
+          "x": 310,
+          "y": 76,
+          "w": 200,
+          "h": 28
+        },
+        {
+          "type": "button",
+          "text": "< Prev",
+          "x": 900,
+          "y": 74,
+          "w": 90,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "Today",
+          "x": 1000,
+          "y": 74,
+          "w": 90,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "Next >",
+          "x": 1100,
+          "y": 74,
+          "w": 90,
+          "h": 34
+        },
+        {
+          "type": "separator",
+          "x": 300,
+          "y": 120,
+          "w": 1000,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Sun",
+          "x": 330,
+          "y": 132,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Mon",
+          "x": 472,
+          "y": 132,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Tue",
+          "x": 614,
+          "y": 132,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Wed",
+          "x": 756,
+          "y": 132,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Thu",
+          "x": 898,
+          "y": 132,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Fri",
+          "x": 1040,
+          "y": 132,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Sat",
+          "x": 1182,
+          "y": 132,
+          "w": 100,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 1320,
+      "y": 56,
+      "w": 600,
+      "h": 1024,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Upcoming Events",
+          "x": 1340,
+          "y": 76,
+          "w": 220,
+          "h": 28
+        },
+        {
+          "type": "text",
+          "text": "Today — April 2",
+          "x": 1340,
+          "y": 118,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 1340,
+          "y": 146,
+          "w": 560,
+          "h": 1
+        },
+        {
+          "type": "container",
+          "x": 1340,
+          "y": 158,
+          "w": 560,
+          "h": 70,
+          "elements": [
+            {
+              "type": "text",
+              "text": "09:00 — Team Standup",
+              "x": 1355,
+              "y": 168,
+              "w": 300,
+              "h": 20
+            },
+            {
+              "type": "text",
+              "text": "Conference Room B  •  Work",
+              "x": 1355,
+              "y": 196,
+              "w": 300,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "x": 1340,
+          "y": 238,
+          "w": 560,
+          "h": 70,
+          "elements": [
+            {
+              "type": "text",
+              "text": "12:00 — Lunch with Sarah",
+              "x": 1355,
+              "y": 248,
+              "w": 300,
+              "h": 20
+            },
+            {
+              "type": "text",
+              "text": "Downtown Café  •  Personal",
+              "x": 1355,
+              "y": 276,
+              "w": 300,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "x": 1340,
+          "y": 318,
+          "w": 560,
+          "h": 70,
+          "elements": [
+            {
+              "type": "text",
+              "text": "15:30 — Sprint Review",
+              "x": 1355,
+              "y": 328,
+              "w": 300,
+              "h": 20
+            },
+            {
+              "type": "text",
+              "text": "Zoom Meeting  •  Work",
+              "x": 1355,
+              "y": 356,
+              "w": 300,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "type": "separator",
+          "x": 1340,
+          "y": 404,
+          "w": 560,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Tomorrow — April 3",
+          "x": 1340,
+          "y": 420,
+          "w": 220,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 1340,
+          "y": 448,
+          "w": 560,
+          "h": 1
+        },
+        {
+          "type": "container",
+          "x": 1340,
+          "y": 460,
+          "w": 560,
+          "h": 70,
+          "elements": [
+            {
+              "type": "text",
+              "text": "10:00 — Dentist Appointment",
+              "x": 1355,
+              "y": 470,
+              "w": 320,
+              "h": 20
+            },
+            {
+              "type": "text",
+              "text": "Dr. Miller Clinic  •  Personal",
+              "x": 1355,
+              "y": 498,
+              "w": 300,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "x": 1340,
+          "y": 540,
+          "w": 560,
+          "h": 70,
+          "elements": [
+            {
+              "type": "text",
+              "text": "14:00 — Design Workshop",
+              "x": 1355,
+              "y": 550,
+              "w": 300,
+              "h": 20
+            },
+            {
+              "type": "text",
+              "text": "Room 401  •  Work",
+              "x": 1355,
+              "y": 578,
+              "w": 300,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "type": "separator",
+          "x": 1340,
+          "y": 626,
+          "w": 560,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "April 5",
+          "x": 1340,
+          "y": 642,
+          "w": 140,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 1340,
+          "y": 670,
+          "w": 560,
+          "h": 1
+        },
+        {
+          "type": "container",
+          "x": 1340,
+          "y": 682,
+          "w": 560,
+          "h": 70,
+          "elements": [
+            {
+              "type": "text",
+              "text": "18:00 — Family Dinner",
+              "x": 1355,
+              "y": 692,
+              "w": 300,
+              "h": 20
+            },
+            {
+              "type": "text",
+              "text": "Mom's House  •  Family",
+              "x": 1355,
+              "y": 720,
+              "w": 300,
+              "h": 16
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

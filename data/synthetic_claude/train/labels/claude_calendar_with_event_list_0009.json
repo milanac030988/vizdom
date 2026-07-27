@@ -1,0 +1,879 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        56
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E4",
+        "E3",
+        "E2",
+        "E5",
+        "E6",
+        "E7"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        20,
+        16,
+        44,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        60,
+        14,
+        204,
+        32
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Calendar & Events",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        740,
+        12,
+        1140,
+        44
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search events...",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1108,
+        16,
+        1132,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1832,
+        16,
+        1856,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1872,
+        16,
+        1896,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        0,
+        56,
+        280,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E9",
+        "E18",
+        "E21",
+        "E22",
+        "E12",
+        "E15",
+        "E11",
+        "E14",
+        "E13",
+        "E20",
+        "E10",
+        "E16",
+        "E19",
+        "E17"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        20,
+        76,
+        260,
+        114
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "+ New Event",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        20,
+        130,
+        260,
+        132
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        20,
+        148,
+        104,
+        165
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "My Calendars",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        20,
+        180,
+        98,
+        200
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Personal",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        20,
+        210,
+        80,
+        230
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Work",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        20,
+        240,
+        85,
+        260
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Family",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        20,
+        270,
+        98,
+        290
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Holidays",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        20,
+        306,
+        260,
+        308
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        20,
+        324,
+        49,
+        338
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "View",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        20,
+        354,
+        260,
+        386
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Month",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        20,
+        402,
+        260,
+        404
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        20,
+        420,
+        84,
+        434
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Reminders",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        20,
+        452,
+        175,
+        472
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Email notifications",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        20,
+        484,
+        171,
+        504
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Push notifications",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        280,
+        56,
+        1320,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E25",
+        "E26",
+        "E27",
+        "E28",
+        "E24",
+        "E30",
+        "E32",
+        "E29",
+        "E33",
+        "E31",
+        "E35",
+        "E34"
+      ]
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        310,
+        76,
+        392,
+        98
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "April 2026",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        900,
+        74,
+        990,
+        108
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "< Prev",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        1000,
+        74,
+        1090,
+        108
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Today",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        1100,
+        74,
+        1190,
+        108
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Next >",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        300,
+        120,
+        1300,
+        122
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E23"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        330,
+        132,
+        353,
+        146
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Sun",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        472,
+        132,
+        501,
+        146
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Mon",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        614,
+        132,
+        636,
+        146
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Tue",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        756,
+        132,
+        784,
+        146
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Wed",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        898,
+        132,
+        921,
+        146
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Thu",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        1040,
+        132,
+        1055,
+        146
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Fri",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        1182,
+        132,
+        1201,
+        146
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Sat",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        1320,
+        56,
+        1920,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E40",
+        "E43",
+        "E46",
+        "E52",
+        "E55",
+        "E61",
+        "E53",
+        "E37",
+        "E56",
+        "E48",
+        "E63",
+        "E41",
+        "E42",
+        "E45",
+        "E62",
+        "E47",
+        "E54",
+        "E44",
+        "E50",
+        "E38",
+        "E57",
+        "E39",
+        "E49",
+        "E51",
+        "E58",
+        "E60",
+        "E59"
+      ]
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        1340,
+        76,
+        1479,
+        97
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Upcoming Events",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        1340,
+        118,
+        1439,
+        135
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Today — April 2",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        1340,
+        146,
+        1900,
+        148
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E36"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        1340,
+        158,
+        1900,
+        228
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E36"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        1355,
+        168,
+        1500,
+        185
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "09:00 — Team Standup",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        1355,
+        196,
+        1531,
+        210
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Conference Room B  •  Work",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        1340,
+        238,
+        1900,
+        308
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E36"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        1355,
+        248,
+        1517,
+        262
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "12:00 — Lunch with Sarah",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        1355,
+        276,
+        1527,
+        290
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Downtown Café  •  Personal",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        1340,
+        318,
+        1900,
+        388
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E36"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        1355,
+        328,
+        1494,
+        345
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "15:30 — Sprint Review",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        1355,
+        356,
+        1501,
+        373
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Zoom Meeting  •  Work",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        1340,
+        404,
+        1900,
+        406
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E36"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        1340,
+        420,
+        1465,
+        437
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Tomorrow — April 3",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        1340,
+        448,
+        1900,
+        450
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E36"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        1340,
+        460,
+        1900,
+        530
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E36"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        1355,
+        470,
+        1541,
+        487
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "10:00 — Dentist Appointment",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        1355,
+        498,
+        1521,
+        512
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Dr. Miller Clinic  •  Personal",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        1340,
+        540,
+        1900,
+        610
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E36"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        1355,
+        550,
+        1521,
+        567
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "14:00 — Design Workshop",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        1355,
+        578,
+        1474,
+        592
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Room 401  •  Work",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        1340,
+        626,
+        1900,
+        628
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E36"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        1340,
+        642,
+        1380,
+        659
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "April 5",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        1340,
+        670,
+        1900,
+        672
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E36"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        1340,
+        682,
+        1900,
+        752
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E36"
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        1355,
+        692,
+        1496,
+        709
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "18:00 — Family Dinner",
+      "parent_id": "E36"
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        1355,
+        720,
+        1501,
+        737
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Mom's House  •  Family",
+      "parent_id": "E36"
+    }
+  ],
+  "stats": {
+    "text_detected": 44,
+    "uied_detected": 63,
+    "final_count": 63
+  },
+  "source": "synthetic",
+  "layout_title": "Calendar & Events",
+  "layout_theme": "light"
+}

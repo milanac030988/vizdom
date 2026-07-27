@@ -1,0 +1,731 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        70
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3",
+        "E5",
+        "E4",
+        "E2",
+        "E6"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        20,
+        23,
+        44,
+        47
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        60,
+        20,
+        225,
+        42
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Infotainment System",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        1620,
+        20,
+        1656,
+        37
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "72°F",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1720,
+        20,
+        1785,
+        37
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3:42 PM",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1870,
+        23,
+        1894,
+        47
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        0,
+        70,
+        1920,
+        72
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        0,
+        71,
+        280,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E9",
+        "E10",
+        "E11",
+        "E12",
+        "E13",
+        "E17",
+        "E15",
+        "E16",
+        "E14"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        20,
+        90,
+        260,
+        130
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Navigation",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        20,
+        142,
+        260,
+        182
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Media",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        20,
+        194,
+        260,
+        234
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Phone",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        20,
+        246,
+        260,
+        286
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Vehicle",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        20,
+        298,
+        260,
+        338
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Climate",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        20,
+        360,
+        260,
+        362
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        20,
+        380,
+        125,
+        400
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Bluetooth",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        20,
+        420,
+        99,
+        440
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Wi-Fi",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        20,
+        460,
+        151,
+        480
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Parking Assist",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        280,
+        71,
+        290,
+        73
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E19"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        281,
+        71,
+        1920,
+        631
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E21",
+        "E23",
+        "E26",
+        "E24",
+        "E25",
+        "E28",
+        "E30",
+        "E27",
+        "E29",
+        "E20",
+        "E22",
+        "E18"
+      ]
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        310,
+        90,
+        396,
+        111
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Navigation",
+      "parent_id": "E19"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        310,
+        130,
+        910,
+        164
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E19"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        320,
+        135,
+        344,
+        159
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E19"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        354,
+        130,
+        754,
+        164
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search destination...",
+      "parent_id": "E19"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        940,
+        130,
+        1040,
+        164
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Home",
+      "parent_id": "E19"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        1052,
+        130,
+        1152,
+        164
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Work",
+      "parent_id": "E19"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        1164,
+        130,
+        1284,
+        164
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Favorites",
+      "parent_id": "E19"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        310,
+        190,
+        466,
+        207
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Recent Destinations",
+      "parent_id": "E19"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        310,
+        224,
+        480,
+        241
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "123 Main Street, Springfield",
+      "parent_id": "E19"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        310,
+        254,
+        421,
+        271
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Airport Terminal B",
+      "parent_id": "E19"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        310,
+        284,
+        475,
+        301
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Downtown Parking Garage",
+      "parent_id": "E19"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        281,
+        631,
+        1920,
+        633
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        281,
+        632,
+        1920,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E40",
+        "E34",
+        "E35",
+        "E36",
+        "E37",
+        "E38",
+        "E43",
+        "E45",
+        "E47",
+        "E49",
+        "E51",
+        "E50",
+        "E41",
+        "E33",
+        "E52",
+        "E46",
+        "E39",
+        "E44",
+        "E48",
+        "E42"
+      ]
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        310,
+        652,
+        409,
+        674
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Now Playing",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        310,
+        696,
+        474,
+        718
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Bohemian Rhapsody",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        310,
+        726,
+        502,
+        743
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Queen — A Night at the Opera",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        310,
+        770,
+        390,
+        810
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "⏮",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        402,
+        770,
+        482,
+        810
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "⏸",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        494,
+        770,
+        574,
+        810
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "⏭",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        310,
+        830,
+        357,
+        844
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Volume",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        700,
+        652,
+        900,
+        682
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "FM Radio",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        1100,
+        652,
+        1223,
+        670
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Climate Control",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        1100,
+        696,
+        1137,
+        710
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Driver",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        1100,
+        726,
+        1180,
+        762
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "−",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        1196,
+        730,
+        1232,
+        747
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "72°F",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        1270,
+        726,
+        1350,
+        762
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "+",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        1400,
+        696,
+        1462,
+        713
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Passenger",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        1400,
+        726,
+        1480,
+        762
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "−",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        1496,
+        730,
+        1532,
+        747
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "70°F",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        1570,
+        726,
+        1650,
+        762
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "+",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        1100,
+        785,
+        1228,
+        805
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Seat Heater L",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        1400,
+        785,
+        1530,
+        805
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Seat Heater R",
+      "parent_id": "E32"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        1100,
+        825,
+        1202,
+        845
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Auto Climate",
+      "parent_id": "E32"
+    }
+  ],
+  "stats": {
+    "text_detected": 43,
+    "uied_detected": 52,
+    "final_count": 52
+  },
+  "source": "synthetic",
+  "layout_title": "Car Infotainment",
+  "layout_theme": "dark"
+}

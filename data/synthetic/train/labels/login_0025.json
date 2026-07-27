@@ -1,0 +1,195 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        622,
+        168,
+        1297,
+        911
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E13",
+        "E5",
+        "E7",
+        "E9",
+        "E11",
+        "E3",
+        "E10",
+        "E2",
+        "E12",
+        "E4",
+        "E8",
+        "E6"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        658,
+        204,
+        752,
+        243
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Login",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        658,
+        276,
+        865,
+        301
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Access your account",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        658,
+        339,
+        761,
+        359
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Username",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        658,
+        371,
+        1261,
+        428
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "username",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        658,
+        446,
+        714,
+        467
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Email",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        658,
+        478,
+        1261,
+        535
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "email",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        658,
+        553,
+        755,
+        574
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        658,
+        585,
+        1261,
+        642
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        658,
+        660,
+        842,
+        681
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Confirm Password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        658,
+        692,
+        1261,
+        749
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "confirm password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        658,
+        767,
+        780,
+        795
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Remember me",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        658,
+        817,
+        1261,
+        881
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Sign In",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 12,
+    "uied_detected": 13,
+    "final_count": 13
+  },
+  "source": "synthetic"
+}

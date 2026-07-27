@@ -1,0 +1,199 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        20,
+        10,
+        1900,
+        110
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E4",
+        "E6",
+        "E3",
+        "E2",
+        "E5"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        30,
+        30,
+        116,
+        47
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Task Manager",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        20,
+        60,
+        1900,
+        62
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        20,
+        70,
+        1900,
+        120
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        30,
+        80,
+        91,
+        94
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "New Task:",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        140,
+        80,
+        340,
+        108
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        350,
+        110,
+        500,
+        146
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "+ Add Task"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        20,
+        160,
+        1900,
+        210
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E10",
+        "E9"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        30,
+        170,
+        69,
+        184
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Filters:",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        140,
+        170,
+        290,
+        198
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "All Tasks",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        300,
+        200,
+        400,
+        236
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Clear Filters"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        20,
+        230,
+        1900,
+        232
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        20,
+        240,
+        1900,
+        740
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E14"
+      ]
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        30,
+        250,
+        97,
+        264
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "To-Do List:",
+      "parent_id": "E13"
+    }
+  ],
+  "stats": {
+    "text_detected": 7,
+    "uied_detected": 14,
+    "final_count": 14
+  },
+  "source": "synthetic",
+  "layout_title": "Task Manager",
+  "layout_theme": "light"
+}

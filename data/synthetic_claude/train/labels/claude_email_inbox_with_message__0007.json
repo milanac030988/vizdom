@@ -1,0 +1,1118 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        56
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E4",
+        "E3",
+        "E2",
+        "E5",
+        "E6",
+        "E7"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        20,
+        16,
+        44,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        60,
+        14,
+        93,
+        32
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Mail",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        520,
+        12,
+        920,
+        44
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search mail...",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        888,
+        16,
+        912,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1840,
+        16,
+        1864,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1880,
+        16,
+        1904,
+        40
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        0,
+        56,
+        240,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E9",
+        "E13",
+        "E22",
+        "E12",
+        "E17",
+        "E20",
+        "E15",
+        "E10",
+        "E18",
+        "E21",
+        "E19",
+        "E14",
+        "E11",
+        "E16"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        20,
+        76,
+        220,
+        116
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Compose",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        20,
+        136,
+        55,
+        150
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Inbox",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        190,
+        136,
+        206,
+        150
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "24",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        20,
+        168,
+        64,
+        182
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Starred",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        20,
+        200,
+        72,
+        214
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Snoozed",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        20,
+        232,
+        47,
+        246
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Sent",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        20,
+        264,
+        57,
+        278
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Drafts",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        190,
+        264,
+        198,
+        278
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        20,
+        296,
+        54,
+        313
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Spam",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        20,
+        328,
+        53,
+        342
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Trash",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        20,
+        364,
+        220,
+        366
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E8"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        20,
+        380,
+        58,
+        394
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Labels",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        20,
+        412,
+        53,
+        426
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Work",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        20,
+        444,
+        72,
+        458
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Personal",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        240,
+        56,
+        250,
+        58
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        241,
+        56,
+        1920,
+        106
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E29",
+        "E30",
+        "E27",
+        "E28",
+        "E26",
+        "E31",
+        "E25",
+        "E23"
+      ]
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        261,
+        72,
+        281,
+        92
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E24"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        295,
+        68,
+        375,
+        98
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "All",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        400,
+        68,
+        490,
+        98
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Archive",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        500,
+        68,
+        590,
+        98
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Delete",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        600,
+        68,
+        720,
+        98
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Mark as read",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        740,
+        68,
+        850,
+        98
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Move to",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        1800,
+        72,
+        1866,
+        86
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1-24 of 24",
+      "parent_id": "E24"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        241,
+        106,
+        1920,
+        108
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        241,
+        107,
+        1920,
+        171
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E36",
+        "E38",
+        "E35",
+        "E37",
+        "E34"
+      ]
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        261,
+        130,
+        281,
+        150
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E33"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        300,
+        118,
+        370,
+        132
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Sarah Chen",
+      "parent_id": "E33"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        470,
+        118,
+        1031,
+        135
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Q2 Sprint Planning - Hi team, please review the sprint goals before our meeting tomorrow...",
+      "parent_id": "E33"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        1820,
+        118,
+        1881,
+        132
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "10:42 AM",
+      "parent_id": "E33"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        470,
+        144,
+        563,
+        161
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Planning, Work",
+      "parent_id": "E33"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        261,
+        171,
+        1900,
+        173
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        241,
+        172,
+        1920,
+        236
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E43",
+        "E42",
+        "E45",
+        "E44",
+        "E41"
+      ]
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        261,
+        195,
+        281,
+        215
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E40"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        300,
+        183,
+        386,
+        200
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "DevOps Team",
+      "parent_id": "E40"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        470,
+        183,
+        970,
+        200
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Build #4821 Failed - The nightly build pipeline failed at the integration test stage...",
+      "parent_id": "E40"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        1820,
+        183,
+        1873,
+        197
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "9:15 AM",
+      "parent_id": "E40"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        470,
+        209,
+        547,
+        225
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "CI/CD, Work",
+      "parent_id": "E40"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        261,
+        236,
+        1900,
+        238
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        241,
+        237,
+        1920,
+        301
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E50",
+        "E51",
+        "E49",
+        "E48"
+      ]
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        261,
+        260,
+        281,
+        280
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E47"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        300,
+        248,
+        370,
+        262
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Marcus Lee",
+      "parent_id": "E47"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        470,
+        248,
+        1104,
+        265
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Design Review Feedback - Attached are my notes on the new dashboard mockups. Overall looks great...",
+      "parent_id": "E47"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        1820,
+        248,
+        1880,
+        265
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Yesterday",
+      "parent_id": "E47"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        261,
+        301,
+        1900,
+        303
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        241,
+        302,
+        1920,
+        366
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E56",
+        "E55",
+        "E57",
+        "E54"
+      ]
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        261,
+        325,
+        281,
+        345
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E53"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        300,
+        313,
+        396,
+        330
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "HR Department",
+      "parent_id": "E53"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        470,
+        313,
+        1092,
+        330
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Benefits Enrollment Open - Annual benefits enrollment is now open. Please complete your selections...",
+      "parent_id": "E53"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        1820,
+        313,
+        1880,
+        330
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Yesterday",
+      "parent_id": "E53"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        261,
+        366,
+        1900,
+        368
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        241,
+        367,
+        1920,
+        431
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E62",
+        "E61",
+        "E63",
+        "E60"
+      ]
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        261,
+        390,
+        281,
+        410
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E59"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        300,
+        378,
+        400,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Jira Notifications",
+      "parent_id": "E59"
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        470,
+        378,
+        1008,
+        395
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "PROJ-1847 updated - Status changed from In Progress to Code Review by Alex Müller...",
+      "parent_id": "E59"
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        1820,
+        378,
+        1865,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Mar 31",
+      "parent_id": "E59"
+    },
+    {
+      "id": "E64",
+      "bounds": [
+        261,
+        431,
+        1900,
+        433
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E65",
+      "bounds": [
+        241,
+        432,
+        1920,
+        496
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E68",
+        "E67",
+        "E70",
+        "E69",
+        "E66"
+      ]
+    },
+    {
+      "id": "E66",
+      "bounds": [
+        261,
+        455,
+        281,
+        475
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E65"
+    },
+    {
+      "id": "E67",
+      "bounds": [
+        300,
+        443,
+        398,
+        460
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Elena Rodriguez",
+      "parent_id": "E65"
+    },
+    {
+      "id": "E68",
+      "bounds": [
+        470,
+        443,
+        1006,
+        460
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Lunch Friday? - Hey! Are you free this Friday for lunch? There's a new place downtown...",
+      "parent_id": "E65"
+    },
+    {
+      "id": "E69",
+      "bounds": [
+        1820,
+        443,
+        1865,
+        457
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Mar 31",
+      "parent_id": "E65"
+    },
+    {
+      "id": "E70",
+      "bounds": [
+        470,
+        469,
+        522,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Personal",
+      "parent_id": "E65"
+    },
+    {
+      "id": "E71",
+      "bounds": [
+        261,
+        496,
+        1900,
+        498
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E72",
+      "bounds": [
+        241,
+        497,
+        1920,
+        561
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E75",
+        "E76",
+        "E74",
+        "E73"
+      ]
+    },
+    {
+      "id": "E73",
+      "bounds": [
+        261,
+        520,
+        281,
+        540
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E72"
+    },
+    {
+      "id": "E74",
+      "bounds": [
+        300,
+        508,
+        344,
+        522
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "GitHub",
+      "parent_id": "E72"
+    },
+    {
+      "id": "E75",
+      "bounds": [
+        470,
+        508,
+        1084,
+        525
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Pull request #312 merged - Your pull request \"Fix responsive layout breakpoints\" has been merged...",
+      "parent_id": "E72"
+    },
+    {
+      "id": "E76",
+      "bounds": [
+        1820,
+        508,
+        1865,
+        522
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Mar 30",
+      "parent_id": "E72"
+    },
+    {
+      "id": "E77",
+      "bounds": [
+        261,
+        561,
+        1900,
+        563
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E78",
+      "bounds": [
+        241,
+        562,
+        1920,
+        626
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E81",
+        "E80",
+        "E82",
+        "E79"
+      ]
+    },
+    {
+      "id": "E79",
+      "bounds": [
+        261,
+        585,
+        281,
+        605
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E78"
+    },
+    {
+      "id": "E80",
+      "bounds": [
+        300,
+        573,
+        365,
+        587
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Tom Baker",
+      "parent_id": "E78"
+    },
+    {
+      "id": "E81",
+      "bounds": [
+        470,
+        573,
+        1073,
+        590
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Re: API Documentation - Thanks for the updates. I've added a few comments on the auth section...",
+      "parent_id": "E78"
+    },
+    {
+      "id": "E82",
+      "bounds": [
+        1820,
+        573,
+        1865,
+        587
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Mar 29",
+      "parent_id": "E78"
+    }
+  ],
+  "stats": {
+    "text_detected": 52,
+    "uied_detected": 82,
+    "final_count": 82
+  },
+  "source": "synthetic",
+  "layout_title": "Mail",
+  "layout_theme": "light"
+}

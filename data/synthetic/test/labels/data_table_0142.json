@@ -1,0 +1,1501 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        27,
+        27,
+        304,
+        61
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Data Management"
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        1761,
+        24,
+        1893,
+        74
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Export"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        1599,
+        24,
+        1747,
+        74
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Add New"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        27,
+        90,
+        562,
+        140
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search..."
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        37,
+        172,
+        93,
+        191
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Count"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        324,
+        172,
+        393,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        611,
+        172,
+        695,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Category"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        898,
+        172,
+        970,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Created"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        1185,
+        172,
+        1229,
+        196
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Type"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        1472,
+        172,
+        1493,
+        191
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "ID"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        1759,
+        172,
+        1828,
+        192
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Actions"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        27,
+        208,
+        1893,
+        210
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        37,
+        221,
+        67,
+        238
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "102"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        324,
+        221,
+        416,
+        243
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        611,
+        221,
+        661,
+        239
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        898,
+        221,
+        940,
+        238
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        1185,
+        221,
+        1255,
+        243
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Pending"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        1472,
+        221,
+        1590,
+        240
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "APAC\\USER01"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        1756,
+        214,
+        1813,
+        250
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1820,
+        214,
+        1877,
+        250
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        27,
+        255,
+        1893,
+        257
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        37,
+        268,
+        67,
+        285
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "315"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        324,
+        268,
+        397,
+        290
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Warning"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        611,
+        268,
+        667,
+        286
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Online"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        898,
+        268,
+        940,
+        285
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        1185,
+        268,
+        1258,
+        286
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        1472,
+        268,
+        1524,
+        290
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Ready"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        1756,
+        261,
+        1813,
+        297
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        1820,
+        261,
+        1877,
+        297
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        27,
+        302,
+        1893,
+        304
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        37,
+        315,
+        67,
+        332
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "421"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        324,
+        315,
+        377,
+        333
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "admin"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        611,
+        315,
+        707,
+        332
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-01-15"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        898,
+        315,
+        1003,
+        332
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "HC-C-004CE"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        1185,
+        315,
+        1227,
+        332
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        1472,
+        315,
+        1522,
+        333
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        1756,
+        308,
+        1813,
+        344
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        1820,
+        308,
+        1877,
+        344
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        27,
+        349,
+        1893,
+        351
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        37,
+        362,
+        67,
+        379
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "323"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        324,
+        362,
+        397,
+        380
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        611,
+        362,
+        739,
+        379
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "+1 234 567 890"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        898,
+        362,
+        969,
+        384
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        1185,
+        362,
+        1314,
+        382
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "C:\\Users\\admin"
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        1472,
+        362,
+        1586,
+        380
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        1756,
+        355,
+        1813,
+        391
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        1820,
+        355,
+        1877,
+        391
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        27,
+        396,
+        1893,
+        398
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        37,
+        409,
+        67,
+        426
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "487"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        324,
+        409,
+        381,
+        427
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Offline"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        611,
+        409,
+        691,
+        427
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        898,
+        409,
+        989,
+        427
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Connected"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        1185,
+        409,
+        1267,
+        427
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "New York"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        1472,
+        409,
+        1528,
+        427
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Online"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        1756,
+        402,
+        1813,
+        438
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        1820,
+        402,
+        1877,
+        438
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        27,
+        443,
+        1893,
+        445
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        37,
+        456,
+        67,
+        473
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "682"
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        324,
+        456,
+        366,
+        473
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error"
+    },
+    {
+      "id": "E64",
+      "bounds": [
+        611,
+        456,
+        691,
+        474
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E65",
+      "bounds": [
+        898,
+        456,
+        990,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E66",
+      "bounds": [
+        1185,
+        456,
+        1340,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "john.doe@exampl"
+    },
+    {
+      "id": "E67",
+      "bounds": [
+        1472,
+        456,
+        1577,
+        473
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "HC-C-004CE"
+    },
+    {
+      "id": "E68",
+      "bounds": [
+        1756,
+        449,
+        1813,
+        485
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E69",
+      "bounds": [
+        1820,
+        449,
+        1877,
+        485
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E70",
+      "bounds": [
+        27,
+        490,
+        1893,
+        492
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E71",
+      "bounds": [
+        37,
+        503,
+        67,
+        520
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "496"
+    },
+    {
+      "id": "E72",
+      "bounds": [
+        324,
+        503,
+        403,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "John Doe"
+    },
+    {
+      "id": "E73",
+      "bounds": [
+        611,
+        503,
+        690,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "John Doe"
+    },
+    {
+      "id": "E74",
+      "bounds": [
+        898,
+        503,
+        980,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "New York"
+    },
+    {
+      "id": "E75",
+      "bounds": [
+        1185,
+        503,
+        1237,
+        525
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Ready"
+    },
+    {
+      "id": "E76",
+      "bounds": [
+        1472,
+        503,
+        1537,
+        521
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Inactive"
+    },
+    {
+      "id": "E77",
+      "bounds": [
+        1756,
+        496,
+        1813,
+        532
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E78",
+      "bounds": [
+        1820,
+        496,
+        1877,
+        532
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E79",
+      "bounds": [
+        27,
+        537,
+        1893,
+        539
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E81",
+      "bounds": [
+        37,
+        550,
+        67,
+        567
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "427"
+    },
+    {
+      "id": "E82",
+      "bounds": [
+        324,
+        550,
+        394,
+        572
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Pending"
+    },
+    {
+      "id": "E83",
+      "bounds": [
+        611,
+        550,
+        693,
+        568
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "New York"
+    },
+    {
+      "id": "E84",
+      "bounds": [
+        898,
+        550,
+        949,
+        568
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E85",
+      "bounds": [
+        1185,
+        550,
+        1278,
+        571
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Acme Corp"
+    },
+    {
+      "id": "E86",
+      "bounds": [
+        1472,
+        550,
+        1563,
+        568
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Connected"
+    },
+    {
+      "id": "E87",
+      "bounds": [
+        1756,
+        543,
+        1813,
+        579
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E88",
+      "bounds": [
+        1820,
+        543,
+        1877,
+        579
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E89",
+      "bounds": [
+        27,
+        584,
+        1893,
+        586
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E90",
+      "bounds": [
+        37,
+        597,
+        67,
+        614
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "917"
+    },
+    {
+      "id": "E91",
+      "bounds": [
+        324,
+        597,
+        438,
+        615
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E92",
+      "bounds": [
+        611,
+        597,
+        703,
+        619
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E93",
+      "bounds": [
+        898,
+        597,
+        966,
+        615
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E94",
+      "bounds": [
+        1185,
+        597,
+        1242,
+        615
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Offline"
+    },
+    {
+      "id": "E95",
+      "bounds": [
+        1472,
+        597,
+        1545,
+        615
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E96",
+      "bounds": [
+        1756,
+        590,
+        1813,
+        626
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E97",
+      "bounds": [
+        1820,
+        590,
+        1877,
+        626
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E98",
+      "bounds": [
+        27,
+        631,
+        1893,
+        633
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E100",
+      "bounds": [
+        37,
+        644,
+        67,
+        661
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "298"
+    },
+    {
+      "id": "E101",
+      "bounds": [
+        324,
+        644,
+        416,
+        666
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E102",
+      "bounds": [
+        611,
+        644,
+        703,
+        666
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Completed"
+    },
+    {
+      "id": "E103",
+      "bounds": [
+        898,
+        644,
+        1003,
+        661
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "HC-C-004CE"
+    },
+    {
+      "id": "E104",
+      "bounds": [
+        1185,
+        644,
+        1299,
+        662
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E105",
+      "bounds": [
+        1472,
+        644,
+        1522,
+        662
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E106",
+      "bounds": [
+        1756,
+        637,
+        1813,
+        673
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E107",
+      "bounds": [
+        1820,
+        637,
+        1877,
+        673
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E108",
+      "bounds": [
+        27,
+        678,
+        1893,
+        680
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E109",
+      "bounds": [
+        37,
+        691,
+        67,
+        708
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "244"
+    },
+    {
+      "id": "E110",
+      "bounds": [
+        324,
+        691,
+        374,
+        708
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "10001"
+    },
+    {
+      "id": "E111",
+      "bounds": [
+        611,
+        691,
+        682,
+        713
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Running"
+    },
+    {
+      "id": "E112",
+      "bounds": [
+        898,
+        691,
+        971,
+        713
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Warning"
+    },
+    {
+      "id": "E113",
+      "bounds": [
+        1185,
+        691,
+        1236,
+        709
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E114",
+      "bounds": [
+        1472,
+        691,
+        1551,
+        709
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "John Doe"
+    },
+    {
+      "id": "E115",
+      "bounds": [
+        1756,
+        684,
+        1813,
+        720
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E116",
+      "bounds": [
+        1820,
+        684,
+        1877,
+        720
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E117",
+      "bounds": [
+        27,
+        725,
+        1893,
+        727
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E119",
+      "bounds": [
+        37,
+        738,
+        67,
+        755
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "771"
+    },
+    {
+      "id": "E120",
+      "bounds": [
+        324,
+        738,
+        374,
+        755
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "10001"
+    },
+    {
+      "id": "E121",
+      "bounds": [
+        611,
+        738,
+        684,
+        760
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Warning"
+    },
+    {
+      "id": "E122",
+      "bounds": [
+        898,
+        738,
+        968,
+        760
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Stopped"
+    },
+    {
+      "id": "E123",
+      "bounds": [
+        1185,
+        738,
+        1313,
+        755
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "+1 234 567 890"
+    },
+    {
+      "id": "E124",
+      "bounds": [
+        1472,
+        738,
+        1523,
+        756
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Active"
+    },
+    {
+      "id": "E125",
+      "bounds": [
+        1756,
+        731,
+        1813,
+        767
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Edit"
+    },
+    {
+      "id": "E126",
+      "bounds": [
+        1820,
+        731,
+        1877,
+        767
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Del"
+    },
+    {
+      "id": "E127",
+      "bounds": [
+        27,
+        772,
+        1893,
+        774
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E128",
+      "bounds": [
+        27,
+        791,
+        200,
+        813
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Showing 1-10 of 283"
+    },
+    {
+      "id": "E129",
+      "bounds": [
+        1816,
+        784,
+        1893,
+        823
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Prev"
+    },
+    {
+      "id": "E130",
+      "bounds": [
+        1774,
+        784,
+        1809,
+        823
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "1"
+    },
+    {
+      "id": "E131",
+      "bounds": [
+        1732,
+        784,
+        1767,
+        823
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "2"
+    },
+    {
+      "id": "E132",
+      "bounds": [
+        1648,
+        784,
+        1725,
+        823
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Next"
+    }
+  ],
+  "stats": {
+    "text_detected": 112,
+    "uied_detected": 125,
+    "final_count": 125
+  },
+  "source": "synthetic"
+}

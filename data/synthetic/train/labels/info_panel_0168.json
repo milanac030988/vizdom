@@ -1,0 +1,383 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        27,
+        19,
+        159,
+        44
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Calculator"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        1763,
+        10,
+        1893,
+        60
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Details"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        36,
+        93,
+        152,
+        117
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Software"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        36,
+        136,
+        1884,
+        138
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        50,
+        150,
+        187,
+        176
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Last Updated"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        351,
+        150,
+        411,
+        170
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Never"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        50,
+        196,
+        195,
+        222
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Update Status"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        351,
+        196,
+        460,
+        222
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Checking..."
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        50,
+        242,
+        181,
+        268
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Auto Update"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        351,
+        242,
+        434,
+        263
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        36,
+        309,
+        140,
+        339
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Security"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        36,
+        352,
+        1884,
+        354
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        50,
+        366,
+        189,
+        392
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Admin Rights"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        351,
+        366,
+        462,
+        391
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Temporary"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        50,
+        412,
+        226,
+        438
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password Expires"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        351,
+        412,
+        442,
+        437
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "139 Days"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        50,
+        458,
+        154,
+        484
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Last Login"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        351,
+        458,
+        524,
+        478
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-03-28 17:30"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        36,
+        525,
+        129,
+        554
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "System"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        36,
+        568,
+        1884,
+        570
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        50,
+        582,
+        148,
+        602
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Processor"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        351,
+        582,
+        505,
+        603
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Intel i7-12800H"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        50,
+        628,
+        175,
+        649
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Architecture"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        351,
+        628,
+        425,
+        648
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "ARM64"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        50,
+        674,
+        219,
+        699
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Computer Name"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        351,
+        674,
+        423,
+        694
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "PC-001"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        50,
+        720,
+        160,
+        746
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disk Space"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        351,
+        720,
+        448,
+        740
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1 TB HDD"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        36,
+        999,
+        149,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Apply"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        167,
+        999,
+        280,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Close"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        298,
+        999,
+        467,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Check Now"
+    }
+  ],
+  "stats": {
+    "text_detected": 28,
+    "uied_detected": 31,
+    "final_count": 31
+  },
+  "source": "synthetic"
+}

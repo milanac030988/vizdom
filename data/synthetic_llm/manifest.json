@@ -1,0 +1,132 @@
+{
+  "config": {
+    "mode": "llm",
+    "num_samples": 16,
+    "width": 1920,
+    "height": 1080,
+    "ollama_model": "llama3.1",
+    "train_ratio": 0.8,
+    "generated_at": "2026-04-01T13:56:43.132255"
+  },
+  "train": [
+    {
+      "name": "llm_music_player_with_pl_0001",
+      "app_type": "music player with playlist and controls",
+      "theme": "light",
+      "element_count": 16,
+      "image": "train/images/llm_music_player_with_pl_0001.png",
+      "label": "train/labels/llm_music_player_with_pl_0001.json",
+      "layout": "train/layouts/llm_music_player_with_pl_0001.json"
+    },
+    {
+      "name": "llm_login_form_0002",
+      "app_type": "login form",
+      "theme": "light",
+      "element_count": 13,
+      "image": "train/images/llm_login_form_0002.png",
+      "label": "train/labels/llm_login_form_0002.json",
+      "layout": "train/layouts/llm_login_form_0002.json"
+    },
+    {
+      "name": "llm_video_player_with_pl_0003",
+      "app_type": "video player with playlist and controls",
+      "theme": "light",
+      "element_count": 15,
+      "image": "train/images/llm_video_player_with_pl_0003.png",
+      "label": "train/labels/llm_video_player_with_pl_0003.json",
+      "layout": "train/layouts/llm_video_player_with_pl_0003.json"
+    },
+    {
+      "name": "llm_text_editor_with_too_0005",
+      "app_type": "text editor with toolbar and formatting options",
+      "theme": "light",
+      "element_count": 18,
+      "image": "train/images/llm_text_editor_with_too_0005.png",
+      "label": "train/labels/llm_text_editor_with_too_0005.json",
+      "layout": "train/layouts/llm_text_editor_with_too_0005.json"
+    },
+    {
+      "name": "llm_calendar_with_event__0006",
+      "app_type": "calendar with event list",
+      "theme": "light",
+      "element_count": 18,
+      "image": "train/images/llm_calendar_with_event__0006.png",
+      "label": "train/labels/llm_calendar_with_event__0006.json",
+      "layout": "train/layouts/llm_calendar_with_event__0006.json"
+    },
+    {
+      "name": "llm_photo_gallery_with_t_0007",
+      "app_type": "photo gallery with thumbnails",
+      "theme": "light",
+      "element_count": 13,
+      "image": "train/images/llm_photo_gallery_with_t_0007.png",
+      "label": "train/labels/llm_photo_gallery_with_t_0007.json",
+      "layout": "train/layouts/llm_photo_gallery_with_t_0007.json"
+    },
+    {
+      "name": "llm_printer_settings_dia_0008",
+      "app_type": "printer settings dialog",
+      "theme": "light",
+      "element_count": 17,
+      "image": "train/images/llm_printer_settings_dia_0008.png",
+      "label": "train/labels/llm_printer_settings_dia_0008.json",
+      "layout": "train/layouts/llm_printer_settings_dia_0008.json"
+    },
+    {
+      "name": "llm_password_manager_wit_0009",
+      "app_type": "password manager with entry list",
+      "theme": "light",
+      "element_count": 16,
+      "image": "train/images/llm_password_manager_wit_0009.png",
+      "label": "train/labels/llm_password_manager_wit_0009.json",
+      "layout": "train/layouts/llm_password_manager_wit_0009.json"
+    },
+    {
+      "name": "llm_device_manager_with__0010",
+      "app_type": "device manager with tree view of hardware",
+      "theme": "light",
+      "element_count": 14,
+      "image": "train/images/llm_device_manager_with__0010.png",
+      "label": "train/labels/llm_device_manager_with__0010.json",
+      "layout": "train/layouts/llm_device_manager_with__0010.json"
+    },
+    {
+      "name": "llm_user_registration_fo_0012",
+      "app_type": "user registration form",
+      "theme": "light",
+      "element_count": 17,
+      "image": "train/images/llm_user_registration_fo_0012.png",
+      "label": "train/labels/llm_user_registration_fo_0012.json",
+      "layout": "train/layouts/llm_user_registration_fo_0012.json"
+    }
+  ],
+  "test": [
+    {
+      "name": "llm_task_manager_with_to_0013",
+      "app_type": "task manager with to-do list and filters",
+      "theme": "light",
+      "element_count": 14,
+      "image": "test/images/llm_task_manager_with_to_0013.png",
+      "label": "test/labels/llm_task_manager_with_to_0013.json",
+      "layout": "test/layouts/llm_task_manager_with_to_0013.json"
+    },
+    {
+      "name": "llm_notification_center__0014",
+      "app_type": "notification center with message cards",
+      "theme": "light",
+      "element_count": 16,
+      "image": "test/images/llm_notification_center__0014.png",
+      "label": "test/labels/llm_notification_center__0014.json",
+      "layout": "test/layouts/llm_notification_center__0014.json"
+    },
+    {
+      "name": "llm_dashboard_with_stati_0015",
+      "app_type": "dashboard with statistics cards and charts",
+      "theme": "light",
+      "element_count": 17,
+      "image": "test/images/llm_dashboard_with_stati_0015.png",
+      "label": "test/labels/llm_dashboard_with_stati_0015.json",
+      "layout": "test/layouts/llm_dashboard_with_stati_0015.json"
+    }
+  ]
+}

@@ -1,0 +1,423 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        27,
+        21,
+        148,
+        56
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Settings"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        36,
+        99,
+        137,
+        124
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "General"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        54,
+        149,
+        171,
+        175
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Description"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1668,
+        142,
+        1884,
+        185
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Failed"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        54,
+        203,
+        121,
+        223
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Owner"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1704,
+        200,
+        1744,
+        220
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        54,
+        257,
+        106,
+        277
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "State"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        1668,
+        250,
+        1884,
+        293
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Pending"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        36,
+        311,
+        1884,
+        313
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        36,
+        338,
+        150,
+        363
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Network"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        54,
+        388,
+        94,
+        414
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "City"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        1704,
+        385,
+        1744,
+        405
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        54,
+        442,
+        152,
+        467
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Company"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        1668,
+        435,
+        1884,
+        478
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Unknown"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        54,
+        496,
+        130,
+        517
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        1704,
+        493,
+        1744,
+        513
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        54,
+        550,
+        135,
+        575
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Country"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        1740,
+        547,
+        1768,
+        575
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        54,
+        604,
+        129,
+        625
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "License"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        1740,
+        601,
+        1768,
+        629
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        36,
+        658,
+        1884,
+        660
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        36,
+        685,
+        206,
+        710
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Notifications"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        54,
+        735,
+        121,
+        755
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Owner"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        1740,
+        732,
+        1768,
+        760
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        54,
+        789,
+        170,
+        815
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Expiry Date"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        1704,
+        786,
+        1744,
+        806
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        54,
+        843,
+        110,
+        864
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Email"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        1668,
+        836,
+        1884,
+        879
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Online"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        54,
+        897,
+        134,
+        918
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Created"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        1668,
+        890,
+        1884,
+        933
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        54,
+        951,
+        157,
+        971
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Username"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        1704,
+        948,
+        1744,
+        968
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        36,
+        1005,
+        1884,
+        1007
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        1740,
+        999,
+        1884,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        1578,
+        999,
+        1722,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel"
+    }
+  ],
+  "stats": {
+    "text_detected": 24,
+    "uied_detected": 35,
+    "final_count": 35
+  },
+  "source": "synthetic"
+}

@@ -1,0 +1,250 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        20,
+        20,
+        1860,
+        1060
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3",
+        "E14",
+        "E17",
+        "E8",
+        "E5",
+        "E16",
+        "E11",
+        "E2",
+        "E13",
+        "E15",
+        "E6",
+        "E9",
+        "E12",
+        "E4",
+        "E7",
+        "E10"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        30,
+        40,
+        177,
+        57
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Statistics Overview",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        30,
+        70,
+        530,
+        270
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        30,
+        80,
+        56,
+        94
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "card",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        40,
+        100,
+        190,
+        120
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Total Users: 10,234",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        340,
+        120,
+        360,
+        140
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        30,
+        300,
+        56,
+        314
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "card",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        40,
+        320,
+        226,
+        340
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "New Users: 5,678 (56%)",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        340,
+        340,
+        360,
+        360
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        30,
+        500,
+        56,
+        514
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "card",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        40,
+        520,
+        196,
+        537
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Bounce Rate: 25.6%",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        340,
+        540,
+        360,
+        560
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        30,
+        580,
+        510,
+        582
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        30,
+        600,
+        530,
+        800
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        30,
+        610,
+        60,
+        624
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "chart",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        530,
+        20,
+        630,
+        50
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Refresh Data",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        630,
+        20,
+        830,
+        48
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Select...",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 13,
+    "uied_detected": 17,
+    "final_count": 17
+  },
+  "source": "synthetic",
+  "layout_title": "Analytics Dashboard",
+  "layout_theme": "light"
+}

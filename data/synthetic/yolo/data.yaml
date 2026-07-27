@@ -1,0 +1,9 @@
+# VizDOM YOLO Dataset
+# Auto-generated from D:/Project/MasterProject/data/synthetic
+
+path: D:\Project\MasterProject\data\synthetic\yolo
+train: images/train
+val: images/val
+
+nc: 15
+names: ['button', 'text', 'icon', 'input_field', 'checkbox', 'radio_button', 'toggle', 'slider', 'dropdown', 'image', 'container', 'toolbar', 'navbar', 'card', 'list_item']

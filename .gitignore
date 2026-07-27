@@ -58,3 +58,16 @@ results/
 # OS
 .DS_Store
 Thumbs.db
+
+# Runtime logs (visual_dom.logging_utils)
+logs/
+
+# ProperDocs build output
+tools/plantuml.jar
+site/
+
+# Vendored external code (AGPL-3.0, reconstruct via scripts/setup_omniparser.py).
+# Not a submodule: the corporate proxy blocks GitHub, so clones can't fetch it.
+third_party/
+src/visual_dom/rpc/*_pb2.py
+src/visual_dom/rpc/*_pb2_grpc.py

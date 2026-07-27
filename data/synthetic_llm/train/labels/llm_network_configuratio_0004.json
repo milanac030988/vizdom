@@ -1,0 +1,269 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        85,
+        20,
+        131,
+        42
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Title"
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        90,
+        70,
+        1890,
+        270
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E6"
+      ]
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        35,
+        40,
+        205,
+        80
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "IP Address",
+      "parent_id": "E13"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        220,
+        40,
+        405,
+        80
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Subnet Mask",
+      "parent_id": "E14",
+      "children_ids": [
+        "E18"
+      ]
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        390,
+        40,
+        550,
+        80
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Default Gateway",
+      "children_ids": [
+        "E19"
+      ]
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        75,
+        120,
+        1875,
+        320
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E2"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        35,
+        40,
+        205,
+        80
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "DNS Server 1",
+      "parent_id": "E13"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        220,
+        40,
+        405,
+        80
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "DNS Server 2",
+      "parent_id": "E14"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        90,
+        360,
+        1870,
+        560
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        45,
+        40,
+        149,
+        60
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Enable DHCP",
+      "parent_id": "E13"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        220,
+        40,
+        405,
+        76
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "DHCP Server Address",
+      "parent_id": "E14"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        90,
+        570,
+        1870,
+        770
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        35,
+        40,
+        195,
+        88
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save Configuration",
+      "children_ids": [
+        "E3",
+        "E7",
+        "E16",
+        "E10"
+      ]
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        225,
+        40,
+        385,
+        88
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel",
+      "children_ids": [
+        "E4",
+        "E8",
+        "E11"
+      ]
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        90,
+        780,
+        1870,
+        980
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        45,
+        36,
+        195,
+        72
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Network Speed (Mbps)",
+      "parent_id": "E13"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        195,
+        36,
+        243,
+        72
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "2"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        270,
+        36,
+        420,
+        72
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Connection Type",
+      "parent_id": "E4"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        420,
+        36,
+        504,
+        72
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Ethernet",
+      "parent_id": "E5"
+    }
+  ],
+  "stats": {
+    "text_detected": 14,
+    "uied_detected": 19,
+    "final_count": 19
+  },
+  "source": "synthetic",
+  "layout_title": "Network Configuration",
+  "layout_theme": "light"
+}

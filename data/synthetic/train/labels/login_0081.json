@@ -1,0 +1,139 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        630,
+        177,
+        1290,
+        902
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E9",
+        "E5",
+        "E7",
+        "E3",
+        "E2",
+        "E6",
+        "E8",
+        "E4"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        666,
+        213,
+        783,
+        252
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Sign In",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        666,
+        285,
+        888,
+        311
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enter your credentials",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        666,
+        348,
+        769,
+        368
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Username",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        666,
+        380,
+        1254,
+        437
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "username",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        666,
+        455,
+        850,
+        476
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Confirm Password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        666,
+        487,
+        1254,
+        544
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "confirm password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        666,
+        562,
+        788,
+        590
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Remember me",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        666,
+        612,
+        1254,
+        676
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Login",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 8,
+    "uied_detected": 9,
+    "final_count": 9
+  },
+  "source": "synthetic"
+}

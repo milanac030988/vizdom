@@ -1,0 +1,209 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        20,
+        10,
+        249,
+        38
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Melodia Music Player"
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        10,
+        60,
+        1910,
+        140
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3"
+      ]
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        20,
+        120,
+        99,
+        137
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Now Playing:",
+      "parent_id": "E2"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        150,
+        140,
+        1920,
+        170
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        20,
+        160,
+        80,
+        177
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Song Title"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        10,
+        220,
+        1910,
+        250
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E7"
+      ]
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        20,
+        240,
+        93,
+        254
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Artist Name",
+      "parent_id": "E6"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        10,
+        280,
+        1810,
+        282
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        10,
+        300,
+        1910,
+        330
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        20,
+        320,
+        100,
+        356
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "<<"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        110,
+        320,
+        190,
+        356
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": ">>"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        200,
+        320,
+        280,
+        340
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Loop"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        10,
+        360,
+        1810,
+        362
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        10,
+        370,
+        1910,
+        400
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        20,
+        390,
+        65,
+        407
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Playlist:"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        130,
+        390,
+        330,
+        420
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Select Playlist"
+    }
+  ],
+  "stats": {
+    "text_detected": 9,
+    "uied_detected": 16,
+    "final_count": 16
+  },
+  "source": "synthetic",
+  "layout_title": "Melodia",
+  "layout_theme": "light"
+}

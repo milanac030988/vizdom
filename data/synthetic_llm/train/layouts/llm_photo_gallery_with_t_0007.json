@@ -1,0 +1,105 @@
+{
+  "title": "Photo Gallery",
+  "theme": "light",
+  "elements": [
+    {
+      "type": "text",
+      "x": 20,
+      "y": 10,
+      "w": 200,
+      "h": 18,
+      "text": "Photo Gallery"
+    },
+    {
+      "type": "container",
+      "x": 30,
+      "y": 40,
+      "w": 1800,
+      "h": 900
+    },
+    {
+      "type": "dropdown",
+      "x": 20,
+      "y": 100,
+      "w": 200,
+      "h": 28,
+      "text": "Select Album"
+    },
+    {
+      "type": "button",
+      "x": 250,
+      "y": 120,
+      "w": 150,
+      "h": 30,
+      "text": "Upload Photos"
+    },
+    {
+      "type": "separator",
+      "x": 20,
+      "y": 170,
+      "w": 1800,
+      "h": 10
+    },
+    {
+      "type": "container",
+      "x": 30,
+      "y": 190,
+      "w": 1800,
+      "h": 800
+    },
+    {
+      "type": "button",
+      "x": 20,
+      "y": 340,
+      "w": 80,
+      "h": 36,
+      "text": "<<"
+    },
+    {
+      "type": "button",
+      "x": 110,
+      "y": 340,
+      "w": 150,
+      "h": 36,
+      "text": "Slide Show"
+    },
+    {
+      "type": "button",
+      "x": 270,
+      "y": 340,
+      "w": 80,
+      "h": 36,
+      "text": ">"
+    },
+    {
+      "type": "separator",
+      "x": 20,
+      "y": 400,
+      "w": 1800,
+      "h": 10
+    },
+    {
+      "type": "container",
+      "x": 30,
+      "y": 420,
+      "w": 1800,
+      "h": 500
+    },
+    {
+      "type": "text",
+      "x": 20,
+      "y": 520,
+      "w": 200,
+      "h": 16,
+      "text": "Slide 1"
+    },
+    {
+      "type": "button",
+      "x": 240,
+      "y": 540,
+      "w": 150,
+      "h": 30,
+      "text": "Delete Slide"
+    }
+  ]
+}

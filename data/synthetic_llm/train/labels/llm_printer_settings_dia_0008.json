@@ -1,0 +1,245 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        20,
+        50,
+        1840,
+        1050
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E4",
+        "E9",
+        "E14",
+        "E6",
+        "E11",
+        "E3",
+        "E8",
+        "E13",
+        "E17",
+        "E7",
+        "E12",
+        "E2",
+        "E5",
+        "E10",
+        "E15",
+        "E16"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        30,
+        80,
+        124,
+        97
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Printer Settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        10,
+        110,
+        1830,
+        112
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        30,
+        120,
+        1850,
+        420
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        50,
+        150,
+        134,
+        164
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Printer Name:",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        200,
+        160,
+        450,
+        188
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        480,
+        190,
+        580,
+        220
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Update",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        10,
+        220,
+        1830,
+        222
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        30,
+        230,
+        1850,
+        530
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        50,
+        260,
+        115,
+        277
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Paper Size:",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        200,
+        270,
+        350,
+        298
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Select...",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        370,
+        300,
+        470,
+        330
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Apply",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        10,
+        330,
+        1830,
+        332
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        30,
+        340,
+        1850,
+        640
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        50,
+        370,
+        117,
+        384
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Resolution:",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        200,
+        380,
+        240,
+        400
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        370,
+        410,
+        470,
+        446
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "OK",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 8,
+    "uied_detected": 17,
+    "final_count": 17
+  },
+  "source": "synthetic",
+  "layout_title": "Printer Settings",
+  "layout_theme": "light"
+}

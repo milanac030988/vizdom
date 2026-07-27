@@ -1,0 +1,571 @@
+{
+  "title": "Car Infotainment",
+  "theme": "dark",
+  "elements": [
+    {
+      "type": "container",
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 70,
+      "elements": [
+        {
+          "type": "icon",
+          "icon": "menu",
+          "x": 20,
+          "y": 23,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "DriveSync Infotainment",
+          "x": 60,
+          "y": 18,
+          "w": 320,
+          "h": 34
+        },
+        {
+          "type": "text",
+          "text": "72°F",
+          "x": 1620,
+          "y": 20,
+          "w": 80,
+          "h": 28
+        },
+        {
+          "type": "text",
+          "text": "3:42 PM",
+          "x": 1720,
+          "y": 20,
+          "w": 120,
+          "h": 28
+        },
+        {
+          "type": "icon",
+          "icon": "settings",
+          "x": 1870,
+          "y": 23,
+          "w": 24,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "x": 0,
+      "y": 70,
+      "w": 1920,
+      "h": 1
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 71,
+      "w": 280,
+      "h": 1009,
+      "elements": [
+        {
+          "type": "button",
+          "text": "Navigation",
+          "x": 20,
+          "y": 90,
+          "w": 240,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Media",
+          "x": 20,
+          "y": 142,
+          "w": 240,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Phone",
+          "x": 20,
+          "y": 194,
+          "w": 240,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Climate",
+          "x": 20,
+          "y": 246,
+          "w": 240,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Vehicle Info",
+          "x": 20,
+          "y": 298,
+          "w": 240,
+          "h": 40
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 360,
+          "w": 240,
+          "h": 1
+        },
+        {
+          "type": "toggle",
+          "text": "Parking Assist",
+          "x": 20,
+          "y": 380,
+          "w": 240,
+          "h": 20
+        },
+        {
+          "type": "toggle",
+          "text": "Lane Keep Assist",
+          "x": 20,
+          "y": 414,
+          "w": 240,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "x": 280,
+      "y": 71,
+      "w": 1,
+      "h": 1009
+    },
+    {
+      "type": "container",
+      "x": 300,
+      "y": 80,
+      "w": 900,
+      "h": 520,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Now Playing",
+          "x": 320,
+          "y": 95,
+          "w": 200,
+          "h": 28
+        },
+        {
+          "type": "separator",
+          "x": 320,
+          "y": 130,
+          "w": 860,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Bohemian Rhapsody",
+          "x": 320,
+          "y": 160,
+          "w": 400,
+          "h": 34
+        },
+        {
+          "type": "text",
+          "text": "Queen — A Night at the Opera",
+          "x": 320,
+          "y": 202,
+          "w": 400,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "2:34 / 5:55",
+          "x": 320,
+          "y": 260,
+          "w": 160,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 320,
+          "y": 300,
+          "w": 860,
+          "h": 1
+        },
+        {
+          "type": "button",
+          "text": "⏮ Prev",
+          "x": 420,
+          "y": 320,
+          "w": 120,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "⏸ Pause",
+          "x": 560,
+          "y": 320,
+          "w": 120,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Next ⏭",
+          "x": 700,
+          "y": 320,
+          "w": 120,
+          "h": 40
+        },
+        {
+          "type": "text",
+          "text": "Volume",
+          "x": 320,
+          "y": 390,
+          "w": 80,
+          "h": 20
+        },
+        {
+          "type": "button",
+          "text": "−",
+          "x": 420,
+          "y": 384,
+          "w": 40,
+          "h": 34
+        },
+        {
+          "type": "text",
+          "text": "████████░░",
+          "x": 470,
+          "y": 390,
+          "w": 300,
+          "h": 20
+        },
+        {
+          "type": "button",
+          "text": "+",
+          "x": 780,
+          "y": 384,
+          "w": 40,
+          "h": 34
+        },
+        {
+          "type": "dropdown",
+          "text": "Source: Bluetooth",
+          "x": 320,
+          "y": 440,
+          "w": 250,
+          "h": 30
+        },
+        {
+          "type": "checkbox",
+          "text": "Shuffle",
+          "x": 600,
+          "y": 445,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "Repeat",
+          "x": 740,
+          "y": 445,
+          "w": 120,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 1240,
+      "y": 80,
+      "w": 660,
+      "h": 520,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Climate Control",
+          "x": 1260,
+          "y": 95,
+          "w": 200,
+          "h": 28
+        },
+        {
+          "type": "separator",
+          "x": 1260,
+          "y": 130,
+          "w": 620,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Driver",
+          "x": 1260,
+          "y": 155,
+          "w": 100,
+          "h": 24
+        },
+        {
+          "type": "button",
+          "text": "−",
+          "x": 1260,
+          "y": 190,
+          "w": 40,
+          "h": 34
+        },
+        {
+          "type": "text",
+          "text": "71°F",
+          "x": 1320,
+          "y": 194,
+          "w": 80,
+          "h": 24
+        },
+        {
+          "type": "button",
+          "text": "+",
+          "x": 1420,
+          "y": 190,
+          "w": 40,
+          "h": 34
+        },
+        {
+          "type": "text",
+          "text": "Passenger",
+          "x": 1560,
+          "y": 155,
+          "w": 140,
+          "h": 24
+        },
+        {
+          "type": "button",
+          "text": "−",
+          "x": 1560,
+          "y": 190,
+          "w": 40,
+          "h": 34
+        },
+        {
+          "type": "text",
+          "text": "73°F",
+          "x": 1620,
+          "y": 194,
+          "w": 80,
+          "h": 24
+        },
+        {
+          "type": "button",
+          "text": "+",
+          "x": 1720,
+          "y": 190,
+          "w": 40,
+          "h": 34
+        },
+        {
+          "type": "separator",
+          "x": 1260,
+          "y": 244,
+          "w": 620,
+          "h": 1
+        },
+        {
+          "type": "toggle",
+          "text": "A/C",
+          "x": 1260,
+          "y": 268,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "toggle",
+          "text": "Recirculate",
+          "x": 1420,
+          "y": 268,
+          "w": 140,
+          "h": 20
+        },
+        {
+          "type": "toggle",
+          "text": "Auto",
+          "x": 1620,
+          "y": 268,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "dropdown",
+          "text": "Fan Speed: 3",
+          "x": 1260,
+          "y": 310,
+          "w": 200,
+          "h": 30
+        },
+        {
+          "type": "toggle",
+          "text": "Heated Seats — Driver",
+          "x": 1260,
+          "y": 362,
+          "w": 240,
+          "h": 20
+        },
+        {
+          "type": "toggle",
+          "text": "Heated Seats — Passenger",
+          "x": 1560,
+          "y": 362,
+          "w": 240,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 300,
+      "y": 620,
+      "w": 1600,
+      "h": 200,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Quick Navigation",
+          "x": 320,
+          "y": 635,
+          "w": 250,
+          "h": 28
+        },
+        {
+          "type": "separator",
+          "x": 320,
+          "y": 670,
+          "w": 1560,
+          "h": 1
+        },
+        {
+          "type": "icon",
+          "icon": "search",
+          "x": 320,
+          "y": 690,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "input_field",
+          "text": "Search destination...",
+          "x": 356,
+          "y": 684,
+          "w": 400,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "Home",
+          "x": 790,
+          "y": 684,
+          "w": 120,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Work",
+          "x": 924,
+          "y": 684,
+          "w": 120,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Favorites",
+          "x": 1058,
+          "y": 684,
+          "w": 140,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Recent",
+          "x": 1212,
+          "y": 684,
+          "w": 120,
+          "h": 36
+        },
+        {
+          "type": "text",
+          "text": "ETA: 25 min — 12.4 mi to Home",
+          "x": 320,
+          "y": 740,
+          "w": 380,
+          "h": 22
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 300,
+      "y": 840,
+      "w": 1600,
+      "h": 230,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Vehicle Status",
+          "x": 320,
+          "y": 855,
+          "w": 200,
+          "h": 28
+        },
+        {
+          "type": "separator",
+          "x": 320,
+          "y": 890,
+          "w": 1560,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Fuel: 68%",
+          "x": 320,
+          "y": 915,
+          "w": 160,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "Range: 284 mi",
+          "x": 520,
+          "y": 915,
+          "w": 200,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "Tire Pressure: OK",
+          "x": 760,
+          "y": 915,
+          "w": 220,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "Oil Life: 74%",
+          "x": 1020,
+          "y": 915,
+          "w": 180,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "Odometer: 23,481 mi",
+          "x": 320,
+          "y": 950,
+          "w": 260,
+          "h": 22
+        },
+        {
+          "type": "text",
+          "text": "Avg MPG: 28.3",
+          "x": 620,
+          "y": 950,
+          "w": 200,
+          "h": 22
+        }
+      ]
+    }
+  ]
+}

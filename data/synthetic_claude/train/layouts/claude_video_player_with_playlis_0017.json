@@ -1,0 +1,557 @@
+{
+  "title": "StreamView Player",
+  "theme": "dark",
+  "elements": [
+    {
+      "type": "container",
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 48,
+      "elements": [
+        {
+          "type": "icon",
+          "icon": "menu",
+          "x": 16,
+          "y": 12,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "StreamView Player",
+          "x": 56,
+          "y": 12,
+          "w": 180,
+          "h": 24
+        },
+        {
+          "type": "input_field",
+          "text": "Search videos...",
+          "x": 700,
+          "y": 8,
+          "w": 400,
+          "h": 32
+        },
+        {
+          "type": "icon",
+          "icon": "search",
+          "x": 1112,
+          "y": 12,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "settings",
+          "x": 1832,
+          "y": 12,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "user",
+          "x": 1872,
+          "y": 12,
+          "w": 24,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 48,
+      "w": 1400,
+      "h": 788,
+      "elements": [
+        {
+          "type": "container",
+          "x": 20,
+          "y": 10,
+          "w": 1360,
+          "h": 680,
+          "elements": [
+            {
+              "type": "text",
+              "text": "▶",
+              "x": 640,
+              "y": 310,
+              "w": 80,
+              "h": 60
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "x": 20,
+          "y": 700,
+          "w": 1360,
+          "h": 36,
+          "elements": [
+            {
+              "type": "separator",
+              "x": 0,
+              "y": 0,
+              "w": 1360,
+              "h": 1
+            },
+            {
+              "type": "text",
+              "text": "12:34",
+              "x": 10,
+              "y": 10,
+              "w": 50,
+              "h": 16
+            },
+            {
+              "type": "container",
+              "x": 70,
+              "y": 14,
+              "w": 1180,
+              "h": 8,
+              "elements": []
+            },
+            {
+              "type": "text",
+              "text": "1:02:17",
+              "x": 1260,
+              "y": 10,
+              "w": 60,
+              "h": 16
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "x": 20,
+          "y": 740,
+          "w": 1360,
+          "h": 40,
+          "elements": [
+            {
+              "type": "button",
+              "text": "⏮",
+              "x": 10,
+              "y": 4,
+              "w": 40,
+              "h": 32
+            },
+            {
+              "type": "button",
+              "text": "⏸ Pause",
+              "x": 60,
+              "y": 4,
+              "w": 100,
+              "h": 32
+            },
+            {
+              "type": "button",
+              "text": "⏭",
+              "x": 170,
+              "y": 4,
+              "w": 40,
+              "h": 32
+            },
+            {
+              "type": "button",
+              "text": "🔊 Volume",
+              "x": 230,
+              "y": 4,
+              "w": 120,
+              "h": 32
+            },
+            {
+              "type": "dropdown",
+              "text": "1.0x Speed",
+              "x": 1040,
+              "y": 4,
+              "w": 120,
+              "h": 32
+            },
+            {
+              "type": "dropdown",
+              "text": "1080p",
+              "x": 1170,
+              "y": 4,
+              "w": 100,
+              "h": 32
+            },
+            {
+              "type": "button",
+              "text": "Fullscreen",
+              "x": 1280,
+              "y": 4,
+              "w": 80,
+              "h": 32
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 1400,
+      "y": 48,
+      "w": 520,
+      "h": 788,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Playlist",
+          "x": 20,
+          "y": 12,
+          "w": 120,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "24 videos",
+          "x": 400,
+          "y": 14,
+          "w": 100,
+          "h": 18
+        },
+        {
+          "type": "separator",
+          "x": 16,
+          "y": 44,
+          "w": 488,
+          "h": 1
+        },
+        {
+          "type": "container",
+          "x": 10,
+          "y": 54,
+          "w": 500,
+          "h": 72,
+          "elements": [
+            {
+              "type": "container",
+              "x": 8,
+              "y": 8,
+              "w": 112,
+              "h": 56,
+              "elements": []
+            },
+            {
+              "type": "text",
+              "text": "▶ Introduction to Design Systems",
+              "x": 130,
+              "y": 8,
+              "w": 340,
+              "h": 18
+            },
+            {
+              "type": "text",
+              "text": "Now Playing · 12:34 / 1:02:17",
+              "x": 130,
+              "y": 30,
+              "w": 280,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "Sarah Chen",
+              "x": 130,
+              "y": 50,
+              "w": 120,
+              "h": 14
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "x": 10,
+          "y": 134,
+          "w": 500,
+          "h": 72,
+          "elements": [
+            {
+              "type": "container",
+              "x": 8,
+              "y": 8,
+              "w": 112,
+              "h": 56,
+              "elements": []
+            },
+            {
+              "type": "text",
+              "text": "Building Component Libraries",
+              "x": 130,
+              "y": 8,
+              "w": 320,
+              "h": 18
+            },
+            {
+              "type": "text",
+              "text": "45:22",
+              "x": 130,
+              "y": 30,
+              "w": 60,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "Marcus Rivera",
+              "x": 130,
+              "y": 50,
+              "w": 130,
+              "h": 14
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "x": 10,
+          "y": 214,
+          "w": 500,
+          "h": 72,
+          "elements": [
+            {
+              "type": "container",
+              "x": 8,
+              "y": 8,
+              "w": 112,
+              "h": 56,
+              "elements": []
+            },
+            {
+              "type": "text",
+              "text": "Responsive Layout Patterns",
+              "x": 130,
+              "y": 8,
+              "w": 300,
+              "h": 18
+            },
+            {
+              "type": "text",
+              "text": "38:15",
+              "x": 130,
+              "y": 30,
+              "w": 60,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "Aisha Patel",
+              "x": 130,
+              "y": 50,
+              "w": 120,
+              "h": 14
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "x": 10,
+          "y": 294,
+          "w": 500,
+          "h": 72,
+          "elements": [
+            {
+              "type": "container",
+              "x": 8,
+              "y": 8,
+              "w": 112,
+              "h": 56,
+              "elements": []
+            },
+            {
+              "type": "text",
+              "text": "Accessibility Best Practices",
+              "x": 130,
+              "y": 8,
+              "w": 310,
+              "h": 18
+            },
+            {
+              "type": "text",
+              "text": "52:08",
+              "x": 130,
+              "y": 30,
+              "w": 60,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "James Liu",
+              "x": 130,
+              "y": 50,
+              "w": 100,
+              "h": 14
+            }
+          ]
+        },
+        {
+          "type": "container",
+          "x": 10,
+          "y": 374,
+          "w": 500,
+          "h": 72,
+          "elements": [
+            {
+              "type": "container",
+              "x": 8,
+              "y": 8,
+              "w": 112,
+              "h": 56,
+              "elements": []
+            },
+            {
+              "type": "text",
+              "text": "Animation and Micro-interactions",
+              "x": 130,
+              "y": 8,
+              "w": 340,
+              "h": 18
+            },
+            {
+              "type": "text",
+              "text": "29:44",
+              "x": 130,
+              "y": 30,
+              "w": 60,
+              "h": 16
+            },
+            {
+              "type": "text",
+              "text": "Elena Kowalski",
+              "x": 130,
+              "y": 50,
+              "w": 140,
+              "h": 14
+            }
+          ]
+        },
+        {
+          "type": "separator",
+          "x": 16,
+          "y": 456,
+          "w": 488,
+          "h": 1
+        },
+        {
+          "type": "toggle",
+          "text": "Autoplay",
+          "x": 20,
+          "y": 468,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "toggle",
+          "text": "Loop Playlist",
+          "x": 20,
+          "y": 498,
+          "w": 130,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "Shuffle",
+          "x": 20,
+          "y": 530,
+          "w": 100,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 836,
+      "w": 1920,
+      "h": 244,
+      "elements": [
+        {
+          "type": "separator",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Introduction to Design Systems",
+          "x": 20,
+          "y": 16,
+          "w": 400,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "Sarah Chen · Published Mar 15, 2026 · 14,302 views",
+          "x": 20,
+          "y": 48,
+          "w": 500,
+          "h": 16
+        },
+        {
+          "type": "button",
+          "text": "👍 1.2K",
+          "x": 20,
+          "y": 78,
+          "w": 100,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "👎 23",
+          "x": 130,
+          "y": 78,
+          "w": 90,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "Share",
+          "x": 232,
+          "y": 78,
+          "w": 90,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "Save",
+          "x": 332,
+          "y": 78,
+          "w": 90,
+          "h": 34
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 124,
+          "w": 1360,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "A comprehensive walkthrough of modern design systems, covering tokens, components, documentation, and governance. Perfect for teams looking to scale their UI consistency.",
+          "x": 20,
+          "y": 138,
+          "w": 1100,
+          "h": 18
+        },
+        {
+          "type": "text",
+          "text": "Tags: #design-systems #ui #components #frontend",
+          "x": 20,
+          "y": 168,
+          "w": 500,
+          "h": 16
+        },
+        {
+          "type": "button",
+          "text": "Show More",
+          "x": 20,
+          "y": 196,
+          "w": 120,
+          "h": 32
+        }
+      ]
+    }
+  ]
+}

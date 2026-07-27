@@ -1,0 +1,240 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        642,
+        211,
+        1277,
+        868
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E11",
+        "E5",
+        "E7",
+        "E9",
+        "E3",
+        "E8",
+        "E2",
+        "E10",
+        "E6",
+        "E4",
+        "E12"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        678,
+        247,
+        772,
+        286
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Login",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        678,
+        319,
+        900,
+        345
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enter your credentials",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        678,
+        382,
+        775,
+        403
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        678,
+        414,
+        1241,
+        471
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        678,
+        489,
+        781,
+        509
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Username",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        678,
+        521,
+        1241,
+        578
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "username",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        678,
+        596,
+        862,
+        617
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Confirm Password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        678,
+        628,
+        1241,
+        685
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "confirm password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        678,
+        703,
+        800,
+        731
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Remember me",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        678,
+        753,
+        1241,
+        817
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Continue",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        678,
+        835,
+        1241,
+        837
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        905,
+        862,
+        1025,
+        884
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "or sign in with"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        678,
+        907,
+        853,
+        961
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "GitHub"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        871,
+        907,
+        1046,
+        961
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Google"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        1064,
+        907,
+        1239,
+        961
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Apple"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        678,
+        979,
+        827,
+        1001
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Forgot password?"
+    }
+  ],
+  "stats": {
+    "text_detected": 15,
+    "uied_detected": 17,
+    "final_count": 17
+  },
+  "source": "synthetic"
+}

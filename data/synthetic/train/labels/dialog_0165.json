@@ -1,0 +1,110 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        622,
+        300,
+        1297,
+        780
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E5",
+        "E7",
+        "E6",
+        "E3",
+        "E2",
+        "E4"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        1243,
+        314,
+        1279,
+        350
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "close",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        658,
+        336,
+        734,
+        363
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Error",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        658,
+        390,
+        1261,
+        392
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        658,
+        417,
+        1108,
+        443
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "A new version is available. Would you like to",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        658,
+        449,
+        741,
+        475
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "update?",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1171,
+        687,
+        1261,
+        744
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Yes",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 5,
+    "uied_detected": 7,
+    "final_count": 7
+  },
+  "source": "synthetic"
+}

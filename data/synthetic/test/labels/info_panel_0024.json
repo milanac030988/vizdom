@@ -1,0 +1,519 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        27,
+        19,
+        173,
+        50
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Log Viewer"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        1763,
+        10,
+        1893,
+        60
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Details"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        36,
+        93,
+        152,
+        117
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Software"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        36,
+        136,
+        1884,
+        138
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        50,
+        150,
+        195,
+        176
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Update Status"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        351,
+        150,
+        460,
+        176
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Up to date"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        50,
+        196,
+        181,
+        222
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Auto Update"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        351,
+        196,
+        434,
+        217
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enabled"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        50,
+        242,
+        125,
+        263
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "License"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        351,
+        242,
+        395,
+        263
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Trial"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        50,
+        288,
+        165,
+        309
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Install Date"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        351,
+        288,
+        465,
+        308
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2025-06-15"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        50,
+        334,
+        187,
+        360
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Last Updated"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        351,
+        334,
+        465,
+        354
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-03-15"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        50,
+        380,
+        126,
+        401
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Version"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        351,
+        380,
+        414,
+        400
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "5.4.3.2"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        36,
+        447,
+        149,
+        471
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Network"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        36,
+        490,
+        1884,
+        492
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        50,
+        504,
+        158,
+        525
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "IP Address"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        351,
+        504,
+        438,
+        524
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "10.0.0.42"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        50,
+        550,
+        139,
+        575
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Gateway"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        351,
+        550,
+        462,
+        570
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "192.168.1.1"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        50,
+        596,
+        163,
+        616
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "VPN Status"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        351,
+        596,
+        490,
+        617
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disconnected"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        50,
+        642,
+        189,
+        663
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "MAC Address"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        351,
+        642,
+        538,
+        662
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "AA:BB:CC:DD:EE:FF"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        50,
+        688,
+        109,
+        708
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "DHCP"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        351,
+        688,
+        441,
+        709
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disabled"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        50,
+        734,
+        183,
+        755
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Subnet Mask"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        351,
+        734,
+        486,
+        754
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "255.255.255.0"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        50,
+        780,
+        164,
+        800
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "DNS Server"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        351,
+        780,
+        414,
+        800
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "8.8.8.8"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        36,
+        847,
+        129,
+        876
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "System"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        36,
+        890,
+        1884,
+        892
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        50,
+        904,
+        100,
+        924
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "RAM"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        351,
+        904,
+        410,
+        924
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "32 GB"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        50,
+        950,
+        160,
+        976
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Disk Space"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        351,
+        950,
+        468,
+        970
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "512 GB SSD"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        50,
+        996,
+        161,
+        1017
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "OS Version",
+      "parent_id": "E42"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        351,
+        996,
+        533,
+        1017
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Windows 10 22H2"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        36,
+        999,
+        205,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Check Now",
+      "children_ids": [
+        "E40"
+      ]
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        223,
+        999,
+        336,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Reset"
+    }
+  ],
+  "stats": {
+    "text_detected": 39,
+    "uied_detected": 42,
+    "final_count": 42
+  },
+  "source": "synthetic"
+}

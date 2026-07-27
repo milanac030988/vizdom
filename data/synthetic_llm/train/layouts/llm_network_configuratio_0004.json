@@ -1,0 +1,168 @@
+{
+  "title": "Network Configuration",
+  "theme": "light",
+  "elements": [
+    {
+      "type": "text",
+      "text": "Title",
+      "x": 85,
+      "y": 20,
+      "w": 1745,
+      "h": 36
+    },
+    {
+      "type": "container",
+      "text": "",
+      "x": 90,
+      "y": 70,
+      "w": 1800,
+      "h": 200,
+      "elements": [
+        {
+          "type": "input_field",
+          "text": "IP Address",
+          "x": 35,
+          "y": 40,
+          "w": 170,
+          "h": 40
+        },
+        {
+          "type": "input_field",
+          "text": "Subnet Mask",
+          "x": 220,
+          "y": 40,
+          "w": 185,
+          "h": 40
+        },
+        {
+          "type": "input_field",
+          "text": "Default Gateway",
+          "x": 390,
+          "y": 40,
+          "w": 160,
+          "h": 40
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "text": "",
+      "x": 75,
+      "y": 120,
+      "w": 1800,
+      "h": 200,
+      "elements": [
+        {
+          "type": "input_field",
+          "text": "DNS Server 1",
+          "x": 35,
+          "y": 40,
+          "w": 170,
+          "h": 40
+        },
+        {
+          "type": "input_field",
+          "text": "DNS Server 2",
+          "x": 220,
+          "y": 40,
+          "w": 185,
+          "h": 40
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "text": "",
+      "x": 90,
+      "y": 360,
+      "w": 1780,
+      "h": 200,
+      "elements": [
+        {
+          "type": "checkbox",
+          "text": "Enable DHCP",
+          "x": 45,
+          "y": 40,
+          "w": 170,
+          "h": 36
+        },
+        {
+          "type": "input_field",
+          "text": "DHCP Server Address",
+          "x": 220,
+          "y": 40,
+          "w": 185,
+          "h": 36
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "text": "",
+      "x": 90,
+      "y": 570,
+      "w": 1780,
+      "h": 200,
+      "elements": [
+        {
+          "type": "button",
+          "text": "Save Configuration",
+          "x": 35,
+          "y": 40,
+          "w": 160,
+          "h": 48
+        },
+        {
+          "type": "button",
+          "text": "Cancel",
+          "x": 225,
+          "y": 40,
+          "w": 160,
+          "h": 48
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "text": "",
+      "x": 90,
+      "y": 780,
+      "w": 1780,
+      "h": 200,
+      "elements": [
+        {
+          "type": "dropdown",
+          "text": "Network Speed (Mbps)",
+          "x": 45,
+          "y": 36,
+          "w": 150,
+          "h": 36
+        },
+        {
+          "type": "input_field",
+          "text": "2",
+          "x": 195,
+          "y": 36,
+          "w": 48,
+          "h": 36
+        },
+        {
+          "type": "dropdown",
+          "text": "Connection Type",
+          "x": 270,
+          "y": 36,
+          "w": 150,
+          "h": 36
+        },
+        {
+          "type": "input_field",
+          "text": "Ethernet",
+          "x": 420,
+          "y": 36,
+          "w": 84,
+          "h": 36
+        }
+      ]
+    }
+  ]
+}

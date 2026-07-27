@@ -1,0 +1,93 @@
+@startuml Hexagonal_Architecture
+' Uses Graphviz (dot) for clean top-to-bottom layering (needs dot / GRAPHVIZ_DOT).
+' The other diagrams stay Smetana (graphviz-free). Keep this file ASCII-only.
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ranksep 45
+skinparam nodesep 25
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #666666
+    ArrowColor #333333
+}
+
+title VizDOM - Hexagonal Architecture + Distributed Model/Capture Services (ADR-017, ADR-018)
+
+package "Driving adapters (inbound)" #E3F2FD {
+    [CLI\nprocess_gui_image] as cli
+    [Visual DOM Viewer] as viewer
+    [Dashboard] as dash
+    [Robot Framework lib] as rf
+}
+
+package "Domain core (pure, local, CPU)" #FFF3E0 {
+    [Pipeline orchestration] as pipe
+    [Reading-order + Smart-merge] as merge
+    [Coarse hierarchy] as hier
+    [DOM compiler + schema] as compiler
+    interface "DetectorPort" as dport
+    interface "RefinerPort" as rport
+    interface "OcrPort" as oport
+    interface "CapturePort" as cport
+}
+
+package "Driven adapters - local (in-process)" #E8F5E9 {
+    [UIEDBackend] as uied
+    [YOLOBackend] as yolo
+    [OmniParserBackend] as omni
+    [TextDetector] as ocr
+    [SLMAdvisor] as slm
+    [WindowsCapture] as wcap
+    [AndroidCapture] as acap
+    [CameraCapture] as ccap
+}
+
+package "Driven adapters - remote" #FCE4EC {
+    [GrpcDetectorBackend] as gclient
+    [GrpcCaptureStrategy] as gcap
+}
+
+node "GPU host A" #ECEFF1 {
+    [Detector gRPC service\n(warm OmniParser/YOLO)] as dsvc
+}
+node "GPU host B" #ECEFF1 {
+    [Ollama\n(minicpm-v / qwen2.5)] as ollama
+}
+node "SUT host / device" #ECEFF1 {
+    [Capture gRPC service\n(windows / android / camera)] as csvc
+}
+
+' inbound -> core (all enter at the pipeline so the core stays one rank band)
+cli --> pipe
+viewer --> pipe
+dash --> pipe
+rf --> pipe
+
+' within the core (flat: children one rank below pipe, ports included)
+pipe --> merge
+pipe --> hier
+pipe --> compiler
+pipe --> dport
+pipe --> oport
+pipe --> rport
+pipe --> cport
+
+' ports -> driven adapters (below the core)
+dport --> uied
+dport --> yolo
+dport --> omni
+dport --> gclient
+oport --> ocr
+rport --> slm
+cport --> wcap
+cport --> acap
+cport --> ccap
+cport --> gcap
+
+' remote adapters -> external hosts (bottom)
+gclient --> dsvc : gRPC
+slm --> ollama : HTTP
+gcap --> csvc : gRPC
+
+@enduml

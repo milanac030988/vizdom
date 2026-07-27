@@ -1,0 +1,53 @@
+{
+  "config": {
+    "mode": "claude",
+    "num_samples": 5,
+    "width": 1920,
+    "height": 1080,
+    "generated_at": "2026-04-02T15:27:36.998046"
+  },
+  "train": [
+    {
+      "name": "claude_car_infotainment_0001",
+      "app_type": "car infotainment",
+      "element_count": 65,
+      "image": "train/images/claude_car_infotainment_0001.png",
+      "label": "train/labels/claude_car_infotainment_0001.json",
+      "layout": "train/layouts/claude_car_infotainment_0001.json"
+    },
+    {
+      "name": "claude_car_infotainment_0002",
+      "app_type": "car infotainment",
+      "element_count": 66,
+      "image": "train/images/claude_car_infotainment_0002.png",
+      "label": "train/labels/claude_car_infotainment_0002.json",
+      "layout": "train/layouts/claude_car_infotainment_0002.json"
+    },
+    {
+      "name": "claude_car_infotainment_0003",
+      "app_type": "car infotainment",
+      "element_count": 71,
+      "image": "train/images/claude_car_infotainment_0003.png",
+      "label": "train/labels/claude_car_infotainment_0003.json",
+      "layout": "train/layouts/claude_car_infotainment_0003.json"
+    },
+    {
+      "name": "claude_car_infotainment_0004",
+      "app_type": "car infotainment",
+      "element_count": 71,
+      "image": "train/images/claude_car_infotainment_0004.png",
+      "label": "train/labels/claude_car_infotainment_0004.json",
+      "layout": "train/layouts/claude_car_infotainment_0004.json"
+    }
+  ],
+  "test": [
+    {
+      "name": "claude_car_infotainment_0005",
+      "app_type": "car infotainment",
+      "element_count": 52,
+      "image": "test/images/claude_car_infotainment_0005.png",
+      "label": "test/labels/claude_car_infotainment_0005.json",
+      "layout": "test/layouts/claude_car_infotainment_0005.json"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        688,
+        376,
+        1231,
+        704
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E5",
+        "E8",
+        "E7",
+        "E3",
+        "E6",
+        "E2",
+        "E4"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        1177,
+        390,
+        1213,
+        426
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "close",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        724,
+        412,
+        942,
+        447
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Save Changes?",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        724,
+        466,
+        1195,
+        468
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        724,
+        493,
+        1144,
+        519
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Do you want to save your changes before",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        724,
+        525,
+        807,
+        551
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "closing?",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1051,
+        611,
+        1195,
+        668
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        871,
+        611,
+        1033,
+        668
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Confirm",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 6,
+    "uied_detected": 8,
+    "final_count": 8
+  },
+  "source": "synthetic"
+}

@@ -1,0 +1,82 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        639,
+        306,
+        1280,
+        774
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E4",
+        "E2",
+        "E5",
+        "E3"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        675,
+        342,
+        931,
+        377
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Update Available",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        675,
+        396,
+        1244,
+        398
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        675,
+        423,
+        1028,
+        449
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Are you sure you want to proceed?",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1172,
+        681,
+        1244,
+        738
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "No",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 3,
+    "uied_detected": 5,
+    "final_count": 5
+  },
+  "source": "synthetic"
+}

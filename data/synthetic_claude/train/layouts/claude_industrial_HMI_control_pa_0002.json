@@ -1,0 +1,1081 @@
+{
+  "title": "Industrial HMI Control Panel",
+  "theme": "dark",
+  "elements": [
+    {
+      "type": "container",
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 48,
+      "elements": [
+        {
+          "type": "icon",
+          "icon": "menu",
+          "x": 16,
+          "y": 12,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "PlantVision HMI — Line 4 Control Panel",
+          "x": 56,
+          "y": 12,
+          "w": 420,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "RUNNING",
+          "x": 820,
+          "y": 14,
+          "w": 80,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Operator: J. Kowalski",
+          "x": 1540,
+          "y": 14,
+          "w": 180,
+          "h": 20
+        },
+        {
+          "type": "icon",
+          "icon": "user",
+          "x": 1730,
+          "y": 12,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "settings",
+          "x": 1770,
+          "y": 12,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "search",
+          "x": 1810,
+          "y": 12,
+          "w": 24,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "x": 0,
+      "y": 48,
+      "w": 1920,
+      "h": 1
+    },
+    {
+      "type": "container",
+      "x": 16,
+      "y": 64,
+      "w": 460,
+      "h": 320,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Motor Drive Unit A",
+          "x": 20,
+          "y": 14,
+          "w": 200,
+          "h": 22
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 44,
+          "w": 420,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Speed (RPM)",
+          "x": 20,
+          "y": 60,
+          "w": 100,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "1485",
+          "x": 340,
+          "y": 58,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Torque (Nm)",
+          "x": 20,
+          "y": 90,
+          "w": 100,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "247.3",
+          "x": 340,
+          "y": 88,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Current (A)",
+          "x": 20,
+          "y": 120,
+          "w": 100,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "18.6",
+          "x": 340,
+          "y": 118,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Temperature (°C)",
+          "x": 20,
+          "y": 150,
+          "w": 140,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "72.1",
+          "x": 340,
+          "y": 148,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 180,
+          "w": 420,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Set Speed",
+          "x": 20,
+          "y": 196,
+          "w": 80,
+          "h": 16
+        },
+        {
+          "type": "input_field",
+          "text": "1500",
+          "x": 140,
+          "y": 192,
+          "w": 160,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "RPM",
+          "x": 310,
+          "y": 196,
+          "w": 40,
+          "h": 16
+        },
+        {
+          "type": "button",
+          "text": "START",
+          "x": 20,
+          "y": 240,
+          "w": 130,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "STOP",
+          "x": 162,
+          "y": 240,
+          "w": 130,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "E-STOP",
+          "x": 304,
+          "y": 240,
+          "w": 136,
+          "h": 36
+        },
+        {
+          "type": "toggle",
+          "text": "Auto Mode",
+          "x": 20,
+          "y": 290,
+          "w": 120,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 492,
+      "y": 64,
+      "w": 460,
+      "h": 320,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Conveyor System B",
+          "x": 20,
+          "y": 14,
+          "w": 200,
+          "h": 22
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 44,
+          "w": 420,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Belt Speed (m/min)",
+          "x": 20,
+          "y": 60,
+          "w": 150,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "12.4",
+          "x": 340,
+          "y": 58,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Load (kg)",
+          "x": 20,
+          "y": 90,
+          "w": 100,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "385",
+          "x": 340,
+          "y": 88,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Belt Tension (N)",
+          "x": 20,
+          "y": 120,
+          "w": 130,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "2140",
+          "x": 340,
+          "y": 118,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Items/min",
+          "x": 20,
+          "y": 150,
+          "w": 100,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "48",
+          "x": 340,
+          "y": 148,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 180,
+          "w": 420,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Target Speed",
+          "x": 20,
+          "y": 196,
+          "w": 100,
+          "h": 16
+        },
+        {
+          "type": "input_field",
+          "text": "12.5",
+          "x": 140,
+          "y": 192,
+          "w": 160,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "m/min",
+          "x": 310,
+          "y": 196,
+          "w": 50,
+          "h": 16
+        },
+        {
+          "type": "button",
+          "text": "RUN",
+          "x": 20,
+          "y": 240,
+          "w": 130,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "PAUSE",
+          "x": 162,
+          "y": 240,
+          "w": 130,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "RESET",
+          "x": 304,
+          "y": 240,
+          "w": 136,
+          "h": 36
+        },
+        {
+          "type": "toggle",
+          "text": "Sync to Line",
+          "x": 20,
+          "y": 290,
+          "w": 130,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 968,
+      "y": 64,
+      "w": 460,
+      "h": 320,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Pressure & Flow Control",
+          "x": 20,
+          "y": 14,
+          "w": 240,
+          "h": 22
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 44,
+          "w": 420,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Inlet Pressure (bar)",
+          "x": 20,
+          "y": 60,
+          "w": 160,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "4.82",
+          "x": 340,
+          "y": 58,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Outlet Pressure (bar)",
+          "x": 20,
+          "y": 90,
+          "w": 160,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "3.15",
+          "x": 340,
+          "y": 88,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Flow Rate (L/min)",
+          "x": 20,
+          "y": 120,
+          "w": 150,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "67.2",
+          "x": 340,
+          "y": 118,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Valve Position (%)",
+          "x": 20,
+          "y": 150,
+          "w": 150,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "78",
+          "x": 340,
+          "y": 148,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 180,
+          "w": 420,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Setpoint",
+          "x": 20,
+          "y": 196,
+          "w": 70,
+          "h": 16
+        },
+        {
+          "type": "input_field",
+          "text": "4.50",
+          "x": 140,
+          "y": 192,
+          "w": 160,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "bar",
+          "x": 310,
+          "y": 196,
+          "w": 30,
+          "h": 16
+        },
+        {
+          "type": "button",
+          "text": "OPEN",
+          "x": 20,
+          "y": 240,
+          "w": 130,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "CLOSE",
+          "x": 162,
+          "y": 240,
+          "w": 130,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "PURGE",
+          "x": 304,
+          "y": 240,
+          "w": 136,
+          "h": 36
+        },
+        {
+          "type": "toggle",
+          "text": "PID Control",
+          "x": 20,
+          "y": 290,
+          "w": 120,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 1444,
+      "y": 64,
+      "w": 460,
+      "h": 320,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Alarm Summary",
+          "x": 20,
+          "y": 14,
+          "w": 160,
+          "h": 22
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 44,
+          "w": 420,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "WARN  Motor A bearing temp high",
+          "x": 20,
+          "y": 60,
+          "w": 380,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "14:32:07",
+          "x": 360,
+          "y": 60,
+          "w": 80,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "INFO  Conveyor B speed adjusted",
+          "x": 20,
+          "y": 86,
+          "w": 380,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "14:28:51",
+          "x": 360,
+          "y": 86,
+          "w": 80,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "WARN  Inlet pressure fluctuation",
+          "x": 20,
+          "y": 112,
+          "w": 380,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "14:15:22",
+          "x": 360,
+          "y": 112,
+          "w": 80,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "INFO  Shift changeover logged",
+          "x": 20,
+          "y": 138,
+          "w": 380,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "14:00:00",
+          "x": 360,
+          "y": 138,
+          "w": 80,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "INFO  PLC heartbeat OK",
+          "x": 20,
+          "y": 164,
+          "w": 380,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "13:59:58",
+          "x": 360,
+          "y": 164,
+          "w": 80,
+          "h": 16
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 194,
+          "w": 420,
+          "h": 1
+        },
+        {
+          "type": "dropdown",
+          "text": "Filter: All Alarms",
+          "x": 20,
+          "y": 210,
+          "w": 200,
+          "h": 30
+        },
+        {
+          "type": "button",
+          "text": "ACK ALL",
+          "x": 240,
+          "y": 210,
+          "w": 100,
+          "h": 30
+        },
+        {
+          "type": "button",
+          "text": "SILENCE",
+          "x": 352,
+          "y": 210,
+          "w": 88,
+          "h": 30
+        },
+        {
+          "type": "checkbox",
+          "text": "Show acknowledged",
+          "x": 20,
+          "y": 258,
+          "w": 180,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "Auto-scroll",
+          "x": 220,
+          "y": 258,
+          "w": 130,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 16,
+      "y": 400,
+      "w": 936,
+      "h": 300,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Process Overview — Batch #20260402-047",
+          "x": 20,
+          "y": 14,
+          "w": 380,
+          "h": 22
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 44,
+          "w": 896,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Batch Status",
+          "x": 20,
+          "y": 60,
+          "w": 100,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "IN PROGRESS",
+          "x": 180,
+          "y": 58,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Recipe",
+          "x": 20,
+          "y": 90,
+          "w": 60,
+          "h": 16
+        },
+        {
+          "type": "dropdown",
+          "text": "STD-MIX-004",
+          "x": 180,
+          "y": 84,
+          "w": 200,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "Elapsed",
+          "x": 20,
+          "y": 126,
+          "w": 60,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "01:42:18",
+          "x": 180,
+          "y": 124,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "ETA",
+          "x": 20,
+          "y": 156,
+          "w": 30,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "00:38:42",
+          "x": 180,
+          "y": 154,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Completion",
+          "x": 20,
+          "y": 186,
+          "w": 90,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "72%",
+          "x": 180,
+          "y": 184,
+          "w": 50,
+          "h": 20
+        },
+        {
+          "type": "separator",
+          "x": 460,
+          "y": 54,
+          "w": 1,
+          "h": 230
+        },
+        {
+          "type": "text",
+          "text": "Stage Parameters",
+          "x": 480,
+          "y": 60,
+          "w": 150,
+          "h": 16
+        },
+        {
+          "type": "text",
+          "text": "Mix Temp (°C)",
+          "x": 480,
+          "y": 90,
+          "w": 110,
+          "h": 16
+        },
+        {
+          "type": "input_field",
+          "text": "85.0",
+          "x": 680,
+          "y": 84,
+          "w": 150,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "Mix Time (min)",
+          "x": 480,
+          "y": 126,
+          "w": 120,
+          "h": 16
+        },
+        {
+          "type": "input_field",
+          "text": "45",
+          "x": 680,
+          "y": 120,
+          "w": 150,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "Agitator (RPM)",
+          "x": 480,
+          "y": 166,
+          "w": 120,
+          "h": 16
+        },
+        {
+          "type": "input_field",
+          "text": "220",
+          "x": 680,
+          "y": 160,
+          "w": 150,
+          "h": 30
+        },
+        {
+          "type": "button",
+          "text": "APPLY",
+          "x": 680,
+          "y": 204,
+          "w": 150,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "HOLD BATCH",
+          "x": 480,
+          "y": 252,
+          "w": 140,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "ABORT BATCH",
+          "x": 632,
+          "y": 252,
+          "w": 140,
+          "h": 34
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 968,
+      "y": 400,
+      "w": 936,
+      "h": 300,
+      "elements": [
+        {
+          "type": "text",
+          "text": "System Configuration",
+          "x": 20,
+          "y": 14,
+          "w": 200,
+          "h": 22
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 44,
+          "w": 896,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "PLC Connection",
+          "x": 20,
+          "y": 62,
+          "w": 120,
+          "h": 16
+        },
+        {
+          "type": "dropdown",
+          "text": "PLC-04 (192.168.1.40)",
+          "x": 200,
+          "y": 56,
+          "w": 250,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "Scan Rate (ms)",
+          "x": 20,
+          "y": 100,
+          "w": 120,
+          "h": 16
+        },
+        {
+          "type": "input_field",
+          "text": "250",
+          "x": 200,
+          "y": 94,
+          "w": 150,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "Data Logging",
+          "x": 20,
+          "y": 138,
+          "w": 100,
+          "h": 16
+        },
+        {
+          "type": "toggle",
+          "text": "Enabled",
+          "x": 200,
+          "y": 138,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Log Interval (s)",
+          "x": 20,
+          "y": 170,
+          "w": 130,
+          "h": 16
+        },
+        {
+          "type": "input_field",
+          "text": "5",
+          "x": 200,
+          "y": 164,
+          "w": 150,
+          "h": 30
+        },
+        {
+          "type": "separator",
+          "x": 480,
+          "y": 54,
+          "w": 1,
+          "h": 230
+        },
+        {
+          "type": "text",
+          "text": "Safety Interlocks",
+          "x": 500,
+          "y": 62,
+          "w": 150,
+          "h": 16
+        },
+        {
+          "type": "checkbox",
+          "text": "Over-temperature trip",
+          "x": 500,
+          "y": 90,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "Over-pressure trip",
+          "x": 500,
+          "y": 118,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "Low-flow shutdown",
+          "x": 500,
+          "y": 146,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "Door open inhibit",
+          "x": 500,
+          "y": 174,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "checkbox",
+          "text": "Emergency chain OK",
+          "x": 500,
+          "y": 202,
+          "w": 200,
+          "h": 20
+        },
+        {
+          "type": "button",
+          "text": "EXPORT LOG",
+          "x": 20,
+          "y": 252,
+          "w": 140,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "DIAGNOSTICS",
+          "x": 172,
+          "y": 252,
+          "w": 150,
+          "h": 34
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 1040,
+      "w": 1920,
+      "h": 40,
+      "elements": [
+        {
+          "type": "text",
+          "text": "PLC: CONNECTED",
+          "x": 20,
+          "y": 10,
+          "w": 140,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Scan: 248ms",
+          "x": 200,
+          "y": 10,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "I/O: 128/128 OK",
+          "x": 340,
+          "y": 10,
+          "w": 130,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Active Alarms: 2",
+          "x": 520,
+          "y": 10,
+          "w": 140,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "2026-04-02  14:34:51",
+          "x": 1740,
+          "y": 10,
+          "w": 160,
+          "h": 20
+        }
+      ]
+    }
+  ]
+}

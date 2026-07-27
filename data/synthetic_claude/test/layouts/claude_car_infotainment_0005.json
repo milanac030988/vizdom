@@ -1,0 +1,423 @@
+{
+  "title": "Car Infotainment",
+  "theme": "dark",
+  "elements": [
+    {
+      "type": "container",
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 70,
+      "elements": [
+        {
+          "type": "icon",
+          "icon": "menu",
+          "x": 20,
+          "y": 23,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "Infotainment System",
+          "x": 60,
+          "y": 20,
+          "w": 250,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "72°F",
+          "x": 1620,
+          "y": 20,
+          "w": 60,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "3:42 PM",
+          "x": 1720,
+          "y": 20,
+          "w": 100,
+          "h": 30
+        },
+        {
+          "type": "icon",
+          "icon": "settings",
+          "x": 1870,
+          "y": 23,
+          "w": 24,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "x": 0,
+      "y": 70,
+      "w": 1920,
+      "h": 1
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 71,
+      "w": 280,
+      "h": 1009,
+      "elements": [
+        {
+          "type": "button",
+          "text": "Navigation",
+          "x": 20,
+          "y": 90,
+          "w": 240,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Media",
+          "x": 20,
+          "y": 142,
+          "w": 240,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Phone",
+          "x": 20,
+          "y": 194,
+          "w": 240,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Vehicle",
+          "x": 20,
+          "y": 246,
+          "w": 240,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Climate",
+          "x": 20,
+          "y": 298,
+          "w": 240,
+          "h": 40
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 360,
+          "w": 240,
+          "h": 1
+        },
+        {
+          "type": "toggle",
+          "text": "Bluetooth",
+          "x": 20,
+          "y": 380,
+          "w": 240,
+          "h": 24
+        },
+        {
+          "type": "toggle",
+          "text": "Wi-Fi",
+          "x": 20,
+          "y": 420,
+          "w": 240,
+          "h": 24
+        },
+        {
+          "type": "toggle",
+          "text": "Parking Assist",
+          "x": 20,
+          "y": 460,
+          "w": 240,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "x": 280,
+      "y": 71,
+      "w": 1,
+      "h": 1009
+    },
+    {
+      "type": "container",
+      "x": 281,
+      "y": 71,
+      "w": 1639,
+      "h": 560,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Navigation",
+          "x": 310,
+          "y": 90,
+          "w": 200,
+          "h": 28
+        },
+        {
+          "type": "container",
+          "x": 310,
+          "y": 130,
+          "w": 600,
+          "h": 34,
+          "elements": [
+            {
+              "type": "icon",
+              "icon": "search",
+              "x": 320,
+              "y": 135,
+              "w": 24,
+              "h": 24
+            },
+            {
+              "type": "input_field",
+              "text": "Search destination...",
+              "x": 354,
+              "y": 130,
+              "w": 400,
+              "h": 34
+            }
+          ]
+        },
+        {
+          "type": "button",
+          "text": "Home",
+          "x": 940,
+          "y": 130,
+          "w": 100,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "Work",
+          "x": 1052,
+          "y": 130,
+          "w": 100,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "Favorites",
+          "x": 1164,
+          "y": 130,
+          "w": 120,
+          "h": 34
+        },
+        {
+          "type": "text",
+          "text": "Recent Destinations",
+          "x": 310,
+          "y": 190,
+          "w": 220,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "123 Main Street, Springfield",
+          "x": 310,
+          "y": 224,
+          "w": 300,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Airport Terminal B",
+          "x": 310,
+          "y": 254,
+          "w": 300,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Downtown Parking Garage",
+          "x": 310,
+          "y": 284,
+          "w": 300,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "x": 281,
+      "y": 631,
+      "w": 1639,
+      "h": 1
+    },
+    {
+      "type": "container",
+      "x": 281,
+      "y": 632,
+      "w": 1639,
+      "h": 448,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Now Playing",
+          "x": 310,
+          "y": 652,
+          "w": 180,
+          "h": 28
+        },
+        {
+          "type": "text",
+          "text": "Bohemian Rhapsody",
+          "x": 310,
+          "y": 696,
+          "w": 260,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "Queen — A Night at the Opera",
+          "x": 310,
+          "y": 726,
+          "w": 300,
+          "h": 20
+        },
+        {
+          "type": "button",
+          "text": "⏮",
+          "x": 310,
+          "y": 770,
+          "w": 80,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "⏸",
+          "x": 402,
+          "y": 770,
+          "w": 80,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "⏭",
+          "x": 494,
+          "y": 770,
+          "w": 80,
+          "h": 40
+        },
+        {
+          "type": "text",
+          "text": "Volume",
+          "x": 310,
+          "y": 830,
+          "w": 80,
+          "h": 20
+        },
+        {
+          "type": "dropdown",
+          "text": "FM Radio",
+          "x": 700,
+          "y": 652,
+          "w": 200,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "Climate Control",
+          "x": 1100,
+          "y": 652,
+          "w": 200,
+          "h": 28
+        },
+        {
+          "type": "text",
+          "text": "Driver",
+          "x": 1100,
+          "y": 696,
+          "w": 80,
+          "h": 20
+        },
+        {
+          "type": "button",
+          "text": "−",
+          "x": 1100,
+          "y": 726,
+          "w": 80,
+          "h": 36
+        },
+        {
+          "type": "text",
+          "text": "72°F",
+          "x": 1196,
+          "y": 730,
+          "w": 60,
+          "h": 24
+        },
+        {
+          "type": "button",
+          "text": "+",
+          "x": 1270,
+          "y": 726,
+          "w": 80,
+          "h": 36
+        },
+        {
+          "type": "text",
+          "text": "Passenger",
+          "x": 1400,
+          "y": 696,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "button",
+          "text": "−",
+          "x": 1400,
+          "y": 726,
+          "w": 80,
+          "h": 36
+        },
+        {
+          "type": "text",
+          "text": "70°F",
+          "x": 1496,
+          "y": 730,
+          "w": 60,
+          "h": 24
+        },
+        {
+          "type": "button",
+          "text": "+",
+          "x": 1570,
+          "y": 726,
+          "w": 80,
+          "h": 36
+        },
+        {
+          "type": "toggle",
+          "text": "Seat Heater L",
+          "x": 1100,
+          "y": 785,
+          "w": 200,
+          "h": 24
+        },
+        {
+          "type": "toggle",
+          "text": "Seat Heater R",
+          "x": 1400,
+          "y": 785,
+          "w": 200,
+          "h": 24
+        },
+        {
+          "type": "checkbox",
+          "text": "Auto Climate",
+          "x": 1100,
+          "y": 825,
+          "w": 160,
+          "h": 20
+        }
+      ]
+    }
+  ]
+}

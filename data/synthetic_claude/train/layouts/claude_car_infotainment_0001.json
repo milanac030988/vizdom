@@ -1,0 +1,532 @@
+{
+  "title": "Car Infotainment",
+  "theme": "dark",
+  "elements": [
+    {
+      "type": "container",
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 70,
+      "elements": [
+        {
+          "type": "icon",
+          "icon": "menu",
+          "x": 20,
+          "y": 23,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "DriveConnect",
+          "x": 60,
+          "y": 20,
+          "w": 200,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "22°C",
+          "x": 820,
+          "y": 20,
+          "w": 60,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "2:45 PM",
+          "x": 920,
+          "y": 20,
+          "w": 100,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "87% Battery",
+          "x": 1060,
+          "y": 20,
+          "w": 120,
+          "h": 30
+        },
+        {
+          "type": "icon",
+          "icon": "user",
+          "x": 1840,
+          "y": 23,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "type": "icon",
+          "icon": "settings",
+          "x": 1880,
+          "y": 23,
+          "w": 24,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 70,
+      "w": 320,
+      "h": 1010,
+      "elements": [
+        {
+          "type": "button",
+          "text": "Navigation",
+          "x": 20,
+          "y": 90,
+          "w": 280,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Media",
+          "x": 20,
+          "y": 142,
+          "w": 280,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Phone",
+          "x": 20,
+          "y": 194,
+          "w": 280,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Climate",
+          "x": 20,
+          "y": 246,
+          "w": 280,
+          "h": 40
+        },
+        {
+          "type": "button",
+          "text": "Vehicle Info",
+          "x": 20,
+          "y": 298,
+          "w": 280,
+          "h": 40
+        },
+        {
+          "type": "separator",
+          "x": 20,
+          "y": 358,
+          "w": 280,
+          "h": 1
+        },
+        {
+          "type": "button",
+          "text": "Settings",
+          "x": 20,
+          "y": 378,
+          "w": 280,
+          "h": 40
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 320,
+      "y": 70,
+      "w": 1600,
+      "h": 60,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Now Playing",
+          "x": 340,
+          "y": 85,
+          "w": 200,
+          "h": 28
+        },
+        {
+          "type": "icon",
+          "icon": "search",
+          "x": 1870,
+          "y": 88,
+          "w": 24,
+          "h": 24
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 320,
+      "y": 130,
+      "w": 780,
+      "h": 400,
+      "elements": [
+        {
+          "type": "container",
+          "x": 340,
+          "y": 150,
+          "w": 740,
+          "h": 300,
+          "elements": [
+            {
+              "type": "text",
+              "text": "Album Art",
+              "x": 360,
+              "y": 220,
+              "w": 200,
+              "h": 24
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Bohemian Rhapsody",
+          "x": 340,
+          "y": 465,
+          "w": 300,
+          "h": 28
+        },
+        {
+          "type": "text",
+          "text": "Queen — A Night at the Opera",
+          "x": 340,
+          "y": 498,
+          "w": 350,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 320,
+      "y": 540,
+      "w": 780,
+      "h": 100,
+      "elements": [
+        {
+          "type": "separator",
+          "x": 340,
+          "y": 555,
+          "w": 740,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "2:31",
+          "x": 340,
+          "y": 568,
+          "w": 50,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "5:55",
+          "x": 1030,
+          "y": 568,
+          "w": 50,
+          "h": 20
+        },
+        {
+          "type": "button",
+          "text": "⏮",
+          "x": 560,
+          "y": 598,
+          "w": 80,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "⏸",
+          "x": 660,
+          "y": 598,
+          "w": 80,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "⏭",
+          "x": 760,
+          "y": 598,
+          "w": 80,
+          "h": 36
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 320,
+      "y": 650,
+      "w": 780,
+      "h": 60,
+      "elements": [
+        {
+          "type": "toggle",
+          "text": "Shuffle",
+          "x": 340,
+          "y": 668,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "toggle",
+          "text": "Repeat",
+          "x": 470,
+          "y": 668,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "dropdown",
+          "text": "Source: Bluetooth",
+          "x": 860,
+          "y": 660,
+          "w": 200,
+          "h": 30
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 1120,
+      "y": 130,
+      "w": 800,
+      "h": 350,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Quick Navigation",
+          "x": 1140,
+          "y": 150,
+          "w": 250,
+          "h": 28
+        },
+        {
+          "type": "separator",
+          "x": 1140,
+          "y": 188,
+          "w": 740,
+          "h": 1
+        },
+        {
+          "type": "input_field",
+          "text": "Enter destination...",
+          "x": 1140,
+          "y": 205,
+          "w": 400,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "Go",
+          "x": 1560,
+          "y": 205,
+          "w": 80,
+          "h": 34
+        },
+        {
+          "type": "button",
+          "text": "Home",
+          "x": 1140,
+          "y": 260,
+          "w": 170,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Work",
+          "x": 1325,
+          "y": 260,
+          "w": 170,
+          "h": 36
+        },
+        {
+          "type": "button",
+          "text": "Favorites",
+          "x": 1510,
+          "y": 260,
+          "w": 170,
+          "h": 36
+        },
+        {
+          "type": "text",
+          "text": "Recent Destinations",
+          "x": 1140,
+          "y": 316,
+          "w": 250,
+          "h": 24
+        },
+        {
+          "type": "text",
+          "text": "Central Station — 12 km",
+          "x": 1140,
+          "y": 350,
+          "w": 300,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Airport Terminal 2 — 34 km",
+          "x": 1140,
+          "y": 380,
+          "w": 300,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Downtown Mall — 8 km",
+          "x": 1140,
+          "y": 410,
+          "w": 300,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 1120,
+      "y": 500,
+      "w": 800,
+      "h": 220,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Climate Control",
+          "x": 1140,
+          "y": 520,
+          "w": 200,
+          "h": 28
+        },
+        {
+          "type": "separator",
+          "x": 1140,
+          "y": 558,
+          "w": 740,
+          "h": 1
+        },
+        {
+          "type": "text",
+          "text": "Driver",
+          "x": 1140,
+          "y": 580,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "button",
+          "text": "−",
+          "x": 1250,
+          "y": 575,
+          "w": 40,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "22°C",
+          "x": 1305,
+          "y": 580,
+          "w": 60,
+          "h": 20
+        },
+        {
+          "type": "button",
+          "text": "+",
+          "x": 1380,
+          "y": 575,
+          "w": 40,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "Passenger",
+          "x": 1140,
+          "y": 625,
+          "w": 100,
+          "h": 20
+        },
+        {
+          "type": "button",
+          "text": "−",
+          "x": 1250,
+          "y": 620,
+          "w": 40,
+          "h": 30
+        },
+        {
+          "type": "text",
+          "text": "21°C",
+          "x": 1305,
+          "y": 625,
+          "w": 60,
+          "h": 20
+        },
+        {
+          "type": "button",
+          "text": "+",
+          "x": 1380,
+          "y": 620,
+          "w": 40,
+          "h": 30
+        },
+        {
+          "type": "toggle",
+          "text": "Seat Heater",
+          "x": 1140,
+          "y": 670,
+          "w": 120,
+          "h": 20
+        },
+        {
+          "type": "toggle",
+          "text": "AC Auto",
+          "x": 1300,
+          "y": 670,
+          "w": 100,
+          "h": 20
+        }
+      ]
+    },
+    {
+      "type": "container",
+      "x": 0,
+      "y": 1040,
+      "w": 1920,
+      "h": 40,
+      "elements": [
+        {
+          "type": "text",
+          "text": "Speed: 0 km/h",
+          "x": 20,
+          "y": 1050,
+          "w": 150,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Range: 412 km",
+          "x": 250,
+          "y": 1050,
+          "w": 150,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Trip: 47.3 km",
+          "x": 480,
+          "y": 1050,
+          "w": 150,
+          "h": 20
+        },
+        {
+          "type": "text",
+          "text": "Bluetooth Connected",
+          "x": 1720,
+          "y": 1050,
+          "w": 180,
+          "h": 20
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1207 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        50
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E3",
+        "E5",
+        "E55",
+        "E68",
+        "E79",
+        "E4",
+        "E62",
+        "E48",
+        "E54",
+        "E69",
+        "E80",
+        "E8",
+        "E49",
+        "E63",
+        "E21",
+        "E2",
+        "E6",
+        "E39"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        20,
+        13,
+        44,
+        37
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        60,
+        13,
+        239,
+        30
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "VEHICLE DASHBOARD",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        880,
+        13,
+        955,
+        30
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "12:47 PM",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1520,
+        13,
+        1645,
+        34
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Trip A: 247.3 mi",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1870,
+        13,
+        1894,
+        37
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        60,
+        100,
+        560,
+        600
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E86",
+        "E77",
+        "E37",
+        "E46",
+        "E18",
+        "E45",
+        "E35",
+        "E75",
+        "E34",
+        "E36",
+        "E33",
+        "E41",
+        "E42",
+        "E43",
+        "E29",
+        "E30",
+        "E19",
+        "E88",
+        "E23",
+        "E24",
+        "E25",
+        "E26",
+        "E9",
+        "E10",
+        "E11",
+        "E12",
+        "E13",
+        "E14",
+        "E15",
+        "E16",
+        "E17",
+        "E22",
+        "E40",
+        "E44"
+      ]
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        190,
+        20,
+        261,
+        34
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "RPM x1000",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        100,
+        400,
+        110,
+        417
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "0",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        80,
+        330,
+        90,
+        347
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        80,
+        260,
+        90,
+        277
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        100,
+        190,
+        110,
+        207
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        150,
+        130,
+        160,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "4",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        230,
+        100,
+        240,
+        117
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "5",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        310,
+        130,
+        320,
+        147
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "6",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        360,
+        190,
+        370,
+        207
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "7",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        380,
+        260,
+        390,
+        277
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "8",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        190,
+        320,
+        247,
+        344
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3,250",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        220,
+        360,
+        249,
+        374
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "RPM",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        620,
+        70,
+        1300,
+        650
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        290,
+        20,
+        329,
+        37
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "MPH",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        120,
+        460,
+        130,
+        477
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "0",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        80,
+        370,
+        100,
+        387
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "20",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        70,
+        270,
+        90,
+        287
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "40",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        100,
+        170,
+        120,
+        187
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "60",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        170,
+        100,
+        190,
+        117
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "80",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        270,
+        60,
+        300,
+        77
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "100",
+      "parent_id": "E82"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        370,
+        60,
+        400,
+        77
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "120",
+      "parent_id": "E82"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        470,
+        100,
+        500,
+        117
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "140",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        530,
+        170,
+        560,
+        187
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "160",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        560,
+        270,
+        590,
+        287
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "180"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        550,
+        370,
+        580,
+        387
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "200"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        280,
+        310,
+        306,
+        331
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "72",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        310,
+        390,
+        349,
+        407
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "MPH",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        300,
+        440,
+        349,
+        457
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "DRIVE",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        200,
+        480,
+        480,
+        482
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E7"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        260,
+        500,
+        361,
+        515
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "ODO: 14,832 mi",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        1360,
+        100,
+        1860,
+        600
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        210,
+        20,
+        241,
+        34
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "FUEL",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        100,
+        400,
+        109,
+        417
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "E",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        90,
+        300,
+        117,
+        319
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1/4",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        120,
+        200,
+        147,
+        219
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1/2",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        200,
+        130,
+        227,
+        149
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "3/4",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        310,
+        100,
+        319,
+        117
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "F",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        200,
+        310,
+        246,
+        331
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "68%",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        175,
+        360,
+        263,
+        377
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Range: 310 mi",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        60,
+        640,
+        460,
+        780
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        20,
+        15,
+        107,
+        29
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "ENGINE TEMP",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        20,
+        40,
+        380,
+        42
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        20,
+        60,
+        29,
+        74
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "C",
+      "parent_id": "E56"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        350,
+        60,
+        360,
+        74
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "H",
+      "parent_id": "E82"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        130,
+        90,
+        263,
+        108
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "195°F — Normal",
+      "parent_id": "E66"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        500,
+        690,
+        1420,
+        810
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        20,
+        10,
+        99,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "INDICATORS",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        20,
+        35,
+        900,
+        37
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        20,
+        55,
+        133,
+        75
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "High Beam",
+      "children_ids": [
+        "E70",
+        "E81",
+        "E50",
+        "E64"
+      ]
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        170,
+        55,
+        280,
+        75
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Fog Lights"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        320,
+        55,
+        430,
+        75
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Cruise Ctrl"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        480,
+        55,
+        601,
+        75
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Traction Ctrl"
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        650,
+        55,
+        779,
+        75
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Parking Brake"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        1460,
+        640,
+        1860,
+        780
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        20,
+        15,
+        108,
+        29
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "OIL PRESSURE",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        20,
+        40,
+        380,
+        42
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E64",
+      "bounds": [
+        20,
+        60,
+        27,
+        74
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "L",
+      "parent_id": "E56"
+    },
+    {
+      "id": "E65",
+      "bounds": [
+        350,
+        60,
+        360,
+        74
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "H",
+      "parent_id": "E82"
+    },
+    {
+      "id": "E66",
+      "bounds": [
+        130,
+        90,
+        267,
+        108
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "42 PSI — Normal",
+      "children_ids": [
+        "E52",
+        "E73",
+        "E84"
+      ]
+    },
+    {
+      "id": "E67",
+      "bounds": [
+        60,
+        820,
+        640,
+        1020
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E68",
+      "bounds": [
+        20,
+        15,
+        125,
+        29
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "TRIP COMPUTER",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E69",
+      "bounds": [
+        20,
+        40,
+        560,
+        42
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E70",
+      "bounds": [
+        20,
+        60,
+        88,
+        77
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Avg Speed:",
+      "parent_id": "E56"
+    },
+    {
+      "id": "E71",
+      "bounds": [
+        200,
+        60,
+        259,
+        77
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "54.2 mph",
+      "parent_id": "E82"
+    },
+    {
+      "id": "E72",
+      "bounds": [
+        20,
+        90,
+        76,
+        107
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Avg Fuel:",
+      "children_ids": [
+        "E83"
+      ]
+    },
+    {
+      "id": "E73",
+      "bounds": [
+        200,
+        90,
+        259,
+        107
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "28.4 mpg",
+      "parent_id": "E66"
+    },
+    {
+      "id": "E74",
+      "bounds": [
+        20,
+        120,
+        88,
+        134
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Drive Time:",
+      "parent_id": "E85"
+    },
+    {
+      "id": "E75",
+      "bounds": [
+        200,
+        120,
+        248,
+        134
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "4h 32m",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E76",
+      "bounds": [
+        20,
+        155,
+        150,
+        189
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Reset Trip A",
+      "children_ids": [
+        "E87"
+      ]
+    },
+    {
+      "id": "E77",
+      "bounds": [
+        165,
+        155,
+        295,
+        189
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Reset Trip B",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E78",
+      "bounds": [
+        1280,
+        820,
+        1860,
+        1020
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E79",
+      "bounds": [
+        20,
+        15,
+        124,
+        29
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "VEHICLE STATUS",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E80",
+      "bounds": [
+        20,
+        40,
+        560,
+        42
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E81",
+      "bounds": [
+        20,
+        60,
+        101,
+        74
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Tire Pressure:",
+      "parent_id": "E56"
+    },
+    {
+      "id": "E82",
+      "bounds": [
+        200,
+        60,
+        396,
+        78
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "FL 34 | FR 35 | RL 33 | RR 34 PSI",
+      "children_ids": [
+        "E71",
+        "E27",
+        "E28",
+        "E51",
+        "E65"
+      ]
+    },
+    {
+      "id": "E83",
+      "bounds": [
+        20,
+        90,
+        67,
+        107
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Battery:",
+      "parent_id": "E72"
+    },
+    {
+      "id": "E84",
+      "bounds": [
+        200,
+        90,
+        236,
+        104
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "14.2V",
+      "parent_id": "E66"
+    },
+    {
+      "id": "E85",
+      "bounds": [
+        20,
+        120,
+        102,
+        134
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Transmission:",
+      "children_ids": [
+        "E74"
+      ]
+    },
+    {
+      "id": "E86",
+      "bounds": [
+        200,
+        116,
+        360,
+        146
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "D — Drive",
+      "parent_id": "E7"
+    },
+    {
+      "id": "E87",
+      "bounds": [
+        20,
+        158,
+        109,
+        175
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Outside Temp:",
+      "parent_id": "E76"
+    },
+    {
+      "id": "E88",
+      "bounds": [
+        200,
+        158,
+        228,
+        172
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "72°F",
+      "parent_id": "E7"
+    }
+  ],
+  "stats": {
+    "text_detected": 73,
+    "uied_detected": 88,
+    "final_count": 88
+  },
+  "source": "synthetic",
+  "layout_title": "Car Instrument Cluster",
+  "layout_theme": "dark"
+}

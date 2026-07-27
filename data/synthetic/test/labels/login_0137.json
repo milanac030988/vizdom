@@ -1,0 +1,234 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        658,
+        184,
+        1262,
+        896
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E10",
+        "E5",
+        "E7",
+        "E9",
+        "E13",
+        "E14",
+        "E15",
+        "E3",
+        "E2",
+        "E8",
+        "E12",
+        "E6",
+        "E4",
+        "E11"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        694,
+        220,
+        811,
+        259
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Sign In",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        694,
+        292,
+        916,
+        318
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Enter your credentials",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        694,
+        355,
+        750,
+        376
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Email",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        694,
+        387,
+        1226,
+        444
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "email",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        694,
+        462,
+        797,
+        482
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Username",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        694,
+        494,
+        1226,
+        551
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "username",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        694,
+        569,
+        878,
+        590
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Confirm Password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        694,
+        601,
+        1226,
+        658
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "confirm password",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        694,
+        676,
+        1226,
+        740
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Login",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        694,
+        758,
+        1226,
+        760
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        906,
+        785,
+        1026,
+        807
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "or sign in with",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        694,
+        830,
+        859,
+        884
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "GitHub",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        877,
+        830,
+        1042,
+        884
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Google",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        1060,
+        830,
+        1225,
+        884
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Apple",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        694,
+        902,
+        843,
+        924
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Forgot password?"
+    }
+  ],
+  "stats": {
+    "text_detected": 14,
+    "uied_detected": 16,
+    "final_count": 16
+  },
+  "source": "synthetic"
+}

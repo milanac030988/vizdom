@@ -1,0 +1,1138 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        0,
+        0,
+        1920,
+        48
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E4",
+        "E14",
+        "E81",
+        "E9",
+        "E11",
+        "E10",
+        "E12",
+        "E15",
+        "E3",
+        "E82",
+        "E51",
+        "E42",
+        "E19",
+        "E48",
+        "E21",
+        "E24",
+        "E45",
+        "E2",
+        "E5",
+        "E6",
+        "E7",
+        "E50",
+        "E17",
+        "E44",
+        "E43",
+        "E18",
+        "E20",
+        "E49",
+        "E13"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        16,
+        12,
+        40,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "menu",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        56,
+        12,
+        158,
+        34
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "File Manager",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        660,
+        8,
+        1060,
+        40
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Search files and folders...",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        1032,
+        12,
+        1056,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "search",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1840,
+        12,
+        1864,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "settings",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        1880,
+        12,
+        1904,
+        36
+      ],
+      "visual_type": "icon",
+      "confidence": 1.0,
+      "ocr_text": "user",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        0,
+        48,
+        1920,
+        92
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E26",
+        "E55",
+        "E59",
+        "E52",
+        "E25",
+        "E58",
+        "E57",
+        "E54",
+        "E53"
+      ]
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        16,
+        6,
+        126,
+        38
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "New Folder",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        138,
+        6,
+        228,
+        38
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Upload",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        240,
+        6,
+        340,
+        38
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Download",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        352,
+        6,
+        438,
+        38
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Delete",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        454,
+        8,
+        464,
+        10
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        472,
+        6,
+        632,
+        38
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Sort by: Name",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        1760,
+        12,
+        1885,
+        32
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Show hidden",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        0,
+        92,
+        1920,
+        124
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E27"
+      ]
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        16,
+        6,
+        53,
+        20
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Home",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        62,
+        6,
+        72,
+        18
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": ">",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        80,
+        6,
+        150,
+        20
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Documents",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        176,
+        6,
+        186,
+        18
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": ">",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        194,
+        6,
+        242,
+        23
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Projects",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        0,
+        124,
+        1920,
+        126
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        0,
+        125,
+        300,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E30",
+        "E29",
+        "E28",
+        "E33",
+        "E31",
+        "E39",
+        "E72",
+        "E64",
+        "E32",
+        "E38",
+        "E68",
+        "E76",
+        "E37",
+        "E34",
+        "E36",
+        "E35"
+      ]
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        16,
+        16,
+        73,
+        30
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "FOLDERS",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        16,
+        46,
+        86,
+        63
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "▼ Home",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        16,
+        76,
+        148,
+        93
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "    ▼ Documents",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        16,
+        106,
+        135,
+        127
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "        ▶ Reports",
+      "parent_id": "E16"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        16,
+        136,
+        139,
+        157
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "        ▼ Projects",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        16,
+        166,
+        140,
+        188
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "            webapp",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E30",
+      "bounds": [
+        16,
+        196,
+        169,
+        218
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "            mobile-app",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E31",
+      "bounds": [
+        16,
+        226,
+        139,
+        244
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "        ▶ Archives",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E32",
+      "bounds": [
+        16,
+        256,
+        114,
+        273
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "    ▶ Pictures",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E33",
+      "bounds": [
+        16,
+        286,
+        143,
+        304
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "    ▶ Downloads",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E34",
+      "bounds": [
+        16,
+        316,
+        99,
+        333
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "    ▶ Music",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E35",
+      "bounds": [
+        16,
+        352,
+        284,
+        354
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E23"
+    },
+    {
+      "id": "E36",
+      "bounds": [
+        16,
+        368,
+        85,
+        382
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "FAVORITES",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E37",
+      "bounds": [
+        36,
+        398,
+        103,
+        420
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Desktop",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E38",
+      "bounds": [
+        36,
+        428,
+        128,
+        446
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Recent Files",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E39",
+      "bounds": [
+        36,
+        458,
+        159,
+        476
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Shared with me",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E40",
+      "bounds": [
+        300,
+        125,
+        310,
+        127
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E41"
+    },
+    {
+      "id": "E41",
+      "bounds": [
+        301,
+        125,
+        1920,
+        165
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E67",
+        "E65",
+        "E66",
+        "E40"
+      ]
+    },
+    {
+      "id": "E42",
+      "bounds": [
+        16,
+        10,
+        79,
+        30
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "Name",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E43",
+      "bounds": [
+        900,
+        10,
+        923,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Size",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E44",
+      "bounds": [
+        1100,
+        10,
+        1129,
+        27
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Type",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E45",
+      "bounds": [
+        1350,
+        10,
+        1404,
+        24
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Modified",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E46",
+      "bounds": [
+        301,
+        165,
+        1920,
+        167
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E47",
+      "bounds": [
+        301,
+        166,
+        1920,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E80",
+        "E71",
+        "E75",
+        "E79",
+        "E69",
+        "E77",
+        "E74",
+        "E73",
+        "E78",
+        "E70"
+      ]
+    },
+    {
+      "id": "E48",
+      "bounds": [
+        16,
+        14,
+        61,
+        34
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "src",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E49",
+      "bounds": [
+        900,
+        14,
+        914,
+        22
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "—",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E50",
+      "bounds": [
+        1100,
+        14,
+        1138,
+        28
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Folder",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E51",
+      "bounds": [
+        1350,
+        14,
+        1465,
+        28
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-04-01 14:22",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E52",
+      "bounds": [
+        16,
+        48,
+        80,
+        68
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "assets",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E53",
+      "bounds": [
+        900,
+        48,
+        914,
+        56
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "—",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E54",
+      "bounds": [
+        1100,
+        48,
+        1138,
+        62
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Folder",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E55",
+      "bounds": [
+        1350,
+        48,
+        1465,
+        62
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-03-28 09:15",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E56",
+      "bounds": [
+        16,
+        82,
+        117,
+        102
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "README.md"
+    },
+    {
+      "id": "E57",
+      "bounds": [
+        900,
+        82,
+        939,
+        96
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "4.2 KB",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E58",
+      "bounds": [
+        1100,
+        82,
+        1166,
+        96
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Markdown",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E59",
+      "bounds": [
+        1350,
+        82,
+        1465,
+        96
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-04-02 08:30",
+      "parent_id": "E8"
+    },
+    {
+      "id": "E60",
+      "bounds": [
+        16,
+        116,
+        120,
+        136
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "package.json"
+    },
+    {
+      "id": "E61",
+      "bounds": [
+        900,
+        116,
+        939,
+        130
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.8 KB"
+    },
+    {
+      "id": "E62",
+      "bounds": [
+        1100,
+        116,
+        1133,
+        130
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "JSON"
+    },
+    {
+      "id": "E63",
+      "bounds": [
+        1350,
+        116,
+        1465,
+        130
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-03-30 16:45"
+    },
+    {
+      "id": "E64",
+      "bounds": [
+        16,
+        150,
+        103,
+        170
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "index.html",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E65",
+      "bounds": [
+        900,
+        150,
+        947,
+        164
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "12.6 KB",
+      "parent_id": "E41"
+    },
+    {
+      "id": "E66",
+      "bounds": [
+        1100,
+        150,
+        1137,
+        164
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "HTML",
+      "parent_id": "E41"
+    },
+    {
+      "id": "E67",
+      "bounds": [
+        1350,
+        150,
+        1465,
+        164
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-04-01 11:02",
+      "parent_id": "E41"
+    },
+    {
+      "id": "E68",
+      "bounds": [
+        16,
+        184,
+        97,
+        204
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "styles.css",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E69",
+      "bounds": [
+        900,
+        184,
+        939,
+        198
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "8.3 KB",
+      "parent_id": "E47"
+    },
+    {
+      "id": "E70",
+      "bounds": [
+        1100,
+        184,
+        1123,
+        198
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "CSS",
+      "parent_id": "E47"
+    },
+    {
+      "id": "E71",
+      "bounds": [
+        1350,
+        184,
+        1465,
+        198
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-03-29 13:58",
+      "parent_id": "E47"
+    },
+    {
+      "id": "E72",
+      "bounds": [
+        16,
+        218,
+        110,
+        238
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "config.yaml",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E73",
+      "bounds": [
+        900,
+        218,
+        936,
+        232
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "956 B",
+      "parent_id": "E47"
+    },
+    {
+      "id": "E74",
+      "bounds": [
+        1100,
+        218,
+        1137,
+        232
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "YAML",
+      "parent_id": "E47"
+    },
+    {
+      "id": "E75",
+      "bounds": [
+        1350,
+        218,
+        1465,
+        232
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-03-25 10:30",
+      "parent_id": "E47"
+    },
+    {
+      "id": "E76",
+      "bounds": [
+        16,
+        252,
+        92,
+        272
+      ],
+      "visual_type": "checkbox",
+      "confidence": 1.0,
+      "ocr_text": "LICENSE",
+      "parent_id": "E23"
+    },
+    {
+      "id": "E77",
+      "bounds": [
+        900,
+        252,
+        939,
+        266
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "1.1 KB",
+      "parent_id": "E47"
+    },
+    {
+      "id": "E78",
+      "bounds": [
+        1100,
+        252,
+        1125,
+        266
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Text",
+      "parent_id": "E47"
+    },
+    {
+      "id": "E79",
+      "bounds": [
+        1350,
+        252,
+        1465,
+        266
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "2026-02-14 09:00",
+      "parent_id": "E47"
+    },
+    {
+      "id": "E80",
+      "bounds": [
+        0,
+        1044,
+        1920,
+        1080
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E47"
+    },
+    {
+      "id": "E81",
+      "bounds": [
+        16,
+        8,
+        279,
+        23
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "8 items  •  2 folders, 6 files  •  29.0 KB total",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E82",
+      "bounds": [
+        1720,
+        8,
+        1859,
+        22
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "312 GB free of 500 GB",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 70,
+    "uied_detected": 82,
+    "final_count": 82
+  },
+  "source": "synthetic",
+  "layout_title": "File Manager",
+  "layout_theme": "light"
+}

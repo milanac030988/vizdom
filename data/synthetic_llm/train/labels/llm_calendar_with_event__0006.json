@@ -1,0 +1,260 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        20,
+        20,
+        920,
+        80
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E2"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        30,
+        40,
+        67,
+        57
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Today",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        20,
+        80,
+        920,
+        580
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E8",
+        "E10",
+        "E9",
+        "E18",
+        "E4",
+        "E11",
+        "E12",
+        "E13",
+        "E14",
+        "E5",
+        "E6",
+        "E7",
+        "E15",
+        "E17"
+      ]
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        30,
+        120,
+        180,
+        148
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Select Date",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        230,
+        120,
+        330,
+        150
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Today",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        340,
+        120,
+        440,
+        150
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Yesterday",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        20,
+        180,
+        920,
+        182
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E3"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        20,
+        200,
+        920,
+        500
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "parent_id": "E3"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        30,
+        220,
+        180,
+        256
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Add Event",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        230,
+        220,
+        430,
+        248
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Event Name",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        530,
+        220,
+        680,
+        248
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "Start Time",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        700,
+        220,
+        850,
+        248
+      ],
+      "visual_type": "input_field",
+      "confidence": 1.0,
+      "ocr_text": "End Time",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        30,
+        250,
+        130,
+        286
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        160,
+        250,
+        260,
+        286
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Cancel",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        20,
+        320,
+        920,
+        322
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E3"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        20,
+        340,
+        920,
+        840
+      ],
+      "visual_type": "block",
+      "confidence": 1.0
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        30,
+        360,
+        73,
+        374
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Events:",
+      "parent_id": "E3"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        230,
+        400,
+        380,
+        436
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "+ Event",
+      "parent_id": "E3"
+    }
+  ],
+  "stats": {
+    "text_detected": 12,
+    "uied_detected": 18,
+    "final_count": 18
+  },
+  "source": "synthetic",
+  "layout_title": "Event Calendar",
+  "layout_theme": "light"
+}

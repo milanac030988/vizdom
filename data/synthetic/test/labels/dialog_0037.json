@@ -1,0 +1,96 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E1",
+      "bounds": [
+        597,
+        340,
+        1322,
+        739
+      ],
+      "visual_type": "block",
+      "confidence": 1.0,
+      "children_ids": [
+        "E4",
+        "E6",
+        "E2",
+        "E5",
+        "E3"
+      ]
+    },
+    {
+      "id": "E2",
+      "bounds": [
+        633,
+        376,
+        762,
+        411
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Warning",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        633,
+        430,
+        1286,
+        432
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0,
+      "parent_id": "E1"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        633,
+        457,
+        1099,
+        483
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Please check your network connection and try",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        633,
+        489,
+        695,
+        515
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "again.",
+      "parent_id": "E1"
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        1124,
+        646,
+        1286,
+        703
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Confirm",
+      "parent_id": "E1"
+    }
+  ],
+  "stats": {
+    "text_detected": 4,
+    "uied_detected": 6,
+    "final_count": 6
+  },
+  "source": "synthetic"
+}

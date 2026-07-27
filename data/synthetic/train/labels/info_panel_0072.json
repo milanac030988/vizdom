@@ -1,0 +1,348 @@
+{
+  "image_size": {
+    "width": 1920,
+    "height": 1080
+  },
+  "elements": [
+    {
+      "id": "E2",
+      "bounds": [
+        27,
+        19,
+        276,
+        50
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "VPN Configuration"
+    },
+    {
+      "id": "E3",
+      "bounds": [
+        1805,
+        10,
+        1893,
+        60
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Help"
+    },
+    {
+      "id": "E4",
+      "bounds": [
+        36,
+        93,
+        129,
+        122
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "System"
+    },
+    {
+      "id": "E5",
+      "bounds": [
+        36,
+        136,
+        1884,
+        138
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E6",
+      "bounds": [
+        50,
+        150,
+        219,
+        175
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Computer Name"
+    },
+    {
+      "id": "E7",
+      "bounds": [
+        351,
+        150,
+        475,
+        170
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "HC-C-004CE"
+    },
+    {
+      "id": "E8",
+      "bounds": [
+        50,
+        196,
+        148,
+        216
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Processor"
+    },
+    {
+      "id": "E9",
+      "bounds": [
+        351,
+        196,
+        505,
+        217
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Intel i7-12800H"
+    },
+    {
+      "id": "E10",
+      "bounds": [
+        50,
+        242,
+        100,
+        262
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "RAM"
+    },
+    {
+      "id": "E11",
+      "bounds": [
+        351,
+        242,
+        410,
+        262
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "32 GB"
+    },
+    {
+      "id": "E12",
+      "bounds": [
+        50,
+        288,
+        175,
+        309
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Architecture"
+    },
+    {
+      "id": "E13",
+      "bounds": [
+        351,
+        288,
+        412,
+        309
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "64-bit"
+    },
+    {
+      "id": "E14",
+      "bounds": [
+        50,
+        334,
+        130,
+        355
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Domain"
+    },
+    {
+      "id": "E15",
+      "bounds": [
+        351,
+        334,
+        492,
+        354
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "WORKGROUP"
+    },
+    {
+      "id": "E16",
+      "bounds": [
+        50,
+        380,
+        161,
+        401
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "OS Version"
+    },
+    {
+      "id": "E17",
+      "bounds": [
+        351,
+        380,
+        568,
+        401
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Windows Server 2022"
+    },
+    {
+      "id": "E18",
+      "bounds": [
+        36,
+        447,
+        140,
+        477
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Security"
+    },
+    {
+      "id": "E19",
+      "bounds": [
+        36,
+        490,
+        1884,
+        492
+      ],
+      "visual_type": "divider",
+      "confidence": 1.0
+    },
+    {
+      "id": "E20",
+      "bounds": [
+        50,
+        504,
+        159,
+        530
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Encryption"
+    },
+    {
+      "id": "E21",
+      "bounds": [
+        351,
+        504,
+        482,
+        525
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "BitLocker Off"
+    },
+    {
+      "id": "E22",
+      "bounds": [
+        50,
+        550,
+        213,
+        571
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Protection Level"
+    },
+    {
+      "id": "E23",
+      "bounds": [
+        351,
+        550,
+        428,
+        571
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Trusted"
+    },
+    {
+      "id": "E24",
+      "bounds": [
+        50,
+        596,
+        226,
+        622
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Password Expires"
+    },
+    {
+      "id": "E25",
+      "bounds": [
+        351,
+        596,
+        411,
+        616
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Never"
+    },
+    {
+      "id": "E26",
+      "bounds": [
+        50,
+        642,
+        189,
+        668
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Admin Rights"
+    },
+    {
+      "id": "E27",
+      "bounds": [
+        351,
+        642,
+        462,
+        667
+      ],
+      "visual_type": "text",
+      "confidence": 1.0,
+      "ocr_text": "Temporary"
+    },
+    {
+      "id": "E28",
+      "bounds": [
+        36,
+        999,
+        149,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Reset"
+    },
+    {
+      "id": "E29",
+      "bounds": [
+        167,
+        999,
+        266,
+        1056
+      ],
+      "visual_type": "button",
+      "confidence": 1.0,
+      "ocr_text": "Save"
+    }
+  ],
+  "stats": {
+    "text_detected": 26,
+    "uied_detected": 28,
+    "final_count": 28
+  },
+  "source": "synthetic"
+}
