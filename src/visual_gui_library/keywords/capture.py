@@ -19,10 +19,63 @@ class CaptureKeywords:
         self._current_dom = None
         self._current_screenshot = None
         self._finder = None
+        # Session config supplied by the `Connect` keyword (ADR-020). When set,
+        # `Dump Visual DOM` builds the DOM through this pre-configured session
+        # instead of the ad-hoc default pipeline.
+        self._session = None
+        self._session_config = None
 
     def _get_capture(self):
         """Get the visual_dom capture strategy - provided by VisualGuiLibrary."""
         raise NotImplementedError("VisualGuiLibrary provides _get_capture")
+
+    @keyword("Connect")
+    def connect(self, config: Optional[str] = None) -> dict:
+        """
+        Start a configured VizDOM session for this suite (ADR-020).
+
+        This is the recommended first step. Give it the path to a JSON config
+        file (see ``python -m visual_dom.config --init``) and every subsequent
+        ``Dump Visual DOM`` uses that config for all stages: detector/OCR choice
+        and parameters, Stage 2.5 merge/dedup, Stage 3 hierarchy, filters, the
+        optional refiner, and capture. Call with no argument for all-defaults.
+
+        The config's ``capture`` section (strategy/target/camera_mode) is also
+        applied to this library's capture port, so a single file configures both
+        DOM generation and screen acquisition.
+
+        Args:
+            config: Path to a VizDOM JSON config file, or ``None`` for defaults.
+
+        Returns:
+            The resolved config as a dictionary (handy for logging/asserts).
+
+        Example:
+            | Connect | vizdom.config.json |
+            | Dump Visual DOM |
+            | Click Visual | text=Login |
+
+            | # defaults, no file:
+            | Connect |
+        """
+        from visual_dom.config import VizDomConfig
+        from visual_dom.session import Session
+
+        cfg = VizDomConfig.load(config)
+        self._session_config = cfg
+        self._session = Session(cfg)
+
+        # Apply the capture section to this library's capture port so one config
+        # drives both DOM generation and screen acquisition. Only override when
+        # the config actually specifies a strategy; otherwise keep the library's
+        # platform-derived default. Reset any cached capture so it rebuilds.
+        cap = cfg.capture
+        if cap.strategy and hasattr(self, "_capture_name"):
+            self._capture_name = cap.strategy
+            self._capture_kwargs = {"target": cap.target} if cap.target else {}
+            self._capture = None
+
+        return cfg.to_dict()
 
     @keyword("Capture Screen")
     def capture_screen(self, region: Optional[str] = None) -> np.ndarray:
@@ -73,33 +126,46 @@ class CaptureKeywords:
         Returns:
             Compiled Visual DOM dictionary
 
+        If a session was started with ``Connect``, that config drives all stages
+        and the ``ocr_engine`` / ``use_llm`` / ``llm_model`` arguments here are
+        ignored (they only apply to the ad-hoc default path used when no
+        ``Connect`` was called).
+
         Example:
+            | # preferred: configure once, then just dump
+            | Connect | vizdom.config.json |
             | ${dom}= | Dump Visual DOM |
+            |
+            | # ad-hoc (no Connect): per-call arguments
             | ${dom}= | Dump Visual DOM | ocr_engine=tesseract |
             | ${dom}= | Dump Visual DOM | use_llm=True | llm_model=ollama |
         """
-        # Import visual_dom modules
-        from visual_dom.cv.pipeline import VisualDOMPipeline
-        from visual_dom.hierarchy import CoarseHierarchyBuilder, LLMHierarchyRefiner
-        from visual_dom.compiler import DOMCompiler
-
         # Capture if needed
         if image is None:
             image = self.capture_screen()
 
+        # Preferred path: a session was configured via `Connect`.
+        if self._session is not None:
+            dom = self._session.analyze(image, save_path=save_path)
+            self._current_dom = dom
+            self._update_finder()
+            return dom
+
+        # Ad-hoc fallback: build a default pipeline from the call arguments.
+        from visual_dom.cv.pipeline import VisualDOMPipeline
+        from visual_dom.hierarchy import CoarseHierarchyBuilder, LLMHierarchyRefiner
+        from visual_dom.compiler import DOMCompiler
+
         height, width = image.shape[:2]
 
-        # Run CV pipeline
         pipeline = VisualDOMPipeline(ocr_engine=ocr_engine)
         cv_result = pipeline.process(image, detect_text=True, detect_elements=True)
 
-        # Build coarse hierarchy
         builder = CoarseHierarchyBuilder()
         hierarchy = builder.build(cv_result["elements"])
 
         elements = cv_result["elements"]
 
-        # Optional LLM refinement
         if use_llm:
             try:
                 refiner = LLMHierarchyRefiner(model_name=llm_model)
@@ -112,7 +178,6 @@ class CaptureKeywords:
             except Exception as e:
                 print(f"LLM refinement failed: {e}")
 
-        # Compile DOM
         compiler = DOMCompiler(generate_locators=True)
         dom = compiler.compile(
             elements=elements,
@@ -120,12 +185,10 @@ class CaptureKeywords:
             image_size=(width, height),
         )
 
-        # Save if requested
         if save_path:
             with open(save_path, "w", encoding="utf-8") as f:
                 json.dump(dom, f, indent=2, ensure_ascii=False)
 
-        # Store for later use
         self._current_dom = dom
         self._update_finder()
 

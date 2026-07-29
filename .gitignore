@@ -55,6 +55,9 @@ tests/samples/*.jpg
 output/
 results/
 
+# User's own session config (keep the tracked template vizdom.config.example.json)
+vizdom.config.json
+
 # OS
 .DS_Store
 Thumbs.db

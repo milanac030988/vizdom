@@ -5,6 +5,8 @@ This document describes the evaluation metrics and methodology used to assess th
 ## Table of Contents
 
 - [Overview](#overview)
+- [Benchmark Results](#benchmark-results)
+- [Improvement: OmniParser Type Mapping](#improvement-omniparser-type-mapping-before--after)
 - [Quick Start](#quick-start)
 - [Element Detection Metrics](#element-detection-metrics)
 - [OCR Accuracy Metrics](#ocr-accuracy-metrics)
@@ -22,6 +24,79 @@ The Visual DOM Evaluation Framework provides comprehensive metrics for evaluatin
 2. **OCR Accuracy** - How accurately text content is recognized
 3. **Hierarchy Structure** - How well the parent-child relationships are captured
 4. **Locator Quality** - How useful the generated locators are for automation
+
+## Benchmark Results
+
+Results below are computed by this framework on the **synthetic benchmark**
+(`data/synthetic`): programmatically generated UI screenshots at 1920x1080 with
+exact ground truth (element bounds, `visual_type`, text, containment), split into
+167 train / **44 test** images. Matching is greedy by IoU at threshold 0.5, pooled
+over all elements. YOLO is not evaluated (no trained weights for these UI classes);
+the SLM-refinement variant needs a running Ollama service and is not benchmarked here.
+
+### Overall (44-image test set)
+
+| Detector | Precision | Recall | F1 | mIoU | Char. acc. |
+|---|---|---|---|---|---|
+| UIED (CPU) | 0.39 | **0.71** | 0.51 | 0.68 | 0.92 |
+| OmniParser | **0.56** | 0.59 | **0.58** | **0.67** | **0.95** |
+
+### Recall by element type (two lenses)
+
+Aggregate scores are dominated by *text* (63% of ground-truth elements), so the
+per-type breakdown is far more informative for a testing use case. Two lenses:
+**IoU>=0.5** (strict overlap) and **center-hit** (does a predicted box contain the
+element's centre, i.e. is it click-targetable?).
+
+| GT type (n) | UIED IoU>=0.5 | UIED center-hit | OmniParser IoU>=0.5 | OmniParser center-hit |
+|---|---|---|---|---|
+| button (183) | 0.82 | 0.96 | **1.00** | **1.00** |
+| input_field (135) | 0.95 | 0.99 | **0.99** | 0.99 |
+| checkbox (76) | **0.68** | 0.82 | 0.20 | **0.87** |
+| icon (36) | 0.08 | 0.28 | **0.67** | **1.00** |
+| text (1074) | **0.79** | **0.99** | 0.59 | 0.98 |
+| **actionable (pooled, 430)** | 0.77 | 0.89 | **0.83** | **0.97** |
+
+**Key findings.** OmniParser leads on the actionable controls a test drives ---
+buttons (recall 1.00), input fields (0.99), icons (0.67) --- with tight boxes,
+confirming manual inspection that its bounding is more accurate. UIED leads on
+checkboxes and text recall. By click-targetability both are strong, with OmniParser
+essentially perfect on actionable elements (0.97). OmniParser's low checkbox IoU
+(0.20) vs. high center-hit (0.87) is a box-convention effect (it boxes the check
+glyph, not the padded control), so the element is still clickable. A single
+IoU-based F1 can therefore *understate* a detector; we report both lenses and treat
+per-type recall as the primary, testing-relevant measure.
+
+## Improvement: OmniParser Type Mapping (before / after)
+
+**Problem.** OmniParser's raw output only tags each element `text` or `icon`. Our
+integration originally passed that straight through, so the DOM carried no
+`button` / `input_field` / `checkbox` roles --- element-type classification accuracy
+on actionable controls was **0.09** (correct only on icons, obtained trivially by
+labelling everything `icon`), and role-based test logic could not use the DOM.
+
+**What we did.** Added `_infer_visual_type` in the OmniParser backend, which recovers
+the role from three signals: box **geometry** (wide entry-height -> input field),
+**width/aspect** (buttons are ~2x wider than icons), and OmniParser's **caption**
+(a "Checkmark"/"Toggle"/"Check" caption -> checkbox). We also made the pipeline
+auto-resolve OmniParser's model paths (a missing path had silently degraded a run to
+OCR-only).
+
+**Result** --- element-type accuracy on matched actionable controls:
+
+| Mapping | button | input_field | checkbox | icon | actionable |
+|---|---|---|---|---|---|
+| Before (text/icon only) | 0.00 | 0.00 | 0.00 | 1.00* | 0.09 |
+| After (caption + width/aspect) | **0.89** | **0.99** | **0.55** | 0.89 | **0.87** |
+
+\*The old mapping labelled all non-text as `icon`, so icons scored correct trivially
+while every other role scored 0 --- which is exactly why it could not identify
+anything else. The improvement raised actionable type accuracy **0.09 -> 0.87**;
+checkbox (0.55) remains the weakest (recovered only when the caption is distinctive)
+and is future work. This measures *type* only --- localisation (above) is unchanged.
+
+> Caveat: this is a synthetic, clean benchmark; absolute scores will differ on
+> gradient-heavy real-world UIs. A larger real-world labelled set is the next step.
 
 ## Quick Start
 

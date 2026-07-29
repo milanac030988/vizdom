@@ -1,0 +1,71 @@
+{
+  "_about": "VizDOM session config. Provide via connect(<this file>) or the Robot Framework 'Connect' keyword. All values below are defaults; delete any you don't want to override.",
+  "_help": {
+    "detector": "Stage 2 - element detection backend and its parameters",
+    "detector.backend": "uied (CPU baseline) | yolo | omniparser (best actionable) | hybrid",
+    "detector.confidence_threshold": "0..1; lower = more detections (higher recall)",
+    "detector.omniparser_icon_detect_path": "null = auto-resolve from models/omniparser/",
+    "detector.omniparser_text_ensemble": "feed VizDOM OCR into OmniParser to recover text (ADR-016)",
+    "ocr": "Stage 1 - text detection engine",
+    "ocr.engine": "easyocr | paddleocr | tesseract | none",
+    "refiner": "Stage 8 - optional small-LM/VLM element review (needs a running backend)",
+    "merge": "Stage 2.5 - Merge & Deduplicate",
+    "merge.nms_iou_threshold": "per-type non-max-suppression IoU",
+    "merge.cross_type_iou": "suppress overlapping boxes of different types above this IoU",
+    "merge.merge_oversegmented": "fuse split multi-line labels/buttons back together",
+    "hierarchy": "Stage 3 - Hierarchy Building (containment tree)",
+    "hierarchy.containment_threshold": "fraction of a child's area that must sit inside its parent",
+    "filter": "resolution-aware size/count filters (referenced to 1080p)",
+    "capture": "how screens are acquired (RF client layer, ADR-018)",
+    "capture.strategy": "null=auto | windows | linux | android | camera | grpc | <plugin>",
+    "output": "DOM compilation options"
+  },
+  "detector": {
+    "backend": "uied",
+    "use_gpu": true,
+    "confidence_threshold": 0.3,
+    "yolo_model_path": null,
+    "omniparser_icon_detect_path": null,
+    "omniparser_icon_caption_path": null,
+    "omniparser_text_ensemble": true
+  },
+  "ocr": {
+    "engine": "easyocr",
+    "languages": [
+      "en"
+    ],
+    "confidence_threshold": 0.3
+  },
+  "refiner": {
+    "enabled": false,
+    "backend": "ollama",
+    "model": "qwen2.5:3b",
+    "host": "http://localhost:11434"
+  },
+  "merge": {
+    "nms_iou_threshold": 0.5,
+    "cross_type_iou": 0.4,
+    "duplicate_tolerance_px": 5,
+    "merge_oversegmented": true,
+    "group_fill_ratio_min": 0.5
+  },
+  "hierarchy": {
+    "containment_threshold": 0.85,
+    "min_containment_margin": 5,
+    "use_llm": false,
+    "llm_model": "ollama"
+  },
+  "filter": {
+    "min_element_area": 100,
+    "min_element_size": 10,
+    "max_elements": 200
+  },
+  "capture": {
+    "strategy": null,
+    "target": null,
+    "camera_mode": false
+  },
+  "output": {
+    "generate_locators": true
+  }
+}

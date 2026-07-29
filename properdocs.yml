@@ -39,6 +39,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Setup (uv): uv-setup.md
+  - Configuration & Sessions: CONFIGURATION.md
   - Architecture: architecture.md
   - CV Pipeline: PIPELINE.md
   - OmniParser Setup: omniparser-setup.md
@@ -78,3 +79,4 @@ nav:
       - 017 Distributed Hexagonal + gRPC: adr/017-distributed-hexagonal-grpc.md
       - 018 Pluggable Capture Service: adr/018-pluggable-capture-service.md
       - 019 Pluggable Actuator Service: adr/019-pluggable-actuator-service.md
+      - 020 Client Session Config: adr/020-client-session-config.md

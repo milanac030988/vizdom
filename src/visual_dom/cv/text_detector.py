@@ -205,6 +205,11 @@ class TextDetector:
         if self._engine is not None:
             return
 
+        # Text detection disabled: "none"/None/"" is a valid config choice
+        # (e.g. detector=omniparser with its own OCR, or a text-free benchmark).
+        if self.ocr_engine in (None, "none", ""):
+            return
+
         if self.ocr_engine == "easyocr":
             try:
                 import easyocr
@@ -292,6 +297,10 @@ class TextDetector:
         """
         self._init_engine()
         self._text_counter = 0
+
+        # No OCR engine configured -> no text elements (clean no-op).
+        if self.ocr_engine in (None, "none", ""):
+            return []
 
         # Load image if path provided
         if isinstance(image, str):

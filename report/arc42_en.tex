@@ -285,8 +285,29 @@ changes --- the concrete justification for ADR-015. The OmniParser backend
 additionally maps its coarse \code{text}/\code{icon} output to VizDOM's role
 taxonomy (\code{button} / \code{input\_field} / \code{checkbox}) via an
 interactivity + resolution-aware geometry heuristic, so its DOM is directly usable
-by the test layer (element-type accuracy on actionable controls improved from 0.09
-to 0.87; details in the project report).
+by the test layer. Table~\ref{tab:arc42typeacc} quantifies this mapping: recovering
+roles from interactivity, geometry and OmniParser's caption raised element-type
+accuracy on actionable controls from \textbf{0.09} to \textbf{0.87}.
+
+\begin{table}[H]
+  \centering\footnotesize
+  \caption{OmniParser element-type accuracy on matched actionable controls, before
+  and after the role-mapping heuristic (synthetic test set).}
+  \label{tab:arc42typeacc}
+  \begin{tabular}{@{}lccccc@{}}
+    \toprule
+    Mapping & button & input\_field & checkbox & icon & actionable \\
+    \midrule
+    Before (text/icon only) & 0.00 & 0.00 & 0.00 & 1.00$^\dagger$ & 0.09 \\
+    After (caption + geometry) & \textbf{0.89} & \textbf{0.99} & \textbf{0.55} & 0.89 & \textbf{0.87} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\noindent{\footnotesize $^\dagger$The old mapping labelled every non-text element
+\code{icon}, so only icons scored correct while all other roles scored 0 --- which
+is why the DOM could not identify anything actionable. Localisation is unchanged;
+this measures \emph{type} only.}
 
 \begin{table}[H]
   \centering\footnotesize

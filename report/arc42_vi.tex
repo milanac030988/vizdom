@@ -280,8 +280,29 @@ bằng một bộ giấy phép dễ chịu mà không đổi pipeline --- lý do
 Backend OmniParser còn ánh xạ đầu ra thô \code{text}/\code{icon} của nó sang bộ phân
 loại vai trò của VizDOM (\code{button} / \code{input\_field} / \code{checkbox}) qua
 một suy luận tương tác + hình học nhận biết độ phân giải, nên DOM của nó dùng được
-trực tiếp bởi tầng kiểm thử (độ chính xác loại trên điều khiển thao tác được tăng từ
-0.09 lên 0.87; chi tiết trong báo cáo dự án).
+trực tiếp bởi tầng kiểm thử. Bảng~\ref{tab:arc42typeacc} định lượng ánh xạ này: khôi
+phục vai trò từ tính tương tác, hình học và chú thích của OmniParser đã nâng độ chính
+xác loại phần tử trên các điều khiển thao tác được từ \textbf{0.09} lên \textbf{0.87}.
+
+\begin{table}[H]
+  \centering\footnotesize
+  \caption{Độ chính xác loại phần tử của OmniParser trên các điều khiển thao tác được
+  khớp, trước và sau suy luận ánh xạ vai trò (tập kiểm tra tổng hợp).}
+  \label{tab:arc42typeacc}
+  \begin{tabular}{@{}lccccc@{}}
+    \toprule
+    Ánh xạ & button & input\_field & checkbox & icon & thao tác được \\
+    \midrule
+    Trước (chỉ text/icon) & 0.00 & 0.00 & 0.00 & 1.00$^\dagger$ & 0.09 \\
+    Sau (chú thích + hình học) & \textbf{0.89} & \textbf{0.99} & \textbf{0.55} & 0.89 & \textbf{0.87} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\noindent{\footnotesize $^\dagger$Ánh xạ cũ gán mọi phần tử phi văn bản là
+\code{icon}, nên chỉ icon được tính đúng còn mọi vai trò khác đạt 0 --- đó là lý do
+DOM không thể nhận ra bất kỳ điều khiển thao tác nào. Định vị không đổi; bảng này chỉ
+đo \emph{loại}.}
 
 \begin{table}[H]
   \centering\footnotesize

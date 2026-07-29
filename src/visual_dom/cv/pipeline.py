@@ -113,6 +113,10 @@ class VisualDOMPipeline:
         detector_kwargs: Dict[str, Any] = None,
         text_ensemble: bool = True,
         merge_oversegmented: bool = True,
+        cross_type_iou: float = 0.4,
+        duplicate_tolerance_px: int = 5,
+        group_fill_ratio_min: float = 0.5,
+        hierarchy_containment_threshold: float = 0.7,
     ):
         """
         Initialize CV pipeline.
@@ -141,6 +145,12 @@ class VisualDOMPipeline:
         self.camera_mode = camera_mode
         self._text_ensemble = text_ensemble
         self._merge_oversegmented = merge_oversegmented
+        # Stage 2.5 (merge & deduplicate) tunables, previously hardcoded.
+        self._cross_type_iou = cross_type_iou
+        self._duplicate_tolerance_px = duplicate_tolerance_px
+        self._group_fill_ratio_min = group_fill_ratio_min
+        # Stage 3 (hierarchy) containment threshold for the in-pipeline pass.
+        self._hierarchy_containment_threshold = hierarchy_containment_threshold
         self.detector_mode = detector
         self.confidence_threshold = confidence_threshold
         self.iou_threshold = iou_threshold
@@ -967,7 +977,7 @@ class VisualDOMPipeline:
                 iou = calculate_iou(elem.bounds, other.bounds)
 
                 # High IoU overlap — keep higher priority
-                if iou > 0.4:
+                if iou > self._cross_type_iou:
                     suppressed_ids.add(other.id)
                     continue
 
@@ -1028,7 +1038,8 @@ class VisualDOMPipeline:
                 dx = max(abs(b1[0] - b2[0]), abs(b1[2] - b2[2]))
                 dy = max(abs(b1[1] - b2[1]), abs(b1[3] - b2[3]))
 
-                if dx <= 5 and dy <= 5:
+                tol = self._duplicate_tolerance_px
+                if dx <= tol and dy <= tol:
                     # Nearly identical position — it's a duplicate
                     # Transfer text if the kept one doesn't have it
                     if elem.ocr_text and not kept.ocr_text:
@@ -1120,7 +1131,8 @@ class VisualDOMPipeline:
                     continue
 
                 # Check containment
-                if is_contained(child.bounds, elem.bounds, threshold=0.7):
+                if is_contained(child.bounds, elem.bounds,
+                                threshold=self._hierarchy_containment_threshold):
                     child.parent_id = elem.id
                     elem.children_ids.append(child.id)
 
@@ -1183,7 +1195,7 @@ class VisualDOMPipeline:
                 # their union box. Genuine over-segmentation (a multi-line label,
                 # a split text line) tiles its region; a coincidental substring
                 # match with a distant element leaves the union mostly empty.
-                if self._group_fill_ratio(group) >= 0.5:
+                if self._group_fill_ratio(group) >= self._group_fill_ratio_min:
                     used.update(m.id for m in group)
                     groups.append(group)
         return groups

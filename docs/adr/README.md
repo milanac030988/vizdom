@@ -34,6 +34,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [017](017-distributed-hexagonal-grpc.md) | Distributed Hexagonal Architecture with gRPC Model Services | Proposed | 2026-07-26 |
 | [018](018-pluggable-capture-service.md) | Pluggable Screenshot Capture (Strategy + Auto-Discovery + Service) | Accepted | 2026-07-26 |
 | [019](019-pluggable-actuator-service.md) | Pluggable Input Actuation (Strategy + Auto-Discovery + Service) | Accepted | 2026-07-27 |
+| [020](020-client-session-config.md) | Client Session Configuration (`connect` + JSON config) | Accepted | 2026-07-29 |
 
 ## Summary
 

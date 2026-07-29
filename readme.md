@@ -1,5 +1,36 @@
 # Visual DOM + Robot Framework GUI Automation (CV + Small LLM)
 
+Turn a GUI **screenshot** into a UI-Automator-like **DOM** (bounds, roles, text,
+labels, locators, hierarchy) using computer vision plus a small LLM/VLM — so GUI test
+automation works even when **no accessibility tree exists** (custom-rendered Qt/OpenGL
+UIs, embedded/industrial HMIs, or screens seen through a camera).
+
+![System overview](report/figures/System_Overview.png)
+
+**Docs site:** https://milanac030988.github.io/vizdom/ &nbsp;·&nbsp;
+**Report:** [`report/`](report/) (general + arc42, each EN + VI) &nbsp;·&nbsp;
+**ADRs:** [`docs/adr/`](docs/adr/)
+
+## Benchmark (synthetic set, 44 test images)
+
+Methodology and full per-type results in [`docs/EVALUATION.md`](docs/EVALUATION.md).
+
+| Detector | F1 | mIoU | Actionable center-hit |
+|---|---|---|---|
+| UIED (CPU) | 0.51 | 0.68 | 0.89 |
+| OmniParser | **0.58** | 0.67 | **0.97** |
+
+**Improvement — OmniParser element-type classification** (accuracy on actionable
+controls). OmniParser only tags elements `text`/`icon`; mapping that to real roles via
+interactivity + geometry + caption signals raised type accuracy **0.09 → 0.87**:
+
+| Mapping | button | input_field | checkbox | icon | actionable |
+|---|---|---|---|---|---|
+| Before (text/icon only) | 0.00 | 0.00 | 0.00 | 1.00\* | 0.09 |
+| After | **0.89** | **0.99** | **0.55** | 0.89 | **0.87** |
+
+\*old mapping labelled all non-text `icon`, so only icons scored correct.
+
 ## Quick Start
 
 ### Installation
@@ -22,6 +53,28 @@ pip install -e ".[ocr]"
 
 # Install all dependencies (for development)
 pip install -e ".[ocr,training,cv-training,annotation,desktop,dev]"
+```
+
+### Configure a session (recommended)
+
+One JSON file configures every stage — detector/OCR choice, Stage 2.5 merge/dedup,
+Stage 3 hierarchy, filters, refiner, capture. Generate a template, then use it from
+Python or Robot Framework (see [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md)):
+
+```bash
+python -m visual_dom.config --init vizdom.config.json   # annotated template
+```
+
+```python
+from visual_dom import connect
+session = connect("vizdom.config.json")     # or connect() for defaults
+dom = session.analyze("screenshot.png")     # -> Visual DOM dict
+```
+
+```robotframework
+Connect              vizdom.config.json     # first step; drives all stages
+Dump Visual DOM
+Click Visual         text=Login
 ```
 
 ### Run CV Pipeline Test
@@ -102,36 +155,37 @@ pip install paddlepaddle paddleocr
 ```
 MasterProject/
 ├── src/
-│   ├── visual_dom/              # Visual DOM Generator
-│   │   ├── cv/                  # Computer Vision (UIED + OCR)
+│   ├── visual_dom/              # Core engine
+│   │   ├── cv/                  # Pipeline + OCR; detectors/ (UIED, YOLO, OmniParser, gRPC)
+│   │   ├── capture/             # CapturePort: strategies (windows/linux/android/camera) + gRPC
+│   │   ├── actuator/            # ActuatorPort: strategies (desktop/android) + gRPC
 │   │   ├── hierarchy/           # Hierarchy building (coarse + LLM refiner)
-│   │   ├── compiler/            # DOM compiler
-│   │   ├── schema/              # JSON schema
+│   │   ├── compiler/            # DOM compiler (roles, flags, locators, labels)
+│   │   ├── rpc/                 # gRPC servers: detector, capture, actuator
 │   │   └── evaluation/          # Evaluation framework (metrics, reports)
-│   └── visual_gui_library/      # Robot Framework Library
+│   └── visual_gui_library/      # Robot Framework library (thin client over capture + actuator)
 │       ├── keywords/            # RF keywords (actions, assertions, capture)
-│       ├── locators/            # Locator strategies
-│       └── adapters/            # Platform adapters (desktop/android)
-├── models/
-│   ├── configs/                 # Model configurations
-│   ├── pretrained/              # Downloaded models
-│   └── finetuned/               # Your trained models
-├── scripts/                     # Processing & visualization scripts
-├── research/                    # VLM/LLM research experiments
-├── tests/
-│   ├── samples/                 # Test screenshots & ground truth
-│   └── unit/                    # Unit tests
-├── tools/
-│   ├── annotator/               # Simple web annotation tool
-│   └── visual_dom_viewer/       # Interactive DOM viewer (PyQt5)
-│       ├── core/                # Data model, tree, state
-│       ├── ui/                  # Main window, dialogs
-│       ├── plugins/             # Platform handlers (Android, Windows, Visual DOM)
-│       └── export/              # Robot Framework resource exporter
-├── output/                      # Generated output files (JSON, PNG)
-├── examples/                    # Usage examples
-└── docs/                        # Documentation
+│       └── locators/            # Locator strategies (id/text/hint/role/spatial)
+├── plugins/                     # User plugins, auto-discovered
+│   ├── capture/                 # e.g. example_static_image.py
+│   └── actuator/                # e.g. example_robot_arm.py
+├── protos/                      # gRPC contracts: detector/capture/actuator .proto
+├── models/configs/              # Model registry code (weights fetched by setup script, not in git)
+├── data/synthetic/              # Labelled evaluation benchmark
+├── scripts/                     # setup_omniparser.py, process_gui_image.py, ...
+├── report/                      # LaTeX reports (main_en/vi, arc42_en/vi) + figures/
+├── docs/ + properdocs.yml       # ProperDocs site (+ docs/diagrams/*.puml, docs/adr/)
+├── tools/                       # visual_dom_viewer (PyQt5), dashboard, annotator
+├── start_*.bat                  # launchers: viewer, detector, capture, actuator, dashboard
+└── output/                      # Generated sessions (JSON, PNG) — gitignored
 ```
+
+### Architecture at a glance
+Hexagonal (ports & adapters): a pure core depends on abstract ports — **Detector,
+Ocr, Refiner, Capture, Actuator**. Each is a *strategy* selected by name, running
+**in-process or as a remote gRPC service**, so you can capture on the device, detect
+on a GPU box, and actuate on the SUT / a robot-arm controller. See
+[`docs/architecture.md`](docs/architecture.md) and ADR-015/017/018/019.
 
 ---
 
@@ -330,4 +384,8 @@ python scripts/evaluation/evaluate_model.py --model models/finetuned/qwen2.5-3b-
 | 7. RF Library Core | ✅ Done | Keywords (actions, assertions, capture), locator strategies, platform adapters |
 | 8. Visual DOM Viewer | ✅ Done | PyQt5 interactive inspector, plugin system, Robot Framework export |
 | 9. Research & Experiments | ✅ Done | VLM model testing (Florence-2, Qwen2-VL), LLM refinement benchmarks |
-| 10. Integration & E2E | ⏳ Pending | End-to-end testing, production hardening |
+| 10. Pluggable detectors (ADR-015) | ✅ Done | UIED / YOLO / OmniParser behind one interface, selectable per run |
+| 11. Distributed services (ADR-017/018/019) | ✅ Done | Hexagonal ports; gRPC detector/capture/actuator; user plugins (camera, robot-arm) |
+| 12. Benchmark & evaluation | ✅ Done | Synthetic 44-img set; UIED vs OmniParser; OmniParser type-mapping 0.09→0.87 |
+| 13. Docs site + report | ✅ Done | ProperDocs (GitHub Pages-ready); LaTeX reports (general + arc42, EN + VI) |
+| 14. Real-world dataset & hardening | ⏳ Pending | Real-UI labelled benchmark; TLS/auth on gRPC; E2E production hardening |
