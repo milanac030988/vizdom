@@ -1,9 +1,9 @@
 <!DOCTYPE html><html class="writer-html5" lang="en"><head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/uv-setup/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/CONFIGURATION/">
       <link rel="shortcut icon" href="../img/favicon.ico">
-    <title>Setup (uv) - VizDOM — Visual DOM Generator</title>
+    <title>Configuration &amp; Sessions - VizDOM — Visual DOM Generator</title>
     <link rel="stylesheet" href="../css/theme.css">
     <link rel="stylesheet" href="../css/theme_extra.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
@@ -11,9 +11,9 @@
     
       <script>
         // Current page data
-        var properdocs_page_name = "Setup (uv)";
-        var properdocs_page_input_path = "uv-setup.md";
-        var properdocs_page_url = "/vizdom/uv-setup/";
+        var properdocs_page_name = "Configuration \u0026 Sessions";
+        var properdocs_page_input_path = "CONFIGURATION.md";
+        var properdocs_page_url = "/vizdom/CONFIGURATION/";
       </script>
     
     <!--[if lt IE 9]>
@@ -47,28 +47,26 @@
                 <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
                 </li>
               </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="#">Setup (uv)</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#path-a-uv-over-the-existing-python-39-recommended-here">Path A — uv over the existing Python 3.9 (recommended here)</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#path-b-fresh-uv-managed-environment-portable-heavier">Path B — fresh uv-managed environment (portable, heavier)</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#one-time-external-setup-either-path">One-time external setup (either path)</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#running">Running</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#lockfile-requirementslock">Lockfile (requirements.lock)</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#dependency-groups-pyprojecttoml">Dependency groups (pyproject.toml)</a>
-    </li>
-    </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../uv-setup/">Setup (uv)</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../CONFIGURATION/">Configuration &amp; Sessions</a>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Configuration &amp; Sessions</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-get-a-template">1. Get a template</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-use-it-from-python">2. Use it from Python</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-use-it-from-robot-framework">3. Use it from Robot Framework</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-what-each-section-controls">4. What each section controls</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#common-recipes">Common recipes</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
                 </li>
               </ul>
               <ul>
@@ -183,7 +181,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">Setup (uv)</li>
+      <li class="breadcrumb-item active">Configuration &amp; Sessions</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -192,94 +190,142 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="setup-with-uv">Setup with uv<a class="headerlink" href="#setup-with-uv" title="Permanent link">¶</a></h1>
-<p>This project uses <a href="https://docs.astral.sh/uv/"><strong>uv</strong></a> (a fast Python
-package/env manager) to install dependencies reproducibly from <code>pyproject.toml</code>.</p>
-<blockquote>
-<p><strong>Scope (honest).</strong> uv manages the <strong>Python</strong> side. Three things live outside
-it and are separate steps uv <em>invokes</em> or that you install once:
-<strong>Ollama</strong> (native app — the SLM refiner), <strong>OmniParser</strong> (a git repo + HF
-weights, fetched by <code>scripts/setup_omniparser.py</code>), and <strong>CUDA PyTorch</strong>
-(already installed in the app's Python 3.9 — see Path A below).</p>
-</blockquote>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
-<ul>
-<li>The app runs on <strong>Python 3.9</strong> at <code>D:\Python\python39\python.exe</code> (has a
-  working <code>torch 2.4.1+cu124</code>).</li>
-<li>Install uv into it (avoids the GitHub-blocked standalone installer):
-  <code>bat
-  "D:\Python\python39\python.exe" -m pip install uv</code></li>
-</ul>
-<h2 id="path-a-uv-over-the-existing-python-39-recommended-here">Path A — uv over the existing Python 3.9 (recommended here)<a class="headerlink" href="#path-a-uv-over-the-existing-python-39-recommended-here" title="Permanent link">¶</a></h2>
-<p>Keeps the working CUDA torch (no ~2.5 GB redownload). uv installs/locks the
-<em>other</em> dependencies <strong>into that interpreter</strong> via its pip interface.</p>
-<pre><code class="language-bat">REM install a dependency group into the existing python39 (examples):
-"D:\Python\python39\python.exe" -m uv pip install --python "D:\Python\python39\python.exe" -e ".[grpc]"
-"D:\Python\python39\python.exe" -m uv pip install --python "D:\Python\python39\python.exe" -e ".[docs]"
-"D:\Python\python39\python.exe" -m uv pip install --python "D:\Python\python39\python.exe" -e ".[viewer,dashboard]"
+                <h1 id="client-configuration-sessions">Client Configuration &amp; Sessions<a class="headerlink" href="#client-configuration-sessions" title="Permanent link">¶</a></h1>
+<p>VizDOM is configured with a single JSON file that a client provides <strong>once</strong> at
+the start of a session. That one file drives every pipeline stage — which
+detector and OCR engine to use and their parameters, the Stage 2.5 merge/dedup
+tunables, the Stage 3 hierarchy tunables, size filters, the optional refiner, and
+how screens are captured. Both the Python API (<code>connect</code>) and the Robot Framework
+<code>Connect</code> keyword read the same file.</p>
+<h2 id="1-get-a-template">1. Get a template<a class="headerlink" href="#1-get-a-template" title="Permanent link">¶</a></h2>
+<p>Emit an annotated template with every field at its default value:</p>
+<pre><code class="language-bash">python -m visual_dom.config --init vizdom.config.json
 </code></pre>
-<blockquote>
-<p>⚠️ <strong>Do NOT</strong> run <code>uv sync</code> / a fresh <code>uv venv</code> in Path A — that creates an
-isolated env and would reinstall torch (Path B). Use <code>uv pip install --python</code>
-against the existing interpreter, as above.</p>
-<p>⚠️ <strong>protobuf pin.</strong> <code>grpcio-tools &gt;= 1.63</code> pulls <strong>protobuf 6</strong>, which breaks
-the streamlit dashboard (needs <code>protobuf &lt; 6</code>). The <code>grpc</code> group pins
-<code>grpcio* &lt; 1.63</code> and <code>[tool.uv] constraint-dependencies = ["protobuf&lt;6"]</code>
-keeps it project-wide. Keep it that way.</p>
-</blockquote>
-<h2 id="path-b-fresh-uv-managed-environment-portable-heavier">Path B — fresh uv-managed environment (portable, heavier)<a class="headerlink" href="#path-b-fresh-uv-managed-environment-portable-heavier" title="Permanent link">¶</a></h2>
-<p>For a clean machine / full reproducibility (re-downloads CUDA torch from the
-configured PyTorch index):</p>
-<pre><code class="language-bash">uv venv --python 3.12
-uv pip install -e ".[omniparser,grpc,viewer,docs,dashboard]"
+<p>Copy it, then delete or change only the keys you care about — anything omitted
+keeps its default. Validate a hand-edited file at any time:</p>
+<pre><code class="language-bash">python -m visual_dom.config --check vizdom.config.json
 </code></pre>
-<p><code>[tool.uv]</code> already points <code>torch</code>/<code>torchvision</code> at <code>pytorch-cu124</code>.
-(<code>uv python install</code> fetches Python from GitHub, which the corporate proxy may
-block — use a system Python with <code>uv venv --python &lt;path&gt;</code> if so.)</p>
-<h2 id="one-time-external-setup-either-path">One-time external setup (either path)<a class="headerlink" href="#one-time-external-setup-either-path" title="Permanent link">¶</a></h2>
-<pre><code class="language-bat">REM OmniParser detector backend (repo + weights); see docs/omniparser-setup.md
-"D:\Python\python39\python.exe" scripts\setup_omniparser.py --install-deps
+<p>Unknown keys are rejected (so a typo like <code>backendd</code> fails loudly instead of being
+silently ignored). Keys beginning with <code>_</code> (e.g. the <code>_help</code> block in the
+template) are treated as comments and ignored.</p>
+<h2 id="2-use-it-from-python">2. Use it from Python<a class="headerlink" href="#2-use-it-from-python" title="Permanent link">¶</a></h2>
+<pre><code class="language-python">from visual_dom import connect
 
-REM gRPC stubs for the remote detector (ADR-017)
-"D:\Python\python39\python.exe" -m grpc_tools.protoc -I protos ^
-  --python_out=src\visual_dom\rpc --grpc_python_out=src\visual_dom\rpc protos\detector.proto
-REM then make the generated grpc import relative:
-REM   edit detector_pb2_grpc.py: `import detector_pb2` -&gt; `from . import detector_pb2`
+session = connect("vizdom.config.json")   # or connect() for all-defaults
+dom = session.analyze("screenshot.png")   # -&gt; compiled Visual DOM dict
+dom = session.analyze(bgr_numpy_array, save_path="out.json")
 </code></pre>
-<p>Ollama (refiner): install separately and <code>ollama pull minicpm-v</code>.</p>
-<h2 id="running">Running<a class="headerlink" href="#running" title="Permanent link">¶</a></h2>
-<pre><code class="language-bat">start_viewer.bat                 REM PyQt5 inspector
-start_dashboard.bat              REM Streamlit dashboard
-start_detector.bat --backend omniparser   REM remote detector service (ADR-017)
+<p>The detector/OCR/refiner models load <strong>once</strong> when the session is created and are
+reused for every <code>analyze</code> call, so a batch or a test suite pays that cost only
+once.</p>
+<h2 id="3-use-it-from-robot-framework">3. Use it from Robot Framework<a class="headerlink" href="#3-use-it-from-robot-framework" title="Permanent link">¶</a></h2>
+<p><code>Connect</code> is the recommended first keyword. After it, <code>Dump Visual DOM</code> uses the
+configured session for all stages:</p>
+<pre><code class="language-robotframework">*** Settings ***
+Library    VisualGuiLibrary
+
+*** Test Cases ***
+Login Works
+    Connect              vizdom.config.json     # configure the whole session
+    Dump Visual DOM                             # uses the config above
+    Click Visual         text=Login
+    Visual Should Exist  text=Welcome
 </code></pre>
-<h2 id="lockfile-requirementslock">Lockfile (<code>requirements.lock</code>)<a class="headerlink" href="#lockfile-requirementslock" title="Permanent link">¶</a></h2>
-<p>A resolved lock (112 pinned packages) over the runtime + tooling extras
-(<code>ocr,omniparser,grpc,viewer,dashboard,docs,desktop</code>), generated with:</p>
-<pre><code class="language-bat">"D:\Python\python39\python.exe" -m uv pip compile pyproject.toml --python-version 3.9 ^
-  --extra ocr --extra omniparser --extra grpc --extra viewer --extra dashboard ^
-  --extra docs --extra desktop -o requirements.lock
+<p>Call <code>Connect</code> with no argument for all-defaults. The config's <code>capture</code> section
+(<code>strategy</code> / <code>target</code> / <code>camera_mode</code>) is applied to the library's capture port
+too, so one file configures both DOM generation <strong>and</strong> screen acquisition — e.g.
+capture from a remote device over gRPC:</p>
+<pre><code class="language-json">"capture": { "strategy": "grpc", "target": "sut-device:50053" }
 </code></pre>
-<p>⚠️ <strong>It is a <em>fresh-install</em> lock, not a snapshot of the current env.</strong> It resolves
-the newest compatible versions (e.g. <code>torch==2.6.0+cu124</code>, <code>opencv-python==5.x</code>),
-which differ from what's installed on this machine (<code>torch 2.4.1</code>, <code>opencv 4.9</code>).</p>
-<ul>
-<li><strong>Fresh machine (Path B):</strong> <code>uv pip install -r requirements.lock</code> into a new venv
-  → reproduces the pinned set (downloads CUDA torch from the pytorch index).</li>
-<li><strong>Do NOT <code>uv pip sync requirements.lock</code> into the working Python 3.9</strong> — it would
-  upgrade torch (2.4→2.6, ~2.5 GB) and opencv (4→5). To snapshot the <em>current</em>
-  working env instead, use <code>uv pip freeze --python &lt;py39&gt; &gt; current-env.lock</code>.</li>
-</ul>
-<h2 id="dependency-groups-pyprojecttoml">Dependency groups (<code>pyproject.toml</code>)<a class="headerlink" href="#dependency-groups-pyprojecttoml" title="Permanent link">¶</a></h2>
-<p><code>ocr</code> · <code>omniparser</code> · <code>grpc</code> · <code>docs</code> · <code>dashboard</code> · <code>viewer</code> · <code>desktop</code> ·
-<code>llm</code> · <code>training</code> · <code>cv-training</code> · <code>annotation</code> · <code>dev</code> · <code>all</code>.
-Deliberately <strong>not</strong> installed: <code>ocr-paddle</code> (paddle → protobuf-6 conflict; the
-OmniParser setup patches around needing paddle).</p>
+<p>When a session is connected, the per-call arguments of <code>Dump Visual DOM</code>
+(<code>ocr_engine</code>, <code>use_llm</code>, <code>llm_model</code>) are ignored — the config wins. They only
+apply to the ad-hoc path used when <code>Connect</code> was never called.</p>
+<h2 id="4-what-each-section-controls">4. What each section controls<a class="headerlink" href="#4-what-each-section-controls" title="Permanent link">¶</a></h2>
+<p>The template groups options by pipeline stage:</p>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Stage</th>
+<th>Key options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>detector</code></td>
+<td>Stage 2 — element detection</td>
+<td><code>backend</code> (<code>uied</code>/<code>yolo</code>/<code>omniparser</code>/<code>hybrid</code>), <code>use_gpu</code>, <code>confidence_threshold</code>, OmniParser weight paths + <code>omniparser_text_ensemble</code></td>
+</tr>
+<tr>
+<td><code>ocr</code></td>
+<td>Stage 1 — text detection</td>
+<td><code>engine</code> (<code>easyocr</code>/<code>paddleocr</code>/<code>tesseract</code>/<code>none</code>), <code>languages</code></td>
+</tr>
+<tr>
+<td><code>refiner</code></td>
+<td>Stage 8 — SLM/VLM review</td>
+<td><code>enabled</code>, <code>backend</code>, <code>model</code>, <code>host</code></td>
+</tr>
+<tr>
+<td><code>merge</code></td>
+<td><strong>Stage 2.5 — Merge &amp; Deduplicate</strong></td>
+<td><code>nms_iou_threshold</code>, <code>cross_type_iou</code>, <code>duplicate_tolerance_px</code>, <code>merge_oversegmented</code>, <code>group_fill_ratio_min</code></td>
+</tr>
+<tr>
+<td><code>hierarchy</code></td>
+<td><strong>Stage 3 — Hierarchy Building</strong></td>
+<td><code>containment_threshold</code>, <code>min_containment_margin</code>, <code>use_llm</code>, <code>llm_model</code></td>
+</tr>
+<tr>
+<td><code>filter</code></td>
+<td>size / count filters</td>
+<td><code>min_element_area</code>, <code>min_element_size</code>, <code>max_elements</code></td>
+</tr>
+<tr>
+<td><code>capture</code></td>
+<td>acquisition (ADR-018)</td>
+<td><code>strategy</code>, <code>target</code>, <code>camera_mode</code></td>
+</tr>
+<tr>
+<td><code>output</code></td>
+<td>DOM compilation</td>
+<td><code>generate_locators</code></td>
+</tr>
+</tbody>
+</table>
+<p>Filters and thresholds expressed in pixels are <strong>resolution-aware</strong>: they are
+defined at 1080p and scaled up automatically for higher-resolution screens.</p>
+<h3 id="common-recipes">Common recipes<a class="headerlink" href="#common-recipes" title="Permanent link">¶</a></h3>
+<p><strong>Best actionable-control accuracy (GPU), OmniParser with text ensemble:</strong></p>
+<pre><code class="language-json">{
+  "detector": { "backend": "omniparser", "use_gpu": true },
+  "ocr": { "engine": "easyocr" }
+}
+</code></pre>
+<p><strong>CPU-only, no GPU, classical baseline:</strong></p>
+<pre><code class="language-json">{
+  "detector": { "backend": "uied", "use_gpu": false },
+  "ocr": { "engine": "tesseract" }
+}
+</code></pre>
+<p><strong>Denser detection (recover small/adjacent elements) — loosen filters and NMS:</strong></p>
+<pre><code class="language-json">{
+  "detector": { "confidence_threshold": 0.2 },
+  "merge": { "nms_iou_threshold": 0.6, "cross_type_iou": 0.5 },
+  "filter": { "min_element_area": 60, "max_elements": 400 }
+}
+</code></pre>
+<p><strong>Add a small-LM review pass (needs a running Ollama):</strong></p>
+<pre><code class="language-json">{
+  "refiner": { "enabled": true, "backend": "ollama", "model": "qwen2.5:3b" }
+}
+</code></pre>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../CONFIGURATION/" class="btn btn-neutral float-right" title="Configuration &amp; Sessions">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../uv-setup/" class="btn btn-neutral float-left" title="Setup (uv)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../architecture/" class="btn btn-neutral float-right" title="Architecture">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr>
@@ -302,10 +348,10 @@ OmniParser setup patches around needing paddle).</p>
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href=".." style="color: #fcfcfc">« Previous</a></span>
+      <span><a href="../uv-setup/" style="color: #fcfcfc">« Previous</a></span>
     
     
-      <span><a href="../CONFIGURATION/" style="color: #fcfcfc">Next »</a></span>
+      <span><a href="../architecture/" style="color: #fcfcfc">Next »</a></span>
     
   </span>
 </div>

@@ -1,9 +1,9 @@
 <!DOCTYPE html><html class="writer-html5" lang="en"><head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/adr/012-ocr-upscale-dual-engine/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/adr/020-client-session-config/">
       <link rel="shortcut icon" href="../../img/favicon.ico">
-    <title>012 OCR Upscale + Dual Engine - VizDOM — Visual DOM Generator</title>
+    <title>020 Client Session Config - VizDOM — Visual DOM Generator</title>
     <link rel="stylesheet" href="../../css/theme.css">
     <link rel="stylesheet" href="../../css/theme_extra.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
@@ -11,9 +11,9 @@
     
       <script>
         // Current page data
-        var properdocs_page_name = "012 OCR Upscale + Dual Engine";
-        var properdocs_page_input_path = "adr\\012-ocr-upscale-dual-engine.md";
-        var properdocs_page_url = "/vizdom/adr/012-ocr-upscale-dual-engine/";
+        var properdocs_page_name = "020 Client Session Config";
+        var properdocs_page_input_path = "adr\\020-client-session-config.md";
+        var properdocs_page_url = "/vizdom/adr/020-client-session-config/";
       </script>
     
     <!--[if lt IE 9]>
@@ -134,45 +134,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../011-symbol-detector/">011 Symbol Detector</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">012 OCR Upscale + Dual Engine</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#status">Status</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#date">Date</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#history">History</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#context">Context</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#decision">Decision</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#1-image-upscaling-before-ocr">1. Image Upscaling Before OCR</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#2-clahe-contrast-enhancement">2. CLAHE Contrast Enhancement</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#3-dual-engine-ocr-easyocr-tesseract-fallback">3. Dual-Engine OCR (EasyOCR + Tesseract Fallback)</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#4-lowered-confidence-threshold">4. Lowered Confidence Threshold</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#5-ocr-engine-selector-in-viewer">5. OCR Engine Selector in Viewer</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#alternatives-considered">Alternatives Considered</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#consequences">Consequences</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#positive">Positive</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#negative">Negative</a>
-    </li>
-        </ul>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#files-changed">Files Changed</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../013-session-based-output/">013 Session-Based Output</a>
                   </li>
@@ -188,7 +150,23 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../020-client-session-config/">020 Client Session Config</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">020 Client Session Config</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#status">Status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#date">Date</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#history">History</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#context">Context</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#decision">Decision</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#consequences">Consequences</a>
+    </li>
+    </ul>
                   </li>
               </ul>
       </div>
@@ -206,7 +184,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Architecture Decisions</li>
-      <li class="breadcrumb-item active">012 OCR Upscale + Dual Engine</li>
+      <li class="breadcrumb-item active">020 Client Session Config</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -215,11 +193,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="adr-012-ocr-upscaling-and-dual-engine-strategy">ADR-012: OCR Upscaling and Dual-Engine Strategy<a class="headerlink" href="#adr-012-ocr-upscaling-and-dual-engine-strategy" title="Permanent link">¶</a></h1>
+                <h1 id="adr-020-client-session-configuration-connect-json-config">ADR-020: Client Session Configuration (<code>connect</code> + JSON config)<a class="headerlink" href="#adr-020-client-session-configuration-connect-json-config" title="Permanent link">¶</a></h1>
 <h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">¶</a></h2>
-<p>Accepted</p>
+<p>Accepted (implemented)</p>
 <h2 id="date">Date<a class="headerlink" href="#date" title="Permanent link">¶</a></h2>
-<p>2026-03-30</p>
+<p>2026-07-29</p>
 <h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">¶</a></h2>
 <p>Development Team</p>
 <h2 id="history">History<a class="headerlink" href="#history" title="Permanent link">¶</a></h2>
@@ -233,95 +211,74 @@
 </thead>
 <tbody>
 <tr>
-<td>2026-03-30</td>
+<td>2026-07-29</td>
 <td>1.0</td>
-<td>Initial version</td>
+<td><code>VizDomConfig</code> dataclass tree + <code>connect()</code> session API + Robot Framework <code>Connect</code> keyword + annotated JSON template (<code>python -m visual_dom.config --init</code>). Stage 2.5 / Stage 3 tunables previously hardcoded in the pipeline are now config-driven. Verified end-to-end (config load/validate/round-trip; <code>connect().analyze()</code> on the synthetic benchmark; RF library import + keyword).</td>
 </tr>
 </tbody>
 </table>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">¶</a></h2>
-<p>Testing with the CMST application (Bosch IT Workplace Toolkit, WPF/.NET) revealed two OCR accuracy issues:</p>
-<ol>
-<li><strong>Small text misread</strong>: 12-14px text labels ("IP Address", "MAC Address") were garbled by EasyOCR (e.g., <code>~ddress</code>, <code>Mas; Storaze</code>, <code>Untruszed</code>)</li>
-<li><strong>Low-contrast text invisible</strong>: Gray text on white background (e.g., "APAC\UGC1HC", "HC-C-004CE") detected with confidence &lt;0.15, filtered out</li>
-</ol>
-<p>Root cause analysis:
-- EasyOCR's CRNN model was trained on larger text; small text at 12px produces unreliable features
-- The Bosch Sans Regular custom font is not in EasyOCR's training distribution
-- Gray-on-white contrast ratio is too low for reliable detection</p>
-<p>Testing showed Tesseract reads the same regions much more accurately (e.g., "HC-C-004CE" at conf=75) but has weaker text region detection (misses regions that EasyOCR finds).</p>
+<p>The pipeline exposes many knobs — detector backend, OCR engine, Stage 2.5
+merge/deduplicate thresholds, Stage 3 hierarchy thresholds, size filters, an
+optional SLM refiner, and the capture strategy. Before this ADR they were reachable
+only as scattered <code>VisualDOMPipeline(...)</code> constructor arguments, and the Robot
+Framework layer forwarded almost none of them (<code>Dump Visual DOM</code> only took
+<code>ocr_engine</code>). Several Stage 2.5 / Stage 3 parameters (<code>cross_type_iou</code>,
+duplicate-box tolerance, merge-group fill ratio, in-pipeline containment
+threshold) were <strong>hardcoded</strong> and not reachable at all.</p>
+<p>A client — a Python caller or a Robot Framework suite — needs a <strong>single, explicit,
+reproducible</strong> way to select models and tune every stage for its target UI, and to
+do so <strong>once per session</strong> rather than per call.</p>
 <h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">¶</a></h2>
-<h3 id="1-image-upscaling-before-ocr">1. Image Upscaling Before OCR<a class="headerlink" href="#1-image-upscaling-before-ocr" title="Permanent link">¶</a></h3>
-<p>In <code>TextDetector.detect()</code>:</p>
-<ul>
-<li>Images with height below <code>UPSCALE_THRESHOLD</code> (1500px) are auto-upscaled</li>
-<li>Scale factor: <code>min(1500/height, 3.0)</code> — capped at 3x to limit memory</li>
-<li>Uses <code>cv2.INTER_CUBIC</code> for quality upscaling</li>
-<li>Bounding boxes scaled back to original coordinates after detection</li>
-<li>Configurable via <code>upscale=True/False</code> parameter</li>
-</ul>
-<p>For the CMST screenshot (562px), 12px text becomes ~32px after 2.7x upscale — significantly easier for OCR.</p>
-<h3 id="2-clahe-contrast-enhancement">2. CLAHE Contrast Enhancement<a class="headerlink" href="#2-clahe-contrast-enhancement" title="Permanent link">¶</a></h3>
-<p>New <code>_enhance_for_ocr()</code> method:</p>
-<ul>
-<li>Converts to LAB color space</li>
-<li>Applies CLAHE (Contrast Limited Adaptive Histogram Equalization) to luminance channel</li>
-<li>Improves visibility of gray text on white backgrounds without distorting colors</li>
-</ul>
-<h3 id="3-dual-engine-ocr-easyocr-tesseract-fallback">3. Dual-Engine OCR (EasyOCR + Tesseract Fallback)<a class="headerlink" href="#3-dual-engine-ocr-easyocr-tesseract-fallback" title="Permanent link">¶</a></h3>
-<p>New <code>_retry_low_confidence_with_tesseract()</code> method:</p>
-<ul>
-<li>After EasyOCR detection, identifies results with confidence &lt; 0.5</li>
-<li>For each low-confidence region, runs Tesseract in single-line mode (<code>--psm 7</code>)</li>
-<li>If Tesseract returns valid text, replaces EasyOCR's garbled result</li>
-<li>Boosts confidence to 0.3 so the result survives the filter</li>
-</ul>
-<p>This combines EasyOCR's strength (text region detection) with Tesseract's strength (font recognition accuracy).</p>
-<h3 id="4-lowered-confidence-threshold">4. Lowered Confidence Threshold<a class="headerlink" href="#4-lowered-confidence-threshold" title="Permanent link">¶</a></h3>
-<p>Default TextDetector confidence threshold lowered: 0.5 → 0.2</p>
-<ul>
-<li>Allows low-confidence but correct detections to pass through</li>
-<li>Tesseract fallback can rescue these with better text</li>
-<li>Pipeline's later NMS and dedup stages handle any noise</li>
-</ul>
-<h3 id="5-ocr-engine-selector-in-viewer">5. OCR Engine Selector in Viewer<a class="headerlink" href="#5-ocr-engine-selector-in-viewer" title="Permanent link">¶</a></h3>
-<p>Added OCR dropdown in viewer toolbar:
-- <code>easyocr</code> (default) — best text region detection
-- <code>tesseract</code> — better for system/custom fonts
-- <code>paddleocr</code> — fast, multi-language</p>
-<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">¶</a></h2>
-<ul>
-<li><strong>Tesseract as primary engine</strong>: Tested, but misses too many text regions compared to EasyOCR</li>
-<li><strong>PaddleOCR</strong>: Not tested extensively yet, could be a good middle ground</li>
-<li><strong>Fine-tuning EasyOCR on Bosch Sans</strong>: Possible but requires significant training effort</li>
-<li><strong>Fine-tuning Tesseract on Bosch Sans</strong>: Feasible via <code>tesstrain</code>, deferred for now</li>
-</ul>
+<p>Introduce one JSON configuration object and a session entry point.</p>
+<ol>
+<li>
+<p><strong><code>visual_dom.config.VizDomConfig</code></strong> — a tree of plain dataclasses
+   (<code>detector</code>, <code>ocr</code>, <code>refiner</code>, <code>merge</code>, <code>hierarchy</code>, <code>filter</code>, <code>capture</code>,
+   <code>output</code>) with defaults everywhere. It loads from a file/dict/None, <strong>rejects
+   unknown keys</strong> (typos fail loudly), ignores <code>_</code>-prefixed comment keys, and can
+   emit an <strong>annotated template</strong> via <code>python -m visual_dom.config --init</code> and
+   validate via <code>--check</code>.</p>
+</li>
+<li>
+<p><strong><code>visual_dom.connect(config) -&gt; Session</code></strong> — the client's first call. It
+   resolves the config and builds the detector/OCR/refiner <strong>once</strong>; <code>Session.
+   analyze(image)</code> reuses them across images so batch/suite runs pay model-load
+   cost once.</p>
+</li>
+<li>
+<p><strong>Robot Framework <code>Connect</code> keyword</strong> — the same object behind a keyword.
+   After <code>Connect  vizdom.config.json</code>, <code>Dump Visual DOM</code> uses the configured
+   session for all stages, and the config's <code>capture</code> section is applied to the
+   library's capture port so one file configures both DOM generation and screen
+   acquisition. Calling <code>Dump Visual DOM</code> with no prior <code>Connect</code> keeps the old
+   ad-hoc behaviour.</p>
+</li>
+<li>
+<p><strong>Expose the hardcoded stage params.</strong> <code>VisualDOMPipeline</code> gains
+   <code>cross_type_iou</code>, <code>duplicate_tolerance_px</code>, <code>group_fill_ratio_min</code>, and
+   <code>hierarchy_containment_threshold</code> constructor arguments (defaults unchanged), so
+   the config can drive Stage 2.5 and Stage 3.</p>
+</li>
+</ol>
 <h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">¶</a></h2>
-<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">¶</a></h3>
 <ul>
-<li>CMST app: 25/46 → improved text detection on form labels</li>
-<li>Garbled text reduced: EasyOCR misreads retried by Tesseract</li>
-<li>Works without any model training — pure preprocessing + dual engine</li>
-<li>Upscaling is automatic and transparent</li>
-</ul>
-<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Permanent link">¶</a></h3>
-<ul>
-<li>Upscaling increases OCR processing time (~2-3x slower due to larger image)</li>
-<li>Tesseract fallback adds ~50-100ms per low-confidence region</li>
-<li>CLAHE may slightly alter colors (applied before OCR only, not before UIED)</li>
-<li>Requires Tesseract installed for fallback to work</li>
-</ul>
-<h2 id="files-changed">Files Changed<a class="headerlink" href="#files-changed" title="Permanent link">¶</a></h2>
-<ul>
-<li><code>src/visual_dom/cv/text_detector.py</code> — Added <code>upscale</code> param, <code>UPSCALE_THRESHOLD</code>, <code>_enhance_for_ocr()</code>, <code>_retry_low_confidence_with_tesseract()</code>, lowered default confidence</li>
-<li><code>tools/visual_dom_viewer/ui/main_window.py</code> — Added OCR engine dropdown</li>
+<li><strong>Reproducible &amp; shareable.</strong> A run is fully described by one committed file;
+  <code>vizdom.config.example.json</code> is the tracked template, users' own
+  <code>vizdom.config.json</code> is gitignored.</li>
+<li><strong>Uniform surface.</strong> Python and Robot Framework read the same schema; there is
+  one place to document every knob (see <code>docs/CONFIGURATION.md</code>).</li>
+<li><strong>Backwards compatible.</strong> No <code>Connect</code> / no config → previous defaults and the
+  ad-hoc <code>Dump Visual DOM</code> path are unchanged.</li>
+<li><strong>No new dependency.</strong> Dataclasses + <code>json</code> only; validation is hand-rolled.</li>
+<li>Future work: JSON-Schema export for editor autocompletion; per-keyword config
+  overrides layered on top of the session config.</li>
 </ul>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../011-symbol-detector/" class="btn btn-neutral float-left" title="011 Symbol Detector"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../013-session-based-output/" class="btn btn-neutral float-right" title="013 Session-Based Output">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../019-pluggable-actuator-service/" class="btn btn-neutral float-left" title="019 Pluggable Actuator Service"><span class="icon icon-circle-arrow-left"></span> Previous</a>
     </div>
 
   <hr>
@@ -344,10 +301,8 @@
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../011-symbol-detector/" style="color: #fcfcfc">« Previous</a></span>
+      <span><a href="../019-pluggable-actuator-service/" style="color: #fcfcfc">« Previous</a></span>
     
-    
-      <span><a href="../013-session-based-output/" style="color: #fcfcfc">Next »</a></span>
     
   </span>
 </div>

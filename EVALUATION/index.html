@@ -52,6 +52,10 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CONFIGURATION/">Configuration &amp; Sessions</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
                 </li>
               </ul>
@@ -69,6 +73,16 @@
     <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#benchmark-results">Benchmark Results</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#overall-44-image-test-set">Overall (44-image test set)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#recall-by-element-type-two-lenses">Recall by element type (two lenses)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#improvement-omniparser-type-mapping-before-first-fix-now">Improvement: OmniParser Type Mapping (before / first fix / now)</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a>
         <ul>
@@ -252,6 +266,8 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/020-client-session-config/">020 Client Session Config</a>
+                  </li>
               </ul>
       </div>
     </div>
@@ -281,6 +297,8 @@
 <h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">¶</a></h2>
 <ul>
 <li><a href="#overview">Overview</a></li>
+<li><a href="#benchmark-results">Benchmark Results</a></li>
+<li><a href="#improvement-omniparser-type-mapping-before--first-fix--now">Improvement: OmniParser Type Mapping</a></li>
 <li><a href="#quick-start">Quick Start</a></li>
 <li><a href="#element-detection-metrics">Element Detection Metrics</a></li>
 <li><a href="#ocr-accuracy-metrics">OCR Accuracy Metrics</a></li>
@@ -298,6 +316,183 @@
 <li><strong>Hierarchy Structure</strong> - How well the parent-child relationships are captured</li>
 <li><strong>Locator Quality</strong> - How useful the generated locators are for automation</li>
 </ol>
+<h2 id="benchmark-results">Benchmark Results<a class="headerlink" href="#benchmark-results" title="Permanent link">¶</a></h2>
+<p>Results below are computed by this framework on the <strong>synthetic benchmark</strong>
+(<code>data/synthetic</code>): programmatically generated UI screenshots at 1920x1080 with
+exact ground truth (element bounds, <code>visual_type</code>, text, containment), split into
+167 train / <strong>44 test</strong> images. Matching is greedy by IoU at threshold 0.5, pooled
+over all elements. YOLO is not evaluated (no trained weights for these UI classes);
+the SLM-refinement variant needs a running Ollama service and is not benchmarked here.</p>
+<h3 id="overall-44-image-test-set">Overall (44-image test set)<a class="headerlink" href="#overall-44-image-test-set" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Detector</th>
+<th>Precision</th>
+<th>Recall</th>
+<th>F1</th>
+<th>mIoU</th>
+<th>Char. acc.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UIED (CPU)</td>
+<td>0.39</td>
+<td><strong>0.71</strong></td>
+<td>0.51</td>
+<td>0.68</td>
+<td>0.92</td>
+</tr>
+<tr>
+<td>OmniParser</td>
+<td><strong>0.56</strong></td>
+<td>0.59</td>
+<td><strong>0.58</strong></td>
+<td><strong>0.67</strong></td>
+<td><strong>0.95</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="recall-by-element-type-two-lenses">Recall by element type (two lenses)<a class="headerlink" href="#recall-by-element-type-two-lenses" title="Permanent link">¶</a></h3>
+<p>Aggregate scores are dominated by <em>text</em> (63% of ground-truth elements), so the
+per-type breakdown is far more informative for a testing use case. Two lenses:
+<strong>IoU&gt;=0.5</strong> (strict overlap) and <strong>center-hit</strong> (does a predicted box contain the
+element's centre, i.e. is it click-targetable?).</p>
+<table>
+<thead>
+<tr>
+<th>GT type (n)</th>
+<th>UIED IoU&gt;=0.5</th>
+<th>UIED center-hit</th>
+<th>OmniParser IoU&gt;=0.5</th>
+<th>OmniParser center-hit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>button (183)</td>
+<td>0.82</td>
+<td>0.96</td>
+<td><strong>1.00</strong></td>
+<td><strong>1.00</strong></td>
+</tr>
+<tr>
+<td>input_field (135)</td>
+<td>0.95</td>
+<td>0.99</td>
+<td><strong>0.99</strong></td>
+<td>0.99</td>
+</tr>
+<tr>
+<td>checkbox (76)</td>
+<td><strong>0.68</strong></td>
+<td>0.82</td>
+<td>0.20</td>
+<td><strong>0.87</strong></td>
+</tr>
+<tr>
+<td>icon (36)</td>
+<td>0.08</td>
+<td>0.28</td>
+<td><strong>0.67</strong></td>
+<td><strong>1.00</strong></td>
+</tr>
+<tr>
+<td>text (1074)</td>
+<td><strong>0.79</strong></td>
+<td><strong>0.99</strong></td>
+<td>0.59</td>
+<td>0.98</td>
+</tr>
+<tr>
+<td><strong>actionable (pooled, 430)</strong></td>
+<td>0.77</td>
+<td>0.89</td>
+<td><strong>0.83</strong></td>
+<td><strong>0.97</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key findings.</strong> OmniParser leads on the actionable controls a test drives ---
+buttons (recall 1.00), input fields (0.99), icons (0.67) --- with tight boxes,
+confirming manual inspection that its bounding is more accurate. UIED leads on
+checkboxes and text recall. By click-targetability both are strong, with OmniParser
+essentially perfect on actionable elements (0.97). OmniParser's low checkbox IoU
+(0.20) vs. high center-hit (0.87) is a box-convention effect (it boxes the check
+glyph, not the padded control), so the element is still clickable. A single
+IoU-based F1 can therefore <em>understate</em> a detector; we report both lenses and treat
+per-type recall as the primary, testing-relevant measure.</p>
+<h2 id="improvement-omniparser-type-mapping-before-first-fix-now">Improvement: OmniParser Type Mapping (before / first fix / now)<a class="headerlink" href="#improvement-omniparser-type-mapping-before-first-fix-now" title="Permanent link">¶</a></h2>
+<p><strong>Problem.</strong> OmniParser's raw output only tags each element <code>text</code> or <code>icon</code>. Our
+integration originally passed that straight through, so the DOM carried no
+<code>button</code> / <code>input_field</code> / <code>checkbox</code> roles --- element-type classification accuracy
+on actionable controls was <strong>0.09</strong> (correct only on icons, obtained trivially by
+labelling everything <code>icon</code>), and role-based test logic could not use the DOM.</p>
+<p><strong>What we did.</strong> Added <code>_infer_visual_type</code> in the OmniParser backend, which recovers
+the role from three signals: box <strong>geometry</strong> (wide entry-height -&gt; input field),
+<strong>width/aspect</strong> (buttons are ~2x wider than icons), and OmniParser's <strong>caption</strong>
+(a "Checkmark"/"Toggle"/"Check" caption -&gt; checkbox). We also made the pipeline
+auto-resolve OmniParser's model paths (a missing path had silently degraded a run to
+OCR-only).</p>
+<p><strong>Result</strong> --- element-type accuracy on matched actionable controls, across the two
+improvement stages: <strong>before</strong> (text/icon only), <strong>first fix</strong> (interactivity +
+geometry), and <strong>now</strong> (+ caption disambiguation and re-tuned width/aspect):</p>
+<table>
+<thead>
+<tr>
+<th>GT type</th>
+<th>before</th>
+<th>first fix</th>
+<th>now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>button</td>
+<td>0.00</td>
+<td>0.91</td>
+<td>0.89</td>
+</tr>
+<tr>
+<td>input_field</td>
+<td>0.00</td>
+<td>0.99</td>
+<td>0.99</td>
+</tr>
+<tr>
+<td>checkbox</td>
+<td>0.00</td>
+<td>0.12</td>
+<td>0.55</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>1.00*</td>
+<td>0.00</td>
+<td><strong>0.89</strong></td>
+</tr>
+<tr>
+<td><strong>actionable</strong></td>
+<td>0.09</td>
+<td>0.73</td>
+<td><strong>0.87</strong></td>
+</tr>
+</tbody>
+</table>
+<p>*The original mapping labelled all non-text as <code>icon</code>, so icons scored correct
+trivially while every other role scored 0. The <strong>first fix</strong> (geometry only) lifted
+actionable accuracy to 0.73 but <em>regressed</em> icons to 0.00 --- the geometry rule
+reclassified small square glyphs as buttons/checkboxes --- and barely moved
+checkboxes (0.12), which are geometrically indistinguishable from icons. Adding the
+<strong>caption</strong> signal to disambiguate checkboxes and re-tuning the button/icon width
+boundary produced the current mapping (<strong>actionable 0.09 -&gt; 0.73 -&gt; 0.87</strong>). Checkbox
+(0.55) remains the weakest (recovered only when the caption is distinctive) and is
+future work. This measures <em>type</em> only --- localisation (above) is unchanged.</p>
+<blockquote>
+<p>Caveat: this is a synthetic, clean benchmark; absolute scores will differ on
+gradient-heavy real-world UIs. A larger real-world labelled set is the next step.</p>
+</blockquote>
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">¶</a></h2>
 <h3 id="command-line">Command Line<a class="headerlink" href="#command-line" title="Permanent link">¶</a></h3>
 <pre><code class="language-bash"># Evaluate single prediction
