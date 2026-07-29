@@ -291,15 +291,20 @@ accuracy on actionable controls from \textbf{0.09} to \textbf{0.87}.
 
 \begin{table}[H]
   \centering\footnotesize
-  \caption{OmniParser element-type accuracy on matched actionable controls, before
-  and after the role-mapping heuristic (synthetic test set).}
+  \caption{OmniParser element-type accuracy on matched actionable controls, across
+  the two improvement stages (synthetic test set): before (text/icon only), first fix
+  (interactivity + geometry), and now (+ caption + re-tuned width/aspect).}
   \label{tab:arc42typeacc}
-  \begin{tabular}{@{}lccccc@{}}
+  \begin{tabular}{@{}lccc@{}}
     \toprule
-    Mapping & button & input\_field & checkbox & icon & actionable \\
+    GT type & Before & First fix & Now \\
     \midrule
-    Before (text/icon only) & 0.00 & 0.00 & 0.00 & 1.00$^\dagger$ & 0.09 \\
-    After (caption + geometry) & \textbf{0.89} & \textbf{0.99} & \textbf{0.55} & 0.89 & \textbf{0.87} \\
+    button       & 0.00 & 0.91 & 0.89 \\
+    input\_field & 0.00 & 0.99 & 0.99 \\
+    checkbox     & 0.00 & 0.12 & 0.55 \\
+    icon         & 1.00$^\dagger$ & 0.00 & \textbf{0.89} \\
+    \midrule
+    actionable   & 0.09 & 0.73 & \textbf{0.87} \\
     \bottomrule
   \end{tabular}
 \end{table}

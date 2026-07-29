@@ -659,27 +659,39 @@ chứa ``check'', ``toggle'', ``radio'' hay ``switch'' đánh dấu một hộp 
 pipeline nay tự phân giải đường dẫn mô hình OmniParser, vì đường dẫn thiếu trước đây
 đã âm thầm làm một lần chạy suy giảm về chỉ-OCR.
 
-Bảng~\ref{tab:typeacc} cho thấy hiệu quả. Ánh xạ cũ chỉ đạt độ chính xác loại thao
-tác được 0.09 --- đúng duy nhất trên biểu tượng, mà nó có được một cách tầm thường do
-gán \emph{mọi thứ} thành \code{icon} (nên không nhận diện được gì khác). Ánh xạ cải
-tiến nâng độ chính xác thao tác được lên \textbf{0.87}: nút 0.89, ô nhập 0.99, và
-\emph{biểu tượng cùng hộp kiểm hồi phục từ 1.00/0.00 và 0.00 lên 0.89 và 0.55}. DOM
-của OmniParser nay dùng được trực tiếp bởi tầng kiểm thử trên mọi vai trò tương tác.
+Bảng~\ref{tab:typeacc} cho thấy hiệu quả qua hai giai đoạn đo được. Ánh xạ ban đầu
+chỉ đạt độ chính xác loại thao tác được 0.09 --- đúng duy nhất trên biểu tượng, mà nó
+có được một cách tầm thường do gán \emph{mọi thứ} thành \code{icon}. Một \emph{sửa lần
+đầu} thêm suy luận vai trò dựa trên tính tương tác và hình học (chiều cao ô nhập và
+rộng/tỉ lệ), giúp hồi phục nút (0.91) và ô nhập (0.99) và nâng độ chính xác thao tác
+được lên 0.73 --- nhưng nó \emph{làm giảm} biểu tượng: luật hình học nay phân loại nhầm
+các ô vuông nhỏ thành nút hoặc hộp kiểm, kéo độ chính xác biểu tượng từ mức 1.00 tầm
+thường xuống 0.00, còn hộp kiểm gần như bằng 0 (0.12) vì không thể phân biệt hình học
+với biểu tượng. Thêm \emph{chú thích} của OmniParser để phân biệt hộp kiểm, cùng việc
+tinh chỉnh lại ranh giới rộng/tỉ lệ giữa nút và biểu tượng, tạo ra ánh xạ hiện tại:
+biểu tượng hồi phục lên 0.89, hộp kiểm lên 0.55, nút giữ ở 0.89, và độ chính xác thao
+tác được đạt \textbf{0.87}. DOM của OmniParser nay dùng được trực tiếp bởi tầng kiểm
+thử trên mọi vai trò tương tác.
 
 \begin{table}[H]
   \centering
-  \caption{Độ chính xác phân loại loại trên các điều khiển thao tác được khớp, trước
-  và sau ánh xạ cải tiến (OmniParser, tập kiểm thử tổng hợp). Định vị
-  (Bảng~\ref{tab:pertype}) không đổi --- bảng này chỉ đo \emph{loại}. $^\dagger$Ánh
-  xạ cũ gán mọi thứ phi-văn-bản thành \code{icon}, nên biểu tượng đúng một cách tầm
-  thường còn mọi vai trò khác bằng 0.}
+  \caption{Độ chính xác phân loại loại trên các điều khiển thao tác được khớp, qua hai
+  giai đoạn cải tiến (OmniParser, tập kiểm thử tổng hợp): \emph{trước} (chỉ text/icon),
+  \emph{sửa lần đầu} (tính tương tác + hình học), và \emph{hiện tại} (+ phân biệt bằng
+  chú thích và tinh chỉnh rộng/tỉ lệ). Định vị (Bảng~\ref{tab:pertype}) không đổi ---
+  bảng này chỉ đo \emph{loại}. $^\dagger$Ánh xạ cũ gán mọi thứ phi-văn-bản thành
+  \code{icon}, nên biểu tượng đúng một cách tầm thường còn mọi vai trò khác bằng 0.}
   \label{tab:typeacc}
-  \begin{tabular}{lccccc}
+  \begin{tabular}{lccc}
     \toprule
-    Ánh xạ & button & input\_field & checkbox & icon & thao tác được \\
+    Loại (GT) & Trước & Sửa lần đầu & Hiện tại \\
     \midrule
-    Trước (chỉ text/icon) & 0.00 & 0.00 & 0.00 & 1.00$^\dagger$ & 0.09 \\
-    Sau (chú thích + rộng/tỉ lệ) & \textbf{0.89} & \textbf{0.99} & \textbf{0.55} & 0.89 & \textbf{0.87} \\
+    button       & 0.00 & 0.91 & 0.89 \\
+    input\_field & 0.00 & 0.99 & 0.99 \\
+    checkbox     & 0.00 & 0.12 & 0.55 \\
+    icon         & 1.00$^\dagger$ & 0.00 & \textbf{0.89} \\
+    \midrule
+    thao tác được & 0.09 & 0.73 & \textbf{0.87} \\
     \bottomrule
   \end{tabular}
 \end{table}

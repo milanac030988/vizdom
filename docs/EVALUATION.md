@@ -6,7 +6,7 @@ This document describes the evaluation metrics and methodology used to assess th
 
 - [Overview](#overview)
 - [Benchmark Results](#benchmark-results)
-- [Improvement: OmniParser Type Mapping](#improvement-omniparser-type-mapping-before--after)
+- [Improvement: OmniParser Type Mapping](#improvement-omniparser-type-mapping-before--first-fix--now)
 - [Quick Start](#quick-start)
 - [Element Detection Metrics](#element-detection-metrics)
 - [OCR Accuracy Metrics](#ocr-accuracy-metrics)
@@ -67,7 +67,7 @@ glyph, not the padded control), so the element is still clickable. A single
 IoU-based F1 can therefore *understate* a detector; we report both lenses and treat
 per-type recall as the primary, testing-relevant measure.
 
-## Improvement: OmniParser Type Mapping (before / after)
+## Improvement: OmniParser Type Mapping (before / first fix / now)
 
 **Problem.** OmniParser's raw output only tags each element `text` or `icon`. Our
 integration originally passed that straight through, so the DOM carried no
@@ -82,18 +82,27 @@ the role from three signals: box **geometry** (wide entry-height -> input field)
 auto-resolve OmniParser's model paths (a missing path had silently degraded a run to
 OCR-only).
 
-**Result** --- element-type accuracy on matched actionable controls:
+**Result** --- element-type accuracy on matched actionable controls, across the two
+improvement stages: **before** (text/icon only), **first fix** (interactivity +
+geometry), and **now** (+ caption disambiguation and re-tuned width/aspect):
 
-| Mapping | button | input_field | checkbox | icon | actionable |
-|---|---|---|---|---|---|
-| Before (text/icon only) | 0.00 | 0.00 | 0.00 | 1.00* | 0.09 |
-| After (caption + width/aspect) | **0.89** | **0.99** | **0.55** | 0.89 | **0.87** |
+| GT type | before | first fix | now |
+|---|---|---|---|
+| button | 0.00 | 0.91 | 0.89 |
+| input_field | 0.00 | 0.99 | 0.99 |
+| checkbox | 0.00 | 0.12 | 0.55 |
+| icon | 1.00* | 0.00 | **0.89** |
+| **actionable** | 0.09 | 0.73 | **0.87** |
 
-\*The old mapping labelled all non-text as `icon`, so icons scored correct trivially
-while every other role scored 0 --- which is exactly why it could not identify
-anything else. The improvement raised actionable type accuracy **0.09 -> 0.87**;
-checkbox (0.55) remains the weakest (recovered only when the caption is distinctive)
-and is future work. This measures *type* only --- localisation (above) is unchanged.
+\*The original mapping labelled all non-text as `icon`, so icons scored correct
+trivially while every other role scored 0. The **first fix** (geometry only) lifted
+actionable accuracy to 0.73 but *regressed* icons to 0.00 --- the geometry rule
+reclassified small square glyphs as buttons/checkboxes --- and barely moved
+checkboxes (0.12), which are geometrically indistinguishable from icons. Adding the
+**caption** signal to disambiguate checkboxes and re-tuning the button/icon width
+boundary produced the current mapping (**actionable 0.09 -> 0.73 -> 0.87**). Checkbox
+(0.55) remains the weakest (recovered only when the caption is distinctive) and is
+future work. This measures *type* only --- localisation (above) is unchanged.
 
 > Caveat: this is a synthetic, clean benchmark; absolute scores will differ on
 > gradient-heavy real-world UIs. A larger real-world labelled set is the next step.

@@ -665,28 +665,41 @@ captions naming ``check'', ``toggle'', ``radio'' or ``switch'' mark a checkbox.
 Separately, the pipeline now auto-resolves OmniParser's model paths, since a missing
 path had silently degraded a run to OCR-only.
 
-Table~\ref{tab:typeacc} reports the effect. The old mapping scored actionable
-type-accuracy of only 0.09 --- correct solely on icons, which it obtained trivially
-by labelling \emph{everything} \code{icon} (hence its inability to identify anything
-else). The improved mapping raises actionable accuracy to \textbf{0.87}: buttons
-0.89, input fields 0.99, and \emph{icons and checkboxes recovered from 1.00/0.00 and
-0.00 to 0.89 and 0.55}. OmniParser's DOM is now directly usable by the test layer
-across all interactive roles.
+Table~\ref{tab:typeacc} reports the effect in the two measured stages it took to
+get there. The original mapping scored actionable type-accuracy of only 0.09 ---
+correct solely on icons, which it obtained trivially by labelling \emph{everything}
+\code{icon} (hence its inability to identify anything else). A \emph{first fix} added
+the interactivity- and geometry-based role inference (input-height and width/aspect),
+which recovered buttons (0.91) and input fields (0.99) and lifted actionable accuracy
+to 0.73 --- but it \emph{regressed} icons: the geometry rule now reclassified small
+square glyphs as buttons or checkboxes, dropping icon accuracy from its trivial 1.00
+to 0.00, and checkboxes stayed near-zero (0.12) because they are geometrically
+indistinguishable from icons. Adding OmniParser's \emph{caption} to disambiguate
+checkboxes, and re-tuning the width/aspect boundary between buttons and icons,
+produced the current mapping: icons recover to 0.89, checkboxes to 0.55, buttons
+hold at 0.89, and actionable accuracy reaches \textbf{0.87}. OmniParser's DOM is now
+directly usable by the test layer across all interactive roles.
 
 \begin{table}[H]
   \centering
   \caption{Element-type classification accuracy on matched actionable controls,
-  before and after the improved mapping (OmniParser, synthetic test set).
-  Localisation (Table~\ref{tab:pertype}) is unaffected --- this measures \emph{type}
-  only. $^\dagger$The old mapping labelled all non-text as \code{icon}, so icons were
+  across the two improvement stages (OmniParser, synthetic test set):
+  \emph{before} (text/icon only), \emph{first fix} (interactivity + geometry), and
+  \emph{now} (+ caption disambiguation and re-tuned width/aspect). Localisation
+  (Table~\ref{tab:pertype}) is unaffected --- this measures \emph{type} only.
+  $^\dagger$The original mapping labelled all non-text as \code{icon}, so icons were
   correct trivially while every other role scored 0.}
   \label{tab:typeacc}
-  \begin{tabular}{lccccc}
+  \begin{tabular}{lccc}
     \toprule
-    Mapping & button & input\_field & checkbox & icon & actionable \\
+    GT type & Before & First fix & Now \\
     \midrule
-    Before (text/icon only) & 0.00 & 0.00 & 0.00 & 1.00$^\dagger$ & 0.09 \\
-    After (caption + width/aspect) & \textbf{0.89} & \textbf{0.99} & \textbf{0.55} & 0.89 & \textbf{0.87} \\
+    button       & 0.00 & 0.91 & 0.89 \\
+    input\_field & 0.00 & 0.99 & 0.99 \\
+    checkbox     & 0.00 & 0.12 & 0.55 \\
+    icon         & 1.00$^\dagger$ & 0.00 & \textbf{0.89} \\
+    \midrule
+    actionable   & 0.09 & 0.73 & \textbf{0.87} \\
     \bottomrule
   \end{tabular}
 \end{table}

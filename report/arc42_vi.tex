@@ -287,14 +287,19 @@ xác loại phần tử trên các điều khiển thao tác được từ \text
 \begin{table}[H]
   \centering\footnotesize
   \caption{Độ chính xác loại phần tử của OmniParser trên các điều khiển thao tác được
-  khớp, trước và sau suy luận ánh xạ vai trò (tập kiểm tra tổng hợp).}
+  khớp, qua hai giai đoạn cải tiến (tập kiểm tra tổng hợp): trước (chỉ text/icon), sửa
+  lần đầu (tính tương tác + hình học), và hiện tại (+ chú thích + tinh chỉnh rộng/tỉ lệ).}
   \label{tab:arc42typeacc}
-  \begin{tabular}{@{}lccccc@{}}
+  \begin{tabular}{@{}lccc@{}}
     \toprule
-    Ánh xạ & button & input\_field & checkbox & icon & thao tác được \\
+    Loại (GT) & Trước & Sửa lần đầu & Hiện tại \\
     \midrule
-    Trước (chỉ text/icon) & 0.00 & 0.00 & 0.00 & 1.00$^\dagger$ & 0.09 \\
-    Sau (chú thích + hình học) & \textbf{0.89} & \textbf{0.99} & \textbf{0.55} & 0.89 & \textbf{0.87} \\
+    button       & 0.00 & 0.91 & 0.89 \\
+    input\_field & 0.00 & 0.99 & 0.99 \\
+    checkbox     & 0.00 & 0.12 & 0.55 \\
+    icon         & 1.00$^\dagger$ & 0.00 & \textbf{0.89} \\
+    \midrule
+    thao tác được & 0.09 & 0.73 & \textbf{0.87} \\
     \bottomrule
   \end{tabular}
 \end{table}

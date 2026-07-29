@@ -15,21 +15,43 @@ UIs, embedded/industrial HMIs, or screens seen through a camera).
 
 Methodology and full per-type results in [`docs/EVALUATION.md`](docs/EVALUATION.md).
 
+**Overall**
+
 | Detector | F1 | mIoU | Actionable center-hit |
 |---|---|---|---|
 | UIED (CPU) | 0.51 | 0.68 | 0.89 |
 | OmniParser | **0.58** | 0.67 | **0.97** |
 
+**Recall by element type** — two lenses, IoU≥0.5 / center-hit (click-targetability):
+
+| type | UIED (IoU / hit) | OmniParser (IoU / hit) |
+|---|---|---|
+| button | 0.82 / 0.96 | **1.00 / 1.00** |
+| input_field | 0.95 / 0.99 | **0.99** / 0.99 |
+| icon | 0.08 / 0.28 | **0.67 / 1.00** |
+| checkbox | **0.68** / 0.82 | 0.20 / **0.87** |
+| text | **0.79 / 0.99** | 0.59 / 0.98 |
+| actionable (pooled) | 0.77 / 0.89 | **0.83 / 0.97** |
+
+OmniParser leads on the actionable controls a test drives (button/input/icon), UIED
+on checkbox and text. Both are click-targetable; OmniParser is essentially perfect on
+actionable (0.97).
+
 **Improvement — OmniParser element-type classification** (accuracy on actionable
-controls). OmniParser only tags elements `text`/`icon`; mapping that to real roles via
-interactivity + geometry + caption signals raised type accuracy **0.09 → 0.87**:
+controls), across the two stages it took: **before** (text/icon only) → **first fix**
+(interactivity + geometry) → **now** (+ caption disambiguation + re-tuned width/aspect):
 
-| Mapping | button | input_field | checkbox | icon | actionable |
-|---|---|---|---|---|---|
-| Before (text/icon only) | 0.00 | 0.00 | 0.00 | 1.00\* | 0.09 |
-| After | **0.89** | **0.99** | **0.55** | 0.89 | **0.87** |
+| type | before | first fix | now |
+|---|---|---|---|
+| button | 0.00 | 0.91 | 0.89 |
+| input_field | 0.00 | 0.99 | 0.99 |
+| checkbox | 0.00 | 0.12 | 0.55 |
+| icon | 1.00\* | 0.00 | **0.89** |
+| actionable | 0.09 | 0.73 | **0.87** |
 
-\*old mapping labelled all non-text `icon`, so only icons scored correct.
+\*old mapping labelled all non-text `icon`, so only icons scored correct. The first
+fix (geometry) lifted actionable to 0.73 but regressed icons (→0.00) and barely moved
+checkbox (0.12); the caption signal + width re-tune produced the current mapping.
 
 ## Quick Start
 
