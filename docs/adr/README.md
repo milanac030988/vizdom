@@ -33,6 +33,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [016](016-reading-order-and-labels.md) | Reading-Order Sorting and Element Labels | Accepted | 2026-07-25 |
 | [017](017-distributed-hexagonal-grpc.md) | Distributed Hexagonal Architecture with gRPC Model Services | Proposed | 2026-07-26 |
 | [018](018-pluggable-capture-service.md) | Pluggable Screenshot Capture (Strategy + Auto-Discovery + Service) | Accepted | 2026-07-26 |
+| [019](019-pluggable-actuator-service.md) | Pluggable Input Actuation (Strategy + Auto-Discovery + Service) | Accepted | 2026-07-27 |
 
 ## Summary
 

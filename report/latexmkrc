@@ -1,0 +1,4 @@
+# Make latexmk use XeLaTeX by default (these documents need fontspec).
+# Usage:  latexmk main_en.tex   (auto-runs xelatex + bibtex + reruns)
+$pdf_mode = 5;   # 5 = xelatex
+$bibtex_use = 2; # run bibtex when needed

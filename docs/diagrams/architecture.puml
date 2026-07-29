@@ -1,24 +1,24 @@
-@startuml Hexagonal_Architecture
+@startuml Architecture
 ' Uses Graphviz (dot) for clean top-to-bottom layering (needs dot / GRAPHVIZ_DOT).
 ' The other diagrams stay Smetana (graphviz-free). Keep this file ASCII-only.
 skinparam backgroundColor #FEFEFE
 skinparam defaultFontName Arial
 skinparam defaultFontSize 12
 skinparam ranksep 45
-skinparam nodesep 25
+skinparam nodesep 22
 skinparam component {
     BackgroundColor #FFFFFF
     BorderColor #666666
     ArrowColor #333333
 }
 
-title VizDOM - Hexagonal Architecture + Distributed Model/Capture Services (ADR-017, ADR-018)
+title VizDOM - Hexagonal Architecture + Distributed Services\n(detector ADR-017, capture ADR-018, actuator ADR-019)
 
 package "Driving adapters (inbound)" #E3F2FD {
     [CLI\nprocess_gui_image] as cli
     [Visual DOM Viewer] as viewer
     [Dashboard] as dash
-    [Robot Framework lib] as rf
+    [Robot Framework lib\n(thin client)] as rf
 }
 
 package "Domain core (pure, local, CPU)" #FFF3E0 {
@@ -27,9 +27,10 @@ package "Domain core (pure, local, CPU)" #FFF3E0 {
     [Coarse hierarchy] as hier
     [DOM compiler + schema] as compiler
     interface "DetectorPort" as dport
-    interface "RefinerPort" as rport
     interface "OcrPort" as oport
+    interface "RefinerPort" as rport
     interface "CapturePort" as cport
+    interface "ActuatorPort" as aport
 }
 
 package "Driven adapters - local (in-process)" #E8F5E9 {
@@ -41,11 +42,14 @@ package "Driven adapters - local (in-process)" #E8F5E9 {
     [WindowsCapture] as wcap
     [AndroidCapture] as acap
     [CameraCapture] as ccap
+    [DesktopActuator] as dact
+    [AndroidActuator] as aact
 }
 
 package "Driven adapters - remote" #FCE4EC {
     [GrpcDetectorBackend] as gclient
     [GrpcCaptureStrategy] as gcap
+    [GrpcActuatorStrategy] as gact
 }
 
 node "GPU host A" #ECEFF1 {
@@ -54,8 +58,9 @@ node "GPU host A" #ECEFF1 {
 node "GPU host B" #ECEFF1 {
     [Ollama\n(minicpm-v / qwen2.5)] as ollama
 }
-node "SUT host / device" #ECEFF1 {
+node "SUT host / device / arm controller" #ECEFF1 {
     [Capture gRPC service\n(windows / android / camera)] as csvc
+    [Actuator gRPC service\n(desktop / android / robot-arm)] as asvc
 }
 
 ' inbound -> core (all enter at the pipeline so the core stays one rank band)
@@ -72,6 +77,7 @@ pipe --> dport
 pipe --> oport
 pipe --> rport
 pipe --> cport
+pipe --> aport
 
 ' ports -> driven adapters (below the core)
 dport --> uied
@@ -84,10 +90,14 @@ cport --> wcap
 cport --> acap
 cport --> ccap
 cport --> gcap
+aport --> dact
+aport --> aact
+aport --> gact
 
 ' remote adapters -> external hosts (bottom)
 gclient --> dsvc : gRPC
 slm --> ollama : HTTP
 gcap --> csvc : gRPC
+gact --> asvc : gRPC
 
 @enduml

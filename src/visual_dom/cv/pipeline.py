@@ -219,6 +219,24 @@ class VisualDOMPipeline:
             )
         elif detector == "omniparser":
             kwargs = dict(use_gpu=use_gpu)
+            # Auto-resolve model paths from standard project locations when not
+            # given via detector_kwargs or OMNIPARSER_* env vars. Without this the
+            # backend fails to construct and the pipeline silently degrades to
+            # OCR-text-only -- a trap that quietly invalidates "omniparser" runs.
+            import os as _os
+            _root = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "..", "..", ".."))
+            if "icon_detect_path" not in detector_kwargs and not _os.environ.get("OMNIPARSER_ICON_DETECT"):
+                _cand = _os.path.join(_root, "models", "omniparser", "icon_detect", "model.pt")
+                if _os.path.exists(_cand):
+                    kwargs["icon_detect_path"] = _cand
+            if "icon_caption_path" not in detector_kwargs and not _os.environ.get("OMNIPARSER_ICON_CAPTION"):
+                _cand = _os.path.join(_root, "models", "omniparser", "icon_caption_florence")
+                if _os.path.isdir(_cand):
+                    kwargs["icon_caption_path"] = _cand
+            if "omniparser_root" not in detector_kwargs and not _os.environ.get("OMNIPARSER_ROOT"):
+                _cand = _os.path.join(_root, "third_party", "OmniParser")
+                if _os.path.isdir(_cand):
+                    kwargs["omniparser_root"] = _cand
             # Text ensemble (ADR-016): feed our upscaling OCR into OmniParser so
             # its text/icon linking uses better OCR and misses less text. Reuses
             # the pipeline's TextDetector. Disable via text_ensemble=False to get

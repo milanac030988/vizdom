@@ -1,5 +1,4 @@
 @startuml CV_Pipeline_Detail
-!pragma layout smetana
 
 skinparam backgroundColor #FEFEFE
 skinparam defaultFontSize 11
@@ -7,71 +6,72 @@ skinparam defaultFontName Arial
 
 title Visual DOM CV Pipeline - Detailed Flow\nVisualDOMPipeline.process()
 
-(*) --> "Acquire image (by CLI / Viewer, ADR-018)\nCaptureStrategy: windows / android / camera / grpc,\nor read a file"
---> "Load Image\n(path or numpy BGR)"
---> "Camera mode?\ndetect + rectify screen (optional)"
---> "Compute scale factor\nscale = max(1.0, height / 1080)"
+start
+:Acquire image (by CLI / Viewer, ADR-018)\nCaptureStrategy: windows / android / camera / grpc,\nor read a file;
+:Load Image\n(path or numpy BGR);
+:Camera mode?\ndetect + rectify screen (optional);
+:Compute scale factor\nscale = max(1.0, height / 1080);
 
 partition "Step 1: Text Detection" #E8F5E9 {
-  --> "TextDetector\n(EasyOCR / PaddleOCR / Tesseract, upscaling)"
+  :TextDetector\n(EasyOCR / PaddleOCR / Tesseract, upscaling);
 }
 
 partition "Step 2: Element Detection (pluggable backend)" #FFF3E0 {
-  --> "create_detector(mode)"
-  if "detector mode?" then
-    -->[uied] "UIEDBackend\ncontours, CPU"
-  elseif "" then
-    -->[yolo] "YOLOBackend\nUltralytics"
-  elseif "" then
-    -->[omniparser] "OmniParserBackend\nYOLO + OCR ensemble + Florence-2"
-  else
-    -->[hybrid] "UIED + YOLO merge"
+  :create_detector(mode);
+  if (detector mode?) then (uied)
+    :UIEDBackend\ncontours, CPU;
+  elseif (detector mode?) then (yolo)
+    :YOLOBackend\nUltralytics;
+  elseif (detector mode?) then (omniparser)
+    :OmniParserBackend\nYOLO + OCR ensemble + Florence-2;
+  else (hybrid)
+    :UIED + YOLO merge;
   endif
-  --> "Detection[] -> UIElement[]"
+  :Detection[] -> UIElement[];
 }
 
 partition "Step 3-4: Rescan / Merge / Split" #FCE4EC {
-  --> "Re-scan merged regions (text positions)"
-  --> "Merge text + elements (IoU / contain)"
-  --> "Split by text positions"
+  :Re-scan merged regions (text positions);
+  :Merge text + elements (IoU / contain);
+  :Split by text positions;
 }
 
 partition "Step 4c-6: Symbols / Filter / NMS / Dedup" #FFF9C4 {
-  --> "Symbol detection (+ - = x)"
-  --> "Filter conf>0.3, min area/size"
-  --> "Cross-type NMS + per-type NMS"
-  --> "Remove near-duplicates"
+  :Symbol detection (+ - = x);
+  :Filter conf>0.3, min area/size;
+  :Cross-type NMS + per-type NMS;
+  :Remove near-duplicates;
 }
 
 partition "Step 6c: Smart-merge over-segmented" #FFE0B2 {
-  --> "Find candidates\n(full-text anchor + same-line fragments)"
-  if "safe to auto-merge?" then
-    -->[yes: fill>=0.5,\nno delimiter,\n<2 interactable] "Merge group -> one element"
-  else
-    -->[no] "Defer to SLM candidate"
+  :Find candidates\n(full-text anchor + same-line fragments);
+  if (safe to auto-merge?) then (yes: fill>=0.5,\nno delimiter, <2 interactable)
+    :Merge group -> one element;
+  else (no)
+    :Defer to SLM candidate;
   endif
 }
 
 partition "Step 7-7b: Limit + Reading order" #E1F5FE {
-  --> "Limit to max_elements"
-  --> "Reading-order sort (row-band)"
+  :Limit to max_elements;
+  :Reading-order sort (row-band);
 }
 
 partition "Step 8: SLM Review (optional VLM)" #F3E5F5 {
-  if "SLM enabled?" then
-    -->[yes] "SLMAdvisor (Ollama VLM)\nsplit / retype / merge / label\nmerges gated to candidates"
-  else
-    -->[no] "Skip"
+  if (SLM enabled?) then (yes)
+    :SLMAdvisor (Ollama VLM)\nsplit / retype / merge / label\nmerges gated to candidates;
+  else (no)
+    :Skip;
   endif
 }
 
 partition "Step 9-10: Hierarchy + Output" #E0F7FA {
-  --> "Build containment hierarchy"
-  --> "Reading-order re-sort (E1 = top-left)"
-  --> "Reassign IDs"
-  --> "Return { elements[], image_size, stats }"
+  :Build containment hierarchy;
+  :Reading-order re-sort (E1 = top-left);
+  :Reassign IDs;
+  :Return { elements[], image_size, stats };
 }
 
---> (*)
+stop
 
 @enduml

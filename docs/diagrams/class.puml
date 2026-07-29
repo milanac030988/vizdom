@@ -150,14 +150,34 @@ package "shared" #ECEFF1 {
     }
 }
 
-package "visual_gui_library (RF)" #F3E5F5 {
+package "actuator (ADR-019)" #E1F5FE {
+    abstract class ActuatorStrategy {
+        +name / platform / description
+        +{abstract} tap(nx, ny, image_size, click_type)
+        +{abstract} type_text(text)
+        +{abstract} press_key(key)
+        +{abstract} scroll(nx, ny, direction, amount, image_size)
+        +{abstract} swipe(nx1, ny1, nx2, ny2, image_size, duration)
+        +device_size() / _to_device()
+    }
+    class DesktopActuator
+    class AndroidActuator
+    class GrpcActuatorStrategy {
+        +target: str
+    }
+    class ActuatorRegistry <<module>> {
+        +create_actuator(name, kwargs)
+        +list_actuators()
+        +auto_select()
+    }
+}
+
+package "visual_gui_library (RF, thin client)" #F3E5F5 {
     class Locator
     class Keywords {
         actions / assertions / capture
+        (orchestrates capture + actuator)
     }
-    abstract class BaseAdapter
-    class AndroidAdapter
-    class DesktopAdapter
 }
 
 ' --- relationships ---
@@ -193,7 +213,11 @@ CoarseHierarchyBuilder ..> DOMCompiler
 DOMCompiler ..> DOMNode
 DOMCompiler --> Locator
 Locator --> Keywords
-Keywords --> BaseAdapter
-AndroidAdapter --|> BaseAdapter
-DesktopAdapter --|> BaseAdapter
+
+DesktopActuator --|> ActuatorStrategy
+AndroidActuator --|> ActuatorStrategy
+GrpcActuatorStrategy --|> ActuatorStrategy
+ActuatorRegistry ..> ActuatorStrategy : creates
+Keywords --> CaptureStrategy : capture
+Keywords --> ActuatorStrategy : actuate
 @enduml

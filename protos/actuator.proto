@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+// VizDOM remote actuator service (ADR-019 Phase 2).
+// Runs on the host/device under test (or a robot arm's controller) and performs
+// input, so actuation happens where the app-under-test is while the pipeline and
+// orchestration run elsewhere. Coordinates are NORMALIZED [0,1] + the source
+// image size; the server-side strategy maps them to its own device space.
+package visualdom.actuator.v1;
+
+service Actuator {
+  rpc Tap(TapRequest) returns (ActionResponse);
+  rpc TypeText(TypeTextRequest) returns (ActionResponse);
+  rpc PressKey(PressKeyRequest) returns (ActionResponse);
+  rpc Scroll(ScrollRequest) returns (ActionResponse);
+  rpc Swipe(SwipeRequest) returns (ActionResponse);
+  rpc HealthCheck(HealthRequest) returns (HealthResponse);
+}
+
+// Source image dimensions the normalized coords were computed against.
+message ImageSize {
+  int32 width = 1;
+  int32 height = 2;
+}
+
+message TapRequest {
+  double nx = 1;              // normalized x in [0,1]
+  double ny = 2;              // normalized y in [0,1]
+  ImageSize image_size = 3;
+  string click_type = 4;      // "single" | "double" | "right" | "long"
+  string request_id = 5;
+}
+
+message TypeTextRequest {
+  string text = 1;
+  string request_id = 2;
+}
+
+message PressKeyRequest {
+  string key = 1;             // "enter", "tab", "ctrl+a", ...
+  string request_id = 2;
+}
+
+message ScrollRequest {
+  double nx = 1;
+  double ny = 2;
+  string direction = 3;       // "up" | "down" | "left" | "right"
+  int32 amount = 4;
+  ImageSize image_size = 5;
+  string request_id = 6;
+}
+
+message SwipeRequest {
+  double nx1 = 1;
+  double ny1 = 2;
+  double nx2 = 3;
+  double ny2 = 4;
+  ImageSize image_size = 5;
+  double duration = 6;        // seconds
+  string request_id = 7;
+}
+
+message ActionResponse {
+  bool ok = 1;
+  string actuator = 2;        // e.g. "desktop", "android", "robot-arm"
+  string request_id = 3;
+  double action_ms = 4;       // server-side action time (ms)
+}
+
+message HealthRequest {}
+
+message HealthResponse {
+  bool ready = 1;
+  string actuator = 2;
+  string platform = 3;
+}

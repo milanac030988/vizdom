@@ -771,11 +771,21 @@ class VisualDOMViewerWindow(QMainWindow):
         toolbar.addSeparator()
 
         # ========== File Section ==========
-        # Open Screenshot action (for offline mode)
+        # Open Screenshot action (for offline mode) - loads image without analysing
         open_action = QAction("Open Image", self)
         open_action.setShortcut("Ctrl+O")
         open_action.triggered.connect(self._open_screenshot)
         toolbar.addAction(open_action)
+
+        # Open an image file AND run the Visual DOM pipeline on it (offline analysis)
+        analyze_image_action = QAction("Analyze Image", self)
+        analyze_image_action.setShortcut("Ctrl+Shift+O")
+        analyze_image_action.setToolTip(
+            "Open an image file and analyze it with the current pipeline settings "
+            "(detector / OCR / SLM), no device connection needed."
+        )
+        analyze_image_action.triggered.connect(self._open_and_analyze_image)
+        toolbar.addAction(analyze_image_action)
 
         # Open DOM JSON action
         open_dom_action = QAction("Open DOM", self)
@@ -1085,6 +1095,45 @@ class VisualDOMViewerWindow(QMainWindow):
         if filepath:
             self._model.load_screenshot(filepath)
             self._canvas.load_image(filepath)
+
+    def _open_and_analyze_image(self):
+        """Open an image file and run the Visual DOM pipeline on it (offline).
+
+        Reuses the same analysis path as capture: the image is loaded, re-encoded
+        to PNG bytes, shown on the canvas, and passed to _do_analyze_screenshot,
+        which honours the current toolbar settings (detector / OCR / SLM / camera).
+        No device connection is required.
+        """
+        import os
+        filepath, _ = QFileDialog.getOpenFileName(
+            self, "Open Image to Analyze",
+            "", "Images (*.png *.jpg *.jpeg *.bmp);;All Files (*)"
+        )
+        if not filepath:
+            return
+
+        try:
+            import cv2
+            img = cv2.imread(filepath)
+            if img is None:
+                QMessageBox.warning(self, "Open Failed",
+                                    f"Could not read image:\n{filepath}")
+                return
+            ok, buf = cv2.imencode(".png", img)
+            if not ok:
+                QMessageBox.warning(self, "Open Failed", "Could not encode the image.")
+                return
+            screenshot = buf.tobytes()
+        except Exception as e:
+            QMessageBox.warning(self, "Open Failed", f"Error loading image: {e}")
+            return
+
+        h, w = img.shape[:2]
+        self._show_progress(f"Loaded {os.path.basename(filepath)} ({w}x{h}); analyzing...", 40)
+        self._model.set_screenshot_data(screenshot)
+        self._canvas.load_image_data(screenshot)
+        self._refresh_action.setEnabled(True)
+        self._do_analyze_screenshot(screenshot)
 
     def _open_dom_json(self):
         """Open DOM JSON file dialog."""

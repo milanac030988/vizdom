@@ -178,7 +178,8 @@ orchestration only when nodes actually come and go.
 - `src/visual_dom/cv/detectors/grpc_backend.py` — `GrpcDetectorBackend` client adapter.
 - `src/visual_dom/rpc/detector_server.py` — the detector gRPC server.
 - `src/visual_dom/cv/detectors/registry.py` — register `grpc` backend.
-- `docs/diagrams/hexagonal.puml` — the ports/adapters + deployment diagram.
+- `docs/diagrams/architecture.puml` — the ports/adapters + deployment diagram
+  (was `hexagonal.puml`; extended for capture ADR-018 and actuator ADR-019).
 - `start_detector.bat` — launcher for the detector service (native process).
 
 ### Code generation

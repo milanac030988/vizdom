@@ -1,0 +1,89 @@
+name: Deploy ProperDocs to GitHub Pages
+
+# Builds the ProperDocs site on GitHub's runners (which have internet, so the
+# corporate proxy that blocks GitHub locally is irrelevant here) and publishes it
+# to GitHub Pages. PlantUML is rendered offline via the same vendored-jar approach
+# used locally; Graphviz is installed for the one dot-based diagram (architecture.puml).
+#
+# PREREQUISITES (one-time, in the repo on github.com):
+#   Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
+#   NOTE: GitHub Pages on a PRIVATE repo requires a paid plan (Pro/Team/Enterprise);
+#   on the Free plan the repo must be Public for Pages to serve.
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "docs/**"
+      - "properdocs.yml"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Java (for plantuml.jar) + Graphviz (for architecture.puml's dot layout).
+      - name: Install system tools (Java, Graphviz)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends default-jre graphviz
+
+      # tools/plantuml.jar is gitignored, so fetch the matching version on the runner.
+      - name: Fetch PlantUML jar
+        run: |
+          mkdir -p tools
+          curl -fsSL -o tools/plantuml.jar \
+            https://github.com/plantuml/plantuml/releases/download/v1.2024.3/plantuml-1.2024.3.jar
+          java -jar tools/plantuml.jar -version
+
+      - name: Install ProperDocs + plugins
+        run: |
+          python -m pip install --upgrade pip
+          pip install properdocs properdocs-theme-readthedocs plantuml-markdown mkdocs-glightbox
+
+      - name: Build site
+        run: python -m properdocs build --clean -f properdocs.yml
+
+      - name: Verify diagrams rendered (no error SVGs)
+        run: |
+          python - <<'PY'
+          import re, urllib.parse, glob, sys
+          bad = 0
+          for page in glob.glob("site/**/*.html", recursive=True):
+              html = open(page, encoding="utf-8").read()
+              for u in re.findall(r'data:image/svg\+xml[^"\')]*', html):
+                  d = urllib.parse.unquote(u)
+                  if "cannot include" in d or "Syntax Error" in d or "contains errors" in d:
+                      print("ERROR diagram in", page); bad += 1
+          sys.exit(1 if bad else 0)
+          PY
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -34,10 +34,11 @@ All diagrams below are **single-sourced** from `docs/diagrams/*.puml` via
 !include diagrams/sequence.puml
 ```
 
-## Distributed / hexagonal architecture (ADR-017)
+## Distributed / hexagonal architecture (ADR-017 / 018 / 019)
 
-Ports & adapters, with the heavy detector/refiner as remote services.
+Ports & adapters, with the detector, capture, and actuator as pluggable driven
+ports that can each run in-process or as a remote gRPC service.
 
 ```plantuml
-!include diagrams/hexagonal.puml
+!include diagrams/architecture.puml
 ```

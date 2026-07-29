@@ -291,7 +291,10 @@ Example Test
 | `Get Element Center` | `element` | Get element center point |
 | `Get Element Text` | `element` | Get element text content |
 | `Click Element` | `locator` | Click element (simulated) |
-| `Element Should Exist` | `locator` | Assert element exists |
+| `Visual Should Exist` | `locator`, `message` | Assert element exists (current DOM) |
+| `Visual Should Not Exist` | `locator`, `message` | Assert element absent (current DOM) |
+| `Wait Until Visual Appears` | `locator`, `timeout`, `poll_interval` | Wait for element to appear (re-dumps DOM) |
+| `Wait Until Visual Disappears` | `locator`, `timeout`, `poll_interval` | Wait for element to disappear (re-dumps DOM) |
 | `Element Should Have Text` | `locator`, `expected` | Assert element text |
 
 ---

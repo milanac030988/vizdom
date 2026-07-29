@@ -7,6 +7,10 @@ from typing import Optional, Any, Tuple
 from robot.api.deco import keyword
 import numpy as np
 
+# Sentinel so `Get Element Property` can tell "no default given" (-> raise on a
+# missing property) apart from "default is None / empty" (-> return it).
+_UNSET = object()
+
 
 class CaptureKeywords:
     """Keywords for screen capture and Visual DOM generation."""
@@ -16,17 +20,18 @@ class CaptureKeywords:
         self._current_screenshot = None
         self._finder = None
 
-    def _get_adapter(self):
-        """Get platform adapter - to be overridden by main class."""
-        raise NotImplementedError("Subclass must implement _get_adapter")
+    def _get_capture(self):
+        """Get the visual_dom capture strategy - provided by VisualGuiLibrary."""
+        raise NotImplementedError("VisualGuiLibrary provides _get_capture")
 
     @keyword("Capture Screen")
     def capture_screen(self, region: Optional[str] = None) -> np.ndarray:
         """
-        Capture the current screen.
+        Capture the current screen via the configured capture strategy
+        (visual_dom.capture: windows/linux/android/camera/grpc/<plugin>).
 
         Args:
-            region: Optional region to capture (x,y,width,height)
+            region: Optional region to crop, "x,y,width,height"
 
         Returns:
             Screenshot as numpy array (BGR)
@@ -35,15 +40,14 @@ class CaptureKeywords:
             | ${img}= | Capture Screen |
             | ${img}= | Capture Screen | region=0,0,800,600 |
         """
-        adapter = self._get_adapter()
+        screenshot = self._get_capture().capture()
 
-        region_tuple = None
         if region:
             parts = [int(x.strip()) for x in region.split(",")]
             if len(parts) == 4:
-                region_tuple = tuple(parts)
+                x, y, w, h = parts
+                screenshot = screenshot[y:y + h, x:x + w]
 
-        screenshot = adapter.capture_screen(region=region_tuple)
         self._current_screenshot = screenshot
         return screenshot
 
@@ -221,44 +225,104 @@ class CaptureKeywords:
         center = element.get("center", [0, 0])
         return tuple(center)
 
-    @keyword("Element Should Exist")
-    def element_should_exist(self, locator: str) -> None:
+    @keyword("Get Element Property")
+    def get_element_property(
+        self,
+        locator: str,
+        name: str,
+        default: Any = _UNSET,
+    ) -> Any:
         """
-        Verify element exists in DOM.
+        Get a single property of a visual element from the current DOM.
+
+        Reads one field of the element matched by ``locator``. Common properties:
+        ``text``, ``label``, ``hint``, ``role``, ``visual_type``, ``bounds``,
+        ``center``, ``clickable``, ``editable``, ``scrollable``, ``confidence``,
+        ``id``. Property names are case-insensitive. A generated locator can be
+        read with a dotted name, e.g. ``locators.text``.
+
+        Some properties (``text``, ``hint``, ``label``, ``locators``) exist only
+        when the element actually has them. If the requested property is absent
+        and no ``default`` is given, the keyword fails and lists the available
+        properties; pass ``default`` to get a fallback value instead.
 
         Args:
-            locator: Element locator string
+            locator: Element locator string (e.g. ``text=Login``).
+            name: Property name to read (case-insensitive).
+            default: Value to return when the property is absent. If omitted, an
+                absent property raises an error.
+
+        Returns:
+            The property value.
 
         Example:
-            | Element Should Exist | text=Login |
+            | ${label}=     | Get Element Property | text=Login     | label |
+            | ${role}=      | Get Element Property | id=E12         | role  |
+            | ${clickable}= | Get Element Property | text=Submit    | clickable |
+            | ${hint}=      | Get Element Property | role=textField | hint | default=${EMPTY} |
         """
-        if not self._finder:
-            raise RuntimeError("No DOM loaded. Call 'Dump Visual DOM' first.")
+        element = self.get_visual_element(locator)
+        return self._read_property(element, name, default, locator)
 
-        from ..locators import LocatorParser
-        locators = LocatorParser.parse(locator)
-        matches = self._finder.find(locators)
+    def _read_property(self, element: dict, name: str, default: Any, locator: str) -> Any:
+        """Resolve a (possibly dotted, case-insensitive) property name on an element."""
+        key = (name or "").strip()
 
-        if not matches:
-            raise AssertionError(f"Element not found: {locator}")
+        if "." in key:
+            # dotted access into a sub-dict, e.g. "locators.text"
+            head, tail = key.split(".", 1)
+            sub = element.get(head)
+            if isinstance(sub, dict):
+                lower = {k.lower(): k for k in sub}
+                if tail.lower() in lower:
+                    return sub[lower[tail.lower()]]
+        else:
+            lower = {k.lower(): k for k in element}
+            if key.lower() in lower:
+                return element[lower[key.lower()]]
+            # convenience: fall through into the 'locators' sub-dict
+            locs = element.get("locators") or {}
+            locs_lower = {k.lower(): k for k in locs}
+            if key.lower() in locs_lower:
+                return locs[locs_lower[key.lower()]]
 
-    @keyword("Element Should Not Exist")
-    def element_should_not_exist(self, locator: str) -> None:
+        if default is not _UNSET:
+            return default
+
+        available = sorted(element.keys())
+        locs = element.get("locators") or {}
+        if locs:
+            available += [f"locators.{k}" for k in sorted(locs)]
+        raise ValueError(
+            f"Property '{name}' not found on element (locator: {locator}). "
+            f"Available: {', '.join(available)}"
+        )
+
+    @keyword("Get Element Text")
+    def get_element_text(self, locator: str, default: Any = _UNSET) -> str:
         """
-        Verify element does not exist in DOM.
-
-        Args:
-            locator: Element locator string
+        Get the OCR/visible text of an element (convenience for
+        ``Get Element Property  <locator>  text``).
 
         Example:
-            | Element Should Not Exist | text=Error |
+            | ${txt}= | Get Element Text | id=E12 |
+            | ${txt}= | Get Element Text | role=staticText | default=${EMPTY} |
         """
-        if not self._finder:
-            raise RuntimeError("No DOM loaded. Call 'Dump Visual DOM' first.")
+        element = self.get_visual_element(locator)
+        return self._read_property(element, "text", default, locator)
 
-        from ..locators import LocatorParser
-        locators = LocatorParser.parse(locator)
-        matches = self._finder.find(locators)
+    @keyword("Get Element Label")
+    def get_element_label(self, locator: str, default: Any = _UNSET) -> str:
+        """
+        Get the associated label of an element (convenience for
+        ``Get Element Property  <locator>  label``).
 
-        if matches:
-            raise AssertionError(f"Element unexpectedly found: {locator}")
+        Example:
+            | ${label}= | Get Element Label | role=textField |
+        """
+        element = self.get_visual_element(locator)
+        return self._read_property(element, "label", default, locator)
+
+    # Existence assertions live in AssertionKeywords as the canonical
+    # 'Visual Should Exist' / 'Visual Should Not Exist' (they add a custom
+    # `message` and refresh-aware 'Wait Until Visual ...' companions).

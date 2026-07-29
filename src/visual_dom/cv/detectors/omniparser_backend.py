@@ -315,9 +315,12 @@ class OmniParserBackend(DetectorBackend):
             )
 
             raw_type = (item.get("type") or "unknown").lower()
-            visual_type = "text" if raw_type == "text" else "icon"
             content = item.get("content")
             interactable = item.get("interactivity")
+            visual_type = self._infer_visual_type(
+                raw_type, interactable, content,
+                px[2] - px[0], px[3] - px[1], height,
+            )
 
             detections.append(
                 Detection(
@@ -331,3 +334,66 @@ class OmniParserBackend(DetectorBackend):
                 )
             )
         return detections
+
+    @staticmethod
+    def _infer_visual_type(
+        raw_type: str,
+        interactable: Optional[bool],
+        content: Optional[str],
+        w: int,
+        h: int,
+        image_height: int,
+    ) -> str:
+        """
+        Map an OmniParser item to our richer visual-type taxonomy.
+
+        OmniParser only tags each element as ``text`` or ``icon`` plus an
+        ``interactivity`` flag; that collapsed everything actionable into
+        ``icon``. Here we recover ``button`` / ``input_field`` / ``checkbox`` /
+        ``icon`` from interactivity + resolution-aware geometry, so OmniParser's
+        (good) boxes also carry the role a test needs. Non-interactive text stays
+        ``text``. Thresholds scale with resolution (ref 1080p), matching the rest
+        of the pipeline. Heuristic by nature; the raw type is kept in ``extra``.
+        """
+        scale = max(1.0, image_height / 1080.0)
+        text = (content or "").strip()
+        text_l = text.lower()
+        has_text = bool(text)
+        aspect = w / float(max(1, h))
+        small = max(w, h) <= 46 * scale
+        near_square = 0.6 <= aspect <= 1.7
+
+        # Checkbox/toggle/radio cues from OmniParser's caption. Checkboxes and icons
+        # are both small near-square interactive boxes, so geometry alone cannot
+        # separate them; the caption ("Checkmark", "Toggle", "Check", ...) is the
+        # reliable signal. Without a cue, a small square defaults to icon (below).
+        _check_kw = ("check", "tick", "toggle", "radio", "switch", "selected")
+
+        # Non-interactive plain text.
+        if raw_type == "text" and not interactable:
+            return "text"
+
+        if interactable or raw_type == "icon":
+            # 1. Long, entry-height boxes -> input field.
+            if aspect >= 3.0 and h >= 22 * scale:
+                return "input_field"
+            # 2. Caption clearly names a checkbox/toggle/radio.
+            if has_text and any(k in text_l for k in _check_kw):
+                return "checkbox"
+            # 3. Wide, labelled control -> button. Buttons are markedly wider than
+            #    icons/checkboxes (measured w ~ 2x), so width is the key separator.
+            if has_text and w >= 82 * scale and aspect >= 1.3:
+                return "button"
+            # 4. Small, square graphic -> icon (icons cluster at aspect ~1, w<=~75).
+            if aspect <= 1.35 and max(w, h) <= 78 * scale:
+                return "icon"
+            # 5. Remaining labelled, wider-than-tall control -> button.
+            if has_text and aspect >= 1.3 and h >= 18 * scale:
+                return "button"
+            # 6. Fallbacks: small -> icon; else labelled -> button.
+            if small:
+                return "icon"
+            return "button" if has_text else "icon"
+
+        # Non-interactive, non-text -> icon.
+        return "icon"

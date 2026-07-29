@@ -2,6 +2,7 @@
 Locator parsing and element finding logic.
 
 Supported locator strategies:
+- By id: id=E12 (exact DOM element id, case-insensitive)
 - By text: text="Login", hint="Email"
 - By role/type: role=Button, role=EditText
 - By structure: within="LoginForm", near text="Password"
@@ -16,6 +17,7 @@ import re
 
 class LocatorStrategy(Enum):
     """Available locator strategies."""
+    ID = "id"
     TEXT = "text"
     HINT = "hint"
     ROLE = "role"
@@ -170,6 +172,15 @@ class ElementFinder:
     def _find_by_strategy(self, locator: Locator) -> List[Dict]:
         """Find elements using a single locator strategy."""
         value = locator.value.lower()
+
+        if locator.strategy == LocatorStrategy.ID:
+            # DOM ids are case-sensitive (e.g. "E12"); match the original value
+            # first, then fall back to a case-insensitive scan.
+            exact = self._index["by_id"].get(locator.value, [])
+            if exact:
+                return exact
+            return [e for e in self.elements
+                    if str(e.get("id", "")).lower() == value]
 
         if locator.strategy == LocatorStrategy.TEXT:
             # Exact or partial text match

@@ -69,5 +69,20 @@ site/
 # Vendored external code (AGPL-3.0, reconstruct via scripts/setup_omniparser.py).
 # Not a submodule: the corporate proxy blocks GitHub, so clones can't fetch it.
 third_party/
+
+# LaTeX build artifacts (report/). Keep .tex, .bib, and figures/ tracked.
+report/*.aux
+report/*.log
+report/*.bbl
+report/*.blg
+report/*.out
+report/*.toc
+report/*.pdf
+report/*.xdv
+report/*.fls
+report/*.fdb_latexmk
+report/*.synctex.gz
+report/*.lof
+report/*.lot
 src/visual_dom/rpc/*_pb2.py
 src/visual_dom/rpc/*_pb2_grpc.py

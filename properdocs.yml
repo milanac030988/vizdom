@@ -1,5 +1,8 @@
 site_name: VizDOM — Visual DOM Generator
 site_description: Screenshot -> Visual DOM -> GUI Test Automation
+# GitHub Pages landing URL (username.github.io/repo). Needed so links/assets
+# resolve correctly on the deployed site (per deploy-properdocs skill).
+site_url: https://milanac030988.github.io/vizdom/
 docs_dir: docs
 
 theme:
@@ -74,3 +77,4 @@ nav:
       - 016 Reading Order + Labels: adr/016-reading-order-and-labels.md
       - 017 Distributed Hexagonal + gRPC: adr/017-distributed-hexagonal-grpc.md
       - 018 Pluggable Capture Service: adr/018-pluggable-capture-service.md
+      - 019 Pluggable Actuator Service: adr/019-pluggable-actuator-service.md

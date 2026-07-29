@@ -5,6 +5,8 @@ skinparam backgroundColor #FEFEFE
 skinparam defaultFontName Arial
 skinparam defaultFontSize 12
 skinparam componentStyle rectangle
+skinparam nodesep 18
+skinparam ranksep 40
 skinparam component {
     BorderColor #555555
     ArrowColor #333333
@@ -12,6 +14,23 @@ skinparam component {
 
 title VizDOM - Component Diagram
 
+' ============================================================
+' Layer 1 - Consumers (driving side)
+' ============================================================
+package "tools" #F5F5F5 {
+    [visual_dom_viewer\n(PyQt5)] as viewer
+    [dashboard\n(Streamlit)] as dash
+    [annotator] as annot
+}
+
+package "visual_gui_library (Robot Framework)" #F3E5F5 {
+    [locators\nLocator] as loc
+    [keywords\nactions/assertions/capture\n(thin client, ADR-019)] as kw
+}
+
+' ============================================================
+' Layer 2 - Domain core (analysis engine)
+' ============================================================
 package "visual_dom.cv" #FFF3E0 {
     [pipeline\nVisualDOMPipeline] as pipeline
     [text_detector] as textd
@@ -31,52 +50,54 @@ package "visual_dom.cv" #FFF3E0 {
     }
 }
 
-package "visual_dom.capture (ADR-018)" #E1F5FE {
-    [base\nCaptureStrategy] as cbase
-    [registry\ncreate_capture, discover] as creg
-    [builtin\nwindows/linux/android/camera] as cbuiltin
-    [builtin.grpc_remote\nGrpcCaptureStrategy] as cgrpc
-    [plugins/capture/*\n(user, auto-loaded)] as cplugins
+together {
+    package "visual_dom.hierarchy" #FCE4EC {
+        [coarse_builder\nCoarseHierarchyBuilder] as coarse
+        [llm_refiner] as llm
+    }
+    package "visual_dom.compiler" #E0F7FA {
+        [dom_compiler\nDOMCompiler] as compiler
+    }
+    package "visual_dom (shared)" #ECEFF1 {
+        [reading_order] as rorder
+        [logging_utils] as logx
+        [schema\ndom_schema] as schema
+    }
+    package "visual_dom.evaluation" #E8F5E9 {
+        [evaluator] as evalr
+        [metrics] as metrics
+        [report] as report
+    }
 }
 
-package "visual_dom.rpc" #EDE7F6 {
-    [detector_server\nDetector gRPC] as dsrv
-    [capture_server\nCapture gRPC] as csrv
+' ============================================================
+' Layer 3 - Driven ports (pluggable strategies) + gRPC services
+' ============================================================
+together {
+    package "visual_dom.capture (ADR-018)" #E1F5FE {
+        [registry\ncreate_capture, discover] as creg
+        [base\nCaptureStrategy] as cbase
+        [builtin\nwindows/linux/android/camera] as cbuiltin
+        [builtin.grpc_remote\nGrpcCaptureStrategy] as cgrpc
+        [plugins/capture/*\n(user, auto-loaded)] as cplugins
+    }
+    package "visual_dom.actuator (ADR-019)" #E1F5FE {
+        [registry\ncreate_actuator, discover] as areg
+        [base\nActuatorStrategy] as abase
+        [builtin\ndesktop/android] as abuiltin
+        [builtin.grpc_remote\nGrpcActuatorStrategy] as agrpc
+        [plugins/actuator/*\n(user, e.g. robot-arm)] as aplugins
+    }
+    package "visual_dom.rpc (services)" #EDE7F6 {
+        [detector_server\nDetector gRPC] as dsrv
+        [capture_server\nCapture gRPC] as csrv
+        [actuator_server\nActuator gRPC] as asrv
+    }
 }
 
-package "visual_dom (shared)" #ECEFF1 {
-    [reading_order] as rorder
-    [logging_utils] as logx
-    [schema\ndom_schema] as schema
-}
-
-package "visual_dom.hierarchy" #FCE4EC {
-    [coarse_builder\nCoarseHierarchyBuilder] as coarse
-    [llm_refiner] as llm
-}
-
-package "visual_dom.compiler" #E0F7FA {
-    [dom_compiler\nDOMCompiler] as compiler
-}
-
-package "visual_dom.evaluation" #E8F5E9 {
-    [evaluator] as evalr
-    [metrics] as metrics
-    [report] as report
-}
-
-package "visual_gui_library (Robot Framework)" #F3E5F5 {
-    [locators\nLocator] as loc
-    [keywords\nactions/assertions/capture] as kw
-    [adapters\nbase/android/desktop] as adp
-}
-
-package "tools" #F5F5F5 {
-    [visual_dom_viewer\n(PyQt5)] as viewer
-    [dashboard\n(Streamlit)] as dash
-    [annotator] as annot
-}
-
+' ============================================================
+' Layer 4 - External
+' ============================================================
 cloud "External" #FAFAFA {
     [OmniParser repo\n+ Florence-2 weights] as extomni
     [Ollama\n(minicpm-v / qwen2.5)] as extollama
@@ -84,7 +105,23 @@ cloud "External" #FAFAFA {
     [Ultralytics YOLO] as extyolo
 }
 
-' --- dependencies ---
+' ============================================================
+' Edges
+' ============================================================
+
+' -- consumers -> core --
+viewer --> pipeline
+viewer --> coarse
+viewer --> compiler
+dash --> pipeline
+compiler --> loc
+loc --> kw
+' RF library is a thin orchestrator: capture -> detect/DOM -> locate -> actuate
+kw --> creg : capture
+kw --> pipeline : detect / DOM
+kw --> areg : actuate
+
+' -- pipeline internals --
 pipeline --> dreg
 pipeline --> textd
 pipeline --> symd
@@ -97,43 +134,47 @@ dreg --> duied
 dreg --> dyolo
 dreg --> domni
 dreg --> dgrpc
-dgrpc --> dsrv : gRPC
 duied --> uiedcore
 uiedcore --> imgp
 domni --> textd : ocr_provider (ensemble)
 domni --> logx
 
-textd --> extocr
-dyolo --> extyolo
-domni --> extomni
-slm --> extollama
-
+' -- core -> hierarchy/compiler --
 pipeline ..> coarse : (via caller)
 coarse --> rorder
 coarse ..> compiler
-llm --> extollama
 compiler --> schema
 
-compiler --> loc
-loc --> kw
-kw --> adp
-
-viewer --> pipeline
-viewer --> coarse
-viewer --> compiler
-dash --> pipeline
-
-' capture: registry discovers built-ins + remote client + user plugins;
-' CLI/Viewer acquire the image via it; the gRPC servers wrap the registries.
+' -- capture port (registry discovers built-ins + grpc client + user plugins) --
 creg --> cbase
 creg --> cbuiltin
 creg --> cgrpc
 creg --> cplugins
-cgrpc --> csrv : gRPC
 csrv --> creg
-dsrv --> dreg
 viewer --> creg : acquire image
 
+' -- actuator port (same shape as capture) --
+areg --> abase
+areg --> abuiltin
+areg --> agrpc
+areg --> aplugins
+asrv --> areg
+
+' -- gRPC clients -> services --
+dgrpc --> dsrv : gRPC
+cgrpc --> csrv : gRPC
+agrpc --> asrv : gRPC
+dsrv --> dreg
+
+' -- evaluation --
 evalr --> metrics
 evalr --> report
+
+' -- external model/tool dependencies --
+textd --> extocr
+dyolo --> extyolo
+domni --> extomni
+slm --> extollama
+llm --> extollama
+
 @enduml

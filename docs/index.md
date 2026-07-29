@@ -95,8 +95,8 @@ Honest status — these are the open edges, roughly in priority order:
 ## Documentation map
 
 - **[Architecture](architecture.md)** — system, pipeline, component, class,
-  sequence and hexagonal diagrams (rendered inline from the `.puml` sources of
-  record).
+  sequence and hexagonal (ports & adapters) diagrams (rendered inline from the
+  `.puml` sources of record).
 - **[CV Pipeline](PIPELINE.md)** and **[OmniParser Setup](omniparser-setup.md)** —
   how detection works and how to set up the OmniParser backend.
 - **[Evaluation](EVALUATION.md)** and **[VLM Study](RESEARCH.md)** — the metrics
@@ -124,4 +124,4 @@ properdocs build -f properdocs.yml     # static site/ (gitignored)
 
 PlantUML runs via the vendored `tools/plantuml.jar` using the built-in **Smetana**
 layout engine (`!pragma layout smetana`), so no external `dot.exe` is required
-(the hexagonal diagram is the one exception — it uses `dot`).
+(the `architecture.puml` ports & adapters diagram is the one exception — it uses `dot`).
