@@ -70,6 +70,15 @@ site/
 # Not a submodule: the corporate proxy blocks GitHub, so clones can't fetch it.
 third_party/
 
+# Model weights (large; reconstruct via scripts/setup_omniparser.py + HuggingFace).
+# GitHub rejects files >100MB (icon_caption_florence/model.safetensors is ~1GB).
+# Keep models/configs/*.py (source) tracked.
+models/omniparser/
+*.safetensors
+*.pt
+*.pth
+*.onnx
+
 # LaTeX build artifacts (report/). Keep .tex, .bib, and figures/ tracked.
 report/*.aux
 report/*.log
