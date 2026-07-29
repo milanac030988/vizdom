@@ -118,6 +118,18 @@ defined at 1080p and scaled up automatically for higher-resolution screens.
 }
 ```
 
+**Recover faint small controls with OmniParser (e.g. a minimize "–" button):**
+A tiny low-contrast glyph can sit just under OmniParser's YOLO confidence cutoff
+(default 0.05) and be missed — sometimes only on certain captures, since YOLO runs
+at a fixed input size and is sensitive to the exact screenshot resolution. Lower the
+cutoff to recover it (0.03 is usually clean; below ~0.02 starts adding noise):
+
+```json
+{
+  "detector": { "backend": "omniparser", "omniparser_box_threshold": 0.03 }
+}
+```
+
 **Add a small-LM review pass (needs a running Ollama):**
 
 ```json

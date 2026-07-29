@@ -6,6 +6,8 @@
     "detector.confidence_threshold": "0..1; lower = more detections (higher recall)",
     "detector.omniparser_icon_detect_path": "null = auto-resolve from models/omniparser/",
     "detector.omniparser_text_ensemble": "feed VizDOM OCR into OmniParser to recover text (ADR-016)",
+    "detector.omniparser_box_threshold": "YOLO icon confidence cutoff (default 0.05); lower to ~0.03 to recover faint glyphs like a minimize button",
+    "detector.grpc_target": "host:port of a running detector gRPC service (used only when backend == 'grpc', ADR-017)",
     "ocr": "Stage 1 - text detection engine",
     "ocr.engine": "easyocr | paddleocr | tesseract | none",
     "refiner": "Stage 8 - optional small-LM/VLM element review (needs a running backend)",
@@ -27,7 +29,9 @@
     "yolo_model_path": null,
     "omniparser_icon_detect_path": null,
     "omniparser_icon_caption_path": null,
-    "omniparser_text_ensemble": true
+    "omniparser_text_ensemble": true,
+    "omniparser_box_threshold": 0.05,
+    "grpc_target": "localhost:50051"
   },
   "ocr": {
     "engine": "easyocr",

@@ -55,6 +55,14 @@ class DetectorConfig:
     omniparser_icon_caption_path: Optional[str] = None
     # Feed VizDOM's upscaling OCR into OmniParser to recover missed text (ADR-016).
     omniparser_text_ensemble: bool = True
+    # OmniParser YOLO icon-detection confidence cutoff. Default 0.05 (OmniParser's
+    # own default). Faint/small glyphs (e.g. a minimize "-" button) can sit just
+    # under it and be missed on some captures; lowering to ~0.03 recovers them at a
+    # small false-positive cost. Only used when backend == "omniparser".
+    omniparser_box_threshold: float = 0.05
+    # For backend == "grpc": address of a running detector service (ADR-017),
+    # e.g. a GPU host serving one warm OmniParser for many clients.
+    grpc_target: str = "localhost:50051"
 
 
 @dataclass
@@ -235,6 +243,8 @@ _FIELD_HELP: Dict[str, str] = {
     "detector.confidence_threshold": "0..1; lower = more detections (higher recall)",
     "detector.omniparser_icon_detect_path": "null = auto-resolve from models/omniparser/",
     "detector.omniparser_text_ensemble": "feed VizDOM OCR into OmniParser to recover text (ADR-016)",
+    "detector.omniparser_box_threshold": "YOLO icon confidence cutoff (default 0.05); lower to ~0.03 to recover faint glyphs like a minimize button",
+    "detector.grpc_target": "host:port of a running detector gRPC service (used only when backend == 'grpc', ADR-017)",
     "ocr": "Stage 1 - text detection engine",
     "ocr.engine": "easyocr | paddleocr | tesseract | none",
     "refiner": "Stage 8 - optional small-LM/VLM element review (needs a running backend)",
