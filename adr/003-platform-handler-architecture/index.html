@@ -1,0 +1,504 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/adr/003-platform-handler-architecture/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>003 Platform Handler Architecture - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "003 Platform Handler Architecture";
+        var properdocs_page_input_path = "adr\\003-platform-handler-architecture.md";
+        var properdocs_page_url = "/vizdom/adr/003-platform-handler-architecture/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">003 Platform Handler Architecture</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#status">Status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#date">Date</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#reviewer">Reviewer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#history">History</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#context">Context</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#decision">Decision</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#base-handler-interface">Base Handler Interface</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#windows-handler-implementation">Windows Handler Implementation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#android-handler-implementation">Android Handler Implementation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#platform-manager-usage">Platform Manager Usage</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#consequences">Consequences</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#positive">Positive</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#negative">Negative</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#neutral">Neutral</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#alternatives-considered">Alternatives Considered</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-single-monolithic-handler-rejected">1. Single Monolithic Handler (Rejected)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-subprocess-only-approach-rejected">2. Subprocess-Only Approach (Rejected)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-third-party-library-pyautogui-deferred">3. Third-Party Library (pyautogui) (Deferred)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#references">References</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Architecture Decisions</li>
+      <li class="breadcrumb-item active">003 Platform Handler Architecture</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="adr-003-platform-handler-plugin-architecture">ADR-003: Platform Handler Plugin Architecture<a class="headerlink" href="#adr-003-platform-handler-plugin-architecture" title="Permanent link">¶</a></h1>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">¶</a></h2>
+<p>Accepted</p>
+<h2 id="date">Date<a class="headerlink" href="#date" title="Permanent link">¶</a></h2>
+<p>2025-01-26</p>
+<h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">¶</a></h2>
+<p>Development Team</p>
+<h2 id="reviewer">Reviewer<a class="headerlink" href="#reviewer" title="Permanent link">¶</a></h2>
+<ul>
+<li>Project Lead</li>
+</ul>
+<h2 id="history">History<a class="headerlink" href="#history" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Version</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025-01-26</td>
+<td>1.0</td>
+<td>Initial version</td>
+</tr>
+</tbody>
+</table>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">¶</a></h2>
+<p>The Visual DOM Viewer needs to capture screenshots from target applications across different platforms:</p>
+<ul>
+<li><strong>Windows</strong>: Desktop applications via WinAPI</li>
+<li><strong>Android</strong>: Mobile apps via ADB</li>
+<li><strong>Linux</strong>: Applications via X11/Wayland</li>
+<li><strong>Web</strong>: Browsers via DevTools/Selenium</li>
+</ul>
+<p>Requirements:
+1. Support multiple platforms with a unified interface
+2. Allow adding new platforms without modifying core code
+3. Handle platform-specific operations (window enumeration, screenshot capture)
+4. Manage connection state and target selection</p>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">¶</a></h2>
+<p>Implement a <strong>Plugin Architecture</strong> with:</p>
+<ol>
+<li><strong>Abstract Base Handler</strong>: Defines interface all platform handlers must implement</li>
+<li><strong>Platform Manager</strong>: Singleton that manages handler registration and lifecycle</li>
+<li><strong>Concrete Handlers</strong>: Platform-specific implementations</li>
+</ol>
+<h3 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">¶</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    PlatformManager                          │
+│                     (Singleton)                             │
+├─────────────────────────────────────────────────────────────┤
+│  • get_available_platforms()                                │
+│  • connect(config)                                          │
+│  • disconnect()                                             │
+│  • capture_screenshot()                                     │
+│  • current_handler: PlatformHandler                         │
+└────────────────────────────┬────────────────────────────────┘
+                             │
+         ┌───────────────────┼───────────────────┐
+         ▼                   ▼                   ▼
+┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│ WindowsHandler  │ │ AndroidHandler  │ │  LinuxHandler   │
+├─────────────────┤ ├─────────────────┤ ├─────────────────┤
+│ • WinAPI        │ │ • ADB           │ │ • X11/Wayland   │
+│ • EnumWindows   │ │ • screencap     │ │ • xdotool       │
+│ • PrintWindow   │ │ • uiautomator   │ │ • scrot         │
+└─────────────────┘ └─────────────────┘ └─────────────────┘
+</code></pre>
+<h3 id="base-handler-interface">Base Handler Interface<a class="headerlink" href="#base-handler-interface" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">class PlatformHandler(ABC):
+    """Abstract base class for platform handlers."""
+
+    @property
+    @abstractmethod
+    def platform_type(self) -&gt; PlatformType:
+        """Return platform type identifier."""
+        pass
+
+    @property
+    @abstractmethod
+    def platform_name(self) -&gt; str:
+        """Human-readable platform name."""
+        pass
+
+    @abstractmethod
+    def is_available(self) -&gt; bool:
+        """Check if platform is available on current system."""
+        pass
+
+    @abstractmethod
+    def list_targets(self) -&gt; List[TargetApplication]:
+        """List available target applications."""
+        pass
+
+    @abstractmethod
+    def connect(self, config: PlatformConfig) -&gt; bool:
+        """Connect to target application."""
+        pass
+
+    @abstractmethod
+    def disconnect(self) -&gt; None:
+        """Disconnect from current target."""
+        pass
+
+    @abstractmethod
+    def capture_screenshot(self) -&gt; Optional[bytes]:
+        """Capture screenshot from connected target."""
+        pass
+</code></pre>
+<h3 id="windows-handler-implementation">Windows Handler Implementation<a class="headerlink" href="#windows-handler-implementation" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">class WindowsPlatformHandler(PlatformHandler):
+    """Windows platform handler using WinAPI."""
+
+    def list_targets(self) -&gt; List[TargetApplication]:
+        # Use EnumWindows to list visible windows
+        windows = []
+        def enum_callback(hwnd, results):
+            if user32.IsWindowVisible(hwnd):
+                title = get_window_title(hwnd)
+                if title:
+                    results.append(TargetApplication(
+                        id=str(hwnd),
+                        title=title,
+                        process_name=get_process_name(hwnd),
+                        bounds=get_window_rect(hwnd)
+                    ))
+        user32.EnumWindows(EnumWindowsProc(enum_callback), windows)
+        return windows
+
+    def capture_screenshot(self) -&gt; Optional[bytes]:
+        # Use Desktop DC capture for DWM compatibility
+        hwnd = self._connected_hwnd
+        rect = get_window_rect(hwnd)
+
+        # Bring window to front
+        self.bring_to_front()
+
+        # Capture from desktop DC
+        desktop_dc = user32.GetDC(0)
+        # ... capture logic
+        return png_bytes
+</code></pre>
+<h3 id="android-handler-implementation">Android Handler Implementation<a class="headerlink" href="#android-handler-implementation" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">class AndroidPlatformHandler(PlatformHandler):
+    """Android platform handler using ADB."""
+
+    def list_targets(self) -&gt; List[TargetApplication]:
+        # List connected devices
+        result = subprocess.run(['adb', 'devices'], capture_output=True)
+        devices = parse_devices(result.stdout)
+        return [TargetApplication(id=d.serial, title=d.model) for d in devices]
+
+    def capture_screenshot(self) -&gt; Optional[bytes]:
+        # Use adb screencap
+        result = subprocess.run(
+            ['adb', '-s', self._device_serial, 'exec-out', 'screencap', '-p'],
+            capture_output=True
+        )
+        return result.stdout if result.returncode == 0 else None
+</code></pre>
+<h3 id="platform-manager-usage">Platform Manager Usage<a class="headerlink" href="#platform-manager-usage" title="Permanent link">¶</a></h3>
+<pre><code class="language-python"># Get singleton instance
+manager = PlatformManager.get_instance()
+
+# List available platforms
+platforms = manager.get_available_platforms()
+# [('WINDOWS', 'Windows', 'Windows desktop applications'), ...]
+
+# Connect to target
+config = PlatformConfig(
+    platform=PlatformType.WINDOWS,
+    target=selected_window
+)
+manager.connect(config)
+
+# Capture screenshot
+screenshot = manager.capture_screenshot()
+
+# Disconnect
+manager.disconnect()
+</code></pre>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">¶</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Extensible</strong>: Easy to add new platforms without changing core code</li>
+<li><strong>Consistent API</strong>: Same interface for all platforms</li>
+<li><strong>Encapsulated complexity</strong>: Platform-specific code isolated in handlers</li>
+<li><strong>Testable</strong>: Can mock handlers for testing</li>
+<li><strong>Auto-detection</strong>: Handlers report availability based on system</li>
+</ul>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Platform-specific dependencies</strong>: Each handler may need different libraries</li>
+<li><strong>Complexity</strong>: More code than a single-platform solution</li>
+<li><strong>Testing burden</strong>: Need to test on each supported platform</li>
+</ul>
+<h3 id="neutral">Neutral<a class="headerlink" href="#neutral" title="Permanent link">¶</a></h3>
+<ul>
+<li>Handler registration happens at import time</li>
+<li>Only one connection active at a time (by design)</li>
+<li>Screenshot capture methods vary by platform capabilities</li>
+</ul>
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">¶</a></h2>
+<h3 id="1-single-monolithic-handler-rejected">1. Single Monolithic Handler (Rejected)<a class="headerlink" href="#1-single-monolithic-handler-rejected" title="Permanent link">¶</a></h3>
+<p>One handler class with platform detection and branching logic.</p>
+<p>Rejected because:
+- Becomes unmaintainable as platforms increase
+- Hard to add new platforms
+- Violates Single Responsibility Principle</p>
+<h3 id="2-subprocess-only-approach-rejected">2. Subprocess-Only Approach (Rejected)<a class="headerlink" href="#2-subprocess-only-approach-rejected" title="Permanent link">¶</a></h3>
+<p>Use only command-line tools (scrot, screencap, etc.) via subprocess.</p>
+<p>Rejected because:
+- Less control over capture process
+- Harder to enumerate windows/targets
+- Missing features like bringing window to front</p>
+<h3 id="3-third-party-library-pyautogui-deferred">3. Third-Party Library (pyautogui) (Deferred)<a class="headerlink" href="#3-third-party-library-pyautogui-deferred" title="Permanent link">¶</a></h3>
+<p>Use pyautogui for cross-platform screenshot capture.</p>
+<p>Deferred because:
+- Less control over specific windows
+- Cannot enumerate individual windows well
+- Can add as fallback later</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">¶</a></h2>
+<ul>
+<li>WinAPI documentation: https://docs.microsoft.com/en-us/windows/win32/api/</li>
+<li>ADB documentation: https://developer.android.com/studio/command-line/adb</li>
+<li>Source: <code>tools/visual_dom_viewer/plugins/platform_manager.py</code></li>
+<li>Source: <code>tools/visual_dom_viewer/plugins/windows_handler.py</code></li>
+<li>Source: <code>tools/visual_dom_viewer/plugins/android_handler.py</code></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../002-cv-pipeline-design/" class="btn btn-neutral float-left" title="002 CV Pipeline Design"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../004-dom-compiler-json-format/" class="btn btn-neutral float-right" title="004 DOM Compiler / JSON Format">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../002-cv-pipeline-design/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../004-dom-compiler-json-format/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

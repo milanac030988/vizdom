@@ -1,0 +1,629 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/adr/005-evaluation-framework/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>005 Evaluation Framework - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "005 Evaluation Framework";
+        var properdocs_page_input_path = "adr\\005-evaluation-framework.md";
+        var properdocs_page_url = "/vizdom/adr/005-evaluation-framework/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">005 Evaluation Framework</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#status">Status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#date">Date</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#reviewer">Reviewer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#history">History</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#context">Context</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#decision">Decision</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-element-detection-metrics">1. Element Detection Metrics</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-ocr-accuracy-metrics">2. OCR Accuracy Metrics</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-hierarchy-structure-metrics">3. Hierarchy Structure Metrics</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-locator-quality-metrics">4. Locator Quality Metrics</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#evaluator-usage">Evaluator Usage</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#report-generation">Report Generation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#quality-thresholds">Quality Thresholds</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#consequences">Consequences</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#positive">Positive</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#negative">Negative</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#neutral">Neutral</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#alternatives-considered">Alternatives Considered</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-manual-inspection-only-rejected">1. Manual Inspection Only (Rejected)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-user-acceptance-testing-only-rejected">2. User Acceptance Testing Only (Rejected)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-custom-metric-design-deferred">3. Custom Metric Design (Deferred)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#references">References</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Architecture Decisions</li>
+      <li class="breadcrumb-item active">005 Evaluation Framework</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="adr-005-evaluation-framework-and-metrics">ADR-005: Evaluation Framework and Metrics<a class="headerlink" href="#adr-005-evaluation-framework-and-metrics" title="Permanent link">¶</a></h1>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">¶</a></h2>
+<p>Accepted</p>
+<h2 id="date">Date<a class="headerlink" href="#date" title="Permanent link">¶</a></h2>
+<p>2025-01-26</p>
+<h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">¶</a></h2>
+<p>Development Team</p>
+<h2 id="reviewer">Reviewer<a class="headerlink" href="#reviewer" title="Permanent link">¶</a></h2>
+<ul>
+<li>Project Lead</li>
+</ul>
+<h2 id="history">History<a class="headerlink" href="#history" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Version</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025-01-26</td>
+<td>1.0</td>
+<td>Initial version</td>
+</tr>
+</tbody>
+</table>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">¶</a></h2>
+<p>To measure and improve the Visual DOM system quality, we need:</p>
+<ol>
+<li><strong>Quantitative metrics</strong> to compare detection accuracy</li>
+<li><strong>Benchmarking capability</strong> across different configurations</li>
+<li><strong>Regression testing</strong> to catch quality degradation</li>
+<li><strong>Reporting</strong> for documentation and analysis</li>
+</ol>
+<p>The evaluation should cover:
+- Element detection quality (did we find the right elements?)
+- OCR accuracy (did we read text correctly?)
+- Hierarchy correctness (did we build the right tree structure?)
+- Locator usefulness (can automation tools use our output?)</p>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">¶</a></h2>
+<p>Implement a comprehensive <strong>Evaluation Framework</strong> with four metric categories:</p>
+<h3 id="1-element-detection-metrics">1. Element Detection Metrics<a class="headerlink" href="#1-element-detection-metrics" title="Permanent link">¶</a></h3>
+<p>Measure how well we detect UI elements using object detection metrics.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Formula</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Precision</strong></td>
+<td>TP / (TP + FP)</td>
+<td>Of predictions, how many are correct</td>
+</tr>
+<tr>
+<td><strong>Recall</strong></td>
+<td>TP / (TP + FN)</td>
+<td>Of ground truth, how many found</td>
+</tr>
+<tr>
+<td><strong>F1 Score</strong></td>
+<td>2×P×R / (P+R)</td>
+<td>Harmonic mean of P and R</td>
+</tr>
+<tr>
+<td><strong>Mean IoU</strong></td>
+<td>avg(IoU scores)</td>
+<td>Average bounding box overlap</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python">@dataclass
+class ElementMetrics:
+    true_positives: int = 0
+    false_positives: int = 0
+    false_negatives: int = 0
+    iou_scores: List[float] = field(default_factory=list)
+
+    @property
+    def precision(self) -&gt; float:
+        return self.true_positives / (self.true_positives + self.false_positives)
+
+    @property
+    def recall(self) -&gt; float:
+        return self.true_positives / (self.true_positives + self.false_negatives)
+
+    @property
+    def f1_score(self) -&gt; float:
+        p, r = self.precision, self.recall
+        return 2 * p * r / (p + r) if (p + r) &gt; 0 else 0
+</code></pre>
+<h3 id="2-ocr-accuracy-metrics">2. OCR Accuracy Metrics<a class="headerlink" href="#2-ocr-accuracy-metrics" title="Permanent link">¶</a></h3>
+<p>Measure text recognition quality using standard OCR metrics.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Formula</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CER</strong></td>
+<td>(I+D+S) / total_chars</td>
+<td>Character Error Rate</td>
+</tr>
+<tr>
+<td><strong>WER</strong></td>
+<td>(I+D+S) / total_words</td>
+<td>Word Error Rate</td>
+</tr>
+<tr>
+<td><strong>Char Accuracy</strong></td>
+<td>1 - CER</td>
+<td>Character-level accuracy</td>
+</tr>
+<tr>
+<td><strong>Exact Match</strong></td>
+<td>exact_matches / total</td>
+<td>Perfect text match rate</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python">@dataclass
+class OCRMetrics:
+    char_insertions: int = 0
+    char_deletions: int = 0
+    char_substitutions: int = 0
+    total_chars_gt: int = 0
+
+    @property
+    def cer(self) -&gt; float:
+        errors = self.char_insertions + self.char_deletions + self.char_substitutions
+        return errors / self.total_chars_gt if self.total_chars_gt &gt; 0 else 0
+
+    @property
+    def char_accuracy(self) -&gt; float:
+        return max(0, 1 - self.cer)
+</code></pre>
+<h3 id="3-hierarchy-structure-metrics">3. Hierarchy Structure Metrics<a class="headerlink" href="#3-hierarchy-structure-metrics" title="Permanent link">¶</a></h3>
+<p>Measure how well we build the DOM tree structure.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Parent Accuracy</strong></td>
+<td>Elements with correct parent assignment</td>
+</tr>
+<tr>
+<td><strong>Depth Accuracy</strong></td>
+<td>Elements at correct tree depth</td>
+</tr>
+<tr>
+<td><strong>Sibling Order Accuracy</strong></td>
+<td>Sibling pairs in correct order</td>
+</tr>
+<tr>
+<td><strong>Structure Similarity</strong></td>
+<td>1 - normalized tree edit distance</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python">@dataclass
+class HierarchyMetrics:
+    correct_parents: int = 0
+    total_elements: int = 0
+    tree_edit_distance: int = 0
+
+    @property
+    def parent_accuracy(self) -&gt; float:
+        return self.correct_parents / self.total_elements
+
+    @property
+    def structure_similarity(self) -&gt; float:
+        return max(0, 1 - self.tree_edit_distance / self.tree_size)
+</code></pre>
+<h3 id="4-locator-quality-metrics">4. Locator Quality Metrics<a class="headerlink" href="#4-locator-quality-metrics" title="Permanent link">¶</a></h3>
+<p>Measure usefulness of generated locators for automation.</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Coverage</strong></td>
+<td>Elements with at least one locator</td>
+</tr>
+<tr>
+<td><strong>Text Locator Rate</strong></td>
+<td>Elements locatable by text (preferred)</td>
+</tr>
+<tr>
+<td><strong>Uniqueness Rate</strong></td>
+<td>Locators that uniquely identify elements</td>
+</tr>
+<tr>
+<td><strong>Duplicate Rate</strong></td>
+<td>Elements with ambiguous locators</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python">@dataclass
+class LocatorMetrics:
+    total_elements: int = 0
+    text_locatable: int = 0
+    unique_locators: int = 0
+
+    @property
+    def text_locator_rate(self) -&gt; float:
+        return self.text_locatable / self.total_elements
+
+    @property
+    def uniqueness_rate(self) -&gt; float:
+        return self.unique_locators / self.total_elements
+</code></pre>
+<h3 id="evaluator-usage">Evaluator Usage<a class="headerlink" href="#evaluator-usage" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">from visual_dom.evaluation import VisualDOMEvaluator, EvaluationConfig
+
+# Configure evaluation
+config = EvaluationConfig(
+    iou_threshold=0.5,          # 50% overlap required for match
+    evaluate_hierarchy=True,
+    evaluate_locators=True,
+)
+
+# Create evaluator
+evaluator = VisualDOMEvaluator(config)
+
+# Single evaluation
+result = evaluator.evaluate_from_files("predicted.json", "ground_truth.json")
+print(result.summary())
+
+# Batch evaluation
+batch_result = evaluator.evaluate_batch(predictions, ground_truths)
+print(f"Mean F1: {batch_result.mean_f1:.2%}")
+</code></pre>
+<h3 id="report-generation">Report Generation<a class="headerlink" href="#report-generation" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">from visual_dom.evaluation import EvaluationReport
+
+report = EvaluationReport(result)
+
+# Multiple output formats
+report.save_json("report.json")
+report.save_markdown("report.md")
+report.save_html("report.html")
+
+print(report.to_text())
+</code></pre>
+<h3 id="quality-thresholds">Quality Thresholds<a class="headerlink" href="#quality-thresholds" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Excellent</th>
+<th>Good</th>
+<th>Fair</th>
+<th>Poor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F1 Score</td>
+<td>&gt; 0.90</td>
+<td>0.75-0.90</td>
+<td>0.50-0.75</td>
+<td>&lt; 0.50</td>
+</tr>
+<tr>
+<td>Mean IoU</td>
+<td>&gt; 0.80</td>
+<td>0.60-0.80</td>
+<td>0.40-0.60</td>
+<td>&lt; 0.40</td>
+</tr>
+<tr>
+<td>Char Accuracy</td>
+<td>&gt; 0.95</td>
+<td>0.85-0.95</td>
+<td>0.70-0.85</td>
+<td>&lt; 0.70</td>
+</tr>
+<tr>
+<td>Parent Accuracy</td>
+<td>&gt; 0.90</td>
+<td>0.75-0.90</td>
+<td>0.50-0.75</td>
+<td>&lt; 0.50</td>
+</tr>
+</tbody>
+</table>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">¶</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Quantitative quality tracking</strong>: Objective measurement of system performance</li>
+<li><strong>Regression detection</strong>: Catch quality degradation early</li>
+<li><strong>Configuration tuning</strong>: Compare different settings objectively</li>
+<li><strong>Documentation</strong>: Clear metrics for project status</li>
+</ul>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Ground truth required</strong>: Need manually annotated data</li>
+<li><strong>Metric limitations</strong>: Some quality aspects hard to quantify</li>
+<li><strong>Annotation burden</strong>: Creating ground truth is time-consuming</li>
+</ul>
+<h3 id="neutral">Neutral<a class="headerlink" href="#neutral" title="Permanent link">¶</a></h3>
+<ul>
+<li>Metrics may not capture all aspects of "good" detection</li>
+<li>Different use cases may prioritize different metrics</li>
+<li>Thresholds are guidelines, not strict requirements</li>
+</ul>
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">¶</a></h2>
+<h3 id="1-manual-inspection-only-rejected">1. Manual Inspection Only (Rejected)<a class="headerlink" href="#1-manual-inspection-only-rejected" title="Permanent link">¶</a></h3>
+<p>Rely only on visual inspection of results.</p>
+<p>Rejected because:
+- Not scalable
+- Subjective
+- Cannot track regression
+- Not reproducible</p>
+<h3 id="2-user-acceptance-testing-only-rejected">2. User Acceptance Testing Only (Rejected)<a class="headerlink" href="#2-user-acceptance-testing-only-rejected" title="Permanent link">¶</a></h3>
+<p>Only measure end-to-end automation success.</p>
+<p>Rejected because:
+- Too coarse-grained
+- Hard to diagnose failures
+- Doesn't isolate detection vs. automation issues</p>
+<h3 id="3-custom-metric-design-deferred">3. Custom Metric Design (Deferred)<a class="headerlink" href="#3-custom-metric-design-deferred" title="Permanent link">¶</a></h3>
+<p>Design completely novel metrics specific to Visual DOM.</p>
+<p>Deferred because:
+- Standard metrics well understood
+- Easier to compare with other systems
+- Can add custom metrics later if needed</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">¶</a></h2>
+<ul>
+<li>COCO evaluation metrics: https://cocodataset.org/#detection-eval</li>
+<li>OCR evaluation standards</li>
+<li>Source: <code>src/visual_dom/evaluation/metrics.py</code></li>
+<li>Source: <code>src/visual_dom/evaluation/evaluator.py</code></li>
+<li>Documentation: <code>docs/EVALUATION.md</code></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../004-dom-compiler-json-format/" class="btn btn-neutral float-left" title="004 DOM Compiler / JSON Format"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../006-viewer-workflow-design/" class="btn btn-neutral float-right" title="006 Viewer Workflow Design">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../004-dom-compiler-json-format/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../006-viewer-workflow-design/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

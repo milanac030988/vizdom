@@ -1,0 +1,95 @@
+@startuml Sequence_Diagram
+
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam ParticipantPadding 12
+skinparam BoxPadding 10
+
+title VizDOM - Screenshot -> DOM Sequence (detector = omniparser, SLM on)
+
+' --- participants, colored per component ---
+actor "User / CLI / Viewer" as user #FFFFFF
+participant "CaptureStrategy\n(windows/android/camera/grpc)" as cap #E1F5FE
+participant "VisualDOMPipeline" as pipe #FFF3E0
+participant "TextDetector\n(EasyOCR)" as text #FFCC80
+participant "OmniParserBackend" as omni #FFE0B2
+participant "OmniParser\n(YOLO + Florence-2)" as omnimodel #FFD180
+participant "reading_order" as ro #ECEFF1
+participant "SLMAdvisor" as slm #F3E5F5
+participant "Ollama\n(minicpm-v)" as ollama #E1BEE7
+participant "CoarseHierarchyBuilder" as coarse #FCE4EC
+participant "DOMCompiler" as comp #E0F7FA
+participant "Consumer\n(RF / Viewer / Eval)" as out #E8F5E9
+
+opt acquire via capture strategy (ADR-018; else read a file)
+    user -> cap : capture()
+    activate cap
+    cap --> user : BGR image\n(local grab / adb / camera / remote gRPC)
+    deactivate cap
+end
+
+user -> pipe : process(screenshot)
+activate pipe
+
+pipe -> text : detect(image)  (Step 1)
+activate text
+text --> pipe : TextElement[]
+deactivate text
+
+pipe -> omni : detect(image)  (Step 2)
+activate omni
+omni -> text : ocr_provider(image)\n(ensemble OCR)
+activate text
+text --> omni : word boxes
+deactivate text
+omni -> omnimodel : check_ocr_box + get_som_labeled_img
+activate omnimodel
+omnimodel --> omni : parsed elements\n(boxes + labels + interactable)
+deactivate omnimodel
+omni --> pipe : Detection[]  (gap-fill merged OCR)
+deactivate omni
+
+pipe -> pipe : convert -> UIElement[]\nmerge / split / NMS / dedup (Step 3-6b)
+
+pipe -> pipe : smart-merge over-segmented (Step 6c)\nguards: fill / delimiter / interactable
+
+pipe -> ro : sort_reading_order()  (Step 7b)
+activate ro
+ro --> pipe : ordered UIElement[]
+deactivate ro
+
+alt SLM enabled (Step 8)
+    pipe -> pipe : find merge candidates (geometry)
+    pipe -> slm : review_elements(elems, image, merge_candidates)
+    activate slm
+    slm -> ollama : VLM prompt + screenshot
+    activate ollama
+    ollama --> slm : JSON suggestions
+    deactivate ollama
+    slm --> pipe : split / retype / merge / label
+    deactivate slm
+    pipe -> pipe : apply (merges gated to candidates)
+end
+
+pipe -> pipe : build hierarchy + reading-order + reassign IDs (Step 9-10)
+pipe --> user : { elements[], image_size, stats }
+deactivate pipe
+
+user -> coarse : build(elements)
+activate coarse
+coarse -> ro : order_tree(children)
+activate ro
+ro --> coarse : ordered tree
+deactivate ro
+coarse --> user : nodes + labels + associations
+deactivate coarse
+
+user -> comp : compile(elements, hierarchy)
+activate comp
+comp --> user : Visual DOM JSON\n(roles + locators + label)
+deactivate comp
+
+user -> out : consume DOM
+@enduml

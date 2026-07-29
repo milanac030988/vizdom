@@ -1,0 +1,422 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/adr/016-reading-order-and-labels/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>016 Reading Order + Labels - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "016 Reading Order + Labels";
+        var properdocs_page_input_path = "adr\\016-reading-order-and-labels.md";
+        var properdocs_page_url = "/vizdom/adr/016-reading-order-and-labels/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">016 Reading Order + Labels</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#status">Status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#date">Date</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#history">History</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#context">Context</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#decision">Decision</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-reading-order-sorting-srcvisual_domreading_orderpy">1. Reading-order sorting (src/visual_dom/reading_order.py)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-label-property">2. label property</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#alternatives-considered">Alternatives Considered</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#consequences">Consequences</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#positive">Positive</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#negative-limitations">Negative / limitations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#follow-ups">Follow-ups</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#files-changed">Files Changed</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Architecture Decisions</li>
+      <li class="breadcrumb-item active">016 Reading Order + Labels</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="adr-016-reading-order-sorting-and-element-labels">ADR-016: Reading-Order Sorting and Element Labels<a class="headerlink" href="#adr-016-reading-order-sorting-and-element-labels" title="Permanent link">¶</a></h1>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">¶</a></h2>
+<p>Accepted</p>
+<h2 id="date">Date<a class="headerlink" href="#date" title="Permanent link">¶</a></h2>
+<p>2026-07-25</p>
+<h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">¶</a></h2>
+<p>Development Team</p>
+<h2 id="history">History<a class="headerlink" href="#history" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Version</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-07-25</td>
+<td>1.0</td>
+<td>Reading-order sort + <code>label</code> property (association-based). Text ensemble and SLM label refinement noted as follow-ups.</td>
+</tr>
+<tr>
+<td>2026-07-25</td>
+<td>1.1</td>
+<td>Text ensemble implemented: OmniParser backend accepts an <code>ocr_provider</code>; pipeline feeds its upscaling TextDetector in. Measured 20→42 text boxes on the calculator sample.</td>
+</tr>
+<tr>
+<td>2026-07-25</td>
+<td>1.2</td>
+<td>Ensemble dedup changed from IoU to <strong>gap-fill</strong> (overlap-over-smaller-box) after A/B showed doubled text ("5 5", "10<em> 10</em>"). Gained now shows real button glyphs (7,8,9,+,C,n!) vs original's Florence caption hallucinations ("7, September, 2024", "Hyperlink"), with no duplication.</td>
+</tr>
+<tr>
+<td>2026-07-26</td>
+<td>1.3</td>
+<td>Over-segmentation <strong>smart-merge</strong> + SLM merge/label refinement. Rule-based Step 6c merges a multi-word "full text" anchor with same-line fragment boxes (fixes OmniParser splitting a 2-line button into halves + a full-text box), guarded by spatial fill-ratio ≥0.5 and a breadcrumb-delimiter skip. SLM gains <code>merge</code>/<code>label</code> actions (fed geometric merge candidates) for ambiguous cases. CLI <code>--no-merge</code>, pipeline <code>merge_oversegmented</code>.</td>
+</tr>
+<tr>
+<td>2026-07-26</td>
+<td>1.4</td>
+<td>Added <code>_find_line_text_candidates</code>: groups consecutive same-line non-interactable <strong>text</strong> pieces (split into runs by horizontal gap ≤ 2.5×median height) as <strong>SLM merge candidates</strong>. Handles the "sentence split into disjoint pieces, no full-text anchor" pattern that the anchor-containment rule can't catch. Candidates only (SLM decides — geometry can't distinguish one wrapped sentence from separate labels); not auto-merged. Also fixed: ensemble OCR provider now uses a dedicated easyocr detector when the pipeline's ocr_engine is None.</td>
+</tr>
+<tr>
+<td>2026-07-26</td>
+<td>1.5</td>
+<td><strong>Live SLM finding + fix.</strong> Ran minicpm-v (VLM) live via Ollama. It proposed ~23 merges, ~22 of them BAD (merging separate buttons/labels) — a 7B VLM over-merges badly with free rein. Fix: <strong>SLM merges are now gated to the geometric candidate groups</strong> (subset check) — the SLM may only confirm/reject proposed over-segmentation, not invent merges. Ungated 71→57 (mostly wrong); gated 72 with only the 1 legit text-line merge applied, 22 rejected. Confirms the rules-propose / SLM-confirms architecture.</td>
+</tr>
+<tr>
+<td>2026-07-26</td>
+<td>1.6</td>
+<td><strong>Label now surfaces to the Viewer.</strong> The <code>label</code> was computed on coarse_builder nodes but lost before display. Fixed the whole chain: coarse_builder writes resolved labels back onto the source element dicts (Step 3c); <code>DOMCompiler</code> DOMNode gains <code>label</code> (in <code>to_dict</code> + read from elem); the Viewer's <code>_parse_visual_dom_element</code> carries <code>label</code> + <code>interactable</code> into <code>element.properties</code> so the PropertyTable shows them.</td>
+</tr>
+<tr>
+<td>2026-07-26</td>
+<td>1.7</td>
+<td><strong>False-merge guard for distinct buttons.</strong> A spanning text label ("Session Servers") over two adjacent clickable buttons ("Session", "Servers") matched the anchor rule and fused them. Geometry can't distinguish that from a wrapped 2-line button. Fix: smart-merge now <strong>skips any group with ≥2 independently-interactable members</strong> (distinct controls) and defers them to the SLM; wrapped-button halves (interactable=None) still auto-merge. Note: separately, OmniParser sometimes fuses adjacent buttons at <em>detection</em> time (one icon box, OCR "Session Servers") — that's upstream, not our merge.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">¶</a></h2>
+<p>With OmniParser adopted as the strongest detector backend (ADR-015), three
+weaknesses of the raw detection output were identified:</p>
+<ol>
+<li><strong>No reading order.</strong> Detected elements come out in detector/area order, not
+   the order a person reads a screen. This produced non-deterministic-looking
+   output, made diffs/tests noisy, and gave the optional SLM reviewer spatially
+   incoherent input (harder to reason about).</li>
+<li><strong>Missing text.</strong> Even the best detector misses some text.</li>
+<li><strong>No semantic label.</strong> Elements had <code>ocr_text</code> (raw text on the element) but
+   no resolved <em>name</em> — the thing that makes an element identifiable for a
+   locator (e.g. "the field labelled Username").</li>
+</ol>
+<p>These are a dependency chain: reading order enables reliable label association,
+and text completeness feeds both. This ADR covers items 1 and 3. Item 2 (text
+ensemble) and SLM-based label refinement are follow-ups.</p>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">¶</a></h2>
+<h3 id="1-reading-order-sorting-srcvisual_domreading_orderpy">1. Reading-order sorting (<code>src/visual_dom/reading_order.py</code>)<a class="headerlink" href="#1-reading-order-sorting-srcvisual_domreading_orderpy" title="Permanent link">¶</a></h3>
+<p>A geometry-only, model-free, deterministic module:</p>
+<ul>
+<li><code>sort_reading_order(items, get_bounds)</code> — row-bands elements (group by vertical
+  centre within a tolerance = <code>max(4px, 0.6 * median height)</code>), orders rows
+  top→bottom, and orders within each row left→right. A lightweight XY-cut. A
+  naive <code>sort((y, x))</code> is explicitly avoided because same-row elements rarely
+  share an exact top-y. The size-relative tolerance keeps it resolution-aware
+  (consistent with ADR-008).</li>
+<li><code>order_tree(children, ...)</code> — applies the sort recursively per level, so a
+  container's children read in order <em>within</em> that container; parents are never
+  interleaved with descendants.</li>
+</ul>
+<p><strong>Pipeline integration</strong> (<code>cv/pipeline.py</code>): reading order is applied twice —
+once before the SLM review (Step 7b, so the reviewer sees ordered input) and
+once after hierarchy building (Step 9b), because <code>_build_hierarchy</code> re-sorts by
+area. The post-hierarchy sort means the sequential IDs assigned next follow
+reading order (<strong>E1 = top-left</strong>).</p>
+<p><strong>Hierarchy integration</strong> (<code>hierarchy/coarse_builder.py</code>): <code>order_tree</code> reorders
+the tree's children after containment is built.</p>
+<h3 id="2-label-property">2. <code>label</code> property<a class="headerlink" href="#2-label-property" title="Permanent link">¶</a></h3>
+<ul>
+<li>Added a <code>label</code> string to the pipeline <code>UIElement</code>, the <code>coarse_builder</code>
+  <code>TreeNode</code>, and the DOM schema (element + node). Distinct from <code>ocr_text</code>:
+  <code>ocr_text</code>/<code>text</code> is the raw text <em>on</em> the element; <code>label</code> is its identifying
+  <em>name</em>.</li>
+<li>Resolution rule (in <code>coarse_builder</code>, which already did label association):</li>
+<li>a control with an associated nearby text <strong>above/left</strong> takes that text as
+    its label (extends the existing <code>_associate_labels</code> / <code>associated_label_id</code>);</li>
+<li>otherwise an element with its own text takes that as its label (a button
+    reading "OK" → <code>label = "OK"</code>), via <code>_assign_own_text_labels</code>.</li>
+<li>Reading order improves label association by making "the text immediately
+  before/above" well-defined.</li>
+</ul>
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">¶</a></h2>
+<ul>
+<li><strong>Naive <code>sort((y, x))</code></strong> — rejected: scrambles rows under sub-pixel/again
+  jitter in top-y.</li>
+<li><strong>Compute labels in the pipeline instead of the hierarchy builder</strong> — rejected:
+  association needs the full element set and neighbour geometry, which is the
+  hierarchy builder's job; the pipeline <code>UIElement.label</code> field exists mainly for
+  future SLM refinement.</li>
+<li><strong>XY-cut (full recursive projection)</strong> — deferred: row-banding is simpler and
+  sufficient for UI layouts; can revisit if complex multi-column layouts need it.</li>
+</ul>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">¶</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">¶</a></h3>
+<ul>
+<li>Deterministic, reading-ordered output; stable IDs (E1 = top-left) → cleaner
+  diffs and tests.</li>
+<li>Better SLM input (ordered) → better suggestions.</li>
+<li>Elements gain a semantic <code>label</code> usable directly by Robot Framework locators.</li>
+<li>Reuses existing label-association code rather than duplicating it.</li>
+</ul>
+<h3 id="negative-limitations">Negative / limitations<a class="headerlink" href="#negative-limitations" title="Permanent link">¶</a></h3>
+<ul>
+<li>Row-banding can mis-split when a tall element sits between two rows; tolerance
+  is heuristic.</li>
+<li>Label quality depends on text completeness — a missing label text yields no
+  label (motivates the text-ensemble follow-up).</li>
+<li>The pipeline <code>UIElement.label</code> is not yet populated by the pipeline itself
+  (only the hierarchy builder populates labels today).</li>
+</ul>
+<h3 id="follow-ups">Follow-ups<a class="headerlink" href="#follow-ups" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Text ensemble</strong> (original point 2) — <strong>DONE (v1.1)</strong>. <code>OmniParserBackend</code>
+  gained an optional <code>ocr_provider</code> callable (image → [(bbox, text)]) plus
+  <code>ocr_ensemble</code>/<code>ocr_dedup_iou</code>. In <code>detect()</code> the provider's boxes are unioned
+  with OmniParser's own OCR, deduped by IoU, before <code>get_som_labeled_img</code>. The
+  pipeline injects its upscaling <code>TextDetector</code> as the provider for the
+  omniparser path. Measured on the calculator sample: 20 → 42 text boxes, all 53
+  elements text-covered. Note: the provider adds an OCR pass; within the full
+  pipeline (Step 1 text detection also on) OCR effectively runs twice —
+  acceptable for now (OmniParser inference dominates), optimisation deferred.
+  <strong>Switchable:</strong> pipeline <code>text_ensemble</code> (default True) toggles original vs
+  gained; exposed as CLI <code>--no-text-ensemble</code> and a Viewer "Text+" checkbox — so
+  the two can be A/B compared (useful for the planned UIED-vs-OmniParser eval).</li>
+<li><strong>SLM label refinement</strong>: use the SLM to suggest labels for ambiguous/missing
+  cases, leveraging the now-ordered, structured context.</li>
+</ul>
+<h2 id="files-changed">Files Changed<a class="headerlink" href="#files-changed" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>src/visual_dom/reading_order.py</code> — New: <code>sort_reading_order</code>, <code>order_tree</code></li>
+<li><code>src/visual_dom/cv/pipeline.py</code> — apply reading order (Steps 7b, 9b);
+  <code>UIElement.label</code></li>
+<li><code>src/visual_dom/hierarchy/coarse_builder.py</code> — <code>order_tree</code> in <code>build</code>;
+  <code>TreeNode.label</code>; <code>_assign_own_text_labels</code>; label set in <code>_associate_labels</code></li>
+<li><code>src/visual_dom/schema/dom_schema.py</code> — <code>label</code> (+ <code>interactable</code>) properties</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../015-pluggable-detector-backends/" class="btn btn-neutral float-left" title="015 Pluggable Detector Backends"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../017-distributed-hexagonal-grpc/" class="btn btn-neutral float-right" title="017 Distributed Hexagonal + gRPC">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../015-pluggable-detector-backends/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../017-distributed-hexagonal-grpc/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

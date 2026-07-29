@@ -1,0 +1,459 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/discussion/elam-7b-analysis-en/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>ELAM-7B analysis (EN) - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "ELAM-7B analysis (EN)";
+        var properdocs_page_input_path = "discussion\\elam-7b-analysis-en.md";
+        var properdocs_page_url = "/vizdom/discussion/elam-7b-analysis-en/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current">Model Comparisons</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">ELAM-7B analysis (EN)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#1-what-elam-7b-is">1. What ELAM-7B is</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-our-pipeline-in-one-page">2. Our pipeline in one page</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-the-core-tension-two-opposite-bets">3. The core tension: two opposite bets</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-head-to-head-comparison">4. Head-to-head comparison</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-four-ways-elam-could-fit">5. Four ways ELAM could fit</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#a-as-a-baseline-to-compare-against-recommended">A. As a baseline to compare against (recommended)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#b-as-the-evaluation-assertion-stage-promising">B. As the evaluation / assertion stage (promising)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#c-as-the-slm-advisor-refiner-possible">C. As the SLM advisor / refiner (possible)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#d-as-a-signal-to-rethink-the-architecture-high-stakes">D. As a signal to rethink the architecture (high-stakes)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6-risks-limitations">6. Risks &amp; limitations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#7-recommendation">7. Recommendation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#8-open-questions-next-steps">8. Open questions &amp; next steps</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Research</li>
+          <li class="breadcrumb-item">Model Comparisons</li>
+      <li class="breadcrumb-item active">ELAM-7B analysis (EN)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="elam-7b-vs-the-visual-dom-pipeline">ELAM-7B vs. the Visual DOM Pipeline<a class="headerlink" href="#elam-7b-vs-the-visual-dom-pipeline" title="Permanent link">¶</a></h1>
+<p>An analysis of a VLM-native GUI-testing model and what it means for a CV-first, DOM-generation architecture.</p>
+<div class="admonition warning">
+<p class="admonition-title">Source &amp; confidence</p>
+<p>Facts about ELAM-7B are drawn from its Hugging Face model card
+ (<code>sparks-solutions/ELAM-7B</code>). Benchmark numbers are the authors' own, reported on the
+ <em>automotive</em> UI domain. Claims about the Visual DOM pipeline reflect the current state of the
+ <code>D:\Project\MasterProject</code> repository. Treat this as a decision-support note, not a verified benchmark study.</p>
+</div>
+<h2 id="1-what-elam-7b-is">1. What ELAM-7B is<a class="headerlink" href="#1-what-elam-7b-is" title="Permanent link">¶</a></h2>
+<p><strong>ELAM (Evaluative Large Action Model)</strong> is a vision-language model (VLM) fine-tuned for
+GUI test automation. Rather than describing a screen, it acts on it: given a screenshot and an English
+instruction, it returns where to tap and whether an expected result holds.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Base model</strong></td>
+<td></td>
+<td>Molmo-7B-D (AllenAI), built on a Qwen2-7B backbone. Molmo is chosen for its native pointing / grounding ability.</td>
+</tr>
+<tr>
+<td><strong>Task 1 — Action Grounding</strong></td>
+<td>87.6%</td>
+<td>Screenshot + instruction → tap coordinates for the target element.</td>
+</tr>
+<tr>
+<td><strong>Task 2 — Result Evaluation</strong></td>
+<td>78.2%</td>
+<td>Validates a UI state, returns PASSED / FAILED + element coords.</td>
+</tr>
+<tr>
+<td><strong>License</strong></td>
+<td>Apache&nbsp;2.0</td>
+<td>Commercially usable. transformers ≥ 4.48.2, bf16, trust_remote_code=True .</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><strong>Input / output:</strong> UI screenshot + English text → normalized <code>[x, y]</code> coordinates (0–1) plus explanatory text.</p>
+</li>
+<li>
+<p><strong>Training data:</strong> 17,708 instructions across 6,230 <strong>automotive</strong> UI images (German &amp; English text; English prompts).</p>
+</li>
+<li>
+<p><strong>Benchmark:</strong> AutomotiveUI-Bench-4K — Action Grounding 87.6%, Expected-Result Grounding 77.5%, Expected-Result Evaluation 78.2%.</p>
+</li>
+</ul>
+<h2 id="2-our-pipeline-in-one-page">2. Our pipeline in one page<a class="headerlink" href="#2-our-pipeline-in-one-page" title="Permanent link">¶</a></h2>
+<p>The Visual DOM Generator converts a screenshot into an Android-UIAutomator-like <strong>DOM JSON tree</strong>,
+so a Robot Framework library can locate and act on elements — even when no accessibility tree exists.</p>
+<ul>
+<li>
+<p><strong>Design principle:</strong> <em>CV handles geometry, the LLM handles semantics</em>. The LLM is explicitly forbidden from inventing coordinates.</p>
+</li>
+<li>
+<p><strong>3-stage hierarchy:</strong> rule-based coarse builder → LLM refinement → DOM compiler.</p>
+</li>
+<li>
+<p><strong>Detection stack:</strong> UIED + OCR (EasyOCR / PaddleOCR / Tesseract, dual-engine + upscale), plus newer symbol / screen detectors and an SLM advisor.</p>
+</li>
+<li>
+<p><strong>Output:</strong> a reusable, inspectable hierarchy — not a single tap point.</p>
+</li>
+<li>
+<p><strong>Open thread (Apr 2026):</strong> adding <strong>YOLO</strong> as an optional detector, and whether agentic patterns help.</p>
+</li>
+</ul>
+<h2 id="3-the-core-tension-two-opposite-bets">3. The core tension: two opposite bets<a class="headerlink" href="#3-the-core-tension-two-opposite-bets" title="Permanent link">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">The one idea to take away</p>
+<p>ELAM and our pipeline make <strong>opposite architectural bets on who owns geometry.</strong>
+ ELAM lets the neural model emit coordinates directly (end-to-end grounding). We deliberately keep
+ coordinates in the deterministic CV layer and let the LLM touch only <em>meaning</em>. This single
+ difference drives every trade-off below.</p>
+</div>
+<p>This makes ELAM less of a plug-in component and more of a <strong>competing paradigm</strong> — which is
+exactly what makes it valuable to your thesis. It gives you a concrete, published rival to define your
+contribution against.</p>
+<h2 id="4-head-to-head-comparison">4. Head-to-head comparison<a class="headerlink" href="#4-head-to-head-comparison" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Visual DOM Pipeline (ours)</th>
+<th>ELAM-7B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Who produces coordinates</td>
+<td>Deterministic CV (UIED/OCR/YOLO)</td>
+<td>The VLM itself (grounding)</td>
+</tr>
+<tr>
+<td>Primary output</td>
+<td>Full DOM hierarchy (JSON tree)</td>
+<td>Single tap point / pass-fail verdict</td>
+</tr>
+<tr>
+<td>Reusability</td>
+<td>One DOM serves many actions &amp; assertions</td>
+<td>Re-inference per instruction</td>
+</tr>
+<tr>
+<td>Explainability</td>
+<td>High — inspectable tree, traceable rules</td>
+<td>Lower — end-to-end black box + text rationale</td>
+</tr>
+<tr>
+<td>Compute</td>
+<td>Runs on CPU; LLM optional/small</td>
+<td>7B VLM, GPU + bf16 effectively required</td>
+</tr>
+<tr>
+<td>Domain evidence</td>
+<td>General/custom UIs (Qt, OpenGL, calculator…)</td>
+<td>Strong on <em>automotive</em> UIs; general-domain unproven</td>
+</tr>
+<tr>
+<td>Evaluation built in</td>
+<td>Via RF assertion keywords</td>
+<td>Native "Expected Result Evaluation" (PASSED/FAILED)</td>
+</tr>
+<tr>
+<td>Maturity of numbers</td>
+<td>Internal, in progress</td>
+<td>Published benchmark (author-reported)</td>
+</tr>
+<tr>
+<td>License</td>
+<td>Own code</td>
+<td>Apache 2.0 (reusable)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-four-ways-elam-could-fit">5. Four ways ELAM could fit<a class="headerlink" href="#5-four-ways-elam-could-fit" title="Permanent link">¶</a></h2>
+<h3 id="a-as-a-baseline-to-compare-against-recommended">A. As a baseline to compare against (recommended)<a class="headerlink" href="#a-as-a-baseline-to-compare-against-recommended" title="Permanent link">¶</a></h3>
+<p>The cleanest, lowest-risk use. ELAM gives you a published, Apache-licensed rival with a public benchmark.
+Comparing your DOM pipeline against it — on accuracy, compute, reusability and explainability — makes a strong
+"related work" and "evaluation" chapter, and sharpens the argument for <em>why</em> a DOM intermediate representation earns its keep.</p>
+<h3 id="b-as-the-evaluation-assertion-stage-promising">B. As the evaluation / assertion stage (promising)<a class="headerlink" href="#b-as-the-evaluation-assertion-stage-promising" title="Permanent link">¶</a></h3>
+<p>ELAM's "Expected Result Evaluation" (<code>PASSED</code>/<code>FAILED</code> + coords) maps almost directly onto
+your Robot Framework assertion keywords. You could keep CV-driven DOM for locating and acting, and borrow a
+VLM-style check for hard-to-express visual assertions ("is the warning banner shown?").</p>
+<h3 id="c-as-the-slm-advisor-refiner-possible">C. As the SLM advisor / refiner (possible)<a class="headerlink" href="#c-as-the-slm-advisor-refiner-possible" title="Permanent link">¶</a></h3>
+<p>You already have an SLM-advisor stage (ADR-009) that reviews CV output. A grounding-capable VLM could
+cross-check or repair the DOM — but note the philosophical friction: if it starts emitting coordinates, it
+crosses your "no coordinates from the model" line. Usable, but bounds it to <em>reviewing</em>, not <em>producing</em>, geometry.</p>
+<h3 id="d-as-a-signal-to-rethink-the-architecture-high-stakes">D. As a signal to rethink the architecture (high-stakes)<a class="headerlink" href="#d-as-a-signal-to-rethink-the-architecture-high-stakes" title="Permanent link">¶</a></h3>
+<p>If a 7B VLM grounds at ~88% end-to-end, one must ask whether the modular CV-first stack is still justified.
+The honest answer for your thesis is a defensible <em>yes, under conditions</em>: DOM reusability, CPU-friendliness,
+explainability, no per-action GPU inference, and producing a full tree (not one point). Make that argument
+explicit rather than assumed.</p>
+<h2 id="6-risks-limitations">6. Risks &amp; limitations<a class="headerlink" href="#6-risks-limitations" title="Permanent link">¶</a></h2>
+<div class="admonition danger">
+<p class="admonition-title">Domain gap</p>
+<p>ELAM is trained and benchmarked on <strong>automotive</strong> UIs. Its 87.6% does <em>not</em> transfer
+ guaranteed to calculators, desktop apps, or Qt/OpenGL surfaces. Any comparison must control for domain, or it is unfair to both sides.</p>
+</div>
+<ul>
+<li>
+<p><strong>Compute cost:</strong> a 7B VLM needs a GPU with bf16; your CV path can run on CPU. This matters for a "works anywhere" testing tool.</p>
+</li>
+<li>
+<p><strong>No hierarchy:</strong> ELAM returns points/verdicts, not a structured tree — you lose the reusable DOM that your RF library is built around.</p>
+</li>
+<li>
+<p><strong>English-only prompts;</strong> coordinate outputs are normalized 0–1 and need mapping back to pixels.</p>
+</li>
+<li>
+<p><strong>Reproducibility:</strong> benchmark numbers are author-reported; independent replication on your own images is needed before citing them as fact.</p>
+</li>
+</ul>
+<h2 id="7-recommendation">7. Recommendation<a class="headerlink" href="#7-recommendation" title="Permanent link">¶</a></h2>
+<div class="admonition success">
+<p class="admonition-title">Suggested stance</p>
+<p>Adopt ELAM-7B as a baseline and an optional evaluation module, not as a replacement for the DOM pipeline.</p>
+<p>It strengthens the thesis in two ways at once: (1) a credible, published comparator that legitimizes your
+ problem, and (2) a ready-made visual-assertion capability you can bolt onto the Robot Framework side. Keep the
+ CV-first DOM as your core contribution; use ELAM to define and defend its boundaries.</p>
+</div>
+<h2 id="8-open-questions-next-steps">8. Open questions &amp; next steps<a class="headerlink" href="#8-open-questions-next-steps" title="Permanent link">¶</a></h2>
+<ul>
+<li>
+<p><strong>Scope decision:</strong> Is ELAM a comparison baseline, an integrated module, or both? (Recommendation: both, in that order.)</p>
+</li>
+<li>
+<p><strong>Fair benchmark:</strong> Can we run ELAM on a small set of <em>our</em> screenshots (calculator, desktop, Qt) and measure grounding accuracy vs. our CV+DOM output?</p>
+</li>
+<li>
+<p><strong>Hardware:</strong> Do we have a GPU with enough VRAM + bf16 to run 7B inference at a usable speed?</p>
+</li>
+<li>
+<p><strong>Integration point:</strong> If we adopt the evaluation task, where does it sit — inside the RF assertion keywords, or as a post-DOM check?</p>
+</li>
+<li>
+<p><strong>Thesis framing:</strong> Write one crisp paragraph: "Why a DOM intermediate representation beats direct VLM grounding for <em>our</em> use case." This is the intellectual core.</p>
+</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../aria-ui-integration-vi/" class="btn btn-neutral float-left" title="Aria-UI integration (VI)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../elam-7b-analysis-vi/" class="btn btn-neutral float-right" title="ELAM-7B analysis (VI)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../aria-ui-integration-vi/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../elam-7b-analysis-vi/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

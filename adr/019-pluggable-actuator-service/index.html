@@ -1,0 +1,453 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/adr/019-pluggable-actuator-service/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>019 Pluggable Actuator Service - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "019 Pluggable Actuator Service";
+        var properdocs_page_input_path = "adr\\019-pluggable-actuator-service.md";
+        var properdocs_page_url = "/vizdom/adr/019-pluggable-actuator-service/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">019 Pluggable Actuator Service</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#status">Status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#date">Date</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#history">History</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#context">Context</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#decision">Decision</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-strategy-base-actuatorstrategy">1. Strategy base (ActuatorStrategy)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-coordinate-contract-normalized-0-1">2. Coordinate contract - normalized [0, 1]</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-auto-discovery-registry-visual_domactuatorregistrypy">3. Auto-discovery registry (visual_dom/actuator/registry.py)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-built-in-adapters-visual_domactuatorbuiltin">4. Built-in adapters (visual_dom/actuator/builtin/)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-actuation-as-a-service-grpc-transport-not-requirement">5. Actuation as a service (gRPC) - transport, not requirement</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6-rf-library-becomes-a-thin-client">6. RF library becomes a thin client</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#alternatives-considered">Alternatives Considered</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#consequences">Consequences</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#positive">Positive</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#negative-risks">Negative / risks</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#follow-ups">Follow-ups</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#files">Files</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#related">Related</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Architecture Decisions</li>
+      <li class="breadcrumb-item active">019 Pluggable Actuator Service</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="adr-019-pluggable-input-actuation-strategy-auto-discovery-service">ADR-019: Pluggable Input Actuation (Strategy + Auto-Discovery + Service)<a class="headerlink" href="#adr-019-pluggable-input-actuation-strategy-auto-discovery-service" title="Permanent link">¶</a></h1>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">¶</a></h2>
+<p>Accepted (fully implemented - Phases 1-3)</p>
+<h2 id="date">Date<a class="headerlink" href="#date" title="Permanent link">¶</a></h2>
+<p>2026-07-27</p>
+<h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">¶</a></h2>
+<p>Development Team</p>
+<h2 id="history">History<a class="headerlink" href="#history" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Version</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-07-27</td>
+<td>0.1</td>
+<td>Initial proposal: <code>ActuatorPort</code> as the write-side twin of <code>CapturePort</code> (ADR-018) - strategy + auto-discovery registry + built-ins + optional gRPC service.</td>
+</tr>
+<tr>
+<td>2026-07-27</td>
+<td>0.2</td>
+<td>Phase 1 implemented: <code>ActuatorStrategy</code> (normalized-coord contract) + auto-discovery registry + built-ins (desktop/android, relocated from RF adapters) + robot-arm example plugin. Verified discovery + coordinate mapping. gRPC service = Phase 2.</td>
+</tr>
+<tr>
+<td>2026-07-27</td>
+<td>0.3</td>
+<td>Phase 2 implemented: gRPC <code>Actuator</code> service (<code>actuator_server</code>) + <code>GrpcActuatorStrategy</code> client (registered as <code>grpc</code>) + <code>protos/actuator.proto</code>. Verified end-to-end (normalized coords mapped server-side).</td>
+</tr>
+<tr>
+<td>2026-07-27</td>
+<td>1.0</td>
+<td>Phase 3 implemented: RF library rewired as a thin client over <code>visual_dom</code> capture + actuator strategies (in-process or gRPC per config); old <code>adapters/{base,desktop,android}.py</code> deleted. Verified end-to-end (normalized round-trip to element centers). Component + class diagrams updated.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">¶</a></h2>
+<p>Driving an application under test (SUT) has two halves:</p>
+<ul>
+<li><strong>Read</strong> the screen - already a pluggable, service-able driven port
+  (<code>CapturePort</code>, ADR-018): windows / linux / android / camera + a gRPC service.</li>
+<li><strong>Drive input</strong> - click, type, scroll, swipe, key presses. Today this lives in
+  the Robot Framework library's platform adapters
+  (<code>visual_gui_library/adapters/{base,desktop,android}.py</code>), a <em>separate</em>
+  mechanism from capture. Worse, <code>BaseAdapter</code> bundles <strong>both</strong> <code>capture_screen()</code>
+  and the action methods, so capture is implemented twice (once here, once in
+  <code>visual_dom.capture</code>).</li>
+</ul>
+<p>This has three problems:</p>
+<ol>
+<li><strong>Duplication / drift.</strong> Capture logic exists in two places.</li>
+<li><strong>No extensibility for input.</strong> A user cannot plug in a new way to actuate the
+   SUT without editing the RF library. The motivating case: a <strong>robot arm</strong> (or
+   capture card + serial/CAN controller) that physically taps a screen which is
+   observed through <code>CaptureStrategy=camera</code>. There is no seam for that.</li>
+<li><strong>Asymmetry.</strong> Capture is a first-class <code>visual_dom</code> port that can run as a
+   remote service; input is not, even though it has the same "runs where the SUT
+   is" property.</li>
+</ol>
+<p><code>visual_dom</code> should own <strong>both</strong> driven ports. The RF library should become a thin
+orchestrator: capture -&gt; detect -&gt; build DOM -&gt; resolve locator -&gt; <strong>actuate</strong>.</p>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">¶</a></h2>
+<p>Introduce <strong><code>ActuatorPort</code></strong> - the write-side twin of <code>CapturePort</code> - built with
+the exact machinery already proven for detectors (ADR-015) and capture (ADR-018).</p>
+<h3 id="1-strategy-base-actuatorstrategy">1. Strategy base (<code>ActuatorStrategy</code>)<a class="headerlink" href="#1-strategy-base-actuatorstrategy" title="Permanent link">¶</a></h3>
+<p>Abstract, <strong>primitive</strong> input operations (no DOM knowledge):</p>
+<pre><code>tap(x, y, image_size, click_type="single")
+type_text(text)
+press_key(key)              # "enter", "ctrl+a", "alt+f4"
+swipe(x1, y1, x2, y2, image_size, duration=0.3)   # also drag / scroll
+</code></pre>
+<p>Plus <code>name</code>, <code>platform</code>, <code>description</code>, <code>is_available()</code>, <code>close()</code> - identical to
+<code>CaptureStrategy</code>.</p>
+<p>Element resolution (<code>locator -&gt; bounds -&gt; center</code>) and higher-level flows
+(focus-then-type, wait-then-click) stay in the RF keywords. The actuator only
+receives coordinates and primitives.</p>
+<h3 id="2-coordinate-contract-normalized-0-1">2. Coordinate contract - normalized [0, 1]<a class="headerlink" href="#2-coordinate-contract-normalized-0-1" title="Permanent link">¶</a></h3>
+<p>This is the one concern capture does not have: the DOM gives coordinates in
+<strong>image pixels</strong>, but where a tap lands depends on the actuator's own space.</p>
+<p>The wire/API contract uses a <strong>normalized coordinate</strong> <code>(nx, ny) in [0, 1]</code> plus
+the source <code>image_size</code>. Each strategy maps normalization to its own device space:</p>
+<ul>
+<li><strong>desktop</strong> (windows/linux): image px == screen px -&gt; <code>nx * screen_w</code> (identity-ish).</li>
+<li><strong>android</strong>: scale normalized -&gt; device input resolution.</li>
+<li><strong>robot-arm</strong> (user plugin): apply a <strong>calibration homography</strong> image -&gt; physical
+  servo coordinates (a one-time calibrate step the plugin owns).</li>
+</ul>
+<p>Device-specific mapping stays inside the device adapter (hexagonally correct); the
+orchestrator and the protocol stay dumb.</p>
+<h3 id="3-auto-discovery-registry-visual_domactuatorregistrypy">3. Auto-discovery registry (<code>visual_dom/actuator/registry.py</code>)<a class="headerlink" href="#3-auto-discovery-registry-visual_domactuatorregistrypy" title="Permanent link">¶</a></h3>
+<p>Discovers <code>ActuatorStrategy</code> subclasses from the built-in package <strong>and</strong> a
+plugins folder - <code>$VIZDOM_ACTUATOR_PLUGINS</code>, else <code>&lt;repo&gt;/plugins/actuator/</code>.
+API mirrors capture: <code>create_actuator(name, **kw)</code>, <code>list_actuators()</code>,
+<code>register()</code>, <code>auto_select()</code>. Selection is by name from config/CLI.</p>
+<h3 id="4-built-in-adapters-visual_domactuatorbuiltin">4. Built-in adapters (<code>visual_dom/actuator/builtin/</code>)<a class="headerlink" href="#4-built-in-adapters-visual_domactuatorbuiltin" title="Permanent link">¶</a></h3>
+<p>Relocated from the RF adapters (mostly a move, not new logic):</p>
+<ul>
+<li><code>desktop</code> - pyautogui / platform input (from <code>adapters/desktop.py</code>).</li>
+<li><code>android</code> - adb <code>input tap/text/swipe/keyevent</code> (from <code>adapters/android.py</code>).</li>
+<li>Example plugin <code>plugins/actuator/example_robot_arm.py</code> - a worked stub showing
+  the calibrate + homography + servo-command pattern.</li>
+</ul>
+<h3 id="5-actuation-as-a-service-grpc-transport-not-requirement">5. Actuation as a service (gRPC) - transport, not requirement<a class="headerlink" href="#5-actuation-as-a-service-grpc-transport-not-requirement" title="Permanent link">¶</a></h3>
+<p>Mirrors the capture/detector services:</p>
+<ul>
+<li><code>protos/actuator.proto</code> - <code>Tap</code>, <code>TypeText</code>, <code>PressKey</code>, <code>Swipe</code>, <code>HealthCheck</code>.</li>
+<li><code>visual_dom/rpc/actuator_server.py</code> - wraps one <code>ActuatorStrategy</code>, runs <strong>on the
+  SUT host / the arm's controller</strong>. <code>vizdom-actuator</code> / <code>start_actuator.bat</code>.</li>
+<li><code>GrpcActuatorStrategy</code> - registered as <code>grpc</code>, just another strategy.</li>
+</ul>
+<p><strong>gRPC is one transport.</strong> A local desktop click uses the in-process strategy (no
+server, no latency); <code>grpc</code> is selected only when the actuator lives on another
+machine/device. Same local-vs-remote selection as capture.</p>
+<h3 id="6-rf-library-becomes-a-thin-client">6. RF library becomes a thin client<a class="headerlink" href="#6-rf-library-becomes-a-thin-client" title="Permanent link">¶</a></h3>
+<p><code>visual_gui_library</code> stops owning platform I/O. <code>ActionKeywords</code> /
+<code>CaptureKeywords</code> resolve locators against the DOM and call the <code>visual_dom</code>
+capture + actuator strategies (in-process or gRPC, per config). The old
+<code>adapters/{base,desktop,android}.py</code> are deleted once parity is confirmed.</p>
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">¶</a></h2>
+<ul>
+<li><strong>Leave input in the RF adapters.</strong> Rejected: keeps capture duplicated, gives no
+  plug-in seam for a robot arm / custom controller, and leaves input unable to run
+  as a remote service next to the SUT.</li>
+<li><strong>Element-level actuator API</strong> (<code>click(locator)</code> on the actuator). Rejected: it
+  drags DOM/locator knowledge into the device layer. Keeping the actuator to
+  coordinate primitives makes a robot-arm plugin trivial to write.</li>
+<li><strong>Absolute pixel coordinates on the wire.</strong> Rejected in favour of normalized
+  coords: absolute px forces the orchestrator to know each device's resolution;
+  normalization pushes that where it belongs (the device adapter).</li>
+<li><strong>gRPC always.</strong> Rejected: needless latency/complexity for local desktop runs.</li>
+</ul>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">¶</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">¶</a></h3>
+<ul>
+<li>Removes the capture duplication; <code>visual_dom</code> owns both driven ports symmetrically.</li>
+<li>Users add a new way to actuate the SUT by dropping one file in
+  <code>plugins/actuator/</code> - no core edits. Robot arm / capture card / serial / CAN all fit.</li>
+<li>Completes the distributed picture: <strong>capture on the device, detect on a GPU box,
+  actuate on the SUT/arm controller, orchestrate on the client</strong> - each a
+  strategy/backend selected by name, each optionally a gRPC service.</li>
+<li>RF library gets thinner and testable against a mock actuator.</li>
+</ul>
+<h3 id="negative-risks">Negative / risks<a class="headerlink" href="#negative-risks" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Calibration is real work</strong> for the robot-arm case (image -&gt; physical mapping);
+  the port design isolates it to that plugin, but it must be solved there.</li>
+<li>Auto-discovery <strong>imports</strong> plugin files (executes code) - trusted plugins only
+  (same caveat as ADR-018).</li>
+<li><strong>Physical actuation is irreversible and can be unsafe</strong> (a real arm moving).
+  Plugins own their own safety limits / e-stop; out of scope for the port.</li>
+<li>gRPC channel is insecure by default (LAN/trusted use; TLS is a follow-up, as
+  with ADR-017/018).</li>
+<li>One-time migration churn moving adapters out of the RF library.</li>
+</ul>
+<h3 id="follow-ups">Follow-ups<a class="headerlink" href="#follow-ups" title="Permanent link">¶</a></h3>
+<ul>
+<li>Phase 1: <code>ActuatorStrategy</code> + registry + relocate desktop/android built-ins +
+  robot-arm example plugin.</li>
+<li>Phase 2: <code>protos/actuator.proto</code> + <code>actuator_server</code> + <code>GrpcActuatorStrategy</code>.</li>
+<li>Phase 3: rewire the RF library as a thin client; delete <code>adapters/*</code>.</li>
+<li>Factor a shared plugin-registry base (detector + capture + actuator repeat the
+  same discovery code three times).</li>
+<li>TLS/auth on the actuator + capture gRPC channels.</li>
+</ul>
+<h2 id="files">Files<a class="headerlink" href="#files" title="Permanent link">¶</a></h2>
+<p><strong>Phase 1 (implemented)</strong>
+- <code>src/visual_dom/actuator/base.py</code> - <code>ActuatorStrategy</code> (normalized-coord contract)
+- <code>src/visual_dom/actuator/builtin/{desktop,android}.py</code> - relocated from RF adapters
+- <code>src/visual_dom/actuator/registry.py</code> - <code>create_actuator</code> / <code>list_actuators</code> / <code>auto_select</code>
+- <code>src/visual_dom/actuator/__init__.py</code>
+- <code>plugins/actuator/example_robot_arm.py</code> - worked example (calibrate + homography)</p>
+<p><strong>Phase 2 (implemented)</strong>
+- <code>protos/actuator.proto</code> - <code>Actuator</code> service (<code>Tap</code>, <code>TypeText</code>, <code>PressKey</code>, <code>Scroll</code>, <code>Swipe</code>, <code>HealthCheck</code>)
+- <code>src/visual_dom/rpc/actuator_server.py</code> - server (runs on SUT / arm controller); <code>vizdom-actuator</code> / <code>start_actuator.bat</code>
+- <code>src/visual_dom/actuator/builtin/grpc_remote.py</code> - <code>GrpcActuatorStrategy</code> (name <code>grpc</code>)</p>
+<p><strong>Phase 3 (implemented)</strong>
+- <code>src/visual_gui_library/keywords/__init__.py</code> - <code>VisualGuiLibrary</code> holds capture +
+  actuator strategies (config: <code>capture</code>/<code>actuator</code>/<code>*_target</code>), pixel&lt;-&gt;normalized helpers
+- <code>src/visual_gui_library/keywords/{capture,actions}.py</code> - call the strategies (normalized coords)
+- removed <code>src/visual_gui_library/adapters/{base,desktop,android}.py</code></p>
+<h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">¶</a></h2>
+<ul>
+<li>ADR-015 Pluggable Detector Backends (the strategy+registry pattern)</li>
+<li>ADR-017 Distributed Hexagonal + gRPC (the service pattern, <code>DetectorPort</code>)</li>
+<li>ADR-018 Pluggable Screenshot Capture (<code>CapturePort</code> - the read-side twin)</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../018-pluggable-capture-service/" class="btn btn-neutral float-left" title="018 Pluggable Capture Service"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../018-pluggable-capture-service/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/uv-setup/">
+      <link rel="shortcut icon" href="../img/favicon.ico">
+    <title>Setup (uv) - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "Setup (uv)";
+        var properdocs_page_input_path = "uv-setup.md";
+        var properdocs_page_url = "/vizdom/uv-setup/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Setup (uv)</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#path-a-uv-over-the-existing-python-39-recommended-here">Path A — uv over the existing Python 3.9 (recommended here)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#path-b-fresh-uv-managed-environment-portable-heavier">Path B — fresh uv-managed environment (portable, heavier)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#one-time-external-setup-either-path">One-time external setup (either path)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#running">Running</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#lockfile-requirementslock">Lockfile (requirements.lock)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dependency-groups-pyprojecttoml">Dependency groups (pyproject.toml)</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Setup (uv)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="setup-with-uv">Setup with uv<a class="headerlink" href="#setup-with-uv" title="Permanent link">¶</a></h1>
+<p>This project uses <a href="https://docs.astral.sh/uv/"><strong>uv</strong></a> (a fast Python
+package/env manager) to install dependencies reproducibly from <code>pyproject.toml</code>.</p>
+<blockquote>
+<p><strong>Scope (honest).</strong> uv manages the <strong>Python</strong> side. Three things live outside
+it and are separate steps uv <em>invokes</em> or that you install once:
+<strong>Ollama</strong> (native app — the SLM refiner), <strong>OmniParser</strong> (a git repo + HF
+weights, fetched by <code>scripts/setup_omniparser.py</code>), and <strong>CUDA PyTorch</strong>
+(already installed in the app's Python 3.9 — see Path A below).</p>
+</blockquote>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">¶</a></h2>
+<ul>
+<li>The app runs on <strong>Python 3.9</strong> at <code>D:\Python\python39\python.exe</code> (has a
+  working <code>torch 2.4.1+cu124</code>).</li>
+<li>Install uv into it (avoids the GitHub-blocked standalone installer):
+  <code>bat
+  "D:\Python\python39\python.exe" -m pip install uv</code></li>
+</ul>
+<h2 id="path-a-uv-over-the-existing-python-39-recommended-here">Path A — uv over the existing Python 3.9 (recommended here)<a class="headerlink" href="#path-a-uv-over-the-existing-python-39-recommended-here" title="Permanent link">¶</a></h2>
+<p>Keeps the working CUDA torch (no ~2.5 GB redownload). uv installs/locks the
+<em>other</em> dependencies <strong>into that interpreter</strong> via its pip interface.</p>
+<pre><code class="language-bat">REM install a dependency group into the existing python39 (examples):
+"D:\Python\python39\python.exe" -m uv pip install --python "D:\Python\python39\python.exe" -e ".[grpc]"
+"D:\Python\python39\python.exe" -m uv pip install --python "D:\Python\python39\python.exe" -e ".[docs]"
+"D:\Python\python39\python.exe" -m uv pip install --python "D:\Python\python39\python.exe" -e ".[viewer,dashboard]"
+</code></pre>
+<blockquote>
+<p>⚠️ <strong>Do NOT</strong> run <code>uv sync</code> / a fresh <code>uv venv</code> in Path A — that creates an
+isolated env and would reinstall torch (Path B). Use <code>uv pip install --python</code>
+against the existing interpreter, as above.</p>
+<p>⚠️ <strong>protobuf pin.</strong> <code>grpcio-tools &gt;= 1.63</code> pulls <strong>protobuf 6</strong>, which breaks
+the streamlit dashboard (needs <code>protobuf &lt; 6</code>). The <code>grpc</code> group pins
+<code>grpcio* &lt; 1.63</code> and <code>[tool.uv] constraint-dependencies = ["protobuf&lt;6"]</code>
+keeps it project-wide. Keep it that way.</p>
+</blockquote>
+<h2 id="path-b-fresh-uv-managed-environment-portable-heavier">Path B — fresh uv-managed environment (portable, heavier)<a class="headerlink" href="#path-b-fresh-uv-managed-environment-portable-heavier" title="Permanent link">¶</a></h2>
+<p>For a clean machine / full reproducibility (re-downloads CUDA torch from the
+configured PyTorch index):</p>
+<pre><code class="language-bash">uv venv --python 3.12
+uv pip install -e ".[omniparser,grpc,viewer,docs,dashboard]"
+</code></pre>
+<p><code>[tool.uv]</code> already points <code>torch</code>/<code>torchvision</code> at <code>pytorch-cu124</code>.
+(<code>uv python install</code> fetches Python from GitHub, which the corporate proxy may
+block — use a system Python with <code>uv venv --python &lt;path&gt;</code> if so.)</p>
+<h2 id="one-time-external-setup-either-path">One-time external setup (either path)<a class="headerlink" href="#one-time-external-setup-either-path" title="Permanent link">¶</a></h2>
+<pre><code class="language-bat">REM OmniParser detector backend (repo + weights); see docs/omniparser-setup.md
+"D:\Python\python39\python.exe" scripts\setup_omniparser.py --install-deps
+
+REM gRPC stubs for the remote detector (ADR-017)
+"D:\Python\python39\python.exe" -m grpc_tools.protoc -I protos ^
+  --python_out=src\visual_dom\rpc --grpc_python_out=src\visual_dom\rpc protos\detector.proto
+REM then make the generated grpc import relative:
+REM   edit detector_pb2_grpc.py: `import detector_pb2` -&gt; `from . import detector_pb2`
+</code></pre>
+<p>Ollama (refiner): install separately and <code>ollama pull minicpm-v</code>.</p>
+<h2 id="running">Running<a class="headerlink" href="#running" title="Permanent link">¶</a></h2>
+<pre><code class="language-bat">start_viewer.bat                 REM PyQt5 inspector
+start_dashboard.bat              REM Streamlit dashboard
+start_detector.bat --backend omniparser   REM remote detector service (ADR-017)
+</code></pre>
+<h2 id="lockfile-requirementslock">Lockfile (<code>requirements.lock</code>)<a class="headerlink" href="#lockfile-requirementslock" title="Permanent link">¶</a></h2>
+<p>A resolved lock (112 pinned packages) over the runtime + tooling extras
+(<code>ocr,omniparser,grpc,viewer,dashboard,docs,desktop</code>), generated with:</p>
+<pre><code class="language-bat">"D:\Python\python39\python.exe" -m uv pip compile pyproject.toml --python-version 3.9 ^
+  --extra ocr --extra omniparser --extra grpc --extra viewer --extra dashboard ^
+  --extra docs --extra desktop -o requirements.lock
+</code></pre>
+<p>⚠️ <strong>It is a <em>fresh-install</em> lock, not a snapshot of the current env.</strong> It resolves
+the newest compatible versions (e.g. <code>torch==2.6.0+cu124</code>, <code>opencv-python==5.x</code>),
+which differ from what's installed on this machine (<code>torch 2.4.1</code>, <code>opencv 4.9</code>).</p>
+<ul>
+<li><strong>Fresh machine (Path B):</strong> <code>uv pip install -r requirements.lock</code> into a new venv
+  → reproduces the pinned set (downloads CUDA torch from the pytorch index).</li>
+<li><strong>Do NOT <code>uv pip sync requirements.lock</code> into the working Python 3.9</strong> — it would
+  upgrade torch (2.4→2.6, ~2.5 GB) and opencv (4→5). To snapshot the <em>current</em>
+  working env instead, use <code>uv pip freeze --python &lt;py39&gt; &gt; current-env.lock</code>.</li>
+</ul>
+<h2 id="dependency-groups-pyprojecttoml">Dependency groups (<code>pyproject.toml</code>)<a class="headerlink" href="#dependency-groups-pyprojecttoml" title="Permanent link">¶</a></h2>
+<p><code>ocr</code> · <code>omniparser</code> · <code>grpc</code> · <code>docs</code> · <code>dashboard</code> · <code>viewer</code> · <code>desktop</code> ·
+<code>llm</code> · <code>training</code> · <code>cv-training</code> · <code>annotation</code> · <code>dev</code> · <code>all</code>.
+Deliberately <strong>not</strong> installed: <code>ocr-paddle</code> (paddle → protobuf-6 conflict; the
+OmniParser setup patches around needing paddle).</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../architecture/" class="btn btn-neutral float-right" title="Architecture">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../architecture/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

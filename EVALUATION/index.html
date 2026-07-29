@@ -1,0 +1,801 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/EVALUATION/">
+      <link rel="shortcut icon" href="../img/favicon.ico">
+    <title>Evaluation - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "Evaluation";
+        var properdocs_page_input_path = "EVALUATION.md";
+        var properdocs_page_url = "/vizdom/EVALUATION/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Evaluation</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#command-line">Command Line</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#python-api">Python API</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#element-detection-metrics">Element Detection Metrics</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#precision">Precision</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#recall">Recall</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#f1-score">F1 Score</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#mean-iou-intersection-over-union">Mean IoU (Intersection over Union)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#per-class-metrics">Per-Class Metrics</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ocr-accuracy-metrics">OCR Accuracy Metrics</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#character-error-rate-cer">Character Error Rate (CER)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#word-error-rate-wer">Word Error Rate (WER)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#character-accuracy">Character Accuracy</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#word-accuracy">Word Accuracy</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#exact-match-rate">Exact Match Rate</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#mean-similarity">Mean Similarity</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#hierarchy-structure-metrics">Hierarchy Structure Metrics</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#parent-accuracy">Parent Accuracy</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#depth-accuracy">Depth Accuracy</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sibling-order-accuracy">Sibling Order Accuracy</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#structure-similarity">Structure Similarity</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#locator-quality-metrics">Locator Quality Metrics</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#coverage">Coverage</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#text-locator-rate">Text Locator Rate</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#uniqueness-rate">Uniqueness Rate</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#duplicate-rate">Duplicate Rate</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#locator-type-distribution">Locator Type Distribution</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#interpreting-results">Interpreting Results</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#quality-levels">Quality Levels</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#common-issues-and-solutions">Common Issues and Solutions</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#creating-ground-truth">Creating Ground Truth</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#annotation-guidelines">Annotation Guidelines</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#tools-for-annotation">Tools for Annotation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#api-reference">API Reference</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#visualdomevaluator">VisualDOMEvaluator</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#evaluationresult">EvaluationResult</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#evaluationreport">EvaluationReport</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#example-1-basic-evaluation">Example 1: Basic Evaluation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#example-2-batch-evaluation-with-report">Example 2: Batch Evaluation with Report</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#example-3-custom-thresholds">Example 3: Custom Thresholds</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Evaluation</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="visual-dom-evaluation-framework">Visual DOM Evaluation Framework<a class="headerlink" href="#visual-dom-evaluation-framework" title="Permanent link">¶</a></h1>
+<p>This document describes the evaluation metrics and methodology used to assess the quality of Visual DOM detection, OCR accuracy, hierarchy structure, and locator generation.</p>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#quick-start">Quick Start</a></li>
+<li><a href="#element-detection-metrics">Element Detection Metrics</a></li>
+<li><a href="#ocr-accuracy-metrics">OCR Accuracy Metrics</a></li>
+<li><a href="#hierarchy-structure-metrics">Hierarchy Structure Metrics</a></li>
+<li><a href="#locator-quality-metrics">Locator Quality Metrics</a></li>
+<li><a href="#interpreting-results">Interpreting Results</a></li>
+<li><a href="#creating-ground-truth">Creating Ground Truth</a></li>
+<li><a href="#api-reference">API Reference</a></li>
+</ul>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¶</a></h2>
+<p>The Visual DOM Evaluation Framework provides comprehensive metrics for evaluating:</p>
+<ol>
+<li><strong>Element Detection</strong> - How well the system detects UI elements (buttons, text, inputs, etc.)</li>
+<li><strong>OCR Accuracy</strong> - How accurately text content is recognized</li>
+<li><strong>Hierarchy Structure</strong> - How well the parent-child relationships are captured</li>
+<li><strong>Locator Quality</strong> - How useful the generated locators are for automation</li>
+</ol>
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">¶</a></h2>
+<h3 id="command-line">Command Line<a class="headerlink" href="#command-line" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Evaluate single prediction
+python -m visual_dom.evaluation.cli predicted.json ground_truth.json
+
+# Batch evaluation
+python -m visual_dom.evaluation.cli --batch predictions/ ground_truths/
+
+# Save as Markdown report
+python -m visual_dom.evaluation.cli pred.json gt.json -f markdown -o report.md
+
+# Custom IoU threshold
+python -m visual_dom.evaluation.cli pred.json gt.json --iou-threshold 0.75
+</code></pre>
+<h3 id="python-api">Python API<a class="headerlink" href="#python-api" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">from visual_dom.evaluation import VisualDOMEvaluator, EvaluationReport
+
+# Create evaluator
+evaluator = VisualDOMEvaluator()
+
+# Evaluate
+result = evaluator.evaluate_from_files("predicted.json", "ground_truth.json")
+
+# Print summary
+print(result.summary())
+
+# Generate detailed report
+report = EvaluationReport(result)
+report.save_markdown("evaluation_report.md")
+report.save_html("evaluation_report.html")
+</code></pre>
+<h2 id="element-detection-metrics">Element Detection Metrics<a class="headerlink" href="#element-detection-metrics" title="Permanent link">¶</a></h2>
+<p>Element detection evaluates how well the system finds UI elements by comparing predicted bounding boxes against ground truth annotations.</p>
+<h3 id="precision">Precision<a class="headerlink" href="#precision" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Precision = TP / (TP + FP)</code></p>
+<ul>
+<li><strong>What it measures:</strong> Of all elements the system detected, how many were correct?</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+<li><strong>Use case:</strong> Important when false positives are costly (e.g., clicking wrong elements)</li>
+</ul>
+<h3 id="recall">Recall<a class="headerlink" href="#recall" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Recall = TP / (TP + FN)</code></p>
+<ul>
+<li><strong>What it measures:</strong> Of all actual elements, how many did the system find?</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+<li><strong>Use case:</strong> Important when missing elements is costly (e.g., incomplete automation)</li>
+</ul>
+<h3 id="f1-score">F1 Score<a class="headerlink" href="#f1-score" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>F1 = 2 × (Precision × Recall) / (Precision + Recall)</code></p>
+<ul>
+<li><strong>What it measures:</strong> Harmonic mean of precision and recall</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+<li><strong>Use case:</strong> Overall detection quality when both precision and recall matter equally</li>
+</ul>
+<h3 id="mean-iou-intersection-over-union">Mean IoU (Intersection over Union)<a class="headerlink" href="#mean-iou-intersection-over-union" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>IoU = Area(Intersection) / Area(Union)</code></p>
+<ul>
+<li><strong>What it measures:</strong> How well predicted bounding boxes align with ground truth</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+<li><strong>Threshold:</strong> Typically 0.5 (50%) is used to determine a "match"</li>
+</ul>
+<pre><code>Ground Truth Box     Predicted Box
+┌─────────────┐
+│             │    ┌─────────────┐
+│     ███████████  │             │
+│     █ Inter█    │             │
+│     █ sect █    │             │
+│     ███████████  │             │
+│             │    └─────────────┘
+└─────────────┘
+
+IoU = Area of Intersection / Area of Union
+</code></pre>
+<h3 id="per-class-metrics">Per-Class Metrics<a class="headerlink" href="#per-class-metrics" title="Permanent link">¶</a></h3>
+<p>The system also computes precision, recall, and F1 for each element type:
+- <code>button</code>, <code>text</code>, <code>input_field</code>, <code>checkbox</code>, <code>icon</code>, etc.</p>
+<p>This helps identify which element types are detected well vs. poorly.</p>
+<h2 id="ocr-accuracy-metrics">OCR Accuracy Metrics<a class="headerlink" href="#ocr-accuracy-metrics" title="Permanent link">¶</a></h2>
+<p>OCR metrics evaluate how accurately the system recognizes text content.</p>
+<h3 id="character-error-rate-cer">Character Error Rate (CER)<a class="headerlink" href="#character-error-rate-cer" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>CER = (Insertions + Deletions + Substitutions) / Total_Characters_GT</code></p>
+<ul>
+<li><strong>What it measures:</strong> Percentage of character-level errors</li>
+<li><strong>Range:</strong> 0.0 to ∞ (lower is better, 0 = perfect)</li>
+<li><strong>Example:</strong> GT="Hello", Pred="Helo" → CER = 1/5 = 0.2</li>
+</ul>
+<h3 id="word-error-rate-wer">Word Error Rate (WER)<a class="headerlink" href="#word-error-rate-wer" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>WER = (Insertions + Deletions + Substitutions) / Total_Words_GT</code></p>
+<ul>
+<li><strong>What it measures:</strong> Percentage of word-level errors</li>
+<li><strong>Range:</strong> 0.0 to ∞ (lower is better)</li>
+<li><strong>Example:</strong> GT="Hello World", Pred="Hello Word" → WER = 1/2 = 0.5</li>
+</ul>
+<h3 id="character-accuracy">Character Accuracy<a class="headerlink" href="#character-accuracy" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Char_Accuracy = max(0, 1 - CER)</code></p>
+<ul>
+<li><strong>What it measures:</strong> Percentage of correct characters</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+</ul>
+<h3 id="word-accuracy">Word Accuracy<a class="headerlink" href="#word-accuracy" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Word_Accuracy = max(0, 1 - WER)</code></p>
+<ul>
+<li><strong>What it measures:</strong> Percentage of correct words</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+</ul>
+<h3 id="exact-match-rate">Exact Match Rate<a class="headerlink" href="#exact-match-rate" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Exact_Match = Count(Pred == GT) / Total_Comparisons</code></p>
+<ul>
+<li><strong>What it measures:</strong> Percentage of texts that match exactly (case-insensitive)</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+<li><strong>Use case:</strong> Strict matching for critical text elements</li>
+</ul>
+<h3 id="mean-similarity">Mean Similarity<a class="headerlink" href="#mean-similarity" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> Uses <code>difflib.SequenceMatcher.ratio()</code></p>
+<ul>
+<li><strong>What it measures:</strong> Average text similarity score</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+<li><strong>Note:</strong> More forgiving than exact match, accounts for partial matches</li>
+</ul>
+<h2 id="hierarchy-structure-metrics">Hierarchy Structure Metrics<a class="headerlink" href="#hierarchy-structure-metrics" title="Permanent link">¶</a></h2>
+<p>Hierarchy metrics evaluate how well the predicted DOM tree structure matches the ground truth.</p>
+<h3 id="parent-accuracy">Parent Accuracy<a class="headerlink" href="#parent-accuracy" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Parent_Accuracy = Correct_Parents / Total_Elements</code></p>
+<ul>
+<li><strong>What it measures:</strong> Percentage of elements with correct parent assignment</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+</ul>
+<pre><code>Ground Truth:          Predicted:
+    Root                  Root
+    ├── Group1            ├── Group1
+    │   ├── Button        │   ├── Button ✓
+    │   └── Text          │   └── Icon   ✗ (wrong parent)
+    └── Group2            └── Group2
+        └── Input             └── Input ✓
+</code></pre>
+<h3 id="depth-accuracy">Depth Accuracy<a class="headerlink" href="#depth-accuracy" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Depth_Accuracy = Correct_Depths / Total_Elements</code></p>
+<ul>
+<li><strong>What it measures:</strong> Percentage of elements at correct tree depth</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+<li><strong>Note:</strong> Depth 0 = root, Depth 1 = direct children, etc.</li>
+</ul>
+<h3 id="sibling-order-accuracy">Sibling Order Accuracy<a class="headerlink" href="#sibling-order-accuracy" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Sibling_Order_Accuracy = Correct_Orders / Total_Sibling_Pairs</code></p>
+<ul>
+<li><strong>What it measures:</strong> Whether sibling elements are in correct order</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+<li><strong>Use case:</strong> Important for forms, lists, navigation</li>
+</ul>
+<h3 id="structure-similarity">Structure Similarity<a class="headerlink" href="#structure-similarity" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Structure_Similarity = 1 - (Tree_Edit_Distance / Tree_Size)</code></p>
+<ul>
+<li><strong>What it measures:</strong> Overall structural similarity</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+<li><strong>Note:</strong> Based on tree edit distance (minimum operations to transform)</li>
+</ul>
+<h2 id="locator-quality-metrics">Locator Quality Metrics<a class="headerlink" href="#locator-quality-metrics" title="Permanent link">¶</a></h2>
+<p>Locator metrics evaluate how useful the generated locators are for UI automation.</p>
+<h3 id="coverage">Coverage<a class="headerlink" href="#coverage" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Coverage = Elements_With_Locators / Total_Elements</code></p>
+<ul>
+<li><strong>What it measures:</strong> Percentage of elements with at least one locator</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+<li><strong>Target:</strong> 100% coverage is ideal</li>
+</ul>
+<h3 id="text-locator-rate">Text Locator Rate<a class="headerlink" href="#text-locator-rate" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Text_Rate = Text_Locatable / Total_Elements</code></p>
+<ul>
+<li><strong>What it measures:</strong> Percentage of elements locatable by text</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+<li><strong>Why important:</strong> Text locators are most readable and maintainable</li>
+</ul>
+<h3 id="uniqueness-rate">Uniqueness Rate<a class="headerlink" href="#uniqueness-rate" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Uniqueness = Unique_Locators / Total_Locators</code></p>
+<ul>
+<li><strong>What it measures:</strong> Percentage of locators that uniquely identify elements</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (higher is better)</li>
+<li><strong>Why important:</strong> Non-unique locators may select wrong elements</li>
+</ul>
+<h3 id="duplicate-rate">Duplicate Rate<a class="headerlink" href="#duplicate-rate" title="Permanent link">¶</a></h3>
+<p><strong>Formula:</strong> <code>Duplicate_Rate = Duplicate_Locators / Total_Elements</code></p>
+<ul>
+<li><strong>What it measures:</strong> Percentage of elements with ambiguous locators</li>
+<li><strong>Range:</strong> 0.0 to 1.0 (lower is better)</li>
+<li><strong>Why important:</strong> Duplicates cause automation failures</li>
+</ul>
+<h3 id="locator-type-distribution">Locator Type Distribution<a class="headerlink" href="#locator-type-distribution" title="Permanent link">¶</a></h3>
+<p>Shows the count of each locator type:
+- <code>id</code> - Element ID
+- <code>text</code> - Text content
+- <code>type_index</code> - Type with index (e.g., <code>button[0]</code>)
+- <code>bounds</code> - Bounding box coordinates
+- <code>center</code> - Center point coordinates</p>
+<h2 id="interpreting-results">Interpreting Results<a class="headerlink" href="#interpreting-results" title="Permanent link">¶</a></h2>
+<h3 id="quality-levels">Quality Levels<a class="headerlink" href="#quality-levels" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Excellent</th>
+<th>Good</th>
+<th>Fair</th>
+<th>Poor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F1 Score</td>
+<td>&gt; 0.90</td>
+<td>0.75-0.90</td>
+<td>0.50-0.75</td>
+<td>&lt; 0.50</td>
+</tr>
+<tr>
+<td>Mean IoU</td>
+<td>&gt; 0.80</td>
+<td>0.60-0.80</td>
+<td>0.40-0.60</td>
+<td>&lt; 0.40</td>
+</tr>
+<tr>
+<td>Char Accuracy</td>
+<td>&gt; 0.95</td>
+<td>0.85-0.95</td>
+<td>0.70-0.85</td>
+<td>&lt; 0.70</td>
+</tr>
+<tr>
+<td>Parent Accuracy</td>
+<td>&gt; 0.90</td>
+<td>0.75-0.90</td>
+<td>0.50-0.75</td>
+<td>&lt; 0.50</td>
+</tr>
+<tr>
+<td>Locator Coverage</td>
+<td>100%</td>
+<td>90-100%</td>
+<td>70-90%</td>
+<td>&lt; 70%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-issues-and-solutions">Common Issues and Solutions<a class="headerlink" href="#common-issues-and-solutions" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Likely Cause</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Low Precision</td>
+<td>Over-detection, noise</td>
+<td>Increase confidence threshold</td>
+</tr>
+<tr>
+<td>Low Recall</td>
+<td>Under-detection</td>
+<td>Decrease confidence threshold</td>
+</tr>
+<tr>
+<td>Low IoU</td>
+<td>Bounding box misalignment</td>
+<td>Improve CV detection</td>
+</tr>
+<tr>
+<td>High CER</td>
+<td>OCR model issues</td>
+<td>Use different OCR engine, better image</td>
+</tr>
+<tr>
+<td>Low Parent Accuracy</td>
+<td>Hierarchy builder issues</td>
+<td>Adjust containment thresholds</td>
+</tr>
+<tr>
+<td>Low Text Locator Rate</td>
+<td>Missing OCR text</td>
+<td>Improve OCR, lower confidence</td>
+</tr>
+</tbody>
+</table>
+<h2 id="creating-ground-truth">Creating Ground Truth<a class="headerlink" href="#creating-ground-truth" title="Permanent link">¶</a></h2>
+<p>Ground truth files should follow the same JSON format as Visual DOM output:</p>
+<pre><code class="language-json">{
+  "image_size": {"width": 1920, "height": 1080},
+  "dom": {
+    "hierarchy": {
+      "id": "ROOT",
+      "bounds": [0, 0, 1920, 1080],
+      "visual_type": "container",
+      "children": [
+        {
+          "id": "E1",
+          "bounds": [100, 200, 300, 250],
+          "visual_type": "button",
+          "text": "Submit",
+          "children": []
+        }
+      ]
+    }
+  }
+}
+</code></pre>
+<h3 id="annotation-guidelines">Annotation Guidelines<a class="headerlink" href="#annotation-guidelines" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Bounds Format:</strong> <code>[x1, y1, x2, y2]</code> (top-left to bottom-right)</li>
+<li><strong>Visual Types:</strong> Use standard types: <code>button</code>, <code>text</code>, <code>input_field</code>, <code>checkbox</code>, <code>icon</code>, <code>container</code>, <code>block</code></li>
+<li><strong>Text:</strong> Include exact text content as displayed</li>
+<li><strong>Hierarchy:</strong> Nest elements that visually contain other elements</li>
+</ol>
+<h3 id="tools-for-annotation">Tools for Annotation<a class="headerlink" href="#tools-for-annotation" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Visual DOM Viewer</strong> - Load screenshot, manually annotate elements</li>
+<li><strong>LabelImg</strong> - General-purpose bounding box annotation</li>
+<li><strong>CVAT</strong> - Computer Vision Annotation Tool</li>
+</ul>
+<h2 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">¶</a></h2>
+<h3 id="visualdomevaluator">VisualDOMEvaluator<a class="headerlink" href="#visualdomevaluator" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">from visual_dom.evaluation import VisualDOMEvaluator, EvaluationConfig
+
+# Configure evaluation
+config = EvaluationConfig(
+    iou_threshold=0.5,          # IoU threshold for matching
+    iou_good_threshold=0.75,    # Threshold for "good" match
+    strict_text_matching=False, # Exact text match required
+    min_text_similarity=0.8,    # Minimum similarity for OCR
+    evaluate_hierarchy=True,    # Evaluate hierarchy metrics
+    evaluate_locators=True,     # Evaluate locator metrics
+)
+
+evaluator = VisualDOMEvaluator(config)
+
+# Single evaluation
+result = evaluator.evaluate(predicted_dict, ground_truth_dict)
+result = evaluator.evaluate_from_files("pred.json", "gt.json")
+
+# Batch evaluation
+batch_result = evaluator.evaluate_batch(predictions_list, ground_truths_list)
+</code></pre>
+<h3 id="evaluationresult">EvaluationResult<a class="headerlink" href="#evaluationresult" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">result = evaluator.evaluate(pred, gt)
+
+# Access metrics
+result.element_metrics.precision
+result.element_metrics.recall
+result.element_metrics.f1_score
+result.element_metrics.mean_iou
+
+result.ocr_metrics.cer
+result.ocr_metrics.wer
+result.ocr_metrics.char_accuracy
+
+result.hierarchy_metrics.parent_accuracy
+result.hierarchy_metrics.depth_accuracy
+
+result.locator_metrics.coverage
+result.locator_metrics.text_locator_rate
+
+# Generate output
+print(result.summary())           # Text summary
+result.to_dict()                  # Dictionary
+</code></pre>
+<h3 id="evaluationreport">EvaluationReport<a class="headerlink" href="#evaluationreport" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">from visual_dom.evaluation import EvaluationReport
+
+report = EvaluationReport(result)
+
+# Generate reports
+report.to_text()                  # Plain text
+report.to_markdown()              # Markdown
+report.to_html()                  # HTML with styling
+report.to_json()                  # JSON
+
+# Save to file
+report.save_json("report.json")
+report.save_markdown("report.md")
+report.save_html("report.html")
+</code></pre>
+<h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">¶</a></h2>
+<h3 id="example-1-basic-evaluation">Example 1: Basic Evaluation<a class="headerlink" href="#example-1-basic-evaluation" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">from visual_dom.evaluation import VisualDOMEvaluator
+
+evaluator = VisualDOMEvaluator()
+result = evaluator.evaluate_from_files(
+    "output/calculator_dom.json",
+    "ground_truth/calculator_gt.json"
+)
+
+print(f"F1 Score: {result.element_metrics.f1_score:.2%}")
+print(f"OCR Accuracy: {result.ocr_metrics.char_accuracy:.2%}")
+</code></pre>
+<h3 id="example-2-batch-evaluation-with-report">Example 2: Batch Evaluation with Report<a class="headerlink" href="#example-2-batch-evaluation-with-report" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">from visual_dom.evaluation import VisualDOMEvaluator, EvaluationConfig
+from visual_dom.evaluation.report import BatchEvaluationReport
+from pathlib import Path
+import json
+
+# Load all test cases
+predictions = []
+ground_truths = []
+
+for pred_file in Path("test_outputs/").glob("*.json"):
+    gt_file = Path("ground_truths/") / pred_file.name
+    if gt_file.exists():
+        with open(pred_file) as f:
+            predictions.append(json.load(f))
+        with open(gt_file) as f:
+            ground_truths.append(json.load(f))
+
+# Evaluate
+config = EvaluationConfig(iou_threshold=0.5)
+evaluator = VisualDOMEvaluator(config)
+batch_result = evaluator.evaluate_batch(predictions, ground_truths)
+
+# Report
+print(batch_result.summary())
+print(f"Mean F1: {batch_result.mean_f1:.2%}")
+
+report = BatchEvaluationReport(batch_result)
+report.save_markdown("batch_evaluation.md")
+</code></pre>
+<h3 id="example-3-custom-thresholds">Example 3: Custom Thresholds<a class="headerlink" href="#example-3-custom-thresholds" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">from visual_dom.evaluation import VisualDOMEvaluator, EvaluationConfig
+
+# Strict evaluation
+strict_config = EvaluationConfig(
+    iou_threshold=0.75,           # Higher IoU required
+    strict_text_matching=True,    # Exact text match
+    min_text_similarity=0.95,
+)
+
+# Lenient evaluation
+lenient_config = EvaluationConfig(
+    iou_threshold=0.25,           # Lower IoU accepted
+    strict_text_matching=False,
+    min_text_similarity=0.5,
+)
+
+strict_evaluator = VisualDOMEvaluator(strict_config)
+lenient_evaluator = VisualDOMEvaluator(lenient_config)
+
+strict_result = strict_evaluator.evaluate(pred, gt)
+lenient_result = lenient_evaluator.evaluate(pred, gt)
+
+print(f"Strict F1:  {strict_result.element_metrics.f1_score:.2%}")
+print(f"Lenient F1: {lenient_result.element_metrics.f1_score:.2%}")
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../omniparser-setup/" class="btn btn-neutral float-left" title="OmniParser Setup"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../annotation_workflow/" class="btn btn-neutral float-right" title="Data Annotation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../omniparser-setup/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../annotation_workflow/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/adr/015-pluggable-detector-backends/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>015 Pluggable Detector Backends - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "015 Pluggable Detector Backends";
+        var properdocs_page_input_path = "adr\\015-pluggable-detector-backends.md";
+        var properdocs_page_url = "/vizdom/adr/015-pluggable-detector-backends/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">015 Pluggable Detector Backends</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#status">Status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#date">Date</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#history">History</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#context">Context</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#licensing-driver">Licensing driver</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#decision">Decision</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-detector-backend-interface">1. Detector backend interface</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-backends">2. Backends</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-registry">3. Registry</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-pipeline-integration">4. Pipeline integration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-cli">5. CLI</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#alternatives-considered">Alternatives Considered</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#consequences">Consequences</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#positive">Positive</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#negative">Negative</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#follow-ups">Follow-ups</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#files-changed">Files Changed</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Architecture Decisions</li>
+      <li class="breadcrumb-item active">015 Pluggable Detector Backends</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="adr-015-pluggable-detector-backends-uied-yolo-omniparser">ADR-015: Pluggable Detector Backends (UIED / YOLO / OmniParser)<a class="headerlink" href="#adr-015-pluggable-detector-backends-uied-yolo-omniparser" title="Permanent link">¶</a></h1>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">¶</a></h2>
+<p>Accepted</p>
+<h2 id="date">Date<a class="headerlink" href="#date" title="Permanent link">¶</a></h2>
+<p>2026-07-24</p>
+<h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">¶</a></h2>
+<p>Development Team</p>
+<h2 id="history">History<a class="headerlink" href="#history" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Version</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-07-24</td>
+<td>1.0</td>
+<td>Initial version — introduces the detector-backend abstraction and adds OmniParser as an option</td>
+</tr>
+</tbody>
+</table>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">¶</a></h2>
+<p>A July 2026 review of the GUI-understanding landscape (see
+<code>docs/discussion/landscape-comparison-*.html</code>) found that Microsoft's <strong>OmniParser</strong>
+independently implements our detection architecture (YOLO icon detection + OCR +
+a captioning model → boxes with labels and interactability). Two conclusions followed:</p>
+<ol>
+<li>Element detection has become a commoditised layer; our differentiation lies
+   in hierarchy construction, the DOM representation and the Robot Framework
+   testing integration — not in the detector itself.</li>
+<li>We should be able to <strong>compare</strong> our own CV detector against OmniParser
+   empirically, and to <strong>swap</strong> detectors for licensing reasons.</li>
+</ol>
+<p>Before this change, the pipeline hard-coded detector choice as <code>if/elif</code> branches
+over a <code>detector</code> string ("uied" | "yolo" | "hybrid"), with YOLO initialised
+inline. Adding OmniParser that way would have compounded the branching and mixed
+heavy optional dependencies (torch, ultralytics, OmniParser) into pipeline import.</p>
+<h3 id="licensing-driver">Licensing driver<a class="headerlink" href="#licensing-driver" title="Permanent link">¶</a></h3>
+<p>Our detection stack is already on <strong>AGPL-3.0</strong> through the existing Ultralytics
+dependency (<code>pyproject.toml</code>, <code>inference_yolo.py</code>, <code>cv_model_registry.py</code>).
+OmniParser's <code>icon_detect</code> component is likewise AGPL-3.0 (<code>icon_caption</code> is MIT).
+Adopting OmniParser therefore introduces <strong>no new licence class</strong>, but the ability
+to swap to a permissively licensed detector (RT-DETR upstream, YOLOX, DETR — all
+Apache 2.0) later must not require rewriting the pipeline.</p>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">¶</a></h2>
+<h3 id="1-detector-backend-interface">1. Detector backend interface<a class="headerlink" href="#1-detector-backend-interface" title="Permanent link">¶</a></h3>
+<p>Added <code>src/visual_dom/cv/detectors/</code> defining:</p>
+<ul>
+<li><code>Detection</code> — a neutral dataclass (bounds, visual_type, confidence, optional
+  text, optional <code>interactable</code>, source, containment, <code>extra</code>). Independent of
+  the pipeline so backends carry no dependency on <code>pipeline.py</code>.</li>
+<li><code>DetectorBackend</code> (ABC) — <code>detect(image) -&gt; List[Detection]</code>, plus declarative
+  metadata: <code>name</code>, <code>description</code>, <code>license</code>, <code>requires_gpu</code>, and a cheap
+  <code>is_available()</code> classmethod that never raises.</li>
+</ul>
+<h3 id="2-backends">2. Backends<a class="headerlink" href="#2-backends" title="Permanent link">¶</a></h3>
+<ul>
+<li><code>UIEDBackend</code> — adapter over the existing <code>UIEDDetector</code> (default; CPU; no weights).</li>
+<li><code>YOLOBackend</code> — Ultralytics YOLO; carries an explicit AGPL-3.0 warning.</li>
+<li><code>OmniParserBackend</code> — Microsoft OmniParser; configurable repo/weights paths
+  (constructor args or <code>OMNIPARSER_ROOT</code> / <code>OMNIPARSER_ICON_DETECT</code> /
+  <code>OMNIPARSER_ICON_CAPTION</code>); normalizes OmniParser's <code>[0,1]</code> bboxes to pixels.</li>
+</ul>
+<h3 id="3-registry">3. Registry<a class="headerlink" href="#3-registry" title="Permanent link">¶</a></h3>
+<p><code>create_detector(name, **kwargs)</code> and <code>list_detectors()</code> in <code>registry.py</code>. Lazy
+factories keep torch/ultralytics/OmniParser out of import time — a heavy backend
+is imported only when actually constructed.</p>
+<h3 id="4-pipeline-integration">4. Pipeline integration<a class="headerlink" href="#4-pipeline-integration" title="Permanent link">¶</a></h3>
+<p><code>VisualDOMPipeline</code> gains <code>detector_kwargs</code> and now builds a <code>_primary_backend</code>
+via the registry for single-backend modes ("uied", "yolo", "omniparser"),
+converting <code>Detection -&gt; UIElement</code> in one place (<code>_convert_detections</code>). The
+legacy <code>"hybrid"</code> mode (YOLO + UIED merge) is left on its bespoke path to avoid
+regressions. On backend init failure the pipeline degrades gracefully (UIED
+failure is fatal; others log and yield zero elements).</p>
+<h3 id="5-cli">5. CLI<a class="headerlink" href="#5-cli" title="Permanent link">¶</a></h3>
+<p><code>scripts/process_gui_image.py</code> gains <code>--detector {uied,yolo,omniparser,hybrid}</code>,
+<code>--omniparser-root</code>, <code>--omniparser-icon-detect</code>, <code>--omniparser-icon-caption</code> and
+<code>--yolo-model</code>.</p>
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">¶</a></h2>
+<ul>
+<li><strong>Extend the if/elif chain with an OmniParser branch</strong> — rejected: worsens
+  branching and couples optional heavy deps to pipeline import.</li>
+<li><strong>Replace UIED with OmniParser outright</strong> — rejected: loses the CPU-only path
+  (a genuine differentiator for test rigs) and the ability to compare.</li>
+<li><strong>Depend on OmniParser as a pip package</strong> — not viable: it is a repo + weights
+  with an API that has drifted across versions; hence the isolated
+  <code>_parse_content_list</code> and configurable paths.</li>
+</ul>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">¶</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">¶</a></h3>
+<ul>
+<li>Detectors are interchangeable behind one interface → enables the planned
+  empirical comparison and licence flexibility.</li>
+<li>Optional heavy dependencies stay out of import time.</li>
+<li><code>Detection.interactable</code> preserves OmniParser's interactability signal, newly
+  surfaced in element output.</li>
+<li>Licences are explicit in code and in <code>list_detectors()</code>.</li>
+</ul>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Permanent link">¶</a></h3>
+<ul>
+<li>Two detection code paths remain (pluggable single-backend + legacy hybrid).</li>
+<li><code>OmniParserBackend</code> is coupled to OmniParser's output format; version drift
+  requires updating <code>_parse_content_list</code> (isolated for this reason).</li>
+<li>Backend metadata (licence/gpu) is duplicated between the class and the registry.</li>
+</ul>
+<h3 id="follow-ups">Follow-ups<a class="headerlink" href="#follow-ups" title="Permanent link">¶</a></h3>
+<ul>
+<li>Verify <code>OmniParserBackend</code> against a real OmniParser install (output format,
+  exact <code>util.utils</code> signatures).</li>
+<li>Add hierarchy-correctness metrics for the UIED-vs-OmniParser comparison.</li>
+<li>If commercial/network reuse is required, add a permissive (Apache) detector
+  backend and confirm AGPL implications with the university/employer.</li>
+</ul>
+<h2 id="files-changed">Files Changed<a class="headerlink" href="#files-changed" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>src/visual_dom/cv/detectors/</code> — New: <code>base.py</code>, <code>registry.py</code>,
+  <code>uied_backend.py</code>, <code>yolo_backend.py</code>, <code>omniparser_backend.py</code>, <code>__init__.py</code></li>
+<li><code>src/visual_dom/cv/pipeline.py</code> — <code>detector_kwargs</code>, <code>_init_backend</code>,
+  <code>_convert_detections</code>, <code>_primary_backend</code>; <code>UIElement.interactable</code></li>
+<li><code>src/visual_dom/cv/__init__.py</code> — export detector API</li>
+<li><code>scripts/process_gui_image.py</code> — detector CLI arguments</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../014-project-restructure/" class="btn btn-neutral float-left" title="014 Project Restructure"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../016-reading-order-and-labels/" class="btn btn-neutral float-right" title="016 Reading Order + Labels">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../014-project-restructure/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../016-reading-order-and-labels/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

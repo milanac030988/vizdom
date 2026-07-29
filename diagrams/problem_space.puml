@@ -1,0 +1,27 @@
+@startwbs
+' GUI element-detection problem-space taxonomy (from UIED, Xie et al. 2020).
+' WBS layout is pure-Java (no Graphviz/Smetana needed). Keep ASCII-only.
+<style>
+wbsDiagram {
+  BackgroundColor #FFFFFF
+  LineColor #666666
+  node {
+    Padding 8
+    Margin 6
+    FontName Arial
+    FontSize 12
+    RoundCorner 8
+  }
+  arrow { LineColor #888888 }
+}
+</style>
+
+* GUI element detection\nproblem space
+** <back:#FFF3E0>Element level</back>
+*** <back:#FFE0B2>Large intra-class variation\n(one class, many sizes/shapes/styles)
+*** <back:#FFE0B2>High inter-class similarity\n(button vs spinner: subtle cues)
+** <back:#E3F2FD>GUI level
+*** <back:#BBDEFB>Heterogeneous mix\n(widgets + images + text)
+*** <back:#BBDEFB>Dense / adjacent elements\n(packed, few-pixel gaps)
+*** <back:#BBDEFB>High-precision region\n(a loose box is not enough)
+@endwbs

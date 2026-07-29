@@ -1,0 +1,349 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Screenshot -&gt; Visual DOM -&gt; GUI Test Automation"><link rel="canonical" href="https://milanac030988.github.io/vizdom/">
+      <link rel="shortcut icon" href="img/favicon.ico">
+    <title>VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "Home";
+        var properdocs_page_input_path = "index.md";
+        var properdocs_page_url = "/vizdom/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Home</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#why-this-project-exists">Why this project exists</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#what-we-have-built">What we have built</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#what-we-are-still-improving">What we are still improving</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#documentation-map">Documentation map</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#two-deliverables">Two deliverables</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#building-these-docs">Building these docs</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Home</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="vizdom-visual-dom-generator">VizDOM — Visual DOM Generator<a class="headerlink" href="#vizdom-visual-dom-generator" title="Permanent link">¶</a></h1>
+<p>Turn a GUI <strong>screenshot</strong> into a UIAutomator-like <strong>DOM JSON tree</strong> — element
+bounds, roles, text labels, locators and hierarchy — using Computer Vision plus a
+small LLM/VLM, so GUI test automation works even when no accessibility tree
+exists.</p>
+<hr>
+<h2 id="why-this-project-exists">Why this project exists<a class="headerlink" href="#why-this-project-exists" title="Permanent link">¶</a></h2>
+<p>GUI test automation lives or dies on one thing: being able to <strong>find an element</strong>
+on screen and address it reliably. The usual way is the platform's accessibility
+tree (UIAutomator, UIA, the DOM). But a large class of applications expose <strong>no
+usable tree at all</strong>:</p>
+<ul>
+<li>Custom-rendered UIs — Qt/QML, OpenGL, game engines, canvas apps.</li>
+<li>Embedded / industrial HMIs and kiosk software.</li>
+<li>Screens seen <strong>through a camera</strong> (a physical device, a capture card) where
+  there is no software API to query at all.</li>
+</ul>
+<p>For these, testers fall back to brittle pixel-coordinate scripts that break on the
+first layout change. <strong>VizDOM's premise:</strong> if a human tester can look at the
+screen and know "that's the Login button", a pipeline should be able to
+reconstruct an equivalent structured tree from the pixels alone — and hand it to a
+test framework as if it came from an accessibility API.</p>
+<p>This is a master's <strong>applied project</strong>: the contribution is solid engineering that
+composes existing CV/LLM building blocks into a working, extensible, deployable
+system — not a new model or a research claim.</p>
+<hr>
+<h2 id="what-we-have-built">What we have built<a class="headerlink" href="#what-we-have-built" title="Permanent link">¶</a></h2>
+<p>A complete <strong>screenshot → DOM → test-automation</strong> path, plus the architecture to
+run it in the real world.</p>
+<p><strong>The pipeline</strong> (<code>visual_dom.cv.pipeline</code>)</p>
+<ul>
+<li><strong>Pluggable element detectors</strong> behind one interface (ADR-015): traditional CV
+  (<strong>UIED</strong>), <strong>YOLO</strong>, and Microsoft <strong>OmniParser</strong> (YOLO + Florence-2 + OCR).
+  Pick per run; add more without touching the core.</li>
+<li><strong>OCR text layer</strong> (EasyOCR / PaddleOCR / Tesseract) with upscaling, and an
+  <strong>ensemble</strong> that feeds our OCR into OmniParser to recover missed text.</li>
+<li><strong>Clean-up passes</strong>: merge / split / NMS / dedup, plus a <strong>smart-merge</strong> for
+  over-segmented boxes (guarded by fill-ratio, delimiter and interactable checks).</li>
+<li><strong>Reading-order</strong> sorting (row-band, top→bottom / left→right).</li>
+<li>An optional <strong>SLM/VLM advisor</strong> (via Ollama) that reviews suspicious elements —
+  split, re-type, merge and <strong>label</strong> — with merges gated to safe candidates.</li>
+</ul>
+<p><strong>From detections to a usable DOM</strong></p>
+<ul>
+<li><strong>Coarse hierarchy builder</strong> — containment, alignment grouping, label
+  association (ADR-016).</li>
+<li><strong>DOM compiler</strong> — roles, flags (clickable/editable/scrollable), multiple
+  <strong>locators</strong>, and human-readable labels, emitted as UIAutomator-like JSON.</li>
+<li><strong>Robot Framework Visual Automation Library</strong> — GUI-testing keywords driven by
+  that DOM (the second deliverable).</li>
+</ul>
+<p><strong>Tooling &amp; architecture</strong></p>
+<ul>
+<li><strong>Visual DOM Viewer</strong> (PyQt5) to capture, inspect and export; a Streamlit
+  dashboard; and an <strong>evaluation framework</strong> (IoU / precision / recall / F1).</li>
+<li><strong>Hexagonal (ports &amp; adapters)</strong> structure with <strong>distributed gRPC services</strong>
+  (ADR-017): run the heavy detector as a warm-model service on a GPU box.</li>
+<li><strong>Pluggable capture service</strong> (ADR-018): a <code>CaptureStrategy</code> for
+  Windows / Linux / Android / camera, <strong>auto-discovered</strong> user plugins, and a gRPC
+  <code>Capture</code> service so screenshots come from <strong>where the app-under-test runs</strong> —
+  wired into both the CLI (<code>--capture</code>) and the Viewer (<code>Src:</code>).</li>
+<li><strong><code>uv</code></strong>-managed environment and this <strong>ProperDocs</strong> site with diagrams rendered
+  offline (behind a corporate proxy, no PlantUML server, no Graphviz).</li>
+</ul>
+<hr>
+<h2 id="what-we-are-still-improving">What we are still improving<a class="headerlink" href="#what-we-are-still-improving" title="Permanent link">¶</a></h2>
+<p>Honest status — these are the open edges, roughly in priority order:</p>
+<ul>
+<li><strong>Real-world robustness.</strong> Detection and symbol recognition (ADR-011) are strong
+  on clean/synthetic UIs but weaker on gradient-heavy, themed real-world apps.
+  Reducing OmniParser's over-segmentation is ongoing.</li>
+<li><strong>Evaluation at scale.</strong> The metrics framework exists; it needs a larger, more
+  representative labelled dataset (synthetic-data generation is in progress) to
+  quantify accuracy and regressions.</li>
+<li><strong>Capture service hardening</strong> (ADR-018 follow-ups): setuptools <strong>entry-point</strong>
+  plugin discovery as a second source, and <strong>TLS/auth</strong> on the currently-insecure
+  gRPC channel.</li>
+<li><strong>Model choices.</strong> Ongoing comparison of grounding/agent models (OmniParser,
+  Aria-UI, ELAM-7B, Jedi) to decide what best replaces or augments the SLM
+  refinement step — see the <a href="model-discussion/">model discussion notes</a>.</li>
+</ul>
+<hr>
+<h2 id="documentation-map">Documentation map<a class="headerlink" href="#documentation-map" title="Permanent link">¶</a></h2>
+<ul>
+<li><strong><a href="architecture/">Architecture</a></strong> — system, pipeline, component, class,
+  sequence and hexagonal (ports &amp; adapters) diagrams (rendered inline from the
+  <code>.puml</code> sources of record).</li>
+<li><strong><a href="PIPELINE/">CV Pipeline</a></strong> and <strong><a href="omniparser-setup/">OmniParser Setup</a></strong> —
+  how detection works and how to set up the OmniParser backend.</li>
+<li><strong><a href="EVALUATION/">Evaluation</a></strong> and <strong><a href="RESEARCH/">VLM Study</a></strong> — the metrics
+  framework and the VLM experiments.</li>
+<li><strong><a href="model-discussion/">Model Discussion Notes</a></strong> — comparisons (OmniParser,
+  Aria-UI, ELAM-7B, Jedi) that shaped the design.</li>
+<li><strong><a href="adr/">Architecture Decisions</a></strong> — the full ADR log (001–018).</li>
+</ul>
+<h2 id="two-deliverables">Two deliverables<a class="headerlink" href="#two-deliverables" title="Permanent link">¶</a></h2>
+<ol>
+<li><strong>Visual DOM Generator</strong> — the screenshot→DOM pipeline (CV + small LLM/VLM).</li>
+<li><strong>Robot Framework Visual Automation Library</strong> — GUI-testing keywords driven by
+   the DOM.</li>
+</ol>
+<h2 id="building-these-docs">Building these docs<a class="headerlink" href="#building-these-docs" title="Permanent link">¶</a></h2>
+<p>This site is built with <a href="https://properdocs.org">ProperDocs</a> (a MkDocs fork).
+Diagrams render locally — <strong>no PlantUML server, no Graphviz</strong>:</p>
+<pre><code class="language-bash"># needs: Java on PATH, and tools/plantuml.jar present
+properdocs serve -f properdocs.yml     # live preview at http://localhost:8000
+properdocs build -f properdocs.yml     # static site/ (gitignored)
+</code></pre>
+<p>PlantUML runs via the vendored <code>tools/plantuml.jar</code> using the built-in <strong>Smetana</strong>
+layout engine (<code>!pragma layout smetana</code>), so no external <code>dot.exe</code> is required
+(the <code>architecture.puml</code> ports &amp; adapters diagram is the one exception — it uses <code>dot</code>).</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="uv-setup/" class="btn btn-neutral float-right" title="Setup (uv)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="uv-setup/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html><!--
+ProperDocs version : ProperDocs 1.6.7
+Build Date UTC : 2026-07-29 09:01:18.422084+00:00
+-->

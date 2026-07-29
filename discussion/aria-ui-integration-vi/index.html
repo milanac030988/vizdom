@@ -1,0 +1,547 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/discussion/aria-ui-integration-vi/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>Aria-UI integration (VI) - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "Aria-UI integration (VI)";
+        var properdocs_page_input_path = "discussion\\aria-ui-integration-vi.md";
+        var properdocs_page_url = "/vizdom/discussion/aria-ui-integration-vi/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current">Model Comparisons</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Aria-UI integration (VI)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#1-aria-ui-la-gi">1. Aria-UI là gì</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-au-vao-nhan-nhung-gi">2. ĐẦU VÀO nhận những gì</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#quy-oi-toa-o-ve-khong-gian-pixel-cua-ta">Quy đổi tọa độ về không gian pixel của ta</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-lam-uoc-va-khong-lam-uoc-oc-truoc-khi-thiet-ke">3. Làm được và KHÔNG làm được — đọc trước khi thiết kế</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-ho-tro-pipeline-ra-sao-nam-cach-dung-cu-the">4. Hỗ trợ pipeline ra sao — năm cách dùng cụ thể</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#a-kiem-chung-dua-tren-mot-ky-vong-a-biet-phu-hop-nhat">A. Kiểm chứng dựa trên một kỳ vọng đã biết (phù hợp nhất)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#b-tu-ong-gan-nhan-ngoai-tuyen-cho-bo-phat-hien-yolo-gia-tri-dai-han-cao-nhat">B. Tự động gán nhãn ngoại tuyến cho bộ phát hiện YOLO (giá trị dài hạn cao nhất)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#c-locator-ngon-ngu-tu-nhien-cho-thu-vien-robot-framework-gia-tri-san-pham">C. Locator ngôn ngữ tự nhiên cho thư viện Robot Framework (giá trị sản phẩm)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#d-muon-ky-thuat-sieu-phan-giai-cua-ho-phuong-phap-luan">D. Mượn kỹ thuật siêu phân giải của họ (phương pháp luận)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#e-muon-phuong-phap-tong-hop-du-lieu-cua-ho-kha-thi-ngay-nhat">E. Mượn phương pháp tổng hợp dữ liệu của họ (khả thi ngay nhất)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-so-o-tich-hop">5. Sơ đồ tích hợp</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6-can-kiem-chung-gi-truoc-khi-xay">6. Cần kiểm chứng gì trước khi xây</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#7-buoc-tiep-theo">7. Bước tiếp theo</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Research</li>
+          <li class="breadcrumb-item">Model Comparisons</li>
+      <li class="breadcrumb-item active">Aria-UI integration (VI)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="aria-ui-cung-cap-nhung-gi-va-ho-tro-pipeline-cua-ta-ra-sao">Aria-UI: Cung cấp những gì, và hỗ trợ pipeline của ta ra sao<a class="headerlink" href="#aria-ui-cung-cap-nhung-gi-va-ho-tro-pipeline-cua-ta-ra-sao" title="Permanent link">¶</a></h1>
+<p>Đọc thực dụng bài báo <em>Aria-UI: Visual Grounding for GUI Instructions</em> — hợp đồng đầu vào/đầu ra chính xác, những gì nó làm được và không làm được, cùng các điểm tích hợp cụ thể vào pipeline Visual DOM.</p>
+<div class="admonition warning">
+<p class="admonition-title">Nguồn &amp; độ tin cậy</p>
+<p>Dựa trên bài báo <a href="https://arxiv.org/html/2412.16256v1">arXiv:2412.16256v1</a> (Yang, Wang, Li, Luo, Chen, Huang, Li — HKU &amp; Rhymes AI).
+ Chi tiết về <strong>mẫu prompt và định dạng chuỗi trả về chính xác</strong> thuộc về phần cài đặt mô hình, không có trong bài báo —
+ các mục gắn nhãn (cần kiểm chứng) phải được xác nhận với model card/repo chính thức trước khi viết mã.</p>
+</div>
+<h2 id="1-aria-ui-la-gi">1. Aria-UI là gì<a class="headerlink" href="#1-aria-ui-la-gi" title="Permanent link">¶</a></h2>
+<p>Aria-UI là mô hình ngôn ngữ–thị giác chuyên cho <strong>định vị phần tử GUI (grounding)</strong>: cho một ảnh chụp màn hình và
+một chỉ dẫn bằng ngôn ngữ tự nhiên, nó cho biết phần tử mục tiêu nằm <em>ở đâu</em> trên màn hình. Tiền đề thiết kế của nó —
+<strong>thuần thị giác, không dùng HTML và không dùng cây trợ năng</strong> — chính là phát biểu bài toán của đề tài chúng ta.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mô hình nền</strong></td>
+<td></td>
+<td>Aria — đa phương thức dạng MoE , chỉ 3,9B tham số kích hoạt (rẻ hơn mỗi lần suy luận so với mô hình dense 7B).</td>
+</tr>
+<tr>
+<td><strong>ScreenSpot</strong></td>
+<td>82.4%</td>
+<td>Độ chính xác grounding một bước, trung bình.</td>
+</tr>
+<tr>
+<td><strong>Độ phân giải tối đa</strong></td>
+<td>3920×2940</td>
+<td>Mở rộng từ 980×980 bằng cách chia ảnh thành khối, đệm giữ tỉ lệ (kiểu NaViT).</td>
+</tr>
+<tr>
+<td><strong>Quy mô huấn luyện</strong></td>
+<td>11,5 triệu</td>
+<td>mẫu trên 3,9 triệu phần tử — web, desktop và mobile (miền tổng quát).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-au-vao-nhan-nhung-gi">2. ĐẦU VÀO nhận những gì<a class="headerlink" href="#2-au-vao-nhan-nhung-gi" title="Permanent link">¶</a></h2>
+<p><strong>ĐẦU VÀO</strong>
+1. <strong>Một ảnh chụp GUI</strong> — độ phân giải bất kỳ tới 3920×2940; màn hình DPI cao được xử lý sẵn nhờ cơ chế chia khối.
+2. <strong>Một chỉ dẫn ngôn ngữ tự nhiên</strong> nêu <em>một</em> mục tiêu, ví dụ
+ <code>"click the Submit button"</code>, <code>"the search input field"</code>.
+3. <strong>(Tùy chọn) Lịch sử hành động</strong> — các bước trước dưới dạng văn bản hoặc ảnh chụp trước đó, cho phép grounding theo ngữ cảnh
+ ("giờ chạm mục thứ hai") (cần kiểm chứng định dạng).</p>
+<p><strong>ĐẦU RA</strong>
+- <strong>Tọa độ chuẩn hóa trong khoảng <code>[0, 1000]</code></strong> trỏ tới phần tử mục tiêu.
+- Thực chất là <strong>một vị trí / điểm</strong>, không phải cây có nhãn. (cần kiểm chứng: điểm hay hộp)
+- Một câu trả lời cho mỗi chỉ dẫn.</p>
+<h3 id="quy-oi-toa-o-ve-khong-gian-pixel-cua-ta">Quy đổi tọa độ về không gian pixel của ta<a class="headerlink" href="#quy-oi-toa-o-ve-khong-gian-pixel-cua-ta" title="Permanent link">¶</a></h3>
+<p>DOM của ta dùng biên pixel <code>[x1, y1, x2, y2]</code>. Aria-UI trả về giá trị chuẩn hóa 0–1000, nên:</p>
+<p><code>px = (x_aria / 1000) * chiều_rộng_ảnh
+py = (y_aria / 1000) * chiều_cao_ảnh</code></p>
+<div class="admonition danger">
+<p class="admonition-title">Điểm cần lưu ý nhất</p>
+<p>Mô hình grounding kiểu này trả về <strong>một điểm, không phải hộp bao (bounding box)</strong>. DOM của ta cần hộp.
+ Nghĩa là Aria-UI <em>không thể tự sinh hình học cho ta</em> — nó chỉ nói “phần tử nằm quanh đây”,
+ và tầng CV vẫn phải cung cấp hộp thật sự. May mắn là điều này khớp đúng với nguyên tắc kiến trúc của ta.</p>
+</div>
+<h2 id="3-lam-uoc-va-khong-lam-uoc-oc-truoc-khi-thiet-ke">3. Làm được và KHÔNG làm được — đọc trước khi thiết kế<a class="headerlink" href="#3-lam-uoc-va-khong-lam-uoc-oc-truoc-khi-thiet-ke" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Năng lực</th>
+<th>Hệ quả với chúng ta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ĐƯỢC</td>
+<td>Định vị phần tử được mô tả trên ảnh, không cần cây trợ năng</td>
+<td>Chạy được trên Qt/OpenGL/UI tùy biến — đúng mục tiêu của ta</td>
+</tr>
+<tr>
+<td>ĐƯỢC</td>
+<td>Xử lý màn hình độ phân giải rất cao</td>
+<td>Liên quan ADR-008 / ADR-012 (độ phân giải &amp; phóng đại)</td>
+</tr>
+<tr>
+<td>ĐƯỢC</td>
+<td>Hiểu tham chiếu ngôn ngữ tự nhiên ("nút xác nhận màu xanh")</td>
+<td>Cho phép locator dễ đọc cho Robot Framework</td>
+</tr>
+<tr>
+<td>ĐƯỢC</td>
+<td>Dùng lịch sử hành động làm ngữ cảnh</td>
+<td>Hữu ích cho luồng kiểm thử nhiều bước</td>
+</tr>
+<tr>
+<td>KHÔNG</td>
+<td>Liệt kê <em>toàn bộ</em> phần tử trên màn hình</td>
+<td><strong>Nó không phải bộ phát hiện.</strong> Nó trả lời “X ở đâu?”, không phải “trên màn hình có gì?” — nên không thay được UIED/YOLO</td>
+</tr>
+<tr>
+<td>KHÔNG</td>
+<td>Trả về cây phân cấp / DOM</td>
+<td>Đóng góp DOM của ta vẫn giữ được tính khác biệt</td>
+</tr>
+<tr>
+<td>KHÔNG</td>
+<td>Trả về hộp bao (chỉ trả điểm)</td>
+<td>CV vẫn phải sở hữu hình học</td>
+</tr>
+<tr>
+<td>KHÔNG</td>
+<td>Tự lập kế hoạch</td>
+<td>Bài báo nêu rõ nó phụ thuộc bộ lập kế hoạch bên ngoài và không có cơ chế sửa lỗi</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Cách hiểu then chốt</p>
+<p>Aria-UI là một <strong>công cụ truy vấn</strong> (“X ở đâu?”), không phải một <strong>bộ phát hiện</strong> (“liệt kê tất cả”).
+ Mọi ý tưởng tích hợp bên dưới đều bị chi phối bởi đúng sự thật này.</p>
+</div>
+<h2 id="4-ho-tro-pipeline-ra-sao-nam-cach-dung-cu-the">4. Hỗ trợ pipeline ra sao — năm cách dùng cụ thể<a class="headerlink" href="#4-ho-tro-pipeline-ra-sao-nam-cach-dung-cu-the" title="Permanent link">¶</a></h2>
+<h3 id="a-kiem-chung-dua-tren-mot-ky-vong-a-biet-phu-hop-nhat">A. Kiểm chứng dựa trên một kỳ vọng đã biết (phù hợp nhất)<a class="headerlink" href="#a-kiem-chung-dua-tren-mot-ky-vong-a-biet-phu-hop-nhat" title="Permanent link">¶</a></h3>
+<div class="admonition danger">
+<p class="admonition-title">Trước hết, cái bẫy: tính vòng lặp</p>
+<p>Nếu danh sách những thứ ta yêu cầu Aria-UI tìm lại <em>lấy từ chính đầu ra CV</em>, thì ta chỉ có thể tìm những phần tử
+ mà CV <strong>đã</strong> phát hiện — điều này triệt tiêu toàn bộ mục đích là tìm ra thứ CV <strong>đã bỏ sót</strong>.
+ Một cài đặt ngây thơ sẽ không tìm ra gì cả. Aria-UI <strong>không thể khám phá mù</strong>: nó là công cụ truy vấn,
+ nên ta buộc phải biết trước cần hỏi gì. Cách khắc phục không phải là lách qua giới hạn này, mà là <strong>đổi câu hỏi ta đặt ra</strong>.</p>
+</div>
+<h4 id="kham-pha-va-kiem-chung-at-ung-cau-hoi">Khám phá và kiểm chứng — đặt đúng câu hỏi<a class="headerlink" href="#kham-pha-va-kiem-chung-at-ung-cau-hoi" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Chế độ</th>
+<th>Câu hỏi</th>
+<th>Aria-UI có hợp không?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Khám phá</strong></td>
+<td>“Trên màn hình này có những phần tử nào?”</td>
+<td>KHÔNG — việc này cần bộ phát hiện/liệt kê (UIED/YOLO), không phải mô hình grounding</td>
+</tr>
+<tr>
+<td><strong>Kiểm chứng</strong></td>
+<td>“Phần tử X có tồn tại không, và hộp bao của nó có đúng không?”</td>
+<td>CÓ — đúng thế mạnh của nó</td>
+</tr>
+</tbody>
+</table>
+<p>Vậy nên tầng này <strong>không phải</strong> bộ <em>khám phá</em> lỗ hổng recall; nó là <strong>bộ kiểm chứng dựa trên một kỳ vọng đã biết</strong>.
+Cách định khung này cũng vững hơn về mặt học thuật: <em>“kiểm chứng DOM so với những gì các test thực sự cần”</em> là một đóng góp
+sắc nét hơn <em>“dùng VLM để tìm phần tử bị bỏ sót.”</em></p>
+<h4 id="danh-sach-muc-tieu-ky-vong-lay-tu-au">Danh sách mục tiêu kỳ vọng lấy từ đâu?<a class="headerlink" href="#danh-sach-muc-tieu-ky-vong-lay-tu-au" title="Permanent link">¶</a></h4>
+<p>Bốn nguồn khả thi, xếp theo mức hữu ích với chúng ta:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Nguồn</th>
+<th>Vì sao thoát khỏi tính vòng lặp</th>
+<th>Hạn chế</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Text OCR</strong> (tốt nhất cho điểm đau CV của ta)</td>
+<td>OCR và phát hiện phần tử là <strong>hai tầng tách biệt</strong>. OCR vẫn đọc được chữ ngay cả ở nơi bộ phát hiện phần tử không tạo được hộp đúng — nhờ đó cung cấp các mục tiêu mà tầng tạo hộp đã bỏ sót.</td>
+<td>Không tìm được phần tử chỉ có biểu tượng, không có chữ.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Chính kịch bản test</strong> (mạnh nhất cho công cụ kiểm thử)</td>
+<td>Hoàn toàn độc lập với CV. Trong kiểm thử GUI, ta <em>vốn đã biết</em> mình đang tìm gì — bài test nói rõ điều đó.</td>
+<td>Chỉ bao phủ các phần tử mà test có nhắc tới.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>DOM chuẩn / DOM tham chiếu</strong></td>
+<td>Đến từ một bản build tốt đã biết trước đó, không phải từ CV của lần chạy này.</td>
+<td>Cần có đường cơ sở sẵn; chỉ dùng cho kịch bản hồi quy.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Từ vựng theo miền</strong> (phương án thô)</td>
+<td>Một danh sách cố định, ví dụ với máy tính bỏ túi: chữ số 0–9, toán tử, <code>MC/MR/MS</code>.</td>
+<td>Không tổng quát hóa được; khó bảo vệ trong luận văn.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="vi-du-thuc-te-bai-toan-gop-nut-cua-may-tinh-bo-tui">Ví dụ thực tế — bài toán gộp nút của máy tính bỏ túi<a class="headerlink" href="#vi-du-thuc-te-bai-toan-gop-nut-cua-may-tinh-bo-tui" title="Permanent link">¶</a></h4>
+<p>Đây đúng là lỗi đã ghi trong ADR-009 (các nút liền kề bị phát hiện thành một phần tử), và nguồn&nbsp;1 giải quyết được:</p>
+<p>`Bộ phát hiện phần tử → MỘT hộp bị gộp E7
+OCR → "4", "5", "7", "8" (bốn cụm text riêng biệt)</p>
+<p>expected_targets = ["4", "5", "7", "8"] # từ OCR, không phải từ tầng tạo hộp</p>
+<p>for target in expected_targets:
+ pt = aria_ui.ground(screenshot, target) # → một điểm
+ box = find_cv_box_containing(pt)</p>
+<p>if box is None: → phần tử có tồn tại nhưng CV KHÔNG tạo hộp → quét lại vùng
+ elif box bị nhiều target cùng trỏ tới:
+ → HỘP BỊ GỘP: 4 điểm nằm trong E7 → TÁCH nó ra
+ else: → xác nhận hộp + gắn nhãn ngữ nghĩa`</p>
+<p>Bốn điểm phân biệt cùng rơi vào một hộp là bằng chứng trực tiếp, đo đếm được rằng hộp đó phải được tách —
+biến một phán đoán chủ quan kiểu “VLM thấy hình như bị gộp” thành một dữ kiện hình học.</p>
+<p>Cách này khớp với khe <code>SLMAdvisor</code> sẵn có (ADR-009) và <strong>tôn trọng nguyên tắc cốt lõi</strong>: Aria-UI chỉ trỏ;
+CV vẫn tạo ra hộp cuối cùng.</p>
+<div class="admonition note">
+<p class="admonition-title">Phân vai thực dụng</p>
+<p>Dùng <strong>nguồn 1 (text OCR)</strong> cho việc kiểm chứng tách/gộp bên trong pipeline — không cần đầu vào bổ sung và đánh trúng
+ bài toán máy tính bỏ túi đã biết. Dùng <strong>nguồn 2 (kịch bản test)</strong> cho việc kiểm chứng ở tầng Robot Framework.
+ Hãy để việc khám phá mù cho UIED/YOLO — đừng bao giờ giao cho mô hình grounding.</p>
+</div>
+<h3 id="b-tu-ong-gan-nhan-ngoai-tuyen-cho-bo-phat-hien-yolo-gia-tri-dai-han-cao-nhat">B. Tự động gán nhãn ngoại tuyến cho bộ phát hiện YOLO (giá trị dài hạn cao nhất)<a class="headerlink" href="#b-tu-ong-gan-nhan-ngoai-tuyen-cho-bo-phat-hien-yolo-gia-tri-dai-han-cao-nhat" title="Permanent link">¶</a></h3>
+<p>Nối thẳng với hướng còn dang dở từ tháng 4 (dữ liệu tổng hợp + YOLO). Dùng Aria-UI <strong>một lần, ngoại tuyến</strong> để hỗ trợ gán nhãn
+ảnh chụp thật, rồi huấn luyện bộ phát hiện nhỏ chạy tốt trên CPU của ta. Ta chưng cất năng lực của nó vào một mô hình nhanh và
+<strong>không thêm phụ thuộc GPU lúc chạy kiểm thử</strong>. Đầu ra dạng điểm của nó kết hợp tốt với hộp do CV đề xuất: Aria-UI chọn
+<em>hộp nào</em> là "nút Submit", còn CV cung cấp chính cái hộp đó.</p>
+<h3 id="c-locator-ngon-ngu-tu-nhien-cho-thu-vien-robot-framework-gia-tri-san-pham">C. Locator ngôn ngữ tự nhiên cho thư viện Robot Framework (giá trị sản phẩm)<a class="headerlink" href="#c-locator-ngon-ngu-tu-nhien-cho-thu-vien-robot-framework-gia-tri-san-pham" title="Permanent link">¶</a></h3>
+<p>Aria-UI biến <code>"the Submit button"</code> thành một vị trí — đúng bài toán phân giải locator mà thư viện RF của ta giải quyết.
+Nó có thể đóng vai <strong>chiến lược locator dự phòng</strong> khi locator dựa trên DOM thất bại — tăng độ bền mà không trở thành đường đi chính.</p>
+<h3 id="d-muon-ky-thuat-sieu-phan-giai-cua-ho-phuong-phap-luan">D. Mượn kỹ thuật siêu phân giải của họ (phương pháp luận)<a class="headerlink" href="#d-muon-ky-thuat-sieu-phan-giai-cua-ho-phuong-phap-luan" title="Permanent link">¶</a></h3>
+<p>Họ mở rộng 980×980 → 3920×2940 bằng cách <strong>chia ảnh thành khối kèm đệm giữ tỉ lệ</strong>.
+Ta gặp đúng bức tường đó (phần tử nhỏ ở DPI cao) và đã xử lý bằng ngưỡng theo độ phân giải (ADR-008) và phóng đại OCR (ADR-012).
+Cách của họ là một phương án thay thế đáng trích dẫn, và có thể mượn được cho khâu tiền xử lý.</p>
+<h3 id="e-muon-phuong-phap-tong-hop-du-lieu-cua-ho-kha-thi-ngay-nhat">E. Mượn phương pháp tổng hợp dữ liệu của họ (khả thi ngay nhất)<a class="headerlink" href="#e-muon-phuong-phap-tong-hop-du-lieu-cua-ho-kha-thi-ngay-nhat" title="Permanent link">¶</a></h3>
+<p>Đóng góp nổi bật của bài báo là quy trình tổng hợp <strong>chỉ dẫn đa dạng, giống người, gắn kèm mô tả phần tử</strong> ở quy mô lớn,
+bao gồm một <strong>agent duyệt tự động</strong> để thu thập phần tử desktop. Điều này áp dụng trực tiếp cho việc sinh dữ liệu tổng hợp của ta
+và có thể còn giá trị hơn cả trọng số mô hình.</p>
+<h2 id="5-so-o-tich-hop">5. Sơ đồ tích hợp<a class="headerlink" href="#5-so-o-tich-hop" title="Permanent link">¶</a></h2>
+<p><code>┌────────────────────────────────────────────────┐
+Ảnh chụp ─┤ PHÁT HIỆN CV (UIED + OCR + symbol + YOLO) │ ← sở hữu hình học (hộp)
+ └───────────────────┬────────────────────────────┘
+ │ elements[] kèm bounds
+ ┌───────────────────▼────────────────────────────┐
+ │ TẦNG KIỂM CHỨNG [MỚI / Aria-UI] │
+ │ • ground các mục tiêu kỳ vọng → điểm │
+ │ • điểm nằm trong hộp? → xác nhận + gắn nhãn │
+ │ • điểm không có hộp? → THIẾU RECALL, quét lại│
+ │ • hộp không ai trỏ tới → có thể là nhiễu │
+ └───────────────────┬────────────────────────────┘
+ │ phần tử đã kiểm chứng
+ ┌───────────────────▼────────────────────────────┐
+ │ PHÂN CẤP THÔ → LLM REFINER → TRÌNH BIÊN DỊCH DOM│ ← chỉ lo ngữ nghĩa
+ └───────────────────┬────────────────────────────┘
+ ▼
+ DOM JSON → Thư viện Robot Framework
+ └ locator NL dự phòng (Aria-UI)</code></p>
+<p>Aria-UI nằm <strong>bên cạnh</strong> <code>SLMAdvisor</code> hiện có như một chiến lược có thể chọn — không phải xóa bỏ bộ rà soát 3B đang chạy tốt.
+Hãy để các con số đánh giá quyết định cái nào tồn tại.</p>
+<h2 id="6-can-kiem-chung-gi-truoc-khi-xay">6. Cần kiểm chứng gì trước khi xây<a class="headerlink" href="#6-can-kiem-chung-gi-truoc-khi-xay" title="Permanent link">¶</a></h2>
+<ul>
+<li>
+<p><strong>Điểm hay hộp?</strong> Xác nhận mô hình phát hành có thể xuất hộp bao hay chỉ ra điểm tâm. Điều này thay đổi thiết kế.</p>
+</li>
+<li>
+<p><strong>Định dạng prompt/phản hồi chính xác</strong> — bài báo chỉ nêu dải tọa độ, không nêu mẫu chuỗi. Kiểm tra model card/repo chính thức.</p>
+</li>
+<li>
+<p><strong>Giấy phép và khả năng tải trọng số</strong> — phải xác nhận trước khi phụ thuộc vào nó.</p>
+</li>
+<li>
+<p><strong>Phần cứng</strong> — MoE 3,9B kích hoạt rẻ hơn dense 7B, nhưng VRAM vẫn phải chứa toàn bộ tập chuyên gia. Cần đo độ trễ thực mỗi màn hình.</p>
+</li>
+<li>
+<p><strong>Kiểm tra miền dữ liệu</strong> — chạy trên ảnh chụp của <em>chính ta</em> (máy tính bỏ túi, desktop, Qt). Việc nó được huấn luyện đa miền khiến khả năng thành công cao hơn nhiều so với mô hình chỉ có dữ liệu ô tô, nhưng đây vẫn là cửa ải bắt buộc.</p>
+</li>
+</ul>
+<h2 id="7-buoc-tiep-theo">7. Bước tiếp theo<a class="headerlink" href="#7-buoc-tiep-theo" title="Permanent link">¶</a></h2>
+<ul>
+<li>
+<p>Chạy <strong>kiểm tra miền</strong> trên 10–20 ảnh chụp của ta; đo tần suất điểm trả về rơi đúng vào hộp CV tương ứng.</p>
+</li>
+<li>
+<p>Nếu tỉ lệ trúng tốt → làm mẫu thử <strong>cách dùng A (kiểm chứng lỗ hổng recall)</strong> sau một cờ bật/tắt, chạy song song advisor hiện có.</p>
+</li>
+<li>
+<p>Song song, khai thác <strong>phần tổng hợp dữ liệu (cách dùng E)</strong> cho công việc dataset YOLO.</p>
+</li>
+<li>
+<p>Ghi lại kết quả thành một ADR mới (đề xuất: <em>ADR-015 — Tầng kiểm chứng bằng mô hình grounding</em>).</p>
+</li>
+</ul>
+<div class="admonition success">
+<p class="admonition-title">Tóm tắt một dòng</p>
+<p>Aria-UI cho ta <strong>“ảnh chụp + mô tả → nó nằm ở đâu”</strong>. Nó không dựng được DOM và không liệt kê được phần tử,
+ nên không thay thế CV — nhưng là một <strong>bộ kiểm chứng, bộ tự gán nhãn và locator ngôn ngữ tự nhiên</strong> rất tốt,
+ và phương pháp tổng hợp dữ liệu của nó có thể là phần giá trị nhất của bài báo đối với ta.</p>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../aria-ui-integration-en/" class="btn btn-neutral float-left" title="Aria-UI integration (EN)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../elam-7b-analysis-en/" class="btn btn-neutral float-right" title="ELAM-7B analysis (EN)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../aria-ui-integration-en/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../elam-7b-analysis-en/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

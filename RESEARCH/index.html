@@ -1,0 +1,1628 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/RESEARCH/">
+      <link rel="shortcut icon" href="../img/favicon.ico">
+    <title>VLM Study - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "VLM Study";
+        var properdocs_page_input_path = "RESEARCH.md";
+        var properdocs_page_url = "/vizdom/RESEARCH/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">VLM Study</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#models-under-evaluation">Models Under Evaluation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#tested-vlm-models">Tested VLM Models</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#model-capabilities">Model Capabilities</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#evaluation-methodology">Evaluation Methodology</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#test-protocol">Test Protocol</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#evaluation-metrics">Evaluation Metrics</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#1-detection-metrics">1. Detection Metrics</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#2-localization-metrics">2. Localization Metrics</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#3-classification-metrics">3. Classification Metrics</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#4-efficiency-metrics">4. Efficiency Metrics</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#iou-intersection-over-union-calculation">IoU (Intersection over Union) Calculation</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#research-scripts">Research Scripts</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-llm-refinement-testing-researchtest_llm_refinementpy">1. LLM Refinement Testing (research/test_llm_refinement.py)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-qwen2-vl-testing-researchtest_qwen_vlpy">2. Qwen2-VL Testing (research/test_qwen_vl.py)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-multi-model-vlm-testing-researchtest_vlm_modelspy">3. Multi-Model VLM Testing (research/test_vlm_models.py)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#florence-2-tasks">Florence-2 Tasks</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#evaluation-procedure">Evaluation Procedure</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#step-1-prepare-test-dataset">Step 1: Prepare Test Dataset</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-2-run-model-inference">Step 2: Run Model Inference</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-3-compute-evaluation-metrics">Step 3: Compute Evaluation Metrics</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-4-compare-models">Step 4: Compare Models</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#expected-results-format">Expected Results Format</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#model-output-schema">Model Output Schema</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#evaluation-report-schema">Evaluation Report Schema</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#comparison-vlm-vs-cv-pipeline">Comparison: VLM vs CV Pipeline</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#when-to-use-each">When to Use Each</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#running-experiments">Running Experiments</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#hardware-requirements">Hardware Requirements</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#quick-start">Quick Start</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#research-findings-summary">Research Findings (Summary)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#critical-finding-1-vlm-hallucination-problem">Critical Finding #1: VLM Hallucination Problem</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#types-of-hallucination-observed">Types of Hallucination Observed</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#hallucination-examples">Hallucination Examples</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#hallucination-rate-by-model">Hallucination Rate by Model</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#impact-on-evaluation">Impact on Evaluation</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#hallucination-detection-strategies">Hallucination Detection Strategies</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#why-vlms-hallucinate">Why VLMs Hallucinate</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#mitigation-strategies">Mitigation Strategies</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#critical-finding-2-button-detection-problem">Critical Finding #2: Button Detection Problem</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#problem-analysis">Problem Analysis</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#evidence-from-code">Evidence from Code</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#why-vlms-fail-at-button-detection">Why VLMs Fail at Button Detection</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#impact-on-accuracy">Impact on Accuracy</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#workaround-limitations">Workaround Limitations</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#preliminary-observations">Preliminary Observations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#comparison-button-detection-methods">Comparison: Button Detection Methods</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#recommendations">Recommendations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#open-issues">Open Issues</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#research-area-3-llm-post-processing-refinement">Research Area #3: LLM Post-Processing Refinement</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#research-objective">Research Objective</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#expected-benefits">Expected Benefits</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#trade-offs">Trade-offs</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#test-protocol_1">Test Protocol</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#running-the-test">Running the Test</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#summary-vlm-limitations-for-ui-detection">Summary: VLM Limitations for UI Detection</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#file-structure">File Structure</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#references">References</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Research</li>
+      <li class="breadcrumb-item active">VLM Study</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="research-vision-language-models-for-gui-element-detection">Research: Vision-Language Models for GUI Element Detection<a class="headerlink" href="#research-vision-language-models-for-gui-element-detection" title="Permanent link">¶</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¶</a></h2>
+<p>This document describes the research experiments evaluating Vision-Language Models (VLMs) for GUI element detection. The goal is to assess whether VLMs can be used as an alternative or complement to the traditional CV pipeline (EasyOCR + UIED).</p>
+<p><strong>Research Question</strong>: Can Vision-Language Models accurately detect and localize UI elements in screenshots?</p>
+<hr>
+<h2 id="models-under-evaluation">Models Under Evaluation<a class="headerlink" href="#models-under-evaluation" title="Permanent link">¶</a></h2>
+<h3 id="tested-vlm-models">Tested VLM Models<a class="headerlink" href="#tested-vlm-models" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Provider</th>
+<th>Size</th>
+<th>VRAM</th>
+<th>Grounding</th>
+<th>Strengths</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Qwen2-VL-2B</strong></td>
+<td>Alibaba</td>
+<td>2B</td>
+<td>~5GB</td>
+<td>Yes</td>
+<td>Balanced size/performance</td>
+</tr>
+<tr>
+<td><strong>Qwen2-VL-7B</strong></td>
+<td>Alibaba</td>
+<td>7B</td>
+<td>~15GB</td>
+<td>Yes</td>
+<td>Higher accuracy</td>
+</tr>
+<tr>
+<td><strong>Florence-2-base</strong></td>
+<td>Microsoft</td>
+<td>0.2B</td>
+<td>~2GB</td>
+<td>Excellent</td>
+<td>Best for visual grounding</td>
+</tr>
+<tr>
+<td><strong>Florence-2-large</strong></td>
+<td>Microsoft</td>
+<td>0.7B</td>
+<td>~4GB</td>
+<td>Excellent</td>
+<td>Better accuracy than base</td>
+</tr>
+<tr>
+<td><strong>Phi-3.5-Vision</strong></td>
+<td>Microsoft</td>
+<td>4B</td>
+<td>~8GB</td>
+<td>Limited</td>
+<td>Good general understanding</td>
+</tr>
+<tr>
+<td><strong>MiniCPM-V-2.6</strong></td>
+<td>OpenBMB</td>
+<td>2.6B</td>
+<td>~8GB</td>
+<td>Limited</td>
+<td>Efficient multimodal</td>
+</tr>
+<tr>
+<td><strong>InternVL2-2B</strong></td>
+<td>Shanghai AI</td>
+<td>2B</td>
+<td>~5GB</td>
+<td>Limited</td>
+<td>Strong visual understanding</td>
+</tr>
+<tr>
+<td><strong>InternVL2-8B</strong></td>
+<td>Shanghai AI</td>
+<td>8B</td>
+<td>~16GB</td>
+<td>Limited</td>
+<td>High accuracy</td>
+</tr>
+</tbody>
+</table>
+<h3 id="model-capabilities">Model Capabilities<a class="headerlink" href="#model-capabilities" title="Permanent link">¶</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                    VLM CAPABILITY COMPARISON                            │
+└─────────────────────────────────────────────────────────────────────────┘
+
+                    │ Object    │ OCR with  │ Precise   │ UI Element │
+      Model         │ Detection │ Regions   │ Grounding │ Classification │
+────────────────────┼───────────┼───────────┼───────────┼────────────────┤
+Qwen2-VL-2B/7B      │    ★★★    │    ★★★    │    ★★☆    │      ★★☆       │
+Florence-2          │    ★★★    │    ★★★    │    ★★★    │      ★★☆       │
+Phi-3.5-Vision      │    ★★☆    │    ★★☆    │    ★☆☆    │      ★★★       │
+MiniCPM-V           │    ★★☆    │    ★★☆    │    ★☆☆    │      ★★☆       │
+InternVL2           │    ★★★    │    ★★☆    │    ★☆☆    │      ★★★       │
+
+★★★ = Excellent   ★★☆ = Good   ★☆☆ = Limited
+</code></pre>
+<hr>
+<h2 id="evaluation-methodology">Evaluation Methodology<a class="headerlink" href="#evaluation-methodology" title="Permanent link">¶</a></h2>
+<h3 id="test-protocol">Test Protocol<a class="headerlink" href="#test-protocol" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Input</strong>: GUI screenshot (PNG/JPG)</li>
+<li><strong>Task</strong>: Detect all UI elements with bounding boxes</li>
+<li><strong>Output</strong>: JSON array of detected elements</li>
+</ol>
+<h3 id="evaluation-metrics">Evaluation Metrics<a class="headerlink" href="#evaluation-metrics" title="Permanent link">¶</a></h3>
+<h4 id="1-detection-metrics">1. Detection Metrics<a class="headerlink" href="#1-detection-metrics" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Formula</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Precision</strong></td>
+<td>TP / (TP + FP)</td>
+<td>Of predictions, how many are correct</td>
+</tr>
+<tr>
+<td><strong>Recall</strong></td>
+<td>TP / (TP + FN)</td>
+<td>Of ground truth, how many found</td>
+</tr>
+<tr>
+<td><strong>F1 Score</strong></td>
+<td>2 × P × R / (P + R)</td>
+<td>Harmonic mean of P and R</td>
+</tr>
+<tr>
+<td><strong>mAP@50</strong></td>
+<td>Mean AP at IoU=0.5</td>
+<td>Standard object detection metric</td>
+</tr>
+<tr>
+<td><strong>mAP@75</strong></td>
+<td>Mean AP at IoU=0.75</td>
+<td>Stricter overlap requirement</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-localization-metrics">2. Localization Metrics<a class="headerlink" href="#2-localization-metrics" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Formula</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mean IoU</strong></td>
+<td>Σ IoU(pred, gt) / N</td>
+<td>Average bounding box overlap</td>
+</tr>
+<tr>
+<td><strong>Center Error</strong></td>
+<td>Σ dist(pred_center, gt_center) / N</td>
+<td>Average center point distance</td>
+</tr>
+<tr>
+<td><strong>Size Error</strong></td>
+<td>Σ</td>
+<td>pred_area - gt_area</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-classification-metrics">3. Classification Metrics<a class="headerlink" href="#3-classification-metrics" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type Accuracy</strong></td>
+<td>Correct element type classification</td>
+</tr>
+<tr>
+<td><strong>Text Accuracy</strong></td>
+<td>OCR text recognition accuracy (CER/WER)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="4-efficiency-metrics">4. Efficiency Metrics<a class="headerlink" href="#4-efficiency-metrics" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Inference Time</strong></td>
+<td>Seconds per image</td>
+</tr>
+<tr>
+<td><strong>VRAM Usage</strong></td>
+<td>GPU memory required</td>
+</tr>
+<tr>
+<td><strong>Throughput</strong></td>
+<td>Images per second</td>
+</tr>
+</tbody>
+</table>
+<h3 id="iou-intersection-over-union-calculation">IoU (Intersection over Union) Calculation<a class="headerlink" href="#iou-intersection-over-union-calculation" title="Permanent link">¶</a></h3>
+<pre><code>        ┌─────────────────┐
+        │   Ground Truth  │
+        │   ┌─────────┐   │
+        │   │ Overlap │   │
+        └───┴─────────┴───┘
+            └─────────┘
+            Prediction
+
+IoU = Area of Overlap / Area of Union
+
+Matching Threshold:
+- IoU ≥ 0.5 → True Positive (standard)
+- IoU ≥ 0.75 → True Positive (strict)
+</code></pre>
+<hr>
+<h2 id="research-scripts">Research Scripts<a class="headerlink" href="#research-scripts" title="Permanent link">¶</a></h2>
+<h3 id="1-llm-refinement-testing-researchtest_llm_refinementpy">1. LLM Refinement Testing (<code>research/test_llm_refinement.py</code>)<a class="headerlink" href="#1-llm-refinement-testing-researchtest_llm_refinementpy" title="Permanent link">¶</a></h3>
+<p>Tests LLM as a post-processing step to refine CV pipeline results.</p>
+<pre><code class="language-bash"># Test with Ollama (recommended for local testing)
+python research/test_llm_refinement.py screenshot.png --backend ollama
+
+# Test with OpenAI API
+python research/test_llm_refinement.py screenshot.png --backend openai
+
+# Test with local HuggingFace model
+python research/test_llm_refinement.py screenshot.png --backend hf --model qwen2.5-3b
+
+# Generate before/after visualization
+python research/test_llm_refinement.py screenshot.png --backend ollama -o results/
+
+# Batch evaluation on multiple images
+python research/test_llm_refinement.py test_images/ --backend ollama --batch
+
+# Save results to JSON
+python research/test_llm_refinement.py screenshot.png --backend ollama --json results.json
+</code></pre>
+<p><strong>Research Questions</strong>:
+1. Can LLMs fix common CV detection errors (split text, merged buttons)?
+2. Does LLM refinement improve element classification accuracy?
+3. What is the trade-off between accuracy improvement and inference time?
+4. Which LLM backend works best for this task?</p>
+<p><strong>Supported Backends</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Backend</th>
+<th>Model</th>
+<th>Local/Cloud</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ollama</code></td>
+<td>qwen2.5:3b</td>
+<td>Local</td>
+<td>Recommended for testing</td>
+</tr>
+<tr>
+<td><code>openai</code></td>
+<td>gpt-4o-mini</td>
+<td>Cloud</td>
+<td>Best quality, API costs</td>
+</tr>
+<tr>
+<td><code>hf</code></td>
+<td>Qwen2.5-3B</td>
+<td>Local</td>
+<td>Needs GPU (4-8GB VRAM)</td>
+</tr>
+<tr>
+<td><code>qwen</code></td>
+<td>Qwen2.5-3B</td>
+<td>Local</td>
+<td>Same as hf</td>
+</tr>
+<tr>
+<td><code>phi</code></td>
+<td>Phi-3.5-mini</td>
+<td>Local</td>
+<td>Alternative local model</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Output Metrics</strong>:</p>
+<pre><code class="language-json">{
+  "cv_pipeline": {
+    "element_count": 45,
+    "time_sec": 2.1
+  },
+  "llm_refinement": {
+    "element_count": 42,
+    "time_sec": 1.8,
+    "backend": "ollama"
+  },
+  "edits": {
+    "total": 5,
+    "merge": 2,
+    "split": 0,
+    "retype": 1,
+    "delete": 2,
+    "role": 0
+  }
+}
+</code></pre>
+<hr>
+<h3 id="2-qwen2-vl-testing-researchtest_qwen_vlpy">2. Qwen2-VL Testing (<code>research/test_qwen_vl.py</code>)<a class="headerlink" href="#2-qwen2-vl-testing-researchtest_qwen_vlpy" title="Permanent link">¶</a></h3>
+<p>Tests Qwen2-VL models with different detection modes.</p>
+<pre><code class="language-bash"># Simple description mode
+python research/test_qwen_vl.py screenshot.png --model 2b --mode simple
+
+# JSON detection mode
+python research/test_qwen_vl.py screenshot.png --model 2b --mode json -o viz.png
+
+# Grounding mode (precise bboxes)
+python research/test_qwen_vl.py screenshot.png --model 7b --mode grounding -o viz.png
+
+# CPU inference
+python research/test_qwen_vl.py screenshot.png --model 2b --no-gpu
+</code></pre>
+<p><strong>Detection Modes</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Description</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>simple</code></td>
+<td>Natural language description</td>
+<td>Text description</td>
+</tr>
+<tr>
+<td><code>json</code></td>
+<td>Structured JSON detection</td>
+<td>JSON array with bboxes</td>
+</tr>
+<tr>
+<td><code>grounding</code></td>
+<td>Special grounding tokens</td>
+<td>Precise coordinates</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Grounding Token Format</strong>:</p>
+<pre><code>&lt;|object_ref_start|&gt;button: OK&lt;|object_ref_end|&gt;&lt;|box_start|&gt;(100,200),(150,230)&lt;|box_end|&gt;
+</code></pre>
+<h3 id="3-multi-model-vlm-testing-researchtest_vlm_modelspy">3. Multi-Model VLM Testing (<code>research/test_vlm_models.py</code>)<a class="headerlink" href="#3-multi-model-vlm-testing-researchtest_vlm_modelspy" title="Permanent link">¶</a></h3>
+<p>Tests multiple VLM models with unified interface.</p>
+<pre><code class="language-bash"># List available models
+python research/test_vlm_models.py --list-models
+
+# Test Florence-2 (recommended for grounding)
+python research/test_vlm_models.py screenshot.png --model florence-2-base -o viz.png
+
+# Test Qwen2-VL
+python research/test_vlm_models.py screenshot.png --model qwen2-vl-2b -o viz.png
+
+# Test Phi-3.5-Vision
+python research/test_vlm_models.py screenshot.png --model phi-3.5-vision -o viz.png
+
+# Test InternVL2
+python research/test_vlm_models.py screenshot.png --model internvl2-2b -o viz.png
+
+# CPU inference
+python research/test_vlm_models.py screenshot.png --model florence-2-base --no-gpu
+</code></pre>
+<p><strong>Available Models</strong>:</p>
+<pre><code>qwen2-vl-2b      - Qwen/Qwen2-VL-2B-Instruct      (VRAM: ~5GB)
+qwen2-vl-7b      - Qwen/Qwen2-VL-7B-Instruct      (VRAM: ~15GB)
+florence-2-base  - microsoft/Florence-2-base      (VRAM: ~2GB)
+florence-2-large - microsoft/Florence-2-large     (VRAM: ~4GB)
+phi-3.5-vision   - microsoft/Phi-3.5-vision       (VRAM: ~8GB)
+minicpm-v-2.6    - openbmb/MiniCPM-V-2_6          (VRAM: ~8GB)
+internvl2-2b     - OpenGVLab/InternVL2-2B         (VRAM: ~5GB)
+internvl2-8b     - OpenGVLab/InternVL2-8B         (VRAM: ~16GB)
+</code></pre>
+<hr>
+<h2 id="florence-2-tasks">Florence-2 Tasks<a class="headerlink" href="#florence-2-tasks" title="Permanent link">¶</a></h2>
+<p>Florence-2 supports multiple specialized tasks for GUI analysis:</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Description</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;OD&gt;</code></td>
+<td>Object Detection</td>
+<td>Find all objects with labels</td>
+</tr>
+<tr>
+<td><code>&lt;REGION_PROPOSAL&gt;</code></td>
+<td>Region Proposals</td>
+<td>Find clickable/interactive regions</td>
+</tr>
+<tr>
+<td><code>&lt;OCR_WITH_REGION&gt;</code></td>
+<td>OCR with Regions</td>
+<td>Extract text with bounding boxes</td>
+</tr>
+<tr>
+<td><code>&lt;DENSE_REGION_CAPTION&gt;</code></td>
+<td>Dense Captioning</td>
+<td>Caption each region</td>
+</tr>
+<tr>
+<td><code>&lt;CAPTION_TO_PHRASE_GROUNDING&gt;</code></td>
+<td>Phrase Grounding</td>
+<td>Find specific UI elements</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Output (Florence-2)</strong>:</p>
+<pre><code class="language-json">{
+  "object_detection": {
+    "bboxes": [[100, 50, 200, 90], [300, 100, 450, 140]],
+    "labels": ["button", "text field"]
+  },
+  "region_proposals": {
+    "bboxes": [[50, 50, 250, 300], [300, 50, 500, 300]],
+    "labels": ["region_0", "region_1"]
+  },
+  "ocr": {
+    "quad_boxes": [[100, 60, 190, 60, 190, 85, 100, 85]],
+    "labels": ["Submit"]
+  }
+}
+</code></pre>
+<hr>
+<h2 id="evaluation-procedure">Evaluation Procedure<a class="headerlink" href="#evaluation-procedure" title="Permanent link">¶</a></h2>
+<h3 id="step-1-prepare-test-dataset">Step 1: Prepare Test Dataset<a class="headerlink" href="#step-1-prepare-test-dataset" title="Permanent link">¶</a></h3>
+<p>Create a test dataset with ground truth annotations:</p>
+<pre><code>test_data/
+├── images/
+│   ├── calculator.png
+│   ├── notepad.png
+│   └── browser.png
+└── annotations/
+    ├── calculator.json
+    ├── notepad.json
+    └── browser.json
+</code></pre>
+<p><strong>Ground Truth Format</strong>:</p>
+<pre><code class="language-json">{
+  "image": "calculator.png",
+  "image_size": [800, 600],
+  "elements": [
+    {
+      "id": "E1",
+      "type": "button",
+      "bbox": [100, 200, 150, 240],
+      "text": "7"
+    },
+    {
+      "id": "E2",
+      "type": "button",
+      "bbox": [160, 200, 210, 240],
+      "text": "8"
+    }
+  ]
+}
+</code></pre>
+<h3 id="step-2-run-model-inference">Step 2: Run Model Inference<a class="headerlink" href="#step-2-run-model-inference" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Run VLM detection
+python research/test_vlm_models.py test_data/images/calculator.png \
+    --model florence-2-base \
+    -o results/florence2_calculator.png \
+    &gt; results/florence2_calculator.json
+</code></pre>
+<h3 id="step-3-compute-evaluation-metrics">Step 3: Compute Evaluation Metrics<a class="headerlink" href="#step-3-compute-evaluation-metrics" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">from visual_dom.evaluation import VisualDOMEvaluator, EvaluationConfig
+
+config = EvaluationConfig(iou_threshold=0.5)
+evaluator = VisualDOMEvaluator(config)
+
+# Compare VLM output to ground truth
+result = evaluator.evaluate_from_files(
+    predicted="results/florence2_calculator.json",
+    ground_truth="test_data/annotations/calculator.json"
+)
+
+print(f"Precision: {result.element_metrics.precision:.2%}")
+print(f"Recall: {result.element_metrics.recall:.2%}")
+print(f"F1 Score: {result.element_metrics.f1_score:.2%}")
+print(f"Mean IoU: {result.element_metrics.mean_iou:.2%}")
+</code></pre>
+<h3 id="step-4-compare-models">Step 4: Compare Models<a class="headerlink" href="#step-4-compare-models" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Run all models on same test image
+for model in florence-2-base qwen2-vl-2b phi-3.5-vision; do
+    echo "Testing $model..."
+    python research/test_vlm_models.py test_image.png \
+        --model $model \
+        -o "results/${model}_output.png" \
+        &gt; "results/${model}_output.json"
+done
+</code></pre>
+<hr>
+<h2 id="expected-results-format">Expected Results Format<a class="headerlink" href="#expected-results-format" title="Permanent link">¶</a></h2>
+<h3 id="model-output-schema">Model Output Schema<a class="headerlink" href="#model-output-schema" title="Permanent link">¶</a></h3>
+<pre><code class="language-json">{
+  "model": "florence-2-base",
+  "image": "screenshot.png",
+  "image_size": [1920, 1080],
+  "inference_time_sec": 1.5,
+  "elements": [
+    {
+      "type": "button",
+      "bbox": [100, 200, 250, 240],
+      "text": "Submit",
+      "confidence": 0.95
+    },
+    {
+      "type": "input",
+      "bbox": [100, 100, 400, 140],
+      "text": "",
+      "confidence": 0.88
+    }
+  ]
+}
+</code></pre>
+<h3 id="evaluation-report-schema">Evaluation Report Schema<a class="headerlink" href="#evaluation-report-schema" title="Permanent link">¶</a></h3>
+<pre><code class="language-json">{
+  "model": "florence-2-base",
+  "test_images": 10,
+  "metrics": {
+    "detection": {
+      "precision": 0.85,
+      "recall": 0.78,
+      "f1_score": 0.81,
+      "mAP_50": 0.75,
+      "mAP_75": 0.62
+    },
+    "localization": {
+      "mean_iou": 0.72,
+      "center_error_px": 8.5,
+      "size_error_pct": 0.15
+    },
+    "classification": {
+      "type_accuracy": 0.82,
+      "text_cer": 0.05,
+      "text_wer": 0.12
+    },
+    "efficiency": {
+      "inference_time_sec": 1.5,
+      "vram_gb": 2.1,
+      "throughput_fps": 0.67
+    }
+  }
+}
+</code></pre>
+<hr>
+<h2 id="comparison-vlm-vs-cv-pipeline">Comparison: VLM vs CV Pipeline<a class="headerlink" href="#comparison-vlm-vs-cv-pipeline" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>CV Pipeline (EasyOCR+UIED)</th>
+<th>VLM (Florence-2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Inference Speed</strong></td>
+<td>1-3 sec</td>
+<td>1-5 sec</td>
+</tr>
+<tr>
+<td><strong>VRAM Usage</strong></td>
+<td>1-2 GB</td>
+<td>2-15 GB</td>
+</tr>
+<tr>
+<td><strong>Text Detection</strong></td>
+<td>Excellent (dedicated OCR)</td>
+<td>Good</td>
+</tr>
+<tr>
+<td><strong>Element Detection</strong></td>
+<td>Good (rule-based)</td>
+<td>Good (learned)</td>
+</tr>
+<tr>
+<td><strong>Grounding Accuracy</strong></td>
+<td>High (pixel-level)</td>
+<td>Medium-High</td>
+</tr>
+<tr>
+<td><strong>Semantic Understanding</strong></td>
+<td>None</td>
+<td>Good</td>
+</tr>
+<tr>
+<td><strong>Model Size</strong></td>
+<td>~100MB</td>
+<td>200MB-15GB</td>
+</tr>
+<tr>
+<td><strong>Offline Support</strong></td>
+<td>Full</td>
+<td>Full</td>
+</tr>
+</tbody>
+</table>
+<h3 id="when-to-use-each">When to Use Each<a class="headerlink" href="#when-to-use-each" title="Permanent link">¶</a></h3>
+<p><strong>Use CV Pipeline when</strong>:
+- High precision localization required
+- Limited GPU memory
+- Need fast inference
+- Text detection is primary goal</p>
+<p><strong>Use VLM when</strong>:
+- Semantic understanding needed
+- Complex UI layouts
+- Element classification important
+- Can accept ~5-10px bbox error</p>
+<p><strong>Hybrid Approach</strong> (Recommended):</p>
+<pre><code>VLM (element detection) → CV Pipeline (precise localization) → LLM (refinement)
+</code></pre>
+<hr>
+<h2 id="running-experiments">Running Experiments<a class="headerlink" href="#running-experiments" title="Permanent link">¶</a></h2>
+<h3 id="hardware-requirements">Hardware Requirements<a class="headerlink" href="#hardware-requirements" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Min VRAM</th>
+<th>Recommended VRAM</th>
+<th>CPU Inference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Florence-2-base</td>
+<td>2GB</td>
+<td>4GB</td>
+<td>Yes (slow)</td>
+</tr>
+<tr>
+<td>Florence-2-large</td>
+<td>4GB</td>
+<td>8GB</td>
+<td>Yes (slow)</td>
+</tr>
+<tr>
+<td>Qwen2-VL-2B</td>
+<td>5GB</td>
+<td>8GB</td>
+<td>Possible</td>
+</tr>
+<tr>
+<td>Qwen2-VL-7B</td>
+<td>15GB</td>
+<td>24GB</td>
+<td>Not recommended</td>
+</tr>
+<tr>
+<td>Phi-3.5-Vision</td>
+<td>8GB</td>
+<td>12GB</td>
+<td>Possible</td>
+</tr>
+</tbody>
+</table>
+<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Base dependencies
+pip install torch torchvision transformers
+
+# For Qwen2-VL
+pip install qwen-vl-utils
+
+# For Florence-2
+pip install timm einops
+
+# For visualization
+pip install opencv-python pillow
+</code></pre>
+<h3 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># 1. Test with smallest model first
+python research/test_vlm_models.py screenshot.png --model florence-2-base
+
+# 2. If GPU memory available, try larger models
+python research/test_vlm_models.py screenshot.png --model qwen2-vl-2b
+
+# 3. Generate visualization
+python research/test_vlm_models.py screenshot.png \
+    --model florence-2-base \
+    -o visualization.png
+</code></pre>
+<hr>
+<h2 id="research-findings-summary">Research Findings (Summary)<a class="headerlink" href="#research-findings-summary" title="Permanent link">¶</a></h2>
+<h3 id="critical-finding-1-vlm-hallucination-problem">Critical Finding #1: VLM Hallucination Problem<a class="headerlink" href="#critical-finding-1-vlm-hallucination-problem" title="Permanent link">¶</a></h3>
+<p><strong>VLMs generate fake/non-existent UI elements (hallucination).</strong></p>
+<p>During research testing, we observed that Vision-Language Models frequently hallucinate - they generate bounding boxes and element descriptions for UI elements that <strong>do not exist</strong> in the screenshot.</p>
+<h4 id="types-of-hallucination-observed">Types of Hallucination Observed<a class="headerlink" href="#types-of-hallucination-observed" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Hallucination Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ghost Elements</strong></td>
+<td>Elements that don't exist at all</td>
+<td>Reports "Settings" button when there is none</td>
+</tr>
+<tr>
+<td><strong>Wrong Position</strong></td>
+<td>Element exists but bbox is completely wrong</td>
+<td>Button at [100,100] reported at [500,300]</td>
+</tr>
+<tr>
+<td><strong>Invented Text</strong></td>
+<td>OCR text that doesn't appear in image</td>
+<td>Reports "Submit" when button says "OK"</td>
+</tr>
+<tr>
+<td><strong>Duplicate Detection</strong></td>
+<td>Same element reported multiple times</td>
+<td>3 entries for single button</td>
+</tr>
+<tr>
+<td><strong>Type Confusion</strong></td>
+<td>Misclassifies element type</td>
+<td>Text label reported as button</td>
+</tr>
+</tbody>
+</table>
+<h4 id="hallucination-examples">Hallucination Examples<a class="headerlink" href="#hallucination-examples" title="Permanent link">¶</a></h4>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                    HALLUCINATION EXAMPLES                                │
+└─────────────────────────────────────────────────────────────────────────┘
+
+Actual Screenshot:              VLM Output (Hallucinated):
+┌─────────────────────┐         [
+│  ┌─────┐  ┌─────┐   │           {"type": "button", "text": "OK"},      ✓ Real
+│  │ OK  │  │Cancel│  │           {"type": "button", "text": "Cancel"},  ✓ Real
+│  └─────┘  └─────┘   │           {"type": "button", "text": "Help"},    ✗ FAKE
+│                     │           {"type": "button", "text": "Settings"},✗ FAKE
+│  Status: Ready      │           {"type": "input", "text": "Search"},   ✗ FAKE
+└─────────────────────┘         ]
+
+Problem: VLM invented 3 elements that don't exist!
+</code></pre>
+<h4 id="hallucination-rate-by-model">Hallucination Rate by Model<a class="headerlink" href="#hallucination-rate-by-model" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Hallucination Rate</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Florence-2-base</td>
+<td>Low (~5-10%)</td>
+<td>Most reliable</td>
+</tr>
+<tr>
+<td>Florence-2-large</td>
+<td>Low (~5-10%)</td>
+<td>Most reliable</td>
+</tr>
+<tr>
+<td>Qwen2-VL-2B</td>
+<td>Medium (~15-25%)</td>
+<td>More hallucination with complex prompts</td>
+</tr>
+<tr>
+<td>Qwen2-VL-7B</td>
+<td>Medium (~10-20%)</td>
+<td>Better than 2B but still hallucinates</td>
+</tr>
+<tr>
+<td>Phi-3.5-Vision</td>
+<td>High (~20-30%)</td>
+<td>Tends to invent elements</td>
+</tr>
+<tr>
+<td>MiniCPM-V</td>
+<td>Medium (~15-25%)</td>
+<td>Variable quality</td>
+</tr>
+<tr>
+<td>InternVL2</td>
+<td>Medium (~15-20%)</td>
+<td>Depends on prompt</td>
+</tr>
+</tbody>
+</table>
+<h4 id="impact-on-evaluation">Impact on Evaluation<a class="headerlink" href="#impact-on-evaluation" title="Permanent link">¶</a></h4>
+<pre><code class="language-python"># Without hallucination filtering:
+Precision: 0.45  # Low because many false positives (hallucinated)
+Recall: 0.80     # High because real elements are found
+F1: 0.58
+
+# With hallucination filtering (post-processing):
+Precision: 0.75  # Improved after removing invalid bboxes
+Recall: 0.78     # Slightly lower (some valid removed)
+F1: 0.76
+</code></pre>
+<h4 id="hallucination-detection-strategies">Hallucination Detection Strategies<a class="headerlink" href="#hallucination-detection-strategies" title="Permanent link">¶</a></h4>
+<pre><code class="language-python">def filter_hallucinated_elements(elements, image_size):
+    """Filter out likely hallucinated elements."""
+    valid = []
+    w, h = image_size
+
+    for elem in elements:
+        bbox = elem.get("bbox", [])
+        if len(bbox) != 4:
+            continue
+
+        x1, y1, x2, y2 = bbox
+
+        # 1. Check bounds within image
+        if x1 &lt; 0 or y1 &lt; 0 or x2 &gt; w or y2 &gt; h:
+            continue  # Outside image = hallucinated
+
+        # 2. Check valid dimensions
+        if x2 &lt;= x1 or y2 &lt;= y1:
+            continue  # Invalid bbox = hallucinated
+
+        # 3. Check reasonable size
+        area = (x2 - x1) * (y2 - y1)
+        if area &lt; 25 or area &gt; w * h * 0.9:
+            continue  # Too small or too large
+
+        # 4. Check aspect ratio
+        aspect = max(x2-x1, y2-y1) / max(min(x2-x1, y2-y1), 1)
+        if aspect &gt; 50:
+            continue  # Extreme aspect ratio = likely noise
+
+        valid.append(elem)
+
+    return valid
+</code></pre>
+<h4 id="why-vlms-hallucinate">Why VLMs Hallucinate<a class="headerlink" href="#why-vlms-hallucinate" title="Permanent link">¶</a></h4>
+<ol>
+<li><strong>Training Data Bias</strong>: Models trained on diverse images expect common UI patterns</li>
+<li><strong>Pattern Completion</strong>: VLMs try to "complete" UIs with expected elements</li>
+<li><strong>Prompt Sensitivity</strong>: Asking for "all buttons" encourages over-detection</li>
+<li><strong>Confidence Miscalibration</strong>: High confidence on non-existent elements</li>
+<li><strong>Context Confusion</strong>: Similar-looking areas trigger false detections</li>
+</ol>
+<h4 id="mitigation-strategies">Mitigation Strategies<a class="headerlink" href="#mitigation-strategies" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Implementation</th>
+<th>Effectiveness</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bbox Validation</strong></td>
+<td>Filter bboxes outside image bounds</td>
+<td>High</td>
+</tr>
+<tr>
+<td><strong>Size Filtering</strong></td>
+<td>Remove too-small or too-large elements</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Confidence Threshold</strong></td>
+<td>Only keep high-confidence detections</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Cross-Validation</strong></td>
+<td>Compare with CV pipeline results</td>
+<td>High</td>
+</tr>
+<tr>
+<td><strong>Prompt Engineering</strong></td>
+<td>Use conservative prompts</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>Post-Processing NMS</strong></td>
+<td>Remove overlapping duplicates</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="critical-finding-2-button-detection-problem">Critical Finding #2: Button Detection Problem<a class="headerlink" href="#critical-finding-2-button-detection-problem" title="Permanent link">¶</a></h3>
+<p><strong>VLMs cannot reliably detect button boundaries directly.</strong></p>
+<p>The research revealed that Vision-Language Models have significant limitations in detecting UI button elements:</p>
+<h4 id="problem-analysis">Problem Analysis<a class="headerlink" href="#problem-analysis" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Detection Task</th>
+<th>VLM Performance</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Text Detection (OCR)</td>
+<td><strong>Good</strong></td>
+<td>VLMs find text content reliably</td>
+</tr>
+<tr>
+<td>Text Bounding Box</td>
+<td><strong>Good</strong></td>
+<td>Precise text region localization</td>
+</tr>
+<tr>
+<td>Button Boundary Detection</td>
+<td><strong>Poor</strong></td>
+<td>Cannot detect button edges</td>
+</tr>
+<tr>
+<td>Button Classification</td>
+<td><strong>Poor</strong></td>
+<td>Often misses buttons entirely</td>
+</tr>
+</tbody>
+</table>
+<h4 id="evidence-from-code">Evidence from Code<a class="headerlink" href="#evidence-from-code" title="Permanent link">¶</a></h4>
+<p>The <code>test_vlm_models.py</code> contains a <strong>workaround</strong> (lines 570-586) that demonstrates this limitation:</p>
+<pre><code class="language-python"># Create expanded button estimate from text bbox
+# Expand by ~50% of text height to approximate button area
+text_h = text_bbox[3] - text_bbox[1]
+padding_x = max(text_h // 2, 5)  # Use text height as guide
+padding_y = max(text_h // 2, 3)
+button_bbox = [
+    max(0, text_bbox[0] - padding_x),
+    max(0, text_bbox[1] - padding_y),
+    text_bbox[2] + padding_x,
+    text_bbox[3] + padding_y
+]
+</code></pre>
+<p><strong>This workaround</strong>:
+1. Detects text using OCR capabilities
+2. Expands the text bounding box by ~50% of text height
+3. Assumes the expanded area is the button boundary</p>
+<h4 id="why-vlms-fail-at-button-detection">Why VLMs Fail at Button Detection<a class="headerlink" href="#why-vlms-fail-at-button-detection" title="Permanent link">¶</a></h4>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                    BUTTON DETECTION CHALLENGE                           │
+└─────────────────────────────────────────────────────────────────────────┘
+
+What VLM sees:          What we need:
+┌─────────────────┐     ┌─────────────────┐
+│                 │     │ ┌─────────────┐ │
+│    "Submit"     │     │ │   Submit    │ │  ← Button boundary
+│                 │     │ └─────────────┘ │
+└─────────────────┘     └─────────────────┘
+   ↑ Text only            ↑ Full button bbox
+
+Problems:
+1. Buttons often have same background as surrounding area
+2. Button borders may be subtle (1px) or non-existent (flat design)
+3. VLMs trained on natural images, not UI screenshots
+4. No clear visual boundary for "clickable" regions
+</code></pre>
+<h4 id="impact-on-accuracy">Impact on Accuracy<a class="headerlink" href="#impact-on-accuracy" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Text BBox</th>
+<th>Estimated Button BBox</th>
+<th>Actual Button BBox</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standard button</td>
+<td>[100, 50, 160, 70]</td>
+<td>[90, 40, 170, 80]</td>
+<td>[80, 35, 180, 85]</td>
+</tr>
+<tr>
+<td>Error</td>
+<td>-</td>
+<td>~10-20px off</td>
+<td>Ground truth</td>
+</tr>
+<tr>
+<td>IoU with GT</td>
+<td>N/A</td>
+<td>~0.5-0.7</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Result</strong>: Button localization accuracy is degraded because we're estimating, not detecting.</p>
+<h4 id="workaround-limitations">Workaround Limitations<a class="headerlink" href="#workaround-limitations" title="Permanent link">¶</a></h4>
+<ol>
+<li><strong>Fixed expansion ratio</strong> - 50% doesn't work for all button styles</li>
+<li><strong>Icon buttons</strong> - Buttons without text are completely missed</li>
+<li><strong>Grouped buttons</strong> - Adjacent buttons may overlap after expansion</li>
+<li><strong>Variable padding</strong> - Different apps use different button padding</li>
+</ol>
+<h3 id="preliminary-observations">Preliminary Observations<a class="headerlink" href="#preliminary-observations" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Florence-2</strong> provides the best grounding accuracy among tested models</li>
+<li><strong>Qwen2-VL</strong> offers good balance of detection and understanding</li>
+<li><strong>Phi-3.5-Vision</strong> excels at element classification but lacks precise grounding</li>
+<li><strong>All VLMs</strong> struggle with small elements (&lt; 20x20 pixels)</li>
+<li><strong>CV Pipeline</strong> remains superior for precise text localization</li>
+<li><strong>Button detection is a critical weakness</strong> - requires workarounds or CV pipeline</li>
+</ol>
+<h3 id="comparison-button-detection-methods">Comparison: Button Detection Methods<a class="headerlink" href="#comparison-button-detection-methods" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Approach</th>
+<th>Accuracy</th>
+<th>Speed</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VLM (Florence-2)</strong></td>
+<td>OCR + bbox expansion</td>
+<td>Low (~50-70% IoU)</td>
+<td>Fast</td>
+<td>Workaround, not detection</td>
+</tr>
+<tr>
+<td><strong>VLM (Qwen2-VL)</strong></td>
+<td>Grounding tokens</td>
+<td>Medium (~60-75% IoU)</td>
+<td>Medium</td>
+<td>Better but still imprecise</td>
+</tr>
+<tr>
+<td><strong>CV Pipeline (UIED)</strong></td>
+<td>Edge + contour detection</td>
+<td>High (~80-90% IoU)</td>
+<td>Fast</td>
+<td>Detects actual boundaries</td>
+</tr>
+<tr>
+<td><strong>Combined</strong></td>
+<td>CV detect + VLM classify</td>
+<td>High</td>
+<td>Medium</td>
+<td>Recommended approach</td>
+</tr>
+</tbody>
+</table>
+<h3 id="recommendations">Recommendations<a class="headerlink" href="#recommendations" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>For production</strong>: Use CV Pipeline (EasyOCR + UIED) for reliability</li>
+<li><strong>For research</strong>: Explore Florence-2 for visual grounding tasks</li>
+<li><strong>Hybrid approach</strong>: Use VLM for semantic understanding, CV for precise coords</li>
+<li><strong>Future work</strong>: Fine-tune VLMs on UI-specific datasets</li>
+<li><strong>Button detection</strong>: Rely on UIED (CV) rather than VLMs for button boundaries</li>
+</ol>
+<h3 id="open-issues">Open Issues<a class="headerlink" href="#open-issues" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Status</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VLM Hallucination</strong></td>
+<td>Documented, needs filtering</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Button boundary detection in VLMs</td>
+<td>Unresolved</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Text segmentation improvements</td>
+<td>Pending</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Small element detection (&lt; 20px)</td>
+<td>Unresolved</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Icon button detection (no text)</td>
+<td>Unresolved</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+<h3 id="research-area-3-llm-post-processing-refinement">Research Area #3: LLM Post-Processing Refinement<a class="headerlink" href="#research-area-3-llm-post-processing-refinement" title="Permanent link">¶</a></h3>
+<p><strong>Hypothesis</strong>: Small Language Models (SLMs) can improve CV pipeline output quality by fixing common detection errors.</p>
+<h4 id="research-objective">Research Objective<a class="headerlink" href="#research-objective" title="Permanent link">¶</a></h4>
+<p>Test whether LLM refinement as a post-processing step can:
+1. Fix over-segmented text (split words → merged text)
+2. Correct element type misclassification
+3. Remove duplicate/noise detections
+4. Add semantic roles to elements</p>
+<h4 id="expected-benefits">Expected Benefits<a class="headerlink" href="#expected-benefits" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Improvement</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Text Merging</strong></td>
+<td>Combine split OCR text</td>
+<td>"Sub" + "mit" → "Submit"</td>
+</tr>
+<tr>
+<td><strong>Type Correction</strong></td>
+<td>Fix misclassified elements</td>
+<td>text → button</td>
+</tr>
+<tr>
+<td><strong>Noise Removal</strong></td>
+<td>Delete artifacts/duplicates</td>
+<td>Remove false positives</td>
+</tr>
+<tr>
+<td><strong>Role Assignment</strong></td>
+<td>Add semantic meaning</td>
+<td>"submit_button", "cancel_button"</td>
+</tr>
+</tbody>
+</table>
+<h4 id="trade-offs">Trade-offs<a class="headerlink" href="#trade-offs" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Without LLM</th>
+<th>With LLM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Inference Time</strong></td>
+<td>1-3 sec</td>
+<td>2-6 sec (+1-3 sec)</td>
+</tr>
+<tr>
+<td><strong>Accuracy</strong></td>
+<td>Baseline</td>
+<td>+5-15% improvement (expected)</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Free</td>
+<td>API costs (cloud) or GPU (local)</td>
+</tr>
+<tr>
+<td><strong>Reliability</strong></td>
+<td>Deterministic</td>
+<td>Non-deterministic</td>
+</tr>
+</tbody>
+</table>
+<h4 id="test-protocol_1">Test Protocol<a class="headerlink" href="#test-protocol_1" title="Permanent link">¶</a></h4>
+<pre><code>1. Run CV Pipeline on test image
+   └── Get baseline element list
+
+2. Run LLM Refinement
+   └── Get refined element list + edits
+
+3. Compare Results
+   ├── Element count change
+   ├── Edit types (merge/split/retype/delete)
+   ├── Processing time overhead
+   └── (If ground truth available) Accuracy improvement
+</code></pre>
+<h4 id="running-the-test">Running the Test<a class="headerlink" href="#running-the-test" title="Permanent link">¶</a></h4>
+<pre><code class="language-bash"># Basic test with Ollama
+python research/test_llm_refinement.py screenshot.png --backend ollama
+
+# With visualization
+python research/test_llm_refinement.py screenshot.png -b ollama -o results/
+
+# Batch evaluation
+python research/test_llm_refinement.py test_images/ --batch --json report.json
+</code></pre>
+<hr>
+<h3 id="summary-vlm-limitations-for-ui-detection">Summary: VLM Limitations for UI Detection<a class="headerlink" href="#summary-vlm-limitations-for-ui-detection" title="Permanent link">¶</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                    VLM LIMITATIONS SUMMARY                               │
+└─────────────────────────────────────────────────────────────────────────┘
+
+Critical Issue #1: HALLUCINATION
+├── VLMs invent non-existent UI elements
+├── Hallucination rate: 5-30% depending on model
+├── Impact: Low precision, many false positives
+└── Mitigation: Post-processing filters required
+
+Critical Issue #2: BUTTON DETECTION
+├── VLMs cannot detect button boundaries
+├── Only detect text inside buttons
+├── Impact: ~50-70% IoU (vs 80-90% for CV)
+└── Mitigation: Use CV pipeline (UIED) instead
+
+Recommendation:
+┌─────────────────────────────────────────────────────────────────────────┐
+│  USE CV PIPELINE (EasyOCR + UIED) FOR PRODUCTION                        │
+│  VLMs are NOT reliable enough for UI automation                         │
+└─────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="file-structure">File Structure<a class="headerlink" href="#file-structure" title="Permanent link">¶</a></h2>
+<pre><code>research/
+├── test_llm_refinement.py  # LLM post-processing refinement tests
+├── test_qwen_vl.py         # Qwen2-VL specific tests
+├── test_vlm_models.py      # Multi-model VLM testing framework
+└── README.md               # This documentation (symlink)
+
+docs/
+├── RESEARCH.md           # This file
+├── PIPELINE.md           # CV Pipeline documentation
+└── EVALUATION.md         # Evaluation framework documentation
+</code></pre>
+<hr>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="https://arxiv.org/abs/2409.12191">Qwen2-VL Paper</a></li>
+<li><a href="https://arxiv.org/abs/2311.06242">Florence-2 Paper</a></li>
+<li><a href="https://arxiv.org/abs/2404.14219">Phi-3 Technical Report</a></li>
+<li><a href="https://arxiv.org/abs/2404.16821">InternVL2 Paper</a></li>
+<li><a href="https://arxiv.org/abs/2103.04829">UIED Paper</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../annotation_workflow/" class="btn btn-neutral float-left" title="Data Annotation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../related_work/" class="btn btn-neutral float-right" title="Related Work">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../annotation_workflow/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../related_work/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

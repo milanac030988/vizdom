@@ -1,0 +1,69 @@
+@startuml Visual_DOM_Simple
+
+!theme plain
+skinparam backgroundColor white
+skinparam defaultFontSize 14
+skinparam defaultFontName Arial
+skinparam ArrowThickness 2
+
+skinparam rectangle {
+    RoundCorner 20
+    BorderThickness 2
+}
+
+skinparam agent {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+}
+
+title **Visual DOM Generator - Overview**\n
+
+' ===== MAIN FLOW =====
+
+agent "📷\n**Screenshot**\n(Input Image)" as input #E3F2FD
+
+rectangle "**CV Evidence Extraction**\n\n• Edge Detection (Canny)\n• Contour Analysis\n• Morphological Ops\n• Color Segmentation" as cv #FFF3E0
+
+rectangle "**OCR Text Detection**\n\n• EasyOCR Engine\n• Text Bounding Boxes\n• Multi-language Support" as ocr #E8F5E9
+
+rectangle "**Coarse Hierarchy Builder**\n\n• Spatial Analysis\n• Containment Detection\n• Rules-based Classification" as coarse #FCE4EC
+
+rectangle "**LLM Refinement**\n\n• Qwen2.5-3B (Ollama)\n• Semantic Classification\n• Hierarchy Optimization" as llm #F3E5F5
+
+agent "📄\n**Visual DOM**\n(JSON Output)" as output #E0F7FA
+
+rectangle "**Robot Framework**\n**Library**\n\n• Click Element By Text\n• Input Text To Field\n• Verify Element Exists" as robot #DCEDC8
+
+' ===== CONNECTIONS =====
+
+input -down-> cv
+input -down-> ocr
+
+cv -down-> coarse
+ocr -down-> coarse
+
+coarse -down-> llm
+
+llm -down-> output
+
+output -down-> robot
+
+' ===== LABELS =====
+
+note right of cv
+  **OpenCV**
+  Traditional CV
+end note
+
+note right of ocr
+  **EasyOCR**
+  Text Recognition
+end note
+
+note right of llm
+  **Small LLM**
+  Local Inference
+  ~3B params
+end note
+
+@enduml

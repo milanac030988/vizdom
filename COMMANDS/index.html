@@ -1,0 +1,1176 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/COMMANDS/">
+      <link rel="shortcut icon" href="../img/favicon.ico">
+    <title>Commands - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "Commands";
+        var properdocs_page_input_path = "COMMANDS.md";
+        var properdocs_page_url = "/vizdom/COMMANDS/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Commands</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#visual-dom-pipeline">Visual DOM Pipeline</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#basic-usage">Basic Usage</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#visual-dom-viewer">Visual DOM Viewer</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#basic-usage_1">Basic Usage</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#viewer-features">Viewer Features</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#workflow">Workflow</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#evaluation">Evaluation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#command-line">Command Line</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#parameters_1">Parameters</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#examples_1">Examples</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#python-api">Python API</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#unit-tests">Unit Tests</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#test-parameters">Test Parameters</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#test-categories">Test Categories</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#robot-framework-library">Robot Framework Library</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#robot-framework-usage">Robot Framework Usage</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#library-keywords">Library Keywords</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#research-model-testing">Research / Model Testing</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#test-qwen2-vl-models">Test Qwen2-VL Models</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#parameters_2">Parameters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#detection-modes">Detection Modes</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#examples_2">Examples</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#test-multiple-vlm-models">Test Multiple VLM Models</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#parameters_3">Parameters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#available-models">Available Models</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#examples_3">Examples</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#model-comparison-tips">Model Comparison Tips</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#required-dependencies-for-research">Required Dependencies for Research</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#quick-reference">Quick Reference</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#most-common-commands">Most Common Commands</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#environment-setup">Environment Setup</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#check-gpu-availability">Check GPU Availability</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#common-issues">Common Issues</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#debug-mode">Debug Mode</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Commands</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="visual-dom-command-reference">Visual DOM Command Reference<a class="headerlink" href="#visual-dom-command-reference" title="Permanent link">¶</a></h1>
+<p>Complete list of commands for running the Visual DOM pipeline, viewer, evaluation, and tests.</p>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="#visual-dom-pipeline">Visual DOM Pipeline</a></li>
+<li><a href="#visual-dom-viewer">Visual DOM Viewer</a></li>
+<li><a href="#evaluation">Evaluation</a></li>
+<li><a href="#tests">Tests</a></li>
+<li><a href="#robot-framework-library">Robot Framework Library</a></li>
+</ul>
+<hr>
+<h2 id="visual-dom-pipeline">Visual DOM Pipeline<a class="headerlink" href="#visual-dom-pipeline" title="Permanent link">¶</a></h2>
+<p>Process screenshots to generate DOM JSON.</p>
+<h3 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Process a single image
+python -m visual_dom.cv.pipeline &lt;image_path&gt; [options]
+
+# Examples
+python -m visual_dom.cv.pipeline screenshot.png
+python -m visual_dom.cv.pipeline screenshot.png -o output.json
+python -m visual_dom.cv.pipeline screenshot.png --no-gpu --ocr-engine tesseract
+</code></pre>
+<h3 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Short</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>image_path</code></td>
+<td>-</td>
+<td>Required</td>
+<td>Path to input image (PNG, JPG, BMP)</td>
+</tr>
+<tr>
+<td><code>--output</code></td>
+<td><code>-o</code></td>
+<td><code>&lt;image&gt;_dom.json</code></td>
+<td>Output JSON file path</td>
+</tr>
+<tr>
+<td><code>--ocr-engine</code></td>
+<td>-</td>
+<td><code>easyocr</code></td>
+<td>OCR engine: <code>easyocr</code>, <code>paddleocr</code>, <code>tesseract</code></td>
+</tr>
+<tr>
+<td><code>--no-gpu</code></td>
+<td>-</td>
+<td>False</td>
+<td>Disable GPU acceleration (use CPU)</td>
+</tr>
+<tr>
+<td><code>--confidence</code></td>
+<td><code>-c</code></td>
+<td><code>0.3</code></td>
+<td>Minimum confidence threshold (0.0-1.0)</td>
+</tr>
+<tr>
+<td><code>--languages</code></td>
+<td><code>-l</code></td>
+<td><code>en</code></td>
+<td>OCR languages (comma-separated, e.g., <code>en,ch_sim</code>)</td>
+</tr>
+<tr>
+<td><code>--max-elements</code></td>
+<td>-</td>
+<td><code>200</code></td>
+<td>Maximum elements to detect</td>
+</tr>
+<tr>
+<td><code>--visualize</code></td>
+<td><code>-v</code></td>
+<td>False</td>
+<td>Save visualization image with bounding boxes</td>
+</tr>
+<tr>
+<td><code>--no-hierarchy</code></td>
+<td>-</td>
+<td>False</td>
+<td>Skip hierarchy building (flat output)</td>
+</tr>
+<tr>
+<td><code>--no-locators</code></td>
+<td>-</td>
+<td>False</td>
+<td>Skip locator generation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Basic processing
+python -m visual_dom.cv.pipeline tests/samples/calculator.png
+
+# With custom output and visualization
+python -m visual_dom.cv.pipeline screenshot.png -o result.json -v
+
+# CPU-only processing with Tesseract
+python -m visual_dom.cv.pipeline screenshot.png --no-gpu --ocr-engine tesseract
+
+# Multi-language OCR (English + Chinese)
+python -m visual_dom.cv.pipeline screenshot.png -l en,ch_sim
+
+# High confidence threshold
+python -m visual_dom.cv.pipeline screenshot.png -c 0.7
+
+# Quick processing (no hierarchy/locators)
+python -m visual_dom.cv.pipeline screenshot.png --no-hierarchy --no-locators
+</code></pre>
+<hr>
+<h2 id="visual-dom-viewer">Visual DOM Viewer<a class="headerlink" href="#visual-dom-viewer" title="Permanent link">¶</a></h2>
+<p>Interactive GUI for viewing and editing DOM structures.</p>
+<h3 id="basic-usage_1">Basic Usage<a class="headerlink" href="#basic-usage_1" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Start viewer
+python -m tools.visual_dom_viewer
+
+# Or using the package directly
+cd D:/Project/MasterProject
+python -c "import sys; sys.path.insert(0, '.'); sys.path.insert(0, 'src'); from tools.visual_dom_viewer.__main__ import main; main()"
+</code></pre>
+<h3 id="viewer-features">Viewer Features<a class="headerlink" href="#viewer-features" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Shortcut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connect</td>
+<td><code>Ctrl+N</code></td>
+<td>Connect to target application</td>
+</tr>
+<tr>
+<td>Capture &amp; Analyze</td>
+<td><code>F5</code></td>
+<td>Capture screenshot and run pipeline</td>
+</tr>
+<tr>
+<td>Re-Analyze</td>
+<td><code>F6</code></td>
+<td>Re-analyze current screenshot</td>
+</tr>
+<tr>
+<td>Open Image</td>
+<td><code>Ctrl+O</code></td>
+<td>Load screenshot from file</td>
+</tr>
+<tr>
+<td>Open DOM</td>
+<td>-</td>
+<td>Load DOM JSON from file</td>
+</tr>
+<tr>
+<td>Explore Mode</td>
+<td>-</td>
+<td>Toggle element selection mode</td>
+</tr>
+<tr>
+<td>Zoom In</td>
+<td><code>Ctrl++</code></td>
+<td>Zoom in on canvas</td>
+</tr>
+<tr>
+<td>Zoom Out</td>
+<td><code>Ctrl+-</code></td>
+<td>Zoom out on canvas</td>
+</tr>
+<tr>
+<td>Export</td>
+<td><code>Ctrl+E</code></td>
+<td>Export to Robot Framework</td>
+</tr>
+</tbody>
+</table>
+<h3 id="workflow">Workflow<a class="headerlink" href="#workflow" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Connect</strong> → Select platform (Windows/Android) → Select target app</li>
+<li><strong>Capture &amp; Analyze</strong> → Captures screenshot and generates DOM</li>
+<li><strong>Explore Mode</strong> → Click elements to select them</li>
+<li><strong>Define Elements</strong> → Name elements and select properties</li>
+<li><strong>Export</strong> → Generate Robot Framework resource file</li>
+</ol>
+<hr>
+<h2 id="evaluation">Evaluation<a class="headerlink" href="#evaluation" title="Permanent link">¶</a></h2>
+<p>Evaluate Visual DOM output quality against ground truth.</p>
+<h3 id="command-line">Command Line<a class="headerlink" href="#command-line" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Single file evaluation
+python -m visual_dom.evaluation.cli &lt;predicted.json&gt; &lt;ground_truth.json&gt; [options]
+
+# Batch evaluation
+python -m visual_dom.evaluation.cli --batch &lt;predictions_dir&gt; &lt;ground_truths_dir&gt; [options]
+</code></pre>
+<h3 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Short</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>predicted</code></td>
+<td>-</td>
+<td>Required</td>
+<td>Predicted DOM JSON file or directory</td>
+</tr>
+<tr>
+<td><code>ground_truth</code></td>
+<td>-</td>
+<td>Required</td>
+<td>Ground truth DOM JSON file or directory</td>
+</tr>
+<tr>
+<td><code>--batch</code></td>
+<td><code>-b</code></td>
+<td>False</td>
+<td>Batch mode (treat args as directories)</td>
+</tr>
+<tr>
+<td><code>--format</code></td>
+<td><code>-f</code></td>
+<td><code>text</code></td>
+<td>Output format: <code>text</code>, <code>json</code>, <code>markdown</code>, <code>html</code></td>
+</tr>
+<tr>
+<td><code>--output</code></td>
+<td><code>-o</code></td>
+<td>stdout</td>
+<td>Output file path</td>
+</tr>
+<tr>
+<td><code>--iou-threshold</code></td>
+<td>-</td>
+<td><code>0.5</code></td>
+<td>IoU threshold for matching (0.0-1.0)</td>
+</tr>
+<tr>
+<td><code>--no-hierarchy</code></td>
+<td>-</td>
+<td>False</td>
+<td>Skip hierarchy evaluation</td>
+</tr>
+<tr>
+<td><code>--no-locators</code></td>
+<td>-</td>
+<td>False</td>
+<td>Skip locator evaluation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="examples_1">Examples<a class="headerlink" href="#examples_1" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Basic evaluation
+python -m visual_dom.evaluation.cli predicted.json ground_truth.json
+
+# Save as Markdown report
+python -m visual_dom.evaluation.cli pred.json gt.json -f markdown -o report.md
+
+# Save as HTML report
+python -m visual_dom.evaluation.cli pred.json gt.json -f html -o report.html
+
+# Strict evaluation (higher IoU threshold)
+python -m visual_dom.evaluation.cli pred.json gt.json --iou-threshold 0.75
+
+# Batch evaluation
+python -m visual_dom.evaluation.cli --batch outputs/ ground_truths/ -f json -o batch_results.json
+
+# Quick evaluation (skip hierarchy/locators)
+python -m visual_dom.evaluation.cli pred.json gt.json --no-hierarchy --no-locators
+</code></pre>
+<h3 id="python-api">Python API<a class="headerlink" href="#python-api" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">from visual_dom.evaluation import VisualDOMEvaluator, EvaluationReport
+
+# Create evaluator
+evaluator = VisualDOMEvaluator()
+
+# Evaluate
+result = evaluator.evaluate_from_files("predicted.json", "ground_truth.json")
+
+# Print summary
+print(result.summary())
+
+# Access specific metrics
+print(f"F1 Score: {result.element_metrics.f1_score:.2%}")
+print(f"OCR Accuracy: {result.ocr_metrics.char_accuracy:.2%}")
+
+# Generate report
+report = EvaluationReport(result)
+report.save_markdown("report.md")
+</code></pre>
+<hr>
+<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">¶</a></h2>
+<p>Run unit tests and integration tests.</p>
+<h3 id="unit-tests">Unit Tests<a class="headerlink" href="#unit-tests" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Run all tests
+python -m pytest tests/ -v
+
+# Run specific test file
+python -m pytest tests/test_pipeline.py -v
+
+# Run specific test function
+python -m pytest tests/test_pipeline.py::test_text_detection -v
+
+# Run with coverage
+python -m pytest tests/ --cov=src/visual_dom --cov-report=html
+
+# Run only fast tests (skip slow integration tests)
+python -m pytest tests/ -v -m "not slow"
+</code></pre>
+<h3 id="test-parameters">Test Parameters<a class="headerlink" href="#test-parameters" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-v</code></td>
+<td>Verbose output</td>
+</tr>
+<tr>
+<td><code>-vv</code></td>
+<td>More verbose output</td>
+</tr>
+<tr>
+<td><code>-s</code></td>
+<td>Show print statements</td>
+</tr>
+<tr>
+<td><code>--cov=&lt;path&gt;</code></td>
+<td>Enable coverage for path</td>
+</tr>
+<tr>
+<td><code>--cov-report=html</code></td>
+<td>Generate HTML coverage report</td>
+</tr>
+<tr>
+<td><code>-m "&lt;marker&gt;"</code></td>
+<td>Run tests with specific marker</td>
+</tr>
+<tr>
+<td><code>-k "&lt;pattern&gt;"</code></td>
+<td>Run tests matching pattern</td>
+</tr>
+<tr>
+<td><code>-x</code></td>
+<td>Stop on first failure</td>
+</tr>
+<tr>
+<td><code>--tb=short</code></td>
+<td>Shorter traceback</td>
+</tr>
+</tbody>
+</table>
+<h3 id="test-categories">Test Categories<a class="headerlink" href="#test-categories" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Unit tests only
+python -m pytest tests/unit/ -v
+
+# Integration tests only
+python -m pytest tests/integration/ -v
+
+# CV pipeline tests
+python -m pytest tests/ -k "pipeline" -v
+
+# OCR tests
+python -m pytest tests/ -k "ocr or text" -v
+
+# Hierarchy tests
+python -m pytest tests/ -k "hierarchy" -v
+</code></pre>
+<hr>
+<h2 id="robot-framework-library">Robot Framework Library<a class="headerlink" href="#robot-framework-library" title="Permanent link">¶</a></h2>
+<p>Use Visual DOM with Robot Framework for UI automation.</p>
+<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># The library is in src/visual_dom/robot/
+# Add to PYTHONPATH or install
+pip install -e .
+</code></pre>
+<h3 id="robot-framework-usage">Robot Framework Usage<a class="headerlink" href="#robot-framework-usage" title="Permanent link">¶</a></h3>
+<pre><code class="language-robot">*** Settings ***
+Library    visual_dom.robot.VisualDOMLibrary
+
+*** Test Cases ***
+Example Test
+    # Load DOM from file
+    Load Visual DOM    calculator_dom.json
+
+    # Or capture and analyze
+    Capture And Analyze    screenshot.png
+
+    # Find elements
+    ${element}=    Find Element By Text    Submit
+    ${buttons}=    Find Elements By Type    button
+
+    # Get element properties
+    ${bounds}=    Get Element Bounds    ${element}
+    ${center}=    Get Element Center    ${element}
+
+    # Click using locator
+    Click Element    text=Submit
+    Click Element    id=E42
+    Click Element    type_index=button[0]
+</code></pre>
+<h3 id="library-keywords">Library Keywords<a class="headerlink" href="#library-keywords" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Keyword</th>
+<th>Arguments</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Load Visual DOM</code></td>
+<td><code>json_path</code></td>
+<td>Load DOM from JSON file</td>
+</tr>
+<tr>
+<td><code>Capture And Analyze</code></td>
+<td><code>image_path</code></td>
+<td>Analyze image and load DOM</td>
+</tr>
+<tr>
+<td><code>Find Element By Text</code></td>
+<td><code>text</code>, <code>exact=False</code></td>
+<td>Find element by text content</td>
+</tr>
+<tr>
+<td><code>Find Element By Id</code></td>
+<td><code>element_id</code></td>
+<td>Find element by ID</td>
+</tr>
+<tr>
+<td><code>Find Elements By Type</code></td>
+<td><code>visual_type</code></td>
+<td>Find all elements of type</td>
+</tr>
+<tr>
+<td><code>Get Element Bounds</code></td>
+<td><code>element</code></td>
+<td>Get element bounding box</td>
+</tr>
+<tr>
+<td><code>Get Element Center</code></td>
+<td><code>element</code></td>
+<td>Get element center point</td>
+</tr>
+<tr>
+<td><code>Get Element Text</code></td>
+<td><code>element</code></td>
+<td>Get element text content</td>
+</tr>
+<tr>
+<td><code>Click Element</code></td>
+<td><code>locator</code></td>
+<td>Click element (simulated)</td>
+</tr>
+<tr>
+<td><code>Visual Should Exist</code></td>
+<td><code>locator</code>, <code>message</code></td>
+<td>Assert element exists (current DOM)</td>
+</tr>
+<tr>
+<td><code>Visual Should Not Exist</code></td>
+<td><code>locator</code>, <code>message</code></td>
+<td>Assert element absent (current DOM)</td>
+</tr>
+<tr>
+<td><code>Wait Until Visual Appears</code></td>
+<td><code>locator</code>, <code>timeout</code>, <code>poll_interval</code></td>
+<td>Wait for element to appear (re-dumps DOM)</td>
+</tr>
+<tr>
+<td><code>Wait Until Visual Disappears</code></td>
+<td><code>locator</code>, <code>timeout</code>, <code>poll_interval</code></td>
+<td>Wait for element to disappear (re-dumps DOM)</td>
+</tr>
+<tr>
+<td><code>Element Should Have Text</code></td>
+<td><code>locator</code>, <code>expected</code></td>
+<td>Assert element text</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="research-model-testing">Research / Model Testing<a class="headerlink" href="#research-model-testing" title="Permanent link">¶</a></h2>
+<p>Test various Vision-Language Models (VLMs) for GUI element detection capabilities.</p>
+<h3 id="test-qwen2-vl-models">Test Qwen2-VL Models<a class="headerlink" href="#test-qwen2-vl-models" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Basic usage
+python research/test_qwen_vl.py &lt;image_path&gt; [options]
+
+# Examples
+python research/test_qwen_vl.py screenshot.png
+python research/test_qwen_vl.py screenshot.png -m 7b --mode json -o output.png
+</code></pre>
+<h4 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Short</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>image</code></td>
+<td>-</td>
+<td>Required</td>
+<td>Path to GUI screenshot</td>
+</tr>
+<tr>
+<td><code>--model</code></td>
+<td><code>-m</code></td>
+<td><code>2b</code></td>
+<td>Model size: <code>2b</code> (faster) or <code>7b</code> (more accurate)</td>
+</tr>
+<tr>
+<td><code>--mode</code></td>
+<td>-</td>
+<td><code>simple</code></td>
+<td>Detection mode: <code>simple</code>, <code>json</code>, <code>grounding</code></td>
+</tr>
+<tr>
+<td><code>--output</code></td>
+<td><code>-o</code></td>
+<td>None</td>
+<td>Output visualization path</td>
+</tr>
+<tr>
+<td><code>--gpu</code></td>
+<td>-</td>
+<td>True</td>
+<td>Use GPU acceleration</td>
+</tr>
+<tr>
+<td><code>--no-gpu</code></td>
+<td>-</td>
+<td>False</td>
+<td>Force CPU inference</td>
+</tr>
+<tr>
+<td><code>--flash-attn</code></td>
+<td>-</td>
+<td>False</td>
+<td>Use Flash Attention (faster, requires flash-attn package)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="detection-modes">Detection Modes<a class="headerlink" href="#detection-modes" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Description</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>simple</code></td>
+<td>Basic description of UI elements</td>
+<td>Text description</td>
+</tr>
+<tr>
+<td><code>json</code></td>
+<td>Structured JSON output with bboxes</td>
+<td>JSON array</td>
+</tr>
+<tr>
+<td><code>grounding</code></td>
+<td>Uses special grounding tokens for precise bboxes</td>
+<td>Parsed elements</td>
+</tr>
+</tbody>
+</table>
+<h4 id="examples_2">Examples<a class="headerlink" href="#examples_2" title="Permanent link">¶</a></h4>
+<pre><code class="language-bash"># Simple description (fastest)
+python research/test_qwen_vl.py tests/samples/calculator.png --mode simple
+
+# JSON output with visualization
+python research/test_qwen_vl.py tests/samples/calculator.png --mode json -o detected.png
+
+# Grounding mode (most precise bboxes)
+python research/test_qwen_vl.py tests/samples/calculator.png --mode grounding -o grounded.png
+
+# Use larger 7B model for better accuracy
+python research/test_qwen_vl.py screenshot.png -m 7b --mode json
+
+# CPU-only (for machines without GPU)
+python research/test_qwen_vl.py screenshot.png --no-gpu
+</code></pre>
+<h3 id="test-multiple-vlm-models">Test Multiple VLM Models<a class="headerlink" href="#test-multiple-vlm-models" title="Permanent link">¶</a></h3>
+<p>Compare different Vision-Language Models for GUI detection.</p>
+<pre><code class="language-bash"># Basic usage
+python research/test_vlm_models.py &lt;image_path&gt; [options]
+
+# List available models
+python research/test_vlm_models.py --list-models
+
+# Examples
+python research/test_vlm_models.py screenshot.png -m florence-2-base -o output.png
+</code></pre>
+<h4 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Short</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>image</code></td>
+<td>-</td>
+<td>Required</td>
+<td>Path to GUI screenshot</td>
+</tr>
+<tr>
+<td><code>--model</code></td>
+<td><code>-m</code></td>
+<td><code>florence-2-base</code></td>
+<td>Model to test (see list below)</td>
+</tr>
+<tr>
+<td><code>--output</code></td>
+<td><code>-o</code></td>
+<td>None</td>
+<td>Output visualization path</td>
+</tr>
+<tr>
+<td><code>--gpu</code></td>
+<td>-</td>
+<td>True</td>
+<td>Use GPU acceleration</td>
+</tr>
+<tr>
+<td><code>--no-gpu</code></td>
+<td>-</td>
+<td>False</td>
+<td>Force CPU inference</td>
+</tr>
+<tr>
+<td><code>--list-models</code></td>
+<td>-</td>
+<td>False</td>
+<td>List available models and exit</td>
+</tr>
+</tbody>
+</table>
+<h4 id="available-models">Available Models<a class="headerlink" href="#available-models" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Model Key</th>
+<th>HuggingFace Name</th>
+<th>VRAM</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qwen2-vl-2b</code></td>
+<td>Qwen/Qwen2-VL-2B-Instruct</td>
+<td>~5GB</td>
+<td>Fast, good quality</td>
+</tr>
+<tr>
+<td><code>qwen2-vl-7b</code></td>
+<td>Qwen/Qwen2-VL-7B-Instruct</td>
+<td>~15GB</td>
+<td>More accurate</td>
+</tr>
+<tr>
+<td><code>florence-2-base</code></td>
+<td>microsoft/Florence-2-base</td>
+<td>~2GB</td>
+<td>Excellent for grounding</td>
+</tr>
+<tr>
+<td><code>florence-2-large</code></td>
+<td>microsoft/Florence-2-large</td>
+<td>~4GB</td>
+<td>Better accuracy</td>
+</tr>
+<tr>
+<td><code>phi-3.5-vision</code></td>
+<td>microsoft/Phi-3.5-vision-instruct</td>
+<td>~8GB</td>
+<td>Small but capable</td>
+</tr>
+<tr>
+<td><code>minicpm-v-2.6</code></td>
+<td>openbmb/MiniCPM-V-2_6</td>
+<td>~8GB</td>
+<td>Efficient multimodal</td>
+</tr>
+<tr>
+<td><code>internvl2-2b</code></td>
+<td>OpenGVLab/InternVL2-2B</td>
+<td>~5GB</td>
+<td>Strong visual understanding</td>
+</tr>
+<tr>
+<td><code>internvl2-8b</code></td>
+<td>OpenGVLab/InternVL2-8B</td>
+<td>~16GB</td>
+<td>Best accuracy</td>
+</tr>
+</tbody>
+</table>
+<h4 id="examples_3">Examples<a class="headerlink" href="#examples_3" title="Permanent link">¶</a></h4>
+<pre><code class="language-bash"># Test with Florence-2 (recommended for beginners - small &amp; fast)
+python research/test_vlm_models.py screenshot.png -m florence-2-base -o florence_output.png
+
+# Test with Florence-2 Large (better accuracy)
+python research/test_vlm_models.py screenshot.png -m florence-2-large -o florence_large.png
+
+# Test with Qwen2-VL 2B
+python research/test_vlm_models.py screenshot.png -m qwen2-vl-2b -o qwen_output.png
+
+# Test with Phi-3.5-Vision
+python research/test_vlm_models.py screenshot.png -m phi-3.5-vision -o phi_output.png
+
+# Test with InternVL2 (high accuracy)
+python research/test_vlm_models.py screenshot.png -m internvl2-8b -o internvl_output.png
+
+# CPU-only testing
+python research/test_vlm_models.py screenshot.png -m florence-2-base --no-gpu
+</code></pre>
+<h4 id="model-comparison-tips">Model Comparison Tips<a class="headerlink" href="#model-comparison-tips" title="Permanent link">¶</a></h4>
+<pre><code class="language-bash"># Compare multiple models on same image
+for model in florence-2-base qwen2-vl-2b phi-3.5-vision; do
+    echo "Testing $model..."
+    python research/test_vlm_models.py screenshot.png -m $model -o "output_${model}.png"
+done
+</code></pre>
+<h3 id="required-dependencies-for-research">Required Dependencies for Research<a class="headerlink" href="#required-dependencies-for-research" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Base dependencies
+pip install transformers torch torchvision pillow
+
+# For Qwen2-VL
+pip install qwen-vl-utils
+
+# For Flash Attention (optional, faster inference)
+pip install flash-attn --no-build-isolation
+
+# For visualization
+pip install opencv-python
+</code></pre>
+<hr>
+<h2 id="quick-reference">Quick Reference<a class="headerlink" href="#quick-reference" title="Permanent link">¶</a></h2>
+<h3 id="most-common-commands">Most Common Commands<a class="headerlink" href="#most-common-commands" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># 1. Process image to DOM
+python -m visual_dom.cv.pipeline screenshot.png -o dom.json -v
+
+# 2. Start viewer
+python -m tools.visual_dom_viewer
+
+# 3. Evaluate quality
+python -m visual_dom.evaluation.cli predicted.json ground_truth.json
+
+# 4. Run tests
+python -m pytest tests/ -v
+
+# 5. Generate coverage report
+python -m pytest tests/ --cov=src/visual_dom --cov-report=html
+
+# 6. Research: Test Qwen2-VL
+python research/test_qwen_vl.py screenshot.png --mode json -o output.png
+
+# 7. Research: Test multiple VLMs
+python research/test_vlm_models.py screenshot.png -m florence-2-base -o output.png
+</code></pre>
+<h3 id="environment-setup">Environment Setup<a class="headerlink" href="#environment-setup" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Install dependencies
+pip install -r requirements.txt
+
+# Install with GPU support (CUDA 11.8)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+
+# Install OCR engines
+pip install easyocr paddleocr pytesseract
+
+# Install viewer dependencies
+pip install PyQt5
+</code></pre>
+<h3 id="check-gpu-availability">Check GPU Availability<a class="headerlink" href="#check-gpu-availability" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash">python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}, Device: {torch.cuda.get_device_name(0) if torch.cuda.is_available() else \"N/A\"}')"
+</code></pre>
+<hr>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">¶</a></h2>
+<h3 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ModuleNotFoundError: visual_dom</code></td>
+<td>Add <code>src/</code> to PYTHONPATH or run from project root</td>
+</tr>
+<tr>
+<td><code>CUDA out of memory</code></td>
+<td>Use <code>--no-gpu</code> flag or reduce image size</td>
+</tr>
+<tr>
+<td><code>EasyOCR downloading models</code></td>
+<td>Wait for first-time model download (~100-200MB)</td>
+</tr>
+<tr>
+<td><code>PyQt5 not found</code></td>
+<td>Install with <code>pip install PyQt5</code></td>
+</tr>
+<tr>
+<td><code>Tesseract not found</code></td>
+<td>Install Tesseract OCR and add to PATH</td>
+</tr>
+<tr>
+<td><code>Permission denied</code></td>
+<td>Run as administrator (Windows) or check file permissions</td>
+</tr>
+</tbody>
+</table>
+<h3 id="debug-mode">Debug Mode<a class="headerlink" href="#debug-mode" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Enable verbose logging
+export VISUAL_DOM_DEBUG=1
+python -m visual_dom.cv.pipeline screenshot.png
+
+# Python logging
+import logging
+logging.basicConfig(level=logging.DEBUG)
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../discussion/elam-7b-analysis-vi/" class="btn btn-neutral float-left" title="ELAM-7B analysis (VI)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../DeCuong-Thacsi-Updated/" class="btn btn-neutral float-right" title="Thesis Proposal">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../discussion/elam-7b-analysis-vi/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../DeCuong-Thacsi-Updated/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

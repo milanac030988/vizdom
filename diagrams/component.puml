@@ -1,0 +1,180 @@
+@startuml Component_Diagram
+!pragma layout smetana
+
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam componentStyle rectangle
+skinparam nodesep 18
+skinparam ranksep 40
+skinparam component {
+    BorderColor #555555
+    ArrowColor #333333
+}
+
+title VizDOM - Component Diagram
+
+' ============================================================
+' Layer 1 - Consumers (driving side)
+' ============================================================
+package "tools" #F5F5F5 {
+    [visual_dom_viewer\n(PyQt5)] as viewer
+    [dashboard\n(Streamlit)] as dash
+    [annotator] as annot
+}
+
+package "visual_gui_library (Robot Framework)" #F3E5F5 {
+    [locators\nLocator] as loc
+    [keywords\nactions/assertions/capture\n(thin client, ADR-019)] as kw
+}
+
+' ============================================================
+' Layer 2 - Domain core (analysis engine)
+' ============================================================
+package "visual_dom.cv" #FFF3E0 {
+    [pipeline\nVisualDOMPipeline] as pipeline
+    [text_detector] as textd
+    [symbol_detector] as symd
+    [screen_detector] as scrd
+    [image_processing] as imgp
+    [slm_advisor\nSLMAdvisor] as slm
+
+    package "detectors" #FFE0B2 {
+        [base\nDetectorBackend, Detection] as dbase
+        [registry\ncreate_detector] as dreg
+        [uied_backend] as duied
+        [yolo_backend] as dyolo
+        [omniparser_backend] as domni
+        [grpc_backend\nGrpcDetectorBackend] as dgrpc
+        [uied_detection\nUIEDDetector] as uiedcore
+    }
+}
+
+together {
+    package "visual_dom.hierarchy" #FCE4EC {
+        [coarse_builder\nCoarseHierarchyBuilder] as coarse
+        [llm_refiner] as llm
+    }
+    package "visual_dom.compiler" #E0F7FA {
+        [dom_compiler\nDOMCompiler] as compiler
+    }
+    package "visual_dom (shared)" #ECEFF1 {
+        [reading_order] as rorder
+        [logging_utils] as logx
+        [schema\ndom_schema] as schema
+    }
+    package "visual_dom.evaluation" #E8F5E9 {
+        [evaluator] as evalr
+        [metrics] as metrics
+        [report] as report
+    }
+}
+
+' ============================================================
+' Layer 3 - Driven ports (pluggable strategies) + gRPC services
+' ============================================================
+together {
+    package "visual_dom.capture (ADR-018)" #E1F5FE {
+        [registry\ncreate_capture, discover] as creg
+        [base\nCaptureStrategy] as cbase
+        [builtin\nwindows/linux/android/camera] as cbuiltin
+        [builtin.grpc_remote\nGrpcCaptureStrategy] as cgrpc
+        [plugins/capture/*\n(user, auto-loaded)] as cplugins
+    }
+    package "visual_dom.actuator (ADR-019)" #E1F5FE {
+        [registry\ncreate_actuator, discover] as areg
+        [base\nActuatorStrategy] as abase
+        [builtin\ndesktop/android] as abuiltin
+        [builtin.grpc_remote\nGrpcActuatorStrategy] as agrpc
+        [plugins/actuator/*\n(user, e.g. robot-arm)] as aplugins
+    }
+    package "visual_dom.rpc (services)" #EDE7F6 {
+        [detector_server\nDetector gRPC] as dsrv
+        [capture_server\nCapture gRPC] as csrv
+        [actuator_server\nActuator gRPC] as asrv
+    }
+}
+
+' ============================================================
+' Layer 4 - External
+' ============================================================
+cloud "External" #FAFAFA {
+    [OmniParser repo\n+ Florence-2 weights] as extomni
+    [Ollama\n(minicpm-v / qwen2.5)] as extollama
+    [EasyOCR / PaddleOCR / Tesseract] as extocr
+    [Ultralytics YOLO] as extyolo
+}
+
+' ============================================================
+' Edges
+' ============================================================
+
+' -- consumers -> core --
+viewer --> pipeline
+viewer --> coarse
+viewer --> compiler
+dash --> pipeline
+compiler --> loc
+loc --> kw
+' RF library is a thin orchestrator: capture -> detect/DOM -> locate -> actuate
+kw --> creg : capture
+kw --> pipeline : detect / DOM
+kw --> areg : actuate
+
+' -- pipeline internals --
+pipeline --> dreg
+pipeline --> textd
+pipeline --> symd
+pipeline --> scrd
+pipeline --> slm
+pipeline --> rorder
+pipeline --> logx
+dreg --> dbase
+dreg --> duied
+dreg --> dyolo
+dreg --> domni
+dreg --> dgrpc
+duied --> uiedcore
+uiedcore --> imgp
+domni --> textd : ocr_provider (ensemble)
+domni --> logx
+
+' -- core -> hierarchy/compiler --
+pipeline ..> coarse : (via caller)
+coarse --> rorder
+coarse ..> compiler
+compiler --> schema
+
+' -- capture port (registry discovers built-ins + grpc client + user plugins) --
+creg --> cbase
+creg --> cbuiltin
+creg --> cgrpc
+creg --> cplugins
+csrv --> creg
+viewer --> creg : acquire image
+
+' -- actuator port (same shape as capture) --
+areg --> abase
+areg --> abuiltin
+areg --> agrpc
+areg --> aplugins
+asrv --> areg
+
+' -- gRPC clients -> services --
+dgrpc --> dsrv : gRPC
+cgrpc --> csrv : gRPC
+agrpc --> asrv : gRPC
+dsrv --> dreg
+
+' -- evaluation --
+evalr --> metrics
+evalr --> report
+
+' -- external model/tool dependencies --
+textd --> extocr
+dyolo --> extyolo
+domni --> extomni
+slm --> extollama
+llm --> extollama
+
+@enduml

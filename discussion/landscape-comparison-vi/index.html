@@ -1,0 +1,836 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/discussion/landscape-comparison-vi/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>Landscape 5-way (VI) - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "Landscape 5-way (VI)";
+        var properdocs_page_input_path = "discussion\\landscape-comparison-vi.md";
+        var properdocs_page_url = "/vizdom/discussion/landscape-comparison-vi/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current">Model Comparisons</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Landscape 5-way (VI)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#1-tom-tat-trong-60-giay">1. Tóm tắt trong 60 giây</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-nam-he-thong">2. Năm hệ thống</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-ma-tran-nang-luc-bang-then-chot">3. Ma trận năng lực — bảng then chốt</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-benchmark-va-vi-sao-khong-uoc-gop-chung">4. Benchmark — và vì sao không được gộp chung</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-phat-hien-kho-chiu-omniparser">5. Phát hiện khó chịu: OmniParser</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#hai-cach-oc-ca-hai-eu-ung">Hai cách đọc, cả hai đều đúng</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6-vay-ong-gop-cua-ta-gio-nam-o-au">6. Vậy đóng góp của ta giờ nằm ở đâu?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#7-ba-lua-chon-chien-luoc">7. Ba lựa chọn chiến lược</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#8-nen-muon-gi-tu-moi-he-thong">8. Nên mượn gì từ mỗi hệ thống</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#9-giay-phep-rang-buoc-thuc-te">9. Giấy phép &amp; ràng buộc thực tế</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#91-trang-thai-giay-phep-a-kiem-chung-xac-nhan-20072026">9.1 Trạng thái giấy phép đã kiểm chứng (xác nhận 20/07/2026)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#92-phat-hien-lam-thay-oi-quyet-inh">9.2 Phát hiện làm thay đổi quyết định</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#93-agpl-30-yeu-cau-gi-theo-tung-kich-ban">9.3 AGPL-3.0 yêu cầu gì, theo từng kịch bản</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#94-loi-thoat-sang-giay-phep-de-dai-neu-can">9.4 Lối thoát sang giấy phép dễ dãi, nếu cần</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#95-cac-rang-buoc-thuc-te-khac">9.5 Các ràng buộc thực tế khác</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#10-khuyen-nghi-buoc-tiep-theo">10. Khuyến nghị &amp; bước tiếp theo</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Research</li>
+          <li class="breadcrumb-item">Model Comparisons</li>
+      <li class="breadcrumb-item active">Landscape 5-way (VI)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="boi-canh-hieu-gui-so-sanh-nam-he-thong">Bối cảnh Hiểu GUI: So sánh năm hệ thống<a class="headerlink" href="#boi-canh-hieu-gui-so-sanh-nam-he-thong" title="Permanent link">¶</a></h1>
+<p>Visual DOM Generator của ta đứng ở đâu giữa OmniParser, Aria-UI, ELAM-7B và Jedi — và, một cách trung thực, đóng góp của ta giờ nằm ở chỗ nào.</p>
+<div class="admonition warning">
+<p class="admonition-title">Nguồn &amp; độ tin cậy</p>
+<p>Tổng hợp từ: kho mã OmniParser (microsoft/omniparser), <em>Aria-UI</em> (arXiv:2412.16256v1),
+ model card ELAM-7B (sparks-solutions/ELAM-7B), và trang dự án OSWorld-G / Jedi
+ (<em>Scaling Computer-Use Grounding via User Interface Decomposition and Synthesis</em>).
+ Mọi con số đều do chính nhóm tác giả từng hệ thống công bố. Các nhận định về pipeline của ta phản ánh trạng thái hiện tại
+ của kho <code>D:\Project\MasterProject</code>. Đây là ghi chú hỗ trợ ra quyết định, không phải một nghiên cứu benchmark độc lập.</p>
+</div>
+<h2 id="1-tom-tat-trong-60-giay">1. Tóm tắt trong 60 giây<a class="headerlink" href="#1-tom-tat-trong-60-giay" title="Permanent link">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Ba điều quan trọng nhất</p>
+<ol>
+<li><strong>OmniParser của Microsoft đã độc lập xây dựng đúng kiến trúc của ta</strong> — phát hiện bằng YOLO + OCR + mô hình mô tả để lấy ngữ nghĩa, xuất ra hộp kèm nhãn. Điều này vừa xác nhận trực giác thiết kế của ta, vừa đe dọa tính mới.</li>
+<li><strong>Không hệ thống nào trong bối cảnh này tạo ra cây phân cấp.</strong> OmniParser xuất <em>danh sách phẳng</em>; ba mô hình grounding xuất <em>một điểm</em>. Cây DOM vẫn thực sự là của ta.</li>
+<li><strong>Tất cả họ nhắm tới agent; ta nhắm tới kiểm thử.</strong> Tính tất định, tái sử dụng, diễn giải được và kiểm chứng là yêu cầu của ta, không phải của họ. Đây là khác biệt thật và bảo vệ được.</li>
+</ol>
+</div>
+<h2 id="2-nam-he-thong">2. Năm hệ thống<a class="headerlink" href="#2-nam-he-thong" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Visual DOM Generator (của ta)</strong></td>
+<td>CV (UIED + OCR + bộ phát hiện symbol/màn hình, YOLO dự kiến) → phân cấp thô theo luật → LLM refiner (Qwen2.5-3b) → trình biên dịch DOM → thư viện Robot Framework.</td>
+</tr>
+<tr>
+<td>Nguyên tắc: CV sở hữu hình học, LLM sở hữu ngữ nghĩa . Đầu ra: cây DOM JSON kiểu UIAutomator.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>OmniParser (Microsoft)</strong></td>
+<td>Ảnh chụp → phần tử có cấu trúc. Phát hiện biểu tượng dựa trên YOLO + OCR tích hợp + mô tả bằng Florence-2 (V2; BLIP2 ở V1.5).</td>
+</tr>
+<tr>
+<td>Đầu ra: hộp bao + nhãn ngữ nghĩa + dự đoán khả năng tương tác . V1.5 bổ sung phát hiện biểu tượng nhỏ, chi tiết hơn. V2 phát hành 02/2025.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Aria-UI (HKU / Rhymes AI)</strong></td>
+<td>Grounding thuần thị giác, tuyên bố rõ không dùng HTML/cây trợ năng. Nền: Aria MoE, 3,9B kích hoạt.</td>
+</tr>
+<tr>
+<td>Đầu vào: ảnh + chỉ dẫn NN tự nhiên (+ lịch sử hành động tùy chọn). Đầu ra: điểm chuẩn hóa [0,1000] .</td>
+<td></td>
+</tr>
+<tr>
+<td>11,5 triệu mẫu huấn luyện; siêu phân giải tới 3920×2940.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ELAM-7B (sparks-solutions)</strong></td>
+<td>Nền Molmo-7B-D (xương sống Qwen2-7B). Hai nhiệm vụ: định vị hành động, và đánh giá kết quả kỳ vọng trả về PASSED/FAILED . Huấn luyện trên 17.708 chỉ dẫn / 6.230 ảnh UI ô tô . Apache 2.0.</td>
+</tr>
+<tr>
+<td><strong>Jedi / OSWorld-G (nghiên cứu grounding)</strong></td>
+<td>Mô hình Jedi-3B/7B + bộ dữ liệu tổng hợp 4 triệu mẫu, xây bằng cách phân rã UI (biểu tượng, thành phần, tài liệu, slide, bảng tính, bố cục).</td>
+</tr>
+<tr>
+<td>Benchmark OSWorld-G: 564 mẫu, gồm khớp văn bản, nhận dạng phần tử, hiểu bố cục, thao tác tinh vi và khả năng từ chối .</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-ma-tran-nang-luc-bang-then-chot">3. Ma trận năng lực — bảng then chốt<a class="headerlink" href="#3-ma-tran-nang-luc-bang-then-chot" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Năng lực</th>
+<th>Của ta</th>
+<th>OmniParser</th>
+<th>Aria-UI</th>
+<th>ELAM-7B</th>
+<th>Jedi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Liệt kê toàn bộ phần tử</strong> (“trên màn hình có gì?”)</td>
+<td>CÓ</td>
+<td>CÓ</td>
+<td>không</td>
+<td>không</td>
+<td>không</td>
+</tr>
+<tr>
+<td><strong>Xuất hộp bao</strong></td>
+<td>CÓ</td>
+<td>CÓ</td>
+<td>chỉ điểm</td>
+<td>chỉ điểm</td>
+<td>chỉ điểm</td>
+</tr>
+<tr>
+<td><strong>Cây phân cấp / DOM</strong></td>
+<td>CÓ</td>
+<td>danh sách phẳng</td>
+<td>không</td>
+<td>không</td>
+<td>không</td>
+</tr>
+<tr>
+<td><strong>Định vị từ chỉ dẫn NN tự nhiên</strong> (“X ở đâu?”)</td>
+<td>qua truy vấn DOM</td>
+<td>không</td>
+<td>CÓ</td>
+<td>CÓ</td>
+<td>CÓ</td>
+</tr>
+<tr>
+<td><strong>Nhãn ngữ nghĩa / vai trò</strong></td>
+<td>CÓ</td>
+<td>CÓ</td>
+<td>ngầm định</td>
+<td>ngầm định</td>
+<td>ngầm định</td>
+</tr>
+<tr>
+<td><strong>Đánh giá pass/fail tích hợp</strong></td>
+<td>qua assertion RF</td>
+<td>không</td>
+<td>không</td>
+<td>CÓ</td>
+<td>không</td>
+</tr>
+<tr>
+<td><strong>Từ chối tường minh</strong> (“không tồn tại”)</td>
+<td>theo luật</td>
+<td>n/a</td>
+<td>yếu</td>
+<td>yếu</td>
+<td>có đo lường</td>
+</tr>
+<tr>
+<td><strong>Tái sử dụng cho nhiều hành động</strong></td>
+<td>CÓ — phân tích 1 lần</td>
+<td>CÓ — phân tích 1 lần</td>
+<td>suy luận lại mỗi lần</td>
+<td>suy luận lại</td>
+<td>suy luận lại</td>
+</tr>
+<tr>
+<td><strong>Chạy được không cần GPU</strong></td>
+<td>CÓ (nhánh CPU)</td>
+<td>một phần</td>
+<td>không</td>
+<td>không</td>
+<td>không</td>
+</tr>
+<tr>
+<td><strong>Đối tượng phục vụ</strong></td>
+<td><strong>Tự động hóa kiểm thử</strong></td>
+<td>Agent</td>
+<td>Agent</td>
+<td>Kiểm thử HMI</td>
+<td>Agent</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Cách đọc bảng này</p>
+<p>Ở đây có hai họ khác biệt: <strong>bộ phân tích (parser)</strong> (của ta, OmniParser) trả lời <em>“trên màn hình này có gì?”</em>,
+ và <strong>bộ định vị (grounder)</strong> (Aria-UI, ELAM, Jedi) trả lời <em>“X ở đâu?”</em>. Chúng bổ trợ nhau, không thay thế nhau.
+ Trong họ parser, hàng duy nhất mà ta đứng một mình là <strong>cây phân cấp</strong>.</p>
+</div>
+<h2 id="4-benchmark-va-vi-sao-khong-uoc-gop-chung">4. Benchmark — và vì sao không được gộp chung<a class="headerlink" href="#4-benchmark-va-vi-sao-khong-uoc-gop-chung" title="Permanent link">¶</a></h2>
+<div class="admonition danger">
+<p class="admonition-title">Đừng đặt các con số này vào cùng một cột</p>
+<p>Mỗi con số dưới đây đến từ <strong>một benchmark khác nhau với độ khó khác nhau</strong>. So sánh trực tiếp là không hợp lệ
+ và sẽ là điểm dễ bị phản biện khi bảo vệ luận văn.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Hệ thống</th>
+<th>Benchmark</th>
+<th>Điểm</th>
+<th>Ghi chú</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ELAM-7B</td>
+<td>AutomotiveUI-Bench-4K</td>
+<td>87,6% grounding / 78,2% đánh giá</td>
+<td>Chỉ miền ô tô</td>
+</tr>
+<tr>
+<td>Aria-UI</td>
+<td>ScreenSpot</td>
+<td>82,4%</td>
+<td>Grounding một bước; dễ nhất trong nhóm này</td>
+</tr>
+<tr>
+<td>Jedi-7B</td>
+<td>OSWorld-G (564 mẫu)</td>
+<td>54,1%</td>
+<td>so với UI-TARS-7B 47,5%; thực tế hơn, khó hơn</td>
+</tr>
+<tr>
+<td>OmniParser V2</td>
+<td>ScreenSpot Pro</td>
+<td>39,5%</td>
+<td>Benchmark cố ý làm khó</td>
+</tr>
+<tr>
+<td>Aria-UI</td>
+<td>OSWorld (agentic)</td>
+<td>15,15%</td>
+<td>Tỉ lệ hoàn thành tác vụ đầu-cuối</td>
+</tr>
+<tr>
+<td>Jedi-7B + GPT-4o / + o3</td>
+<td>OSWorld (agentic)</td>
+<td>27,0% / 50,2%</td>
+<td>Lần chạy o3 cải thiện từ đường cơ sở 23%</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition success">
+<p class="admonition-title">Phát hiện đáng trích dẫn</p>
+<p>Trên các benchmark dễ, grounding trông gần như đã giải quyết xong (82–88%), nhưng trên benchmark thực tế nó tụt xuống
+ <strong>40–54%</strong>, và tỉ lệ thành công agentic đầu-cuối chỉ nằm giữa <strong>15% và 50%</strong>.
+ <strong>Grounding không phải nút thắt cổ chai; việc thực thi đáng tin cậy, có cấu trúc và lặp lại được mới là nút thắt.</strong>
+ Chính khoảng cách đó là luận cứ cho một DOM tất định trong bối cảnh <em>kiểm thử</em>.</p>
+</div>
+<h2 id="5-phat-hien-kho-chiu-omniparser">5. Phát hiện khó chịu: OmniParser<a class="headerlink" href="#5-phat-hien-kho-chiu-omniparser" title="Permanent link">¶</a></h2>
+<p>OmniParser không phải một hệ hình cạnh tranh — nó chính là <strong>hệ hình của ta, do Microsoft Research cài đặt</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Giai đoạn</th>
+<th>Pipeline của ta</th>
+<th>OmniParser</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hình học phần tử</td>
+<td>Phát hiện bằng UIED / YOLO</td>
+<td>Phát hiện biểu tượng dựa trên YOLO</td>
+</tr>
+<tr>
+<td>Văn bản</td>
+<td>OCR — EasyOCR / PaddleOCR / Tesseract</td>
+<td>OCR tích hợp</td>
+</tr>
+<tr>
+<td>Ngữ nghĩa</td>
+<td>LLM refiner + SLM advisor (không bao giờ sinh tọa độ)</td>
+<td>Mô tả bằng Florence-2 → mô tả chức năng</td>
+</tr>
+<tr>
+<td>Tín hiệu bổ sung</td>
+<td>Gán visual_type / vai trò</td>
+<td>Dự đoán khả năng tương tác</td>
+</tr>
+<tr>
+<td>Đầu ra</td>
+<td><strong>DOM JSON phân cấp</strong></td>
+<td>Danh sách phẳng các hộp đã gắn nhãn</td>
+</tr>
+</tbody>
+</table>
+<h4 id="hai-cach-oc-ca-hai-eu-ung">Hai cách đọc, cả hai đều đúng<a class="headerlink" href="#hai-cach-oc-ca-hai-eu-ung" title="Permanent link">¶</a></h4>
+<ul>
+<li>
+<p>(Xác nhận) Một phòng nghiên cứu công nghiệp hội tụ về cùng kiến trúc là bằng chứng bên ngoài mạnh mẽ rằng
+ “CV sở hữu hình học, mô hình bổ sung ngữ nghĩa” là cách phân rã đúng. Đây là chỗ dựa có thể trích dẫn cho luận điểm trung tâm.</p>
+</li>
+<li>
+<p>(Đe dọa tính mới) Nếu OmniParser đã biến ảnh chụp thành hộp có nhãn, thì <strong>phát hiện phần tử không còn là một đóng góp</strong>.
+ Hội đồng sẽ hỏi phần còn lại là gì. Ta nên tự trả lời câu đó ngay bây giờ — chứ không phải lúc bảo vệ.</p>
+</li>
+</ul>
+<h2 id="6-vay-ong-gop-cua-ta-gio-nam-o-au">6. Vậy đóng góp của ta giờ nằm ở đâu?<a class="headerlink" href="#6-vay-ong-gop-cua-ta-gio-nam-o-au" title="Permanent link">¶</a></h2>
+<p>Sau khi loại bỏ mọi thứ mà bối cảnh đã cung cấp sẵn, bốn thứ vẫn thực sự là của ta:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Dựng cây phân cấp</strong></td>
+<td>Bao hàm, căn chỉnh, liên kết nhãn và quan hệ cha–con — biến danh sách phần tử phẳng thành một cây truy vấn được. Không hệ thống nào trong so sánh này làm điều đó. Đây là luận điểm còn lại mạnh nhất.</td>
+</tr>
+<tr>
+<td><strong>2. Định hướng kiểm thử</strong></td>
+<td>Chiến lược locator, assertion và từ khóa Robot Framework. Mọi hệ thống khác nhắm tới agent , mà yêu cầu của agent</td>
+</tr>
+<tr>
+<td>(tự chủ, hoàn thành tác vụ) khác về bản chất so với yêu cầu của kiểm thử (tất định, lặp lại được, chẩn đoán được).</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>3. Kinh tế của tái sử dụng</strong></td>
+<td>Một DOM phục vụ nhiều locator và assertion; mô hình grounding phải suy luận lại cho từng chỉ dẫn. Trong bộ hồi quy hàng nghìn bước,</td>
+</tr>
+<tr>
+<td>đây là khác biệt giữa một công cụ khả dụng và một công cụ bất khả thi.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>4. Khả năng diễn giải</strong></td>
+<td>Một test thất bại phải chẩn đoán được. Cây kiểm tra được với luật truy vết được giải thích vì sao một phần tử được khớp;</td>
+</tr>
+<tr>
+<td>một tọa độ từ hộp đen thì không.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Đề xuất phát biểu đóng góp trong một câu</p>
+<p><em>“Các hệ thống hiện có hoặc liệt kê phần tử dạng phẳng (OmniParser), hoặc định vị một mục tiêu đơn lẻ từ ngôn ngữ (Aria-UI, ELAM, Jedi).
+ Công trình này đóng góp tầng còn thiếu — biên dịch các phần tử đã phát hiện thành một cây DOM phân cấp, tái sử dụng được và diễn giải được — và chứng minh
+ rằng chính biểu diễn này, chứ không phải grounding theo từng chỉ dẫn, mới là mức trừu tượng phù hợp cho tự động hóa kiểm thử GUI tất định.”</em></p>
+</div>
+<h2 id="7-ba-lua-chon-chien-luoc">7. Ba lựa chọn chiến lược<a class="headerlink" href="#7-ba-lua-chon-chien-luoc" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Lựa chọn</th>
+<th>Nghĩa là gì</th>
+<th>Ưu điểm</th>
+<th>Nhược điểm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A. Tiếp tục tự xây CV</strong> (giữ nguyên)</td>
+<td>Tiếp tục tự cải thiện UIED/OCR/YOLO.</td>
+<td>Toàn quyền kiểm soát; không vướng giấy phép bên ngoài.</td>
+<td>Cạnh tranh với Microsoft ở đúng khâu <em>yếu nhất</em> của ta; lỗi gộp/tách vẫn tồn tại từ tháng 1.</td>
+</tr>
+<tr>
+<td><strong>B. Dùng OmniParser làm tầng phát hiện</strong> (khuyến nghị)</td>
+<td>Dùng OmniParser cho hộp + nhãn; tập trung công sức vào phân cấp, biên dịch DOM và thư viện RF.</td>
+<td>Giảm rủi ro ở khâu yếu nhất; đứng trên một bộ phát hiện được bảo trì và đo đạc; dời đóng góp về nơi ta thực sự mới.   (cập nhật) bộ phát hiện AGPL của nó <em>không</em> thêm nghĩa vụ giấy phép mới — ta vốn đã ở trên AGPL qua Ultralytics (xem §9.2).</td>
+<td>Phụ thuộc bên ngoài; câu chuyện “tự làm tất cả” bị giảm.</td>
+</tr>
+<tr>
+<td><strong>C. Lai / so sánh</strong> (phương án an toàn)</td>
+<td>Giữ CV của ta làm mặc định, thêm OmniParser như một backend chọn được, và so sánh thực nghiệm hai bên.</td>
+<td>Tạo ra một chương đánh giá thực chất; tránh bị khóa vào giấy phép; giữ mở cả hai hướng.</td>
+<td>Tốn công hơn; phải bảo trì hai nhánh mã.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lưu ý:</strong> cả B và C đều cần cùng một mức trừu tượng — một <em>backend phát hiện</em> cắm rút được sau một giao diện phần tử ổn định.
+Xây giao diện đó là đáng làm bất kể cuối cùng chọn phương án nào.</p>
+<h2 id="8-nen-muon-gi-tu-moi-he-thong">8. Nên mượn gì từ mỗi hệ thống<a class="headerlink" href="#8-nen-muon-gi-tu-moi-he-thong" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Từ</th>
+<th>Lấy gì</th>
+<th>Vì sao</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OmniParser</td>
+<td><strong>Dự đoán khả năng tương tác</strong></td>
+<td>Đánh dấu phần tử nào thao tác được rất hữu ích cho locator kiểm thử; hiện ta chưa mô hình hóa điều này một cách tường minh.</td>
+</tr>
+<tr>
+<td>OmniParser</td>
+<td>Chính tầng phát hiện (phương án B)</td>
+<td>Loại bỏ điểm yếu recall tồn tại đã lâu.</td>
+</tr>
+<tr>
+<td>Jedi / OSWorld-G</td>
+<td><strong>“Từ chối” như một thuộc tính được đo</strong></td>
+<td>Trong kiểm thử, một dương tính giả (bấm nhầm phần tử rồi “PASS”) tệ hơn một lần thất bại. Khả năng từ chối phải được đo, không được mặc định.</td>
+</tr>
+<tr>
+<td>Jedi / OSWorld-G</td>
+<td><strong>Bộ phân loại đánh giá 5 hạng mục</strong></td>
+<td>Khớp văn bản, nhận dạng phần tử, hiểu bố cục, thao tác tinh vi, từ chối — một khung sẵn có cho chương đánh giá của ta.</td>
+</tr>
+<tr>
+<td>Aria-UI</td>
+<td>Chia khối cho siêu phân giải</td>
+<td>Xử lý đúng bài toán phần tử nhỏ/DPI cao như ADR-008 và ADR-012.</td>
+</tr>
+<tr>
+<td>Aria-UI + Jedi</td>
+<td><strong>Phương pháp tổng hợp dữ liệu</strong></td>
+<td>Hai nhóm độc lập cùng xác định tổng hợp dữ liệu là chìa khóa (11,5 triệu và 4 triệu mẫu). Điều này xác nhận hướng dataset tổng hợp/YOLO của ta.</td>
+</tr>
+<tr>
+<td>ELAM-7B</td>
+<td>Đánh giá kết quả kỳ vọng (PASSED/FAILED)</td>
+<td>Ánh xạ trực tiếp sang từ khóa assertion của Robot Framework cho các kiểm chứng thị giác mờ.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="9-giay-phep-rang-buoc-thuc-te">9. Giấy phép &amp; ràng buộc thực tế<a class="headerlink" href="#9-giay-phep-rang-buoc-thuc-te" title="Permanent link">¶</a></h2>
+<h3 id="91-trang-thai-giay-phep-a-kiem-chung-xac-nhan-20072026">9.1 Trạng thái giấy phép đã kiểm chứng (xác nhận 20/07/2026)<a class="headerlink" href="#91-trang-thai-giay-phep-a-kiem-chung-xac-nhan-20072026" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Thành phần</th>
+<th>Giấy phép</th>
+<th>Kiểm chứng bằng cách nào</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kho mã OmniParser (<code>microsoft/OmniParser</code>)</td>
+<td><strong>CC-BY-4.0</strong></td>
+<td>Tệp <code>LICENSE</code> của kho</td>
+</tr>
+<tr>
+<td>Model card OmniParser-v2.0 (tổng thể)</td>
+<td>MIT</td>
+<td>Model card trên Hugging Face</td>
+</tr>
+<tr>
+<td>→ <code>icon_detect</code> (bộ phát hiện)</td>
+<td><strong>AGPL-3.0</strong></td>
+<td>Văn bản AGPL-3.0 chuẩn của FSF trong <code>icon_detect/LICENSE</code></td>
+</tr>
+<tr>
+<td>→ <code>icon_caption</code></td>
+<td>MIT</td>
+<td>Model card</td>
+</tr>
+<tr>
+<td>ELAM-7B</td>
+<td>Apache 2.0</td>
+<td>Model card</td>
+</tr>
+<tr>
+<td>Aria-UI, Jedi</td>
+<td>chưa kiểm chứng</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Microsoft nói rõ: <em>“Please note that icon_detect model is under AGPL license, and icon_caption is under MIT license.”</em>
+Trọng số <code>icon_detect</code> là bản tinh chỉnh của YOLOv8, và Ultralytics phân phối YOLOv8 theo AGPL-3.0 — đó là nơi nghĩa vụ này được kế thừa.</p>
+<h3 id="92-phat-hien-lam-thay-oi-quyet-inh">9.2 Phát hiện làm thay đổi quyết định<a class="headerlink" href="#92-phat-hien-lam-thay-oi-quyet-inh" title="Permanent link">¶</a></h3>
+<div class="admonition danger">
+<p class="admonition-title">Ta vốn đã ở trên AGPL — độc lập với OmniParser</p>
+<p>Rà soát kho mã cho thấy đề tài <strong>đã phụ thuộc vào Ultralytics</strong>:
+ <code>pyproject.toml</code> (<code>ultralytics&gt;=8.0.0</code>), <code>requirements-training.txt</code>,
+ <code>scripts/training/cv/inference_yolo.py</code> (<code>from ultralytics import YOLO</code>) và
+ <code>models/configs/cv_model_registry.py</code> (đăng ký <code>yolov8n/s/m</code>).</p>
+<p><strong>Hệ quả:</strong> AGPL <em>không phải</em> rủi ro riêng của OmniParser mà ta có thể né bằng cách từ chối OmniParser.
+ Quyết định dùng YOLO hồi tháng 4 đã đưa AGPL-3.0 vào đề tài rồi. Dùng bộ phát hiện của OmniParser
+ <strong>không tạo thêm lớp giấy phép mới</strong> — vẫn là nghĩa vụ ta đang chịu. Điều này làm suy yếu đáng kể
+ lập luận về giấy phép để phản đối phương án B.</p>
+</div>
+<h3 id="93-agpl-30-yeu-cau-gi-theo-tung-kich-ban">9.3 AGPL-3.0 yêu cầu gì, theo từng kịch bản<a class="headerlink" href="#93-agpl-30-yeu-cau-gi-theo-tung-kich-ban" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Kịch bản</th>
+<th>Ảnh hưởng</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nghiên cứu luận văn, chạy cục bộ, không phân phối</td>
+<td>Không sao — AGPL không kích hoạt với sử dụng riêng tư</td>
+</tr>
+<tr>
+<td>Công bố mã nguồn luận văn ra công khai</td>
+<td>Sản phẩm kết hợp phải được cấp phép <strong>AGPL-3.0</strong></td>
+</tr>
+<tr>
+<td>Phát hành thư viện Robot Framework cho người khác dùng</td>
+<td>Phải là <strong>AGPL-3.0</strong></td>
+</tr>
+<tr>
+<td>Phục vụ qua mạng (dashboard / API / SaaS)</td>
+<td><strong>Điều khoản mạng §13</strong> — phải cung cấp toàn bộ mã nguồn tương ứng cho người dùng</td>
+</tr>
+<tr>
+<td>Sản phẩm thương mại, mã nguồn đóng</td>
+<td>Cần <strong>giấy phép thương mại Ultralytics</strong> (có phí)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Lưu ý pháp lý — không phải tư vấn pháp luật</p>
+<p>Việc <em>trọng số</em> đã huấn luyện có thuộc phạm vi AGPL hay không, và việc chạy suy luận có tạo ra tác phẩm phái sinh hay không,
+ hiện vẫn chưa ngã ngũ về mặt pháp lý; Ultralytics diễn giải theo hướng rộng. Với bất kỳ mục đích nào vượt ra ngoài nghiên cứu học thuật,
+ nên tham vấn nhà trường và (nếu liên quan) đơn vị công tác trước khi dựa vào phân tích này.</p>
+</div>
+<h3 id="94-loi-thoat-sang-giay-phep-de-dai-neu-can">9.4 Lối thoát sang giấy phép dễ dãi, nếu cần<a class="headerlink" href="#94-loi-thoat-sang-giay-phep-de-dai-neu-can" title="Permanent link">¶</a></h3>
+<p>Nếu thư viện Robot Framework có ý định được tái sử dụng ở nơi làm việc hoặc thương mại, cần lên kế hoạch cho một bộ phát hiện
+có giấy phép dễ dãi <strong>ngay từ sớm</strong> — đổi bộ phát hiện muộn sẽ rất tốn kém.</p>
+<ul>
+<li>
+<p><strong>RT-DETR</strong> (kho gốc <code>lyuwenyu/RT-DETR</code>) — Apache 2.0. Đáng chú ý: chính <code>cv_model_registry.py</code> của ta đã liệt kê RT-DETR như lựa chọn thiên về độ chính xác.</p>
+</li>
+<li>
+<p><strong>YOLOX</strong> (Megvii) — Apache 2.0</p>
+</li>
+<li>
+<p><strong>DETR</strong> (Meta) — Apache 2.0</p>
+</li>
+</ul>
+<div class="admonition danger">
+<p class="admonition-title">Cái bẫy cần tránh</p>
+<p>Dùng RT-DETR <strong>thông qua gói <code>ultralytics</code> thì vẫn là AGPL</strong>. Giấy phép đi theo
+ <em>bản cài đặt</em>, không đi theo kiến trúc. Muốn đường đi dễ dãi thì phải dùng kho nguồn gốc.</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">Điều này biện minh cho backend phát hiện cắm rút được — gấp đôi</p>
+<p>Một giao diện phát hiện cắm rút được giờ phục vụ hai mục đích: cho phép so sánh thực nghiệm CV của ta với OmniParser,
+ <em>và</em> cho phép thay một bộ phát hiện AGPL bằng một bộ dễ dãi mà không phải viết lại pipeline.
+ Điều đó khiến nó là hạng mục kỹ thuật đáng làm nhất tiếp theo, bất kể chọn phương án chiến lược nào.</p>
+</div>
+<h3 id="95-cac-rang-buoc-thuc-te-khac">9.5 Các ràng buộc thực tế khác<a class="headerlink" href="#95-cac-rang-buoc-thuc-te-khac" title="Permanent link">¶</a></h3>
+<ul>
+<li>
+<p><strong>Phần cứng:</strong> cả ba mô hình grounding đều cần GPU; nhánh CPU của ta là điểm khác biệt thực sự cho các máy chạy kiểm thử và thiết bị nhúng.</p>
+</li>
+<li>
+<p><strong>Khả năng tái lập:</strong> mọi con số ở đây đều do tác giả tự báo cáo. Bất kỳ số nào ta trích dẫn như sự thật đều nên được tái lập trên ảnh chụp của chính ta trước.</p>
+</li>
+<li>
+<p><strong>Miền dữ liệu:</strong> ELAM chỉ có dữ liệu ô tô; các hệ thống khác tổng quát. Phải kiểm soát yếu tố miền trong mọi so sánh ta thực hiện.</p>
+</li>
+</ul>
+<h2 id="10-khuyen-nghi-buoc-tiep-theo">10. Khuyến nghị &amp; bước tiếp theo<a class="headerlink" href="#10-khuyen-nghi-buoc-tiep-theo" title="Permanent link">¶</a></h2>
+<div class="admonition success">
+<p class="admonition-title">Lộ trình khuyến nghị</p>
+<p>Theo <strong>phương án C trước mắt, chuyển sang B nếu giấy phép cho phép</strong>: xây một backend phát hiện cắm rút được, chạy song song CV của ta và OmniParser,
+ và dời trọng tâm luận văn về <strong>dựng cây phân cấp + biên dịch DOM + tích hợp Robot Framework</strong>,
+ nơi bối cảnh hiện tại còn để lại khoảng trống thực sự.</p>
+</div>
+<ul>
+<li>
+<p>~~Giải quyết câu hỏi AGPL cho bộ phát hiện của OmniParser.~~ (đã xong — xem §9)
+ Đã xác nhận là AGPL-3.0, nhưng ta <strong>vốn đã</strong> chịu đúng nghĩa vụ đó qua Ultralytics, nên nó không còn chặn phương án B.
+ Quyết định còn lại là một quyết định <em>đề tài</em>: thư viện RF có bao giờ nhằm tái sử dụng ở nơi làm việc hay thương mại không? Nếu có, hãy lên kế hoạch cho bộ phát hiện dễ dãi ngay (§9.4).</p>
+</li>
+<li>
+<p><strong>Định nghĩa giao diện backend phát hiện</strong> (<code>detect(image) → elements[]</code>) để CV của ta, OmniParser và bất kỳ bộ phát hiện dễ dãi nào đều thay thế được cho nhau — giờ được biện minh bởi cả nhu cầu so sánh lẫn tính linh hoạt về giấy phép.</p>
+</li>
+<li>
+<p><strong>Chạy so sánh cùng điều kiện</strong> trên ảnh chụp của ta (máy tính bỏ túi, desktop, Qt): recall, lỗi gộp/tách, độ trễ, CPU và GPU.</p>
+</li>
+<li>
+<p><strong>Áp dụng bộ phân loại OSWorld-G</strong> cho chương đánh giá, bổ sung thêm <em>độ đúng của cây phân cấp</em> — chiều mà không benchmark nào ở đây đo, và cũng là nơi chỉ ta mới cạnh tranh được.</p>
+</li>
+<li>
+<p><strong>Viết đoạn văn phát biểu đóng góp</strong> (mục 6) và mang đi trao đổi với GVHD trước khi cài đặt thêm.</p>
+</li>
+<li>
+<p><strong>Ghi lại quyết định</strong> thành một ADR (đề xuất: <em>ADR-015 — Chiến lược backend phát hiện và định vị đề tài</em>).</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Suy nghĩ khép lại</p>
+<p>Bối cảnh này không phủ định đề tài — nó <strong>làm rõ</strong> đề tài. Phát hiện phần tử giờ đã là một tầng được giải quyết và
+ phổ thông hóa, và tiếp tục cạnh tranh ở đó là chiến lược yếu nhất. Những bài toán chưa được giải là
+ <strong>cấu trúc, tái sử dụng, khả năng diễn giải và thất bại đáng tin cậy</strong> — tất cả đều quan trọng nhất trong kiểm thử, đúng
+ lĩnh vực mà đề tài này vốn đã nhắm tới.</p>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../landscape-comparison-en/" class="btn btn-neutral float-left" title="Landscape 5-way (EN)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../aria-ui-integration-en/" class="btn btn-neutral float-right" title="Aria-UI integration (EN)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../landscape-comparison-en/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../aria-ui-integration-en/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

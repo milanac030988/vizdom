@@ -1,0 +1,821 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/DeCuong-Thacsi-Updated/">
+      <link rel="shortcut icon" href="../img/favicon.ico">
+    <title>Thesis Proposal - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "Thesis Proposal";
+        var properdocs_page_input_path = "DeCuong-Thacsi-Updated.md";
+        var properdocs_page_url = "/vizdom/DeCuong-Thacsi-Updated/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Thesis Proposal</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Thesis Proposal</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ai-hoc-quoc-gia-tphcm">ĐẠI HỌC QUỐC GIA TP.HCM<a class="headerlink" href="#ai-hoc-quoc-gia-tphcm" title="Permanent link">¶</a></h1>
+<h1 id="truong-ai-hoc-khoa-hoc-tu-nhien">TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN<a class="headerlink" href="#truong-ai-hoc-khoa-hoc-tu-nhien" title="Permanent link">¶</a></h1>
+<hr>
+<p><strong>Nguyễn Huỳnh Trí Cương</strong></p>
+<p><strong>Mã số học viên: 23C11001</strong></p>
+<hr>
+<h1 id="e-cuong-nghien-cuu-e-tai-luan-van-thac-si">ĐỀ CƯƠNG NGHIÊN CỨU ĐỀ TÀI LUẬN VĂN THẠC SĨ<a class="headerlink" href="#e-cuong-nghien-cuu-e-tai-luan-van-thac-si" title="Permanent link">¶</a></h1>
+<p><strong>Tên đề tài:</strong> Xây dựng Visual DOM từ ảnh chụp màn hình ứng dụng kỹ thuật thị giác máy tính và mô hình ngôn ngữ nhỏ phục vụ kiểm thử giao diện tự động</p>
+<p><strong>Ngành:</strong> Khoa học máy tính</p>
+<p><strong>Mã số ngành:</strong></p>
+<hr>
+<p><strong>Xác nhận của giảng viên hướng dẫn</strong></p>
+<p>(Ký tên và ghi rõ họ tên)</p>
+<p>Họ tên: …………………………</p>
+<hr>
+<p><strong>TP. HCM, tháng 04 năm 2025</strong></p>
+<hr>
+<h2 id="muc-luc">Mục lục<a class="headerlink" href="#muc-luc" title="Permanent link">¶</a></h2>
+<ol>
+<li><a href="#1-giới-thiệu-tổng-quan">Giới thiệu tổng quan</a></li>
+<li><a href="#2-mục-đích-nghiên-cứu-của-luận-văn">Mục đích nghiên cứu của luận văn</a></li>
+<li><a href="#3-đối-tượng-nghiên-cứu">Đối tượng nghiên cứu</a></li>
+<li><a href="#4-các-phương-pháp-nghiên-cứu">Các phương pháp nghiên cứu</a></li>
+<li><a href="#5-nội-dung-và-phạm-vi-nghiên-cứu">Nội dung và phạm vi nghiên cứu</a></li>
+<li><a href="#6-nơi-thực-hiện-đề-tài">Nơi thực hiện đề tài</a></li>
+<li><a href="#7-thời-gian-thực-hiện">Thời gian thực hiện</a></li>
+<li><a href="#8-tài-liệu-tham-khảo">Tài liệu tham khảo</a></li>
+</ol>
+<hr>
+<h2 id="1-gioi-thieu-tong-quan">1. Giới thiệu tổng quan<a class="headerlink" href="#1-gioi-thieu-tong-quan" title="Permanent link">¶</a></h2>
+<p>Kiểm thử giao diện người dùng (GUI Testing) là một phần quan trọng trong quy trình kiểm thử phần mềm. Các công cụ phổ biến hiện nay như Selenium, Appium, hay UIAutomator sử dụng hướng tiếp cận <strong>object-based</strong>, tức là thao tác với các thành phần giao diện thông qua thuộc tính nội tại (ID, class, structure) được expose bởi hệ thống hoặc framework.</p>
+<p>Tuy nhiên, <strong>object-based</strong> gặp nhiều hạn chế khi áp dụng trong các môi trường thực tế:</p>
+<h3 id="11-han-che-tren-windowslinux-desktop">1.1. Hạn chế trên Windows/Linux Desktop<a class="headerlink" href="#11-han-che-tren-windowslinux-desktop" title="Permanent link">¶</a></h3>
+<p>Trên Windows hoặc Linux, việc truy xuất thông tin từ UI component thường đòi hỏi hệ thống hỗ trợ accessibility API (như Windows UIAutomation).</p>
+<p>Trong các trường hợp không có hỗ trợ sẵn, một phương pháp thường dùng là phát triển một dynamic library (.dll trên Windows hoặc .so trên Linux), gọi là <strong>agent</strong>, rồi inject agent này vào process của AUT (Application Under Test). Agent sẽ chạy trong cùng không gian tiến trình với AUT, cho phép truy cập trực tiếp vào memory space hoặc UI component hierarchy để thu thập thông tin.</p>
+<p>Cách tiếp cận này tiềm ẩn nhiều rủi ro:
+- Gây ảnh hưởng đến các luồng (thread) đang chạy của AUT, có thể làm sai lệch hành vi so với môi trường chạy thực tế.
+- Tăng nguy cơ xảy ra lỗi về đồng bộ, race condition hoặc crash nếu không được kiểm soát tốt.
+- Việc duy trì và phát triển agent phù hợp với nhiều loại AUT cho các platform và framework khác nhau là phức tạp và tốn công sức.</p>
+<h3 id="12-han-che-tren-linux-desktop-apps">1.2. Hạn chế trên Linux Desktop Apps<a class="headerlink" href="#12-han-che-tren-linux-desktop-apps" title="Permanent link">¶</a></h3>
+<p>Trên Linux desktop apps, việc automation phụ thuộc mạnh vào từng UI toolkit (GTK, Qt…), không có một chuẩn chung tương đương như trên Windows.</p>
+<h3 id="13-han-che-tren-android">1.3. Hạn chế trên Android<a class="headerlink" href="#13-han-che-tren-android" title="Permanent link">¶</a></h3>
+<p>Trên Android, framework như UIAutomator hoạt động hiệu quả với các app dùng View tiêu chuẩn. Nhưng với các ứng dụng native Android phát triển bằng Qt, C++, CGI… hoặc render giao diện bằng OpenGL, các thành phần UI không thể được truy cập bởi UIAutomator vì không tồn tại accessibility tree hoặc DOM structure — hoàn toàn không thể kiểm thử theo hướng object-based.</p>
+<h3 id="14-huong-tiep-can-image-based">1.4. Hướng tiếp cận Image-based<a class="headerlink" href="#14-huong-tiep-can-image-based" title="Permanent link">¶</a></h3>
+<p>Vì những hạn chế này, hướng tiếp cận <strong>image-based GUI testing</strong> đang ngày càng được quan tâm. Phương pháp này sử dụng kỹ thuật Computer Vision để nhận diện, xác định vị trí và tương tác với các thành phần giao diện giống như cách con người nhìn vào và thao tác, mà không cần truy xuất nội tại vào ứng dụng.</p>
+<h3 id="15-e-xuat-moi-visual-dom">1.5. Đề xuất mới: Visual DOM<a class="headerlink" href="#15-e-xuat-moi-visual-dom" title="Permanent link">¶</a></h3>
+<p>Các công trình như UIED (ESEC/FSE 2020) và nghiên cứu của Chen et al. (arXiv:2008.05132) đã cho thấy khả năng kết hợp giữa kỹ thuật thị giác máy tính truyền thống và học sâu trong việc phát hiện thành phần UI từ ảnh giao diện.</p>
+<p><strong>Luận văn này đề xuất một hướng tiếp cận mới: xây dựng Visual DOM</strong> — một cấu trúc dữ liệu dạng cây (tree structure) mô tả các thành phần giao diện được trích xuất hoàn toàn từ ảnh chụp màn hình, tương tự như DOM (Document Object Model) trong web development. Visual DOM kết hợp:</p>
+<ol>
+<li>
+<p><strong>Computer Vision Pipeline</strong>: Sử dụng các kỹ thuật xử lý ảnh truyền thống (edge detection, contour analysis) để phát hiện vùng UI.</p>
+</li>
+<li>
+<p><strong>OCR Integration</strong>: Tích hợp nhận dạng ký tự quang học (EasyOCR) để trích xuất nội dung văn bản từ các thành phần giao diện.</p>
+</li>
+<li>
+<p><strong>Small Language Model (SLM) Refinement</strong>: Sử dụng mô hình ngôn ngữ nhỏ (như Qwen2.5-3B) để tinh chỉnh phân loại ngữ nghĩa và xây dựng cấu trúc phân cấp của các thành phần UI.</p>
+</li>
+</ol>
+<p>Đây là hướng đi tiềm năng cho các hệ thống không hỗ trợ accessibility, ứng dụng embedded, hoặc multi-platform.</p>
+<hr>
+<h2 id="2-muc-ich-nghien-cuu-cua-luan-van">2. Mục đích nghiên cứu của luận văn<a class="headerlink" href="#2-muc-ich-nghien-cuu-cua-luan-van" title="Permanent link">¶</a></h2>
+<h3 id="21-tinh-cap-thiet">2.1. Tính cấp thiết<a class="headerlink" href="#21-tinh-cap-thiet" title="Permanent link">¶</a></h3>
+<p>Việc xây dựng hệ thống kiểm thử giao diện không phụ thuộc nền tảng đang là một yêu cầu ngày càng phổ biến, đặc biệt trong các hệ thống nhúng (embedded), automotive, mobile native. Hướng image-based có tiềm năng giải quyết bài toán này, nhưng các giải pháp hiện tại thường:
+- Chỉ hỗ trợ template matching đơn giản
+- Không cung cấp thông tin ngữ nghĩa về các thành phần UI
+- Khó khăn trong việc xây dựng test case có tính tái sử dụng cao</p>
+<h3 id="22-muc-tieu-ly-thuyet">2.2. Mục tiêu lý thuyết<a class="headerlink" href="#22-muc-tieu-ly-thuyet" title="Permanent link">¶</a></h3>
+<ul>
+<li>Nghiên cứu các thuật toán Computer Vision phù hợp cho việc nhận diện và phân loại các thành phần giao diện người dùng (UI components).</li>
+<li>Nghiên cứu khả năng ứng dụng Small Language Model (SLM) trong việc hiểu ngữ nghĩa và phân loại thành phần UI.</li>
+<li>Đề xuất khái niệm <strong>Visual DOM</strong> — cấu trúc dữ liệu mô tả giao diện được trích xuất từ hình ảnh.</li>
+</ul>
+<h3 id="23-muc-tieu-thuc-nghiem">2.3. Mục tiêu thực nghiệm<a class="headerlink" href="#23-muc-tieu-thuc-nghiem" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Xây dựng Visual DOM Generator</strong>: Pipeline chuyển đổi ảnh chụp màn hình thành cấu trúc DOM dạng JSON, bao gồm thông tin về loại, vị trí, và nội dung của từng thành phần UI.</li>
+<li><strong>Xây dựng Robot Framework Library</strong>: Thư viện mở rộng cho Robot Framework hỗ trợ kiểm thử giao diện dựa trên Visual DOM.</li>
+<li><strong>Đánh giá thực nghiệm</strong>: Thử nghiệm trên nhiều nền tảng khác nhau (Windows, Linux, Android) để đánh giá tính hiệu quả và khả năng ứng dụng thực tiễn.</li>
+</ul>
+<hr>
+<h2 id="3-oi-tuong-nghien-cuu">3. Đối tượng nghiên cứu<a class="headerlink" href="#3-oi-tuong-nghien-cuu" title="Permanent link">¶</a></h2>
+<h3 id="31-phuong-phap-kiem-thu-giao-dien">3.1. Phương pháp kiểm thử giao diện<a class="headerlink" href="#31-phuong-phap-kiem-thu-giao-dien" title="Permanent link">¶</a></h3>
+<ul>
+<li>Các phương pháp kiểm thử giao diện người dùng (GUI Testing) theo hướng object-based và image-based.</li>
+<li>Hạn chế của phương pháp object-based trong việc kiểm thử:</li>
+<li>Ứng dụng desktop (.NET, Java) cần automation interface như Windows Automation hoặc phải inject code.</li>
+<li>Ứng dụng Linux tùy thuộc vào UI toolkit (GTK, Qt).</li>
+<li>Ứng dụng Android dùng UIAutomator không tương thích với giao diện vẽ bằng Qt/C++/OpenGL.</li>
+</ul>
+<h3 id="32-ky-thuat-computer-vision-cho-gui">3.2. Kỹ thuật Computer Vision cho GUI<a class="headerlink" href="#32-ky-thuat-computer-vision-cho-gui" title="Permanent link">¶</a></h3>
+<ul>
+<li>Các phương pháp phát hiện vùng (region detection): edge detection, contour analysis, morphological operations.</li>
+<li>Các phương pháp phân đoạn ảnh (image segmentation) áp dụng cho giao diện.</li>
+<li>Kỹ thuật nhận dạng văn bản (OCR) trong ngữ cảnh giao diện người dùng.</li>
+</ul>
+<h3 id="33-mo-hinh-ngon-ngu-cho-gui-understanding">3.3. Mô hình ngôn ngữ cho GUI Understanding<a class="headerlink" href="#33-mo-hinh-ngon-ngu-cho-gui-understanding" title="Permanent link">¶</a></h3>
+<ul>
+<li>Small Language Models (SLM) và khả năng ứng dụng trong phân loại UI.</li>
+<li>Vision-Language Models (VLM) và khả năng phát hiện thành phần giao diện.</li>
+<li>Prompt engineering cho bài toán GUI element classification.</li>
+</ul>
+<h3 id="34-san-pham-au-ra">3.4. Sản phẩm đầu ra<a class="headerlink" href="#34-san-pham-au-ra" title="Permanent link">¶</a></h3>
+<ul>
+<li>Khái niệm và cấu trúc Visual DOM.</li>
+<li>Thư viện mở rộng cho Robot Framework hỗ trợ kiểm thử GUI đa nền tảng.</li>
+</ul>
+<hr>
+<h2 id="4-cac-phuong-phap-nghien-cuu">4. Các phương pháp nghiên cứu<a class="headerlink" href="#4-cac-phuong-phap-nghien-cuu" title="Permanent link">¶</a></h2>
+<h3 id="41-nghien-cuu-ly-thuyet">4.1. Nghiên cứu lý thuyết<a class="headerlink" href="#41-nghien-cuu-ly-thuyet" title="Permanent link">¶</a></h3>
+<p>Tổng hợp các hướng tiếp cận image-based hiện có, bao gồm:
+- Các công cụ hỗ trợ: OpenCV, EasyOCR, Tesseract
+- Các phương pháp: Template Matching, Feature Detection, Deep Learning-based Detection
+- Các mô hình ngôn ngữ nhỏ: Qwen2.5, Llama, Phi</p>
+<h3 id="42-thuc-nghiem-ky-thuat">4.2. Thực nghiệm kỹ thuật<a class="headerlink" href="#42-thuc-nghiem-ky-thuat" title="Permanent link">¶</a></h3>
+<h4 id="421-cv-evidence-extraction-pipeline">4.2.1. CV Evidence Extraction Pipeline<a class="headerlink" href="#421-cv-evidence-extraction-pipeline" title="Permanent link">¶</a></h4>
+<p>Xây dựng pipeline trích xuất thông tin từ ảnh sử dụng các kỹ thuật:</p>
+<p><strong>Kỹ thuật Computer Vision truyền thống:</strong>
+- <strong>Edge Detection</strong>: Sử dụng Canny edge detector để phát hiện cạnh của các thành phần UI.
+- <strong>Contour Analysis</strong>: Phân tích đường viền để xác định vùng bao (bounding box) của các element.
+- <strong>Morphological Operations</strong>: Áp dụng erosion, dilation để xử lý nhiễu và tách vùng chồng lấn.
+- <strong>Color-based Segmentation</strong>: Phân tích màu sắc để phân loại thành phần (button, input field, text).</p>
+<p><strong>Kỹ thuật nhận dạng văn bản (OCR):</strong>
+- <strong>EasyOCR</strong>: Sử dụng cho nhận dạng text đa ngôn ngữ với độ chính xác cao.
+- <strong>Text Region Detection</strong>: Phát hiện và nhóm các vùng chứa văn bản.
+- <strong>Text-to-Element Association</strong>: Liên kết văn bản với thành phần UI tương ứng.</p>
+<h4 id="422-coarse-hierarchy-builder">4.2.2. Coarse Hierarchy Builder<a class="headerlink" href="#422-coarse-hierarchy-builder" title="Permanent link">¶</a></h4>
+<p>Xây dựng cấu trúc phân cấp thô (coarse hierarchy) dựa trên quy tắc:
+- <strong>Spatial Analysis</strong>: Phân tích vị trí tương đối giữa các element.
+- <strong>Containment Detection</strong>: Xác định quan hệ cha-con dựa trên bounding box.
+- <strong>Grouping Rules</strong>: Nhóm các element có liên quan theo logic giao diện.</p>
+<h4 id="423-llm-hierarchy-refinement">4.2.3. LLM Hierarchy Refinement<a class="headerlink" href="#423-llm-hierarchy-refinement" title="Permanent link">¶</a></h4>
+<p>Sử dụng Small Language Model để tinh chỉnh phân loại:
+- <strong>Element Type Classification</strong>: Phân loại chính xác loại element (button, input, label, icon...).
+- <strong>Semantic Understanding</strong>: Hiểu ngữ nghĩa của element dựa trên context và nội dung text.
+- <strong>Hierarchy Optimization</strong>: Tối ưu cấu trúc cây phân cấp dựa trên logic UI.</p>
+<p><strong>Mô hình sử dụng:</strong>
+- Qwen2.5-3B (chạy local qua Ollama)
+- JSON mode để đảm bảo output có cấu trúc</p>
+<h4 id="424-nghien-cuu-vision-language-models">4.2.4. Nghiên cứu Vision-Language Models<a class="headerlink" href="#424-nghien-cuu-vision-language-models" title="Permanent link">¶</a></h4>
+<p>Đánh giá khả năng của các VLM trong việc phát hiện UI element:
+- <strong>Florence-2</strong> (Microsoft): Đánh giá khả năng OCR và object detection.
+- <strong>Qwen2-VL</strong>: Đánh giá khả năng hiểu và mô tả giao diện.
+- So sánh với phương pháp CV truyền thống.</p>
+<h3 id="43-anh-gia-va-kiem-chung">4.3. Đánh giá và kiểm chứng<a class="headerlink" href="#43-anh-gia-va-kiem-chung" title="Permanent link">¶</a></h3>
+<ul>
+<li>Đo độ chính xác phát hiện element (precision, recall).</li>
+<li>Đo độ chính xác phân loại element type.</li>
+<li>Đo hiệu năng (thời gian xử lý) trên các cấu hình phần cứng khác nhau.</li>
+<li>Thử nghiệm trên các hệ thống thực tế: Windows Calculator, Android apps, Linux desktop apps.</li>
+</ul>
+<h3 id="44-cong-cu-su-dung">4.4. Công cụ sử dụng<a class="headerlink" href="#44-cong-cu-su-dung" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Ngôn ngữ lập trình</strong>: Python 3.9+</li>
+<li><strong>Computer Vision</strong>: OpenCV, NumPy, Pillow</li>
+<li><strong>OCR</strong>: EasyOCR</li>
+<li><strong>LLM Runtime</strong>: Ollama (local inference)</li>
+<li><strong>LLM Models</strong>: Qwen2.5-3B-Instruct</li>
+<li><strong>VLM Models</strong>: Florence-2, Qwen2-VL (nghiên cứu)</li>
+<li><strong>Testing Framework</strong>: Robot Framework</li>
+<li><strong>Môi trường thử nghiệm</strong>: Windows 10/11, Linux (Ubuntu), Android Emulator</li>
+</ul>
+<hr>
+<h2 id="5-noi-dung-va-pham-vi-nghien-cuu">5. Nội dung và phạm vi nghiên cứu<a class="headerlink" href="#5-noi-dung-va-pham-vi-nghien-cuu" title="Permanent link">¶</a></h2>
+<h3 id="51-noi-dung-chinh">5.1. Nội dung chính<a class="headerlink" href="#51-noi-dung-chinh" title="Permanent link">¶</a></h3>
+<h4 id="511-xay-dung-visual-dom-generator">5.1.1. Xây dựng Visual DOM Generator<a class="headerlink" href="#511-xay-dung-visual-dom-generator" title="Permanent link">¶</a></h4>
+<p><strong>Mục tiêu</strong>: Chuyển đổi ảnh chụp màn hình thành cấu trúc DOM dạng JSON.</p>
+<p><strong>Kiến trúc hệ thống:</strong></p>
+<pre><code>                    ┌─────────────────────────┐
+                    │    Ảnh chụp màn hình    │
+                    │      (Screenshot)       │
+                    └────────────┬────────────┘
+                                 │
+            ┌────────────────────┴────────────────────┐
+            │                                         │
+            ▼                                         ▼
+┌───────────────────────────┐         ┌───────────────────────────┐
+│  TRÍCH XUẤT ĐẶC TRƯNG CV  │         │  NHẬN DẠNG VĂN BẢN (OCR)  │
+│  ───────────────────────  │         │  ───────────────────────  │
+│  • Phát hiện cạnh (Canny) │         │  • EasyOCR Engine         │
+│  • Phân tích đường viền   │         │  • Trích xuất tọa độ text │
+│  • Xử lý hình thái học    │         │  • Hỗ trợ đa ngôn ngữ     │
+└─────────────┬─────────────┘         └─────────────┬─────────────┘
+              │                                     │
+              └──────────────┬──────────────────────┘
+                             │
+                             ▼
+              ┌─────────────────────────────────┐
+              │    XÂY DỰNG CẤU TRÚC THÔ       │
+              │   ─────────────────────────    │
+              │  • Phân tích không gian        │
+              │  • Phát hiện quan hệ chứa đựng │
+              │  • Phân loại theo quy tắc      │
+              └───────────────┬─────────────────┘
+                              │
+                              ▼
+              ┌─────────────────────────────────┐
+              │     TINH CHỈNH BẰNG LLM        │
+              │   ─────────────────────────    │
+              │  • Mô hình: Qwen2.5-3B         │
+              │  • Runtime: Ollama (cục bộ)    │
+              │  • Phân loại ngữ nghĩa         │
+              │  • Tối ưu cấu trúc cây         │
+              └───────────────┬─────────────────┘
+                              │
+                              ▼
+              ┌─────────────────────────────────┐
+              │          VISUAL DOM            │
+              │         (JSON Output)          │
+              └───────────────┬─────────────────┘
+                              │
+                              ▼
+              ┌─────────────────────────────────┐
+              │   THƯ VIỆN ROBOT FRAMEWORK     │
+              │  • Click Element By Text        │
+              │  • Input Text To Field          │
+              │  • Verify Element Exists        │
+              └─────────────────────────────────┘
+</code></pre>
+<p><strong>Bảng tóm tắt các giai đoạn xử lý:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Giai đoạn</th>
+<th>Tên</th>
+<th>Công nghệ / Thuật toán</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td>Trích xuất đặc trưng CV</td>
+<td>OpenCV: Canny, Contour, Morphology</td>
+</tr>
+<tr>
+<td style="text-align: center;">2</td>
+<td>Nhận dạng văn bản</td>
+<td>EasyOCR (đa ngôn ngữ)</td>
+</tr>
+<tr>
+<td style="text-align: center;">3</td>
+<td>Xây dựng cấu trúc thô</td>
+<td>Rules-based, Spatial Analysis</td>
+</tr>
+<tr>
+<td style="text-align: center;">4</td>
+<td>Tinh chỉnh LLM</td>
+<td>Qwen2.5-3B qua Ollama (JSON mode)</td>
+</tr>
+<tr>
+<td style="text-align: center;">5</td>
+<td>Biên dịch DOM</td>
+<td>Tree Builder, JSON Exporter</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cấu trúc Visual DOM JSON:</strong></p>
+<pre><code class="language-json">{
+  "screen": {
+    "width": 1920,
+    "height": 1080,
+    "title": "Application Name"
+  },
+  "elements": [
+    {
+      "id": "elem_001",
+      "type": "button",
+      "bbox": [100, 200, 200, 250],
+      "text": "Submit",
+      "confidence": 0.95,
+      "children": []
+    },
+    {
+      "id": "elem_002",
+      "type": "input_field",
+      "bbox": [100, 100, 300, 140],
+      "text": "",
+      "placeholder": "Enter name",
+      "children": []
+    }
+  ]
+}
+</code></pre>
+<h4 id="512-xay-dung-robot-framework-library">5.1.2. Xây dựng Robot Framework Library<a class="headerlink" href="#512-xay-dung-robot-framework-library" title="Permanent link">¶</a></h4>
+<p><strong>Mục tiêu</strong>: Cung cấp các keywords để thao tác với giao diện dựa trên Visual DOM.</p>
+<p><strong>Các keywords chính:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Keyword</th>
+<th>Mô tả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Capture And Analyze Screen</code></td>
+<td>Chụp màn hình và tạo Visual DOM</td>
+</tr>
+<tr>
+<td><code>Click Element By Text</code></td>
+<td>Click vào element có text chỉ định</td>
+</tr>
+<tr>
+<td><code>Click Element By Type</code></td>
+<td>Click vào element theo loại (button, input...)</td>
+</tr>
+<tr>
+<td><code>Input Text To Field</code></td>
+<td>Nhập text vào input field</td>
+</tr>
+<tr>
+<td><code>Verify Element Exists</code></td>
+<td>Kiểm tra element tồn tại</td>
+</tr>
+<tr>
+<td><code>Get Element Location</code></td>
+<td>Lấy vị trí của element</td>
+</tr>
+<tr>
+<td><code>Wait For Element</code></td>
+<td>Chờ element xuất hiện</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ví dụ sử dụng:</strong></p>
+<pre><code class="language-robotframework">*** Settings ***
+Library    VisualLibrary
+
+*** Test Cases ***
+Test Calculator Addition
+    Capture And Analyze Screen
+    Click Element By Text    7
+    Click Element By Text    +
+    Click Element By Text    3
+    Click Element By Text    =
+    Verify Element Contains Text    10
+</code></pre>
+<h4 id="513-anh-gia-va-so-sanh">5.1.3. Đánh giá và so sánh<a class="headerlink" href="#513-anh-gia-va-so-sanh" title="Permanent link">¶</a></h4>
+<ul>
+<li>So sánh độ chính xác với phương pháp object-based truyền thống</li>
+<li>Đánh giá trên nhiều loại ứng dụng:</li>
+<li>Windows desktop applications</li>
+<li>Linux desktop applications (GTK, Qt)</li>
+<li>Android applications (standard và OpenGL-based)</li>
+<li>Embedded systems với custom UI</li>
+</ul>
+<h3 id="52-pham-vi-nghien-cuu">5.2. Phạm vi nghiên cứu<a class="headerlink" href="#52-pham-vi-nghien-cuu" title="Permanent link">¶</a></h3>
+<p><strong>Trong phạm vi:</strong>
+- Tập trung vào thao tác kiểm thử cơ bản: click, input text, verify existence
+- Hỗ trợ các loại element phổ biến: button, input field, text label, checkbox, dropdown, icon
+- Giao diện tĩnh và semi-dynamic (có animation đơn giản)</p>
+<p><strong>Ngoài phạm vi:</strong>
+- Không đi sâu vào kiểm thử hiệu năng (performance testing)
+- Không xử lý các giao diện 3D hoặc game
+- Không hỗ trợ video/streaming content
+- Không đi sâu vào nghiệp vụ phức tạp (business logic testing)</p>
+<hr>
+<h2 id="6-noi-thuc-hien-e-tai">6. Nơi thực hiện đề tài<a class="headerlink" href="#6-noi-thuc-hien-e-tai" title="Permanent link">¶</a></h2>
+<p>Công ty <strong>Bosch Global Software Technologies</strong> – nơi người viết đang làm việc và phát triển hệ thống kiểm thử tự động mã nguồn mở <strong>RobotFramework-AIO</strong>, hiện đang được công bố công khai trên GitHub.</p>
+<p>Đề tài có tiềm năng được tích hợp vào RobotFramework-AIO như một thư viện mở rộng, phục vụ cho các dự án kiểm thử tự động trong ngành automotive và embedded systems.</p>
+<hr>
+<h2 id="7-thoi-gian-thuc-hien">7. Thời gian thực hiện<a class="headerlink" href="#7-thoi-gian-thuc-hien" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Giai đoạn</th>
+<th>Nội dung</th>
+<th>Thời gian</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Nghiên cứu lý thuyết và thiết kế kiến trúc</td>
+<td>Tháng 5/2025</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Xây dựng CV Evidence Extraction Pipeline</td>
+<td>Tháng 6/2025</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Xây dựng Coarse Hierarchy Builder</td>
+<td>Tháng 6-7/2025</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Tích hợp LLM Refinement</td>
+<td>Tháng 7/2025</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Xây dựng Robot Framework Library</td>
+<td>Tháng 8/2025</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Đánh giá và thử nghiệm</td>
+<td>Tháng 9/2025</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Viết luận văn và hoàn thiện</td>
+<td>Tháng 10/2025</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Bắt đầu</strong>: Tháng 5/2025</li>
+<li><strong>Kết thúc dự kiến</strong>: Tháng 10/2025</li>
+</ul>
+<hr>
+<h2 id="8-tai-lieu-tham-khao">8. Tài liệu tham khảo<a class="headerlink" href="#8-tai-lieu-tham-khao" title="Permanent link">¶</a></h2>
+<h3 id="81-cac-cong-trinh-nghien-cuu-chinh">8.1. Các công trình nghiên cứu chính<a class="headerlink" href="#81-cac-cong-trinh-nghien-cuu-chinh" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Mulong Xie et al.</strong>, "UIED: A Hybrid Tool for GUI Element Detection," <em>ESEC/FSE 2020</em>.</li>
+<li>
+<p>Công trình nền tảng về kết hợp CV và deep learning cho GUI detection.</p>
+</li>
+<li>
+<p><strong>Chen et al.</strong>, "Object Detection for Graphical User Interface: Old Fashioned or Deep Learning or a Combination?" <em>arXiv:2008.05132</em>, 2020.</p>
+</li>
+<li>
+<p>Nghiên cứu so sánh các phương pháp phát hiện UI element.</p>
+</li>
+<li>
+<p><strong>Andrea Stocco et al.</strong>, "Visual Web Test Repair," <em>ESEC/FSE 2018</em>.</p>
+</li>
+<li>
+<p>Nghiên cứu về visual testing và tự động sửa test case.</p>
+</li>
+<li>
+<p><strong>Leotta et al.</strong>, "Visual vs. DOM-based Web Locators: An Empirical Study," <em>ICWE 2014</em>.</p>
+</li>
+<li>
+<p>So sánh thực nghiệm giữa visual và DOM-based locators.</p>
+</li>
+<li>
+<p><strong>Xiao et al.</strong>, "IconNet: A Deep Neural Network for Icon Recognition," <em>CHI 2021</em>.</p>
+</li>
+<li>Mô hình deep learning cho nhận dạng icon trong GUI.</li>
+</ol>
+<h3 id="82-mo-hinh-ngon-ngu-va-thi-giac">8.2. Mô hình ngôn ngữ và thị giác<a class="headerlink" href="#82-mo-hinh-ngon-ngu-va-thi-giac" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Qwen Team</strong>, "Qwen2.5 Technical Report," <em>Alibaba Group</em>, 2024.</li>
+<li>https://arxiv.org/abs/2412.15115</li>
+<li>
+<p>Mô hình ngôn ngữ nhỏ được sử dụng cho LLM refinement.</p>
+</li>
+<li>
+<p><strong>Xiao et al.</strong>, "Florence-2: Advancing a Unified Representation for a Variety of Vision Tasks," <em>Microsoft</em>, 2024.</p>
+</li>
+<li>https://arxiv.org/abs/2311.06242</li>
+<li>
+<p>Vision-Language Model được nghiên cứu cho GUI element detection.</p>
+</li>
+<li>
+<p><strong>Wang et al.</strong>, "Qwen2-VL: Enhancing Vision-Language Model's Perception of the World at Any Resolution," <em>Alibaba</em>, 2024.</p>
+</li>
+<li>https://arxiv.org/abs/2409.12191</li>
+<li>VLM được đánh giá trong nghiên cứu.</li>
+</ol>
+<h3 id="83-cong-cu-va-thu-vien">8.3. Công cụ và thư viện<a class="headerlink" href="#83-cong-cu-va-thu-vien" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>OpenCV Library Documentation</strong></li>
+<li>https://docs.opencv.org</li>
+<li>
+<p>Thư viện xử lý ảnh chính.</p>
+</li>
+<li>
+<p><strong>EasyOCR</strong></p>
+<ul>
+<li>https://github.com/JaidedAI/EasyOCR</li>
+<li>Thư viện OCR đa ngôn ngữ.</li>
+</ul>
+</li>
+<li>
+<p><strong>Robot Framework User Guide</strong></p>
+<ul>
+<li>https://robotframework.org</li>
+<li>Framework kiểm thử tự động.</li>
+</ul>
+</li>
+<li>
+<p><strong>Ollama</strong></p>
+<ul>
+<li>https://ollama.ai</li>
+<li>Runtime cho chạy LLM local.</li>
+</ul>
+</li>
+</ol>
+<h3 id="84-tai-lieu-bo-sung">8.4. Tài liệu bổ sung<a class="headerlink" href="#84-tai-lieu-bo-sung" title="Permanent link">¶</a></h3>
+<ol>
+<li>
+<p><strong>"Image-based Approaches for Automating GUI Testing of Interactive Web-based Applications"</strong></p>
+<ul>
+<li>Tổng quan về các phương pháp image-based testing.</li>
+</ul>
+</li>
+<li>
+<p><strong>Chang et al.</strong>, "GUI Testing: Pitfalls and Solutions," <em>IEEE Software</em>, 2010.</p>
+<ul>
+<li>Các thách thức trong GUI testing.</li>
+</ul>
+</li>
+<li>
+<p><strong>Memon et al.</strong>, "GUI Testing: Myths, Problems, and Solutions," <em>IEEE Computer</em>, 2002.</p>
+<ul>
+<li>Nền tảng lý thuyết về GUI testing.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="phu-luc-ket-qua-nghien-cuu-so-bo">Phụ lục: Kết quả nghiên cứu sơ bộ<a class="headerlink" href="#phu-luc-ket-qua-nghien-cuu-so-bo" title="Permanent link">¶</a></h2>
+<h3 id="a-so-sanh-cac-vision-language-models-cho-gui-detection">A. So sánh các Vision-Language Models cho GUI Detection<a class="headerlink" href="#a-so-sanh-cac-vision-language-models-cho-gui-detection" title="Permanent link">¶</a></h3>
+<p>Trong quá trình nghiên cứu, các VLM sau đã được đánh giá:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Button Detection</th>
+<th>Text Detection</th>
+<th>Inference Time</th>
+<th>Kết luận</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Florence-2-base</td>
+<td>❌ Không detect riêng</td>
+<td>✅ Tốt (OCR)</td>
+<td>4.6s</td>
+<td>Phù hợp cho OCR</td>
+</tr>
+<tr>
+<td>Florence-2-large</td>
+<td>❌ Không detect riêng</td>
+<td>✅ Tốt (OCR)</td>
+<td>235s</td>
+<td>Chậm, không cải thiện</td>
+</tr>
+<tr>
+<td>Qwen2-VL-2B</td>
+<td>❌ Hallucinated coords</td>
+<td>✅ Mô tả tốt</td>
+<td>~30s</td>
+<td>Không phù hợp</td>
+</tr>
+<tr>
+<td>Qwen2-VL-7B</td>
+<td>❌ Hallucinated coords</td>
+<td>✅ Mô tả tốt</td>
+<td>~27s</td>
+<td>Không phù hợp</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kết luận</strong>: VLM tổng quát không phù hợp cho việc phát hiện chính xác bounding box của UI element. Phương pháp kết hợp CV + OCR + SLM cho kết quả tốt hơn.</p>
+<h3 id="b-kien-truc-e-xuat-vs-phuong-phap-hien-co">B. Kiến trúc đề xuất vs. Phương pháp hiện có<a class="headerlink" href="#b-kien-truc-e-xuat-vs-phuong-phap-hien-co" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tiêu chí</th>
+<th>UIED (2020)</th>
+<th>Đề xuất của luận văn</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CV Pipeline</td>
+<td>Flood-fill, edge detection</td>
+<td>Edge detection, contour analysis, morphological ops</td>
+</tr>
+<tr>
+<td>Text Detection</td>
+<td>EAST + CRNN</td>
+<td>EasyOCR (đơn giản hơn, hiệu quả tương đương)</td>
+</tr>
+<tr>
+<td>Classification</td>
+<td>CNN (ResNet50)</td>
+<td>Small LLM (Qwen2.5-3B)</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>Bounding boxes + types</td>
+<td><strong>Visual DOM</strong> (cấu trúc cây + metadata)</td>
+</tr>
+<tr>
+<td>Runtime</td>
+<td>Cần GPU cho deep learning</td>
+<td>Có thể chạy CPU (SLM qua Ollama)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><em>Đề cương này được cập nhật dựa trên kết quả nghiên cứu và thực nghiệm thực tế trong quá trình phát triển hệ thống.</em></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../COMMANDS/" class="btn btn-neutral float-left" title="Commands"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../adr/" class="btn btn-neutral float-right" title="Overview">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../COMMANDS/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../adr/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

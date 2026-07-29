@@ -1,0 +1,89 @@
+@startuml System_Overview
+!pragma layout smetana
+
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontSize 12
+skinparam defaultFontName Arial
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #666666
+    ArrowColor #333333
+}
+
+title VizDOM - System Overview\nScreenshot -> Visual DOM -> GUI Test Automation
+
+package "Capture (visual_dom.capture, ADR-018)" #E3F2FD {
+    [CaptureStrategy\nwindows / linux / android / camera\n+ custom plugins (auto-discovered)] as capture
+    [GrpcCaptureStrategy\n-> remote Capture service (SUT host)] as rcapture
+    [GUI Screenshot\n(BGR image, or file)] as screenshot
+}
+
+package "CV Pipeline (visual_dom.cv.pipeline)" #FFF3E0 {
+    [Text Detector\n(EasyOCR / PaddleOCR / Tesseract,\nupscaling)] as ocr
+
+    package "Detector backend (pluggable, registry)" #FFE0B2 {
+        [UIED\n(CPU, contours)] as uied
+        [YOLO\n(Ultralytics, AGPL)] as yolo
+        [OmniParser\n(YOLO + OCR + Florence-2)] as omni
+    }
+
+    [Symbol Detector\n(+ - = x)] as symbol
+    [Merge / Split / NMS / Dedup] as merge
+    [Smart-merge over-segmented\n(guards: fill, delimiter, interactable)] as smerge
+    [Reading-order sort\n(row-band, top->bottom L->R)] as order
+    [SLM Advisor (optional VLM)\nsplit / retype / merge / label\n(merges gated to candidates)] as slm
+}
+
+package "Hierarchy Builder (visual_dom.hierarchy)" #FCE4EC {
+    [Coarse Builder\n(containment, alignment,\nlabel association)] as coarse
+    [LLM Refiner\n(Qwen2.5 / Ollama, optional)] as llm_refine
+}
+
+package "DOM Compiler (visual_dom.compiler)" #E0F7FA {
+    [DOM Compiler\nroles + locators + flags + label] as compiler
+}
+
+package "Output" #E8F5E9 {
+    [Visual DOM JSON\n(UIAutomator-like tree)] as dom_json
+}
+
+package "Consumers" #F5F5F5 {
+    [Robot Framework\nVisual Automation Library] as robot
+    [Visual DOM Viewer\n(PyQt5 inspector)] as viewer
+    [Dashboard\n(Streamlit)] as dash
+    [Evaluation\n(IoU / F1 metrics)] as eval
+}
+
+package "Cross-cutting" #ECEFF1 {
+    [logging_utils\n(timestamped, rotating file)] as logx
+}
+
+capture --> screenshot
+rcapture --> screenshot
+screenshot --> ocr
+screenshot --> uied
+screenshot --> yolo
+screenshot --> omni
+ocr ..> omni : ensemble OCR
+
+uied --> merge
+yolo --> merge
+omni --> merge
+ocr --> merge
+symbol --> merge
+merge --> smerge
+smerge --> order
+order --> slm
+slm --> coarse
+
+coarse --> llm_refine
+llm_refine --> compiler
+compiler --> dom_json
+
+dom_json --> robot
+dom_json --> viewer
+dom_json --> dash
+dom_json --> eval
+
+logx .. merge
+@enduml

@@ -1,0 +1,626 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/adr/007-cv-pipeline-with-llm-refinement/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>007 CV Pipeline with LLM Refinement - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "007 CV Pipeline with LLM Refinement";
+        var properdocs_page_input_path = "adr\\007-cv-pipeline-with-llm-refinement.md";
+        var properdocs_page_url = "/vizdom/adr/007-cv-pipeline-with-llm-refinement/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">007 CV Pipeline with LLM Refinement</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#status">Status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#date">Date</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#reviewer">Reviewer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#history">History</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#context">Context</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#decision">Decision</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#complete-pipeline-architecture">Complete Pipeline Architecture</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#llm-refinement-operations">LLM Refinement Operations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#llm-prompt-design">LLM Prompt Design</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#usage-examples">Usage Examples</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#basic-pipeline-no-llm">Basic Pipeline (No LLM)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#with-llm-refinement">With LLM Refinement</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#current-integration-status">Current Integration Status</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#consequences">Consequences</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#positive">Positive</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#negative">Negative</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#neutral">Neutral</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#alternatives-considered">Alternatives Considered</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-llm-only-hierarchy-building-rejected">1. LLM-Only Hierarchy Building (Rejected)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-vision-language-model-vlm-for-detection-deferred">2. Vision-Language Model (VLM) for Detection (Deferred)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-fine-tuned-detection-model-deferred">3. Fine-tuned Detection Model (Deferred)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#references">References</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Architecture Decisions</li>
+      <li class="breadcrumb-item active">007 CV Pipeline with LLM Refinement</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="adr-007-cv-pipeline-with-optional-llm-hierarchy-refinement">ADR-007: CV Pipeline with Optional LLM Hierarchy Refinement<a class="headerlink" href="#adr-007-cv-pipeline-with-optional-llm-hierarchy-refinement" title="Permanent link">¶</a></h1>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">¶</a></h2>
+<p>Accepted</p>
+<h2 id="date">Date<a class="headerlink" href="#date" title="Permanent link">¶</a></h2>
+<p>2025-01-26</p>
+<h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">¶</a></h2>
+<p>Development Team</p>
+<h2 id="reviewer">Reviewer<a class="headerlink" href="#reviewer" title="Permanent link">¶</a></h2>
+<ul>
+<li>Project Lead</li>
+</ul>
+<h2 id="history">History<a class="headerlink" href="#history" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Version</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025-01-26</td>
+<td>1.0</td>
+<td>Initial version</td>
+</tr>
+</tbody>
+</table>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">¶</a></h2>
+<p>The Visual DOM system uses a Computer Vision (CV) pipeline to detect UI elements from screenshots. The pipeline needs to:</p>
+<ol>
+<li>Detect text elements (OCR)</li>
+<li>Detect non-text UI elements (buttons, inputs, icons)</li>
+<li>Merge and deduplicate detections</li>
+<li>Build a hierarchical DOM tree structure</li>
+<li>Generate locators for automation</li>
+</ol>
+<p>The initial rule-based hierarchy builder has limitations:
+- Cannot understand semantic relationships
+- May incorrectly merge or split elements
+- Cannot infer element roles from context
+- Limited ability to fix OCR errors</p>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">¶</a></h2>
+<p>Implement a <strong>two-stage hierarchy building approach</strong>:</p>
+<ol>
+<li><strong>Stage 1: Rule-based Coarse Hierarchy</strong> (Always runs)</li>
+<li>Fast, deterministic, no external dependencies</li>
+<li>
+<p>Uses spatial relationships (containment, alignment)</p>
+</li>
+<li>
+<p><strong>Stage 2: LLM-based Refinement</strong> (Optional)</p>
+</li>
+<li>Uses Small Language Models (SLMs) to refine the hierarchy</li>
+<li>Fixes common CV detection errors</li>
+<li>Adds semantic understanding</li>
+</ol>
+<h3 id="complete-pipeline-architecture">Complete Pipeline Architecture<a class="headerlink" href="#complete-pipeline-architecture" title="Permanent link">¶</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                        VISUAL DOM PIPELINE                               │
+└─────────────────────────────────────────────────────────────────────────┘
+
+Screenshot
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  STAGE 1: CV Detection (VisualDOMPipeline)                              │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  ┌──────────────────┐    ┌──────────────────┐                           │
+│  │  Text Detection  │    │  UIED Detection  │                           │
+│  │    (EasyOCR)     │    │ (Non-text elems) │                           │
+│  └────────┬─────────┘    └────────┬─────────┘                           │
+│           │                       │                                      │
+│           └───────────┬───────────┘                                      │
+│                       ▼                                                  │
+│              ┌─────────────────┐                                         │
+│              │ Merge &amp; NMS     │                                         │
+│              │ Deduplication   │                                         │
+│              └────────┬────────┘                                         │
+│                       │                                                  │
+└───────────────────────┼──────────────────────────────────────────────────┘
+                        ▼
+              List of Detected Elements
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  STAGE 2: Hierarchy Building (CoarseHierarchyBuilder)                   │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  ┌─────────────────────────────────────────────────────────────────┐    │
+│  │ Rule-based Hierarchy (ALWAYS RUNS)                               │    │
+│  ├─────────────────────────────────────────────────────────────────┤    │
+│  │ • Containment-based parent inference                             │    │
+│  │ • Alignment grouping (rows, columns)                             │    │
+│  │ • Label association (text → input)                               │    │
+│  │ • Role assignment based on visual type                           │    │
+│  └─────────────────────────────────────────────────────────────────┘    │
+│                                                                          │
+└───────────────────────┼──────────────────────────────────────────────────┘
+                        ▼
+              Coarse Hierarchy Tree
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  STAGE 3: LLM Refinement (LLMHierarchyRefiner) [OPTIONAL]               │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  ┌─────────────────────────────────────────────────────────────────┐    │
+│  │ LLM-based Refinement (OPTIONAL - Requires LLM backend)           │    │
+│  ├─────────────────────────────────────────────────────────────────┤    │
+│  │ • Merge over-segmented elements                                  │    │
+│  │ • Split incorrectly merged elements                              │    │
+│  │ • Fix visual_type classifications                                │    │
+│  │ • Add semantic roles                                             │    │
+│  │ • Delete noise/duplicates                                        │    │
+│  └─────────────────────────────────────────────────────────────────┘    │
+│                                                                          │
+│  Supported LLM Backends:                                                 │
+│  • Qwen2.5-3B-Instruct (local, recommended)                             │
+│  • Phi-3.5-mini-instruct (local)                                        │
+│  • Gemma-2-2B-it (local)                                                │
+│  • Ollama (local server)                                                │
+│  • OpenAI GPT-4o-mini (cloud API)                                       │
+│                                                                          │
+└───────────────────────┼──────────────────────────────────────────────────┘
+                        ▼
+              Refined Hierarchy Tree
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  STAGE 4: DOM Compilation (DOMCompiler)                                 │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  • Generate unique element IDs                                           │
+│  • Calculate center points                                               │
+│  • Assign accessibility roles                                            │
+│  • Set clickable/editable/scrollable flags                              │
+│  • Generate multiple locator strategies                                  │
+│                                                                          │
+└───────────────────────┼──────────────────────────────────────────────────┘
+                        ▼
+              Final DOM JSON Output
+</code></pre>
+<h3 id="llm-refinement-operations">LLM Refinement Operations<a class="headerlink" href="#llm-refinement-operations" title="Permanent link">¶</a></h3>
+<p>The LLM can perform these tree edit operations:</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MERGE</strong></td>
+<td>Combine split text elements</td>
+<td>"Sub" + "mit" → "Submit"</td>
+</tr>
+<tr>
+<td><strong>SPLIT</strong></td>
+<td>Separate merged elements</td>
+<td>"1 2 3 4" → 4 buttons</td>
+</tr>
+<tr>
+<td><strong>RETYPE</strong></td>
+<td>Change element type</td>
+<td>text → button</td>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td>Remove noise/duplicates</td>
+<td>Remove artifacts</td>
+</tr>
+<tr>
+<td><strong>SET_ROLE</strong></td>
+<td>Add semantic role</td>
+<td>"submit_button"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="llm-prompt-design">LLM Prompt Design<a class="headerlink" href="#llm-prompt-design" title="Permanent link">¶</a></h3>
+<pre><code class="language-python"># The LLM receives a structured prompt:
+"""
+## DETECTED ELEMENTS:
+E1: button "Submit" [center, medium]
+E2: text "Username" [left-top, small]
+E3: input_field [center, medium] (in E5)
+...
+
+## YOUR TASK:
+Output a JSON array of edit operations:
+- MERGE: {"op": "merge", "ids": ["E1", "E2"], "text": "combined"}
+- SPLIT: {"op": "split", "id": "E7", "into": ["4", "5"]}
+- RETYPE: {"op": "retype", "id": "E5", "type": "button"}
+- DELETE: {"op": "delete", "id": "E10"}
+- ROLE: {"op": "role", "id": "E3", "role": "submit_button"}
+
+## OUTPUT:
+[{"op": "retype", "id": "E5", "type": "button"}]
+"""
+</code></pre>
+<h3 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link">¶</a></h3>
+<h4 id="basic-pipeline-no-llm">Basic Pipeline (No LLM)<a class="headerlink" href="#basic-pipeline-no-llm" title="Permanent link">¶</a></h4>
+<pre><code class="language-python">from visual_dom.cv.pipeline import VisualDOMPipeline
+from visual_dom.hierarchy.coarse_builder import CoarseHierarchyBuilder
+from visual_dom.compiler.dom_compiler import DOMCompiler
+
+# Step 1: CV Detection
+pipeline = VisualDOMPipeline(use_gpu=True)
+result = pipeline.process("screenshot.png")
+elements = result["elements"]
+
+# Step 2: Build Coarse Hierarchy
+builder = CoarseHierarchyBuilder()
+hierarchy_result = builder.build(elements)
+hierarchy = hierarchy_result.get("root")
+
+# Step 3: Compile DOM
+compiler = DOMCompiler(generate_locators=True)
+dom = compiler.compile(elements, hierarchy, result["image_size"])
+
+# Save output
+compiler.save("output.json")
+</code></pre>
+<h4 id="with-llm-refinement">With LLM Refinement<a class="headerlink" href="#with-llm-refinement" title="Permanent link">¶</a></h4>
+<pre><code class="language-python">from visual_dom.cv.pipeline import VisualDOMPipeline
+from visual_dom.hierarchy.coarse_builder import CoarseHierarchyBuilder
+from visual_dom.hierarchy.llm_refiner import LLMHierarchyRefiner
+from visual_dom.compiler.dom_compiler import DOMCompiler
+
+# Step 1: CV Detection
+pipeline = VisualDOMPipeline(use_gpu=True)
+result = pipeline.process("screenshot.png")
+elements = result["elements"]
+
+# Step 2: Build Coarse Hierarchy
+builder = CoarseHierarchyBuilder()
+hierarchy_result = builder.build(elements)
+
+# Step 3: LLM Refinement (Optional)
+refiner = LLMHierarchyRefiner(
+    model_name="ollama",  # or "qwen2.5-3b", "openai"
+    use_gpu=True,
+    temperature=0.1,
+)
+refinement = refiner.refine(
+    elements=elements,
+    hierarchy=hierarchy_result.get("root"),
+    image_size=(result["image_size"]["width"], result["image_size"]["height"])
+)
+
+# Use refined elements
+refined_elements = refinement["refined_elements"]
+print(f"Applied {len(refinement['edits'])} edits")
+
+# Step 4: Compile DOM with refined elements
+compiler = DOMCompiler(generate_locators=True)
+dom = compiler.compile(refined_elements, hierarchy_result.get("root"), result["image_size"])
+</code></pre>
+<h3 id="current-integration-status">Current Integration Status<a class="headerlink" href="#current-integration-status" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Status</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CV Pipeline</td>
+<td><strong>Integrated</strong></td>
+<td><code>src/visual_dom/cv/pipeline.py</code></td>
+</tr>
+<tr>
+<td>Coarse Hierarchy</td>
+<td><strong>Integrated</strong></td>
+<td><code>src/visual_dom/hierarchy/coarse_builder.py</code></td>
+</tr>
+<tr>
+<td>DOM Compiler</td>
+<td><strong>Integrated</strong></td>
+<td><code>src/visual_dom/compiler/dom_compiler.py</code></td>
+</tr>
+<tr>
+<td><strong>LLM Refiner</strong></td>
+<td><strong>Implemented, NOT integrated</strong></td>
+<td><code>src/visual_dom/hierarchy/llm_refiner.py</code></td>
+</tr>
+</tbody>
+</table>
+<p>The viewer currently uses:</p>
+<pre><code>Screenshot → CV Pipeline → CoarseHierarchyBuilder → DOMCompiler → DOM JSON
+</code></pre>
+<p>LLM refinement is <strong>available for programmatic use</strong> but <strong>not integrated into the viewer GUI</strong> yet.</p>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">¶</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Modular design</strong>: Each stage can be used independently</li>
+<li><strong>Flexible LLM support</strong>: Multiple backends (local and cloud)</li>
+<li><strong>No LLM required</strong>: System works without LLM (rule-based only)</li>
+<li><strong>Improved accuracy</strong>: LLM can fix common CV detection errors</li>
+<li><strong>Semantic understanding</strong>: LLM adds contextual knowledge</li>
+</ul>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>LLM latency</strong>: Adds 1-5 seconds per image (depending on model)</li>
+<li><strong>Model requirements</strong>: Local LLMs need 4-8GB GPU memory</li>
+<li><strong>API costs</strong>: Cloud LLMs have per-token costs</li>
+<li><strong>Non-deterministic</strong>: LLM outputs may vary</li>
+</ul>
+<h3 id="neutral">Neutral<a class="headerlink" href="#neutral" title="Permanent link">¶</a></h3>
+<ul>
+<li>LLM refinement is optional and can be enabled per-analysis</li>
+<li>Rule-based hierarchy is always available as fallback</li>
+<li>LLM edits are logged for debugging</li>
+</ul>
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">¶</a></h2>
+<h3 id="1-llm-only-hierarchy-building-rejected">1. LLM-Only Hierarchy Building (Rejected)<a class="headerlink" href="#1-llm-only-hierarchy-building-rejected" title="Permanent link">¶</a></h3>
+<p>Use LLM to build hierarchy from scratch without rule-based stage.</p>
+<p>Rejected because:
+- Much slower (LLM processes all elements)
+- More expensive (more tokens)
+- Less reliable (LLM may miss spatial relationships)</p>
+<h3 id="2-vision-language-model-vlm-for-detection-deferred">2. Vision-Language Model (VLM) for Detection (Deferred)<a class="headerlink" href="#2-vision-language-model-vlm-for-detection-deferred" title="Permanent link">¶</a></h3>
+<p>Use VLMs like GPT-4V or Florence-2 for element detection.</p>
+<p>Deferred because:
+- Higher latency than CV-only approach
+- Higher cost for cloud APIs
+- Research ongoing in <code>research/</code> folder</p>
+<h3 id="3-fine-tuned-detection-model-deferred">3. Fine-tuned Detection Model (Deferred)<a class="headerlink" href="#3-fine-tuned-detection-model-deferred" title="Permanent link">¶</a></h3>
+<p>Train a custom model for UI element detection.</p>
+<p>Deferred because:
+- Requires labeled training data
+- Significant development effort
+- EasyOCR + UIED works well for MVP</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">¶</a></h2>
+<ul>
+<li>Source: <code>src/visual_dom/cv/pipeline.py</code></li>
+<li>Source: <code>src/visual_dom/hierarchy/coarse_builder.py</code></li>
+<li>Source: <code>src/visual_dom/hierarchy/llm_refiner.py</code></li>
+<li>Source: <code>src/visual_dom/compiler/dom_compiler.py</code></li>
+<li>ADR-002: CV Pipeline Design (UIED + EasyOCR)</li>
+<li>ADR-004: DOM Compiler JSON Format</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../006-viewer-workflow-design/" class="btn btn-neutral float-left" title="006 Viewer Workflow Design"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../008-resolution-aware-thresholds/" class="btn btn-neutral float-right" title="008 Resolution-Aware Thresholds">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../006-viewer-workflow-design/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../008-resolution-aware-thresholds/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

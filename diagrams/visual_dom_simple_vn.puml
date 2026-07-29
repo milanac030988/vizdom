@@ -1,0 +1,66 @@
+@startuml Visual_DOM_Simple_VN
+
+!theme plain
+skinparam backgroundColor white
+skinparam defaultFontSize 13
+skinparam defaultFontName Arial
+skinparam ArrowThickness 2
+skinparam RectangleBorderThickness 2
+
+skinparam rectangle {
+    RoundCorner 20
+}
+
+title **Tổng quan kiến trúc Visual DOM Generator**\n
+
+' ===== MAIN COMPONENTS =====
+
+rectangle "📷\n**Ảnh chụp màn hình**\n(Đầu vào)" as input #E3F2FD
+
+rectangle "**Trích xuất đặc trưng CV**\n━━━━━━━━━━━━━━━━\n• Phát hiện cạnh (Canny)\n• Phân tích đường viền\n• Xử lý hình thái học\n• Phân đoạn màu sắc" as cv #FFF3E0
+
+rectangle "**Nhận dạng văn bản**\n━━━━━━━━━━━━━━━━\n• EasyOCR Engine\n• Tọa độ vùng text\n• Hỗ trợ đa ngôn ngữ" as ocr #E8F5E9
+
+rectangle "**Xây dựng cấu trúc thô**\n━━━━━━━━━━━━━━━━\n• Phân tích không gian\n• Phát hiện chứa đựng\n• Phân loại theo quy tắc" as coarse #FCE4EC
+
+rectangle "**Tinh chỉnh bằng LLM**\n━━━━━━━━━━━━━━━━\n• Qwen2.5-3B (Ollama)\n• Phân loại ngữ nghĩa\n• Tối ưu cấu trúc cây" as llm #F3E5F5
+
+rectangle "📄\n**Visual DOM**\n(JSON)" as output #E0F7FA
+
+rectangle "🤖\n**Thư viện**\n**Robot Framework**\n━━━━━━━━━━━━━━━━\n• Click Element By Text\n• Input Text To Field\n• Verify Element Exists" as robot #DCEDC8
+
+' ===== CONNECTIONS =====
+
+input -down-> cv
+input -down-> ocr
+
+cv -down-> coarse
+ocr -down-> coarse
+
+coarse -down-> llm
+
+llm -down-> output
+
+output -down-> robot
+
+' ===== ANNOTATIONS =====
+
+note right of cv
+  **OpenCV**
+  Xử lý ảnh
+  truyền thống
+end note
+
+note right of ocr
+  **EasyOCR**
+  Nhận dạng
+  ký tự quang học
+end note
+
+note right of llm
+  **Small LLM**
+  Chạy cục bộ
+  ~3B tham số
+end note
+
+@enduml

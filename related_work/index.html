@@ -1,0 +1,388 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/related_work/">
+      <link rel="shortcut icon" href="../img/favicon.ico">
+    <title>Related Work - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "Related Work";
+        var properdocs_page_input_path = "related_work.md";
+        var properdocs_page_url = "/vizdom/related_work/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Related Work</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#key-papers-for-visual-dom-project">Key Papers for Visual DOM Project</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-uied-ui-element-detection-primary-reference">1. UIED: UI Element Detection (Primary Reference)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-rico-dataset">2. RICO Dataset</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-screen-recognition">3. Screen Recognition</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-gui-testing-with-computer-vision">4. GUI Testing with Computer Vision</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#integration-plan">Integration Plan</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#from-uied-we-should-adopt">From UIED, we should adopt:</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#our-innovations-beyond-prior-work">Our innovations beyond prior work:</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#datasets-to-consider">Datasets to Consider</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#citation">Citation</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Research</li>
+      <li class="breadcrumb-item active">Related Work</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="related-work-research-papers">Related Work &amp; Research Papers<a class="headerlink" href="#related-work-research-papers" title="Permanent link">¶</a></h1>
+<h2 id="key-papers-for-visual-dom-project">Key Papers for Visual DOM Project<a class="headerlink" href="#key-papers-for-visual-dom-project" title="Permanent link">¶</a></h2>
+<h3 id="1-uied-ui-element-detection-primary-reference">1. UIED: UI Element Detection (Primary Reference)<a class="headerlink" href="#1-uied-ui-element-detection-primary-reference" title="Permanent link">¶</a></h3>
+<p><strong>Paper:</strong> "Object Detection for Graphical User Interface: Old Fashioned or Deep Learning or a Combination?"
+- <strong>arXiv:</strong> https://arxiv.org/abs/2008.05132
+- <strong>GitHub:</strong> https://github.com/MulongXie/UIED
+- <strong>Demo:</strong> http://uied.online</p>
+<p><strong>Authors:</strong> Jieshan Chen, Mulong Xie, Zhenchang Xing, Chunyang Chen, et al. (2020)</p>
+<p><strong>Key Findings:</strong>
+- Compared 7 detection methods on 50,000+ GUI images
+- Pure deep learning (YOLO, Faster-RCNN): F1 ≈ 0.25-0.28
+- Pure traditional CV: F1 ≈ 0.27
+- <strong>Hybrid approach: F1 ≈ 0.52</strong> (best performance)</p>
+<p><strong>Architecture:</strong>
+1. Text detection via OCR (Google Vision API)
+2. Non-text detection via traditional CV (edge detection, contours)
+3. CNN classifier for element type classification
+4. Merge and deduplicate results</p>
+<p><strong>Relevance to Our Project:</strong>
+- Validates our hybrid CV + LLM approach
+- Provides baseline methods to compare against
+- Their coarse-to-fine strategy is useful for hierarchy building
+- Dataset methodology can inform our annotation process</p>
+<p><strong>What We Add Beyond UIED:</strong>
+- LLM-based semantic hierarchy understanding
+- Robot Framework automation integration
+- Cross-platform adapter system
+- Full automation pipeline (not just detection)</p>
+<hr>
+<h3 id="2-rico-dataset">2. RICO Dataset<a class="headerlink" href="#2-rico-dataset" title="Permanent link">¶</a></h3>
+<p><strong>Paper:</strong> "Rico: A Mobile App Dataset for Building Data-Driven Design Applications"
+- <strong>Website:</strong> http://interactionmining.org/rico
+- <strong>Size:</strong> 72,000+ UI screenshots from 9,700+ Android apps</p>
+<p><strong>Relevance:</strong>
+- Large-scale dataset for training/evaluation
+- Includes UI hierarchy annotations
+- Can be used for pre-training CV models</p>
+<hr>
+<h3 id="3-screen-recognition">3. Screen Recognition<a class="headerlink" href="#3-screen-recognition" title="Permanent link">¶</a></h3>
+<p><strong>Paper:</strong> "Screen Recognition: Creating Accessibility Metadata for Mobile Applications from Pixels"
+- <strong>Authors:</strong> Xiaoyi Zhang, et al. (Google, 2021)</p>
+<p><strong>Key Ideas:</strong>
+- Uses vision models to infer accessibility metadata
+- Creates semantic understanding from screenshots
+- Similar goal to our Visual DOM generation</p>
+<hr>
+<h3 id="4-gui-testing-with-computer-vision">4. GUI Testing with Computer Vision<a class="headerlink" href="#4-gui-testing-with-computer-vision" title="Permanent link">¶</a></h3>
+<p><strong>Papers:</strong>
+- "Humanoid: A Deep Learning-based Approach to Automated Black-box Android App Testing"
+- "Widget Detection via Deep Learning Regression"</p>
+<p><strong>Relevance:</strong>
+- Prior work on visual GUI testing
+- Different approaches we can compare against</p>
+<hr>
+<h2 id="integration-plan">Integration Plan<a class="headerlink" href="#integration-plan" title="Permanent link">¶</a></h2>
+<h3 id="from-uied-we-should-adopt">From UIED, we should adopt:<a class="headerlink" href="#from-uied-we-should-adopt" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Coarse-to-fine detection strategy</strong></li>
+<li>First detect large containers</li>
+<li>Then detect elements within containers</li>
+<li>
+<p>Improves hierarchy accuracy</p>
+</li>
+<li>
+<p><strong>Separate text/non-text pipelines</strong></p>
+</li>
+<li>Text: OCR-based (EasyOCR/PaddleOCR)</li>
+<li>
+<p>Non-text: CV-based + optional CNN classifier</p>
+</li>
+<li>
+<p><strong>Their evaluation methodology</strong></p>
+</li>
+<li>IoU-based metrics</li>
+<li>Per-class accuracy</li>
+<li>Compare against their baselines</li>
+</ol>
+<h3 id="our-innovations-beyond-prior-work">Our innovations beyond prior work:<a class="headerlink" href="#our-innovations-beyond-prior-work" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>LLM for semantic understanding</strong></li>
+<li>UIED only detects, doesn't understand structure</li>
+<li>
+<p>We use LLM to infer roles, relationships, intent</p>
+</li>
+<li>
+<p><strong>Automation-ready output</strong></p>
+</li>
+<li>UIAutomator-compatible JSON schema</li>
+<li>
+<p>Direct integration with Robot Framework</p>
+</li>
+<li>
+<p><strong>Multi-platform support</strong></p>
+</li>
+<li>Android (ADB)</li>
+<li>Desktop (pyautogui)</li>
+<li>Extensible adapter system</li>
+</ol>
+<hr>
+<h2 id="datasets-to-consider">Datasets to Consider<a class="headerlink" href="#datasets-to-consider" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Size</th>
+<th>Platform</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RICO</td>
+<td>72K images</td>
+<td>Android</td>
+<td>Pre-training</td>
+</tr>
+<tr>
+<td>UIED Dataset</td>
+<td>50K images</td>
+<td>Mixed</td>
+<td>Evaluation</td>
+</tr>
+<tr>
+<td>Custom Dataset</td>
+<td>TBD</td>
+<td>Target apps</td>
+<td>Fine-tuning</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">¶</a></h2>
+<pre><code class="language-bibtex">@inproceedings{chen2020uied,
+  title={Object Detection for Graphical User Interface: Old Fashioned or Deep Learning or a Combination?},
+  author={Chen, Jieshan and Xie, Mulong and Xing, Zhenchang and Chen, Chunyang and Xu, Xiwei and Zhu, Liming and Li, Guoqiang},
+  booktitle={Proceedings of the 28th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering},
+  year={2020}
+}
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../RESEARCH/" class="btn btn-neutral float-left" title="VLM Study"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../model-discussion/" class="btn btn-neutral float-right" title="Overview">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../RESEARCH/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../model-discussion/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

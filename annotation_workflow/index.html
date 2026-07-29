@@ -1,0 +1,542 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/annotation_workflow/">
+      <link rel="shortcut icon" href="../img/favicon.ico">
+    <title>Data Annotation - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "Data Annotation";
+        var properdocs_page_input_path = "annotation_workflow.md";
+        var properdocs_page_url = "/vizdom/annotation_workflow/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Data Annotation</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#option-1-simple-web-annotator-recommended-for-small-datasets">Option 1: Simple Web Annotator (Recommended for small datasets)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#option-2-label-studio-recommended-for-team-collaboration">Option 2: Label Studio (Recommended for team collaboration)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#step-by-step-workflow">Step-by-Step Workflow</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#step-1-capture-screenshots">Step 1: Capture Screenshots</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-2-annotate-ui-elements">Step 2: Annotate UI Elements</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#using-simple-annotator">Using Simple Annotator:</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#using-label-studio">Using Label Studio:</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-3-convert-to-training-format">Step 3: Convert to Training Format</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-4-validate-annotations">Step 4: Validate Annotations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-5-split-dataset">Step 5: Split Dataset</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#annotation-guidelines">Annotation Guidelines</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#ui-element-classes">UI Element Classes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#common-mistakes-to-avoid">Common Mistakes to Avoid</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dataset-size-recommendations">Dataset Size Recommendations</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#file-structure-after-annotation">File Structure After Annotation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#training-after-annotation">Training After Annotation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#train-cv-model-yolov8">Train CV Model (YOLOv8)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#train-llm-hierarchy-refinement">Train LLM (Hierarchy Refinement)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tips-for-faster-annotation">Tips for Faster Annotation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#getting-help">Getting Help</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Data Annotation</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="data-annotation-workflow-guide">Data Annotation Workflow Guide<a class="headerlink" href="#data-annotation-workflow-guide" title="Permanent link">¶</a></h1>
+<p>This guide explains how to create training data for the Visual DOM project.</p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¶</a></h2>
+<p>You need to annotate two types of data:</p>
+<ol>
+<li><strong>CV Detection Data</strong>: Bounding boxes around UI elements (for YOLOv8 training)</li>
+<li><strong>LLM Hierarchy Data</strong>: Tree structure relationships (for Qwen/LLM finetuning)</li>
+</ol>
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">¶</a></h2>
+<h3 id="option-1-simple-web-annotator-recommended-for-small-datasets">Option 1: Simple Web Annotator (Recommended for small datasets)<a class="headerlink" href="#option-1-simple-web-annotator-recommended-for-small-datasets" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Install Flask
+pip install flask
+
+# Run the annotator
+python tools/annotator/app.py --images data/raw/screenshots --output data/annotations
+
+# Open http://localhost:5000
+</code></pre>
+<h3 id="option-2-label-studio-recommended-for-team-collaboration">Option 2: Label Studio (Recommended for team collaboration)<a class="headerlink" href="#option-2-label-studio-recommended-for-team-collaboration" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Install Label Studio
+pip install label-studio
+
+# Set up project
+python scripts/annotation/setup_label_studio.py --project "UI Detection v1" --images data/raw/screenshots
+
+# Start Label Studio
+label-studio start
+</code></pre>
+<h2 id="step-by-step-workflow">Step-by-Step Workflow<a class="headerlink" href="#step-by-step-workflow" title="Permanent link">¶</a></h2>
+<h3 id="step-1-capture-screenshots">Step 1: Capture Screenshots<a class="headerlink" href="#step-1-capture-screenshots" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># Desktop screenshots (batch mode)
+python scripts/annotation/capture_screenshots.py --platform desktop --batch --prefix app_name
+
+# Android screenshots
+python scripts/annotation/capture_screenshots.py --platform android --batch --prefix mobile_app
+</code></pre>
+<p><strong>Tips:</strong>
+- Capture diverse screens (login, home, settings, forms, lists)
+- Include different states (loading, error, empty, populated)
+- Aim for 500+ screenshots for good model performance</p>
+<h3 id="step-2-annotate-ui-elements">Step 2: Annotate UI Elements<a class="headerlink" href="#step-2-annotate-ui-elements" title="Permanent link">¶</a></h3>
+<h4 id="using-simple-annotator">Using Simple Annotator:<a class="headerlink" href="#using-simple-annotator" title="Permanent link">¶</a></h4>
+<ol>
+<li>Run <code>python tools/annotator/app.py --images data/raw/screenshots --output data/annotations</code></li>
+<li>Open http://localhost:5000</li>
+<li>Draw bounding boxes around UI elements</li>
+<li>Select the correct class for each box</li>
+<li>Press 'S' to save, 'D' for next image</li>
+</ol>
+<h4 id="using-label-studio">Using Label Studio:<a class="headerlink" href="#using-label-studio" title="Permanent link">¶</a></h4>
+<ol>
+<li>Create project with the labeling config from <code>setup_label_studio.py</code></li>
+<li>Import images</li>
+<li>Draw bounding boxes and select labels</li>
+<li>Export as JSON when done</li>
+</ol>
+<h3 id="step-3-convert-to-training-format">Step 3: Convert to Training Format<a class="headerlink" href="#step-3-convert-to-training-format" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash"># From Simple Annotator (already saves YOLO format)
+# Just organize into train/val splits
+
+# From Label Studio
+python scripts/annotation/convert_labelstudio_to_training.py \
+    --input labelstudio_export.json \
+    --output-yolo data/ui_detection_dataset \
+    --output-llm data/processed/train/hierarchy_data.jsonl
+</code></pre>
+<h3 id="step-4-validate-annotations">Step 4: Validate Annotations<a class="headerlink" href="#step-4-validate-annotations" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash">python scripts/annotation/validate_annotations.py --input data/ui_detection_dataset
+</code></pre>
+<p>This checks for:
+- Missing labels
+- Overlapping boxes
+- Class distribution imbalance
+- Invalid coordinates</p>
+<h3 id="step-5-split-dataset">Step 5: Split Dataset<a class="headerlink" href="#step-5-split-dataset" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash">python scripts/data_prep/convert_to_yolo.py \
+    --split \
+    --images data/annotations \
+    --labels data/annotations \
+    --output data/ui_detection_dataset \
+    --train-ratio 0.8 \
+    --val-ratio 0.1
+</code></pre>
+<h2 id="annotation-guidelines">Annotation Guidelines<a class="headerlink" href="#annotation-guidelines" title="Permanent link">¶</a></h2>
+<h3 id="ui-element-classes">UI Element Classes<a class="headerlink" href="#ui-element-classes" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>button</td>
+<td>Clickable buttons</td>
+<td>Submit, Cancel, Login</td>
+</tr>
+<tr>
+<td>text</td>
+<td>Static text</td>
+<td>Labels, titles, paragraphs</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>Small symbolic images</td>
+<td>Menu icon, search icon</td>
+</tr>
+<tr>
+<td>input_field</td>
+<td>Text input boxes</td>
+<td>Search bar, text field</td>
+</tr>
+<tr>
+<td>checkbox</td>
+<td>Square checkable boxes</td>
+<td>Remember me, Terms</td>
+</tr>
+<tr>
+<td>radio_button</td>
+<td>Round selection buttons</td>
+<td>Gender selection</td>
+</tr>
+<tr>
+<td>toggle</td>
+<td>On/off switches</td>
+<td>Enable notifications</td>
+</tr>
+<tr>
+<td>slider</td>
+<td>Draggable range controls</td>
+<td>Volume, brightness</td>
+</tr>
+<tr>
+<td>dropdown</td>
+<td>Expandable menus</td>
+<td>Country selector</td>
+</tr>
+<tr>
+<td>image</td>
+<td>Photos/illustrations</td>
+<td>Profile photo, banner</td>
+</tr>
+<tr>
+<td>container</td>
+<td>Grouped UI areas</td>
+<td>Cards, panels</td>
+</tr>
+<tr>
+<td>toolbar</td>
+<td>Action bars</td>
+<td>Top bar with buttons</td>
+</tr>
+<tr>
+<td>navbar</td>
+<td>Navigation bars</td>
+<td>Bottom navigation</td>
+</tr>
+<tr>
+<td>card</td>
+<td>Content cards</td>
+<td>Product card, post</td>
+</tr>
+<tr>
+<td>list_item</td>
+<td>Items in a list</td>
+<td>Chat message, menu item</td>
+</tr>
+</tbody>
+</table>
+<h3 id="best-practices">Best Practices<a class="headerlink" href="#best-practices" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Draw Tight Boxes</strong>: Minimize whitespace around elements</li>
+<li><strong>Be Consistent</strong>: Same element type = same class across images</li>
+<li><strong>Include Everything</strong>: Even small icons and separators</li>
+<li><strong>Don't Overlap</strong>: One box per distinct element</li>
+<li><strong>Handle Ambiguity</strong>: When unsure, use the more general class</li>
+</ol>
+<h3 id="common-mistakes-to-avoid">Common Mistakes to Avoid<a class="headerlink" href="#common-mistakes-to-avoid" title="Permanent link">¶</a></h3>
+<ul>
+<li>❌ Boxing the entire screen as "container"</li>
+<li>❌ Missing small icons</li>
+<li>❌ Inconsistent labeling (button vs icon for same element)</li>
+<li>❌ Overlapping boxes for the same element</li>
+<li>❌ Very loose bounding boxes</li>
+</ul>
+<h2 id="dataset-size-recommendations">Dataset Size Recommendations<a class="headerlink" href="#dataset-size-recommendations" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Quality Level</th>
+<th>Images</th>
+<th>Boxes/Image</th>
+<th>Total Boxes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Minimum</td>
+<td>100</td>
+<td>10</td>
+<td>1,000</td>
+</tr>
+<tr>
+<td>Good</td>
+<td>500</td>
+<td>15</td>
+<td>7,500</td>
+</tr>
+<tr>
+<td>Production</td>
+<td>2,000+</td>
+<td>20</td>
+<td>40,000+</td>
+</tr>
+</tbody>
+</table>
+<h2 id="file-structure-after-annotation">File Structure After Annotation<a class="headerlink" href="#file-structure-after-annotation" title="Permanent link">¶</a></h2>
+<pre><code>data/
+├── raw/
+│   └── screenshots/           # Original screenshots
+├── annotations/               # Raw annotation files
+├── ui_detection_dataset/      # Final YOLO dataset
+│   ├── images/
+│   │   ├── train/
+│   │   ├── val/
+│   │   └── test/
+│   ├── labels/
+│   │   ├── train/
+│   │   ├── val/
+│   │   └── test/
+│   └── ui_detection.yaml      # Dataset config
+└── processed/
+    └── train/
+        └── hierarchy_data.jsonl   # LLM training data
+</code></pre>
+<h2 id="training-after-annotation">Training After Annotation<a class="headerlink" href="#training-after-annotation" title="Permanent link">¶</a></h2>
+<h3 id="train-cv-model-yolov8">Train CV Model (YOLOv8)<a class="headerlink" href="#train-cv-model-yolov8" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash">python scripts/training/cv/train_yolo.py \
+    --model yolov8s \
+    --data data/ui_detection.yaml \
+    --epochs 100
+</code></pre>
+<h3 id="train-llm-hierarchy-refinement">Train LLM (Hierarchy Refinement)<a class="headerlink" href="#train-llm-hierarchy-refinement" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash">python scripts/training/finetune_lora.py \
+    --model qwen2.5-3b \
+    --data data/processed/train
+</code></pre>
+<h2 id="tips-for-faster-annotation">Tips for Faster Annotation<a class="headerlink" href="#tips-for-faster-annotation" title="Permanent link">¶</a></h2>
+<ol>
+<li><strong>Use Keyboard Shortcuts</strong>: 1-9 for classes, A/D for navigation</li>
+<li><strong>Annotate in Batches</strong>: Focus on one screen type at a time</li>
+<li><strong>Start with Common Elements</strong>: Annotate buttons and text first</li>
+<li><strong>Use Pre-annotation</strong>: Run traditional CV first, then correct</li>
+</ol>
+<h2 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link">¶</a></h2>
+<ul>
+<li>Check <code>scripts/annotation/validate_annotations.py</code> for common issues</li>
+<li>Review <code>data/annotation_projects/*/guidelines.md</code> for class definitions</li>
+<li>Run validation before training to catch problems early</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../EVALUATION/" class="btn btn-neutral float-left" title="Evaluation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../RESEARCH/" class="btn btn-neutral float-right" title="VLM Study">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../EVALUATION/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../RESEARCH/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

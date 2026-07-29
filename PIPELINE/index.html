@@ -1,0 +1,1304 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/PIPELINE/">
+      <link rel="shortcut icon" href="../img/favicon.ico">
+    <title>CV Pipeline - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "CV Pipeline";
+        var properdocs_page_input_path = "PIPELINE.md";
+        var properdocs_page_url = "/vizdom/PIPELINE/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">CV Pipeline</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pipeline-stages">Pipeline Stages</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#stage-1-text-detection-ocr">Stage 1: Text Detection (OCR)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#purpose">Purpose</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#modeltechnique">Model/Technique</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#input">Input</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#output">Output</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#example-output">Example Output</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#stage-2-non-text-element-detection-uied">Stage 2: Non-text Element Detection (UIED)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#purpose_1">Purpose</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#modeltechnique_1">Model/Technique</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#algorithm-flow">Algorithm Flow</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#input_1">Input</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#output_1">Output</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#element-types">Element Types</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#example-output_1">Example Output</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration_1">Configuration</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#stage-25-merge-deduplication">Stage 2.5: Merge &amp; Deduplication</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#purpose_2">Purpose</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#technique">Technique</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#operations">Operations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#algorithm">Algorithm</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#input_2">Input</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#output_2">Output</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#stage-3-hierarchy-building-rule-based">Stage 3: Hierarchy Building (Rule-based)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#purpose_3">Purpose</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#technique_1">Technique</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#algorithm_1">Algorithm</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#input_3">Input</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#output_3">Output</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#example-hierarchy">Example Hierarchy</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration_2">Configuration</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#stage-35-llm-hierarchy-refinement-optional">Stage 3.5: LLM Hierarchy Refinement (Optional)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#purpose_4">Purpose</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#modeltechnique_2">Model/Technique</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#operations_1">Operations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#prompt-template">Prompt Template</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#input_4">Input</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#output_4">Output</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration_3">Configuration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#current-status">Current Status</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#stage-4-dom-compilation">Stage 4: DOM Compilation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#purpose_5">Purpose</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#technique_2">Technique</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#operations_2">Operations</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#role-mapping">Role Mapping</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#locator-strategies">Locator Strategies</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#input_5">Input</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#output_5">Output</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#configuration_4">Configuration</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#complete-pipeline-flow">Complete Pipeline Flow</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#summary-table">Summary Table</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#performance-characteristics">Performance Characteristics</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#source-code-references">Source Code References</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#usage-example">Usage Example</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#command-line-usage">Command Line Usage</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">CV Pipeline</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="visual-dom-pipeline-technical-documentation">Visual DOM Pipeline - Technical Documentation<a class="headerlink" href="#visual-dom-pipeline-technical-documentation" title="Permanent link">¶</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¶</a></h2>
+<p>The Visual DOM Pipeline is a Computer Vision-based system that extracts UI element information from screenshots and generates structured DOM (Document Object Model) representations. This enables UI automation without requiring access to platform-specific accessibility APIs.</p>
+<p><strong>Goal</strong>: Convert a screenshot image into a hierarchical JSON structure containing all UI elements with their properties and locators.</p>
+<pre><code>┌──────────────┐      ┌──────────────────────────────────────┐      ┌──────────────┐
+│  Screenshot  │  →   │       Visual DOM Pipeline            │  →   │   DOM JSON   │
+│    (PNG)     │      │  (CV + OCR + Hierarchy + Compiler)   │      │   (Output)   │
+└──────────────┘      └──────────────────────────────────────┘      └──────────────┘
+</code></pre>
+<hr>
+<h2 id="pipeline-stages">Pipeline Stages<a class="headerlink" href="#pipeline-stages" title="Permanent link">¶</a></h2>
+<p>The pipeline consists of <strong>4 main stages</strong> plus an <strong>optional LLM refinement stage</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Name</th>
+<th>Technique</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Text Detection</td>
+<td>EasyOCR (Deep Learning)</td>
+<td>Extract text elements</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Non-text Detection</td>
+<td>UIED Algorithm (Classical CV)</td>
+<td>Detect buttons, icons, inputs</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Hierarchy Building</td>
+<td>Rule-based Heuristics</td>
+<td>Build parent-child tree</td>
+</tr>
+<tr>
+<td>3.5</td>
+<td>LLM Refinement</td>
+<td>Small Language Models (Optional)</td>
+<td>Refine and fix errors</td>
+</tr>
+<tr>
+<td>4</td>
+<td>DOM Compilation</td>
+<td>Deterministic Processing</td>
+<td>Generate final JSON with locators</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="stage-1-text-detection-ocr">Stage 1: Text Detection (OCR)<a class="headerlink" href="#stage-1-text-detection-ocr" title="Permanent link">¶</a></h2>
+<h3 id="purpose">Purpose<a class="headerlink" href="#purpose" title="Permanent link">¶</a></h3>
+<p>Detect and recognize all text elements in the screenshot.</p>
+<h3 id="modeltechnique">Model/Technique<a class="headerlink" href="#modeltechnique" title="Permanent link">¶</a></h3>
+<p><strong>EasyOCR</strong> - A deep learning-based OCR engine</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model Architecture</td>
+<td>CRAFT (Character Region Awareness) + CRNN</td>
+</tr>
+<tr>
+<td>Text Detection</td>
+<td>CRAFT neural network</td>
+</tr>
+<tr>
+<td>Text Recognition</td>
+<td>CRNN (CNN + LSTM + CTC)</td>
+</tr>
+<tr>
+<td>Languages Supported</td>
+<td>80+ languages</td>
+</tr>
+<tr>
+<td>GPU Acceleration</td>
+<td>Yes (CUDA)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="input">Input<a class="headerlink" href="#input" title="Permanent link">¶</a></h3>
+<pre><code>Image: numpy.ndarray (BGR format)
+       Shape: (height, width, 3)
+       Example: 1920x1080 screenshot
+</code></pre>
+<h3 id="output">Output<a class="headerlink" href="#output" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">List[TextElement]:
+  - bounds: (x1, y1, x2, y2)  # Bounding box coordinates
+  - text: str                  # Recognized text content
+  - confidence: float          # Recognition confidence (0.0-1.0)
+</code></pre>
+<h3 id="example-output">Example Output<a class="headerlink" href="#example-output" title="Permanent link">¶</a></h3>
+<pre><code class="language-json">[
+  {"bounds": [100, 50, 200, 80], "text": "Submit", "confidence": 0.95},
+  {"bounds": [100, 100, 250, 130], "text": "Username", "confidence": 0.92},
+  {"bounds": [300, 100, 500, 130], "text": "Enter your name", "confidence": 0.88}
+]
+</code></pre>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">TextDetector(
+    ocr_engine="easyocr",      # OCR backend
+    languages=["en"],          # Detection languages
+    confidence_threshold=0.3,  # Minimum confidence
+    gpu=True                   # Use GPU acceleration
+)
+</code></pre>
+<hr>
+<h2 id="stage-2-non-text-element-detection-uied">Stage 2: Non-text Element Detection (UIED)<a class="headerlink" href="#stage-2-non-text-element-detection-uied" title="Permanent link">¶</a></h2>
+<h3 id="purpose_1">Purpose<a class="headerlink" href="#purpose_1" title="Permanent link">¶</a></h3>
+<p>Detect non-text UI elements: buttons, input fields, icons, checkboxes, containers.</p>
+<h3 id="modeltechnique_1">Model/Technique<a class="headerlink" href="#modeltechnique_1" title="Permanent link">¶</a></h3>
+<p><strong>UIED (UI Element Detection)</strong> - Classical Computer Vision algorithms</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Technique</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.1</td>
+<td>Edge Detection (Canny)</td>
+<td>Find element boundaries</td>
+</tr>
+<tr>
+<td>2.2</td>
+<td>Contour Detection</td>
+<td>Extract closed shapes</td>
+</tr>
+<tr>
+<td>2.3</td>
+<td>Morphological Operations</td>
+<td>Clean up noise</td>
+</tr>
+<tr>
+<td>2.4</td>
+<td>Block Segmentation</td>
+<td>Find container regions</td>
+</tr>
+<tr>
+<td>2.5</td>
+<td>Element Classification</td>
+<td>Classify by shape/size</td>
+</tr>
+</tbody>
+</table>
+<h3 id="algorithm-flow">Algorithm Flow<a class="headerlink" href="#algorithm-flow" title="Permanent link">¶</a></h3>
+<pre><code>Image
+  │
+  ├─→ Grayscale Conversion
+  │
+  ├─→ Adaptive Thresholding
+  │
+  ├─→ Edge Detection (Canny)
+  │       Parameters: low=50, high=150
+  │
+  ├─→ Morphological Closing
+  │       Kernel: 3x3, iterations=2
+  │
+  ├─→ Contour Detection
+  │       Mode: RETR_TREE
+  │       Method: CHAIN_APPROX_SIMPLE
+  │
+  ├─→ Bounding Box Extraction
+  │
+  ├─→ Element Classification
+  │       Rules based on:
+  │       - Aspect ratio
+  │       - Area
+  │       - Position
+  │       - Color analysis
+  │
+  └─→ Non-Maximum Suppression (NMS)
+          IoU threshold: 0.5
+</code></pre>
+<h3 id="input_1">Input<a class="headerlink" href="#input_1" title="Permanent link">¶</a></h3>
+<pre><code>Image: numpy.ndarray (BGR format)
+       Shape: (height, width, 3)
+</code></pre>
+<h3 id="output_1">Output<a class="headerlink" href="#output_1" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">List[DetectedElement]:
+  - bounds: (x1, y1, x2, y2)    # Bounding box
+  - element_type: ElementType   # button, input_field, icon, etc.
+  - confidence: float           # Detection confidence
+  - parent_id: Optional[str]    # Parent element (if nested)
+</code></pre>
+<h3 id="element-types">Element Types<a class="headerlink" href="#element-types" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Classification Criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>button</code></td>
+<td>Rectangular, small-medium size, may have text</td>
+</tr>
+<tr>
+<td><code>input_field</code></td>
+<td>Wide rectangle, height &lt; 50px, aspect ratio &gt; 3</td>
+</tr>
+<tr>
+<td><code>icon</code></td>
+<td>Square-ish, small (&lt; 64x64), no text</td>
+</tr>
+<tr>
+<td><code>checkbox</code></td>
+<td>Small square (&lt; 30x30)</td>
+</tr>
+<tr>
+<td><code>container</code></td>
+<td>Large area, contains other elements</td>
+</tr>
+<tr>
+<td><code>block</code></td>
+<td>Medium-large rectangle, grouping element</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-output_1">Example Output<a class="headerlink" href="#example-output_1" title="Permanent link">¶</a></h3>
+<pre><code class="language-json">[
+  {"bounds": [100, 200, 250, 240], "element_type": "button", "confidence": 0.85},
+  {"bounds": [100, 150, 400, 180], "element_type": "input_field", "confidence": 0.90},
+  {"bounds": [50, 50, 82, 82], "element_type": "icon", "confidence": 0.75}
+]
+</code></pre>
+<h3 id="configuration_1">Configuration<a class="headerlink" href="#configuration_1" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">UIEDDetector(
+    min_element_area=100,      # Minimum area in pixels
+    nms_threshold=0.5,         # IoU threshold for NMS
+    min_block_area=500,        # Minimum block/container area
+    merge_distance=5           # Distance to merge nearby elements
+)
+</code></pre>
+<hr>
+<h2 id="stage-25-merge-deduplication">Stage 2.5: Merge &amp; Deduplication<a class="headerlink" href="#stage-25-merge-deduplication" title="Permanent link">¶</a></h2>
+<h3 id="purpose_2">Purpose<a class="headerlink" href="#purpose_2" title="Permanent link">¶</a></h3>
+<p>Combine text and non-text detections, remove duplicates, associate text with elements.</p>
+<h3 id="technique">Technique<a class="headerlink" href="#technique" title="Permanent link">¶</a></h3>
+<p>Rule-based merging with IoU (Intersection over Union) calculations</p>
+<h3 id="operations">Operations<a class="headerlink" href="#operations" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Text-Element Association</strong>: Attach OCR text to overlapping UI elements</li>
+<li><strong>Cross-type NMS</strong>: Remove highly overlapping detections</li>
+<li><strong>Containment Filtering</strong>: Handle nested elements</li>
+<li><strong>Re-scanning</strong>: Fine-grained detection for merged regions</li>
+</ol>
+<h3 id="algorithm">Algorithm<a class="headerlink" href="#algorithm" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">for each UIED_element:
+    overlapping_texts = find_texts_with_IoU &gt; 0.3
+    if overlapping_texts:
+        element.text = combine(overlapping_texts)
+        mark texts as used
+
+apply_NMS(all_elements, iou_threshold=0.5)
+filter_by_size(min_area=100, min_dimension=10)
+</code></pre>
+<h3 id="input_2">Input<a class="headerlink" href="#input_2" title="Permanent link">¶</a></h3>
+<pre><code>- text_elements: List[TextElement]      # From Stage 1
+- uied_elements: List[DetectedElement]  # From Stage 2
+</code></pre>
+<h3 id="output_2">Output<a class="headerlink" href="#output_2" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">List[UIElement]:
+  - id: str                    # Unique identifier (E1, E2, ...)
+  - bounds: (x1, y1, x2, y2)   # Bounding box
+  - visual_type: str           # Element type
+  - confidence: float          # Combined confidence
+  - ocr_text: Optional[str]    # Associated text
+  - source: str                # "text", "uied", or "merged"
+</code></pre>
+<hr>
+<h2 id="stage-3-hierarchy-building-rule-based">Stage 3: Hierarchy Building (Rule-based)<a class="headerlink" href="#stage-3-hierarchy-building-rule-based" title="Permanent link">¶</a></h2>
+<h3 id="purpose_3">Purpose<a class="headerlink" href="#purpose_3" title="Permanent link">¶</a></h3>
+<p>Build parent-child relationships to create a DOM tree structure.</p>
+<h3 id="technique_1">Technique<a class="headerlink" href="#technique_1" title="Permanent link">¶</a></h3>
+<p><strong>Rule-based Heuristics</strong> using spatial relationships</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Containment</td>
+<td>Element A contains B if B's bounds are 85%+ inside A</td>
+</tr>
+<tr>
+<td>Smallest Parent</td>
+<td>Each element's parent is the smallest valid container</td>
+</tr>
+<tr>
+<td>Alignment Groups</td>
+<td>Elements with same Y-center form rows</td>
+</tr>
+<tr>
+<td>Label Association</td>
+<td>Text near input fields becomes labels</td>
+</tr>
+</tbody>
+</table>
+<h3 id="algorithm_1">Algorithm<a class="headerlink" href="#algorithm_1" title="Permanent link">¶</a></h3>
+<pre><code>1. CONTAINMENT HIERARCHY
+   Sort elements by area (largest first)
+   For each element:
+       Find smallest container that contains it
+       Set as parent
+       Add to parent's children list
+
+2. LABEL ASSOCIATION
+   For each input_field/checkbox:
+       Find nearest text element (within 50px)
+       If above or left: associate as label
+
+3. GROUP DETECTION
+   Find horizontal rows (same Y ± 15px)
+   Find vertical columns (same X ± 15px)
+
+4. ROOT CREATION
+   If multiple top-level nodes:
+       Create synthetic ROOT node
+       Set all orphans as ROOT's children
+</code></pre>
+<h3 id="input_3">Input<a class="headerlink" href="#input_3" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">List[UIElement]:
+  - id, bounds, visual_type, confidence, ocr_text
+</code></pre>
+<h3 id="output_3">Output<a class="headerlink" href="#output_3" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">{
+  "root": TreeNode,              # Root of hierarchy tree
+  "nodes": List[TreeNode],       # Flat list of all nodes
+  "label_associations": Dict,    # element_id → label_id
+  "groups": List[Group]          # Detected rows/columns
+}
+
+TreeNode:
+  - id: str
+  - bounds: (x1, y1, x2, y2)
+  - visual_type: str
+  - role: str                    # Accessibility role
+  - text: Optional[str]
+  - children: List[TreeNode]
+  - parent_id: Optional[str]
+</code></pre>
+<h3 id="example-hierarchy">Example Hierarchy<a class="headerlink" href="#example-hierarchy" title="Permanent link">¶</a></h3>
+<pre><code>ROOT
+├── E1 (container)
+│   ├── E2 (text: "Username")
+│   ├── E3 (input_field, label=E2)
+│   ├── E4 (text: "Password")
+│   └── E5 (input_field, label=E4)
+├── E6 (button: "Login")
+└── E7 (text: "Forgot password?")
+</code></pre>
+<h3 id="configuration_2">Configuration<a class="headerlink" href="#configuration_2" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">CoarseHierarchyBuilder(
+    containment_threshold=0.85,  # % of child inside parent
+    alignment_tolerance=15,      # Pixels for alignment grouping
+    label_max_distance=50,       # Max distance for label association
+    min_containment_margin=5     # Min margin for containment
+)
+</code></pre>
+<hr>
+<h2 id="stage-35-llm-hierarchy-refinement-optional">Stage 3.5: LLM Hierarchy Refinement (Optional)<a class="headerlink" href="#stage-35-llm-hierarchy-refinement-optional" title="Permanent link">¶</a></h2>
+<h3 id="purpose_4">Purpose<a class="headerlink" href="#purpose_4" title="Permanent link">¶</a></h3>
+<p>Use a language model to refine and fix common detection errors.</p>
+<h3 id="modeltechnique_2">Model/Technique<a class="headerlink" href="#modeltechnique_2" title="Permanent link">¶</a></h3>
+<p><strong>Small Language Models (SLMs)</strong> for structured output generation</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Size</th>
+<th>Type</th>
+<th>Speed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qwen2.5-3B-Instruct</td>
+<td>3B params</td>
+<td>Local (HuggingFace)</td>
+<td>~2-3 sec</td>
+</tr>
+<tr>
+<td>Phi-3.5-mini</td>
+<td>3.8B params</td>
+<td>Local (HuggingFace)</td>
+<td>~2-3 sec</td>
+</tr>
+<tr>
+<td>Gemma-2-2B-it</td>
+<td>2B params</td>
+<td>Local (HuggingFace)</td>
+<td>~1-2 sec</td>
+</tr>
+<tr>
+<td>Ollama (qwen2.5:3b)</td>
+<td>3B params</td>
+<td>Local Server</td>
+<td>~1-2 sec</td>
+</tr>
+<tr>
+<td>GPT-4o-mini</td>
+<td>Cloud</td>
+<td>OpenAI API</td>
+<td>~1-2 sec</td>
+</tr>
+</tbody>
+</table>
+<h3 id="operations_1">Operations<a class="headerlink" href="#operations_1" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Purpose</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MERGE</strong></td>
+<td>Combine split text</td>
+<td>"Sub" + "mit" → "Submit"</td>
+</tr>
+<tr>
+<td><strong>SPLIT</strong></td>
+<td>Separate merged elements</td>
+<td>"1 2 3 4" → 4 buttons</td>
+</tr>
+<tr>
+<td><strong>RETYPE</strong></td>
+<td>Fix element type</td>
+<td>text → button</td>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td>Remove noise</td>
+<td>Remove artifacts</td>
+</tr>
+<tr>
+<td><strong>SET_ROLE</strong></td>
+<td>Add semantic role</td>
+<td>"submit_button"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prompt-template">Prompt Template<a class="headerlink" href="#prompt-template" title="Permanent link">¶</a></h3>
+<pre><code>## DETECTED ELEMENTS:
+E1: button "Submit" [center, medium]
+E2: text "Username" [left-top, small]
+...
+
+## YOUR TASK:
+Output JSON array of edits:
+- {"op": "merge", "ids": ["E1", "E2"], "text": "combined"}
+- {"op": "retype", "id": "E5", "type": "button"}
+- {"op": "delete", "id": "E10"}
+
+## OUTPUT:
+[{"op": "retype", "id": "E5", "type": "button"}]
+</code></pre>
+<h3 id="input_4">Input<a class="headerlink" href="#input_4" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">{
+  "elements": List[UIElement],   # From Stage 2.5
+  "hierarchy": TreeNode,         # From Stage 3
+  "image_size": (width, height)
+}
+</code></pre>
+<h3 id="output_4">Output<a class="headerlink" href="#output_4" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">{
+  "edits": List[TreeEdit],           # Applied operations
+  "refined_elements": List[UIElement], # Elements after edits
+  "llm_response": str                # Raw LLM output
+}
+</code></pre>
+<h3 id="configuration_3">Configuration<a class="headerlink" href="#configuration_3" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">LLMHierarchyRefiner(
+    model_name="ollama",        # Model backend
+    use_gpu=True,               # GPU acceleration
+    max_tokens=2048,            # Max response length
+    temperature=0.1,            # Low = deterministic
+    ollama_host="http://localhost:11434"
+)
+</code></pre>
+<h3 id="current-status">Current Status<a class="headerlink" href="#current-status" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Implementation</td>
+<td>✅ Complete</td>
+</tr>
+<tr>
+<td>Viewer Integration</td>
+<td>❌ Not integrated</td>
+</tr>
+<tr>
+<td>CLI Support</td>
+<td>✅ Available</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="stage-4-dom-compilation">Stage 4: DOM Compilation<a class="headerlink" href="#stage-4-dom-compilation" title="Permanent link">¶</a></h2>
+<h3 id="purpose_5">Purpose<a class="headerlink" href="#purpose_5" title="Permanent link">¶</a></h3>
+<p>Generate final JSON output with locators for UI automation.</p>
+<h3 id="technique_2">Technique<a class="headerlink" href="#technique_2" title="Permanent link">¶</a></h3>
+<p><strong>Deterministic Processing</strong> - No ML models</p>
+<h3 id="operations_2">Operations<a class="headerlink" href="#operations_2" title="Permanent link">¶</a></h3>
+<ol>
+<li>Generate unique element IDs</li>
+<li>Calculate center points for clicking</li>
+<li>Map visual types to accessibility roles</li>
+<li>Set interaction flags (clickable, editable, scrollable)</li>
+<li>Generate multiple locator strategies</li>
+</ol>
+<h3 id="role-mapping">Role Mapping<a class="headerlink" href="#role-mapping" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Visual Type</th>
+<th>Accessibility Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>button</td>
+<td>Button</td>
+</tr>
+<tr>
+<td>input_field</td>
+<td>EditText</td>
+</tr>
+<tr>
+<td>checkbox</td>
+<td>CheckBox</td>
+</tr>
+<tr>
+<td>text</td>
+<td>TextView</td>
+</tr>
+<tr>
+<td>icon</td>
+<td>ImageView</td>
+</tr>
+<tr>
+<td>container</td>
+<td>ViewGroup</td>
+</tr>
+</tbody>
+</table>
+<h3 id="locator-strategies">Locator Strategies<a class="headerlink" href="#locator-strategies" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Locator Type</th>
+<th>Format</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Element ID</td>
+<td><code>"E42"</code></td>
+</tr>
+<tr>
+<td>text</td>
+<td>Text content</td>
+<td><code>"Submit"</code> or <code>"Submit[0]"</code></td>
+</tr>
+<tr>
+<td>type_index</td>
+<td>Type + index</td>
+<td><code>"button[3]"</code></td>
+</tr>
+<tr>
+<td>bounds</td>
+<td>Bounding box</td>
+<td><code>"bounds(100,200,250,240)"</code></td>
+</tr>
+<tr>
+<td>center</td>
+<td>Click point</td>
+<td><code>"point(175,220)"</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="input_5">Input<a class="headerlink" href="#input_5" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">{
+  "elements": List[UIElement],
+  "hierarchy": TreeNode,
+  "image_size": (width, height)
+}
+</code></pre>
+<h3 id="output_5">Output<a class="headerlink" href="#output_5" title="Permanent link">¶</a></h3>
+<pre><code class="language-json">{
+  "image_path": "screenshot.png",
+  "image_size": {"width": 1920, "height": 1080},
+  "cv_stats": {
+    "text_detected": 45,
+    "uied_detected": 120,
+    "final_count": 89
+  },
+  "dom": {
+    "version": "1.0",
+    "element_count": 89,
+    "hierarchy": {
+      "id": "ROOT",
+      "bounds": [0, 0, 1920, 1080],
+      "center": [960, 540],
+      "role": "root",
+      "visual_type": "container",
+      "clickable": false,
+      "editable": false,
+      "scrollable": false,
+      "children": [
+        {
+          "id": "E1",
+          "bounds": [100, 200, 250, 240],
+          "center": [175, 220],
+          "role": "Button",
+          "visual_type": "button",
+          "text": "Submit",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.85,
+          "locators": {
+            "id": "E1",
+            "text": "Submit",
+            "type_index": "button[0]",
+            "bounds": "bounds(100,200,250,240)",
+            "center": "point(175,220)"
+          },
+          "children": []
+        }
+      ]
+    }
+  }
+}
+</code></pre>
+<h3 id="configuration_4">Configuration<a class="headerlink" href="#configuration_4" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">DOMCompiler(
+    generate_locators=True,    # Generate locator strategies
+    include_confidence=True,   # Include confidence scores
+    min_confidence=0.3         # Filter low-confidence elements
+)
+</code></pre>
+<hr>
+<h2 id="complete-pipeline-flow">Complete Pipeline Flow<a class="headerlink" href="#complete-pipeline-flow" title="Permanent link">¶</a></h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────────┐
+│                           VISUAL DOM PIPELINE                                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+                              ┌─────────────┐
+                              │ Screenshot  │
+                              │   (PNG)     │
+                              └──────┬──────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 1: TEXT DETECTION                                                      │
+│ ┌─────────────────────────────────────────────────────────────────────────┐ │
+│ │ Model: EasyOCR (CRAFT + CRNN)                                           │ │
+│ │ Input: BGR Image (H×W×3)                                                │ │
+│ │ Output: List[{bounds, text, confidence}]                                │ │
+│ └─────────────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 2: NON-TEXT DETECTION                                                  │
+│ ┌─────────────────────────────────────────────────────────────────────────┐ │
+│ │ Technique: UIED (Edge Detection + Contours + Classification)            │ │
+│ │ Input: BGR Image (H×W×3)                                                │ │
+│ │ Output: List[{bounds, element_type, confidence}]                        │ │
+│ └─────────────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 2.5: MERGE &amp; DEDUPLICATE                                               │
+│ ┌─────────────────────────────────────────────────────────────────────────┐ │
+│ │ Technique: IoU Matching + NMS + Containment Filtering                   │ │
+│ │ Input: text_elements + uied_elements                                    │ │
+│ │ Output: List[UIElement] (merged, deduplicated)                          │ │
+│ └─────────────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 3: HIERARCHY BUILDING                                                  │
+│ ┌─────────────────────────────────────────────────────────────────────────┐ │
+│ │ Technique: Rule-based (Containment + Alignment + Label Association)     │ │
+│ │ Input: List[UIElement]                                                  │ │
+│ │ Output: TreeNode (root of hierarchy tree)                               │ │
+│ └─────────────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                     │
+                          ┌──────────┴──────────┐
+                          │                     │
+                          ▼                     ▼
+┌─────────────────────────────────────┐   ┌─────────────────────────────────┐
+│ STAGE 3.5: LLM REFINEMENT           │   │       (Skip if no LLM)          │
+│ ┌─────────────────────────────────┐ │   │                                 │
+│ │ Model: Qwen2.5-3B / Ollama /    │ │   │                                 │
+│ │        GPT-4o-mini              │ │   │                                 │
+│ │ Operations: merge, split,       │ │   │                                 │
+│ │             retype, delete      │ │   │                                 │
+│ └─────────────────────────────────┘ │   │                                 │
+│ [OPTIONAL - Currently not in viewer]│   │                                 │
+└─────────────────────────────────────┘   └─────────────────────────────────┘
+                          │                     │
+                          └──────────┬──────────┘
+                                     │
+                                     ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 4: DOM COMPILATION                                                     │
+│ ┌─────────────────────────────────────────────────────────────────────────┐ │
+│ │ Technique: Deterministic Processing                                     │ │
+│ │ Input: elements + hierarchy + image_size                                │ │
+│ │ Output: DOM JSON with locators                                          │ │
+│ └─────────────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                     │
+                                     ▼
+                              ┌─────────────┐
+                              │  DOM JSON   │
+                              │  (Output)   │
+                              └─────────────┘
+</code></pre>
+<hr>
+<h2 id="summary-table">Summary Table<a class="headerlink" href="#summary-table" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Name</th>
+<th>Technique/Model</th>
+<th>Input</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Text Detection</td>
+<td>EasyOCR (CRAFT+CRNN)</td>
+<td>Image (BGR)</td>
+<td>Text elements with bounds</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Non-text Detection</td>
+<td>UIED (Canny+Contours)</td>
+<td>Image (BGR)</td>
+<td>UI elements with types</td>
+</tr>
+<tr>
+<td>2.5</td>
+<td>Merge &amp; Dedupe</td>
+<td>IoU + NMS</td>
+<td>Text + UIED elements</td>
+<td>Unified element list</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Hierarchy Building</td>
+<td>Rule-based heuristics</td>
+<td>Element list</td>
+<td>Tree structure</td>
+</tr>
+<tr>
+<td>3.5</td>
+<td>LLM Refinement</td>
+<td>SLM (Qwen/Ollama)</td>
+<td>Elements + Tree</td>
+<td>Refined elements</td>
+</tr>
+<tr>
+<td>4</td>
+<td>DOM Compilation</td>
+<td>Deterministic</td>
+<td>Elements + Tree</td>
+<td>Final JSON with locators</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="performance-characteristics">Performance Characteristics<a class="headerlink" href="#performance-characteristics" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>GPU Benefit</th>
+<th>Typical Time</th>
+<th>Memory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Text Detection</td>
+<td>High (10x faster)</td>
+<td>0.5-2s</td>
+<td>1-2 GB VRAM</td>
+</tr>
+<tr>
+<td>Non-text Detection</td>
+<td>None (CPU only)</td>
+<td>0.3-1s</td>
+<td>200 MB RAM</td>
+</tr>
+<tr>
+<td>Merge &amp; Dedupe</td>
+<td>None</td>
+<td>&lt;0.1s</td>
+<td>Minimal</td>
+</tr>
+<tr>
+<td>Hierarchy Building</td>
+<td>None</td>
+<td>&lt;0.1s</td>
+<td>Minimal</td>
+</tr>
+<tr>
+<td>LLM Refinement</td>
+<td>High</td>
+<td>1-5s</td>
+<td>4-8 GB VRAM</td>
+</tr>
+<tr>
+<td>DOM Compilation</td>
+<td>None</td>
+<td>&lt;0.1s</td>
+<td>Minimal</td>
+</tr>
+<tr>
+<td><strong>Total (no LLM)</strong></td>
+<td>-</td>
+<td><strong>1-3 seconds</strong></td>
+<td>-</td>
+</tr>
+<tr>
+<td><strong>Total (with LLM)</strong></td>
+<td>-</td>
+<td><strong>2-8 seconds</strong></td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="source-code-references">Source Code References<a class="headerlink" href="#source-code-references" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CV Pipeline</td>
+<td><code>src/visual_dom/cv/pipeline.py</code></td>
+</tr>
+<tr>
+<td>Text Detector</td>
+<td><code>src/visual_dom/cv/text_detector.py</code></td>
+</tr>
+<tr>
+<td>UIED Detector</td>
+<td><code>src/visual_dom/cv/uied_detection.py</code></td>
+</tr>
+<tr>
+<td>Hierarchy Builder</td>
+<td><code>src/visual_dom/hierarchy/coarse_builder.py</code></td>
+</tr>
+<tr>
+<td>LLM Refiner</td>
+<td><code>src/visual_dom/hierarchy/llm_refiner.py</code></td>
+</tr>
+<tr>
+<td>DOM Compiler</td>
+<td><code>src/visual_dom/compiler/dom_compiler.py</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="usage-example">Usage Example<a class="headerlink" href="#usage-example" title="Permanent link">¶</a></h2>
+<pre><code class="language-python">from visual_dom.cv.pipeline import VisualDOMPipeline
+from visual_dom.hierarchy.coarse_builder import CoarseHierarchyBuilder
+from visual_dom.compiler.dom_compiler import DOMCompiler
+
+# Initialize pipeline
+pipeline = VisualDOMPipeline(
+    ocr_engine="easyocr",
+    use_gpu=True
+)
+
+# Stage 1-2.5: CV Detection
+result = pipeline.process("screenshot.png")
+elements = result["elements"]
+print(f"Detected {len(elements)} elements")
+
+# Stage 3: Hierarchy Building
+builder = CoarseHierarchyBuilder()
+hierarchy_result = builder.build(elements)
+hierarchy = hierarchy_result.get("root")
+
+# Stage 4: DOM Compilation
+compiler = DOMCompiler(generate_locators=True)
+dom = compiler.compile(
+    elements=elements,
+    hierarchy=hierarchy,
+    image_size=result["image_size"]
+)
+
+# Save output
+import json
+with open("output.json", "w") as f:
+    json.dump(dom, f, indent=2)
+</code></pre>
+<hr>
+<h2 id="command-line-usage">Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permanent link">¶</a></h2>
+<pre><code class="language-bash"># Run full pipeline
+python -m visual_dom.cv.pipeline screenshot.png -o output.json --visualize viz.png
+
+# Run with specific options
+python -m visual_dom.cv.pipeline screenshot.png \
+    --ocr easyocr \
+    --no-gpu \
+    -o output.json
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../architecture/" class="btn btn-neutral float-left" title="Architecture"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../omniparser-setup/" class="btn btn-neutral float-right" title="OmniParser Setup">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../architecture/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../omniparser-setup/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

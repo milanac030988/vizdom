@@ -1,0 +1,54 @@
+@startuml Visual_DOM_Horizontal
+
+!theme plain
+skinparam backgroundColor white
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+skinparam ArrowThickness 2
+skinparam RectangleBorderThickness 2
+
+left to right direction
+
+title **Visual DOM Generator Pipeline**
+
+' ===== COMPONENTS =====
+
+rectangle "📷\n**Screenshot**" as input #E3F2FD
+
+package "Phase 1\n**CV + OCR**" as p1 #FFF8E1 {
+    rectangle "Edge\nDetection" as edge #FFE0B2
+    rectangle "Contour\nAnalysis" as contour #FFE0B2
+    rectangle "EasyOCR" as ocr #C8E6C9
+}
+
+package "Phase 2\n**Coarse Builder**" as p2 #FCE4EC {
+    rectangle "Spatial\nAnalysis" as spatial #F8BBD9
+    rectangle "Rules-based\nClassification" as rules #F8BBD9
+}
+
+package "Phase 3\n**LLM Refinement**" as p3 #F3E5F5 {
+    rectangle "Qwen2.5-3B\n(Ollama)" as llm #E1BEE7
+    rectangle "Semantic\nClassification" as semantic #E1BEE7
+}
+
+rectangle "📄\n**Visual DOM**\n(JSON)" as output #E0F7FA
+
+rectangle "🤖\n**Robot**\n**Framework**" as robot #DCEDC8
+
+' ===== CONNECTIONS =====
+
+input --> edge
+input --> ocr
+
+edge --> contour
+contour --> spatial
+ocr --> spatial
+
+spatial --> rules
+rules --> llm
+llm --> semantic
+semantic --> output
+
+output --> robot
+
+@enduml

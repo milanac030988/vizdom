@@ -1,0 +1,369 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/omniparser-setup/">
+      <link rel="shortcut icon" href="../img/favicon.ico">
+    <title>OmniParser Setup - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "OmniParser Setup";
+        var properdocs_page_input_path = "omniparser-setup.md";
+        var properdocs_page_url = "/vizdom/omniparser-setup/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">OmniParser Setup</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#tldr">TL;DR</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#what-the-environment-already-has-python-39">What the environment already has (Python 3.9)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#what-the-script-does">What the script does</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#manual-setup-if-you-prefer-or-the-script-fails">Manual setup (if you prefer, or the script fails)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#running-it">Running it</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#notes-gotchas-encountered-during-first-real-setup-2026-07-24">Notes &amp; gotchas (encountered during first real setup, 2026-07-24)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#version-caveat">Version caveat</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">OmniParser Setup</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="omniparser-detector-backend-setup">OmniParser Detector Backend — Setup<a class="headerlink" href="#omniparser-detector-backend-setup" title="Permanent link">¶</a></h1>
+<p>This project can use <strong>Microsoft OmniParser</strong> as an alternative element-detection
+backend (alongside the default <code>uied</code> and <code>yolo</code>). See
+<a href="../adr/015-pluggable-detector-backends/">ADR-015</a> for the design and
+<a href="../discussion/landscape-comparison-en/">the landscape comparison</a> for why.</p>
+<blockquote>
+<p><strong>Licensing.</strong> OmniParser's <code>icon_detect</code> is <strong>AGPL-3.0</strong> (via Ultralytics/YOLO);
+<code>icon_caption</code> is MIT; the repo is CC-BY-4.0. This project is <strong>already</strong> on AGPL
+through its existing Ultralytics dependency, so this adds no new licence class —
+but shipping or network-serving the project with this backend active carries AGPL
+obligations. For permissive reuse, prefer an Apache-licensed detector instead.</p>
+</blockquote>
+<h2 id="tldr">TL;DR<a class="headerlink" href="#tldr" title="Permanent link">¶</a></h2>
+<p>Run the setup script with the <strong>same interpreter the app uses</strong> (the Viewer and
+dashboard run on Python 3.9 at <code>D:\Python\python39\python.exe</code>):</p>
+<pre><code class="language-bat">"D:\Python\python39\python.exe" scripts\setup_omniparser.py --install-deps
+</code></pre>
+<p>Then launch <code>start_viewer.bat</code> and choose <strong><code>omniparser</code></strong> in the <strong>Det</strong> dropdown.
+No environment variables are needed — the app auto-detects the default paths.</p>
+<h2 id="what-the-environment-already-has-python-39">What the environment already has (Python 3.9)<a class="headerlink" href="#what-the-environment-already-has-python-39" title="Permanent link">¶</a></h2>
+<p>Checked on this machine:</p>
+<table>
+<thead>
+<tr>
+<th>Dependency</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>torch 2.4.1 + CUDA 12.4</td>
+<td>✅ present (GPU works)</td>
+</tr>
+<tr>
+<td>transformers 4.46</td>
+<td>✅ present</td>
+</tr>
+<tr>
+<td>opencv, numpy, einops, timm, easyocr, Pillow</td>
+<td>✅ present</td>
+</tr>
+<tr>
+<td><strong>ultralytics</strong></td>
+<td>❌ missing — needed for icon_detect</td>
+</tr>
+<tr>
+<td><strong>supervision</strong></td>
+<td>❌ missing — needed by OmniParser utils</td>
+</tr>
+</tbody>
+</table>
+<p>So only two packages need installing. <code>--install-deps</code> handles them.</p>
+<h2 id="what-the-script-does">What the script does<a class="headerlink" href="#what-the-script-does" title="Permanent link">¶</a></h2>
+<ol>
+<li><strong>Deps</strong> — installs <code>ultralytics</code> and <code>supervision</code> (with <code>--install-deps</code>).</li>
+<li><strong>Repo</strong> — clones OmniParser to <code>third_party/OmniParser</code> (provides <code>util.utils</code>).</li>
+<li><strong>Weights</strong> — downloads v2 weights from <code>microsoft/OmniParser-v2.0</code> into
+   <code>models/omniparser/</code> and renames <code>icon_caption</code> → <code>icon_caption_florence</code>.</li>
+</ol>
+<p>Resulting layout (all auto-detected by the app):</p>
+<pre><code>third_party/OmniParser/                 # OMNIPARSER_ROOT
+models/omniparser/
+  icon_detect/model.pt                  # OMNIPARSER_ICON_DETECT
+  icon_caption_florence/                # OMNIPARSER_ICON_CAPTION
+    config.json, generation_config.json, model.safetensors
+</code></pre>
+<h2 id="manual-setup-if-you-prefer-or-the-script-fails">Manual setup (if you prefer, or the script fails)<a class="headerlink" href="#manual-setup-if-you-prefer-or-the-script-fails" title="Permanent link">¶</a></h2>
+<pre><code class="language-bat">REM 1. deps (into the 3.9 env)
+"D:\Python\python39\python.exe" -m pip install ultralytics supervision huggingface_hub
+
+REM 2. clone the repo (provides util.utils)
+git clone --depth 1 https://github.com/microsoft/OmniParser.git third_party\OmniParser
+
+REM 3. weights
+"D:\Python\python39\python.exe" -c "from huggingface_hub import snapshot_download; snapshot_download('microsoft/OmniParser-v2.0', local_dir='models/omniparser', allow_patterns=['icon_detect/*','icon_caption/*'])"
+move models\omniparser\icon_caption models\omniparser\icon_caption_florence
+</code></pre>
+<h2 id="running-it">Running it<a class="headerlink" href="#running-it" title="Permanent link">¶</a></h2>
+<p><strong>Viewer:</strong> <code>start_viewer.bat</code> → set <strong>Det</strong> to <code>omniparser</code>. If weights/repo are
+missing it prints a warning and falls back to <code>uied</code> (never crashes).</p>
+<p><strong>CLI:</strong></p>
+<pre><code class="language-bat">python scripts\process_gui_image.py &lt;image.png&gt; --detector omniparser
+</code></pre>
+<p>Override paths explicitly if you keep weights elsewhere:</p>
+<pre><code class="language-bat">python scripts\process_gui_image.py &lt;image.png&gt; --detector omniparser ^
+  --omniparser-root C:\path\to\OmniParser ^
+  --omniparser-icon-detect  C:\path\to\icon_detect\model.pt ^
+  --omniparser-icon-caption C:\path\to\icon_caption_florence
+</code></pre>
+<p>…or set <code>OMNIPARSER_ROOT</code>, <code>OMNIPARSER_ICON_DETECT</code>, <code>OMNIPARSER_ICON_CAPTION</code>.</p>
+<h2 id="notes-gotchas-encountered-during-first-real-setup-2026-07-24">Notes &amp; gotchas (encountered during first real setup, 2026-07-24)<a class="headerlink" href="#notes-gotchas-encountered-during-first-real-setup-2026-07-24" title="Permanent link">¶</a></h2>
+<p>Verified end-to-end on <code>tests/samples/calculator.png</code> → 53 elements with boxes,
+interactability and text, on GPU. Two issues had to be worked around:</p>
+<ol>
+<li>
+<p><strong>PaddleOCR is imported <em>and instantiated</em> at the top of OmniParser's
+   <code>util/utils.py</code>.</strong> Even though we drive it with easyocr (<code>use_paddleocr=False</code>),
+   the module won't import without paddle. Installing <code>paddlepaddle</code>/<code>paddleocr</code>
+   is a trap: paddle pulls <strong>protobuf 6.x</strong>, which conflicts with the dashboard's
+   streamlit (<code>protobuf&lt;6</code>). Instead, <code>setup_omniparser.py</code> <strong>patches
+   <code>util/utils.py</code> to make PaddleOCR lazy</strong> (<code>_ensure_paddle_ocr()</code>), so paddle is
+   never needed. Do <strong>not</strong> install paddlepaddle into this env.</p>
+</li>
+<li>
+<p><strong>transformers auto-imports TensorFlow 2.10</strong>, whose protobuf-generated code
+   breaks under protobuf ≥ 3.20 ("Descriptors cannot be created directly").
+   Florence-2 runs on torch, so TF is unwanted. <code>omniparser_backend.py</code> sets
+   <code>USE_TF=0</code> / <code>USE_FLAX=0</code> at import (before transformers loads) to prevent this.</p>
+</li>
+<li>
+<p><strong>protobuf pin:</strong> this project uses <code>protobuf==4.25.5</code> (satisfies streamlit
+   <code>&gt;=3.20,&lt;6</code>). TensorFlow 2.10 is consequently unusable, but it was already in
+   conflict with streamlit before and is not used by this project.</p>
+</li>
+<li>
+<p><strong>Broken <code>psutil</code> in the Roaming user-site</strong> (<code>%1 is not a valid Win32
+   application</code>, a 32-bit/64-bit mismatch) shadows a good psutil in the main
+   site-packages. It does not block OmniParser (ultralytics imports fine without
+   it), but if something later needs psutil, remove
+   <code>C:\Users\ugc1hc\AppData\Roaming\Python\Python39\site-packages\psutil</code> so the
+   correct build in <code>D:\Python\python39\Lib\site-packages</code> is used.</p>
+</li>
+</ol>
+<h2 id="version-caveat">Version caveat<a class="headerlink" href="#version-caveat" title="Permanent link">¶</a></h2>
+<p>OmniParser's <code>util.utils</code> API and weight layout have drifted across releases
+(e.g. a newer <code>icon_detect_v3</code> / YOLOv9-E variant exists on an unmerged PR
+branch; the stable <code>main</code> uses <code>icon_detect</code>). If the caption/detector call
+signatures differ from what this integration expects, adjust
+<code>_parse_content_list</code> and the <code>detect()</code> call in
+<code>src/visual_dom/cv/detectors/omniparser_backend.py</code> — the version-sensitive
+parts are isolated there on purpose.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../PIPELINE/" class="btn btn-neutral float-left" title="CV Pipeline"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../EVALUATION/" class="btn btn-neutral float-right" title="Evaluation">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../PIPELINE/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../EVALUATION/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

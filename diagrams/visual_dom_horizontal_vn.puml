@@ -1,0 +1,54 @@
+@startuml Visual_DOM_Horizontal_VN
+
+!theme plain
+skinparam backgroundColor white
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+skinparam ArrowThickness 2
+skinparam RectangleBorderThickness 2
+
+left to right direction
+
+title **Luồng xử lý Visual DOM Generator**
+
+' ===== COMPONENTS =====
+
+rectangle "📷\n**Ảnh chụp**\n**màn hình**" as input #E3F2FD
+
+package "Giai đoạn 1\n**CV + OCR**" as p1 #FFF8E1 {
+    rectangle "Phát hiện\ncạnh" as edge #FFE0B2
+    rectangle "Phân tích\nđường viền" as contour #FFE0B2
+    rectangle "EasyOCR" as ocr #C8E6C9
+}
+
+package "Giai đoạn 2\n**Cấu trúc thô**" as p2 #FCE4EC {
+    rectangle "Phân tích\nkhông gian" as spatial #F8BBD9
+    rectangle "Phân loại\ntheo quy tắc" as rules #F8BBD9
+}
+
+package "Giai đoạn 3\n**Tinh chỉnh LLM**" as p3 #F3E5F5 {
+    rectangle "Qwen2.5-3B\n(Ollama)" as llm #E1BEE7
+    rectangle "Phân loại\nngữ nghĩa" as semantic #E1BEE7
+}
+
+rectangle "📄\n**Visual**\n**DOM**\n(JSON)" as output #E0F7FA
+
+rectangle "🤖\n**Robot**\n**Framework**" as robot #DCEDC8
+
+' ===== CONNECTIONS =====
+
+input --> edge
+input --> ocr
+
+edge --> contour
+contour --> spatial
+ocr --> spatial
+
+spatial --> rules
+rules --> llm
+llm --> semantic
+semantic --> output
+
+output --> robot
+
+@enduml

@@ -1,0 +1,348 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/adr/009-slm-advisor-vlm-support/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>009 SLM Advisor + VLM Support - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "009 SLM Advisor + VLM Support";
+        var properdocs_page_input_path = "adr\\009-slm-advisor-vlm-support.md";
+        var properdocs_page_url = "/vizdom/adr/009-slm-advisor-vlm-support/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">009 SLM Advisor + VLM Support</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#status">Status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#date">Date</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#history">History</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#context">Context</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#decision">Decision</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-slm-advisor-module">1. SLM Advisor Module</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-vlm-vision-language-model-support">2. VLM (Vision Language Model) Support</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-viewer-integration">3. Viewer Integration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-backends">4. Backends</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#alternatives-considered">Alternatives Considered</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#consequences">Consequences</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#positive">Positive</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#negative">Negative</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#files-changed">Files Changed</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Architecture Decisions</li>
+      <li class="breadcrumb-item active">009 SLM Advisor + VLM Support</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="adr-009-slm-advisor-with-vlm-support-for-cv-review">ADR-009: SLM Advisor with VLM Support for CV Review<a class="headerlink" href="#adr-009-slm-advisor-with-vlm-support-for-cv-review" title="Permanent link">¶</a></h1>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">¶</a></h2>
+<p>Accepted</p>
+<h2 id="date">Date<a class="headerlink" href="#date" title="Permanent link">¶</a></h2>
+<p>2026-03-30</p>
+<h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">¶</a></h2>
+<p>Development Team</p>
+<h2 id="history">History<a class="headerlink" href="#history" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Version</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-03-30</td>
+<td>1.0</td>
+<td>Initial version</td>
+</tr>
+</tbody>
+</table>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">¶</a></h2>
+<p>The CV pipeline (ADR-002) sometimes produces incorrect results that pure rule-based logic cannot fix:</p>
+<ul>
+<li><strong>Merged elements</strong>: Adjacent buttons (e.g., "+" and "-") detected as one element</li>
+<li><strong>Mistyped elements</strong>: <code>unknown</code> type for elements that are clearly buttons (e.g., "MC", "MR")</li>
+<li><strong>Split text</strong>: OCR reading two adjacent button labels as one combined string</li>
+</ul>
+<p>The LLM hierarchy refiner (ADR-007) operates after the pipeline, too late to fix CV-level merge/split errors. A review step was needed between CV detection and hierarchy building.</p>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">¶</a></h2>
+<h3 id="1-slm-advisor-module">1. SLM Advisor Module<a class="headerlink" href="#1-slm-advisor-module" title="Permanent link">¶</a></h3>
+<p>Created <code>src/visual_dom/cv/slm_advisor.py</code> — a lightweight review layer that:</p>
+<ul>
+<li>Receives detected elements from the CV pipeline</li>
+<li>Sends only <strong>suspicious elements</strong> to the LLM (text with spaces, mixed chars, wrong types)</li>
+<li>Parses JSON suggestions: <code>split</code> (create child elements) and <code>retype</code> (change visual_type)</li>
+<li>Integrated as optional Step 8 in the pipeline</li>
+</ul>
+<h3 id="2-vlm-vision-language-model-support">2. VLM (Vision Language Model) Support<a class="headerlink" href="#2-vlm-vision-language-model-support" title="Permanent link">¶</a></h3>
+<p>Extended the advisor to support vision models that can see the actual screenshot:</p>
+<ul>
+<li>Auto-detects vision models (<code>minicpm-v</code>, <code>llava</code>, <code>qwen2.5-vl</code>) from model name</li>
+<li>Encodes screenshot as base64 for Ollama vision API (<code>images</code> field)</li>
+<li>OpenAI-compatible vision API support (image_url content type)</li>
+<li>Vision prompt asks VLM to compare elements against what it sees</li>
+</ul>
+<h3 id="3-viewer-integration">3. Viewer Integration<a class="headerlink" href="#3-viewer-integration" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>SLM checkbox</strong> in toolbar to enable/disable</li>
+<li><strong>Model dropdown</strong> with options: <code>qwen2.5:3b</code> (text), <code>minicpm-v</code> (VLM), <code>qwen2.5-vl:3b</code> (VLM), <code>llava:7b</code> (VLM)</li>
+<li><strong>OCR engine dropdown</strong>: <code>easyocr</code>, <code>tesseract</code>, <code>paddleocr</code></li>
+</ul>
+<h3 id="4-backends">4. Backends<a class="headerlink" href="#4-backends" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Ollama</strong> (primary): Local inference, supports both text and vision models</li>
+<li><strong>OpenAI</strong> (secondary): Cloud API, supports GPT-4o vision</li>
+</ul>
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">¶</a></h2>
+<ul>
+<li><strong>Text-only SLM without VLM</strong>: Implemented first, but 3B text models returned empty suggestions — they couldn't reason about merged elements from text descriptions alone</li>
+<li><strong>Running SLM before CV</strong>: Rejected — SLM needs CV results to review, not raw images</li>
+<li><strong>Fine-tuning SLM</strong>: Deferred — prompt engineering with VLM is faster to iterate</li>
+</ul>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">¶</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">¶</a></h3>
+<ul>
+<li>Optional step — zero performance impact when disabled</li>
+<li>VLM can detect issues invisible to text-only models (merged buttons, misclassification)</li>
+<li>Model warmup prevents timeout on first request</li>
+<li>Suspicious-element filtering keeps prompt short for small models</li>
+</ul>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Permanent link">¶</a></h3>
+<ul>
+<li>Requires Ollama running with a pulled model</li>
+<li>VLM models need 3-8GB VRAM</li>
+<li>Response quality varies by model — 3B models are often too conservative</li>
+<li>First-call latency ~20-30s for model loading</li>
+</ul>
+<h2 id="files-changed">Files Changed<a class="headerlink" href="#files-changed" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>src/visual_dom/cv/slm_advisor.py</code> — New: SLM/VLM advisor module</li>
+<li><code>src/visual_dom/cv/pipeline.py</code> — Added <code>slm_backend</code>/<code>slm_model</code> params, <code>_slm_review()</code>, <code>_apply_slm_split()</code></li>
+<li><code>src/visual_dom/cv/__init__.py</code> — Export <code>SLMAdvisor</code></li>
+<li><code>tools/visual_dom_viewer/ui/main_window.py</code> — SLM checkbox, model dropdown, OCR dropdown</li>
+<li><code>scripts/process_gui_image.py</code> — Added <code>--slm</code>, <code>--slm-model</code> arguments</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../008-resolution-aware-thresholds/" class="btn btn-neutral float-left" title="008 Resolution-Aware Thresholds"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../010-smart-merge-split-dedup/" class="btn btn-neutral float-right" title="010 Smart Merge / Split / Dedup">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../008-resolution-aware-thresholds/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../010-smart-merge-split-dedup/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

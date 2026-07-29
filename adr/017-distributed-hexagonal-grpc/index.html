@@ -1,0 +1,474 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/adr/017-distributed-hexagonal-grpc/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>017 Distributed Hexagonal + gRPC - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "017 Distributed Hexagonal + gRPC";
+        var properdocs_page_input_path = "adr\\017-distributed-hexagonal-grpc.md";
+        var properdocs_page_url = "/vizdom/adr/017-distributed-hexagonal-grpc/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">017 Distributed Hexagonal + gRPC</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#status">Status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#date">Date</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#history">History</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#context">Context</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#decision">Decision</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-hexagonal-layering">1. Hexagonal layering</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-ports-formalize-what-exists">2. Ports (formalize what exists)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-remote-detector-via-grpc">3. Remote detector via gRPC</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-remote-refiner-already-available">4. Remote refiner (already available)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-rollout-phases">5. Rollout phases</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#alternatives-considered">Alternatives Considered</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#consequences">Consequences</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#positive">Positive</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#negative-risks">Negative / risks</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#deployment-scaling-path">Deployment &amp; scaling path</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#files-this-proposal-introduces">Files (this proposal introduces)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#code-generation">Code generation</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Architecture Decisions</li>
+      <li class="breadcrumb-item active">017 Distributed Hexagonal + gRPC</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="adr-017-distributed-hexagonal-architecture-with-grpc-model-services">ADR-017: Distributed Hexagonal Architecture with gRPC Model Services<a class="headerlink" href="#adr-017-distributed-hexagonal-architecture-with-grpc-model-services" title="Permanent link">¶</a></h1>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">¶</a></h2>
+<p>Proposed</p>
+<h2 id="date">Date<a class="headerlink" href="#date" title="Permanent link">¶</a></h2>
+<p>2026-07-26</p>
+<h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">¶</a></h2>
+<p>Development Team</p>
+<h2 id="history">History<a class="headerlink" href="#history" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Version</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-07-26</td>
+<td>0.1</td>
+<td>Initial proposal — hexagonal ports/adapters + gRPC detector service</td>
+</tr>
+</tbody>
+</table>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">¶</a></h2>
+<p>The heavy pipeline stages are GPU-bound and expensive to load:</p>
+<ul>
+<li><strong>Detector</strong> (OmniParser = YOLOv8 + Florence-2) — ~10s model load, needs a GPU.</li>
+<li><strong>SLM refiner</strong> (Ollama VLM, e.g. minicpm-v) — needs a GPU.</li>
+<li><strong>OCR</strong> (EasyOCR, optionally upscaled) — GPU-accelerated.</li>
+</ul>
+<p>Today they all run <strong>in one process on one machine</strong>, which:</p>
+<ol>
+<li>Overloads a single PC (two large models + OCR + the app).</li>
+<li>Reloads models on almost every run (the per-process <code>_MODEL_CACHE</code> helps
+   within a session, but a fresh CLI/Viewer run pays the ~10s again).</li>
+<li>Prevents sharing one GPU box across several client machines / test runners.</li>
+</ol>
+<p>We want the detector and refiner to run as <strong>separate services</strong>, potentially on
+<strong>other PCs</strong>, so a warm model server serves many lightweight clients. This is an
+applied-project goal (Method 3): a scalable, decoupled deployment for GPU-shared
+GUI test automation — not a change to the core CV→DOM method.</p>
+<p>Crucially, <strong>the codebase is already most of the way there</strong>:</p>
+<ul>
+<li><code>DetectorBackend</code> (ADR-015) is already a <strong>port</strong>: <code>detect(image) -&gt; List[Detection]</code>,
+  with local adapters (UIED/YOLO/OmniParser).</li>
+<li><code>SLMAdvisor</code> already talks to <strong>Ollama over HTTP</strong> — the refiner can <em>already</em>
+  run on another PC by pointing <code>slm_host</code> at it. No new transport required.</li>
+</ul>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">¶</a></h2>
+<p>Adopt a <strong>hexagonal (ports &amp; adapters)</strong> structure and add <strong>remote adapters</strong>;
+do NOT rewrite into many microservices. Extract only the two heavy stages.</p>
+<h3 id="1-hexagonal-layering">1. Hexagonal layering<a class="headerlink" href="#1-hexagonal-layering" title="Permanent link">¶</a></h3>
+<pre><code>                        Driving adapters (inbound)
+        CLI (process_gui_image) · Viewer · Dashboard · Robot Framework
+                                   │
+                                   ▼
+   ┌───────────────────────────────────────────────────────────────┐
+   │  DOMAIN CORE (pure, no I/O)                                     │
+   │  pipeline orchestration · reading-order · smart-merge ·        │
+   │  coarse hierarchy · DOM compiler · schema                      │
+   │                                                                │
+   │  PORTS (interfaces):                                           │
+   │    DetectorPort   detect(image) -&gt; [Detection]                 │
+   │    RefinerPort    review(elements, image) -&gt; [Suggestion]      │
+   │    OcrPort        detect_text(image) -&gt; [TextElement]          │
+   └───────────────────────────────────────────────────────────────┘
+                                   │
+                                   ▼
+                    Driven adapters (outbound)
+   local: UIEDBackend · YOLOBackend · OmniParserBackend · TextDetector · SLMAdvisor
+   remote: GrpcDetectorBackend ─(gRPC)→ Detector service (GPU box)
+           SLMAdvisor(host=other-pc) ─(HTTP)→ Ollama (GPU box)
+</code></pre>
+<p>The domain core stays <strong>local and CPU-cheap</strong> (it is also the project's main
+technical content — geometry, hierarchy, DOM). Only <strong>model inference</strong> crosses
+the wire.</p>
+<h3 id="2-ports-formalize-what-exists">2. Ports (formalize what exists)<a class="headerlink" href="#2-ports-formalize-what-exists" title="Permanent link">¶</a></h3>
+<ul>
+<li><code>DetectorPort</code> ← existing <code>DetectorBackend</code> (no change).</li>
+<li><code>RefinerPort</code> ← extracted from <code>SLMAdvisor.review_elements(...)</code>.</li>
+<li><code>OcrPort</code> ← extracted from <code>TextDetector.detect(...)</code>.</li>
+</ul>
+<p>Each port has ≥1 <strong>local</strong> adapter (in-process) and MAY have a <strong>remote</strong> adapter.</p>
+<h3 id="3-remote-detector-via-grpc">3. Remote detector via gRPC<a class="headerlink" href="#3-remote-detector-via-grpc" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Contract:</strong> <code>protos/detector.proto</code> — <code>Detector.Detect(DetectRequest) -&gt; DetectResponse</code>
+  where request carries the encoded image + params + a <code>request_id</code>
+  (correlation id for cross-service tracing), and the response carries
+  <code>repeated Detection</code> (bounds, visual_type, confidence, text, interactable, source).</li>
+<li><strong>Server</strong> (<code>src/visual_dom/rpc/detector_server.py</code>): wraps any local backend
+  (<code>create_detector(...)</code>), loads the model <strong>once at startup</strong>, serves Detect.
+  Runs on the GPU PC.</li>
+<li><strong>Client</strong> (<code>GrpcDetectorBackend</code>): a <code>DetectorBackend</code> adapter that marshals
+  the image to the service and converts the proto response back to <code>Detection</code>.
+  Registered as detector name <strong><code>grpc</code></strong>; selected exactly like any other backend.</li>
+</ul>
+<h3 id="4-remote-refiner-already-available">4. Remote refiner (already available)<a class="headerlink" href="#4-remote-refiner-already-available" title="Permanent link">¶</a></h3>
+<p><code>SLMAdvisor(backend="ollama", host="http://&lt;gpu-pc&gt;:11434")</code> already runs the SLM
+on another machine. Optionally, a later phase can wrap it behind a gRPC
+<code>RefinerService</code> for a uniform contract — not required for the load-distribution win.</p>
+<h3 id="5-rollout-phases">5. Rollout phases<a class="headerlink" href="#5-rollout-phases" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Phase 0 (no code):</strong> run the refiner remotely by setting <code>slm_host</code>.</li>
+<li><strong>Phase 1:</strong> formalize ports (thin refactor; mostly naming around existing classes).</li>
+<li><strong>Phase 2:</strong> gRPC <strong>detector service</strong> + <code>GrpcDetectorBackend</code> client (this ADR's
+  code sketch). Delivers the main goal.</li>
+<li><strong>Phase 3 (optional):</strong> gRPC refiner/OCR services for a uniform transport.</li>
+</ul>
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">¶</a></h2>
+<ul>
+<li><strong>Full microservices</strong> (every stage its own service, discovery, mesh) —
+  rejected: sprawl and ops cost not justified for a mostly single-user tool;
+  the domain core is cheap and belongs local.</li>
+<li><strong>REST/HTTP for the detector</strong> (like Ollama) — viable, but gRPC gives typed,
+  versioned contracts and efficient binary image payloads; worth it for the
+  image-in / structured-out shape.</li>
+<li><strong>Keep everything in-process</strong> — rejected: the GPU-overload and model-reuse
+  problems are the whole point.</li>
+</ul>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">¶</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">¶</a></h3>
+<ul>
+<li>One warm GPU model server serves many clients → no per-run reload, no
+  single-PC overload; a CI farm can share a couple of GPU boxes.</li>
+<li>Clean separation: <strong>geometry/hierarchy (CPU, local)</strong> vs <strong>inference (GPU, remote)</strong>.</li>
+<li>Minimal disturbance: remote detector is just another <code>DetectorBackend</code>; the
+  pipeline is untouched.</li>
+<li>Strong, demonstrable systems story for the applied project.</li>
+</ul>
+<h3 id="negative-risks">Negative / risks<a class="headerlink" href="#negative-risks" title="Permanent link">¶</a></h3>
+<ul>
+<li>Distributed debugging — mitigate with <code>request_id</code> correlation IDs threaded
+  through <code>logging_utils</code>.</li>
+<li><strong>Contract versioning</strong> — the <code>Detection</code>/DOM schema still evolves (label,
+  interactable added recently); freeze it carefully with proto field numbers and
+  a <code>v1</code> package.</li>
+<li>Image payload over the network (~0.1–2 MB/req) — fine on a LAN; encode as PNG.</li>
+<li>Security — use TLS/auth if the network is not trusted.</li>
+<li>Extra deps: <code>grpcio</code>, <code>grpcio-tools</code> (client/server); generated <code>*_pb2.py</code>.</li>
+</ul>
+<h2 id="deployment-scaling-path">Deployment &amp; scaling path<a class="headerlink" href="#deployment-scaling-path" title="Permanent link">¶</a></h2>
+<p><strong>Decision: run services as plain native processes — no containers, no
+orchestrator.</strong> For the project's scale (a single user with 1–3 PCs, one GPU box
+serving a few clients), that is the right-sized choice:</p>
+<ul>
+<li>A launcher script (<code>start_detector.bat</code>) starts the detector service on the
+  GPU host; clients point at <code>host:50051</code>. That is the whole deployment.</li>
+<li>Optionally register it as an always-on Windows service with <strong>NSSM</strong> (a few MB,
+  no VM) — not required.</li>
+</ul>
+<p><strong>Explicitly rejected for now (YAGNI at this scale):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Why not now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Docker / Compose</strong></td>
+<td>On Windows it pulls in a WSL2 VM + daemon — heavy RAM/disk for no benefit at 1–3 nodes; conflicts with this project's resource constraints.</td>
+</tr>
+<tr>
+<td><strong>Consul</strong> (discovery/health/mesh)</td>
+<td>A static <code>target</code> (config) already locates the service; a <code>HealthCheck</code> RPC already exists. Discovery earns its keep only when services move/scale dynamically.</td>
+</tr>
+<tr>
+<td><strong>Nomad</strong> (scheduling)</td>
+<td>No cluster to schedule across; 1–2 servers are started by hand / a launcher.</td>
+</tr>
+<tr>
+<td><strong>Kubernetes</strong></td>
+<td>Far beyond the scale; large ops surface.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Future scaling path</strong> (documented, not built) — if this grows into a
+multi-node CI/test farm where many runners share a dynamic pool of GPU model
+servers: (1) <strong>gRPC client-side load balancing</strong> over a static endpoint list +
+<code>HealthCheck</code>-based failover — pure code, still no infra; then (2) <strong>Consul</strong> for
+discovery/health + <strong>Nomad</strong> (or Kubernetes) for scheduling. Start at (1) and add
+orchestration only when nodes actually come and go.</p>
+<h2 id="files-this-proposal-introduces">Files (this proposal introduces)<a class="headerlink" href="#files-this-proposal-introduces" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>protos/detector.proto</code> — the service contract (v1).</li>
+<li><code>src/visual_dom/cv/detectors/grpc_backend.py</code> — <code>GrpcDetectorBackend</code> client adapter.</li>
+<li><code>src/visual_dom/rpc/detector_server.py</code> — the detector gRPC server.</li>
+<li><code>src/visual_dom/cv/detectors/registry.py</code> — register <code>grpc</code> backend.</li>
+<li><code>docs/diagrams/architecture.puml</code> — the ports/adapters + deployment diagram
+  (was <code>hexagonal.puml</code>; extended for capture ADR-018 and actuator ADR-019).</li>
+<li><code>start_detector.bat</code> — launcher for the detector service (native process).</li>
+</ul>
+<h3 id="code-generation">Code generation<a class="headerlink" href="#code-generation" title="Permanent link">¶</a></h3>
+<pre><code class="language-bash">pip install grpcio grpcio-tools
+python -m grpc_tools.protoc -I protos \
+  --python_out=src/visual_dom/rpc --grpc_python_out=src/visual_dom/rpc \
+  protos/detector.proto
+# protoc emits an absolute import that breaks inside a package — make it relative:
+sed -i 's/^import detector_pb2/from . import detector_pb2/' \
+  src/visual_dom/rpc/detector_pb2_grpc.py
+</code></pre>
+<p><strong>Verified end-to-end (2026-07-26):</strong> with the <code>uied</code> backend, client → gRPC
+service → 10 detections returned over the wire (correlation id logged,
+~91 ms server-side, 0.12 s round-trip). Same path works cross-PC by pointing the
+client <code>target</code> at the service host.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../016-reading-order-and-labels/" class="btn btn-neutral float-left" title="016 Reading Order + Labels"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../018-pluggable-capture-service/" class="btn btn-neutral float-right" title="018 Pluggable Capture Service">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../016-reading-order-and-labels/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../018-pluggable-capture-service/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

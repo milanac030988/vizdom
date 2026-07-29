@@ -1,0 +1,547 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/discussion/aria-ui-integration-en/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>Aria-UI integration (EN) - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "Aria-UI integration (EN)";
+        var properdocs_page_input_path = "discussion\\aria-ui-integration-en.md";
+        var properdocs_page_url = "/vizdom/discussion/aria-ui-integration-en/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current">Model Comparisons</a>
+    <ul class="current">
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2 current"><a class="reference internal current" href="#">Aria-UI integration (EN)</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#1-what-aria-ui-is">1. What Aria-UI is</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-what-it-takes-as-input">2. What it takes as INPUT</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#converting-its-coordinates-to-our-pixel-space">Converting its coordinates to our pixel space</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-what-it-can-and-cannot-do-read-this-before-designing">3. What it can and cannot do — read this before designing</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-how-it-can-help-our-pipeline-five-concrete-uses">4. How it can help our pipeline — five concrete uses</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#a-validation-against-a-known-expectation-best-fit">A. Validation against a known expectation (best fit)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#b-offline-auto-labelling-for-our-yolo-detector-highest-long-term-value">B. Offline auto-labelling for our YOLO detector (highest long-term value)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#c-natural-language-locators-for-the-robot-framework-library-product-value">C. Natural-language locators for the Robot Framework library (product value)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#d-borrow-their-ultra-resolution-technique-methodology">D. Borrow their ultra-resolution technique (methodology)</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#e-borrow-their-data-synthesis-methodology-most-actionable">E. Borrow their data-synthesis methodology (most actionable)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-integration-sketch">5. Integration sketch</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6-what-to-verify-before-building">6. What to verify before building</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#7-next-steps">7. Next steps</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/006-viewer-workflow-design/">006 Viewer Workflow Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../adr/019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Research</li>
+          <li class="breadcrumb-item">Model Comparisons</li>
+      <li class="breadcrumb-item active">Aria-UI integration (EN)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="aria-ui-what-it-provides-and-how-it-can-help-our-pipeline">Aria-UI: What It Provides, and How It Can Help Our Pipeline<a class="headerlink" href="#aria-ui-what-it-provides-and-how-it-can-help-our-pipeline" title="Permanent link">¶</a></h1>
+<p>A practical read of <em>Aria-UI: Visual Grounding for GUI Instructions</em> — its exact input/output contract, what it can and cannot do, and the concrete points where it plugs into the Visual DOM pipeline.</p>
+<div class="admonition warning">
+<p class="admonition-title">Source &amp; confidence</p>
+<p>Based on the paper <a href="https://arxiv.org/html/2412.16256v1">arXiv:2412.16256v1</a> (Yang, Wang, Li, Luo, Chen, Huang, Li — HKU &amp; Rhymes AI).
+ Details of the <strong>exact prompt template and response string format</strong> come from the model implementation, not the paper —
+ items marked (verify) must be confirmed against the official model card/repo before coding against them.</p>
+</div>
+<h2 id="1-what-aria-ui-is">1. What Aria-UI is<a class="headerlink" href="#1-what-aria-ui-is" title="Permanent link">¶</a></h2>
+<p>Aria-UI is a vision-language model specialised in <strong>GUI element grounding</strong>: given a screenshot and a
+natural-language instruction, it tells you <em>where</em> on screen the target element is. Its explicit design premise —
+<strong>pure vision, no HTML and no accessibility tree</strong> — is the same problem statement as our project.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Base model</strong></td>
+<td></td>
+<td>Aria — multimodal MoE , only 3.9B activated parameters (cheaper per inference than a 7B dense model).</td>
+</tr>
+<tr>
+<td><strong>ScreenSpot</strong></td>
+<td>82.4%</td>
+<td>Average single-step grounding accuracy.</td>
+</tr>
+<tr>
+<td><strong>Max resolution</strong></td>
+<td>3920×2940</td>
+<td>Extended from 980×980 by splitting the image into blocks with aspect-ratio padding (NaViT-style).</td>
+</tr>
+<tr>
+<td><strong>Training scale</strong></td>
+<td>11.5M</td>
+<td>samples over 3.9M elements — web, desktop and mobile (general domain).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-what-it-takes-as-input">2. What it takes as INPUT<a class="headerlink" href="#2-what-it-takes-as-input" title="Permanent link">¶</a></h2>
+<p><strong>INPUT</strong>
+1. <strong>A GUI screenshot</strong> — any resolution up to 3920×2940; high-DPI screens are handled natively by block splitting.
+2. <strong>A natural-language instruction</strong> naming <em>one</em> target, e.g.
+ <code>"click the Submit button"</code>, <code>"the search input field"</code>.
+3. <strong>(Optional) Action history</strong> — previous steps as text or as past screenshots, enabling context-aware grounding
+ ("now tap the second item") (verify format).</p>
+<p><strong>OUTPUT</strong>
+- <strong>Normalized coordinates in the <code>[0, 1000]</code> range</strong> pointing at the target element.
+- Effectively a <strong>location / point</strong>, not a labelled tree. (verify: point vs. box)
+- One answer per instruction.</p>
+<h3 id="converting-its-coordinates-to-our-pixel-space">Converting its coordinates to our pixel space<a class="headerlink" href="#converting-its-coordinates-to-our-pixel-space" title="Permanent link">¶</a></h3>
+<p>Our DOM uses pixel bounds <code>[x1, y1, x2, y2]</code>. Aria-UI returns values normalized to 0–1000, so:</p>
+<p><code>px = (x_aria / 1000) * image_width
+py = (y_aria / 1000) * image_height</code></p>
+<div class="admonition danger">
+<p class="admonition-title">The single most important caveat</p>
+<p>A grounding model of this type returns <strong>a point, not a bounding box</strong>. Our DOM needs boxes.
+ That means Aria-UI <em>cannot produce our geometry directly</em> — it can only say “the element is around here”,
+ and our CV layer must still supply the actual box. Conveniently, this is exactly what our architecture already demands.</p>
+</div>
+<h2 id="3-what-it-can-and-cannot-do-read-this-before-designing">3. What it can and cannot do — read this before designing<a class="headerlink" href="#3-what-it-can-and-cannot-do-read-this-before-designing" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Capability</th>
+<th>Consequence for us</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CAN</td>
+<td>Locate a described element on a screenshot with no a11y tree</td>
+<td>Works on Qt/OpenGL/custom UIs — our exact target</td>
+</tr>
+<tr>
+<td>CAN</td>
+<td>Handle very high-resolution screens</td>
+<td>Relevant to ADR-008 / ADR-012 (resolution &amp; upscaling)</td>
+</tr>
+<tr>
+<td>CAN</td>
+<td>Understand natural-language references ("the blue confirm button")</td>
+<td>Enables human-readable locators for Robot Framework</td>
+</tr>
+<tr>
+<td>CAN</td>
+<td>Use action history for context</td>
+<td>Useful for multi-step test flows</td>
+</tr>
+<tr>
+<td>CANNOT</td>
+<td>Enumerate <em>all</em> elements on a screen</td>
+<td><strong>It is not a detector.</strong> It answers “where is X?”, not “what is on this screen?” — so it cannot replace UIED/YOLO</td>
+</tr>
+<tr>
+<td>CANNOT</td>
+<td>Return a hierarchy / DOM tree</td>
+<td>Our DOM contribution stays differentiated</td>
+</tr>
+<tr>
+<td>CANNOT</td>
+<td>Return bounding boxes (returns a point)</td>
+<td>CV must still own geometry</td>
+</tr>
+<tr>
+<td>CANNOT</td>
+<td>Plan by itself</td>
+<td>Paper states it depends on an external planner and has no error correction</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">The framing that matters</p>
+<p>Aria-UI is a <strong>query engine</strong> ("where is X?"), not a <strong>detector</strong> ("list everything").
+ Every integration idea below is shaped by that one fact.</p>
+</div>
+<h2 id="4-how-it-can-help-our-pipeline-five-concrete-uses">4. How it can help our pipeline — five concrete uses<a class="headerlink" href="#4-how-it-can-help-our-pipeline-five-concrete-uses" title="Permanent link">¶</a></h2>
+<h3 id="a-validation-against-a-known-expectation-best-fit">A. Validation against a known expectation (best fit)<a class="headerlink" href="#a-validation-against-a-known-expectation-best-fit" title="Permanent link">¶</a></h3>
+<div class="admonition danger">
+<p class="admonition-title">First, the trap: circularity</p>
+<p>If the list of things we ask Aria-UI to find comes from <em>CV output</em>, we can only look for elements CV
+ already found — which defeats the whole purpose of finding what CV <strong>missed</strong>. A naive implementation
+ finds nothing. Aria-UI <strong>cannot do blind discovery</strong>: it is a query engine, so we must already know what to ask for.
+ The fix is not to engineer around this — it is to change the question we ask.</p>
+</div>
+<h4 id="discovery-vs-validation-asking-the-right-question">Discovery vs. validation — asking the right question<a class="headerlink" href="#discovery-vs-validation-asking-the-right-question" title="Permanent link">¶</a></h4>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Question</th>
+<th>Aria-UI suited?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Discovery</strong></td>
+<td>“What elements exist on this screen?”</td>
+<td>NO — that needs a detector/enumerator (UIED/YOLO), not a grounding model</td>
+</tr>
+<tr>
+<td><strong>Validation</strong></td>
+<td>“Does element X exist, and is its box correct?”</td>
+<td>YES — precisely its strength</td>
+</tr>
+</tbody>
+</table>
+<p>So this stage is <strong>not</strong> a recall-gap <em>discoverer</em>; it is a <strong>validator against a known expectation</strong>.
+That framing is also more defensible academically: <em>“validate the DOM against what the tests actually need”</em> is a sharper
+contribution than <em>“use a VLM to find missed elements.”</em></p>
+<h4 id="where-do-the-expected-targets-come-from">Where do the expected targets come from?<a class="headerlink" href="#where-do-the-expected-targets-come-from" title="Permanent link">¶</a></h4>
+<p>Four realistic sources, ordered by usefulness to us:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Source</th>
+<th>Why it escapes circularity</th>
+<th>Limitation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>OCR text</strong> (best for our CV pain)</td>
+<td>OCR and element detection are <strong>separate stages</strong>. OCR finds text even where the element detector failed to produce a proper box — so it supplies targets CV's box stage missed.</td>
+<td>Cannot find icon-only elements with no text.</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>The test script itself</strong> (strongest for a testing tool)</td>
+<td>Completely independent of CV. In GUI testing we <em>already know</em> what we are looking for — the test states it.</td>
+<td>Only covers elements the tests reference.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>A golden / reference DOM</strong></td>
+<td>Comes from a previous known-good build, not from this run's CV.</td>
+<td>Requires an established baseline; regression scenarios only.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>A domain vocabulary</strong> (crude fallback)</td>
+<td>A fixed checklist, e.g. for a calculator: digits 0–9, operators, <code>MC/MR/MS</code>.</td>
+<td>Does not generalise; weak to defend in a thesis.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="worked-example-our-calculator-merge-problem">Worked example — our calculator merge problem<a class="headerlink" href="#worked-example-our-calculator-merge-problem" title="Permanent link">¶</a></h4>
+<p>This is exactly the failure recorded in ADR-009 (adjacent buttons detected as one element), and source&nbsp;1 solves it:</p>
+<p>`Element detector → ONE merged box E7
+OCR → "4", "5", "7", "8" (four separate text runs)</p>
+<p>expected_targets = ["4", "5", "7", "8"] # from OCR, not from the box stage</p>
+<p>for target in expected_targets:
+ pt = aria_ui.ground(screenshot, target) # → a point
+ box = find_cv_box_containing(pt)</p>
+<p>if box is None: → element exists but CV produced NO box → rescan region
+ elif box is shared by &gt;1 target:
+ → MERGED box: 4 points inside E7 → SPLIT it
+ else: → confirm box + attach semantic label`</p>
+<p>Four distinct points landing inside a single box is direct, measurable evidence that the box must be split —
+turning a subjective “the VLM thinks it looks merged” judgement into a geometric fact.</p>
+<p>This fits our existing <code>SLMAdvisor</code> slot (ADR-009) and <strong>respects our core principle</strong>: Aria-UI only
+points; CV still produces the final box.</p>
+<div class="admonition note">
+<p class="admonition-title">Practical split</p>
+<p>Use <strong>source 1 (OCR text)</strong> for pipeline-internal split/merge validation — it needs no extra input and attacks
+ our known calculator problem directly. Use <strong>source 2 (the test script)</strong> for validation at the Robot Framework level.
+ Leave blind discovery to UIED/YOLO — never to a grounding model.</p>
+</div>
+<h3 id="b-offline-auto-labelling-for-our-yolo-detector-highest-long-term-value">B. Offline auto-labelling for our YOLO detector (highest long-term value)<a class="headerlink" href="#b-offline-auto-labelling-for-our-yolo-detector-highest-long-term-value" title="Permanent link">¶</a></h3>
+<p>Connects directly to the unfinished April thread (synthetic dataset + YOLO). Use Aria-UI <strong>once, offline</strong> to help annotate
+real screenshots, then train our own small CPU-friendly detector on the result. We distil its ability into a fast model and
+<strong>add no GPU dependency at test-execution time</strong>. Its point output pairs well with CV-proposed boxes: Aria-UI picks
+<em>which</em> box is the "Submit button", CV supplies the box itself.</p>
+<h3 id="c-natural-language-locators-for-the-robot-framework-library-product-value">C. Natural-language locators for the Robot Framework library (product value)<a class="headerlink" href="#c-natural-language-locators-for-the-robot-framework-library-product-value" title="Permanent link">¶</a></h3>
+<p>Aria-UI turns <code>"the Submit button"</code> into a location, which is exactly the locator-resolution problem our RF library solves.
+It could serve as a <strong>fallback locator strategy</strong> when DOM-based locators fail — improving robustness without becoming the primary path.</p>
+<h3 id="d-borrow-their-ultra-resolution-technique-methodology">D. Borrow their ultra-resolution technique (methodology)<a class="headerlink" href="#d-borrow-their-ultra-resolution-technique-methodology" title="Permanent link">¶</a></h3>
+<p>They extended 980×980 → 3920×2940 by <strong>splitting the image into blocks with aspect-preserving padding</strong>.
+We hit the same wall (small elements at high DPI) and answered it with resolution-aware thresholds (ADR-008) and OCR upscaling (ADR-012).
+Their approach is a citable, possibly borrowable alternative for our preprocessing.</p>
+<h3 id="e-borrow-their-data-synthesis-methodology-most-actionable">E. Borrow their data-synthesis methodology (most actionable)<a class="headerlink" href="#e-borrow-their-data-synthesis-methodology-most-actionable" title="Permanent link">¶</a></h3>
+<p>The paper's headline contribution is a pipeline that synthesises <strong>diverse, human-like instructions paired with element captions</strong>
+at scale, including an <strong>automated traverse agent</strong> that harvests desktop elements. This is directly applicable to our own
+synthetic dataset generation and may be worth more to us than the model weights.</p>
+<h2 id="5-integration-sketch">5. Integration sketch<a class="headerlink" href="#5-integration-sketch" title="Permanent link">¶</a></h2>
+<p><code>┌──────────────────────────────────────────────┐
+Screenshot ─┤ CV DETECTION (UIED + OCR + symbol + YOLO) │ ← owns geometry (boxes)
+ └───────────────────┬──────────────────────────┘
+ │ elements[] with bounds
+ ┌───────────────────▼──────────────────────────┐
+ │ VALIDATION STAGE [NEW / Aria-UI] │
+ │ • ground expected targets → points │
+ │ • point inside a box? → confirm + label │
+ │ • point with no box? → RECALL GAP, rescan │
+ │ • box nobody grounds → possible noise │
+ └───────────────────┬──────────────────────────┘
+ │ validated elements
+ ┌───────────────────▼──────────────────────────┐
+ │ COARSE HIERARCHY → LLM REFINER → DOM COMPILER│ ← semantics only
+ └───────────────────┬──────────────────────────┘
+ ▼
+ DOM JSON → Robot Framework library
+ └ optional NL-locator fallback (Aria-UI)</code></p>
+<p>Aria-UI sits <strong>beside</strong> the existing <code>SLMAdvisor</code> as a selectable strategy — not as a deletion of the working
+3B reviewer. Evaluation numbers should decide which survives.</p>
+<h2 id="6-what-to-verify-before-building">6. What to verify before building<a class="headerlink" href="#6-what-to-verify-before-building" title="Permanent link">¶</a></h2>
+<ul>
+<li>
+<p><strong>Point or box?</strong> Confirm whether the released model can emit a bounding box or only a centre point. This changes the design.</p>
+</li>
+<li>
+<p><strong>Exact prompt/response format</strong> — the paper gives the coordinate range, not the string template. Check the official model card/repo.</p>
+</li>
+<li>
+<p><strong>Licence and weights availability</strong> — must be confirmed before we depend on it.</p>
+</li>
+<li>
+<p><strong>Hardware</strong> — MoE with 3.9B activated is cheaper than 7B dense, but VRAM must hold the full expert set. Measure real latency per screen.</p>
+</li>
+<li>
+<p><strong>Domain check</strong> — run it on <em>our</em> screenshots (calculator, desktop, Qt). Its general-domain training makes success far likelier than with an automotive-only model, but this is still the gate.</p>
+</li>
+</ul>
+<h2 id="7-next-steps">7. Next steps<a class="headerlink" href="#7-next-steps" title="Permanent link">¶</a></h2>
+<ul>
+<li>
+<p>Run the <strong>domain check</strong> on 10–20 of our screenshots; measure how often the returned point lands inside the correct CV box.</p>
+</li>
+<li>
+<p>If hit-rate is good → prototype <strong>use A (recall-gap validation)</strong> behind a flag, alongside the existing advisor.</p>
+</li>
+<li>
+<p>In parallel, mine the <strong>data-synthesis section (use E)</strong> for our YOLO dataset work.</p>
+</li>
+<li>
+<p>Record the outcome as a new ADR (proposed: <em>ADR-015 — Grounding-model validation stage</em>).</p>
+</li>
+</ul>
+<div class="admonition success">
+<p class="admonition-title">Summary in one line</p>
+<p>Aria-UI gives us <strong>“screenshot + description → where it is”</strong>. It cannot build our DOM and cannot list elements,
+ so it is not a replacement for CV — but it is an excellent <strong>validator, auto-labeller and natural-language locator</strong>,
+ and its data-synthesis method may be the most valuable part of the paper for us.</p>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../landscape-comparison-vi/" class="btn btn-neutral float-left" title="Landscape 5-way (VI)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../aria-ui-integration-vi/" class="btn btn-neutral float-right" title="Aria-UI integration (VI)">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../landscape-comparison-vi/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../aria-ui-integration-vi/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>

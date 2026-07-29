@@ -1,0 +1,537 @@
+<!DOCTYPE html><html class="writer-html5" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="canonical" href="https://milanac030988.github.io/vizdom/adr/006-viewer-workflow-design/">
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+    <title>006 Viewer Workflow Design - VizDOM — Visual DOM Generator</title>
+    <link rel="stylesheet" href="../../css/theme.css">
+    <link rel="stylesheet" href="../../css/theme_extra.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+    
+      <script>
+        // Current page data
+        var properdocs_page_name = "006 Viewer Workflow Design";
+        var properdocs_page_input_path = "adr\\006-viewer-workflow-design.md";
+        var properdocs_page_url = "/vizdom/adr/006-viewer-workflow-design/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+        </style></head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> VizDOM — Visual DOM Generator
+        </a><div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here">
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../uv-setup/">Setup (uv)</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../PIPELINE/">CV Pipeline</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../omniparser-setup/">OmniParser Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../EVALUATION/">Evaluation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../annotation_workflow/">Data Annotation</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Research</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../RESEARCH/">VLM Study</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../related_work/">Related Work</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal">Model Comparisons</a>
+    <ul>
+                <li class="toctree-l2"><a class="reference internal" href="../../model-discussion/">Overview</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-en/">Landscape 5-way (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/landscape-comparison-vi/">Landscape 5-way (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-en/">Aria-UI integration (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/aria-ui-integration-vi/">Aria-UI integration (VI)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-en/">ELAM-7B analysis (EN)</a>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../../discussion/elam-7b-analysis-vi/">ELAM-7B analysis (VI)</a>
+                </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../COMMANDS/">Commands</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../DeCuong-Thacsi-Updated/">Thesis Proposal</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Architecture Decisions</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../001-visual-dom-architecture/">001 Visual DOM Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../002-cv-pipeline-design/">002 CV Pipeline Design</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../003-platform-handler-architecture/">003 Platform Handler Architecture</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../004-dom-compiler-json-format/">004 DOM Compiler / JSON Format</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../005-evaluation-framework/">005 Evaluation Framework</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">006 Viewer Workflow Design</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#status">Status</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#date">Date</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#reviewer">Reviewer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#history">History</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#context">Context</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#decision">Decision</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#new-workflow">New Workflow</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#toolbar-actions">Toolbar Actions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#connect-dialog">Connect Dialog</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#status-bar">Status Bar</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#capture-process">Capture Process</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#consequences">Consequences</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#positive">Positive</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#negative">Negative</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#neutral">Neutral</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#alternatives-considered">Alternatives Considered</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-separate-capture-and-analyze-buttons-rejected">1. Separate Capture and Analyze Buttons (Rejected)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-always-on-top-viewer-rejected">2. Always-On-Top Viewer (Rejected)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-transparent-overlay-mode-deferred">3. Transparent Overlay Mode (Deferred)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#references">References</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../007-cv-pipeline-with-llm-refinement/">007 CV Pipeline with LLM Refinement</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../008-resolution-aware-thresholds/">008 Resolution-Aware Thresholds</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../009-slm-advisor-vlm-support/">009 SLM Advisor + VLM Support</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../010-smart-merge-split-dedup/">010 Smart Merge / Split / Dedup</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../011-symbol-detector/">011 Symbol Detector</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../012-ocr-upscale-dual-engine/">012 OCR Upscale + Dual Engine</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../013-session-based-output/">013 Session-Based Output</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../014-project-restructure/">014 Project Restructure</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../015-pluggable-detector-backends/">015 Pluggable Detector Backends</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../016-reading-order-and-labels/">016 Reading Order + Labels</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../017-distributed-hexagonal-grpc/">017 Distributed Hexagonal + gRPC</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../018-pluggable-capture-service/">018 Pluggable Capture Service</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../019-pluggable-actuator-service/">019 Pluggable Actuator Service</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">VizDOM — Visual DOM Generator</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Architecture Decisions</li>
+      <li class="breadcrumb-item active">006 Viewer Workflow Design</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="adr-006-visual-dom-viewer-workflow-design">ADR-006: Visual DOM Viewer Workflow Design<a class="headerlink" href="#adr-006-visual-dom-viewer-workflow-design" title="Permanent link">¶</a></h1>
+<h2 id="status">Status<a class="headerlink" href="#status" title="Permanent link">¶</a></h2>
+<p>Accepted</p>
+<h2 id="date">Date<a class="headerlink" href="#date" title="Permanent link">¶</a></h2>
+<p>2025-01-26</p>
+<h2 id="author">Author<a class="headerlink" href="#author" title="Permanent link">¶</a></h2>
+<p>Development Team</p>
+<h2 id="reviewer">Reviewer<a class="headerlink" href="#reviewer" title="Permanent link">¶</a></h2>
+<ul>
+<li>Project Lead</li>
+</ul>
+<h2 id="history">History<a class="headerlink" href="#history" title="Permanent link">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Version</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025-01-26</td>
+<td>1.0</td>
+<td>Initial version</td>
+</tr>
+</tbody>
+</table>
+<h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">¶</a></h2>
+<p>The Visual DOM Viewer is a PyQt5-based GUI application that allows users to:</p>
+<ol>
+<li>Connect to target applications</li>
+<li>Capture screenshots</li>
+<li>Analyze with Visual DOM pipeline</li>
+<li>Explore and select elements</li>
+<li>Define elements for export</li>
+<li>Export to Robot Framework</li>
+</ol>
+<p>The original design had separate buttons for "Capture Screen", "Analyze", and "Explore Mode" which was confusing. Users expected a simpler workflow.</p>
+<h2 id="decision">Decision<a class="headerlink" href="#decision" title="Permanent link">¶</a></h2>
+<p>Redesign the viewer workflow around a <strong>Connect → Capture &amp; Analyze → Define → Export</strong> flow.</p>
+<h3 id="new-workflow">New Workflow<a class="headerlink" href="#new-workflow" title="Permanent link">¶</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                      VIEWER WORKFLOW                         │
+└─────────────────────────────────────────────────────────────┘
+
+Step 1: Connect
+┌─────────────────────────────────────────────────────────────┐
+│  [Connect] → Dialog opens                                    │
+│    ├─ Select Platform (Windows/Android/...)                 │
+│    ├─ See list of available targets                         │
+│    └─ Select target → [Connect]                             │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+Step 2: Capture &amp; Analyze
+┌─────────────────────────────────────────────────────────────┐
+│  [Capture &amp; Analyze] (F5)                                    │
+│    ├─ Minimize viewer                                        │
+│    ├─ Bring target to front                                  │
+│    ├─ Capture screenshot                                     │
+│    ├─ Run CV pipeline (OCR + UIED)                          │
+│    ├─ Build hierarchy                                        │
+│    ├─ Compile DOM with locators                             │
+│    └─ Display results in viewer                             │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+Step 3: Explore &amp; Define
+┌─────────────────────────────────────────────────────────────┐
+│  Explore Mode (enabled by default)                           │
+│    ├─ Hover over screenshot → highlight elements            │
+│    ├─ Click element → select it                             │
+│    ├─ View properties in right panel                        │
+│    ├─ Name element → [Add to Export List]                   │
+│    └─ Repeat for all needed elements                        │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+Step 4: Export
+┌─────────────────────────────────────────────────────────────┐
+│  [Export to Robot] (Ctrl+E)                                  │
+│    ├─ Generate .resource file                               │
+│    └─ Contains locators for all defined elements            │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="toolbar-actions">Toolbar Actions<a class="headerlink" href="#toolbar-actions" title="Permanent link">¶</a></h3>
+<pre><code>┌──────────────────────────────────────────────────────────────────────┐
+│ [Connect] [Disconnect] │ [Capture &amp; Analyze] [Re-Analyze] │         │
+│                        │                                   │         │
+│ [Open Image] [Open DOM] │ [Explore Mode ✓] [Zoom+] [Zoom-] │ [Export]│
+└──────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>Shortcut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Connect</td>
+<td>Ctrl+N</td>
+<td>Open platform/target selection dialog</td>
+</tr>
+<tr>
+<td>Disconnect</td>
+<td>-</td>
+<td>Disconnect from current target</td>
+</tr>
+<tr>
+<td>Capture &amp; Analyze</td>
+<td>F5</td>
+<td>Capture screenshot and run full pipeline</td>
+</tr>
+<tr>
+<td>Re-Analyze</td>
+<td>F6</td>
+<td>Re-analyze current screenshot with new settings</td>
+</tr>
+<tr>
+<td>Open Image</td>
+<td>Ctrl+O</td>
+<td>Load screenshot from file (offline mode)</td>
+</tr>
+<tr>
+<td>Open DOM</td>
+<td>-</td>
+<td>Load existing DOM JSON (offline mode)</td>
+</tr>
+<tr>
+<td>Explore Mode</td>
+<td>-</td>
+<td>Toggle element selection mode</td>
+</tr>
+<tr>
+<td>Zoom +/-</td>
+<td>Ctrl++/-</td>
+<td>Zoom canvas</td>
+</tr>
+<tr>
+<td>Export</td>
+<td>Ctrl+E</td>
+<td>Export to Robot Framework</td>
+</tr>
+</tbody>
+</table>
+<h3 id="connect-dialog">Connect Dialog<a class="headerlink" href="#connect-dialog" title="Permanent link">¶</a></h3>
+<pre><code>┌────────────────────────────────────────────────────────────┐
+│                   Connect to Target                         │
+├────────────────────────────────────────────────────────────┤
+│ Platform                                                    │
+│ ┌────────────────────────────────────────────────────────┐ │
+│ │ [Windows ▼]                                             │ │
+│ │ Windows desktop applications                            │ │
+│ └────────────────────────────────────────────────────────┘ │
+│                                                             │
+│ Target Application                                          │
+│ ┌─────────────────────────────────────────┬──────────────┐ │
+│ │ Calculator                               │ [Refresh]    │ │
+│ │ Notepad                                  │              │ │
+│ │ Visual Studio Code                       │              │ │
+│ │ Chrome - Google                          │              │ │
+│ └─────────────────────────────────────────┴──────────────┘ │
+│                                                             │
+│ Target Information                                          │
+│ ┌────────────────────────────────────────────────────────┐ │
+│ │ Title: Calculator                                       │ │
+│ │ Process: Calculator.exe                                 │ │
+│ │ Size: 320 x 500                                         │ │
+│ └────────────────────────────────────────────────────────┘ │
+│                                                             │
+│                              [Connect]    [Cancel]          │
+└────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="status-bar">Status Bar<a class="headerlink" href="#status-bar" title="Permanent link">¶</a></h3>
+<pre><code>┌────────────────────────────────────────────────────────────────────┐
+│ Ready                                    │ Connected: Calculator │ │
+└────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<p>Shows:
+- Current operation status
+- Progress bar during analysis
+- Connection status</p>
+<h3 id="capture-process">Capture Process<a class="headerlink" href="#capture-process" title="Permanent link">¶</a></h3>
+<pre><code class="language-python">def _capture_and_analyze(self):
+    # 1. Hide viewer to not interfere
+    self.hide()
+    time.sleep(0.3)
+
+    # 2. Bring target window to front
+    for _ in range(3):  # Multiple attempts
+        handler.bring_to_front()
+        time.sleep(0.3)
+
+    # 3. Capture screenshot
+    screenshot = manager.capture_screenshot()
+
+    # 4. Restore viewer
+    self.show()
+    self.activateWindow()
+
+    # 5. Run full pipeline
+    pipeline = VisualDOMPipeline(...)
+    result = pipeline.process(screenshot)
+
+    hierarchy_builder = CoarseHierarchyBuilder()
+    hierarchy = hierarchy_builder.build(result["elements"])
+
+    compiler = DOMCompiler(generate_locators=True)
+    dom = compiler.compile(elements, hierarchy, image_size)
+
+    # 6. Display in viewer
+    self._model.set_dom_tree(DOMTree.from_dict(dom))
+</code></pre>
+<h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">¶</a></h2>
+<h3 id="positive">Positive<a class="headerlink" href="#positive" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Intuitive workflow</strong>: Linear flow matches user mental model</li>
+<li><strong>Single action capture</strong>: One click for screenshot + analysis</li>
+<li><strong>Connection management</strong>: Clear target selection</li>
+<li><strong>Offline support</strong>: Can still load images/DOM files manually</li>
+<li><strong>Progress feedback</strong>: Status bar shows what's happening</li>
+</ul>
+<h3 id="negative">Negative<a class="headerlink" href="#negative" title="Permanent link">¶</a></h3>
+<ul>
+<li><strong>Slower capture</strong>: Must minimize viewer and restore (adds ~1 second)</li>
+<li><strong>Window focus issues</strong>: Sometimes target doesn't come to front</li>
+<li><strong>No live mode</strong>: Must manually trigger each capture</li>
+</ul>
+<h3 id="neutral">Neutral<a class="headerlink" href="#neutral" title="Permanent link">¶</a></h3>
+<ul>
+<li>Keyboard shortcuts match common conventions</li>
+<li>Connection state persisted until disconnect</li>
+<li>Can switch between live capture and offline modes</li>
+</ul>
+<h2 id="alternatives-considered">Alternatives Considered<a class="headerlink" href="#alternatives-considered" title="Permanent link">¶</a></h2>
+<h3 id="1-separate-capture-and-analyze-buttons-rejected">1. Separate Capture and Analyze Buttons (Rejected)<a class="headerlink" href="#1-separate-capture-and-analyze-buttons-rejected" title="Permanent link">¶</a></h3>
+<p>Keep original two-step process.</p>
+<p>Rejected because:
+- Users found it confusing
+- Extra clicks for common workflow
+- No clear use case for capture-only</p>
+<h3 id="2-always-on-top-viewer-rejected">2. Always-On-Top Viewer (Rejected)<a class="headerlink" href="#2-always-on-top-viewer-rejected" title="Permanent link">¶</a></h3>
+<p>Keep viewer visible during capture.</p>
+<p>Rejected because:
+- Viewer often covers target window
+- Complicates screenshot (must exclude viewer)
+- Platform-specific behavior issues</p>
+<h3 id="3-transparent-overlay-mode-deferred">3. Transparent Overlay Mode (Deferred)<a class="headerlink" href="#3-transparent-overlay-mode-deferred" title="Permanent link">¶</a></h3>
+<p>Show translucent viewer overlay on target.</p>
+<p>Deferred because:
+- Complex to implement cross-platform
+- May interfere with user interactions
+- Can add as enhancement later</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">¶</a></h2>
+<ul>
+<li>PyQt5 documentation: https://www.riverbankcomputing.com/static/Docs/PyQt5/</li>
+<li>Source: <code>tools/visual_dom_viewer/ui/main_window.py</code></li>
+<li>Source: <code>tools/visual_dom_viewer/ui/connect_dialog.py</code></li>
+<li>Source: <code>tools/visual_dom_viewer/plugins/platform_manager.py</code></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../005-evaluation-framework/" class="btn btn-neutral float-left" title="005 Evaluation Framework"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../007-cv-pipeline-with-llm-refinement/" class="btn btn-neutral float-right" title="007 CV Pipeline with LLM Refinement">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://properdocs.org/">ProperDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../005-evaluation-framework/" style="color: #fcfcfc">« Previous</a></span>
+    
+    
+      <span><a href="../007-cv-pipeline-with-llm-refinement/" style="color: #fcfcfc">Next »</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+
+
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+</script></body></html>
