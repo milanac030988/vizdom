@@ -1461,6 +1461,17 @@ class VisualDOMViewerWindow(QMainWindow):
                             detector_kwargs["omniparser_root"] = op_root
                         detector_kwargs["icon_detect_path"] = icon_detect
                         detector_kwargs["icon_caption_path"] = icon_caption
+                        # Optional YOLO confidence cutoff override. Default 0.05
+                        # misses faint glyphs (e.g. a minimize "-" button) on some
+                        # captures; set OMNIPARSER_BOX_THRESHOLD=0.03 to recover them
+                        # (at a small false-positive cost).
+                        bt = os.environ.get("OMNIPARSER_BOX_THRESHOLD")
+                        if bt:
+                            try:
+                                detector_kwargs["box_threshold"] = float(bt)
+                                print(f"[Viewer] OmniParser box_threshold: {float(bt)}")
+                            except ValueError:
+                                print(f"[Viewer] Ignoring invalid OMNIPARSER_BOX_THRESHOLD={bt!r}")
                         print(f"[Viewer] OmniParser weights: {icon_detect}")
                     else:
                         print("[Viewer] Warning: OmniParser weights not found "

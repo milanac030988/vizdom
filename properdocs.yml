@@ -40,6 +40,7 @@ nav:
   - Home: index.md
   - Setup (uv): uv-setup.md
   - Configuration & Sessions: CONFIGURATION.md
+  - Using as a Client: USAGE.md
   - Architecture: architecture.md
   - CV Pipeline: PIPELINE.md
   - OmniParser Setup: omniparser-setup.md

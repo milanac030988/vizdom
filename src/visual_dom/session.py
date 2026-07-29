@@ -58,6 +58,10 @@ class Session:
                 detector_kwargs["icon_detect_path"] = det.omniparser_icon_detect_path
             if det.omniparser_icon_caption_path:
                 detector_kwargs["icon_caption_path"] = det.omniparser_icon_caption_path
+            detector_kwargs["box_threshold"] = det.omniparser_box_threshold
+        elif det.backend == "grpc":
+            # Detector runs as a remote gRPC service (ADR-017); point at it.
+            detector_kwargs["target"] = det.grpc_target
 
         return VisualDOMPipeline(
             # Stage 1 - OCR

@@ -306,6 +306,53 @@ Framework; (iii) \emph{kinh tế tái sử dụng} --- một lần phân tích p
 thay vì một tọa độ từ hộp đen. Do đó VizDOM coi các bộ phát hiện là backend hoán đổi
 được, dùng bộ phát hiện mạnh nhất hiện có trong khi đóng góp nằm ở các tầng phía trên.
 
+\subsection{Lợi ích của DOM sinh ra đối với kiểm thử GUI}
+\label{sec:dombenefits}
+Các phương pháp tự động hóa nêu trên đánh đổi trên cùng những trục;
+Bảng~\ref{tab:methods} so sánh chúng. Kịch bản dựa trên tọa độ và dựa trên ảnh không
+cần hỗ trợ nền tảng nhưng vỡ khi bố cục, giao diện hay độ phân giải thay đổi, và không
+mang ngữ nghĩa phần tử. Tự động hóa dựa trên \emph{cây trợ năng} (Appium, Selenium,
+UIAutomator) là chuẩn vàng \emph{khi có cây} --- nhưng cây đó vắng mặt đúng ở các
+canvas Qt/OpenGL tự vẽ, trò chơi, HMI nhúng, và mọi màn hình quan sát qua camera hay
+luồng video. \emph{Định vị bằng VLM theo từng chỉ dẫn} chạy được mà không cần cây
+nhưng trả về một tọa độ cho mỗi chỉ dẫn ngôn ngữ tự nhiên: không tất định, suy luận
+lại bằng một mô hình lớn cho mỗi hành động, và không tạo ra cấu trúc tái dùng được.
+
+DOM Trực quan sinh ra lấp đúng khoảng trống này: nó \emph{tổng hợp} một tạo tác giống
+cây trợ năng chỉ từ điểm ảnh, nên kiểm thử kiểu-cây trở nên khả dụng trên các GUI
+không có cây. Cụ thể điều này mang lại bốn thứ mà một bộ kiểm thử phụ thuộc vào.
+(i) \textbf{Tính phổ quát} --- nó hoạt động ở bất cứ đâu có điểm ảnh (tự vẽ, nhúng, từ
+xa, camera), chính là các trường hợp mà công cụ dựa trên trang bị đo không chạy được.
+(ii) \textbf{Bộ định vị ngữ nghĩa, bền vững} --- vai trò, văn bản, nhãn và quan hệ
+không gian thay cho tọa độ điểm ảnh mong manh, nên bài kiểm thử sống sót qua việc dời
+chỗ và đổi giao diện. (iii) \textbf{Một tạo tác tái dùng, kiểm tra được} --- một lần
+phân tích tạo ra một cây JSON truy vấn được, phục vụ nhiều bộ định vị và khẳng định,
+và có thể so sánh, ghi log, kiểm toán, khác với một lời gọi định vị theo từng bước.
+(iv) \textbf{Chi phí thấp và có chặn} --- tri giác chạy một lần mỗi màn hình (và có thể
+dùng backend CPU) thay vì gọi một mô hình lớn cho mỗi hành động. Cái giá là tri giác
+mang tính xấp xỉ: phát hiện và chú thích có thể sót hoặc gán nhãn sai phần tử (độ bao
+phủ theo loại ở Bảng~\ref{tab:pertype}), nên DOM là một tái dựng nỗ lực-tốt-nhất chứ
+không phải chân trị --- đó là lý do VizDOM giữ bộ phát hiện cắm-thay được và báo cáo độ
+bao phủ theo từng loại phần tử thay vì một điểm số tổng.
+
+\begin{table}[H]
+  \centering\footnotesize
+  \caption{Các phương pháp kiểm thử GUI đối chiếu với yêu cầu mà một bộ kiểm thử quan
+  tâm. ``M.phần'' = một phần.}
+  \label{tab:methods}
+  \begin{tabular}{@{}p{3.0cm}p{1.7cm}p{1.6cm}p{1.6cm}p{1.6cm}p{1.5cm}@{}}
+    \toprule
+    Phương pháp & Không cần cây trợ năng & Tự vẽ / camera & Cây có cấu trúc & Định vị bền vững & Tạo tác tái dùng \\
+    \midrule
+    Tọa độ / ghi--phát lại & Có & Có & Không & Không & M.phần \\
+    So khớp ảnh / mẫu & Có & Có & Không & Không & M.phần \\
+    Cây trợ năng (Appium/UIAutomator) & Không & Không & Có & Có & Có \\
+    Định vị VLM (mỗi chỉ dẫn) & Có & Có & Không & M.phần & Không \\
+    \textbf{VizDOM (DOM sinh ra)} & Có & Có & Có & Có & Có \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 % =====================================================================
 \section{Kiến trúc hệ thống}
 \label{sec:arch}

@@ -308,6 +308,54 @@ versus a coordinate from a black box. VizDOM therefore treats detectors as
 interchangeable backends, using the strongest available detector while the
 contribution sits in the layers above it.
 
+\subsection{Benefits of a generated DOM for GUI testing}
+\label{sec:dombenefits}
+The automation methodologies surveyed above trade off along the same axes;
+Table~\ref{tab:methods} contrasts them. Coordinate- and image-based scripts need no
+platform support but break on any layout, theme, or resolution change and carry no
+element semantics. \emph{Accessibility-tree} automation (Appium, Selenium,
+UIAutomator) is the gold standard \emph{when a tree exists} --- but it is exactly
+absent for custom-rendered Qt/OpenGL canvases, games, embedded HMIs, and any screen
+observed through a camera or video stream. \emph{Per-instruction VLM grounding}
+works without a tree but returns a single coordinate per natural-language
+instruction: it is non-deterministic, re-infers with a large model on every action,
+and produces no reusable structure.
+
+A generated Visual DOM occupies the gap: it \emph{synthesises} an
+accessibility-tree-like artifact from pixels alone, so tree-style testing becomes
+available on UIs that have no tree. Concretely this buys four things a test suite
+depends on. (i) \textbf{Universality} --- it works wherever there are pixels
+(custom-rendered, embedded, remote, camera), the very cases where
+instrumentation-based tools cannot run. (ii) \textbf{Semantic, resilient locators}
+--- roles, text, labels and spatial relations replace brittle pixel coordinates, so
+a test survives repositioning and restyling. (iii) \textbf{A reusable, inspectable
+artifact} --- one parse yields a queryable JSON tree that serves many locators and
+assertions and can be diffed, logged and audited, unlike a per-step grounding call.
+(iv) \textbf{Lower, bounded cost} --- perception runs once per screen (and can use a
+CPU backend) instead of invoking a large model per action. The price is that
+perception is approximate: detection and captioning can miss or mislabel elements
+(the per-type recall of Table~\ref{tab:pertype}), so the DOM is a best-effort
+reconstruction rather than ground truth --- which is why VizDOM keeps the detector
+pluggable and reports recall per element type rather than a single headline score.
+
+\begin{table}[H]
+  \centering\footnotesize
+  \caption{GUI-test methodologies against the requirements a test suite cares about.
+  ``Part.'' = partial.}
+  \label{tab:methods}
+  \begin{tabular}{@{}p{3.0cm}p{1.7cm}p{1.6cm}p{1.6cm}p{1.6cm}p{1.5cm}@{}}
+    \toprule
+    Methodology & Works w/o a11y tree & Custom / camera & Structured tree & Resilient locators & Reusable artifact \\
+    \midrule
+    Coordinate / record--replay & Yes & Yes & No & No & Part. \\
+    Image / template match & Yes & Yes & No & No & Part. \\
+    Accessibility tree (Appium/UIAutomator) & No & No & Yes & Yes & Yes \\
+    VLM grounding (per instruction) & Yes & Yes & No & Part. & No \\
+    \textbf{VizDOM (generated DOM)} & Yes & Yes & Yes & Yes & Yes \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 % =====================================================================
 \section{System Architecture}
 \label{sec:arch}
