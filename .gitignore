@@ -79,6 +79,10 @@ models/omniparser/
 *.pth
 *.onnx
 
+# Camera-augmented dataset (~580MB, reconstructable via scripts/data_prep/augment_camera.py).
+# Keep data/synthetic/ (the labelled benchmark) tracked.
+data/synthetic_camera/
+
 # LaTeX build artifacts (report/). Keep .tex, .bib, and figures/ tracked.
 report/*.aux
 report/*.log
