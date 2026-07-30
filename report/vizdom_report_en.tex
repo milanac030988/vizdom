@@ -556,6 +556,29 @@ role, visual type, interaction flags (clickable/editable/scrollable), an optiona
 text and label, and multiple \emph{locators} (by id, text, hint, role, and spatial
 relations).
 
+\subsection{Literal text, semantic labels, and symbol reading}
+Two refinements separate what is \emph{read} from what is \emph{inferred}. First,
+the DOM distinguishes \code{text} --- the literal pixel read (OCR) --- from
+\code{label} --- the element's semantic name, resolved with priority \emph{nearby
+associated label $>$ detector caption $>$ own text}. The distinction matters
+because caption models are predictions, not reads: two visually identical captures
+differing only by imperceptible re-encoding noise ($\leq$7/255 per channel) flipped
+an icon caption from ``Maximize'' to ``Page''. Keeping captions out of \code{text}
+makes locators depend only on what is actually on screen.
+
+Second, glyph-only controls (operator keys \code{+ - = $\times$ $\div$}, window
+controls) defeat both OCR and, previously, a rule-based symbol detector whose
+projection heuristics failed on real key glyphs and mistook a hollow maximize
+square for ``+''. The redesigned stage reads such glyphs by \emph{template
+matching}: the glyph is cropped to its own bounding box (scale-normalised),
+hollow outline shapes are rejected structurally, and the candidate is matched
+against font-rendered templates by Dice score with per-symbol acceptance
+thresholds. On a real calculator screenshot this reads 14 of 15 probed controls
+correctly (the remaining composite ``$\pm$'' glyph is safely rejected rather than
+misread), and its output feeds \code{text} --- a symbol is a literal read --- so an
+operator key is drivable as \code{text="+"} even when its caption is noise. The
+recognised set and strictness are configurable (\code{symbols} section).
+
 \subsection{Robot Framework Visual Automation Library}
 The second deliverable is a Robot Framework library \cite{robotframework} that acts
 as a thin orchestrator over the capture and actuator ports. Representative keywords:

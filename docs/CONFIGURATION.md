@@ -81,6 +81,7 @@ The template groups options by pipeline stage:
 | `refiner` | Stage 8 — SLM/VLM review | `enabled`, `backend`, `model`, `host` |
 | `merge` | **Stage 2.5 — Merge & Deduplicate** | `nms_iou_threshold`, `cross_type_iou`, `duplicate_tolerance_px`, `merge_oversegmented`, `group_fill_ratio_min` |
 | `hierarchy` | **Stage 3 — Hierarchy Building** | `containment_threshold`, `min_containment_margin`, `use_llm`, `llm_model` |
+| `symbols` | Stage 4c — glyph/operator reading (`+ − = × ÷ …`) | `enabled`, `min_score` (null = calibrated ~0.70; raise = stricter, lower = recover faint glyphs) |
 | `filter` | size / count filters | `min_element_area`, `min_element_size`, `max_elements` |
 | `capture` | acquisition (ADR-018) | `strategy`, `target`, `camera_mode` |
 | `output` | DOM compilation | `generate_locators` |

@@ -43,6 +43,7 @@ nav:
   - Using as a Client: USAGE.md
   - Architecture: architecture.md
   - CV Pipeline: PIPELINE.md
+  - Algorithms & Improvements: IMPROVEMENTS.md
   - OmniParser Setup: omniparser-setup.md
   - Evaluation: EVALUATION.md
   - Data Annotation: annotation_workflow.md

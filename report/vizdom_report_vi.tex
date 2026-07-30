@@ -583,6 +583,30 @@ role, visual type, interaction flag (clickable/editable/scrollable), text và la
 tùy chọn, cùng nhiều \emph{locator} (theo id, text, hint, role và quan hệ không
 gian).
 
+\subsection{Văn bản đọc được, nhãn ngữ nghĩa, và đọc ký hiệu}
+Hai cải tiến tách bạch cái được \emph{đọc} khỏi cái được \emph{suy đoán}. Thứ nhất,
+DOM phân biệt \code{text} --- giá trị đọc trực tiếp từ điểm ảnh (OCR) --- với
+\code{label} --- tên ngữ nghĩa của phần tử, được phân giải theo ưu tiên \emph{nhãn
+kế bên $>$ chú thích của bộ phát hiện $>$ văn bản của chính nó}. Sự phân biệt này
+quan trọng vì mô hình chú thích là dự đoán chứ không phải phép đọc: hai ảnh chụp
+giống hệt nhau về thị giác, chỉ khác nhiễu tái mã hóa không nhận thấy được
+($\leq$7/255 mỗi kênh), đã làm chú thích một biểu tượng lật từ ``Maximize'' sang
+``Page''. Giữ chú thích ngoài \code{text} khiến bộ định vị chỉ phụ thuộc vào những
+gì thật sự có trên màn hình.
+
+Thứ hai, các điều khiển chỉ-có-glyph (phím toán tử \code{+ - = $\times$ $\div$},
+nút cửa sổ) đánh bại cả OCR lẫn bộ phát hiện ký hiệu dựa trên luật trước đây, vốn
+thất bại trên các glyph phím thực và nhầm hình vuông rỗng của nút phóng to thành
+``+''. Tầng được thiết kế lại đọc các glyph như vậy bằng \emph{so khớp mẫu}: glyph
+được cắt về đúng khung bao của nó (chuẩn hóa tỉ lệ), các hình viền rỗng bị loại về
+mặt cấu trúc, và ứng viên được so với các mẫu kết xuất từ phông chữ bằng điểm Dice
+với ngưỡng chấp nhận theo từng ký hiệu. Trên một ảnh chụp máy tính bỏ túi thực,
+tầng này đọc đúng 14/15 điều khiển được thăm dò (glyph ghép ``$\pm$'' còn lại được
+từ chối an toàn thay vì đọc sai), và kết quả được đưa vào \code{text} --- một ký
+hiệu là một phép đọc trực tiếp --- nên một phím toán tử điều khiển được bằng
+\code{text="+"} ngay cả khi chú thích của nó là nhiễu. Tập ký hiệu nhận dạng và độ
+nghiêm ngặt cấu hình được (mục \code{symbols}).
+
 \subsection{Thư viện Visual Automation cho Robot Framework}
 Deliverable thứ hai là thư viện Robot Framework \cite{robotframework}, hoạt động
 như một orchestrator mỏng phía trên các port capture và actuator. Một số keyword
