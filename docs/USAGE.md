@@ -59,14 +59,40 @@ launchers wrap these (and set `PYTHONPATH`). The detector server also accepts
 
 Prerequisite (once): `pip install grpcio grpcio-tools`.
 
-### Start the detector service (GPU host)
+### Starting the services
+
+Start only the ones you need (see the note at the top). Each is a single command
+that runs until you stop it with `Ctrl-C`; give each its own terminal. On Windows the
+`start_*.bat` wrappers do the same and set `PYTHONPATH` for you.
+
+**Detector** — loads the model once and serves many clients (run it on the GPU host):
 
 ```bash
-python -m visual_dom.rpc.detector_server \
-    --backend omniparser --port 50051 \
+python -m visual_dom.rpc.detector_server --backend omniparser --port 50051 \
     --icon-detect  models/omniparser/icon_detect/model.pt \
     --icon-caption models/omniparser/icon_caption_florence
+# Windows:  start_detector.bat --backend omniparser
+# backends: omniparser | yolo (--yolo-model <path>) | uied (CPU, no weights)
 ```
+
+**Capture** — grabs the screen on the device under test:
+
+```bash
+python -m visual_dom.rpc.capture_server --strategy windows --port 50053
+# strategies: windows | linux | android (--serial <device>) | camera
+# Windows:  start_capture.bat --strategy windows
+```
+
+**Actuator** — clicks / types on the device, or drives a robot arm:
+
+```bash
+python -m visual_dom.rpc.actuator_server --strategy desktop --port 50054
+# strategies: desktop | android (--serial <device>) | <your plugin>
+# Windows:  start_actuator.bat --strategy desktop
+```
+
+Each server logs a `HealthCheck` line when it is ready. Leave them running, then
+start a client (below) pointed at their `host:port`.
 
 ### Python client — DOM via the remote detector
 
@@ -140,3 +166,23 @@ Locate elements by **role/text/spatial** rather than pixel coordinates — e.g.
 > **Tip.** For icon-only controls whose caption can be unreliable (a bare `□`
 > maximize glyph, small toolbar icons), prefer `role=button` + a spatial relation
 > over `text=`, since the visual caption is a best-effort hint, not a stable id.
+
+### Runnable end-to-end demo (Windows)
+
+A complete example — **start the detector service → configure a session → run a
+Robot Framework test** that drives the Windows Calculator from its Visual DOM — is in
+[`examples/windows_calculator_demo/`](https://github.com/milanac030988/vizdom/tree/main/examples/windows_calculator_demo)
+(`README.md` + `vizdom.config.json` + `calculator_demo.robot`). In short:
+
+```bat
+:: Terminal 1 — start the detector service (warm model on :50051)
+start_detector.bat --backend omniparser
+
+:: Terminal 2 — run the test
+set PYTHONPATH=%CD%\src
+robot examples\windows_calculator_demo\calculator_demo.robot
+```
+
+The test launches `calc.exe`, `Connect`s the config, `Dump Visual DOM`, then clicks
+`7`, `+`, `5`, `=` and asserts `12`. A no-service variant (detector in-process) is
+documented in the example's README.
