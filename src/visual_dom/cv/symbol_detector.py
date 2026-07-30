@@ -61,9 +61,127 @@ def _extract_symbol_strokes(gray: np.ndarray) -> Optional[np.ndarray]:
     return candidates[0][0]
 
 
+def _tighten_to_glyph(binary: np.ndarray) -> Optional[Tuple[np.ndarray, float]]:
+    """
+    Crop a binary stroke image to the glyph's own bounding box.
+
+    A key/button crop is mostly background, so projection analysis on it is
+    scale-dependent and unreliable (the root cause of both missed operators and
+    the hollow-square -> "+" false positive). Analysing the tight glyph bbox
+    normalises scale.
+
+    Returns:
+        (tight binary crop, glyph_area / full_area) or None if no glyph found.
+    """
+    ys, xs = np.where(binary > 0)
+    if len(xs) < 4:
+        return None
+    x1, x2 = xs.min(), xs.max() + 1
+    y1, y2 = ys.min(), ys.max() + 1
+    if (x2 - x1) < 3 or (y2 - y1) < 2:
+        return None
+    tight = binary[y1:y2, x1:x2]
+    area_ratio = float(len(xs)) / binary.size
+    return tight, area_ratio
+
+
+# --------------------------------------------------------------------------- #
+# Template matching
+#
+# Hand-tuned projection rules are fragile at real glyph sizes (8-20 px): a "-"
+# binarises to a chunky 17x9 blob, "=" bars fill most of their tight bbox, and
+# thresholds tuned for one shape break another. Instead we render each candidate
+# symbol with real fonts, normalise both glyph and template to a canonical
+# binary patch, and score with the Dice coefficient. Scale-invariant, easy to
+# extend (add a char to _SYMBOLS), and anti-aliasing tolerant.
+# --------------------------------------------------------------------------- #
+
+# (render string, reported symbol). Multi-char renders cover composite glyphs:
+# e.g. the Windows Calculator plus/minus key draws "+/-", not the font's "±".
+_SYMBOLS = [
+    ("+", "+"), ("-", "-"), ("=", "="), ("×", "×"), ("÷", "÷"),
+    ("±", "±"), ("+/-", "±"), (".", "."), ("%", "%"),
+]
+# Per-symbol Dice acceptance (default 0.70). "=" varies with bar spacing across
+# fonts; the "+/-" composite is an approximation of the real key glyph.
+_MIN_SCORE = {"=": 0.60, "±": 0.55}
+_DEFAULT_MIN_SCORE = 0.70
+_CANON = 32                   # canonical patch size
+_TEMPLATE_CACHE: Optional[list] = None
+
+
+def _canonicalize(binary: np.ndarray) -> np.ndarray:
+    """Resize a tight binary glyph onto a CANONxCANON patch, preserving aspect."""
+    h, w = binary.shape
+    scale = (_CANON - 2) / max(h, w)
+    nh, nw = max(1, int(round(h * scale))), max(1, int(round(w * scale)))
+    resized = cv2.resize(binary, (nw, nh), interpolation=cv2.INTER_AREA)
+    patch = np.zeros((_CANON, _CANON), dtype=np.uint8)
+    y0, x0 = (_CANON - nh) // 2, (_CANON - nw) // 2
+    patch[y0:y0 + nh, x0:x0 + nw] = (resized > 127).astype(np.uint8) * 255
+    return patch
+
+
+def _build_templates() -> list:
+    """Render each symbol in a few fonts -> list of (symbol, canonical patch)."""
+    from PIL import Image, ImageDraw, ImageFont
+
+    font_paths = [
+        "C:/Windows/Fonts/segoeui.ttf",
+        "C:/Windows/Fonts/arial.ttf",
+        "C:/Windows/Fonts/seguisym.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    ]
+    templates = []
+    for path in font_paths:
+        try:
+            font = ImageFont.truetype(path, 64)
+        except OSError:
+            continue
+        for render, sym in _SYMBOLS:
+            img = Image.new("L", (192, 128), 0)
+            draw = ImageDraw.Draw(img)
+            draw.text((96, 64), render, fill=255, font=font, anchor="mm")
+            arr = np.array(img)
+            tight = _tighten_to_glyph((arr > 127).astype(np.uint8) * 255)
+            if tight is None:
+                continue
+            templates.append((sym, _canonicalize(tight[0])))
+
+        # Composite plus/minus as drawn on calculator keys: a small "+" top-left,
+        # a "/" through the middle, a small "-" bottom-right (diagonal layout —
+        # no font string renders this arrangement).
+        try:
+            small = ImageFont.truetype(path, 40)
+            img = Image.new("L", (128, 128), 0)
+            draw = ImageDraw.Draw(img)
+            draw.text((30, 26), "+", fill=255, font=small, anchor="mm")
+            draw.text((64, 64), "/", fill=255, font=font, anchor="mm")
+            draw.text((98, 102), "-", fill=255, font=small, anchor="mm")
+            tight = _tighten_to_glyph((np.array(img) > 127).astype(np.uint8) * 255)
+            if tight is not None:
+                templates.append(("±", _canonicalize(tight[0])))
+        except OSError:
+            pass
+    return templates
+
+
+def _dice(a: np.ndarray, b: np.ndarray) -> float:
+    """Dice coefficient of two binary patches (1.0 = identical)."""
+    fa, fb = a > 0, b > 0
+    inter = np.logical_and(fa, fb).sum()
+    denom = fa.sum() + fb.sum()
+    return 2.0 * inter / denom if denom else 0.0
+
+
 def detect_symbol(image: np.ndarray, bbox: Tuple[int, int, int, int]) -> Optional[str]:
     """
     Detect a common UI symbol in the given region.
+
+    Recognises the arithmetic/UI glyphs in ``_SYMBOLS`` (+ - = × ÷ ± . %) by
+    template-matching the glyph's tight bounding box against font-rendered
+    templates (Dice score). Hollow outline shapes (a window-maximize square, a
+    checkbox frame) are rejected before matching.
 
     Args:
         image: BGR image (full screenshot)
@@ -72,9 +190,10 @@ def detect_symbol(image: np.ndarray, bbox: Tuple[int, int, int, int]) -> Optiona
     Returns:
         Detected symbol string (e.g., "+", "-", "=") or None
     """
+    global _TEMPLATE_CACHE
+
     x1, y1, x2, y2 = bbox
     region = image[y1:y2, x1:x2]
-
     if region.size == 0:
         return None
 
@@ -82,118 +201,69 @@ def detect_symbol(image: np.ndarray, bbox: Tuple[int, int, int, int]) -> Optiona
     if w < 8 or h < 8:
         return None
 
-    # Convert to grayscale
-    if len(region.shape) == 3:
-        gray = cv2.cvtColor(region, cv2.COLOR_BGR2GRAY)
-    else:
-        gray = region
+    gray = cv2.cvtColor(region, cv2.COLOR_BGR2GRAY) if region.ndim == 3 else region
 
-    # Strategy: try multiple binarization methods and pick the best
-    center = _extract_symbol_strokes(gray)
+    # Small anti-aliased glyphs binarise badly at native size (a title-bar dash
+    # can survive as ~10 stray pixels); upscale first so strokes are solid.
+    if min(h, w) < 48:
+        f = int(np.ceil(64.0 / min(h, w)))
+        gray = cv2.resize(gray, (w * f, h * f), interpolation=cv2.INTER_CUBIC)
 
-    if center is None:
+    strokes = _extract_symbol_strokes(gray)
+    if strokes is None:
+        return None
+    density = np.sum(strokes > 0) / strokes.size
+    if density < 0.005 or density > 0.6:
         return None
 
-    ch, cw = center.shape
+    tightened = _tighten_to_glyph(strokes)
+    if tightened is None:
+        return None
+    glyph, _ = tightened
+    gh, gw = glyph.shape
 
-    # Compute stroke density
-    fg_pixels = np.sum(center > 0)
-    total_pixels = ch * cw
-    density = fg_pixels / total_pixels if total_pixels > 0 else 0
+    # A single thin solid bar is a minus/dash — classify directly, since a
+    # 20x2 bar canonicalises poorly against thick font hyphens (e.g. the
+    # title-bar minimize dash).
+    fill = np.sum(glyph > 0) / glyph.size
+    if gw / max(1, gh) >= 4.0 and fill >= 0.6:
+        return "-"
 
-    # Too little or too much foreground — not a clean symbol
-    if density < 0.01 or density > 0.55:
+    if gh < 6 or gw < 6:  # too small to classify reliably (post-upscale)
         return None
 
-    # Analyze horizontal and vertical projections
-    h_proj = np.sum(center > 0, axis=1)  # sum each row
-    v_proj = np.sum(center > 0, axis=0)  # sum each column
+    # Reject hollow outline shapes (maximize square, checkbox frame): strong
+    # strokes only along the bbox edges and an empty centre.
+    h_norm = np.sum(glyph > 0, axis=1) / gw
+    v_norm = np.sum(glyph > 0, axis=0) / gh
+    h_segments = _count_segments(h_norm > 0.55)
+    v_segments = _count_segments(v_norm > 0.55)
+    cy0, cy1 = gh // 2 - max(1, gh // 6), gh // 2 + max(1, gh // 6) + 1
+    cx0, cx1 = gw // 2 - max(1, gw // 6), gw // 2 + max(1, gw // 6) + 1
+    center_fill = np.sum(glyph[max(0, cy0):cy1, max(0, cx0):cx1] > 0) / \
+        max(1, (cy1 - max(0, cy0)) * (cx1 - max(0, cx0)))
+    if h_segments >= 2 and v_segments >= 2 and center_fill < 0.2:
+        return None
 
-    # Normalize projections
-    h_norm = h_proj / cw if cw > 0 else h_proj
-    v_norm = v_proj / ch if ch > 0 else v_proj
+    if _TEMPLATE_CACHE is None:
+        _TEMPLATE_CACHE = _build_templates()
+    if not _TEMPLATE_CACHE:
+        return None
 
-    # Use two thresholds:
-    # "strong" = thick stroke (>50% of row/col filled)
-    # "weak"   = thin stroke or spread (>10% filled)
-    h_strong = h_norm > 0.5
-    v_strong = v_norm > 0.5
-    h_weak = h_norm > 0.08
-    v_weak = v_norm > 0.08
+    patch = _canonicalize(glyph)
+    scores: dict = {}
+    for sym, tmpl in _TEMPLATE_CACHE:
+        s = _dice(patch, tmpl)
+        if s > scores.get(sym, 0.0):
+            scores[sym] = s
 
-    h_strong_count = int(np.sum(h_strong))
-    v_strong_count = int(np.sum(v_strong))
-    h_weak_count = int(np.sum(h_weak))
-    v_weak_count = int(np.sum(v_weak))
+    ranked = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)
+    best_sym, best = ranked[0]
+    runner = ranked[1][1] if len(ranked) > 1 else 0.0
 
-    # Count contiguous strong stroke segments
-    h_strong_segments = _count_segments(h_strong)
-    v_strong_segments = _count_segments(v_strong)
-
-    # Check if there's a clear peak in horizontal projection (a horizontal line)
-    has_h_peak = h_strong_count >= 1
-    # Check if there's a clear peak in vertical projection (a vertical line)
-    has_v_peak = v_strong_count >= 1
-
-    # Pattern matching
-
-    # PLUS "+" — has both a horizontal and vertical strong stroke
-    if has_h_peak and has_v_peak:
-        # Verify they cross near center
-        h_peak_rows = np.where(h_strong)[0]
-        v_peak_cols = np.where(v_strong)[0]
-        h_center = np.mean(h_peak_rows) / ch
-        v_center = np.mean(v_peak_cols) / cw
-        if 0.2 < h_center < 0.8 and 0.2 < v_center < 0.8:
-            return "+"
-
-    # EQUALS "=" — two separate horizontal strokes, no vertical stroke
-    if h_strong_segments == 2 and not has_v_peak:
-        return "="
-
-    # MINUS "-" — one horizontal stroke, no vertical stroke
-    if h_strong_segments == 1 and not has_v_peak:
-        # Verify it's centered vertically
-        h_peak_rows = np.where(h_strong)[0]
-        if len(h_peak_rows) > 0:
-            center_ratio = np.mean(h_peak_rows) / ch
-            if 0.25 < center_ratio < 0.75:
-                return "-"
-
-    # MULTIPLY "×" — no clear h/v peaks, but diagonal strokes
-    if not has_h_peak and not has_v_peak and density > 0.05:
-        diag_score = _check_diagonal(center)
-        if diag_score > 0.4:
-            return "×"
-
-    # Also check × with broad h/v coverage but no strong peaks
-    if h_weak_count > ch * 0.5 and v_weak_count > cw * 0.5 and not has_h_peak:
-        diag_score = _check_diagonal(center)
-        if diag_score > 0.3:
-            return "×"
-
-    # DIVIDE "÷" — horizontal line with dots above and below
-    if has_h_peak and h_strong_segments == 1:
-        # Check for dots above and below the line
-        h_peak_rows = np.where(h_strong)[0]
-        line_center = int(np.mean(h_peak_rows))
-        above = center[:max(1, line_center - 2), :]
-        below = center[min(ch - 1, line_center + 3):, :]
-        above_density = np.sum(above > 0) / max(above.size, 1)
-        below_density = np.sum(below > 0) / max(below.size, 1)
-        if above_density > 0.02 and below_density > 0.02:
-            # Has stuff both above and below the line
-            # Check the stuff is dot-like (small clusters)
-            if above_density < 0.2 and below_density < 0.2:
-                return "÷"
-
-    # DOT "." — very small cluster near bottom
-    if density < 0.1 and h_weak_count < ch * 0.3 and v_weak_count < cw * 0.3:
-        bottom_half = center[ch // 2:, :]
-        top_half = center[:ch // 2, :]
-        if np.sum(bottom_half > 0) > np.sum(top_half > 0) * 2:
-            return "."
-
+    # Accept only a confident, unambiguous match (per-symbol thresholds).
+    if best >= _MIN_SCORE.get(best_sym, _DEFAULT_MIN_SCORE) and (best - runner) >= 0.03:
+        return best_sym
     return None
 
 

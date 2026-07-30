@@ -819,12 +819,13 @@ class VisualDOMPipeline:
             if elem.ocr_text:
                 continue
 
-            # Skip elements that already carry a semantic caption/label (e.g.
-            # OmniParser icons): their meaning is known, so glyph-guessing would
-            # only risk a misfire (a square -> "+") and pollute `text`, which must
-            # stay the literal OCR-read value (empty for a caption-only glyph).
-            if elem.label:
-                continue
+            # Captioned glyph elements (e.g. OmniParser icons) DO get symbol
+            # detection: the symbol is a literal pixel read, so it belongs in
+            # `text`, while the caption stays in `label`. This recovers correct
+            # text on operator keys whose captions are look-alike noise (a "-"
+            # key captioned "Minimize", a "+" key captioned "Add"). Safe now
+            # that the detector is template-matched with a confidence gate and
+            # rejects hollow shapes (the old square -> "+" misfire).
 
             # Only check button-sized elements (not blocks or tiny elements)
             if elem.area < self._scaled_area(200) or elem.area > self._scaled_area(40000):

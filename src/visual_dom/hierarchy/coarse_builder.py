@@ -217,6 +217,14 @@ class CoarseHierarchyBuilder:
                 text=text,
                 confidence=elem.get("confidence", 0.0),
             )
+            # Seed the semantic label from the detection stage (e.g. an
+            # OmniParser icon caption like "Minimize"). Without this the
+            # own-text fallback overwrites it with the literal glyph read
+            # ("-", "×") and step 3c propagates that back over the caption.
+            # Priority stays: associated nearby label > caption > own text.
+            existing_label = elem.get("label")
+            if existing_label:
+                node.label = existing_label
             nodes.append(node)
         return nodes
 
