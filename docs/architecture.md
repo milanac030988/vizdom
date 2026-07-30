@@ -42,3 +42,26 @@ ports that can each run in-process or as a remote gRPC service.
 ```plantuml
 !include diagrams/architecture.puml
 ```
+
+### Microservice-oriented ports
+
+The ports are first-class **service boundaries**, not just internal seams. Each of
+**detector**, **capture**, and **actuator** has a versioned protobuf contract
+(`protos/*.proto`) and a standalone gRPC server (`python -m visual_dom.rpc.*_server`),
+so any port can be deployed, scaled, and upgraded as an independent microservice.
+That orientation buys the microservice benefits exactly where this problem needs them:
+
+- **Independent scaling** — one warm-GPU *detector* service serves many thin clients
+  instead of every client loading a heavy model.
+- **Heterogeneous placement** — capture on the device, detection on a GPU host,
+  actuation at the SUT or a robot-arm controller.
+- **Fault & resource isolation** — a busy or crashed detector doesn't stall capture.
+- **Polyglot substitution** — a service can be reimplemented in any language behind
+  the same contract.
+
+It is microservice-oriented **by construction** — the boundaries are designed in, not
+retrofitted — yet the same services **collapse into one process** when co-location is
+enough (gRPC is a transport, not a requirement). So distribution is adopted
+incrementally: a local run pays no network or server-lifecycle cost, and going
+distributed needs no code change, only a different strategy name + target. See the
+per-service ports and start commands in [Using as a Client](USAGE.md#2-distributed-via-grpc).
