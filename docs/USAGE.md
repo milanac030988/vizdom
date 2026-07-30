@@ -9,6 +9,22 @@ locators, hierarchy). There are three ways to consume it, all reading the same
    actuator) as services and call them from a thin client, possibly on another host.
 3. **Robot Framework** — the `VisualGuiLibrary` keyword library for test suites.
 
+!!! note "Do I need to start any services first?"
+    **Not for a local, single-machine run.** In-process Python (`connect()`) and the
+    Robot Framework library run the detector, capture, and actuator *inside your
+    process* — nothing to launch. Start the gRPC services (§2) **only** to split work
+    across machines or share one warm model. Rule of thumb:
+
+    - share / offload the **detector** (the heavy model) → run the *detector* service;
+    - capture the screen on a **different device** → run the *capture* service;
+    - click / type on a **different device or a robot arm** → run the *actuator* service.
+
+    Then point your client at each one **through the config file**
+    (`detector.backend: "grpc"` + `grpc_target`) or the Robot Framework
+    `capture=grpc` / `actuator=grpc` arguments (shown below). All configuration
+    lives in one JSON file — see **[Configuration & Sessions](CONFIGURATION.md)** for
+    how to generate, edit, and load it.
+
 ## 1. In-process Python
 
 ```python
