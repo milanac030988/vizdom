@@ -117,6 +117,8 @@ class VisualDOMPipeline:
         duplicate_tolerance_px: int = 5,
         group_fill_ratio_min: float = 0.5,
         hierarchy_containment_threshold: float = 0.7,
+        detect_symbols: bool = True,
+        symbol_min_score: float = None,
     ):
         """
         Initialize CV pipeline.
@@ -151,6 +153,9 @@ class VisualDOMPipeline:
         self._group_fill_ratio_min = group_fill_ratio_min
         # Stage 3 (hierarchy) containment threshold for the in-pipeline pass.
         self._hierarchy_containment_threshold = hierarchy_containment_threshold
+        # Stage 4c (symbol reading) tunables.
+        self._detect_symbols_enabled = detect_symbols
+        self._symbol_min_score = symbol_min_score
         self.detector_mode = detector
         self.confidence_threshold = confidence_threshold
         self.iou_threshold = iou_threshold
@@ -812,6 +817,8 @@ class VisualDOMPipeline:
         Detect common UI symbols (+, -, =, ×, ÷) in elements that
         have no OCR text. OCR often misses small single-character symbols.
         """
+        if not self._detect_symbols_enabled:
+            return elements
         symbol_count = 0
 
         for elem in elements:
@@ -831,7 +838,7 @@ class VisualDOMPipeline:
             if elem.area < self._scaled_area(200) or elem.area > self._scaled_area(40000):
                 continue
 
-            symbol = detect_symbol(image, elem.bounds)
+            symbol = detect_symbol(image, elem.bounds, min_score=self._symbol_min_score)
             if symbol:
                 elem.ocr_text = symbol
                 symbol_count += 1

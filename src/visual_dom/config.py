@@ -102,6 +102,15 @@ class HierarchyConfig:
 
 
 @dataclass
+class SymbolConfig:
+    """Stage 4c - symbol reading on glyph-only elements (template matching)."""
+    enabled: bool = True
+    # Dice acceptance threshold override (null = calibrated defaults, ~0.70).
+    # Raise for fewer false positives, lower to recover faint glyphs.
+    min_score: Optional[float] = None
+
+
+@dataclass
 class FilterConfig:
     """Size / count filters (resolution-aware, referenced to 1080p)."""
     min_element_area: int = 100
@@ -140,6 +149,7 @@ class VizDomConfig:
     refiner: RefinerConfig = field(default_factory=RefinerConfig)
     merge: MergeConfig = field(default_factory=MergeConfig)
     hierarchy: HierarchyConfig = field(default_factory=HierarchyConfig)
+    symbols: SymbolConfig = field(default_factory=SymbolConfig)
     filter: FilterConfig = field(default_factory=FilterConfig)
     capture: CaptureConfig = field(default_factory=CaptureConfig)
     output: OutputConfig = field(default_factory=OutputConfig)
@@ -254,6 +264,8 @@ _FIELD_HELP: Dict[str, str] = {
     "merge.merge_oversegmented": "fuse split multi-line labels/buttons back together",
     "hierarchy": "Stage 3 - Hierarchy Building (containment tree)",
     "hierarchy.containment_threshold": "fraction of a child's area that must sit inside its parent",
+    "symbols": "Stage 4c - glyph/operator reading (+ - = x / etc.) via template matching",
+    "symbols.min_score": "null = calibrated defaults (~0.70 Dice); raise = stricter, lower = recover faint glyphs",
     "filter": "resolution-aware size/count filters (referenced to 1080p)",
     "capture": "how screens are acquired (RF client layer, ADR-018)",
     "capture.strategy": "null=auto | windows | linux | android | camera | grpc | <plugin>",

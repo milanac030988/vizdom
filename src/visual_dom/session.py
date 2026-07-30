@@ -82,6 +82,9 @@ class Session:
             group_fill_ratio_min=cfg.merge.group_fill_ratio_min,
             # Stage 3 - hierarchy (in-pipeline pass)
             hierarchy_containment_threshold=cfg.hierarchy.containment_threshold,
+            # Stage 4c - symbol reading
+            detect_symbols=cfg.symbols.enabled,
+            symbol_min_score=cfg.symbols.min_score,
             # filters
             min_element_area=cfg.filter.min_element_area,
             min_element_size=cfg.filter.min_element_size,

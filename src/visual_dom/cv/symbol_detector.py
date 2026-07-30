@@ -174,7 +174,11 @@ def _dice(a: np.ndarray, b: np.ndarray) -> float:
     return 2.0 * inter / denom if denom else 0.0
 
 
-def detect_symbol(image: np.ndarray, bbox: Tuple[int, int, int, int]) -> Optional[str]:
+def detect_symbol(
+    image: np.ndarray,
+    bbox: Tuple[int, int, int, int],
+    min_score: Optional[float] = None,
+) -> Optional[str]:
     """
     Detect a common UI symbol in the given region.
 
@@ -186,6 +190,10 @@ def detect_symbol(image: np.ndarray, bbox: Tuple[int, int, int, int]) -> Optiona
     Args:
         image: BGR image (full screenshot)
         bbox: Region to analyze (x1, y1, x2, y2)
+        min_score: Override for the default Dice acceptance threshold (0.70).
+            Per-symbol calibrated thresholds still apply, but are raised to at
+            least this value; i.e. raising it makes everything stricter,
+            lowering it only loosens default-tier symbols.
 
     Returns:
         Detected symbol string (e.g., "+", "-", "=") or None
@@ -262,7 +270,11 @@ def detect_symbol(image: np.ndarray, bbox: Tuple[int, int, int, int]) -> Optiona
     runner = ranked[1][1] if len(ranked) > 1 else 0.0
 
     # Accept only a confident, unambiguous match (per-symbol thresholds).
-    if best >= _MIN_SCORE.get(best_sym, _DEFAULT_MIN_SCORE) and (best - runner) >= 0.03:
+    default_thr = min_score if min_score is not None else _DEFAULT_MIN_SCORE
+    thr = _MIN_SCORE.get(best_sym, default_thr)
+    if min_score is not None:
+        thr = max(thr, min_score)
+    if best >= thr and (best - runner) >= 0.03:
         return best_sym
     return None
 
