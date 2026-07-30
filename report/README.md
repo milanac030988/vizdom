@@ -4,10 +4,10 @@ Paper-format project report (general academic report structure), bilingual.
 
 | File | Language | Style |
 |------|----------|-------|
-| `main_en.tex` | English | General academic report (~15-25 pp) |
-| `main_vi.tex` | Vietnamese | General academic report (~15-25 pp) |
-| `arc42_en.tex` | English | arc42 architecture doc, 12 sections (~27 pp) |
-| `arc42_vi.tex` | Vietnamese | arc42 architecture doc, 12 sections (~27 pp) |
+| `vizdom_report_en.tex` | English | General academic report (~15-25 pp) |
+| `vizdom_report_vi.tex` | Vietnamese | General academic report (~15-25 pp) |
+| `vizdom_architecture_en.tex` | English | arc42 architecture doc, 12 sections (~27 pp) |
+| `vizdom_architecture_vi.tex` | Vietnamese | arc42 architecture doc, 12 sections (~27 pp) |
 | `references.bib` | shared bibliography | |
 | `figures/*.png` | diagrams rendered from `docs/diagrams/*.puml` | |
 
@@ -27,28 +27,35 @@ Latin Modern fonts, no extra font install):
 
 ```bash
 cd report
-# English
-xelatex main_en.tex && bibtex main_en && xelatex main_en.tex && xelatex main_en.tex
-# Vietnamese
-xelatex main_vi.tex && bibtex main_vi && xelatex main_vi.tex && xelatex main_vi.tex
-# arc42 architecture document (EN + VI)
-xelatex arc42_en.tex && bibtex arc42_en && xelatex arc42_en.tex && xelatex arc42_en.tex
-xelatex arc42_vi.tex && bibtex arc42_vi && xelatex arc42_vi.tex && xelatex arc42_vi.tex
+# General report (EN + VI)
+xelatex vizdom_report_en.tex && bibtex vizdom_report_en && xelatex vizdom_report_en.tex && xelatex vizdom_report_en.tex
+xelatex vizdom_report_vi.tex && bibtex vizdom_report_vi && xelatex vizdom_report_vi.tex && xelatex vizdom_report_vi.tex
+# Architecture document (arc42; EN + VI)
+xelatex vizdom_architecture_en.tex && bibtex vizdom_architecture_en && xelatex vizdom_architecture_en.tex && xelatex vizdom_architecture_en.tex
+xelatex vizdom_architecture_vi.tex && bibtex vizdom_architecture_vi && xelatex vizdom_architecture_vi.tex && xelatex vizdom_architecture_vi.tex
 ```
 
 Or with latexmk (a `latexmkrc` here already defaults to XeLaTeX):
 
 ```bash
-latexmk -xelatex main_en.tex
-latexmk -xelatex main_vi.tex
-latexmk -xelatex arc42_en.tex
+latexmk -xelatex vizdom_report_en.tex
+latexmk -xelatex vizdom_report_vi.tex
+latexmk -xelatex vizdom_architecture_en.tex
+latexmk -xelatex vizdom_architecture_vi.tex
 ```
 
-Or build all three at once (Windows / PowerShell):
+Or build all four at once (Windows):
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File build.ps1        # all three
-powershell -ExecutionPolicy Bypass -File build.ps1 main_en # just one
+# PowerShell
+powershell -ExecutionPolicy Bypass -File build.ps1                    # all four
+powershell -ExecutionPolicy Bypass -File build.ps1 vizdom_report_en   # just one
+```
+
+```bat
+:: cmd / double-click (all-in-one: sets MiKTeX PATH, handles locked PDFs)
+build.bat
+build.bat vizdom_report_en
 ```
 
 Need TeX first? Install MiKTeX (`winget install MiKTeX.MiKTeX`) or TeX Live, then

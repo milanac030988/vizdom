@@ -53,6 +53,24 @@ controls), across the two stages it took: **before** (text/icon only) → **firs
 fix (geometry) lifted actionable to 0.73 but regressed icons (→0.00) and barely moved
 checkbox (0.12); the caption signal + width re-tune produced the current mapping.
 
+## Documentation
+
+📖 **Full user documentation is published at
+<https://milanac030988.github.io/vizdom/>** — start there for installation,
+configuration, and how to drive VizDOM from your own code or tests. Key pages:
+
+| Page | What it covers |
+|---|---|
+| [Setup](https://milanac030988.github.io/vizdom/uv-setup/) | Install with `uv` / pip; environment and model weights |
+| [Configuration & Sessions](https://milanac030988.github.io/vizdom/CONFIGURATION/) | The one JSON config that drives every stage (detector, OCR, merge, hierarchy, …) |
+| [Using as a Client](https://milanac030988.github.io/vizdom/USAGE/) | Call VizDOM from **Python** (in-process or over **gRPC**) or the **Robot Framework** library |
+| [Architecture](https://milanac030988.github.io/vizdom/architecture/) | Hexagonal ports, microservice-oriented gRPC services, diagrams |
+| [CV Pipeline](https://milanac030988.github.io/vizdom/PIPELINE/) | The screenshot → DOM stages in detail |
+| [Evaluation](https://milanac030988.github.io/vizdom/EVALUATION/) | Benchmark, metrics, dataset construction, before/after improvements |
+| [Architecture Decisions](https://milanac030988.github.io/vizdom/adr/) | ADRs 001–020 |
+
+The same content lives under [`docs/`](docs/) if you prefer to read it in the repo.
+
 ## Quick Start
 
 ### Installation
@@ -195,7 +213,7 @@ MasterProject/
 ├── models/configs/              # Model registry code (weights fetched by setup script, not in git)
 ├── data/synthetic/              # Labelled evaluation benchmark
 ├── scripts/                     # setup_omniparser.py, process_gui_image.py, ...
-├── report/                      # LaTeX reports (main_en/vi, arc42_en/vi) + figures/
+├── report/                      # LaTeX reports (vizdom_report_en/vi, vizdom_architecture_en/vi) + figures/
 ├── docs/ + properdocs.yml       # ProperDocs site (+ docs/diagrams/*.puml, docs/adr/)
 ├── tools/                       # visual_dom_viewer (PyQt5), dashboard, annotator
 ├── start_*.bat                  # launchers: viewer, detector, capture, actuator, dashboard
