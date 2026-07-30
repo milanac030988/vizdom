@@ -292,6 +292,7 @@ class VisualDOMPipeline:
                 visual_type=d.visual_type,
                 confidence=d.confidence,
                 ocr_text=d.text,
+                label=getattr(d, "label", None),
                 source=d.source,
                 parent_id=d.parent_id,
                 children_ids=list(d.children_ids),
@@ -816,6 +817,13 @@ class VisualDOMPipeline:
         for elem in elements:
             # Skip elements that already have text
             if elem.ocr_text:
+                continue
+
+            # Skip elements that already carry a semantic caption/label (e.g.
+            # OmniParser icons): their meaning is known, so glyph-guessing would
+            # only risk a misfire (a square -> "+") and pollute `text`, which must
+            # stay the literal OCR-read value (empty for a caption-only glyph).
+            if elem.label:
                 continue
 
             # Only check button-sized elements (not blocks or tiny elements)

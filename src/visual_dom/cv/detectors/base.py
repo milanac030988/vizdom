@@ -44,7 +44,8 @@ class Detection:
     bounds: Tuple[int, int, int, int]
     visual_type: str = "unknown"
     confidence: float = 1.0
-    text: Optional[str] = None
+    text: Optional[str] = None      # literal OCR-read text (None if not read from pixels)
+    label: Optional[str] = None     # semantic name/caption (model prediction, e.g. an icon caption)
     interactable: Optional[bool] = None
     source: str = "unknown"
     parent_id: Optional[str] = None

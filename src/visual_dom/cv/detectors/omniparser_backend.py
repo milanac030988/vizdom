@@ -322,15 +322,28 @@ class OmniParserBackend(DetectorBackend):
                 px[2] - px[0], px[3] - px[1], height,
             )
 
+            # Split OCR-read text from the model's semantic caption. OmniParser
+            # tags each item "text" (content = OCR-read pixels) or "icon" (content
+            # = a Florence-2 caption, i.e. a prediction of what the glyph means).
+            # The DOM's `text` must be the literal read value, so only "text"
+            # content becomes `text`; an icon caption becomes `label` (leaving
+            # `text` empty, since a glyph carries no readable text).
+            content = content or None
+            if raw_type == "text":
+                det_text, det_label = content, None
+            else:
+                det_text, det_label = None, content
+
             detections.append(
                 Detection(
                     bounds=px,
                     visual_type=visual_type,
                     confidence=float(item.get("confidence", 1.0)),
-                    text=content if content else None,
+                    text=det_text,
+                    label=det_label,
                     interactable=bool(interactable) if interactable is not None else None,
                     source="omniparser",
-                    extra={"omniparser_type": raw_type},
+                    extra={"omniparser_type": raw_type, "caption": content},
                 )
             )
         return detections
