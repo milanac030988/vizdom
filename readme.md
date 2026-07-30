@@ -117,6 +117,38 @@ Dump Visual DOM
 Click Visual         text=Login
 ```
 
+### Running the services (only for distributed setups)
+
+For a **local, single-machine** run you don't need to start anything — `connect()`
+and the Robot Framework library run the detector, capture, and actuator **in
+process**. Start a service only when you want to split work across machines or share
+one warm model:
+
+| Service | When you need it | Start it (Windows launcher · any-OS command) |
+|---|---|---|
+| **Detector** `:50051` | Share one warm GPU model across clients / detect on a GPU box | `start_detector.bat --backend omniparser` · `python -m visual_dom.rpc.detector_server --backend omniparser --port 50051` |
+| **Capture** `:50053` | Grab the screen on the device under test | `start_capture.bat --strategy windows` · `python -m visual_dom.rpc.capture_server --strategy windows --port 50053` |
+| **Actuator** `:50054` | Click/type on the device or drive a robot arm | `start_actuator.bat --strategy desktop` · `python -m visual_dom.rpc.actuator_server --strategy desktop --port 50054` |
+
+Prerequisite once: `pip install grpcio grpcio-tools`. The detector host also needs the
+OmniParser weights (auto-detected under `models/omniparser/`). Then point the client
+at the service(s) **through the config file**:
+
+```json
+{ "detector": { "backend": "grpc", "grpc_target": "gpu-host:50051" } }
+```
+
+…or via Robot Framework library arguments:
+
+```robotframework
+Library    VisualGuiLibrary    capture=grpc  capture_target=sut:50053
+...                            actuator=grpc  actuator_target=sut:50054
+```
+
+**Other launchers:** `start_viewer.bat` (interactive PyQt DOM viewer for manual
+checks) · `start_dashboard.bat` (Streamlit dashboard at `http://localhost:8501`).
+Full walkthrough in the [Using as a Client](https://milanac030988.github.io/vizdom/USAGE/) guide.
+
 ### Run CV Pipeline Test
 
 ```bash
