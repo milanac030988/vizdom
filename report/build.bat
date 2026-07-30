@@ -4,8 +4,8 @@ REM ============================================================
 REM  VizDOM report build - all in one
 REM
 REM  Usage (double-click, or from a terminal in report\):
-REM    build.bat            build all four PDFs (main_en/vi, arc42_en/vi)
-REM    build.bat main_en    build just one document
+REM    build.bat                       build all four PDFs
+REM    build.bat vizdom_report_en      build just one document
 REM    build.bat figures    regenerate figures from PlantUML, then build all
 REM
 REM  Builds via .xdv then xdvipdfmx, so the LaTeX passes never touch the
@@ -29,7 +29,7 @@ if errorlevel 1 (
 REM --- Allow MiKTeX to auto-install missing packages without prompting ---
 initexmf --set-config-value="[MPM]AutoInstall=1" >nul 2>&1
 
-set "DOCS=main_en main_vi arc42_en arc42_vi"
+set "DOCS=vizdom_report_en vizdom_report_vi vizdom_architecture_en vizdom_architecture_vi"
 
 REM --- Optional figure regeneration ---
 if /i "%~1"=="figures" (

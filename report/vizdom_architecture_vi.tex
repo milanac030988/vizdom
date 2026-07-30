@@ -1,5 +1,5 @@
 %!TeX program = xelatex
-% VizDOM - Tài liệu Kiến trúc arc42 (Tiếng Việt). Biên dịch bằng XeLaTeX (xem README.md).
+% VizDOM - Tài liệu kiến trúc arc42 (Tiếng Việt). Biên dịch bằng XeLaTeX (xem README.md).
 % Overleaf: Menu -> Settings -> Compiler -> XeLaTeX (fontspec cần XeTeX/LuaTeX).
 \documentclass[11pt,a4paper]{report}
 
@@ -27,31 +27,33 @@
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.25}
 
+% Các phần của arc42 được trình bày dưới dạng chương; giữ cách đánh số "N".
 \titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter}{1em}{}
 \titlespacing*{\chapter}{0pt}{0pt}{1em}
 
 \title{\textbf{VizDOM --- Tài liệu Kiến trúc}\\[0.3em]
-\large Theo khuôn mẫu arc42}
-\author{Nguyễn Huỳnh Trí Cương\\
-\small Đồ án ứng dụng thạc sĩ (Ngành Khoa học máy tính) --- Đại học Khoa học Tự nhiên TP. Hồ Chí Minh\\
-\small Khoa Công nghệ thông tin\\
-\small Giảng viên hướng dẫn: PGS.TS Nguyễn Văn Vũ}
-\date{2026 --- Bản 1.0}
+\large theo mẫu arc42}
+\author{Nguyễn Huỳnh Trí Cường\\
+\small Đồ án ứng dụng cao học (Khoa học máy tính) --- Trường Đại học Khoa học Tự nhiên, TP. Hồ Chí Minh\\
+\small Khoa Công nghệ Thông tin\\
+\small Giảng viên hướng dẫn: PGS. TS. Nguyễn Văn Vũ}
+\date{2026 --- Phiên bản 1.0}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-\noindent Tài liệu này mô tả kiến trúc phần mềm của \textbf{VizDOM}, một hệ thống tái
-dựng cây DOM (Document Object Model) tương tự UI Automator từ một ảnh chụp màn hình
-GUI, nhằm cho phép kiểm thử tự động các ứng dụng không cung cấp cây trợ năng. Tài
-liệu tuân theo khuôn mẫu arc42 và kỷ luật quyết định SWA
-(drivers~$\rightarrow$~giải pháp~$\rightarrow$~tài liệu~$\rightarrow$~kiểm chứng).
-Nguyên tắc chủ đạo là khả truy vết: mọi lựa chọn có ý nghĩa kiến trúc đều gắn với một
-driver được xếp hạng và, khi có thể, với bằng chứng đo được. VizDOM là một đồ án ứng
-dụng theo Phương thức 3; kiến trúc nhấn mạnh khả sửa đổi (bộ phát hiện/chụp/tác động
-cắm-thay được), khả triển khai (mỗi mối quan tâm chạy được tại chỗ hoặc như một dịch
-vụ gRPC từ xa) và khả kiểm thử, hơn là tính mới của thuật toán.
+\noindent Tài liệu này mô tả kiến trúc phần mềm của \textbf{VizDOM}, một hệ thống tái tạo
+Mô hình Đối tượng Tài liệu (Document Object Model --- DOM) tương tự UI Automator từ
+ảnh chụp giao diện GUI, qua đó hỗ trợ tự động hóa kiểm thử cho các ứng dụng không cung
+cấp cây accessibility. Tài liệu tuân theo mẫu arc42 và kỷ luật ra quyết định kiến trúc
+SWA (drivers~$\rightarrow$~giải pháp~$\rightarrow$~tài liệu hóa~$\rightarrow$~xác minh).
+Nguyên tắc xuyên suốt là khả năng truy vết: mọi lựa chọn có ý nghĩa kiến trúc đều được
+liên kết với một driver đã được xếp hạng và, khi có thể, với bằng chứng có thể đo lường.
+VizDOM là đồ án ứng dụng theo Phương thức 3; kiến trúc ưu tiên khả năng sửa đổi
+(các cơ chế detection/capture/actuation có thể thay thế), khả năng triển khai
+(mỗi chức năng có thể chạy cục bộ hoặc dưới dạng dịch vụ gRPC từ xa) và khả năng kiểm thử,
+thay vì tập trung vào tính mới của thuật toán.
 \end{abstract}
 
 \tableofcontents
@@ -59,23 +61,25 @@ vụ gRPC từ xa) và khả kiểm thử, hơn là tính mới của thuật to
 % =====================================================================
 \chapter{Giới thiệu và Mục tiêu}
 % =====================================================================
-VizDOM chuyển một \emph{ảnh chụp màn hình} GUI thành một \emph{Visual DOM} có cấu trúc,
-truy vấn được --- khung bao phần tử, vai trò, văn bản, nhãn, bộ định vị và phân cấp
---- bằng thị giác máy tính cộng một mô hình ngôn ngữ/thị giác nhỏ, rồi cung cấp DOM đó
-cho một khung kiểm thử. Nó nhắm tới các ứng dụng nơi cây trợ năng nền tảng (Android
-UI~Automator, Windows~UIA, DOM của web) vắng mặt hoặc không đáng tin: giao diện
-desktop vẽ tùy biến (Qt/QML, OpenGL, game engine), HMI nhúng/công nghiệp, và màn hình
-quan sát qua camera. Nơi có cây trợ năng, các khung như Appium dựa vào
-nó~\cite{uiautomator,appium}; VizDOM nhắm tới các trường hợp không có.
+VizDOM chuyển đổi một \emph{ảnh chụp màn hình} GUI thành một \emph{Visual DOM} có cấu
+trúc và có thể truy vấn --- bao gồm biên phần tử, role, text, label, locator và cấu trúc
+phân cấp --- bằng computer vision kết hợp với một mô hình ngôn ngữ/thị giác nhỏ, sau đó
+cung cấp DOM này cho test framework. Hệ thống hướng đến các ứng dụng mà cây accessibility
+của nền tảng (Android UI~Automator, Windows~UIA, web DOM) không tồn tại hoặc không đáng
+tin cậy: các UI desktop được custom-render bằng Qt/QML, OpenGL hoặc game engine; HMI
+nhúng và công nghiệp; cũng như màn hình được quan sát qua camera. Khi cây accessibility
+tồn tại, các framework như Appium có thể dựa trên cây đó~\cite{uiautomator,appium}; VizDOM
+nhắm đến chính những trường hợp không có cây này.
 
-\paragraph{Bối cảnh vấn đề.} Phát hiện phần tử GUI khó hơn phát hiện đối tượng trong
-ảnh tự nhiên: ở cấp phần tử, một lớp biến thiên lớn (biến thiên trong cùng lớp) trong
-khi các lớp khác nhau trông giống nhau (tương đồng giữa các lớp); ở cấp GUI, widget,
-hình ảnh và văn bản trộn lẫn, các phần tử xếp dày đặc, và kiểm thử cần hộp độ chính
-xác cao chứ không phải một vùng lỏng lẻo~\cite{xie2020uied}. Không họ bộ phát hiện nào
---- cổ điển hay học sâu --- trội đều trên các điều kiện này. Đây là động lực kiến trúc
-đứng sau quyết định bộ phát hiện cắm-thay được (ADR-015) và các bước làm sạch; báo cáo
-dự án trình bày đầy đủ phạm vi vấn đề/giải pháp.
+\paragraph{Bối cảnh bài toán.} Phát hiện phần tử GUI khó hơn object detection trên ảnh tự
+nhiên: ở cấp phần tử, các phần tử cùng một lớp có thể khác nhau rất lớn (intra-class
+variation), trong khi các lớp khác nhau lại có thể trông gần giống nhau (inter-class
+similarity); ở cấp GUI, widget, hình ảnh và text xuất hiện xen kẽ, các phần tử nằm sát nhau,
+và kiểm thử đòi hỏi bounding box có độ chính xác cao thay vì chỉ một vùng ước lượng
+rộng~\cite{xie2020uied}. Không có một họ detector duy nhất --- cổ điển hay deep learning ---
+luôn tốt nhất trong mọi điều kiện. Đây là động lực kiến trúc cho quyết định detector có thể
+thay thế (ADR-015) và các bước clean-up; báo cáo đồ án trình bày đầy đủ không gian bài toán
+và giải pháp này.
 
 \section{Tổng quan yêu cầu}
 \subsection*{Yêu cầu chức năng}
@@ -84,74 +88,73 @@ dự án trình bày đầy đủ phạm vi vấn đề/giải pháp.
 \textbf{ID} & \textbf{Yêu cầu chức năng} \\
 \midrule
 \endhead
-FR1 & Thu nhận ảnh chụp từ một nguồn cấu hình được (desktop OS, thiết bị Android, camera, dịch vụ từ xa, hoặc tệp). \\
-FR2 & Phát hiện phần tử UI và văn bản trong ảnh bằng một backend phát hiện chọn được. \\
-FR3 & Ghép các phát hiện thành phân cấp và biên dịch một DOM tương tự UI Automator (vai trò, cờ, nhãn, nhiều bộ định vị). \\
-FR4 & Phân giải một bộ định vị (theo id/text/hint/role/quan hệ không gian) thành một phần tử cụ thể. \\
-FR5 & Điều khiển đầu vào (bấm, gõ, phím, cuộn, kéo) trên một phần tử đã phân giải. \\
-FR6 & Cung cấp các chức năng trên cho Robot Framework dưới dạng từ khóa. \\
-FR7 & Cho phép chụp, phát hiện và tác động chạy như các dịch vụ từ xa trên nhiều máy/thiết bị. \\
-FR8 & Cho phép người dùng thêm backend phát hiện/chụp/tác động mới mà không sửa lõi. \\
+FR1 & Thu nhận screenshot từ một nguồn có thể cấu hình (desktop của hệ điều hành, thiết bị Android, camera, dịch vụ từ xa hoặc file). \\
+FR2 & Phát hiện các phần tử UI và text trong screenshot bằng detector backend có thể lựa chọn. \\
+FR3 & Tổ chức các detection thành cấu trúc phân cấp và biên dịch thành DOM tương tự UI Automator (role, flag, label và nhiều locator). \\
+FR4 & Phân giải một locator (theo id/text/hint/role/quan hệ không gian) thành một phần tử cụ thể. \\
+FR5 & Thực thi input (click, nhập text, nhấn phím, scroll, drag) lên phần tử đã được phân giải. \\
+FR6 & Cung cấp các chức năng trên cho Robot Framework dưới dạng keyword. \\
+FR7 & Cho phép capture, detection và actuation chạy dưới dạng dịch vụ từ xa trên nhiều máy hoặc thiết bị. \\
+FR8 & Cho phép người dùng bổ sung detector/capture/actuator backend mới mà không cần sửa domain core. \\
 \bottomrule
 \end{longtable}
 
-\subsection*{Yêu cầu chất lượng (đo được)}
+\subsection*{Yêu cầu chất lượng (có thể đo lường)}
 \begin{longtable}{@{}p{1.6cm}p{4.0cm}p{8.6cm}@{}}
 \toprule
-\textbf{ID} & \textbf{Chất lượng} & \textbf{Phát biểu đo được} \\
+\textbf{ID} & \textbf{Thuộc tính chất lượng} & \textbf{Phát biểu có thể đo lường} \\
 \midrule
 \endhead
-NFR1 & Khả sửa đổi & Thêm một backend phát hiện/chụp/tác động mới bằng cách thêm một tệp và một mục registry, với \textbf{không} sửa đổi lõi nghiệp vụ; mỗi cổng có $\geq 2$ hiện thực hoán đổi được. \\
-NFR2 & Khả triển khai & Mỗi cổng chọn được là \emph{tại chỗ} hay \emph{gRPC} thuần bằng cấu hình; luồng chụp$\rightarrow$phát hiện$\rightarrow$tác động chạy không đổi trên $\geq 2$ máy. \\
-NFR3 & Hiệu năng & Một dịch vụ phát hiện nạp mô hình \textbf{một lần} (mô hình nóng) và phục vụ các yêu cầu sau mà không nạp lại; độ trễ mỗi yêu cầu không tính thời gian nạp mô hình. \\
-NFR4 & Khả kiểm thử & Lõi nghiệp vụ chạy đầu-cuối không cần GPU và không cần mạng (bộ phát hiện UIED + chụp static-image + bộ tác động ghi lại). \\
-NFR5 & Độ chính xác & Mục tiêu: phát hiện phần tử F1 $\geq 0.80$ và IoU trung bình $\geq 0.60$ trên điểm chuẩn gán nhãn. Đo được (tập tổng hợp 44 ảnh): F1 tổng thể $0.58$ (OmniParser) / $0.51$ (UIED), mIoU 0.67--0.68 --- đạt mục tiêu mIoU, \emph{chưa} đạt mục tiêu F1. Theo loại, OmniParser trội trên các điều khiển thao tác được (nút 1.00, input\_field 0.99, biểu tượng 0.67) còn UIED trên hộp kiểm/văn bản; cả hai đều bấm-trúng-được (center-hit: OmniParser thao tác được 0.97, UIED 0.89). Xem Ch.~10--11. \\
+NFR1 & Khả năng sửa đổi & Một detector/capture/actuator backend mới được thêm bằng một file và một registry entry, với \textbf{không} chỉnh sửa domain core; mỗi port có $\geq 2$ implementation có thể thay thế cho nhau. \\
+NFR2 & Khả năng triển khai & Mỗi port có thể được chọn chạy \emph{in-process} hoặc qua \emph{gRPC} chỉ bằng cấu hình; luồng capture$\rightarrow$detect$\rightarrow$actuate chạy không đổi trên $\geq 2$ host. \\
+NFR3 & Hiệu năng & Detector service chỉ tải model \textbf{một lần} (warm model) và phục vụ các request tiếp theo mà không tải lại; độ trễ mỗi request không bao gồm thời gian tải model. \\
+NFR4 & Khả năng kiểm thử & Domain core chạy end-to-end mà không cần GPU hoặc network (UIED detector + static-image capture + recording actuator). \\
+NFR5 & Độ chính xác & Mục tiêu: F1 của element detection $\geq 0.80$ và mean IoU $\geq 0.60$ trên benchmark có gán nhãn. Kết quả đo trên tập synthetic gồm 44 ảnh: F1 tổng hợp $0.58$ (OmniParser) / $0.51$ (UIED), mIoU 0.67--0.68 --- đạt mục tiêu mIoU nhưng \emph{chưa đạt} mục tiêu F1. Theo từng loại, OmniParser tốt hơn trên các control có thể thao tác (button 1.00, input\_field 0.99, icon 0.67), còn UIED tốt hơn với checkbox/text; cả hai đều có khả năng xác định mục tiêu click tốt (center-hit: OmniParser actionable 0.97, UIED 0.89). Xem Ch.~10--11. \\
 \bottomrule
 \end{longtable}
 
-\section{Mục tiêu chất lượng (3 hàng đầu)}
+\section{Ba mục tiêu chất lượng chính}
 \begin{enumerate}[leftmargin=1.6em]
-  \item \req{Khả sửa đổi / mở rộng} --- hoán đổi và thêm backend là ý định thiết kế
-        trung tâm; giá trị của hệ thống nằm ở chỗ các bộ phát hiện cổ điển và học máy,
-        cùng các thiết bị chụp/tác động đa dạng, đều hoán đổi được.
-  \item \req{Khả triển khai} --- chụp chạy nơi ứng dụng cần kiểm thử, phát hiện hưởng
-        lợi từ GPU, tác động xảy ra tại thiết bị hoặc bộ điều khiển vật lý; kiến trúc
-        phải cho phép các phần này nằm trên các máy khác nhau.
-  \item \req{Khả kiểm thử} --- pipeline và tầng Robot Framework phải kiểm chứng được
-        mà không cần phần cứng đặc biệt, để dự án phát triển và chấm điểm được trên
-        một laptop.
+  \item \req{Khả năng sửa đổi / mở rộng} --- việc thay thế và bổ sung backend là chủ đích
+        thiết kế trung tâm; giá trị của hệ thống nằm ở khả năng hoán đổi giữa detector cổ điển
+        và detector học máy, cũng như giữa nhiều thiết bị capture/actuation khác nhau.
+  \item \req{Khả năng triển khai} --- capture chạy tại nơi đặt application under test,
+        detection tận dụng GPU, còn actuation diễn ra trên thiết bị hoặc bộ điều khiển vật lý;
+        kiến trúc phải cho phép các thành phần này nằm trên những máy khác nhau.
+  \item \req{Khả năng kiểm thử} --- pipeline và lớp Robot Framework phải có thể được xác minh
+        mà không cần phần cứng đặc biệt, để đồ án có thể được phát triển và đánh giá trên laptop.
 \end{enumerate}
 
 \section{Các bên liên quan}
 \begin{longtable}{@{}p{3.4cm}p{2.2cm}p{2.0cm}p{6.0cm}@{}}
 \toprule
-\textbf{Bên liên quan} & \textbf{Quan tâm} & \textbf{Quyền lực} & \textbf{Nhu cầu chính} \\
+\textbf{Bên liên quan} & \textbf{Mức quan tâm} & \textbf{Mức ảnh hưởng} & \textbf{Nhu cầu chính} \\
 \midrule
 \endhead
-Học viên / tác giả & Cao & Cao & Một hệ thống ứng dụng và báo cáo hoạt động được, bảo vệ được. \\
-GVHD / hội đồng & Cao & Cao & Kỹ thuật rõ ràng, quyết định truy vết được, đánh giá trung thực. \\
-Kỹ sư kiểm thử (người dùng) & Cao & Thấp & Định vị phần tử tin cậy trên UI không trợ năng; từ khóa đơn giản. \\
-Kỹ sư tích hợp thiết bị/robot & Trung bình & Thấp & Một điểm cắm để gắn camera / cánh tay robot. \\
-Vận hành (tương lai) & Thấp & Thấp & Dịch vụ khởi động, ghi log và lỗi an toàn. \\
+Sinh viên / tác giả & Cao & Cao & Một hệ thống ứng dụng hoạt động được, có thể bảo vệ bằng lập luận rõ ràng, cùng báo cáo hoàn chỉnh. \\
+Giảng viên hướng dẫn / hội đồng & Cao & Cao & Giải pháp kỹ thuật rõ ràng, quyết định có thể truy vết và đánh giá trung thực. \\
+Kỹ sư kiểm thử (người dùng) & Cao & Thấp & Định vị phần tử đáng tin cậy trên UI không có accessibility; keyword đơn giản. \\
+Kỹ sư tích hợp thiết bị/robotics & Trung bình & Thấp & Điểm mở rộng rõ ràng để tích hợp camera hoặc robot arm. \\
+Vận hành (trong tương lai) & Thấp & Thấp & Các service có thể khởi động, ghi log và xử lý lỗi an toàn. \\
 \bottomrule
 \end{longtable}
 
 % =====================================================================
-\chapter{Ràng buộc Kiến trúc}
+\chapter{Các Ràng buộc Kiến trúc}
 % =====================================================================
 \begin{longtable}{@{}p{3.6cm}p{11.0cm}@{}}
 \toprule
 \textbf{Ràng buộc} & \textbf{Chi tiết và hệ quả} \\
 \midrule
 \endhead
-Môi trường chạy & Python 3.9 với bản dựng PyTorch hỗ trợ CUDA (cu124); trình thông dịch đang dùng không được bị công cụ môi trường làm xáo trộn. \\
-Quản lý môi trường & Dùng \code{uv} trên trình thông dịch sẵn có (không tái tạo bản dựng CUDA đang chạy). \\
-Proxy doanh nghiệp & Các kho mã công khai (GitHub, Maven) bị chặn; PyPI và chỉ mục PyTorch truy cập được. Mã mô hình ngoài được \emph{đóng gói kèm và ghim} bằng script cài đặt, không phải submodule; tài liệu kết xuất UML \emph{ngoại tuyến} từ bộ kết xuất cục bộ. \\
-Không dùng container & Docker/Nomad/Consul bị loại trừ rõ ràng (tốn tài nguyên); phân tán dùng tiến trình gRPC thuần và script khởi chạy. \\
-Ghim phụ thuộc & \code{protobuf < 6} toàn dự án (xung đột Streamlit/TensorFlow); \code{grpcio}/\code{grpcio-tools} ghim tương ứng. \\
-Giấy phép & Bộ phát hiện biểu tượng của OmniParser là AGPL-3.0 (qua Ultralytics); phục vụ backend đó qua mạng kèm nghĩa vụ AGPL. UIED vẫn là đường cơ sở CPU không dính AGPL. \\
-Sơ đồ & Mã nguồn PlantUML chỉ dùng ASCII và kết xuất qua jar đóng gói kèm (bố cục Smetana; \code{architecture.puml} dùng Graphviz). \\
-Loại dự án & Đồ án ứng dụng Phương thức 3: kỹ thuật vững có nội dung khoa học, không phải luận văn thuật toán mới. \\
+Runtime & Python 3.9 với bản PyTorch hỗ trợ CUDA (cu124); các công cụ quản lý môi trường không được làm thay đổi interpreter đang hoạt động ổn định. \\
+Trình quản lý môi trường & Sử dụng \code{uv} trên interpreter hiện có, không provision lại bản CUDA đang hoạt động. \\
+Corporate proxy & Các code host công cộng (GitHub, Maven) bị chặn; PyPI và PyTorch index vẫn truy cập được. Mã của model bên ngoài được \emph{vendor và pin bằng setup script}, thay vì dùng git submodule; tài liệu render UML hoàn toàn \emph{offline} bằng renderer cục bộ. \\
+Không có container runtime & Docker/Nomad/Consul bị loại trừ rõ ràng do chi phí tài nguyên; việc phân tán sử dụng các process gRPC thông thường và launcher script. \\
+Cố định dependency & Toàn project dùng \code{protobuf < 6} do xung đột Streamlit/TensorFlow; \code{grpcio}/\code{grpcio-tools} được pin tương ứng. \\
+Giấy phép & Icon detector của OmniParser dùng AGPL-3.0 thông qua Ultralytics; việc cung cấp backend này qua network kéo theo các nghĩa vụ AGPL. UIED vẫn là CPU baseline không chịu AGPL. \\
+Sơ đồ & Source PlantUML chỉ dùng ASCII và được render bằng file jar được vendor sẵn (layout Smetana; \code{architecture.puml} dùng Graphviz). \\
+Loại đồ án & Đồ án ứng dụng theo Phương thức 3: tập trung vào kỹ thuật vững chắc có nội dung khoa học, không phải luận văn đề xuất thuật toán mới. \\
 \bottomrule
 \end{longtable}
 
@@ -159,41 +162,41 @@ Loại dự án & Đồ án ứng dụng Phương thức 3: kỹ thuật vững 
 \chapter{Bối cảnh và Phạm vi}
 % =====================================================================
 \section{Bối cảnh nghiệp vụ}
-VizDOM nằm giữa một \emph{màn hình} (ứng dụng cần kiểm thử) và một \emph{khung kiểm
-thử}. Giao diện vào là một ảnh; giao diện ra là một DOM cộng khả năng tác động đầu
-vào. Hình~\ref{fig:overview} minh họa luồng đầu-cuối.
+VizDOM nằm giữa một \emph{màn hình} của application under test và một \emph{test
+framework}. Interface đầu vào là hình ảnh; interface đầu ra là một DOM cùng khả năng
+thực thi input. Hình~\ref{fig:overview} mô tả luồng end-to-end.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.6\linewidth]{System_Overview.png}
-  \caption{Tổng quan / bối cảnh hệ thống. Ranh giới trái: một ảnh chụp từ bất kỳ
-  nguồn chụp nào. Ranh giới phải: một Visual DOM được tiêu thụ bởi Robot Framework,
-  trình xem, bảng điều khiển và bộ khung đánh giá. Chú giải: gói tô màu là hệ thống
-  con; mũi tên là luồng dữ liệu/điều khiển.}
+  \caption{Tổng quan và bối cảnh hệ thống. Biên trái: screenshot từ bất kỳ nguồn
+  capture nào. Biên phải: Visual DOM được Robot Framework, Viewer, dashboard và
+  evaluation harness sử dụng. Chú giải: các package có màu là subsystem; các mũi tên
+  biểu diễn luồng dữ liệu hoặc điều khiển.}
   \label{fig:overview}
 \end{figure}
 
-\section{Bối cảnh kỹ thuật (giao diện)}
+\section{Bối cảnh kỹ thuật (các interface)}
 \begin{longtable}{@{}p{3.4cm}p{3.0cm}p{7.6cm}@{}}
 \toprule
-\textbf{Lân cận} & \textbf{Hướng} & \textbf{Giao diện} \\
+\textbf{Hệ thống lân cận} & \textbf{Hướng} & \textbf{Interface} \\
 \midrule
 \endhead
-Ứng dụng cần kiểm thử & vào & Ảnh chụp (BGR) qua một chiến lược chụp; sự kiện đầu vào qua một chiến lược tác động. \\
-Bộ OCR & ra & EasyOCR~\cite{easyocr} / PaddleOCR / Tesseract~\cite{tesseract} (thư viện trong tiến trình). \\
-OmniParser & ra & Repo đóng gói kèm~\cite{omniparser2024} + trọng số Florence-2~\cite{florence2} / YOLO~\cite{ultralytics} (tệp cục bộ). \\
-Ollama & ra & HTTP tới một LM/VLM nhỏ cục bộ/từ xa cho tinh chỉnh tùy chọn. \\
-Dịch vụ từ xa & cả hai & gRPC~\cite{grpc}: phát hiện (\code{:50051}), chụp (\code{:50053}), tác động (\code{:50054}). \\
-Robot Framework & vào & Thư viện từ khóa (Python)~\cite{robotframework} tiêu thụ DOM. \\
+Application under test & vào & Screenshot (ảnh BGR) thông qua capture strategy; các input event thông qua actuator strategy. \\
+OCR engine & ra & EasyOCR~\cite{easyocr} / PaddleOCR / Tesseract~\cite{tesseract} dưới dạng thư viện in-process. \\
+OmniParser & ra & Repository được vendor~\cite{omniparser2024} cùng weight Florence-2~\cite{florence2} / YOLO~\cite{ultralytics} lưu cục bộ. \\
+Ollama & ra & HTTP đến small LM/VLM cục bộ hoặc từ xa để refinement tùy chọn. \\
+Các dịch vụ từ xa & hai chiều & gRPC~\cite{grpc}: detector (\code{:50051}), capture (\code{:50053}), actuator (\code{:50054}). \\
+Robot Framework & vào & Keyword library bằng Python~\cite{robotframework} sử dụng DOM. \\
 \bottomrule
 \end{longtable}
 
 \section{Phạm vi}
-\textbf{Trong phạm vi:} thu nhận ảnh, phát hiện phần tử/văn bản, tổng hợp DOM, phân
-giải bộ định vị, tác động đầu vào, thư viện Robot Framework, và lớp truyền dịch vụ
-phân tán. \textbf{Ngoài phạm vi:} soạn và lập lịch ca kiểm thử (để cho Robot
-Framework), một dịch vụ đa người thuê được host, xác thực các kênh gRPC (ghi nhận là
-nợ kỹ thuật), và mọi thay đổi tới ứng dụng cần kiểm thử.
+\textbf{Trong phạm vi:} thu nhận screenshot, phát hiện phần tử/text, tổng hợp DOM,
+phân giải locator, thực thi input, Robot Framework library và transport cho các dịch vụ
+phân tán. \textbf{Ngoài phạm vi:} viết và lập lịch test case (do Robot Framework đảm
+nhiệm), dịch vụ hosted multi-tenant, xác thực các kênh gRPC (được ghi nhận là technical
+debt), và mọi thay đổi đối với application under test.
 
 % =====================================================================
 \chapter{Chiến lược Giải pháp}
@@ -204,378 +207,388 @@ nợ kỹ thuật), và mọi thay đổi tới ứng dụng cần kiểm thử.
 \textbf{Mục tiêu chất lượng} & \textbf{Cách tiếp cận kiến trúc} \\
 \midrule
 \endhead
-Khả sửa đổi & \emph{Lục giác (ports \& adapters)}: một lõi nghiệp vụ thuần chỉ phụ thuộc các cổng trừu tượng (Detector, Ocr, Refiner, Capture, Actuator). Mỗi cổng dùng khuôn mẫu \emph{strategy + registry + tự khám phá}, nên backend được thêm dưới dạng plugin. \\
-Khả triển khai & Mỗi cổng bị điều khiển có một bộ điều hợp tại chỗ \emph{và} một bộ điều hợp gRPC-client; một máy chủ gRPC tương ứng bọc registry trên máy từ xa. Truyền tải là lựa chọn cấu hình theo cổng, không phải viết lại. \\
-Hiệu năng & Dịch vụ mô hình là \emph{nóng}: nạp một mô hình nặng một lần và phục vụ nhiều client nhẹ, khấu hao chi phí nạp. \\
-Khả kiểm thử & Lõi không có I/O và phụ thuộc các cổng; một bộ phát hiện CPU không phụ thuộc thư viện (UIED), một chụp static-image, và một bộ tác động ghi lại giúp chạy đầy đủ mà không cần GPU và mạng. \\
-Độ chính xác & Một bộ phát hiện học máy cắm-thay được (OmniParser) cộng tổng hợp OCR và một bước tinh chỉnh có kiểm soát bằng mô hình nhỏ; UIED cổ điển làm đường cơ sở. \\
+Khả năng sửa đổi & \emph{Kiến trúc lục giác (ports \& adapters)}: domain core thuần chỉ phụ thuộc vào các port trừu tượng (Detector, Ocr, Refiner, Capture, Actuator). Mỗi port dùng mẫu \emph{strategy + registry + auto-discovery}, nhờ đó backend được bổ sung dưới dạng plugin. \\
+Khả năng triển khai & Mỗi driven port có cả adapter in-process và gRPC client adapter; một gRPC server tương ứng bao bọc registry trên remote host. Transport là lựa chọn cấu hình riêng cho từng port, không đòi hỏi viết lại hệ thống. \\
+Hiệu năng & Các model service được giữ \emph{warm}: model nặng chỉ tải một lần và phục vụ nhiều client nhẹ, qua đó phân bổ chi phí tải model cho nhiều request. \\
+Khả năng kiểm thử & Core không phụ thuộc I/O mà chỉ phụ thuộc vào port; CPU detector không cần dependency đặc biệt (UIED), static-image capture và recording actuator cho phép chạy đầy đủ mà không cần GPU hoặc network. \\
+Độ chính xác & Detector học máy có thể thay thế (OmniParser), kết hợp OCR ensemble và bước refinement bằng mô hình nhỏ có guard; UIED cổ điển đóng vai trò baseline. \\
 \bottomrule
 \end{longtable}
 
-\section{Xếp hạng driver}
-Bối cảnh: đây là một đồ án ứng dụng \emph{greenfield} mà mục đích rõ ràng là khả mở
-rộng qua các bộ phát hiện và thiết bị; do đó khả sửa đổi và khả triển khai xếp trên
-độ chính xác thô. (Nếu VizDOM là một sản phẩm đơn-nền-tảng cố định, độ chính xác và
-độ tin cậy sẽ xếp đầu.)
+\section{Các driver được xếp hạng}
+Bối cảnh: đây là một đồ án ứng dụng \emph{greenfield} với mục đích rõ ràng là mở rộng
+trên nhiều detector và thiết bị; vì vậy khả năng sửa đổi và khả năng triển khai được xếp
+cao hơn độ chính xác thuần túy. Nếu VizDOM là sản phẩm cố định cho một nền tảng duy nhất,
+độ chính xác và độ tin cậy sẽ được xếp đầu tiên.
 
 \begin{longtable}{@{}p{0.8cm}p{2.8cm}p{7.4cm}p{2.4cm}@{}}
 \toprule
 \textbf{Hạng} & \textbf{Driver} & \textbf{Diễn giải cụ thể} & \textbf{Loại} \\
 \midrule
 \endhead
-\#1 & Khả sửa đổi & Thêm bộ phát hiện/chụp/tác động mới không đụng lõi & Yêu cầu \\
-\#2 & Khả triển khai & Cổng chạy tại chỗ hoặc từ xa theo cấu hình & Yêu cầu \\
-\#3 & Khả kiểm thử & Chạy đầy đủ không cần GPU/mạng & Yêu cầu \\
-\#4 & Độ chính xác & F1/IoU phát hiện trên UI thực & Yêu cầu \\
-\#5 & Hiệu năng & Tái dùng mô hình nóng; độ trễ mỗi yêu cầu chấp nhận được & Yêu cầu \\
--- & Hoạt động ngoại tuyến & Proxy chặn kho công khai (đóng gói kèm, tài liệu ngoại tuyến) & Ràng buộc \\
--- & Không container & Phân tán không Docker/Nomad/Consul & Ràng buộc \\
+\#1 & Khả năng sửa đổi & Thêm detector/capture/actuator mới mà không thay đổi core & Yêu cầu \\
+\#2 & Khả năng triển khai & Port chạy in-process hoặc từ xa bằng cấu hình & Yêu cầu \\
+\#3 & Khả năng kiểm thử & Chạy đầy đủ mà không cần GPU/network & Yêu cầu \\
+\#4 & Độ chính xác & F1/IoU của detection trên UI thực tế & Yêu cầu \\
+\#5 & Hiệu năng & Tái sử dụng warm model; độ trễ mỗi request chấp nhận được & Yêu cầu \\
+-- & Hoạt động offline & Proxy chặn các public host, cần vendoring và tài liệu offline & Ràng buộc \\
+-- & Không dùng container & Phân tán mà không dùng Docker/Nomad/Consul & Ràng buộc \\
 \bottomrule
 \end{longtable}
 
-\paragraph{Xung đột driver.}
-(a) \emph{Độ chính xác vs Khả kiểm thử/Khả chuyển:} bộ phát hiện chính xác nhất
-(OmniParser) cần GPU và trọng số nặng, xung đột với ``chạy trên laptop''. Giải quyết
-bằng cách biến bộ phát hiện thành một cổng với đường cơ sở CPU (UIED) và một dịch vụ
-GPU từ xa. (b) \emph{Khả triển khai vs Đơn giản:} dịch vụ gRPC thêm bộ phận động;
-giải quyết bằng cách để gRPC là tùy chọn (mặc định tại chỗ).
+\paragraph{Xung đột giữa các driver.}
+(a) \emph{Độ chính xác so với khả năng kiểm thử/khả năng di chuyển:} detector chính xác
+nhất (OmniParser) cần GPU và các weight lớn, xung đột với yêu cầu ``chạy được trên laptop''.
+Giải pháp là biến detector thành một port, có CPU baseline (UIED) và remote GPU service.
+(b) \emph{Khả năng triển khai so với tính đơn giản:} các dịch vụ gRPC làm tăng số thành
+phần vận hành; giải pháp là giữ gRPC ở dạng tùy chọn, còn in-process là mặc định.
 
-\section{Quyết định then chốt: làm cho phát hiện/chụp/tác động mở rộng và triển khai được}
-Ba phương án được xem xét và chấm theo tiêu chí dẫn xuất từ các driver xếp hạng
-(trọng số trong ngoặc): Khả sửa đổi~(5), Khả triển khai~(5), Khả kiểm thử~(4), Độ
-phức tạp~(3, thấp hơn tốt hơn), Độ phức tạp vận hành~(3, thấp hơn tốt hơn). Điểm 1--5.
+\section{Quyết định chính: làm thế nào để detection/capture/actuation có thể mở rộng và triển khai linh hoạt}
+Ba phương án được xem xét và chấm điểm theo các tiêu chí rút ra từ nhóm driver đã xếp hạng
+(trọng số trong ngoặc): Khả năng sửa đổi~(5), Khả năng triển khai~(5), Khả năng kiểm
+thử~(4), Độ phức tạp~(3, thấp hơn là tốt hơn), Độ phức tạp vận hành~(3, thấp hơn là tốt
+hơn). Điểm số từ 1--5.
 
 \begin{longtable}{@{}p{5.2cm}p{1.2cm}p{2.2cm}p{2.2cm}p{2.2cm}@{}}
 \toprule
-\textbf{Tiêu chí} & \textbf{TS} & \textbf{A: mã cứng theo nơi dùng} & \textbf{B: thư viện chung, chỉ tại chỗ} & \textbf{C: strategy+registry + gRPC tùy chọn} \\
+\textbf{Tiêu chí} & \textbf{Trọng số} & \textbf{A: hard-code theo từng consumer} & \textbf{B: shared library, chỉ in-process} & \textbf{C: strategy+registry + gRPC tùy chọn} \\
 \midrule
 \endhead
-Khả sửa đổi & 5 & 1 (5) & 4 (20) & 5 (25) \\
-Khả triển khai & 5 & 1 (5) & 2 (10) & 5 (25) \\
-Khả kiểm thử & 4 & 2 (8) & 4 (16) & 5 (20) \\
-Độ phức tạp (thấp tốt) & 3 & 4 (12) & 4 (12) & 2 (6) \\
-Vận hành (thấp tốt) & 3 & 5 (15) & 4 (12) & 2 (6) \\
+Khả năng sửa đổi & 5 & 1 (5) & 4 (20) & 5 (25) \\
+Khả năng triển khai & 5 & 1 (5) & 2 (10) & 5 (25) \\
+Khả năng kiểm thử & 4 & 2 (8) & 4 (16) & 5 (20) \\
+Độ phức tạp (thấp hơn tốt hơn) & 3 & 4 (12) & 4 (12) & 2 (6) \\
+Vận hành (thấp hơn tốt hơn) & 3 & 5 (15) & 4 (12) & 2 (6) \\
 \midrule
 \textbf{Tổng} & & \textbf{45} & \textbf{70} & \textbf{82} \\
 \bottomrule
 \end{longtable}
 
-\textbf{Kết quả:} Phương án~C (được chọn). Nó thắng dứt khoát về khả sửa đổi và khả
-triển khai, hai driver hàng đầu, đổi lại độ phức tạp nội tại và vận hành cao hơn ---
-đánh đổi ta chấp nhận rõ ràng và giảm nhẹ bằng cách để gRPC tùy chọn (hành vi của
-Phương án~B là chế độ cục bộ mặc định) và dùng chung một khuôn mẫu registry cho cả ba
-cổng. Ghi trong ADR-015 (bộ phát hiện), ADR-017 (gRPC phân tán), ADR-018 (chụp),
-ADR-019 (tác động).
+\textbf{Kết quả:} lựa chọn phương án~C. Phương án này vượt trội về khả năng sửa đổi và
+khả năng triển khai, hai driver quan trọng nhất, đổi lại là độ phức tạp nội tại và vận hành
+cao hơn. Đây là trade-off được chấp nhận rõ ràng và được giảm thiểu bằng cách giữ gRPC
+ở dạng tùy chọn (hành vi của phương án~B là chế độ local mặc định), đồng thời dùng chung
+một registry pattern cho cả ba port. Quyết định được ghi trong ADR-015 (detector), ADR-017
+(gRPC phân tán), ADR-018 (capture) và ADR-019 (actuator).
 
-\section{Bức tranh bộ phát hiện (vì sao cần một cổng cắm-thay được)}
-Cổng phát hiện phải dung nạp các công nghệ rất khác nhau. Bảng~\ref{tab:models} so
-sánh các hệ ứng viên~\cite{xie2020uied,omniparser2024,ariaui2024,elam7b,osworldg}.
-Chúng chia thành hai họ: \emph{bộ phân tích} liệt kê phần tử (UIED, OmniParser,
-VizDOM) và \emph{bộ định vị} trả về một điểm cho một chỉ dẫn ngôn ngữ tự nhiên
-(Aria-UI, ELAM-7B, Jedi). Chỉ bộ phân tích phù hợp mục tiêu của VizDOM là tạo một cây
-đầy đủ; không hệ nào được so sánh dựng phân cấp, và đó là nơi đóng góp nằm. Cổng
-cắm-thay được cho phép VizDOM dùng bộ phân tích mạnh nhất (OmniParser) làm backend,
-giữ một đường cơ sở CPU (UIED) cho dàn máy không GPU, và thay một bộ phát hiện AGPL
-bằng một bộ giấy phép dễ chịu mà không đổi pipeline --- lý do cụ thể cho ADR-015.
-Backend OmniParser còn ánh xạ đầu ra thô \code{text}/\code{icon} của nó sang bộ phân
-loại vai trò của VizDOM (\code{button} / \code{input\_field} / \code{checkbox}) qua
-một suy luận tương tác + hình học nhận biết độ phân giải, nên DOM của nó dùng được
-trực tiếp bởi tầng kiểm thử. Bảng~\ref{tab:arc42typeacc} định lượng ánh xạ này: khôi
-phục vai trò từ tính tương tác, hình học và chú thích của OmniParser đã nâng độ chính
-xác loại phần tử trên các điều khiển thao tác được từ \textbf{0.09} lên \textbf{0.87}.
+\section{Bức tranh các detector (lý do cần một port có thể thay thế)}
+Detector port phải hỗ trợ nhiều công nghệ rất khác nhau. Bảng~\ref{tab:models} so sánh
+các hệ thống ứng viên~\cite{xie2020uied,omniparser2024,ariaui2024,elam7b,osworldg}.
+Chúng được chia thành hai họ: \emph{parser}, liệt kê toàn bộ phần tử (UIED, OmniParser,
+VizDOM), và \emph{grounder}, trả về một điểm duy nhất cho một chỉ dẫn bằng ngôn ngữ tự
+nhiên (Aria-UI, ELAM-7B, Jedi). Chỉ parser phù hợp với mục tiêu tạo một cây hoàn chỉnh
+của VizDOM; không hệ thống nào được so sánh xây dựng cấu trúc phân cấp, và đây chính là
+lớp đóng góp của đồ án. Port có thể thay thế cho phép VizDOM sử dụng parser mạnh nhất
+(OmniParser) làm backend, giữ CPU baseline (UIED) cho các test rig không có GPU, và thay
+một detector AGPL bằng detector có giấy phép permissive mà không sửa pipeline --- đây là
+lý do cụ thể cho ADR-015. OmniParser backend còn ánh xạ đầu ra thô \code{text}/\code{icon}
+sang taxonomy role của VizDOM (\code{button} / \code{input\_field} / \code{checkbox})
+bằng heuristic kết hợp interactability và geometry có xét resolution, nhờ đó DOM có thể
+được lớp kiểm thử sử dụng trực tiếp. Bảng~\ref{tab:arc42typeacc} định lượng phép ánh xạ
+này: việc khôi phục role từ interactability, geometry và caption của OmniParser đã nâng độ
+chính xác phân loại loại phần tử trên các control có thể thao tác từ \textbf{0.09} lên
+\textbf{0.87}.
 
 \begin{table}[H]
   \centering\footnotesize
-  \caption{Độ chính xác loại phần tử của OmniParser trên các điều khiển thao tác được
-  khớp, qua hai giai đoạn cải tiến (tập kiểm tra tổng hợp): trước (chỉ text/icon), sửa
-  lần đầu (tính tương tác + hình học), và hiện tại (+ chú thích + tinh chỉnh rộng/tỉ lệ).}
+  \caption{Độ chính xác phân loại loại phần tử của OmniParser trên các control có thể
+  thao tác đã được matching, qua hai giai đoạn cải thiện trên tập synthetic: ban đầu
+  chỉ có text/icon, bản sửa thứ nhất dùng interactability + geometry, và phiên bản hiện
+  tại bổ sung caption cùng ngưỡng width/aspect đã được tinh chỉnh.}
   \label{tab:arc42typeacc}
   \begin{tabular}{@{}lccc@{}}
     \toprule
-    Loại (GT) & Trước & Sửa lần đầu & Hiện tại \\
+    Loại GT & Ban đầu & Bản sửa thứ nhất & Hiện tại \\
     \midrule
     button       & 0.00 & 0.91 & 0.89 \\
     input\_field & 0.00 & 0.99 & 0.99 \\
     checkbox     & 0.00 & 0.12 & 0.55 \\
     icon         & 1.00$^\dagger$ & 0.00 & \textbf{0.89} \\
     \midrule
-    thao tác được & 0.09 & 0.73 & \textbf{0.87} \\
+    actionable   & 0.09 & 0.73 & \textbf{0.87} \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\noindent{\footnotesize $^\dagger$Ánh xạ cũ gán mọi phần tử phi văn bản là
-\code{icon}, nên chỉ icon được tính đúng còn mọi vai trò khác đạt 0 --- đó là lý do
-DOM không thể nhận ra bất kỳ điều khiển thao tác nào. Định vị không đổi; bảng này chỉ
-đo \emph{loại}.}
+\noindent{\footnotesize $^\dagger$Phép ánh xạ cũ gán mọi phần tử không phải text thành
+\code{icon}, nên chỉ icon được tính đúng còn mọi role khác đều bằng 0 --- vì vậy DOM không
+thể nhận diện đúng các phần tử có thể thao tác. Kết quả localisation không thay đổi; bảng này
+chỉ đo \emph{loại phần tử}.}
 
 \begin{table}[H]
   \centering\footnotesize
-  \caption{Bức tranh hiểu GUI (do tác giả công bố; ``n/v'' = chưa xác minh giấy phép).}
+  \caption{Bức tranh các hệ thống hiểu GUI theo kết quả do tác giả công bố; ``n/v'' =
+  giấy phép chưa được xác minh.}
   \label{tab:models}
   \begin{tabular}{@{}p{2.3cm}p{2.4cm}p{2.7cm}p{0.7cm}p{2.2cm}p{2.0cm}@{}}
     \toprule
-    Hệ thống & Mô hình & Độ chi tiết đầu ra & GPU & Nền tảng / cỡ & Giấy phép \\
+    Hệ thống & Mô hình tiếp cận & Mức chi tiết đầu ra & GPU & Nền tảng / kích thước & Giấy phép \\
     \midrule
-    VizDOM (của ta) & parser (CV + SLM) & cây DOM phân cấp & Không$^\ast$ & pipeline ghép & tùy backend \\
-    UIED & CV cổ điển & danh sách phẳng & Không & --- & nghiên cứu \\
-    OmniParser V2 & phát hiện + chú thích & hộp có nhãn + khả năng tương tác & Có & YOLOv8 + Florence-2 & AGPL-3.0 / MIT \\
-    Aria-UI & định vị thị giác & một điểm $[0,1000]$ & Có & Aria MoE (3.9B kích hoạt) & n/v \\
-    ELAM-7B & định vị + đánh giá & điểm + PASSED/FAILED & Có & Molmo-7B-D (Qwen2-7B) & Apache-2.0 \\
-    Jedi-3B/7B & định vị thị giác & một điểm & Có & 3B / 7B & n/v \\
+    VizDOM (đề xuất) & parser (CV + SLM) & cây DOM phân cấp & Không$^\ast$ & pipeline kết hợp & theo từng backend \\
+    UIED & CV cổ điển & danh sách phần tử phẳng & Không & --- & nghiên cứu \\
+    OmniParser V2 & detector + caption & bounding box phẳng có label + interactability & Có & YOLOv8 + Florence-2 & AGPL-3.0 / MIT \\
+    Aria-UI & vision grounding & một điểm $[0,1000]$ & Có & Aria MoE (3.9B tham số hoạt động) & n/v \\
+    ELAM-7B & grounding + đánh giá & điểm + PASSED/FAILED & Có & Molmo-7B-D (Qwen2-7B) & Apache-2.0 \\
+    Jedi-3B/7B & vision grounding & một điểm & Có & 3B / 7B & n/v \\
     \bottomrule
   \end{tabular}\\[0.3em]
-  {\footnotesize $^\ast$ CPU qua backend UIED; backend OmniParser cần GPU để đạt tốc độ thực dụng.}
+  {\footnotesize $^\ast$ Chạy CPU qua UIED backend; OmniParser backend cần GPU để đạt tốc độ thực tế.}
 \end{table}
 
 % =====================================================================
 \chapter{Góc nhìn Khối Xây dựng}
 % =====================================================================
-\section{Cấp 1 --- hộp trắng VizDOM}
+\section{Cấp 1 --- whitebox của VizDOM}
 \begin{longtable}{@{}p{3.8cm}p{10.8cm}@{}}
 \toprule
 \textbf{Khối xây dựng} & \textbf{Trách nhiệm} \\
 \midrule
 \endhead
-\code{visual\_dom.cv} & Điều phối pipeline; OCR; phát hiện ký hiệu/màn hình; gói con \emph{detectors} cắm-thay được; bộ cố vấn SLM. \\
-\code{visual\_dom.capture} & CapturePort: strategy cơ sở, registry, built-in (windows/linux/android/camera), client gRPC, plugin người dùng. \\
-\code{visual\_dom.actuator} & ActuatorPort: strategy cơ sở, registry, built-in (desktop/android), client gRPC, plugin người dùng. \\
-\code{visual\_dom.hierarchy} & Bộ dựng phân cấp thô; bộ tinh chỉnh LLM tùy chọn. \\
-\code{visual\_dom.compiler} & Bộ biên dịch DOM: vai trò, cờ, bộ định vị, nhãn; schema. \\
-\code{visual\_dom.rpc} & Máy chủ gRPC cho phát hiện, chụp, tác động. \\
-\code{visual\_dom} (dùng chung) & Thứ tự đọc, logging, schema. \\
-\code{visual\_gui\_library} & Thư viện từ khóa Robot Framework (client mỏng trên chụp + tác động). \\
-tools & Trình xem PyQt5, bảng điều khiển Streamlit, công cụ gán nhãn. \\
+\code{visual\_dom.cv} & Điều phối pipeline; OCR; phát hiện symbol/screen; subpackage \emph{detectors} có thể thay thế; SLM advisor. \\
+\code{visual\_dom.capture} & CapturePort: strategy base, registry, các implementation tích hợp sẵn (windows/linux/android/camera), gRPC client và plugin của người dùng. \\
+\code{visual\_dom.actuator} & ActuatorPort: strategy base, registry, các implementation tích hợp sẵn (desktop/android), gRPC client và plugin của người dùng. \\
+\code{visual\_dom.hierarchy} & Coarse hierarchy builder; LLM refiner tùy chọn. \\
+\code{visual\_dom.compiler} & DOM compiler: role, flag, locator, label và schema. \\
+\code{visual\_dom.rpc} & Các gRPC server cho detector, capture và actuator. \\
+\code{visual\_dom} (dùng chung) & Reading order, logging và schema. \\
+\code{visual\_gui\_library} & Robot Framework keyword library, đóng vai trò thin client trên capture + actuator. \\
+tools & PyQt5 Viewer, Streamlit dashboard và công cụ annotation. \\
 \bottomrule
 \end{longtable}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\linewidth]{Component_Diagram.png}
-  \caption{Khối xây dựng cấp 1/2 và phụ thuộc. Chú giải: hộp tô màu là gói; hộp lồng
-  là gói con; mũi tên là ``phụ thuộc / gọi''. Ranh giới hệ thống: mọi thứ trừ đám mây
-  \emph{External} (bộ OCR, trọng số OmniParser, Ollama, YOLO).}
+  \caption{Các khối xây dựng cấp 1/2 và dependency giữa chúng. Chú giải: các hộp có
+  màu là package; các hộp lồng nhau là subpackage; mũi tên biểu diễn ``phụ thuộc vào /
+  gọi''. Biên hệ thống gồm mọi thành phần ngoại trừ đám mây \emph{External} gồm OCR
+  engine, weight của OmniParser, Ollama và YOLO.}
   \label{fig:component}
 \end{figure}
 
-\section{Cấp 2 --- khuôn mẫu cổng bị điều khiển}
-Mỗi cổng bị điều khiển (phát hiện, chụp, tác động) chia sẻ cùng cấu trúc nội bộ:
+\section{Cấp 2 --- mẫu driven port}
+Mỗi driven port (detector, capture, actuator) dùng chung một cấu trúc nội bộ:
 \begin{itemize}[leftmargin=1.4em]
-  \item một \textbf{strategy cơ sở} (phương thức trừu tượng: ví dụ \code{detect} /
-        \code{capture} / \code{tap+type+swipe});
-  \item một \textbf{registry} phơi bày \code{create\_X(name)}, \code{list\_X()},
+  \item một \textbf{strategy base} với các abstract method, chẳng hạn \code{detect} /
+        \code{capture} / \code{tap+type+swipe};
+  \item một \textbf{registry} cung cấp \code{create\_X(name)}, \code{list\_X()} và
         \code{auto\_select()};
-  \item \textbf{tự khám phá} nạp các built-in và bất kỳ plugin người dùng nào đặt
-        trong một thư mục quy ước;
-  \item một \textbf{strategy client gRPC} đăng ký dưới tên \code{grpc}, để một bộ
-        điều hợp từ xa được chọn hệt như một bộ cục bộ.
+  \item cơ chế \textbf{auto-discovery} import các implementation tích hợp sẵn và mọi
+        plugin người dùng được đặt trong thư mục quy ước;
+  \item một \textbf{gRPC client strategy} được đăng ký với tên \code{grpc}, nhờ đó
+        remote adapter được lựa chọn giống hệt local adapter.
 \end{itemize}
-Khuôn mẫu duy nhất này, lặp lại ba lần, là cơ chế đứng sau NFR1 và NFR2.
+Việc lặp lại một mẫu duy nhất cho ba port là cơ chế hiện thực hóa NFR1 và NFR2.
 
-\section{Cấp 2 --- nội bộ pipeline thị giác}
-Gói con \code{detectors} giữ giao diện \code{DetectorBackend}, một nhà máy registry,
-và các backend UIED/YOLO/OmniParser/gRPC; pipeline còn sở hữu các bước
-merge/split/NMS, hợp nhất thông minh, thứ tự đọc và rà soát SLM (Ch.~6).
+\section{Cấp 2 --- thành phần nội bộ của CV pipeline}
+Subpackage \code{detectors} chứa interface \code{DetectorBackend}, registry factory và
+các backend UIED/YOLO/OmniParser/gRPC; pipeline còn sở hữu các bước merge/split/NMS,
+smart-merge, reading-order và SLM review (Ch.~6).
 
 % =====================================================================
-\chapter{Góc nhìn Thời gian chạy}
+\chapter{Góc nhìn Runtime}
 % =====================================================================
-\section{Kịch bản 1 --- ảnh sang DOM cục bộ (đường thuận lợi)}
-Hình~\ref{fig:seq} minh họa một chu trình với bộ phát hiện OmniParser và bật rà soát
-SLM. Luồng chi tiết của pipeline ở Hình~\ref{fig:pipeline}.
+\section{Kịch bản 1 --- chuyển screenshot thành DOM cục bộ (happy path)}
+Hình~\ref{fig:seq} mô tả một chu kỳ sử dụng OmniParser detector và bật SLM review.
+Luồng chi tiết của pipeline được trình bày trong Hình~\ref{fig:pipeline}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\linewidth]{Sequence_Diagram.png}
-  \caption{Kịch bản 1: chụp (tùy chọn) $\rightarrow$ OCR $\rightarrow$ phát hiện có
-  tổng hợp OCR $\rightarrow$ làm sạch $\rightarrow$ thứ tự đọc $\rightarrow$ rà soát
-  SLM tùy chọn $\rightarrow$ phân cấp $\rightarrow$ DOM.}
+  \caption{Kịch bản runtime 1: capture tùy chọn $\rightarrow$ OCR $\rightarrow$
+  detection với OCR ensemble $\rightarrow$ clean-up $\rightarrow$ reading-order
+  $\rightarrow$ SLM review tùy chọn $\rightarrow$ hierarchy $\rightarrow$ DOM.}
   \label{fig:seq}
 \end{figure}
 
 \begin{figure}[H]
   \centering
   \includegraphics[height=0.82\textheight,width=\linewidth,keepaspectratio]{CV_Pipeline_Detail.png}
-  \caption{Kịch bản 1, luồng điều khiển chi tiết của \code{VisualDOMPipeline.process()},
-  gồm nhánh chọn bộ phát hiện và các quyết định hợp nhất thông minh / SLM có kiểm soát.}
+  \caption{Kịch bản runtime 1: luồng điều khiển chi tiết của
+  \code{VisualDOMPipeline.process()}, bao gồm nhánh lựa chọn detector mode và các quyết
+  định smart-merge / SLM có guard.}
   \label{fig:pipeline}
 \end{figure}
 
-\section{Kịch bản 2 --- chụp, phát hiện, tác động phân tán}
-Một lần chạy kiểm thử được điều phối trên một client trong khi: chụp chạy trên thiết
-bị cần kiểm thử (\code{grpc} chụp $\rightarrow$ dịch vụ chụp), phát hiện chạy trên máy
-GPU (\code{grpc} phát hiện $\rightarrow$ dịch vụ phát hiện mô hình nóng), và tác động
-chạy trên thiết bị hoặc bộ điều khiển cánh tay robot (\code{grpc} tác động
-$\rightarrow$ dịch vụ tác động). Tọa độ chuẩn hóa đi trên đường truyền tác động và
-được ánh xạ về không gian thiết bị ở phía máy chủ. Cấu trúc triển khai ở
+\section{Kịch bản 2 --- capture, detect và actuate phân tán}
+Một test run được điều phối trên client, trong khi capture chạy trên device under test
+(\code{grpc} capture $\rightarrow$ capture service), detection chạy trên GPU host
+(\code{grpc} detector $\rightarrow$ warm-model detector service), còn actuation chạy
+trên thiết bị hoặc robot-arm controller (\code{grpc} actuator $\rightarrow$ actuator
+service). Normalized coordinate được truyền qua actuator protocol và ánh xạ sang hệ tọa
+độ của thiết bị ở phía server. Topology triển khai được trình bày trong
 Hình~\ref{fig:arch}.
 
-\section{Kịch bản 3 --- các đường lỗi}
+\section{Kịch bản 3 --- các luồng lỗi}
 \begin{longtable}{@{}p{4.4cm}p{10.2cm}@{}}
 \toprule
-\textbf{Lỗi} & \textbf{Hành vi thiết kế} \\
+\textbf{Lỗi} & \textbf{Hành vi được thiết kế} \\
 \midrule
 \endhead
-Bộ phát hiện từ xa không tới được & Lời gọi client gRPC ném lỗi; CLI/trình xem hiển thị lỗi. Giảm nhẹ/dự phòng: chọn backend UIED tại chỗ (đổi cấu hình), không cần GPU hay mạng. \\
-Ảnh xấu tới dịch vụ & Máy chủ kiểm tra và trả trạng thái \code{INVALID\_ARGUMENT}/\code{INTERNAL} kèm thông báo; tiến trình máy chủ vẫn sống (một yêu cầu xấu không bao giờ làm sập nó). \\
-Bộ phát hiện phân mảnh quá mức & Hợp nhất thông minh dựa luật (bảo vệ tỉ lệ lấp đầy / ký tự phân tách / tương tác) và hợp nhất SLM có kiểm soát sửa phân mảnh; hợp nhất bị giới hạn vào ứng viên hình học nên các điều khiển khác nhau không bị gộp. \\
-OCR bỏ sót văn bản & Tổng hợp OCR đưa OCR có phóng đại của ta vào OmniParser để phục hồi từ bị sót (khử trùng lặp lấp khoảng trống). \\
-SLM/Ollama không sẵn có & Bước tinh chỉnh là tùy chọn; pipeline tiếp tục chỉ với kết quả CV. \\
+Không thể kết nối remote detector & Lời gọi gRPC client phát sinh exception; CLI/Viewer hiển thị lỗi. Biện pháp giảm thiểu/fallback: chọn UIED backend in-process bằng thay đổi cấu hình; backend này không cần GPU hoặc network. \\
+Ảnh không hợp lệ được gửi đến service & Server xác thực input và trả về trạng thái \code{INVALID\_ARGUMENT}/\code{INTERNAL} kèm thông báo; server process vẫn tiếp tục chạy, một request lỗi không làm sập service. \\
+Detector tạo quá nhiều phân đoạn & Rule-based smart-merge dựa trên fill-ratio / delimiter / interactable guard và guarded SLM merge sửa các phần tử bị phân mảnh; merge chỉ được phép trên các ứng viên đạt điều kiện geometry nên không hợp nhất các control riêng biệt. \\
+OCR bỏ sót text & OCR ensemble đưa kết quả upscaling OCR của VizDOM vào OmniParser để khôi phục các từ bị bỏ sót bằng gap-fill deduplication. \\
+SLM/Ollama không khả dụng & Refinement stage là tùy chọn; pipeline tiếp tục chỉ với kết quả CV. \\
 \bottomrule
 \end{longtable}
 
 % =====================================================================
 \chapter{Góc nhìn Triển khai}
 % =====================================================================
-\section{Phát triển / một máy}
-Mọi cổng chạy tại chỗ trong một tiến trình Python; không dịch vụ nào được khởi động.
-Đây là mặc định và là chế độ dùng để kiểm thử và chấm điểm.
+\section{Môi trường phát triển / một máy}
+Tất cả port chạy in-process trong cùng một Python process; không service nào được khởi
+động. Đây là chế độ mặc định, đồng thời là chế độ dùng cho kiểm thử và đánh giá đồ án.
 
-\section{Phân tán}
+\section{Triển khai phân tán}
 \begin{figure}[H]
   \centering
   \includegraphics[width=\linewidth]{Architecture.png}
-  \caption{Góc nhìn triển khai / cổng-và-bộ-điều-hợp. Bộ điều hợp điều khiển (trên)
-  đi vào lõi; cổng bị điều khiển (dải giữa) gắn với bộ điều hợp cục bộ hoặc gRPC từ
-  xa; dịch vụ gRPC chạy trên (các) máy GPU và bộ điều khiển SUT/cánh tay robot (dưới).
-  Chú giải: hộp bo góc là thành phần; vòng tròn giao diện là cổng; hộp 3-D là nút
-  triển khai; cạnh gán nhãn gRPC/HTTP là lời gọi mạng.}
+  \caption{Góc nhìn triển khai / ports-and-adapters. Driving adapter ở phía trên đi
+  vào core; driven port ở dải giữa liên kết với local adapter hoặc remote gRPC adapter;
+  các gRPC service chạy trên GPU host và SUT/robot-arm controller ở phía dưới. Chú giải:
+  hộp bo góc là component; vòng tròn interface là port; hộp 3-D là deployment node;
+  cạnh có nhãn gRPC/HTTP là network call.}
   \label{fig:arch}
 \end{figure}
 
 \begin{longtable}{@{}p{4.2cm}p{4.2cm}p{6.0cm}@{}}
 \toprule
-\textbf{Nút} & \textbf{Chạy} & \textbf{Ghi chú} \\
+\textbf{Node} & \textbf{Thành phần chạy trên node} & \textbf{Ghi chú} \\
 \midrule
 \endhead
-Client / điều phối & CLI hoặc Robot Framework + lõi nghiệp vụ & Chọn chiến lược \code{grpc}; không giữ mô hình nặng. \\
-Máy GPU & Dịch vụ gRPC phát hiện & OmniParser/YOLO nóng; \code{:50051}. \\
-Máy/thiết bị SUT & Dịch vụ gRPC chụp + tác động & \code{:50053} / \code{:50054}; nơi ứng dụng cần kiểm thử chạy. \\
-Bộ điều khiển cánh tay robot & Dịch vụ gRPC tác động (plugin cánh tay robot) & Áp dụng hiệu chỉnh ảnh$\rightarrow$vật lý. \\
-Máy LM & Ollama & HTTP; tinh chỉnh tùy chọn. \\
+Client / orchestrator & CLI hoặc Robot Framework + domain core & Chọn các strategy \code{grpc}; không chứa model nặng. \\
+GPU host & Detector gRPC service & Warm OmniParser/YOLO; \code{:50051}. \\
+SUT host / thiết bị & Capture + Actuator gRPC service & \code{:50053} / \code{:50054}; nơi application under test chạy. \\
+Robot-arm controller & Actuator gRPC service với robot-arm plugin & Áp dụng phép calibration từ ảnh sang tọa độ vật lý. \\
+LM host & Ollama & HTTP; dùng cho refinement tùy chọn. \\
 \bottomrule
 \end{longtable}
 
-Khả quan sát: một logger tệp xoay vòng dùng chung (\code{logging\_utils}) với id
-tương quan trên mỗi yêu cầu gRPC; thời gian mỗi yêu cầu được mỗi dịch vụ ghi log.
+Khả năng quan sát: dùng chung rotating file logger (\code{logging\_utils}), gắn correlation
+ID cho từng gRPC request; mỗi service ghi log thời gian xử lý theo request.
 
 % =====================================================================
-\chapter{Khái niệm Xuyên suốt}
+\chapter{Các Khái niệm Xuyên suốt}
 % =====================================================================
 \begin{description}[leftmargin=0pt,style=nextline]
-  \item[Khả mở rộng (strategy + registry + tự khám phá)] Khái niệm quan trọng nhất;
-    xem Ch.~5. Một plugin là một tệp kế thừa strategy cơ sở, tự nạp theo tên.
-    \emph{Lưu ý an toàn:} khám phá nạp mã plugin --- chỉ dùng plugin tin cậy.
-  \item[Hợp đồng tọa độ chuẩn hóa] Hành động tác động dùng tọa độ trong $[0,1]$ cộng
-    kích thước ảnh nguồn; mỗi thiết bị ánh xạ về không gian của nó (desktop $\times$
-    màn hình, android $\times$ độ phân giải đầu vào, cánh tay robot qua homography).
-    Giữ bộ điều phối và giao thức độc lập với độ phân giải.
-  \item[Dịch vụ mô hình nóng] Mô hình nặng nạp một lần mỗi tiến trình dịch vụ; client
-    không trạng thái và rẻ.
-  \item[Xử lý lỗi] Dịch vụ không bao giờ sập vì một yêu cầu xấu; trả trạng thái gRPC
-    và tiếp tục phục vụ. Các bước tùy chọn (SLM, refiner) suy giảm êm.
-  \item[Cấu hình] Chọn chiến lược theo tên từ cờ CLI / tham số thư viện / biến môi
-    trường; đích cho cổng từ xa là chuỗi host:port.
-  \item[Lưu trữ] Mỗi lần phân tích ghi vào thư mục phiên gắn dấu thời gian (ảnh, kết
-    quả CV, DOM, siêu dữ liệu).
-  \item[Giấy phép] Nghĩa vụ AGPL phát sinh khi backend OmniParser được phục vụ qua
-    mạng; UIED là dự phòng không dính AGPL.
-  \item[Hoạt động ngoại tuyến] Mã mô hình ngoài được đóng gói kèm và \emph{ghim} bằng
-    script cài đặt; tài liệu kết xuất UML ngoại tuyến từ jar đóng gói kèm.
+  \item[Khả năng mở rộng (strategy + registry + auto-discovery)] Đây là khái niệm quan
+    trọng nhất; xem Ch.~5. Một plugin là một file kế thừa strategy base và được tự động
+    tải theo tên. \emph{Lưu ý bảo mật:} discovery thực hiện import mã plugin --- chỉ sử
+    dụng plugin đáng tin cậy.
+  \item[Hợp đồng normalized coordinate] Các action của actuator dùng tọa độ trong
+    $[0,1]$ cùng kích thước ảnh nguồn; mỗi thiết bị ánh xạ sang không gian riêng
+    (desktop nhân theo độ phân giải màn hình, Android nhân theo input resolution,
+    robot arm dùng homography). Cơ chế này giữ orchestrator và wire protocol độc lập
+    với độ phân giải.
+  \item[Warm-model service] Model nặng chỉ được tải một lần trong mỗi service process;
+    client là stateless và nhẹ.
+  \item[Xử lý lỗi] Service không bị sập bởi một request lỗi; service trả về gRPC status
+    và tiếp tục phục vụ. Các bước tùy chọn như SLM và refiner được graceful degradation.
+  \item[Cấu hình] Strategy được lựa chọn theo tên từ CLI flag, library argument hoặc
+    environment variable; target cho remote port là chuỗi host:port.
+  \item[Lưu trữ] Kết quả phân tích được ghi vào session folder có timestamp, gồm
+    screenshot, kết quả CV, DOM và metadata.
+  \item[Giấy phép] Nghĩa vụ AGPL được áp dụng khi OmniParser backend được cung cấp qua
+    network; UIED là phương án fallback không chịu AGPL.
+  \item[Hoạt động offline] Mã model bên ngoài được vendor và \emph{pin} bằng setup
+    script; tài liệu render UML offline từ file jar được vendor sẵn.
 \end{description}
 
 % =====================================================================
-\chapter{Quyết định Kiến trúc}
+\chapter{Các Quyết định Kiến trúc}
 % =====================================================================
-Các quyết định được ghi dưới dạng ADR trong \code{docs/adr/}. Tập có ý nghĩa kiến
-trúc (kèm trạng thái hiện tại) ở dưới; lưu ý ADR-017 vẫn \emph{Proposed} --- một điểm
-lưu ý về kiểm chứng (Ch.~11).
+Các quyết định được ghi dưới dạng ADR trong \code{docs/adr/}. Danh sách các quyết định
+có ý nghĩa kiến trúc cùng trạng thái hiện tại được trình bày dưới đây; lưu ý ADR-017 vẫn
+đang ở trạng thái \emph{Proposed}, đây là một lưu ý khi xác minh ở Ch.~11.
 
 \begin{longtable}{@{}p{1.4cm}p{7.8cm}p{2.4cm}@{}}
 \toprule
 \textbf{ADR} & \textbf{Quyết định} & \textbf{Trạng thái} \\
 \midrule
 \endhead
-015 & Backend phát hiện cắm-thay được (UIED/YOLO/OmniParser) & Accepted \\
-016 & Sắp xếp thứ tự đọc và nhãn phần tử & Accepted \\
-017 & Kiến trúc lục giác phân tán với dịch vụ mô hình gRPC & \textbf{Proposed} \\
-018 & Chụp màn hình cắm-thay được (strategy + dịch vụ) & Accepted \\
-019 & Tác động đầu vào cắm-thay được (strategy + dịch vụ) & Accepted \\
+015 & Detector backend có thể thay thế (UIED/YOLO/OmniParser) & Đã chấp thuận \\
+016 & Sắp xếp reading order và label phần tử & Đã chấp thuận \\
+017 & Kiến trúc lục giác phân tán với gRPC model service & \textbf{Đề xuất} \\
+018 & Screenshot capture có thể thay thế (strategy + service) & Đã chấp thuận \\
+019 & Input actuation có thể thay thế (strategy + service) & Đã chấp thuận \\
 \bottomrule
 \end{longtable}
 
-\section{ADR mẫu (rút gọn): ADR-019 Tác động đầu vào cắm-thay được}
-\textbf{Bối cảnh.} Tác động đầu vào từng nằm trong các adapter Robot Framework, trùng
-lặp với chụp và không có điểm cắm plugin (ví dụ một cánh tay robot). \textbf{Driver.}
-NFR1 (khả sửa đổi), NFR2 (khả triển khai). \textbf{Quyết định.} Giới thiệu một
-\code{ActuatorPort} --- bản sinh đôi phía-ghi của \code{CapturePort} --- với một
-strategy cơ sở, một registry có tự khám phá, các built-in dời từ adapter RF, một hợp
-đồng tọa độ chuẩn hóa và một dịch vụ gRPC tùy chọn. \textbf{Phương án.} (a) để đầu vào
-trong RF (không có điểm cắm, chụp vẫn trùng lặp); (b) API tác động cấp-phần-tử (kéo
-kiến thức DOM vào tầng thiết bị); (c) đường truyền tọa độ tuyệt đối (buộc bộ điều phối
-biết độ phân giải mỗi thiết bị). \textbf{Hệ quả.} Loại bỏ trùng lặp; một thiết bị
-cánh tay robot/card thu hình/serial là một plugin một-tệp; thư viện RF trở thành
-client mỏng. Đánh đổi: hiệu chỉnh ảnh$\rightarrow$vật lý là việc thực sự, cô lập trong
-plugin; tác động vật lý có nghĩa vụ an toàn mà plugin phải thực thi.
+\section{ADR mẫu (rút gọn): ADR-019 --- Input actuation có thể thay thế}
+\textbf{Bối cảnh.} Input actuation trước đây nằm trong các Robot Framework adapter,
+làm trùng lặp capture và không tạo điểm mở rộng cho plugin, chẳng hạn robot arm.
+\textbf{Driver.} NFR1 (khả năng sửa đổi), NFR2 (khả năng triển khai).
+\textbf{Quyết định.} Giới thiệu \code{ActuatorPort} --- thành phần phía ghi tương ứng
+với \code{CapturePort} --- gồm strategy base, registry có auto-discovery, các
+implementation tích hợp sẵn được chuyển khỏi RF adapter, hợp đồng normalized coordinate
+và gRPC service tùy chọn. \textbf{Phương án thay thế.} (a) giữ input trong RF: không có
+điểm mở rộng và capture tiếp tục bị trùng lặp; (b) actuator API ở cấp element: kéo kiến
+thức về DOM xuống device layer; (c) truyền absolute pixel: buộc orchestrator phải biết
+độ phân giải của từng thiết bị. \textbf{Hệ quả.} Loại bỏ trùng lặp; robot arm, capture
+card hoặc serial device có thể được tích hợp bằng plugin một file; RF library trở thành
+thin client. Trade-off: calibration từ ảnh sang không gian vật lý là công việc thực tế
+và được cô lập trong plugin; physical actuation kéo theo các nghĩa vụ an toàn mà plugin
+phải bảo đảm.
 
 % =====================================================================
-\chapter{Yêu cầu Chất lượng}
+\chapter{Các Yêu cầu Chất lượng}
 % =====================================================================
-\section{Cây chất lượng (các chất lượng hàng đầu)}
-Khả sửa đổi và Khả triển khai là gốc (xem xếp hạng driver), tiếp đến Khả kiểm thử,
-rồi Độ chính xác và Hiệu năng.
+\section{Cây chất lượng (các thuộc tính chính)}
+Khả năng sửa đổi và khả năng triển khai là hai gốc của cây chất lượng theo nhóm driver
+được xếp hạng, tiếp theo là khả năng kiểm thử, sau đó đến độ chính xác và hiệu năng.
 
-\section{Kịch bản thuộc tính chất lượng}
+\section{Các kịch bản thuộc tính chất lượng}
 \begin{longtable}{@{}p{2.2cm}p{12.4cm}@{}}
 \toprule
-\multicolumn{2}{@{}l}{\textbf{Q-01 --- Khả sửa đổi}} \\
+\multicolumn{2}{@{}l}{\textbf{Q-01 --- Khả năng sửa đổi}} \\
 \midrule
 \endfirsthead
-Driver & Thêm một backend phát hiện mới. \\
-Kích thích & Một lập trình viên cần một bộ phát hiện mới (ví dụ một mô hình định vị khác). \\
-Môi trường & Phát triển, lõi hiện có không đụng đến. \\
-Tạo tác & Registry \code{visual\_dom.cv.detectors} + một tệp backend mới. \\
-Phản ứng & Backend được khám phá và chọn được theo tên. \\
-Đo phản ứng & 1 tệp mới + 1 dòng registry; \textbf{0} sửa lõi; cổng có $\geq 2$ hiện thực (hiện 4: UIED/YOLO/OmniParser/gRPC). \\
+Driver & Bổ sung một detection backend mới. \\
+Kích thích & Developer cần một detector mới, chẳng hạn một grounding model khác. \\
+Môi trường & Giai đoạn phát triển; core hiện có không thay đổi. \\
+Artifact & Registry \code{visual\_dom.cv.detectors} + một file backend mới. \\
+Phản hồi & Backend được phát hiện và có thể lựa chọn theo tên. \\
+Thước đo phản hồi & 1 file mới + 1 dòng registry; \textbf{0} chỉnh sửa core; port có $\geq 2$ implementation, hiện tại là 4: UIED/YOLO/OmniParser/gRPC. \\
 \bottomrule
 \end{longtable}
 
 \begin{longtable}{@{}p{2.2cm}p{12.4cm}@{}}
 \toprule
-\multicolumn{2}{@{}l}{\textbf{Q-02 --- Khả triển khai}} \\
+\multicolumn{2}{@{}l}{\textbf{Q-02 --- Khả năng triển khai}} \\
 \midrule
 \endhead
-Kích thích & Chuyển chụp về thiết bị và phát hiện về máy GPU. \\
-Môi trường & Ba máy trên một mạng LAN. \\
-Tạo tác & Cổng chụp/phát hiện + dịch vụ gRPC. \\
-Phản ứng & Cùng một điều phối chạy, chọn chiến lược \code{grpc}. \\
-Đo phản ứng & Chỉ đổi cấu hình (tên chiến lược + host:port); \textbf{0} đổi mã; vòng đầu-cuối thành công. \\
+Kích thích & Di chuyển capture sang thiết bị và detection sang GPU host. \\
+Môi trường & Ba máy trong cùng LAN. \\
+Artifact & Capture/detector port + gRPC service. \\
+Phản hồi & Cùng một orchestration tiếp tục chạy bằng cách chọn strategy \code{grpc}. \\
+Thước đo phản hồi & Chỉ thay đổi cấu hình gồm tên strategy và host:port; \textbf{0} thay đổi code; round-trip end-to-end thành công. \\
 \bottomrule
 \end{longtable}
 
 \begin{longtable}{@{}p{2.2cm}p{12.4cm}@{}}
 \toprule
-\multicolumn{2}{@{}l}{\textbf{Q-03 --- Hiệu năng (mô hình nóng)}} \\
+\multicolumn{2}{@{}l}{\textbf{Q-03 --- Hiệu năng (warm model)}} \\
 \midrule
 \endhead
-Kích thích & Một client gửi nhiều yêu cầu phát hiện liên tục. \\
-Môi trường & Dịch vụ phát hiện trên một máy GPU. \\
-Tạo tác & Dịch vụ gRPC phát hiện. \\
-Phản ứng & Mô hình nạp một lần và tái dùng. \\
-Đo phản ứng & Nạp mô hình đúng một lần mỗi vòng đời dịch vụ; các yêu cầu sau chỉ tốn suy luận. \\
+Kích thích & Client gửi liên tiếp nhiều detection request. \\
+Môi trường & Detector service chạy trên GPU host. \\
+Artifact & Detector gRPC service. \\
+Phản hồi & Model được tải một lần và được tái sử dụng. \\
+Thước đo phản hồi & Model chỉ được tải đúng một lần trong vòng đời service; các request tiếp theo chỉ chịu chi phí inference. \\
 \bottomrule
 \end{longtable}
 
 \begin{longtable}{@{}p{2.2cm}p{12.4cm}@{}}
 \toprule
-\multicolumn{2}{@{}l}{\textbf{Q-04 --- Khả kiểm thử}} \\
+\multicolumn{2}{@{}l}{\textbf{Q-04 --- Khả năng kiểm thử}} \\
 \midrule
 \endhead
-Kích thích & Chạy toàn pipeline và từ khóa RF trong CI trên một laptop. \\
-Môi trường & Không GPU, không mạng. \\
-Tạo tác & Lõi + UIED + chụp static-image + bộ tác động ghi lại. \\
-Phản ứng & Sinh ra một DOM và từ khóa hành động mà không cần I/O thực. \\
-Đo phản ứng & Lần chạy đầy đủ hoàn tất với không phụ thuộc GPU/mạng. \\
+Kích thích & Chạy toàn bộ pipeline và RF keyword trong CI trên laptop. \\
+Môi trường & Không GPU, không network. \\
+Artifact & Core + UIED + static-image capture + recording actuator. \\
+Phản hồi & DOM được tạo và keyword thực hiện action mà không cần I/O thật. \\
+Thước đo phản hồi & Full run hoàn tất mà không phụ thuộc GPU/network. \\
 \bottomrule
 \end{longtable}
 
@@ -585,24 +598,24 @@ Phản ứng & Sinh ra một DOM và từ khóa hành động mà không cần I
 \midrule
 \endhead
 Kích thích & Phát hiện phần tử trên các UI đại diện. \\
-Môi trường & Tập điểm chuẩn gán nhãn. \\
-Tạo tác & Bộ phát hiện + làm sạch + tinh chỉnh. \\
-Phản ứng & Phát hiện khớp nhãn chuẩn. \\
-Đo phản ứng & Mục tiêu F1 $\geq 0.80$, mIoU $\geq 0.60$. \emph{Đo được (tổng hợp, 44 ảnh, gộp):} F1 $0.51$ (UIED) / $0.58$ (OmniParser); chưa đạt mục tiêu F1, đạt mIoU (0.67--0.68). Recall điều khiển thao tác được (IoU$\geq$0.5): OmniParser nút 1.00, input 0.99, biểu tượng 0.67; UIED nút 0.82, input 0.95, hộp kiểm 0.68. Khả bấm trúng (center-hit): OmniParser 0.97, UIED 0.89. \\
+Môi trường & Benchmark dataset có gán nhãn. \\
+Artifact & Detector + clean-up + refinement. \\
+Phản hồi & Detection khớp với ground truth. \\
+Thước đo phản hồi & Mục tiêu F1 $\geq 0.80$, mIoU $\geq 0.60$. \emph{Kết quả đo trên tập synthetic gồm 44 ảnh, tính gộp:} F1 $0.51$ (UIED) / $0.58$ (OmniParser); chưa đạt mục tiêu F1, đạt mục tiêu mIoU (0.67--0.68). Recall trên actionable control với IoU$\geq$0.5: OmniParser button 1.00, input 0.99, icon 0.67; UIED button 0.82, input 0.95, checkbox 0.68. Click-targetability theo center-hit: OmniParser 0.97, UIED 0.89. \\
 \bottomrule
 \end{longtable}
 
-\section{Kế hoạch kiểm chứng}
+\section{Kế hoạch xác minh}
 \begin{longtable}{@{}p{2.0cm}p{5.4cm}p{4.4cm}p{2.2cm}@{}}
 \toprule
-\textbf{Kịch bản} & \textbf{Cách kiểm chứng} & \textbf{Chấp nhận} & \textbf{Trạng thái} \\
+\textbf{Kịch bản} & \textbf{Cách xác minh} & \textbf{Tiêu chí chấp nhận} & \textbf{Trạng thái} \\
 \midrule
 \endhead
-Q-01 & Đếm hiện thực mỗi cổng; thêm một backend trong test & $\geq 2$ hiện thực; 0 sửa lõi & \textbf{Đã kiểm chứng} (4 phát hiện, 5 chụp, 3 tác động) \\
-Q-02 & Vòng gRPC đầu-cuối qua các tiến trình & chỉ cấu hình; vòng OK & \textbf{Đã kiểm chứng} về chức năng (chụp giống hệt từng điểm ảnh; tác động ánh xạ chính xác; phát hiện tái dùng nóng) \\
-Q-03 & Đo số lần nạp mô hình trong dịch vụ & số lần nạp = 1 & \textbf{Đã kiểm chứng} về chức năng \\
-Q-04 & Chạy pipeline + RF với bộ điều hợp CPU/static/ghi & hoàn tất, không I/O & \textbf{Đã kiểm chứng} \\
-Q-05 & Chỉ số phát hiện trên tập tổng hợp (bộ khung) & F1 $\geq 0.80$, mIoU $\geq 0.60$ & \textbf{Đo được}: F1 0.58, mIoU 0.68; chưa đạt mục tiêu F1; OmniParser center-hit thao tác được 0.97 (R-04) \\
+Q-01 & Đếm implementation trên từng port; thêm một backend trong test & $\geq 2$ implementation; 0 chỉnh sửa core & \textbf{Đã xác minh} (4 detector, 5 capture, 3 actuator) \\
+Q-02 & Round-trip gRPC end-to-end qua nhiều process & chỉ thay đổi cấu hình; round-trip thành công & \textbf{Đã xác minh về chức năng} (capture cho ảnh giống hệt theo pixel; actuator mapping chính xác; detector tái sử dụng warm model) \\
+Q-03 & Instrument số lần tải model trong service & số lần tải = 1 & \textbf{Đã xác minh về chức năng} \\
+Q-04 & Chạy pipeline + RF với CPU/static/recording adapter & hoàn tất, không I/O thật & \textbf{Đã xác minh} \\
+Q-05 & Đo detection metric trên tập synthetic bằng evaluation harness & F1 $\geq 0.80$, mIoU $\geq 0.60$ & \textbf{Đã đo}: F1 0.58, mIoU 0.68; chưa đạt mục tiêu F1; actionable center-hit của OmniParser đạt 0.97 (R-04) \\
 \bottomrule
 \end{longtable}
 
@@ -611,51 +624,51 @@ Q-05 & Chỉ số phát hiện trên tập tổng hợp (bộ khung) & F1 $\geq 
 % =====================================================================
 \begin{longtable}{@{}p{1.2cm}p{5.0cm}p{2.0cm}p{5.6cm}@{}}
 \toprule
-\textbf{ID} & \textbf{Rủi ro / Nợ} & \textbf{Tác động / K.n.} & \textbf{Giảm nhẹ} \\
+\textbf{ID} & \textbf{Rủi ro / Nợ kỹ thuật} & \textbf{Tác động / Khả năng xảy ra} & \textbf{Biện pháp giảm thiểu} \\
 \midrule
 \endhead
-R-01 & ADR-017 (gRPC phân tán) đang \emph{Proposed}, nhưng bằng chứng NFR2 dựa vào nó & Cao / -- & Chấp nhận ADR-017 sau rà soát, hoặc hạ tuyên bố khả triển khai xuống ``đã minh chứng, chưa phê chuẩn''. \\
-R-02 & Kênh gRPC chưa xác thực / chưa mã hóa & Cao / TB & Chỉ dùng LAN hiện tại; thêm TLS + xác thực (theo dõi tiếp). \\
-R-03 & Tự khám phá plugin chạy mã người dùng; một bộ tác động có thể di chuyển cánh tay vật lý & Cao / Thấp & Chính sách plugin tin cậy; ghi nghĩa vụ an toàn (giới hạn, e-stop) là trách nhiệm plugin. \\
-R-04 & F1 dựa IoU tổng thể dưới mục tiêu (0.58 vs 0.80); một chỉ số IoU đơn che giấu việc cả hai bộ phát hiện đều bấm-trúng-được cao & TB / Cao & Báo cáo center-hit cùng IoU; thêm tập gán nhãn thực tế; xem lại liệu mục tiêu F1 0.80 có phải mục tiêu vận hành đúng. \\
-R-05 & Phân mảnh quá mức trên UI thực nhiều dải màu & TB / TB & Hợp nhất thông minh + SLM có kiểm soát; tiếp tục tinh chỉnh. \\
-D-01 & Chỉ số chỉ phủ phát hiện phần tử + OCR (nhãn chuẩn thiếu cây / bộ định vị) & Thấp / -- & Trục phân cấp + bộ định vị chờ nhãn chuẩn dạng cây. \\
-D-02 & Mã registry/khám phá trùng lặp trên 3 cổng & Thấp / -- & Tách một lớp registry-plugin dùng chung. \\
+R-01 & ADR-017 về gRPC phân tán đang ở trạng thái \emph{Proposed}, nhưng bằng chứng cho NFR2 lại dựa trên quyết định này & Cao / -- & Chấp thuận ADR-017 sau khi review, hoặc hạ mức tuyên bố về khả năng triển khai thành ``đã chứng minh, chưa được phê chuẩn''. \\
+R-02 & Các kênh gRPC chưa được xác thực hoặc mã hóa & Cao / Trung bình & Hiện chỉ dùng trong LAN; bổ sung TLS + authentication trong hạng mục tiếp theo. \\
+R-03 & Plugin auto-discovery thực thi code của người dùng; actuator có thể điều khiển robot arm vật lý & Cao / Thấp & Chính sách chỉ dùng plugin đáng tin cậy; ghi rõ an toàn như giới hạn vùng hoạt động và e-stop là trách nhiệm của plugin. \\
+R-04 & F1 tổng hợp dựa trên IoU thấp hơn mục tiêu (0.58 so với 0.80); một metric IoU duy nhất che khuất việc cả hai detector đều xác định click target tốt & Trung bình / Cao & Báo cáo center-hit cùng IoU; bổ sung tập dữ liệu thực tế có gán nhãn; xem xét lại liệu mục tiêu F1 0.80 có phải mục tiêu vận hành phù hợp hay không. \\
+R-05 & Over-segmentation trên UI thực tế có nhiều gradient & Trung bình / Trung bình & Smart-merge + guarded SLM; tiếp tục tinh chỉnh. \\
+D-01 & Metric hiện chỉ bao phủ element detection + OCR vì ground truth chưa có tree / locator & Thấp / -- & Các trục hierarchy + locator cần ground truth có cấu trúc cây. \\
+D-02 & Code registry/discovery bị lặp lại trên ba port & Thấp / -- & Tách một plugin-registry base dùng chung. \\
 \bottomrule
 \end{longtable}
 
-\section{Phát hiện D-CAR (rà soát theo quyết định)}
+\section{Kết quả D-CAR (review tập trung vào quyết định)}
 \begin{longtable}{@{}p{4.6cm}p{5.0cm}p{4.4cm}@{}}
 \toprule
 \textbf{Quan sát} & \textbf{Ảnh hưởng} & \textbf{Hành động} \\
 \midrule
 \endhead
-NFR2 truy về ADR-017, vốn \emph{Proposed} chứ không \emph{Accepted}. & Một tuyên bố driver hàng đầu dựa trên một quyết định chưa phê chuẩn. & Phê chuẩn ADR-017 hoặc phát biểu lại là chỉ-minh-chứng. (R-01) \\
-Phân tán đã hiện thực nhưng quyết định an toàn là ngầm (kênh không bảo mật, chưa từng là ADR). & Quyết định ẩn; người rà soát không thấy được đánh đổi. & Viết một ADR cho an toàn truyền tải; thêm TLS. (R-02) \\
-Khả sửa đổi được \emph{tuyên bố} và \emph{minh chứng} (4/5/3 hiện thực). & Tuyên bố mạnh, kiểm chứng được. & Giữ số đếm hiện thực được tái sinh từ repo. \\
-F1 IoU$\geq$0.5 (0.58) dưới mục tiêu, nhưng center-hit cho thấy cả hai bộ phát hiện định vị tốt điều khiển thao tác được (OmniParser 0.97, UIED 0.89). & Một chỉ số IoU đơn đánh giá thấp tính hữu dụng vận hành. & Báo cáo center-hit + IoU; thêm tập thực tế; xem lại mục tiêu F1. (R-04) \\
+NFR2 truy vết đến ADR-017, nhưng ADR này đang ở trạng thái \emph{Proposed} thay vì \emph{Accepted}. & Tuyên bố gắn với một driver quan trọng dựa trên quyết định chưa được phê chuẩn. & Phê chuẩn ADR-017 hoặc diễn đạt lại rằng khả năng này mới được chứng minh. (R-01) \\
+Cơ chế phân tán đã được triển khai nhưng quyết định bảo mật còn ngầm định: dùng kênh không an toàn và chưa có ADR. & Quyết định bị ẩn; reviewer không nhìn thấy trade-off. & Viết ADR cho transport security và bổ sung TLS. (R-02) \\
+Khả năng sửa đổi vừa được tuyên bố, vừa được chứng minh bằng số implementation 4/5/3. & Tuyên bố mạnh và có thể xác minh. & Tiếp tục tự động cập nhật số implementation từ repository. \\
+F1 tại IoU$\geq$0.5 là 0.58, thấp hơn mục tiêu, nhưng center-hit cho thấy cả hai detector đều định vị tốt actionable control (OmniParser 0.97, UIED 0.89). & Một metric IoU duy nhất đánh giá thấp tính hữu dụng trong vận hành. & Báo cáo center-hit cùng IoU; bổ sung tập dữ liệu thực tế; xem xét lại mục tiêu F1. (R-04) \\
 \bottomrule
 \end{longtable}
 
 % =====================================================================
-\chapter{Thuật ngữ}
+\chapter{Bảng Thuật ngữ}
 % =====================================================================
 \begin{longtable}{@{}p{3.8cm}p{10.8cm}@{}}
 \toprule
 \textbf{Thuật ngữ} & \textbf{Định nghĩa} \\
 \midrule
 \endhead
-Visual DOM & Cây JSON tương tự UI Automator (khung bao, vai trò, văn bản, nhãn, bộ định vị, phân cấp) tổng hợp từ một ảnh chụp. \\
-Port / Adapter & Ranh giới phụ thuộc trừu tượng (port) và hiện thực cụ thể của nó (adapter), theo kiến trúc lục giác. \\
-Cổng bị điều khiển & Cổng mà lõi \emph{gọi} (Detector, Ocr, Refiner, Capture, Actuator). \\
-Strategy & Một hiện thực hoán đổi được, chọn theo tên lúc chạy. \\
-Registry & Nhà máy + cơ chế khám phá tìm và tạo các strategy. \\
-Mô hình nóng & Mô hình giữ nạp trong một tiến trình dịch vụ tồn tại lâu để khấu hao chi phí nạp. \\
-Tọa độ chuẩn hóa & Tọa độ trong $[0,1]$ của chiều rộng/cao ảnh, ánh xạ về không gian thiết bị bởi mỗi bộ tác động. \\
-UIED & Bộ phát hiện phần tử CPU cổ điển, không phụ thuộc thư viện (đường cơ sở)~\cite{xie2020uied}. \\
-OmniParser & Bộ phát hiện học máy: phát hiện biểu tượng YOLO + chú thích Florence-2 + OCR. \\
-SLM / VLM & Mô hình ngôn ngữ / thị giác nhỏ dùng để rà soát phần tử tùy chọn. \\
-Homography & Ánh xạ chiếu 3$\times$3 từ điểm ảnh sang tọa độ vật lý (hiệu chỉnh cánh tay robot). \\
+Visual DOM & Cây JSON tương tự UI Automator gồm bounds, role, text, label, locator và hierarchy, được tổng hợp từ screenshot. \\
+Port / Adapter & Biên dependency trừu tượng (port) và implementation cụ thể của nó (adapter), theo kiến trúc lục giác. \\
+Driven port & Port được core \emph{gọi}, gồm Detector, Ocr, Refiner, Capture và Actuator. \\
+Strategy & Implementation có thể thay thế, được lựa chọn theo tên tại runtime. \\
+Registry & Cơ chế factory + discovery dùng để tìm và khởi tạo strategy. \\
+Warm model & Model được giữ trong trạng thái đã tải bên trong service process sống lâu để phân bổ chi phí tải model cho nhiều request. \\
+Normalized coordinate & Tọa độ trong $[0,1]$ theo chiều rộng/chiều cao ảnh, được mỗi actuator ánh xạ sang không gian thiết bị. \\
+UIED & CPU element detector cổ điển, không yêu cầu dependency đặc biệt, dùng làm baseline~\cite{xie2020uied}. \\
+OmniParser & Detector học máy: YOLO icon detection + caption Florence-2 + OCR. \\
+SLM / VLM & Small language model / vision-language model được dùng để review phần tử ở bước tùy chọn. \\
+Homography & Phép biến đổi chiếu $3\times3$ từ pixel ảnh sang tọa độ vật lý, dùng để calibration robot arm. \\
 \bottomrule
 \end{longtable}
 

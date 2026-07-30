@@ -1,12 +1,12 @@
 # Build the VizDOM reports to PDF with XeLaTeX.
 #   powershell -ExecutionPolicy Bypass -File build.ps1            # builds all three
-#   powershell -ExecutionPolicy Bypass -File build.ps1 main_en    # builds one
+#   powershell -ExecutionPolicy Bypass -File build.ps1 vizdom_report_en   # builds one
 param([string]$doc = "all")
 
 $ErrorActionPreference = "Stop"
 Set-Location $PSScriptRoot
 
-$docs = if ($doc -eq "all") { @("main_en", "main_vi", "arc42_en", "arc42_vi") } else { @($doc) }
+$docs = if ($doc -eq "all") { @("vizdom_report_en", "vizdom_report_vi", "vizdom_architecture_en", "vizdom_architecture_vi") } else { @($doc) }
 
 foreach ($d in $docs) {
     Write-Host "=== Building $d ===" -ForegroundColor Cyan

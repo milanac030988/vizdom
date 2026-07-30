@@ -53,7 +53,7 @@ thể thay thế, chạy trong cùng process hoặc dưới dạng dịch vụ g
 hệ thống hỗ trợ cả những phương án triển khai khác thường như chụp màn hình vật lý
 bằng camera và thao tác bằng cánh tay robot. Một thư viện keyword cho Robot
 Framework cung cấp DOM được sinh ra để phục vụ tự động hóa kiểm thử GUI trong thực
-tế. Báo cáo này được nộp theo hình thức đồ án ứng dụng Method-3: đóng góp chính là
+tế. Báo cáo này được thực hiện theo Phương thức 3: đóng góp chính là
 một giải pháp kỹ thuật kết hợp các building block hiện có thành hệ thống hoạt động
 được, có khả năng mở rộng và triển khai linh hoạt, thay vì đề xuất một thuật toán
 học máy mới.
@@ -104,7 +104,7 @@ trúc tương đương chỉ từ pixel, rồi cung cấp cây đó cho test fra
 \end{enumerate}
 
 \subsection{Các đóng góp chính}
-Với tính chất là một đồ án ứng dụng Method-3, các đóng góp chủ yếu thuộc về kỹ thuật:
+Theo định hướng của Phương thức 3, các đóng góp chủ yếu thuộc về kỹ thuật:
 \begin{enumerate}[leftmargin=1.6em]
   \item \textbf{Một pipeline hoàn chỉnh từ ảnh chụp màn hình đến DOM}, kết hợp OCR,
         detector phần tử có thể thay thế (UIED cổ điển, YOLO hoặc Microsoft
@@ -444,20 +444,23 @@ I/O) và khả năng thay thế (backend được đổi mà không chạm vào 
 phí được chấp nhận là một lớp interface và registry cho mỗi port. Đánh đổi này được
 xem là hợp lý vì khả năng thay thế là mục tiêu chất lượng quan trọng nhất của dự án.
 
-\paragraph{Một phân rã theo hướng microservice.} Các port không chỉ là đường nối nội
-bộ: mỗi port \emph{detector}, \emph{capture} và \emph{actuator} là một ranh giới dịch
-vụ hạng nhất, có hợp đồng protobuf được đánh phiên bản (\code{protos/*.proto}) và một
-máy chủ gRPC độc lập, nên bất kỳ port nào cũng có thể được triển khai, mở rộng và nâng
-cấp như một microservice độc lập. Định hướng này mang lại lợi ích microservice đúng
-nơi bài toán cần: \emph{mở rộng độc lập} (một detector warm-GPU phục vụ nhiều client
-mỏng), \emph{đặt vị trí không đồng nhất} (capture trên thiết bị, detection trên máy
-GPU, actuation tại SUT hoặc bộ điều khiển cánh tay robot), \emph{cô lập lỗi và tài
-nguyên} (một detector bận hay hỏng không làm nghẽn capture), và \emph{thay thế đa
-ngôn ngữ} (một dịch vụ có thể được viết lại bằng bất kỳ ngôn ngữ nào sau cùng một hợp
-đồng). Do đó hệ thống theo hướng microservice ngay từ thiết kế --- các ranh giới dịch
-vụ được thiết kế sẵn chứ không chắp vá --- trong khi, theo điểm kế tiếp, chính các
-dịch vụ đó gộp lại thành một process khi việc đặt chung là đủ, nên phân tán được áp
-dụng dần thay vì phải trả giá trước.
+\paragraph{Phân rã theo định hướng microservice.} Các port không chỉ là những
+điểm phân cách nội bộ: mỗi thành phần \emph{detector}, \emph{capture} và
+\emph{actuator} đều là một ranh giới dịch vụ hạng nhất, với contract protobuf có
+version (\code{protos/*.proto}) và một gRPC server độc lập. Nhờ đó, từng port có
+thể được triển khai, scale và nâng cấp như một microservice độc lập. Định hướng
+này mang lại các lợi ích của microservice đúng tại nơi bài toán cần đến:
+\emph{scale độc lập} (một detector warm-model chạy trên GPU phục vụ nhiều thin
+client), \emph{bố trí dị thể} (capture trên thiết bị, detection trên GPU host,
+actuation tại SUT hoặc bộ điều khiển cánh tay robot), \emph{cô lập lỗi và tài
+nguyên} (detector bị quá tải hoặc gặp sự cố không làm capture đình trệ), và
+\emph{khả năng thay thế đa ngôn ngữ} (một dịch vụ có thể được hiện thực lại bằng
+bất kỳ ngôn ngữ nào phía sau cùng một contract). Vì vậy, hệ thống được thiết kế
+theo định hướng microservice ngay từ đầu --- các service boundary được thiết kế
+sẵn chứ không phải bổ sung hồi tố. Tuy nhiên, như trình bày ở quyết định tiếp theo,
+các dịch vụ này vẫn có thể thu gọn vào một process khi chỉ cần co-location; nhờ
+đó, distribution được áp dụng từng bước thay vì phải trả toàn bộ chi phí ngay từ
+đầu.
 
 \paragraph{Tách dịch vụ tùy chọn, không phải microservice luôn hoạt động.} VizDOM là
 một \emph{modular monolith} có thể tách từng port thành dịch vụ khi cần, thay vì
@@ -648,41 +651,48 @@ locator cần ground truth có cây/locator và được dành cho dataset annot
 tương lai. Tất cả số liệu được tính bởi evaluation harness của dự án
 (\code{visual\_dom.evaluation}).
 
-\subsection{Xây dựng và tăng cường dữ liệu}
-Không có benchmark công khai nào nhắm đúng bối cảnh của VizDOM --- các GUI tự vẽ và
-quan sát qua camera kèm ground truth có cấu trúc --- nên dữ liệu được chính dự án sinh
-ra, theo ba lớp bổ trợ đánh đổi giữa quy mô, sự đa dạng và tính hiện thực của kênh thu.
+\subsection{Xây dựng và tăng cường dataset}
+Không có benchmark công khai nào trực tiếp nhắm tới bối cảnh của VizDOM --- các
+GUI được render tùy biến hoặc được quan sát qua camera, đồng thời có ground truth
+có cấu trúc. Vì vậy, dataset được chính dự án tạo ra theo ba lớp bổ trợ lẫn nhau,
+cân bằng giữa quy mô, tính đa dạng và mức độ sát với kênh thu nhận thực tế.
 
-\paragraph{Sinh bằng chương trình (benchmark có nhãn).} Các mẫu UI tham số hóa
-(login, dashboard, \dots) được kết xuất qua các chủ đề sáng/tối và nhiều độ phân giải,
-mỗi lần sinh ra một ảnh chụp màn hình \emph{kèm theo} ground truth chính xác (bounds,
-\code{visual\_type}, text, containment) theo đúng schema pipeline sinh ra. Điều này
-cho nhãn không nhiễu ở quy mô lớn --- chính là tập chia 167/44 dùng ở trên --- mà
-không cần annotation thủ công, nên nó đóng vai trò benchmark tái lập được.
+\paragraph{Tổng hợp bằng chương trình (benchmark có nhãn).} Các template UI có thể
+tham số hóa (login, dashboard, \dots) được render với nhiều theme sáng/tối và độ
+phân giải khác nhau. Mỗi lần render đồng thời sinh ra ảnh chụp màn hình
+\emph{cùng với} ground truth chính xác (bounds phần tử,
+\code{visual\_type}, text và containment) theo chính schema của pipeline. Cách này
+tạo được nhãn không nhiễu ở quy mô lớn mà không cần annotation thủ công --- bao
+gồm phép chia 167/44 ảnh train/test được sử dụng ở trên --- nên được chọn làm
+benchmark có thể tái lập.
 
-\paragraph{Bố cục do LLM thiết kế (đa dạng).} Các mẫu viết tay đơn điệu về thị giác,
-nên một mô hình ngôn ngữ lớn (Claude) được dùng như một \emph{nhà thiết kế UI}: khi
-được nhắc cho một lớp ứng dụng (ví dụ màn hình thông tin-giải trí trên xe hơi), nó đề
-xuất một bố cục cụ thể rồi một renderer biến thành ảnh chụp màn hình kèm ground truth
-tương ứng. Điều này bơm vào sự đa dạng cấu trúc --- các cụm điều khiển bất thường và
-widget đặc thù theo lĩnh vực --- mà mẫu cố định không phủ được, với chi phí gán nhãn
-không đáng kể.
+\paragraph{Layout do LLM thiết kế (tính đa dạng).} Các template viết thủ công
+thường đơn điệu về mặt thị giác, vì vậy một mô hình ngôn ngữ lớn (Claude) được sử
+dụng như một \emph{UI designer}: khi được prompt về một lớp ứng dụng, chẳng hạn
+màn hình thông tin--giải trí trên ô tô, mô hình đề xuất một layout cụ thể để
+renderer chuyển thành ảnh chụp màn hình kèm ground truth tương ứng. Cách làm này
+bổ sung tính đa dạng về cấu trúc --- các nhóm control không thông thường và widget
+đặc thù miền ứng dụng --- mà template cố định khó bao phủ, trong khi chi phí gán
+nhãn gần như không đáng kể.
 
-\paragraph{Tăng cường kiểu camera (bền vững theo miền).} Vì một động lực trung tâm là
-đọc màn hình \emph{qua camera}, các ảnh sạch được tăng cường để mô phỏng kênh đó: một
-biến đổi phối cảnh (góc nhìn lệch trục) cùng lóa sáng, mờ và nhiễu cảm biến, theo một
-hoặc nhiều biến thể mỗi ảnh. Nhãn ground truth được giữ nguyên --- chính xác cho các
-hiệu ứng quang học, và hợp lệ cho trường hợp phối cảnh vì VizDOM trước tiên nắn chỉnh
-vùng màn hình phát hiện được về góc nhìn chính diện trước khi phát hiện. Tập này rèn
-luyện đường nắn màn hình và trực tiếp thử thách điểm khác biệt không-cần-cây-trợ-năng
-của VizDOM.
+\paragraph{Tăng cường mô phỏng camera (domain robustness).} Do một động lực trung
+tâm của dự án là đọc màn hình \emph{qua camera}, các ảnh chụp màn hình sạch được
+tăng cường để mô phỏng kênh này: perspective warp (góc nhìn lệch trục), kết hợp
+với glare, blur và sensor noise, với một hoặc nhiều biến thể cho mỗi ảnh. Ground
+truth vẫn được giữ lại --- chính xác đối với các hiệu ứng photometric và vẫn hợp
+lệ trong trường hợp perspective, vì VizDOM trước tiên hiệu chỉnh vùng màn hình đã
+phát hiện về góc nhìn chính diện rồi mới chạy detection. Tập dữ liệu này kiểm tra
+trực tiếp đường xử lý screen rectification và tạo áp lực lên đặc trưng khác biệt
+cốt lõi của VizDOM: hoạt động khi không có accessibility tree.
 
-Cùng nhau, ba lớp này kết hợp quy mô gán nhãn rẻ (sinh chương trình), đa dạng cấu trúc
-(LLM thiết kế) và tính hiện thực của kênh thu (tăng cường): tập tổng hợp là benchmark
-tái lập được, còn các lớp LLM và camera mở rộng độ phủ hướng tới điều kiện triển khai
-thực. Do đó các điểm số tuyệt đối trong phần này được báo cáo trên tập tổng hợp sạch;
-các lớp LLM và camera là công cụ phát triển/kiểm thử độ bền chứ không phải benchmark
-được chấm điểm, và một tập có nhãn từ thực tế lớn hơn vẫn là công việc tương lai.
+Ba lớp trên kết hợp quy mô có nhãn với chi phí thấp (synthesis), tính đa dạng cấu
+trúc (LLM design) và độ sát với kênh thu nhận thực tế (augmentation). Phép chia
+dataset tổng hợp là benchmark có thể tái lập; còn các lớp LLM và camera được dùng
+để hỗ trợ phát triển và đánh giá robustness, mở rộng độ bao phủ về phía điều kiện
+triển khai thực tế. Vì vậy, các điểm số tuyệt đối trong phần này được báo cáo trên
+tập tổng hợp sạch; các lớp LLM và camera không thuộc benchmark được chấm điểm, và
+việc xây dựng một tập dữ liệu thực tế lớn hơn có nhãn vẫn là hướng phát triển trong
+tương lai.
 
 \subsection{Xác minh chức năng}
 Hệ thống đầu-cuối và các dịch vụ phân tán đã được xác minh về mặt chức năng:
