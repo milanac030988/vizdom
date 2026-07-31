@@ -269,18 +269,22 @@ khả năng triển khai, hai driver quan trọng nhất, đổi lại là độ
 cao hơn. Đây là trade-off được chấp nhận rõ ràng và được giảm thiểu bằng cách giữ gRPC
 ở dạng tùy chọn (hành vi của phương án~B là chế độ local mặc định), đồng thời dùng chung
 một registry pattern cho cả ba port. Quyết định được ghi trong ADR-015 (detector), ADR-017
-(gRPC phân tán), ADR-018 (capture) và ADR-019 (actuator). Cách phân rã này chủ đích
-theo \emph{hướng microservice}: mỗi port là một ranh giới dịch vụ hạng nhất với hợp
-đồng protobuf được đánh phiên bản và một máy chủ độc lập, mang lại mở rộng độc lập
-(một detector warm-GPU cho nhiều client), đặt vị trí không đồng nhất và cô lập lỗi
---- trong khi chính các dịch vụ đó gộp về một process khi đặt chung là đủ, nên phân
-tán được áp dụng dần. Hai quyết định sau đó hoàn thiện bề mặt phía client: một
-\emph{cấu hình phiên} JSON duy nhất điều khiển mọi giai đoạn từ \code{connect()} hay
-từ khóa \code{Connect} của Robot Framework (ADR-020), và bộ định vị \code{desc=}
-phân giải mô tả phần tử bằng ngôn ngữ tự nhiên qua một chuỗi định vị phân tầng ---
-khớp từ vựng tất định trước, rồi một mô hình ngôn ngữ nhỏ trên DOM, tùy chọn một mô
-hình thị giác qua Set-of-Mark --- với từ chỉ vị trí được thực thi bằng hình học và
-cache theo màn hình (ADR-022).
+(gRPC phân tán), ADR-018 (capture) và ADR-019 (actuator).
+Việc phân rã được định hướng có chủ đích theo \emph{microservice}: mỗi port là một
+ranh giới dịch vụ độc lập, có hợp đồng protobuf được quản lý phiên bản và một server
+có thể chạy riêng. Cách tổ chức này cho phép mở rộng quy mô độc lập (một detector dùng
+warm GPU phục vụ nhiều client), triển khai trên các môi trường phần cứng khác nhau và
+cô lập lỗi; đồng thời, khi các thành phần có thể được đặt cùng nhau, các dịch vụ vẫn có
+thể được gom vào một process duy nhất. Nhờ đó, việc phân tán có thể được áp dụng từng
+bước thay vì trở thành yêu cầu bắt buộc ngay từ đầu.
+
+Hai quyết định sau đó hoàn thiện giao diện phía client: một \emph{session configuration}
+dạng JSON duy nhất điều khiển toàn bộ các stage thông qua \code{connect()} hoặc keyword
+\code{Connect} của Robot Framework (ADR-020); và locator \code{desc=} phân giải mô tả
+phần tử bằng ngôn ngữ tự nhiên thông qua chuỗi grounding phân tầng --- trước hết là
+lexical matching mang tính xác định, tiếp theo là một small LM xử lý trên DOM, và tùy
+chọn dùng vision model thông qua Set-of-Mark. Các từ chỉ vị trí được kiểm tra bằng
+geometry và kết quả được cache theo từng màn hình (ADR-022).
 
 \section{Bức tranh các detector (lý do cần một port có thể thay thế)}
 Detector port phải hỗ trợ nhiều công nghệ rất khác nhau. Bảng~\ref{tab:models} so sánh
@@ -380,13 +384,13 @@ tools & PyQt5 Viewer, Streamlit dashboard và công cụ annotation. \\
 \section{Cấp 2 --- mẫu driven port}
 Mỗi driven port (detector, capture, actuator) dùng chung một cấu trúc nội bộ:
 \begin{itemize}[leftmargin=1.4em]
-  \item một \textbf{strategy base} với các abstract method, chẳng hạn \code{detect} /
+  \item Một \textbf{strategy base} với các abstract method, chẳng hạn \code{detect} /
         \code{capture} / \code{tap+type+swipe};
-  \item một \textbf{registry} cung cấp \code{create\_X(name)}, \code{list\_X()} và
+  \item Một \textbf{registry} cung cấp \code{create\_X(name)}, \code{list\_X()} và
         \code{auto\_select()};
-  \item cơ chế \textbf{auto-discovery} import các implementation tích hợp sẵn và mọi
+  \item Cơ chế \textbf{auto-discovery} import các implementation tích hợp sẵn và mọi
         plugin người dùng được đặt trong thư mục quy ước;
-  \item một \textbf{gRPC client strategy} được đăng ký với tên \code{grpc}, nhờ đó
+  \item Một \textbf{gRPC client strategy} được đăng ký với tên \code{grpc}, nhờ đó
         remote adapter được lựa chọn giống hệt local adapter.
 \end{itemize}
 Việc lặp lại một mẫu duy nhất cho ba port là cơ chế hiện thực hóa NFR1 và NFR2.
@@ -523,8 +527,8 @@ có ý nghĩa kiến trúc cùng trạng thái hiện tại được trình bày
 017 & Kiến trúc lục giác phân tán với gRPC model service & \textbf{Đề xuất} \\
 018 & Screenshot capture có thể thay thế (strategy + service) & Đã chấp thuận \\
 019 & Input actuation có thể thay thế (strategy + service) & Đã chấp thuận \\
-020 & Cấu hình phiên phía client (\code{connect} + một JSON cho mọi giai đoạn) & Đã chấp thuận \\
-022 & Bộ định vị theo mô tả (\code{desc=}) qua định vị phân tầng (từ vựng $\rightarrow$ SLM-trên-DOM $\rightarrow$ VLM Set-of-Mark) & Đã chấp thuận \\
+020 & Cấu hình phiên phía client (\code{connect} + một file JSON cho toàn bộ các stage) & Đã chấp thuận \\
+022 & Locator dựa trên mô tả (\code{desc=}) thông qua grounding phân tầng (lexical $\rightarrow$ SLM-over-DOM $\rightarrow$ VLM Set-of-Mark) & Đã chấp thuận \\
 \bottomrule
 \end{longtable}
 
