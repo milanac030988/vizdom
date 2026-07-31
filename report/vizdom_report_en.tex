@@ -610,6 +610,32 @@ screenshot-to-DOM cycle.
   \label{fig:seq}
 \end{figure}
 
+\subsection{Description-based location: tiered grounding over the DOM}
+Property locators are deterministic but brittle exactly where perception is
+weakest: an icon whose caption is unstable, or a key whose OCR is noise, is
+unfindable by \code{text=}. A \code{desc=} locator therefore lets the tester state
+\emph{intent} --- \code{desc="settings button"} --- and imports the grounder
+paradigm (Section~\ref{sec:dombenefits}) into the parser system, with the DOM kept
+as the source of truth. Resolution escalates through configurable tiers, each
+cheaper and more deterministic than the next, stopping at the first confident hit:
+(i) a \emph{lexical} tier (model-free) scores token/synonym overlap against
+\code{label}/\code{text}/\code{hint} plus role words, accepting only with a score
+floor \emph{and} a margin over the runner-up --- ties escalate rather than guess;
+(ii) an \emph{SLM-over-DOM} tier gives a small text model (temperature 0) a
+compact element table and validates the returned id against the DOM (hallucinated
+ids are rejected); (iii) an opt-in \emph{VLM} tier uses Set-of-Mark prompting ---
+candidate boxes are numbered on the screenshot and the model picks a number, so
+its answer is a DOM element \emph{by construction}, avoiding fragile coordinate
+regression. Two findings shaped the design. Positional words (``top right'') are
+enforced \emph{geometrically} before any model: a 3B model confidently
+misidentified a top-left element as ``top right'', so position is never delegated.
+And determinism is a policy, not an accident: the tier chain is set in the session
+configuration (CI can pin the lexical tier only), resolutions are cached per
+screen, and every hit records which tier answered --- making the ``parse once,
+ground only the long tail'' economics measurable. On a real calculator session the
+chain resolved 5/5 probe descriptions (paraphrases via the SLM tier) and correctly
+rejected a nonsense description with the candidate list (ADR-022).
+
 \subsection{Engineering environment}
 The system runs on Python~3.9 with a CUDA-enabled PyTorch build; environments are
 managed with \code{uv}. Development is behind a corporate proxy that blocks public

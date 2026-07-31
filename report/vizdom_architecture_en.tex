@@ -269,7 +269,19 @@ deployability, the two top drivers, at the cost of higher intrinsic and operatio
 complexity --- the trade-off we explicitly accept and mitigate by keeping gRPC
 optional (Option~B's behaviour is the default local mode) and by sharing one
 registry pattern across all three ports. Recorded in ADR-015 (detectors), ADR-017
-(distributed gRPC), ADR-018 (capture), ADR-019 (actuator).
+(distributed gRPC), ADR-018 (capture), ADR-019 (actuator). The decomposition is
+deliberately \emph{microservice-oriented}: each port is a first-class service
+boundary with a versioned protobuf contract and a standalone server, buying
+independent scaling (one warm-GPU detector for many clients), heterogeneous
+placement, and fault isolation --- while the same services collapse into one
+process when co-location suffices, so distribution is adopted incrementally.
+Two later decisions complete the client surface: a single JSON \emph{session
+configuration} drives every stage from \code{connect()} or the Robot Framework
+\code{Connect} keyword (ADR-020), and a \code{desc=} locator resolves
+natural-language element descriptions through a tiered grounding chain ---
+deterministic lexical matching first, then a small LM over the DOM, optionally a
+vision model via Set-of-Mark --- with positional words enforced geometrically and
+per-screen caching (ADR-022).
 
 \section{Detector landscape (why a pluggable port)}
 The detector port must accommodate very different technologies. Table~\ref{tab:models}
@@ -510,6 +522,8 @@ verification caveat (Ch.~11).
 017 & Distributed hexagonal architecture with gRPC model services & \textbf{Proposed} \\
 018 & Pluggable screenshot capture (strategy + service) & Accepted \\
 019 & Pluggable input actuation (strategy + service) & Accepted \\
+020 & Client session configuration (\code{connect} + one JSON config for all stages) & Accepted \\
+022 & Description-based locator (\code{desc=}) via tiered grounding (lexical $\rightarrow$ SLM-over-DOM $\rightarrow$ VLM Set-of-Mark) & Accepted \\
 \bottomrule
 \end{longtable}
 
