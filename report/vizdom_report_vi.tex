@@ -639,6 +639,32 @@ chu kỳ từ ảnh chụp màn hình đến DOM.
   \label{fig:seq}
 \end{figure}
 
+\subsection{Định vị theo mô tả: định vị phân tầng trên DOM}
+Bộ định vị theo thuộc tính có tính tất định nhưng mong manh đúng ở nơi tri giác yếu
+nhất: một biểu tượng có chú thích bất ổn, hay một phím có OCR nhiễu, là không thể
+tìm bằng \code{text=}. Do đó bộ định vị \code{desc=} cho phép người kiểm thử nêu
+\emph{ý định} --- \code{desc="settings button"} --- và đưa mô hình định vị
+(Mục~\ref{sec:dombenefits}) vào hệ thống phân tích, với DOM vẫn là nguồn chân trị.
+Việc phân giải leo thang qua các tầng cấu hình được, mỗi tầng rẻ hơn và tất định hơn
+tầng kế, dừng ở kết quả tự tin đầu tiên: (i) tầng \emph{từ vựng} (không mô hình)
+chấm điểm trùng khớp token/từ đồng nghĩa với \code{label}/\code{text}/\code{hint}
+cùng các từ chỉ vai trò, chỉ chấp nhận khi vượt sàn điểm \emph{và} có cách biệt với
+hạng nhì --- hòa điểm sẽ leo thang thay vì đoán; (ii) tầng \emph{SLM-trên-DOM} đưa
+cho một mô hình văn bản nhỏ (nhiệt độ 0) một bảng phần tử gọn và kiểm chứng id trả
+về so với DOM (id bịa bị từ chối); (iii) tầng \emph{VLM} tùy chọn dùng gợi ý
+Set-of-Mark --- các khung ứng viên được đánh số trên ảnh chụp màn hình và mô hình
+chọn một con số, nên câu trả lời là một phần tử DOM \emph{theo cấu trúc}, tránh hồi
+quy tọa độ mong manh. Hai phát hiện đã định hình thiết kế. Các từ chỉ vị trí (``trên
+bên phải'') được thực thi \emph{bằng hình học} trước mọi mô hình: một mô hình 3B đã
+tự tin nhận nhầm một phần tử trên-trái là ``trên bên phải'', nên vị trí không bao
+giờ được ủy thác. Và tính tất định là một chính sách, không phải ngẫu nhiên: chuỗi
+tầng được đặt trong cấu hình phiên (CI có thể ghim chỉ tầng từ vựng), kết quả phân
+giải được cache theo màn hình, và mỗi lần trúng đều ghi lại tầng nào trả lời ---
+khiến bài toán kinh tế ``phân tích một lần, định vị chỉ phần đuôi dài'' đo được.
+Trên một phiên máy tính bỏ túi thực, chuỗi đã phân giải đúng 5/5 mô tả thăm dò (các
+cách diễn đạt khác qua tầng SLM) và từ chối đúng một mô tả vô nghĩa kèm danh sách
+ứng viên (ADR-022).
+
 \subsection{Môi trường kỹ thuật}
 Hệ thống chạy trên Python~3.9 với bản build PyTorch hỗ trợ CUDA; môi trường được quản
 lý bằng \code{uv}. Quá trình phát triển diễn ra sau corporate proxy chặn các public
