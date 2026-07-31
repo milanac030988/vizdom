@@ -27,6 +27,7 @@ class LocatorStrategy(Enum):
     LEFT_OF = "left_of"
     ABOVE = "above"
     BELOW = "below"
+    DESC = "desc"  # natural-language description (ADR-022, tiered grounding)
 
 
 @dataclass
@@ -200,6 +201,22 @@ class ElementFinder:
 
         elif locator.strategy == LocatorStrategy.ROLE:
             return self._index["by_role"].get(value, [])
+
+        elif locator.strategy == LocatorStrategy.DESC:
+            # Tier 0 only here (lexical, deterministic) - the finder stays
+            # model-free. Model-backed tiers (SLM/VLM, ADR-022) run in the
+            # keyword layer's DescriptionResolver when this returns nothing.
+            from .desc_resolver import lexical_rank, lexical_confident
+            sz = self.dom.get("image_size")
+            if isinstance(sz, dict):
+                image_size = (sz.get("width"), sz.get("height"))
+            elif isinstance(sz, (list, tuple)) and len(sz) == 2:
+                image_size = tuple(sz)
+            else:
+                image_size = None
+            ranked = lexical_rank(self.elements, locator.value, image_size)
+            elem = lexical_confident(ranked)
+            return [elem] if elem is not None else []
 
         elif locator.strategy in (LocatorStrategy.WITHIN, LocatorStrategy.NEAR):
             # Find container element first

@@ -22,6 +22,8 @@
     "filter": "resolution-aware size/count filters (referenced to 1080p)",
     "capture": "how screens are acquired (RF client layer, ADR-018)",
     "capture.strategy": "null=auto | windows | linux | android | camera | grpc | <plugin>",
+    "grounding": "desc= locator resolution (ADR-022): tiered natural-language grounding",
+    "grounding.tiers": "escalation order; lexical (no model) | slm (text LM over DOM) | vlm (Set-of-Mark over image, opt-in)",
     "output": "DOM compilation options"
   },
   "detector": {
@@ -74,6 +76,16 @@
     "strategy": null,
     "target": null,
     "camera_mode": false
+  },
+  "grounding": {
+    "tiers": [
+      "lexical",
+      "slm"
+    ],
+    "backend": "ollama",
+    "model": "qwen2.5:3b",
+    "vision_model": "qwen2.5-vl:3b",
+    "host": "http://localhost:11434"
   },
   "output": {
     "generate_locators": true

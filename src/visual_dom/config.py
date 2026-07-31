@@ -127,6 +127,19 @@ class CaptureConfig:
 
 
 @dataclass
+class GroundingConfig:
+    """desc= locator resolution (ADR-022): tiered natural-language grounding."""
+    # Escalation chain, tried in order. "lexical" is model-free and always safe;
+    # "slm" needs the text model below (Ollama/OpenAI); "vlm" additionally needs
+    # a vision model and is off by default (least deterministic).
+    tiers: List[str] = field(default_factory=lambda: ["lexical", "slm"])
+    backend: str = "ollama"               # ollama | openai
+    model: str = "qwen2.5:3b"             # text model for the slm tier
+    vision_model: str = "qwen2.5-vl:3b"   # vision model for the vlm tier
+    host: str = "http://localhost:11434"
+
+
+@dataclass
 class OutputConfig:
     """DOM compilation / output options."""
     generate_locators: bool = True
@@ -152,6 +165,7 @@ class VizDomConfig:
     symbols: SymbolConfig = field(default_factory=SymbolConfig)
     filter: FilterConfig = field(default_factory=FilterConfig)
     capture: CaptureConfig = field(default_factory=CaptureConfig)
+    grounding: GroundingConfig = field(default_factory=GroundingConfig)
     output: OutputConfig = field(default_factory=OutputConfig)
 
     # ---- construction ---------------------------------------------------- #
@@ -269,6 +283,8 @@ _FIELD_HELP: Dict[str, str] = {
     "filter": "resolution-aware size/count filters (referenced to 1080p)",
     "capture": "how screens are acquired (RF client layer, ADR-018)",
     "capture.strategy": "null=auto | windows | linux | android | camera | grpc | <plugin>",
+    "grounding": "desc= locator resolution (ADR-022): tiered natural-language grounding",
+    "grounding.tiers": "escalation order; lexical (no model) | slm (text LM over DOM) | vlm (Set-of-Mark over image, opt-in)",
     "output": "DOM compilation options",
 }
 

@@ -64,6 +64,7 @@ class CaptureKeywords:
         cfg = VizDomConfig.load(config)
         self._session_config = cfg
         self._session = Session(cfg)
+        self._desc_resolver = None  # grounding config may have changed
 
         # Apply the capture section to this library's capture port so one config
         # drives both DOM generation and screen acquisition. Only override when
@@ -199,6 +200,23 @@ class CaptureKeywords:
         if self._current_dom:
             from ..locators import ElementFinder
             self._finder = ElementFinder(self._current_dom)
+            self._desc_resolver = None  # per-screen cache; rebuild lazily
+
+    def _get_desc_resolver(self):
+        """DescriptionResolver for the current DOM (ADR-022), built lazily."""
+        if getattr(self, "_desc_resolver", None) is None:
+            from ..locators.desc_resolver import DescriptionResolver
+            g = getattr(self._session_config, "grounding", None) if self._session_config else None
+            self._desc_resolver = DescriptionResolver(
+                self._current_dom,
+                screenshot=self._current_screenshot,
+                tiers=(list(g.tiers) if g else None),
+                backend=(g.backend if g else "ollama"),
+                model=(g.model if g else "qwen2.5:3b"),
+                vision_model=(g.vision_model if g else "qwen2.5-vl:3b"),
+                host=(g.host if g else "http://localhost:11434"),
+            )
+        return self._desc_resolver
 
     @keyword("Load Visual DOM")
     def load_visual_dom(self, path: str) -> dict:
@@ -241,8 +259,27 @@ class CaptureKeywords:
             raise RuntimeError("No DOM loaded. Call 'Dump Visual DOM' first.")
 
         from ..locators import LocatorParser
+        from ..locators.locator import LocatorStrategy
         locators = LocatorParser.parse(locator)
         element = self._finder.find_one(locators)
+
+        # desc= escalation (ADR-022): the finder only runs the deterministic
+        # lexical tier. If that missed and the locator is a lone description,
+        # escalate through the configured chain (SLM over DOM, optionally VLM
+        # Set-of-Mark over the screenshot).
+        if element is None and len(locators) == 1 \
+                and locators[0].strategy == LocatorStrategy.DESC:
+            resolver = self._get_desc_resolver()
+            element, info = resolver.resolve(locators[0].value)
+            if element is not None:
+                print(f"desc= resolved by tier '{info['tier']}' "
+                      f"({info['reason']}) -> {element.get('id')}")
+            else:
+                cands = ", ".join(str(c) for c in info.get("candidates", [])) or "none"
+                raise ValueError(
+                    f"Element not found: {locator} "
+                    f"(no grounding tier was confident; nearest candidates: {cands})"
+                )
 
         if element is None:
             raise ValueError(f"Element not found: {locator}")
