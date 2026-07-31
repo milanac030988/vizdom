@@ -74,12 +74,12 @@ qua nhiều lần chạy. Các framework như Appium và Selenium có được k
 cây accessibility của nền tảng \cite{uiautomator,appium}. Tuy nhiên, nhiều ứng dụng
 thực tế không cung cấp một cây có thể sử dụng:
 \begin{itemize}[leftmargin=1.4em]
-  \item giao diện desktop được render tùy biến --- Qt/QML, OpenGL, canvas và các
+  \item Giao diện desktop được render tùy biến --- Qt/QML, OpenGL, canvas và các
         giao diện do engine vẽ --- nơi widget chỉ là pixel chứ không phải đối tượng
         accessibility;
-  \item giao diện người--máy (HMI) trong hệ thống nhúng và công nghiệp, cùng phần
+  \item Giao diện người--máy (HMI) trong hệ thống nhúng và công nghiệp, cùng phần
         mềm kiosk;
-  \item màn hình được quan sát \emph{qua camera} hoặc capture card, nơi hoàn toàn
+  \item Màn hình được quan sát \emph{qua camera} hoặc capture card, nơi hoàn toàn
         không có software interface để truy vấn.
 \end{itemize}
 Với các đối tượng kiểm thử này, nhóm phát triển thường phải quay về các script dùng
@@ -93,14 +93,14 @@ ra ``đó là nút Login'', thì một pipeline cũng phải có khả năng tá
 trúc tương đương chỉ từ pixel, rồi cung cấp cây đó cho test framework như thể nó
 được lấy từ accessibility API. Vì vậy, các mục tiêu của dự án là:
 \begin{enumerate}[leftmargin=1.6em]
-  \item sinh một DOM tương tự UI Automator (bounds, role, text, label, locator và
+  \item Sinh một DOM tương tự UI Automator (bounds, role, text, label, locator và
         hierarchy) từ một ảnh chụp màn hình duy nhất;
-  \item giữ cho giai đoạn detection có tính \emph{pluggable}, để có thể so sánh và
+  \item Giữ cho giai đoạn detection có tính \emph{pluggable}, để có thể so sánh và
         thay thế các detector cổ điển hoặc detector học máy;
-  \item cho phép capture, detection và actuation được triển khai \emph{đúng nơi
+  \item Cho phép capture, detection và actuation được triển khai \emph{đúng nơi
         chúng cần hiện diện về mặt vật lý} (thiết bị, GPU host hoặc bộ điều khiển
         cánh tay robot); và
-  \item đưa kết quả vào một test framework thực tế (Robot Framework).
+  \item Đưa kết quả vào một test framework thực tế (Robot Framework).
 \end{enumerate}
 
 \subsection{Các đóng góp chính}
@@ -583,29 +583,34 @@ role, visual type, interaction flag (clickable/editable/scrollable), text và la
 tùy chọn, cùng nhiều \emph{locator} (theo id, text, hint, role và quan hệ không
 gian).
 
-\subsection{Văn bản đọc được, nhãn ngữ nghĩa, và đọc ký hiệu}
-Hai cải tiến tách bạch cái được \emph{đọc} khỏi cái được \emph{suy đoán}. Thứ nhất,
-DOM phân biệt \code{text} --- giá trị đọc trực tiếp từ điểm ảnh (OCR) --- với
-\code{label} --- tên ngữ nghĩa của phần tử, được phân giải theo ưu tiên \emph{nhãn
-kế bên $>$ chú thích của bộ phát hiện $>$ văn bản của chính nó}. Sự phân biệt này
-quan trọng vì mô hình chú thích là dự đoán chứ không phải phép đọc: hai ảnh chụp
-giống hệt nhau về thị giác, chỉ khác nhiễu tái mã hóa không nhận thấy được
-($\leq$7/255 mỗi kênh), đã làm chú thích một biểu tượng lật từ ``Maximize'' sang
-``Page''. Giữ chú thích ngoài \code{text} khiến bộ định vị chỉ phụ thuộc vào những
-gì thật sự có trên màn hình.
 
-Thứ hai, các điều khiển chỉ-có-glyph (phím toán tử \code{+ - = $\times$ $\div$},
-nút cửa sổ) đánh bại cả OCR lẫn bộ phát hiện ký hiệu dựa trên luật trước đây, vốn
-thất bại trên các glyph phím thực và nhầm hình vuông rỗng của nút phóng to thành
-``+''. Tầng được thiết kế lại đọc các glyph như vậy bằng \emph{so khớp mẫu}: glyph
-được cắt về đúng khung bao của nó (chuẩn hóa tỉ lệ), các hình viền rỗng bị loại về
-mặt cấu trúc, và ứng viên được so với các mẫu kết xuất từ phông chữ bằng điểm Dice
-với ngưỡng chấp nhận theo từng ký hiệu. Trên một ảnh chụp máy tính bỏ túi thực,
-tầng này đọc đúng 14/15 điều khiển được thăm dò (glyph ghép ``$\pm$'' còn lại được
-từ chối an toàn thay vì đọc sai), và kết quả được đưa vào \code{text} --- một ký
-hiệu là một phép đọc trực tiếp --- nên một phím toán tử điều khiển được bằng
-\code{text="+"} ngay cả khi chú thích của nó là nhiễu. Tập ký hiệu nhận dạng và độ
-nghiêm ngặt cấu hình được (mục \code{symbols}).
+\subsection{Văn bản nguyên bản, nhãn ngữ nghĩa và nhận dạng ký hiệu}
+Hai bước tinh chỉnh giúp tách biệt nội dung được \emph{đọc} khỏi nội dung được
+\emph{suy luận}. Trước hết, DOM phân biệt \code{text} --- nội dung nguyên bản được
+đọc từ pixel bằng OCR --- với \code{label} --- tên ngữ nghĩa của phần tử, được xác
+định theo thứ tự ưu tiên \emph{label liên kết ở lân cận $>$ caption của detector
+$>$ text của chính phần tử}. Sự phân biệt này rất quan trọng vì caption model tạo
+ra dự đoán chứ không trực tiếp đọc nội dung: hai ảnh capture nhìn gần như hoàn toàn
+giống nhau, chỉ khác bởi nhiễu tái mã hóa không thể nhận biết bằng mắt
+($\leq$7/255 trên mỗi channel), đã khiến caption của cùng một icon thay đổi từ
+``Maximize'' thành ``Page''. Việc không đưa caption vào \code{text} giúp locator
+chỉ phụ thuộc vào những gì thực sự xuất hiện trên màn hình.
+
+Thứ hai, các control chỉ chứa glyph (các phím toán tử
+\code{+ - = $\times$ $\div$}, các nút điều khiển cửa sổ) thường không thể được
+nhận dạng bằng OCR. Chúng cũng từng làm thất bại symbol detector dựa trên luật:
+các projection heuristic không hoạt động ổn định trên glyph thật của phím và nhầm
+hình vuông rỗng của nút maximize thành dấu ``+''. Giai đoạn được thiết kế lại nhận
+biết các glyph này bằng \emph{template matching}: glyph được crop theo đúng
+bounding box của nó và chuẩn hóa theo scale; các hình outline rỗng được loại bỏ
+theo cấu trúc; sau đó candidate được so khớp với các template render từ font bằng
+Dice score, với acceptance threshold riêng cho từng ký hiệu. Trên ảnh chụp thật
+của một ứng dụng máy tính, cơ chế này đọc đúng 14 trong 15 control được kiểm tra;
+glyph tổ hợp ``$\pm$'' còn lại được từ chối an toàn thay vì bị nhận dạng sai. Kết
+quả được đưa vào \code{text} --- vì ký hiệu là nội dung được đọc trực tiếp --- nên
+một phím toán tử vẫn có thể được điều khiển bằng \code{text="+"} ngay cả khi
+caption của nó bị nhiễu. Tập ký hiệu được nhận dạng và mức độ nghiêm ngặt có thể
+cấu hình trong section \code{symbols}.
 
 \subsection{Thư viện Visual Automation cho Robot Framework}
 Deliverable thứ hai là thư viện Robot Framework \cite{robotframework}, hoạt động
@@ -639,31 +644,43 @@ chu kỳ từ ảnh chụp màn hình đến DOM.
   \label{fig:seq}
 \end{figure}
 
-\subsection{Định vị theo mô tả: định vị phân tầng trên DOM}
-Bộ định vị theo thuộc tính có tính tất định nhưng mong manh đúng ở nơi tri giác yếu
-nhất: một biểu tượng có chú thích bất ổn, hay một phím có OCR nhiễu, là không thể
-tìm bằng \code{text=}. Do đó bộ định vị \code{desc=} cho phép người kiểm thử nêu
-\emph{ý định} --- \code{desc="settings button"} --- và đưa mô hình định vị
-(Mục~\ref{sec:dombenefits}) vào hệ thống phân tích, với DOM vẫn là nguồn chân trị.
-Việc phân giải leo thang qua các tầng cấu hình được, mỗi tầng rẻ hơn và tất định hơn
-tầng kế, dừng ở kết quả tự tin đầu tiên: (i) tầng \emph{từ vựng} (không mô hình)
-chấm điểm trùng khớp token/từ đồng nghĩa với \code{label}/\code{text}/\code{hint}
-cùng các từ chỉ vai trò, chỉ chấp nhận khi vượt sàn điểm \emph{và} có cách biệt với
-hạng nhì --- hòa điểm sẽ leo thang thay vì đoán; (ii) tầng \emph{SLM-trên-DOM} đưa
-cho một mô hình văn bản nhỏ (nhiệt độ 0) một bảng phần tử gọn và kiểm chứng id trả
-về so với DOM (id bịa bị từ chối); (iii) tầng \emph{VLM} tùy chọn dùng gợi ý
-Set-of-Mark --- các khung ứng viên được đánh số trên ảnh chụp màn hình và mô hình
-chọn một con số, nên câu trả lời là một phần tử DOM \emph{theo cấu trúc}, tránh hồi
-quy tọa độ mong manh. Hai phát hiện đã định hình thiết kế. Các từ chỉ vị trí (``trên
-bên phải'') được thực thi \emph{bằng hình học} trước mọi mô hình: một mô hình 3B đã
-tự tin nhận nhầm một phần tử trên-trái là ``trên bên phải'', nên vị trí không bao
-giờ được ủy thác. Và tính tất định là một chính sách, không phải ngẫu nhiên: chuỗi
-tầng được đặt trong cấu hình phiên (CI có thể ghim chỉ tầng từ vựng), kết quả phân
-giải được cache theo màn hình, và mỗi lần trúng đều ghi lại tầng nào trả lời ---
-khiến bài toán kinh tế ``phân tích một lần, định vị chỉ phần đuôi dài'' đo được.
-Trên một phiên máy tính bỏ túi thực, chuỗi đã phân giải đúng 5/5 mô tả thăm dò (các
-cách diễn đạt khác qua tầng SLM) và từ chối đúng một mô tả vô nghĩa kèm danh sách
-ứng viên (ADR-022).
+
+\subsection{Định vị dựa trên mô tả: grounding phân tầng trên DOM}
+Property locator có tính quyết định nhưng lại dễ trở nên mong manh đúng tại những
+điểm perception yếu nhất: một icon có caption không ổn định hoặc một phím có kết
+quả OCR nhiễu sẽ không thể được tìm bằng \code{text=}. Vì vậy, locator
+\code{desc=} cho phép tester mô tả \emph{ý định} --- ví dụ
+\code{desc="settings button"} --- và đưa mô hình grounder
+(Phần~\ref{sec:dombenefits}) vào hệ thống parser, trong khi DOM vẫn được giữ làm
+source of truth. Quá trình phân giải được nâng dần qua các tier có thể cấu hình;
+mỗi tier rẻ hơn và có tính quyết định cao hơn tier kế tiếp, và chuỗi dừng ngay khi
+tìm được một kết quả đủ tin cậy:
+\begin{enumerate}[leftmargin=1.6em,label=(\roman*)]
+  \item Tier \emph{lexical} không dùng mô hình, chấm điểm mức trùng khớp token và
+        synonym với \code{label}/\code{text}/\code{hint}, kết hợp các từ chỉ role;
+        kết quả chỉ được chấp nhận khi vượt score floor và có margin đủ lớn so với
+        candidate đứng thứ hai --- nếu hòa điểm, hệ thống chuyển lên tier kế tiếp
+        thay vì đoán;
+  \item Tier \emph{SLM-over-DOM} cung cấp cho một text model nhỏ
+        (temperature 0) bảng phần tử rút gọn và kiểm tra id trả về với DOM; các id
+        do mô hình hallucinate sẽ bị từ chối;
+  \item Tier \emph{VLM} tùy chọn sử dụng Set-of-Mark prompting: các bounding box
+        candidate được đánh số trên ảnh chụp màn hình và mô hình chọn một số. Nhờ
+        đó, câu trả lời luôn ánh xạ tới một phần tử DOM \emph{theo thiết kế}, tránh
+        coordinate regression vốn kém ổn định.
+\end{enumerate}
+Hai phát hiện thực nghiệm đã định hình thiết kế này. Trước hết, các từ chỉ vị trí
+như ``top right'' được áp dụng bằng \emph{geometry} trước khi gọi bất kỳ mô hình
+nào: một mô hình 3B từng tự tin nhận nhầm phần tử ở góc trên bên trái thành ``top
+right'', nên vị trí không bao giờ được giao hoàn toàn cho mô hình. Thứ hai, tính
+quyết định là một policy chứ không phải kết quả ngẫu nhiên: chuỗi tier được cấu
+hình theo từng session (CI có thể cố định chỉ dùng tier lexical), kết quả phân giải
+được cache theo từng màn hình và mỗi hit đều ghi nhận tier đã trả lời. Nhờ vậy,
+hiệu quả kinh tế của cách tiếp cận ``parse một lần, chỉ grounding phần long tail''
+có thể được đo lường. Trong một session thực tế với ứng dụng máy tính, chuỗi này
+phân giải đúng 5/5 mô tả thử nghiệm (các cách diễn đạt lại được xử lý bởi tier SLM)
+và từ chối chính xác một mô tả vô nghĩa bằng cách trả về danh sách candidate
+(ADR-022).
 
 \subsection{Môi trường kỹ thuật}
 Hệ thống chạy trên Python~3.9 với bản build PyTorch hỗ trợ CUDA; môi trường được quản
@@ -747,13 +764,13 @@ tương lai.
 \subsection{Xác minh chức năng}
 Hệ thống đầu-cuối và các dịch vụ phân tán đã được xác minh về mặt chức năng:
 \begin{itemize}[leftmargin=1.4em]
-  \item pipeline đầy đủ xử lý ảnh UI tham chiếu và sinh ra DOM hợp lệ (hàng chục
+  \item Pipeline đầy đủ xử lý ảnh UI tham chiếu và sinh ra DOM hợp lệ (hàng chục
         phần tử có role, locator và label);
-  \item dịch vụ gRPC \textbf{detector} nạp warm model một lần và trả detection cho
+  \item Dịch vụ gRPC \textbf{detector} nạp warm model một lần và trả detection cho
         remote client;
-  \item dịch vụ gRPC \textbf{capture} trả về ảnh chụp màn hình giống từng pixel cho
+  \item Dịch vụ gRPC \textbf{capture} trả về ảnh chụp màn hình giống từng pixel cho
         remote client; và
-  \item dịch vụ gRPC \textbf{actuator} tái tạo chính xác action theo tọa độ chuẩn
+  \item Dịch vụ gRPC \textbf{actuator} tái tạo chính xác action theo tọa độ chuẩn
         hóa, ánh xạ sang tọa độ thiết bị ở phía server (được xác minh đầu-cuối bằng
         recording actuator và robot-arm homography stub).
 \end{itemize}
