@@ -163,6 +163,37 @@ Locate elements by **role/text/spatial** rather than pixel coordinates — e.g.
 `text=Login`, `hint=Email`, `role=button`, `right_of="Label"`, `below="Title"`,
 `within="Form"` — so tests survive layout and theme changes.
 
+### Locating by description (`desc=`)
+
+You can also identify an element by *describing* it (ADR-022):
+
+```robotframework
+Click Visual    desc=settings button
+Click Visual    desc="close button top right"
+```
+
+Resolution escalates through configurable tiers, stopping at the first confident
+match — and every hit logs which tier answered:
+
+1. **lexical** (always on, no model) — deterministic token/role/position matching
+   against the DOM's `label`/`text`/`hint`;
+2. **slm** — a small text LM (Ollama, default `qwen2.5:3b`) picks the element from
+   a compact DOM table; handles paraphrase ("magnifier" → *Search*);
+3. **vlm** (opt-in) — Set-of-Mark grounding: candidate boxes are numbered on the
+   screenshot and a vision model picks the number, so the answer is always a real
+   DOM element.
+
+Positional words ("top right") are enforced **geometrically**, never left to the
+model. Ambiguity fails loudly with the candidate list instead of guessing. Tune it
+in the config's `grounding` section — e.g. pin CI to the deterministic tier:
+
+```json
+"grounding": { "tiers": ["lexical"] }
+```
+
+`desc=` trades a little determinism for resilience: prefer `text=`/`role=` when
+they work; reach for `desc=` when perception noise or restyling breaks them.
+
 > **Tip.** For icon-only controls whose caption can be unreliable (a bare `□`
 > maximize glyph, small toolbar icons), prefer `role=button` + a spatial relation
 > over `text=`, since the visual caption is a best-effort hint, not a stable id.

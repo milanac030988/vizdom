@@ -84,6 +84,7 @@ The template groups options by pipeline stage:
 | `symbols` | Stage 4c — glyph/operator reading (`+ − = × ÷ …`) | `enabled`, `min_score` (null = calibrated ~0.70; raise = stricter, lower = recover faint glyphs) |
 | `filter` | size / count filters | `min_element_area`, `min_element_size`, `max_elements` |
 | `capture` | acquisition (ADR-018) | `strategy`, `target`, `camera_mode` |
+| `grounding` | `desc=` locator resolution (ADR-022) | `tiers` (`lexical`/`slm`/`vlm`, escalation order), `backend`, `model`, `vision_model`, `host` |
 | `output` | DOM compilation | `generate_locators` |
 
 Filters and thresholds expressed in pixels are **resolution-aware**: they are
