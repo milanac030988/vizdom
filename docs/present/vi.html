@@ -220,10 +220,10 @@ body.notes-on .slide.active .notes{display:block}
 <li><strong>Bounding box phải đủ chính xác</strong> — một khung bao rộng có thể đủ để nhận diện vật thể, nhưng chưa đủ để click chính xác vào một control</li>
 </ul>
 <p class="small">Phân loại dựa trên Xie và cộng sự, <em>Object Detection for Graphical User Interface: Old Fashioned or Deep Learning or a Combination?</em> (FSE 2020) — bài báo nền tảng mà nhóm đã nghiên cứu.</p>
-</div>
+<div class="card bad"><h3 style="margin-top:0;color:var(--bad)">Khó khăn thứ sáu, đặc thù của kiểm thử</h3><p class="small" style="margin:0;color:var(--fg)"><strong>Phần tử không có text thì cũng không có tên để định vị.</strong> Năm khó khăn phía trên chủ yếu nói về việc <em>phát hiện</em> phần tử; nhưng automation còn phải <em>gọi tên</em> được phần tử đó. Toolbar icon, nút điều khiển cửa sổ hay các phím chỉ có ký hiệu thường không chứa text có thể đọc được. Detector có thể xác định vị trí chính xác nhưng người viết test vẫn không có gì để dùng trong locator. Ba cách xử lý thông thường đều có nhược điểm: dùng <strong>vị trí</strong> thì dễ hỏng khi layout thay đổi; <strong>OCR</strong> thường không đọc được hoặc trả về nhiễu từ glyph; còn <strong>caption model</strong> chỉ đưa ra dự đoán và có thể thiếu ổn định — trong thử nghiệm, nhiễu tái mã hóa không đáng kể ≤7/255 đã làm caption đổi từ “Maximize” thành “Page”.</p></div></div>
 <div class="fig"><img alt="Phạm vi vấn đề" src="figures/problem_space.svg"/></div>
 </div>
-<div class="notes"><b>Điểm cần nhấn mạnh:</b> đây không phải bài toán object detection thông thường. Năm đặc điểm này giải thích vì sao pipeline cần các bước làm sạch, gộp phần tử và xử lý khác biệt về quy ước bounding box.</div>
+<div class="notes"><b>Điểm cần nhấn mạnh:</b> đây không phải bài toán object detection thông thường. Năm đặc điểm đầu giải thích vì sao pipeline cần các bước làm sạch; khó khăn thứ sáu — đặt tên cho control không có text — được xử lý bởi cơ chế label, symbol reader và locator <code>desc=</code>.</div>
 </section>
 <!-- 4 ─────────────────────────────────────────── -->
 <section class="slide">
@@ -286,8 +286,8 @@ body.notes-on .slide.active .notes{display:block}
           Get Element Property/Text/Label/Center, …</p>
 </div>
 <div class="card">
-<h3 style="margin-top:0">6 · Tìm phần tử bằng 6 loại locator</h3>
-<p class="small" style="color:var(--fg);margin:0"><code>id=</code> <code>text=</code> <code>hint=</code> <code>role=</code>, locator theo quan hệ không gian (<code>within</code>, <code>right_of</code>, <code>below</code>, …) và <code>desc=</code> — mô tả bằng ngôn ngữ tự nhiên.</p>
+<h3 style="margin-top:0">6 · Tìm phần tử theo 7 cách — có thể tạo fallback chain</h3>
+<p class="small" style="color:var(--fg);margin:0"><code>id=</code> <code>text=</code> <code>hint=</code> <code>role=</code>, locator theo quan hệ không gian (<code>within</code>, <code>right_of</code>, <code>below</code>, …), <code>desc=</code> bằng ngôn ngữ tự nhiên và <strong>fallback chain với <code>||</code></strong>. Ví dụ <code>text=Save || desc="save button"</code> sẽ thử locator đơn giản, xác định trước; chỉ dùng locator linh hoạt hơn khi cách đầu tiên không tìm được phần tử duy nhất.</p>
 </div>
 <div class="card good">
 <h3 style="margin-top:0;color:var(--good)">7 · Cấu hình toàn bộ session bằng một file</h3>
@@ -302,7 +302,7 @@ body.notes-on .slide.active .notes{display:block}
 <p class="small" style="color:var(--fg);margin:0"><strong>Viewer</strong> tương tác để xem và chỉnh sửa DOM, xuất resource cho Robot Framework; <strong>bộ công cụ đánh giá</strong> tạo metrics và report; các bộ sinh dataset; cùng cơ chế <strong>plugin</strong> chỉ cần bổ sung một file. Mỗi lần chạy còn lưu một <strong>session</strong> gồm screenshot, detections, DOM và <strong>window title / process</strong> đã được phân tích để tiện đối chiếu về sau.</p>
 </div>
 </div>
-<p class="small" style="margin-top:.8em">Tùy chọn: một bước tinh chỉnh bằng LM/VLM nhỏ (tách / đổi loại / gộp / gán label). Mỗi session lưu lại screenshot, detections và DOM để có thể kiểm tra lại. <span class="dim">Hai thành phần chính: engine và thư viện Robot Framework sử dụng engine này.</span></p>
+<div class="card" style="margin-top:.8em"><p class="small" style="margin:0;color:var(--fg)"><strong>10 · Gán tên cho control không có text.</strong> Icon và phím chỉ có ký hiệu được bổ sung ngữ nghĩa theo nhiều lớp: <strong>symbol reader</strong> đọc trực tiếp các glyph như <code>+ − = × ÷</code> vào trường <code>text</code>; label do caption sinh ra được giữ tách biệt với text thực sự đọc được; các control đã nhận dạng có thêm tên chuẩn hóa như ÷ → “Divide”; và <code>desc=</code> đóng vai trò phương án cuối cho những trường hợp còn lại.</p></div><p class="small" style="margin-top:.6em">Tùy chọn: một bước tinh chỉnh bằng LM/VLM nhỏ (tách / đổi loại / gộp / gán label). Mỗi session lưu lại screenshot, detections và DOM để có thể kiểm tra lại. <span class="dim">Hai thành phần chính: engine và thư viện Robot Framework sử dụng engine này.</span></p>
 </div>
 <div class="notes"><b>Slide trọng tâm của Phương thức 3:</b> đây là phần thể hiện sản phẩm kỹ thuật. Mỗi chức năng đều đã được hiện thực và có thể demo; các con số 4 detector, 5 nguồn capture và 25 keywords cũng là bằng chứng cho quality scenario về khả năng mở rộng (Q-01).</div>
 </section>
@@ -389,7 +389,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 </div>
 <div class="card" style="margin-top:.7em"><p style="margin:0">
-<strong>Không phải chọn một bỏ một — VizDOM dùng grounding ở nơi nó thực sự có giá trị.</strong> Tier&nbsp;2 của locator <code>desc=</code> chính là một VLM grounder, chỉ được gọi cho những trường hợp khó mà các tier deterministic không giải quyết được; kết quả sau đó được ánh xạ ngược về một phần tử DOM bằng Set-of-Mark. Trong roadmap, một grounder chuyên dụng thuộc nhóm Aria-UI / ELAM có thể được thêm làm Tier-2 backend khác phía sau cùng một interface.
+<strong>Không phải chọn một bỏ một — VizDOM dùng grounding ở nơi nó thực sự có giá trị.</strong> Tier 2 của locator <code>desc=</code> chính là một VLM grounder, chỉ được gọi cho những trường hợp khó mà các tier deterministic không giải quyết được; kết quả sau đó được ánh xạ ngược về một phần tử DOM bằng Set-of-Mark. Trong roadmap, một grounder chuyên dụng thuộc nhóm Aria-UI / ELAM có thể được thêm làm Tier-2 backend khác phía sau cùng một interface.
 <span class="dim">Parse một lần để lấy cấu trúc; chỉ grounding phần còn lại.</span></p></div>
 </div>
 <div class="notes"><b>Câu hỏi có khả năng được đặt ra:</b> bắt đầu bằng bảng chi phí — chi phí tăng theo số trạng thái màn hình chứ không theo số bước test — rồi chuyển sang dạng đầu ra: một tọa độ không đủ cho assertion. Kết thúc bằng ý “không phải chọn một bỏ một”: VizDOM đã tích hợp grounding như một tier có kiểm soát, cho thấy đây là lựa chọn có cân nhắc chứ không phải né tránh grounder.</div>
@@ -829,7 +829,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 <div class="card good"><p style="margin:0"><strong>5/5</strong> câu mô tả thử nghiệm được resolve đúng trên một session thực tế, bao gồm các cách diễn đạt khác nhau qua tier SLM. Một mô tả vô nghĩa trả về <strong>lỗi rõ ràng</strong> cùng danh sách ứng viên thay vì chọn bừa.</p></div>
 <div class="card warn"><p style="margin:0"><strong>Phát hiện đáng chú ý:</strong> một model 3B từng tự tin gọi phần tử ở góc trên trái là “top right”. Vì vậy mọi từ chỉ vị trí được xử lý <strong>bằng geometry trước khi gọi model</strong>; thông tin vị trí không được giao hoàn toàn cho mô hình.</p></div>
 </div>
-<p class="small">Tính deterministic được kiểm soát bằng policy cấu hình: chuỗi tier có thể cấu hình; CI có thể chỉ bật lexical tier; kết quả được cache theo từng screen; mỗi lần resolve đều ghi lại tier đã trả lời. Nhờ đó chiến lược <strong>“parse once, resolve long-tail locators”</strong> có thể đo lường được.</p>
+<p class="small">Tính deterministic được kiểm soát bằng policy cấu hình: chuỗi tier có thể cấu hình; CI có thể chỉ bật lexical tier; kết quả được cache theo từng screen; mỗi lần resolve đều ghi lại tier đã trả lời. Nhờ đó chiến lược <strong>“parse once, resolve long-tail locators”</strong> có thể đo lường được.</p><div class="card good"><p style="margin:0"><strong>Kết hợp trực tiếp với fallback chain.</strong> Ví dụ <code>text=Save || desc="save button in the toolbar"</code>: locator xác định và gần như không tốn chi phí được chạy trước; <code>desc=</code> chỉ được dùng khi locator đầu tiên không tìm thấy hoặc trả về nhiều kết quả. Khi fallback thành công, hệ thống ghi warning và chỉ rõ locator chính nào đã lỗi thời — đây chính là tín hiệu đầu vào cần thiết cho cơ chế <em>self-healing locator</em> dự kiến trong ADR-024.</p></div>
 </div>
 <div class="notes">ADR-022. Đây là phần mới nhất và có thể phát triển thành một thí nghiệm phù hợp cho luận văn: đo tỷ lệ resolve đúng của từng tier trên dataset có label.</div>
 </section>
