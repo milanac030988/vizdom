@@ -186,9 +186,14 @@ def page_overview():
                 if info_path.exists():
                     with open(info_path) as f:
                         info = json.load(f)
+                    # Session provenance: which app (or file) was analyzed.
+                    src = info.get("window_title") or info.get("capture_source") or ""
+                    src_line = f"{src[:38]}  \n" if src else ""
                     st.caption(
                         f"{session.name}  \n"
+                        f"{src_line}"
                         f"{info.get('element_count', '?')} elements &bull; "
+                        f"{info.get('cv_stats', {}).get('detector', '?')} &bull; "
                         f"{info.get('ocr_engine', '?')}"
                     )
 

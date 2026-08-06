@@ -168,6 +168,9 @@ ra để xử lý phần tử dày đặc, liền kề và bị phân đoạn qu
 ước bounding box trong phần đánh giá (Phần~\ref{sec:eval}) là hệ quả trực tiếp của
 yêu cầu độ chính xác cao. Hình~\ref{fig:problemspace} tóm tắt hệ phân loại này.
 
+\paragraph{Khó khăn thứ sáu, đặc thù của kiểm thử: đặt tên cho phần tử không có text.}
+Năm đặc điểm phía trên chủ yếu liên quan đến việc \emph{phát hiện} phần tử; trong khi đó, automation còn cần \emph{gọi tên} được phần tử để sử dụng trong locator. Nhiều control GUI hoàn toàn không có text có thể đọc được, chẳng hạn toolbar icon, nút điều khiển cửa sổ, phím toán tử hay button chỉ chứa glyph. Detector có thể xác định vị trí của control một cách chính xác nhưng người viết test vẫn không có giá trị nào để đưa vào locator. Đây là một bài toán độc lập, không phải hệ quả trực tiếp của detection accuracy, và ba cách xử lý mặc định đều có hạn chế. Dùng vị trí thì dễ hỏng khi layout thay đổi, đúng như nhược điểm của các công cụ dựa trên ảnh. OCR thường không trả về gì vì không có text, hoặc tệ hơn là trả về nhiễu từ glyph trang trí. Caption model chỉ đưa ra một \emph{dự đoán}, và thử nghiệm cho thấy dự đoán này có thể thiếu ổn định: hai ảnh chụp cùng một màn hình chỉ khác nhau bởi nhiễu tái mã hóa rất nhỏ ($\leq$7/255 trên mỗi kênh màu) đã khiến caption của icon thay đổi từ ``Maximize'' thành ``Page'' (Phần~\ref{sec:eval}). Vì vậy, VizDOM xem ngữ nghĩa của phần tử không có text là một yêu cầu hạng nhất và xử lý theo nhiều lớp: đọc trực tiếp glyph nếu hình dạng thuộc tập ký hiệu đã biết; giữ label sinh từ caption tách biệt hoàn toàn với text thực sự đọc được; gán tên chuẩn hóa cho các control đã nhận dạng; và dùng grounding dựa trên mô tả như phương án cuối. Cơ chế này được trình bày tại Phần~\ref{sec:impl} và đánh giá tại Phần~\ref{sec:eval}.
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.86\linewidth]{Problem_Space.png}
@@ -604,13 +607,30 @@ hình vuông rỗng của nút maximize thành dấu ``+''. Giai đoạn đượ
 biết các glyph này bằng \emph{template matching}: glyph được crop theo đúng
 bounding box của nó và chuẩn hóa theo scale; các hình outline rỗng được loại bỏ
 theo cấu trúc; sau đó candidate được so khớp với các template render từ font bằng
-Dice score, với acceptance threshold riêng cho từng ký hiệu. Trên ảnh chụp thật
-của một ứng dụng máy tính, cơ chế này đọc đúng 14 trong 15 control được kiểm tra;
-glyph tổ hợp ``$\pm$'' còn lại được từ chối an toàn thay vì bị nhận dạng sai. Kết
-quả được đưa vào \code{text} --- vì ký hiệu là nội dung được đọc trực tiếp --- nên
-một phím toán tử vẫn có thể được điều khiển bằng \code{text="+"} ngay cả khi
-caption của nó bị nhiễu. Tập ký hiệu được nhận dạng và mức độ nghiêm ngặt có thể
-cấu hình trong section \code{symbols}.
+Dice score, với acceptance threshold riêng cho từng ký hiệu.
+
+Một ảnh capture thứ hai --- cùng ứng dụng nhưng được render bằng theme có nét glyph
+dày hơn --- cho thấy một failure mode tinh vi hơn: bước \emph{chọn phương án nhị
+phân hóa} đã chọn sai. Adaptive threshold tạo ra một \emph{artefact dạng vòng}
+(glyph xuất hiện như một lỗ rỗng bên trong một khối), nhưng candidate này lại đạt
+điểm cao nhất theo density heuristic dùng để chọn giữa các phương án binarization.
+Vì vậy, dấu ``$\times$'' nét dày bị match thành template dấu chấm đặc, còn
+``$\div$'' và ``$-$'' không match được gì. Giai đoạn này hiện đưa \emph{mọi}
+candidate nhị phân hóa (cả hai polarity và adaptive threshold) qua template
+matching rồi chọn kết quả tốt nhất trên toàn bộ tập candidate. Artefact dạng vòng
+không khớp template nào, nên polarity đúng được chọn theo bằng chứng từ phép so khớp
+thay vì bằng heuristic. Hệ thống đồng thời bổ sung size gate cho dấu ``.'' và các
+template dùng font đậm.
+
+Trên cả hai theme, cơ chế hiện đọc đúng \textbf{20 trên 20} control được kiểm tra;
+glyph tổ hợp ``$\pm$'' vẫn được từ chối an toàn thay vì bị nhận dạng sai. Kết quả
+được đưa vào \code{text} --- vì ký hiệu là nội dung được đọc trực tiếp --- nên một
+phím toán tử vẫn có thể được điều khiển bằng \code{text="+"} ngay cả khi caption
+bị nhiễu. Khi kết quả đủ tin cậy, hệ thống còn gán một \emph{label chuẩn hóa}
+(``$\div$''$\rightarrow$Divide, ``$\times$''$\rightarrow$Multiply), thay thế
+caption dễ nhầm trên các phím toán tử; các control trên title bar vẫn giữ caption vì
+đó mới là tên thực của chúng. Tập ký hiệu được nhận dạng và mức độ nghiêm ngặt có
+thể cấu hình trong section \code{symbols}.
 
 \subsection{Thư viện Visual Automation cho Robot Framework}
 Deliverable thứ hai là thư viện Robot Framework \cite{robotframework}, hoạt động
@@ -627,12 +647,15 @@ như một orchestrator mỏng phía trên các port capture và actuator. Một
         \code{Visual Should Not Exist}, \code{Wait Until Visual Appears},
         \code{Wait Until Visual Disappears}.
 \end{itemize}
-Locator hỗ trợ \code{id=}, \code{text=}, \code{hint=}, \code{role=} và quan hệ
-không gian (\code{within=}, \code{right\_of=}, \code{below=}, \dots). Action phân
-giải locator thành phần tử, chuyển center sang tọa độ chuẩn hóa rồi ủy quyền cho
-actuator. Nhờ vậy, cùng một bài kiểm thử có thể chạy cục bộ, qua gRPC hoặc với cánh
-tay robot mà không cần thay đổi. Hình~\ref{fig:seq} mô tả tương tác đầu-cuối của một
-chu kỳ từ ảnh chụp màn hình đến DOM.
+Locator hỗ trợ \code{id=}, \code{text=}, \code{hint=}, \code{role=}, các quan hệ không gian (\code{within=}, \code{right\_of=}, \code{below=}, \dots) và \code{desc=} (Phần~\ref{sec:desc}). Nhiều locator trong cùng một chuỗi được kết hợp theo điều kiện \emph{and}; ngược lại, dấu phân cách \code{||} biểu diễn một \emph{fallback chain} có thứ tự, được thử từ trái sang phải cho đến khi một phương án resolve chính xác thành một phần tử:
+
+\begin{quote}\small
+\code{Click Visual~~~~text=Save || desc="save button in the toolbar"}
+\end{quote}
+
+\noindent Một phương án bị bỏ qua không chỉ khi không tìm thấy kết quả, mà cả khi kết quả \emph{mơ hồ}; locator trả về nhiều phần tử cũng không thể sử dụng an toàn như locator không tìm thấy phần tử. Khi cả chain thất bại, thông báo lỗi liệt kê từng phương án đã thử cùng nguyên nhân tương ứng để vẫn có thể debug. Do các phương án có thứ tự, người viết test cũng kiểm soát được chi phí: lookup xác định bằng \code{text=} gần như không tốn chi phí và được chạy trước; \code{desc=} chỉ được sử dụng sau khi phương án trước thất bại và có thể gọi model. Khi một phương án phía sau thành công, thư viện phát warning và chỉ rõ phương án nào đã thất bại. Đây là tín hiệu cho thấy locator chính đã lỗi thời, đồng thời là đầu vào có thể đo lường cho cơ chế self-healing locator được liệt kê trong phần công việc tương lai (ADR-024).
+
+Action phân giải locator thành phần tử, chuyển center sang tọa độ chuẩn hóa rồi ủy quyền cho actuator. Nhờ vậy, cùng một bài kiểm thử có thể chạy cục bộ, qua gRPC hoặc với cánh tay robot mà không cần thay đổi. Hình~\ref{fig:seq} mô tả tương tác đầu-cuối của một chu kỳ từ ảnh chụp màn hình đến DOM.
 
 \begin{figure}[H]
   \centering
@@ -646,6 +669,7 @@ chu kỳ từ ảnh chụp màn hình đến DOM.
 
 
 \subsection{Định vị dựa trên mô tả: grounding phân tầng trên DOM}
+\label{sec:desc}
 Property locator có tính quyết định nhưng lại dễ trở nên mong manh đúng tại những
 điểm perception yếu nhất: một icon có caption không ổn định hoặc một phím có kết
 quả OCR nhiễu sẽ không thể được tìm bằng \code{text=}. Vì vậy, locator
@@ -915,6 +939,64 @@ Checkbox vẫn là role yếu nhất (0.55): chỉ được khôi phục khi cap
 đủ đặc trưng (``Checkmark'', ``Toggle''), trong khi nhiều phần tử có caption chung
 chung hoặc caption chính là label hiển thị. Việc sử dụng text label liền kề hoặc
 caption semantics phong phú hơn để nhận diện checkbox được dành cho future work.
+
+
+\subsection{Đánh giá định tính trên một ứng dụng thực tế}
+\label{sec:realapp}
+Benchmark tổng hợp đo được khả năng localisation và phân loại type, nhưng chưa phản
+ánh đầy đủ cách các stage tương tác trên một màn hình doanh nghiệp thực tế có mật
+độ phần tử cao. Để khảo sát vấn đề này, một ứng dụng dạng client-management console
+($980\times562$) được phân tích bằng bốn tổ hợp detector/OCR; các lỗi được phân nhóm
+theo loại (Bảng~\ref{tab:combos}). Đây là một nghiên cứu \emph{định tính} --- màn
+hình này chưa có ground truth --- nên kết quả được trình bày dưới dạng các nhóm lỗi
+quan sát được, không phải điểm số.
+
+\begin{table}[H]
+  \centering\footnotesize
+  \caption{Các nhóm lỗi quan sát được với từng tổ hợp detector/OCR trên một ứng
+  dụng thực tế. ``$\checkmark$'' = không quan sát thấy lỗi thuộc nhóm tương ứng.}
+  \label{tab:combos}
+  \begin{tabular}{@{}p{4.5cm}p{2.2cm}p{2.2cm}p{2.4cm}p{2.2cm}@{}}
+    \toprule
+    Tổ hợp & Icon & Nút dạng tile & Text trạng thái nhỏ & Link cuối màn hình \\
+    \midrule
+    UIED + EasyOCR & Bỏ sót một số & $\checkmark$ & $\checkmark$ & Bị gộp thành một \\
+    OmniParser + EasyOCR \emph{(trước khi sửa)} & $\checkmark$ & Bị tách thành 2--3 phần & Bỏ sót nhiều dòng & $\checkmark$ \\
+    OmniParser + Tesseract & $\checkmark$ & $\checkmark$ & Bỏ sót nhiều dòng & $\checkmark$ \\
+    \textbf{OmniParser + EasyOCR \emph{(sau khi sửa)}} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Hai trong ba nhóm lỗi thực chất nằm trong pipeline của dự án và chỉ lộ ra khi so
+sánh nhiều tổ hợp. Thứ nhất, các dòng trạng thái nhỏ (``Active'', ``Inactive'',
+``Low Protection'') biến mất dù baseline cổ điển vẫn đọc được. OCR ensemble
+(Section~\ref{sec:impl}) trước đây chỉ \emph{bù chỗ trống}: thêm box từ OCR có
+upscaling tại những nơi OmniParser chưa trả kết quả. Khi OCR nội bộ của OmniParser
+đã tạo một kết quả rác trong box rất nhỏ (``\textasciitilde ctive'' thay vì
+``Active'', cao 8\,px), kết quả tốt hơn từ OCR có upscaling bị loại vì được xem là
+trùng; box nhỏ sau đó lại bị minimum-size filter xóa, khiến cả dòng biến mất. OCR
+ensemble hiện dùng cơ chế \emph{prefer-external union}: box từ OCR bên ngoài sẽ
+\emph{thay thế} box OmniParser mà nó overlap, vì lượt OCR có upscaling được thiết
+kế để cung cấp kết quả chất lượng cao hơn.
+
+Thứ hai, các nút tile có caption gồm hai từ (``Check Now'') bị tách thành hai nửa.
+Nguyên nhân là splitter dựa trên luật chia mọi control chứa từ hai OCR box trở lên,
+trong khi EasyOCR trả box theo \emph{từng từ} còn Tesseract trả một box cho cả dòng.
+Đây cũng là lý do lỗi chỉ xuất hiện với một OCR engine. Splitter hiện không chia
+control mà detector đã đánh dấu là một phần tử tương tác duy nhất; trong các trường
+hợp còn lại, việc tách chỉ xảy ra khi có khoảng cách thực sự đủ lớn
+($\geq 1.5\times$ median text height) giữa các đoạn text. Một quan sát độc lập khác
+là OCR engine được cấu hình nhưng chưa cài đặt trước đây có thể âm thầm khiến lần
+chạy suy giảm về OCR nội bộ của detector; trường hợp này hiện fail fast kèm hướng
+dẫn cài đặt.
+
+Sau các bản sửa, OmniParser + EasyOCR không còn lỗi ở cả bốn nhóm trên màn hình thử
+nghiệm, trở thành tổ hợp được khuyến nghị rõ ràng; đồng thời không gây regression
+trên benchmark tổng hợp hay các phép thử với ứng dụng máy tính. Hai bài học có thể
+khái quát: metrics theo từng type trên dữ liệu tổng hợp không phát hiện được lỗi do
+sự tương tác giữa các stage, và khả năng hoán đổi cả detector lẫn OCR engine chính
+là điều giúp các lỗi này được tìm thấy.
 
 \subsection{Các khía cạnh hiệu năng}
 Hiệu năng được phân tích theo ba trục. Số liệu wall-clock cần chờ benchmark so sánh

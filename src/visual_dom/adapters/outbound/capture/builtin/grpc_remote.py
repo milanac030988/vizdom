@@ -50,6 +50,15 @@ class GrpcCaptureStrategy(CaptureStrategy):
         self._channel = grpc.insecure_channel(self.target)
         self._stub = capture_pb2_grpc.CaptureStub(self._channel)
 
+    def describe_target(self) -> dict:
+        """
+        The frame comes from a remote host, so only the endpoint is knowable here.
+        (Identifying the app on that host would need a provenance field in the
+        capture RPC — noted as future work.)
+        """
+        return {"target_hint": f"remote capture service {self.target}",
+                "capture_target": self.target}
+
     def capture(self) -> np.ndarray:
         import cv2
         from visual_dom.generated import capture_pb2

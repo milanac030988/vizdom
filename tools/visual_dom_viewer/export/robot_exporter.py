@@ -53,7 +53,10 @@ Library          VisualLibrary
         self._naming_strategy = 'text_first'  # 'text_first', 'type_first', 'id_only'
         self._include_coordinates = True
         self._include_comments = True
-        self._generate_keywords = True
+        # NOTE: flag must NOT be named _generate_keywords — that would shadow
+        # the _generate_keywords() method and make it uncallable ('bool' object
+        # is not callable') when exporting.
+        self._emit_keywords = True
 
     def set_naming_strategy(self, strategy: str) -> None:
         """Set variable naming strategy."""
@@ -86,7 +89,7 @@ Library          VisualLibrary
             variables = self._generate_variables(elements)
 
             # Generate keywords section
-            keywords = self._generate_keywords(elements) if self._generate_keywords else ""
+            keywords = self._generate_keywords(elements) if self._emit_keywords else ""
 
             # Get metadata
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -367,7 +370,7 @@ Library          VisualLibrary
             Preview string
         """
         variables = self._generate_variables(elements)
-        keywords = self._generate_keywords(elements) if self._generate_keywords else ""
+        keywords = self._generate_keywords(elements) if self._emit_keywords else ""
 
         return f"*** Variables ***\n{variables}\n\n*** Keywords ***\n{keywords}"
 
@@ -397,7 +400,7 @@ Library          VisualLibrary
             variables = self._generate_definition_variables(definitions)
 
             # Generate keywords section from definitions
-            keywords = self._generate_definition_keywords(definitions) if self._generate_keywords else ""
+            keywords = self._generate_definition_keywords(definitions) if self._emit_keywords else ""
 
             # Get metadata
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

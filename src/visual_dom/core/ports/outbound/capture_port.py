@@ -44,6 +44,28 @@ class CaptureStrategy(ABC):
         """
         return True
 
+    def describe_target(self) -> dict:
+        """
+        Identify WHAT was captured, for session provenance. Optional override.
+
+        Each strategy knows best how to name its own target, so this is a port
+        concern rather than a caller concern: the OS grabbers can query the
+        window manager, ADB can ask for the resumed activity, a camera cannot
+        know anything (it photographs an external display), and a remote feed
+        only knows its endpoint.
+
+        Returns a JSON-serialisable dict; recommended keys:
+          ``window_title``  authoritative name, when the platform can supply one
+          ``process_name``  owning executable / package, when known
+          ``activity``      Android component (package/.Activity)
+          ``target_hint``   free-form note when nothing authoritative exists
+          ``guess_source``  set ONLY for inferred values (e.g. "ocr", "vlm"),
+                            so a guess is never mistaken for a fact
+
+        Must never raise — return ``{}`` when the target cannot be identified.
+        """
+        return {}
+
     def close(self) -> None:
         """Release any resources (camera handles, adb sessions). Optional."""
 

@@ -714,6 +714,16 @@ class VisualDOMPipeline:
                 result.append(elem)
                 continue
 
+            # Never split a control the detector identified as ONE interactable
+            # (OmniParser's interactivity flag). A tile button whose caption is
+            # two words ("Check Now") contains two OCR boxes, and splitting it
+            # produced two half-buttons; the detector's own segmentation is the
+            # better authority here. Splitting exists for UIED's merged blobs,
+            # which carry interactable=None.
+            if elem.interactable is True:
+                result.append(elem)
+                continue
+
             # Find text elements contained in this element
             contained = []
             for te in text_elements:
@@ -722,6 +732,22 @@ class VisualDOMPipeline:
 
             # Need 2+ non-overlapping texts to split
             if len(contained) < 2:
+                result.append(elem)
+                continue
+
+            # Words of ONE caption sit close together; separate merged controls
+            # sit far apart. Require a clear gap between adjacent texts (relative
+            # to text height) before splitting — otherwise "User Info" on one
+            # tile splits into two buttons at the word boundary.
+            xs = sorted(contained, key=lambda t: t.bounds[0])
+            med_h = sorted(t.bounds[3] - t.bounds[1] for t in contained)[len(contained) // 2]
+            max_gap = 0
+            for prev, cur in zip(xs, xs[1:]):
+                max_gap = max(max_gap, cur.bounds[0] - prev.bounds[2])
+            ys = sorted(contained, key=lambda t: t.bounds[1])
+            for prev, cur in zip(ys, ys[1:]):
+                max_gap = max(max_gap, cur.bounds[1] - prev.bounds[3])
+            if max_gap < max(12, int(1.5 * med_h)):
                 result.append(elem)
                 continue
 

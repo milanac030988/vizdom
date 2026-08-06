@@ -161,6 +161,25 @@ and over-segmented elements, and the box-convention effects seen in the evaluati
 (Section~\ref{sec:eval}) are a direct consequence of the high-precision requirement.
 Figure~\ref{fig:problemspace} summarises this taxonomy.
 
+\paragraph{A sixth difficulty specific to testing: naming non-text elements.}
+Beyond the five properties above --- which concern \emph{finding} elements ---
+automation additionally requires \emph{naming} them, and a large share of GUI
+controls carry no readable text at all: toolbar icons, window controls, operator
+keys, glyph-only buttons. Detection localises such a control perfectly and still
+leaves the test author with nothing to write in a locator. This is a distinct
+problem, not a corollary of detection accuracy, and it has three unattractive
+default answers. Position is brittle (it breaks on any relayout, the very failure
+image-based tools suffer from). OCR returns nothing, because there is no text ---
+or worse, returns noise from a decorative glyph. A caption model returns a
+\emph{prediction}, which we measured to be unstable: two captures of the same
+screen differing only by imperceptible re-encoding noise ($\leq$7/255 per channel)
+flipped an icon's caption from ``Maximize'' to ``Page'' (Section~\ref{sec:eval}).
+VizDOM therefore treats non-text semantics as a first-class concern with a layered
+answer --- literal glyph reading where the shape is a known symbol, caption-derived
+labels kept strictly separate from read text, canonical names for recognised
+controls, and description-based grounding as the escape hatch --- described in
+Section~\ref{sec:impl} and evaluated in Section~\ref{sec:eval}.
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.86\linewidth]{Problem_Space.png}
@@ -573,11 +592,24 @@ square for ``+''. The redesigned stage reads such glyphs by \emph{template
 matching}: the glyph is cropped to its own bounding box (scale-normalised),
 hollow outline shapes are rejected structurally, and the candidate is matched
 against font-rendered templates by Dice score with per-symbol acceptance
-thresholds. On a real calculator screenshot this reads 14 of 15 probed controls
-correctly (the remaining composite ``$\pm$'' glyph is safely rejected rather than
-misread), and its output feeds \code{text} --- a symbol is a literal read --- so an
-operator key is drivable as \code{text="+"} even when its caption is noise. The
-recognised set and strictness are configurable (\code{symbols} section).
+thresholds. A second capture --- the same application rendered with thicker
+glyphs --- exposed a subtler failure: the \emph{binarisation choice} was wrong.
+An adaptive-threshold \emph{ring artifact} (the glyph appearing as a hole inside a
+blob) scored best on the density heuristic that selected among binarisations, so a
+fat ``$\times$'' matched the filled-dot template while ``$\div$'' and ``$-$''
+matched nothing. The stage therefore now scores \emph{every} binarisation
+candidate (both polarities plus adaptive) through template matching and keeps the
+best overall --- ring artifacts match no template, so the correct polarity wins on
+evidence rather than on a heuristic --- with an added size gate for ``.'' and bold
+font templates. Across both themes it now reads \textbf{20 of 20} probed controls
+correctly (the composite ``$\pm$'' glyph is still safely rejected rather than
+misread). Its output feeds \code{text} --- a symbol is a literal read --- so an
+operator key is drivable as \code{text="+"} even when its caption is noise; a
+confident read additionally assigns a \emph{canonical} label
+(``$\div$''$\rightarrow$Divide, ``$\times$''$\rightarrow$Multiply), replacing
+look-alike caption noise on operator keys while title-bar controls keep the
+captions that are their real names. The recognised set and strictness are
+configurable (\code{symbols} section).
 
 \subsection{Robot Framework Visual Automation Library}
 The second deliverable is a Robot Framework library \cite{robotframework} that acts
@@ -593,12 +625,31 @@ as a thin orchestrator over the capture and actuator ports. Representative keywo
         \code{Visual Should Not Exist}, \code{Wait Until Visual Appears},
         \code{Wait Until Visual Disappears}.
 \end{itemize}
-Locators support \code{id=}, \code{text=}, \code{hint=}, \code{role=}, and spatial
-relations (\code{within=}, \code{right\_of=}, \code{below=}, \dots). Actions resolve
-a locator to an element, convert its center to normalized coordinates, and delegate
-to the actuator, so the same test runs locally, over gRPC, or against a robot arm
-without change. Figure~\ref{fig:seq} shows the end-to-end interaction for a single
-screenshot-to-DOM cycle.
+Locators support \code{id=}, \code{text=}, \code{hint=}, \code{role=}, spatial
+relations (\code{within=}, \code{right\_of=}, \code{below=}, \dots) and
+\code{desc=} (Section~\ref{sec:desc}). Several locators in one string are
+combined with \emph{and}; a \code{||} separator instead expresses an ordered
+\emph{fallback chain}, tried left to right until one alternative resolves to
+exactly one element:
+
+\begin{quote}\small
+\code{Click Visual~~~~text=Save || desc="save button in the toolbar"}
+\end{quote}
+
+\noindent An alternative is abandoned both when it matches nothing and when it is
+\emph{ambiguous} --- an ambiguous locator is as unusable as a missing one --- and a
+failed chain reports every attempt with its reason, so chains remain debuggable.
+Because alternatives are ordered, the author controls cost: a deterministic
+\code{text=} lookup is free and runs first, while \code{desc=} (which may invoke a
+model) is reached only after it has failed. When a later alternative wins, the
+library warns and names the alternative that failed --- a signal that the primary
+locator has gone stale, and the measurable input to the self-healing locators
+listed as future work (ADR-024).
+
+Actions resolve a locator to an element, convert its center to normalized
+coordinates, and delegate to the actuator, so the same test runs locally, over
+gRPC, or against a robot arm without change. Figure~\ref{fig:seq} shows the
+end-to-end interaction for a single screenshot-to-DOM cycle.
 
 \begin{figure}[H]
   \centering
@@ -611,6 +662,7 @@ screenshot-to-DOM cycle.
 \end{figure}
 
 \subsection{Description-based location: tiered grounding over the DOM}
+\label{sec:desc}
 Property locators are deterministic but brittle exactly where perception is
 weakest: an icon whose caption is unstable, or a key whose OCR is noise, is
 unfindable by \code{text=}. A \code{desc=} locator therefore lets the tester state
@@ -858,6 +910,59 @@ Checkboxes remain the weakest role (0.55): they are recovered only when OmniPars
 caption is distinctive (``Checkmark'', ``Toggle''), and many carry a generic caption
 or their visible label instead. Using the adjacent text label or richer caption
 semantics to identify checkboxes is left as future work.
+
+\subsection{Qualitative evaluation on a real application}
+\label{sec:realapp}
+The synthetic benchmark measures localisation and typing, but not how the stages
+interact on a real, dense enterprise screen. To probe that, one such application
+($980\times562$, a client-management console) was analysed with four
+detector/OCR combinations and the defects classified by kind
+(Table~\ref{tab:combos}). This is a \emph{qualitative} study --- there is no ground
+truth for this screen --- so it is reported as observed defect classes rather than
+scores.
+
+\begin{table}[H]
+  \centering\footnotesize
+  \caption{Observed defect classes per detector/OCR combination on one real
+  application. ``$\checkmark$'' = no defect of that kind observed.}
+  \label{tab:combos}
+  \begin{tabular}{@{}p{4.5cm}p{2.2cm}p{2.2cm}p{2.4cm}p{2.2cm}@{}}
+    \toprule
+    Combination & Icons & Tile buttons & Small status text & Bottom links \\
+    \midrule
+    UIED + EasyOCR & some missed & $\checkmark$ & $\checkmark$ & merged into one \\
+    OmniParser + EasyOCR \emph{(before)} & $\checkmark$ & split in 2--3 & rows missing & $\checkmark$ \\
+    OmniParser + Tesseract & $\checkmark$ & $\checkmark$ & rows missing & $\checkmark$ \\
+    \textbf{OmniParser + EasyOCR \emph{(after)}} & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Two of the three defect classes turned out to be \emph{our} bugs, visible only by
+comparing combinations. First, small status rows (``Active'', ``Inactive'',
+``Low Protection'') were absent although the classical baseline read them: the OCR
+ensemble (Section~\ref{sec:impl}) only \emph{gap-filled}, adding our
+upscaling-OCR boxes where OmniParser had none. Where OmniParser's own OCR had
+produced a garbage read in a very small box (``\textasciitilde ctive'' for
+``Active'', 8\,px tall), our better read was discarded as a duplicate and the tiny
+box was then removed by the pipeline's minimum-size filter --- deleting the row
+entirely. The ensemble is now a \emph{prefer-external union}: an external box
+\emph{replaces} the OmniParser box it overlaps, since the upscaling read is the
+higher-quality one by construction. Second, tile buttons whose caption is two words
+(``Check Now'') were split into halves, because the rule-based splitter divides any
+control containing two or more OCR boxes --- and EasyOCR emits \emph{word} boxes
+where Tesseract emits one line box, which is exactly why the defect appeared with
+one engine and not the other. The splitter now refuses to divide a control the
+detector marked as a single interactable, and otherwise requires a real gap
+($\geq 1.5\times$ the median text height) between texts. A third, unrelated
+observation --- a configured OCR engine that is not installed silently degrading a
+run to the detector's own OCR --- is now a fast failure with an install hint.
+
+After these fixes, OmniParser + EasyOCR is defect-free on all four classes for
+this screen, making it the unambiguous recommended combination, with no regression
+on the synthetic benchmark or the calculator probes. Two lessons generalise:
+per-type synthetic metrics do not surface stage-interaction bugs, and keeping both
+the detector and the OCR engine swappable was what made these bugs findable at all.
 
 \subsection{Efficiency considerations}
 Efficiency is analysed along three axes. Wall-clock figures await the like-for-like

@@ -242,11 +242,23 @@ body.notes-on .slide.active .notes{display:block}
       </ul>
       <p class="small">Taxonomy after Xie et al., <em>Object Detection for Graphical User Interface:
         Old Fashioned or Deep Learning or a Combination?</em> (FSE 2020) — the paper our group studied.</p>
+      <div class="card bad">
+        <h3 style="margin-top:0;color:var(--bad)">A sixth difficulty, specific to testing (ours)</h3>
+        <p class="small" style="margin:0;color:var(--fg)"><strong>Non-text elements have no name.</strong>
+          The five above are about <em>finding</em> elements; automation must also <em>name</em> them —
+          and toolbar icons, window controls and operator keys carry no readable text. Detection can
+          localise such a control perfectly and still leave nothing to write in a locator.
+          The three default answers all fail: <strong>position</strong> is brittle (breaks on relayout),
+          <strong>OCR</strong> returns nothing (or glyph noise), and a <strong>caption model</strong>
+          returns a <em>prediction</em> we measured to be unstable — ≤7/255 pixel noise flipped
+          “Maximize” into “Page”.</p>
+      </div>
     </div>
     <div class="fig"><img src="figures/problem_space.svg" alt="Problem space taxonomy"></div>
   </div>
-  <div class="notes"><b>Key point:</b> this is not ordinary object detection. These five properties
-    directly motivate the clean-up stages and explain the box-convention effects in the evaluation.</div>
+  <div class="notes"><b>Key point:</b> this is not ordinary object detection. Five properties motivate
+    the clean-up stages; the sixth — naming non-text controls — is the problem our label/symbol/desc=
+    work answers (slides on Improvements 2, 3 and the desc= locator).</div>
 </section>
 
 <!-- 4 ─────────────────────────────────────────── -->
@@ -330,10 +342,13 @@ body.notes-on .slide.active .notes{display:block}
           Get Element Property/Text/Label/Center, …</p>
       </div>
       <div class="card">
-        <h3 style="margin-top:0">6 · Find elements 6 ways</h3>
+        <h3 style="margin-top:0">6 · Find elements 7 ways — chainable</h3>
         <p class="small" style="color:var(--fg);margin:0"><code>id=</code> <code>text=</code>
           <code>hint=</code> <code>role=</code>, spatial (<code>within</code>, <code>right_of</code>,
-          <code>below</code>, …) and <code>desc=</code> — plain-language description.</p>
+          <code>below</code>, …), <code>desc=</code> (plain language) — and
+          <strong><code>||</code> fallback chains</strong>:
+          <code>text=Save&nbsp;||&nbsp;desc="save button"</code> tries the cheap deterministic
+          locator first, the resilient one only if it fails.</p>
       </div>
       <div class="card good">
         <h3 style="margin-top:0;color:var(--good)">7 · Configure everything in one file</h3>
@@ -351,10 +366,18 @@ body.notes-on .slide.active .notes{display:block}
         <h3 style="margin-top:0;color:var(--good)">9 · Inspect, evaluate, extend</h3>
         <p class="small" style="color:var(--fg);margin:0">Interactive <strong>Viewer</strong> (browse and
           edit the DOM, export RF resources), an <strong>evaluation harness</strong> (metrics + reports),
-          dataset generators, and <strong>plugins</strong> — drop in one file.</p>
+          dataset generators, and <strong>plugins</strong> — drop in one file. Every run saves a
+          <strong>session</strong> (screenshot + detections + DOM + the analyzed
+          <strong>window title / process</strong>) for later comparison.</p>
       </div>
     </div>
-    <p class="small" style="margin-top:.8em">Optional: a small LM/VLM review stage (split / retype /
+    <div class="card" style="margin-top:.8em"><p class="small" style="margin:0;color:var(--fg)">
+      <strong>10 · Names for non-text controls.</strong> Icons and glyph keys get semantics from a
+      layered answer: literal <strong>glyph reading</strong> (<code>+ − = × ÷</code>) into
+      <code>text</code>, <strong>caption-derived labels</strong> kept separate from read text,
+      <strong>canonical names</strong> for recognised controls (÷ → “Divide”), and
+      <code>desc=</code> grounding as the escape hatch.</p></div>
+    <p class="small" style="margin-top:.6em">Optional: a small LM/VLM review stage (split / retype /
       merge / label) and session-based output — every run saves screenshot + detections + DOM for
       later inspection. <span class="dim">Two deliverables: the engine, and the Robot Framework
       library that consumes it.</span></p>
@@ -848,17 +871,17 @@ body.notes-on .slide.active .notes{display:block}
           YOLOv8 icon detection + Florence-2 captioning (OmniParser)</td>
           <td>element boxes from pixels, classical or deep — per config</td></tr>
       <tr><td>OCR</td><td>upscaling (~3×) for small text; <strong>dual-engine re-OCR</strong> of
-          low-confidence reads; <strong>OCR ensemble</strong> fed into OmniParser (gap-fill)</td>
+          low-confidence reads; <strong>OCR ensemble</strong> fed into OmniParser (<strong>prefer-external union</strong>)</td>
           <td>recover small/faint text the base pass misses</td></tr>
       <tr><td>Merge &amp; dedup</td><td>per-type <strong>NMS</strong>; cross-type suppression with
           priority rules; near-duplicate removal; region <strong>re-scan</strong>; text-position
-          splitting; <strong>smart-merge</strong> with fill-ratio guard</td>
+          splitting <em>guarded by interactable-flag + word-gap</em>; <strong>smart-merge</strong> with fill-ratio guard</td>
           <td>one clean element per control on dense UIs</td></tr>
       <tr><td>Role mapping</td><td>interactivity + <strong>resolution-aware geometry</strong> +
           caption-keyword disambiguation</td>
           <td>button / input / checkbox / icon roles from text-or-icon output → 0.09→0.87</td></tr>
       <tr><td>Symbol reading</td><td>tight-glyph normalisation → hollow-shape rejection →
-          <strong>font-template matching (Dice score)</strong> with per-symbol thresholds</td>
+          <strong>font-template matching (Dice)</strong> over <em>all</em> binarizations, per-symbol thresholds</td>
           <td>read + − = × ÷ glyphs OCR cannot → 20/20</td></tr>
       <tr><td>Hierarchy</td><td>containment thresholding, alignment grouping,
           <strong>label association</strong> by distance + position, reading-order sort</td>
@@ -944,6 +967,13 @@ body.notes-on .slide.active .notes{display:block}
           <li>Dice-match against <strong>font-rendered templates</strong>, accept only a confident,
               unambiguous best</li>
         </ol>
+        <div class="card warn"><p class="small" style="margin:0;color:var(--fg)">
+          <strong>Second iteration — a thicker-glyph theme broke it again.</strong> The binarizer was
+          <em>choosing the wrong candidate</em>: an adaptive-threshold <strong>ring artifact</strong>
+          (glyph as a hole in a blob) scored best on the density heuristic, so a fat <code>×</code>
+          matched the filled-dot template. Fix: score <strong>every</strong> binarization through
+          template matching and keep the best — rings match nothing; plus a size gate for
+          <code>.</code> and bold templates.</p></div>
       </div>
       <div>
         <div class="kpi">
@@ -953,6 +983,10 @@ body.notes-on .slide.active .notes{display:block}
         <div class="card good"><p style="margin:0"><code>÷ × − + = .</code> all correct · title-bar dash
           → <code>-</code> · close → <code>×</code> · maximize correctly <strong>rejected</strong> ·
           digits and icons correctly ignored</p></div>
+        <div class="card good" style="margin-top:.9em"><p class="small" style="margin:0;color:var(--fg)">
+          A confident read also sets a <strong>canonical label</strong> — <code>÷</code>→“Divide”,
+          <code>×</code>→“Multiply”, <code>−</code>→“Minus” — replacing caption noise
+          (“Add”/“Close”/“Minimize”) on operator keys, while title-bar controls keep their captions.</p></div>
         <div class="card warn" style="margin-top:.9em"><p class="small" style="margin:0;color:var(--fg)">
           Known miss: the Windows <code>±</code> key draws a diagonal composite no template matches — it
           returns <strong>nothing rather than something wrong</strong>.</p></div>
@@ -1005,6 +1039,48 @@ body.notes-on .slide.active .notes{display:block}
     caption model on GUI glyphs — worth reporting as a finding, not just a bug fix.</div>
 </section>
 
+<!-- 16b ───────────────────────────────────────── -->
+<section class="slide">
+  <h2>Improvement 4 — detector × OCR, evaluated on a real application</h2>
+  <div class="grow">
+    <p class="small">A qualitative A/B/C/D run on one real enterprise app (980×562) — the kind of
+      screen this project targets, not a synthetic one. Each cell is an observed defect class.</p>
+    <table>
+      <tr><th>Combination</th><th>Icons</th><th>Tile buttons</th><th>Small status text</th><th>Bottom links</th></tr>
+      <tr><td>UIED + EasyOCR</td><td class="n lose">misses some</td><td class="n win">whole</td>
+          <td class="n win">read</td><td class="n lose">merged into one</td></tr>
+      <tr><td>OmniParser + EasyOCR <span class="tag">before</span></td><td class="n win">all</td>
+          <td class="n lose">split in 2–3</td><td class="n lose">rows missing</td><td class="n win">separate</td></tr>
+      <tr><td>OmniParser + Tesseract</td><td class="n win">all</td><td class="n win">whole</td>
+          <td class="n lose">rows missing</td><td class="n win">separate</td></tr>
+      <tr class="hi"><td><strong>OmniParser + EasyOCR</strong> <span class="tag">after fixes</span></td>
+          <td class="n win">all</td><td class="n win">whole</td><td class="n win">read</td>
+          <td class="n win">separate</td></tr>
+    </table>
+    <div class="cols" style="margin-top:.7em">
+      <div class="card bad"><h3 style="margin-top:0;color:var(--bad)">Two of our own bugs, not the model's</h3>
+        <p class="small" style="margin:0;color:var(--fg)"><strong>Missing status rows:</strong> the OCR
+          ensemble only <em>gap-filled</em> — where OmniParser's native OCR had a garbage read in an 8 px
+          box (<code>~ctive</code> for “Active”), our better read was skipped as a duplicate, and the tiny
+          box then died in the size filter, deleting the row.<br>
+          <strong>Split tiles:</strong> our splitter divides any control holding 2+ OCR boxes — EasyOCR
+          emits <em>word</em> boxes, so “Check Now” became two half-buttons (Tesseract emits line boxes,
+          which is why the defect appeared only with EasyOCR).</p></div>
+      <div class="card good"><h3 style="margin-top:0;color:var(--good)">Fixes</h3>
+        <p class="small" style="margin:0;color:var(--fg)">Ensemble is now a <strong>prefer-external
+          union</strong> (our upscaled read replaces an overlapping weaker one). The splitter
+          <strong>never splits a control the detector marked as one interactable</strong>, and otherwise
+          requires a real gap (≥1.5× text height) between texts. A configured-but-missing OCR engine now
+          <strong>fails fast</strong> instead of silently degrading.</p></div>
+    </div>
+    <p class="small"><strong>Outcome:</strong> the recommended combination is now unambiguous —
+      OmniParser + EasyOCR wins every column, with no regression on the calculator or synthetic sets.</p>
+  </div>
+  <div class="notes"><b>Method point:</b> this is real-app qualitative evaluation complementing the
+    synthetic metrics — and note both defects were <em>ours</em>, exposed only by comparing combinations.
+    Good argument for keeping detectors and OCR engines swappable.</div>
+</section>
+
 <!-- 17 ────────────────────────────────────────── -->
 <section class="slide">
   <h2>New capability — locating by description</h2>
@@ -1036,6 +1112,11 @@ body.notes-on .slide.active .notes{display:block}
     <p class="small">Determinism is policy: the tier chain is configured (CI can pin lexical-only),
       results cached per screen, and every hit records which tier answered — making
       “parse once, ground the long tail” <strong>measurable</strong>.</p>
+    <div class="card good"><p style="margin:0"><strong>Composes with fallback chains.</strong>
+      <code>text=Save || desc="save button in the toolbar"</code> — the deterministic locator runs
+      first (free); <code>desc=</code> is reached only if it fails or is <em>ambiguous</em>. A
+      fallback win logs a <strong>warning naming the stale primary</strong>, which is exactly the
+      signal the planned <em>self-healing locators</em> need (ADR-024).</p></div>
   </div>
   <div class="notes">ADR-022. This is the newest work and a natural thesis experiment: per-tier
     resolution accuracy over the labelled set.</div>

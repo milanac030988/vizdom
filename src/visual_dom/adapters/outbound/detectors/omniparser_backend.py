@@ -245,23 +245,32 @@ class OmniParserBackend(DetectorBackend):
             return texts, boxes
 
         base_n = len(ocr_text)
-        added = 0
-        for bb, txt in extra:
-            if not txt or not str(txt).strip():
+        clean_extra = [(list(b), str(t)) for (b, t) in extra if t and str(t).strip()]
+
+        # Prefer-external union. The external provider runs our upscaling OCR, so
+        # where its box overlaps OmniParser's own OCR the external read is the
+        # better one — OmniParser's native OCR produced tight garbage reads
+        # ("~ctive" for "Active", "VGcJC" for "UGCIHC") in boxes so small they
+        # later died in the pipeline's size filter, losing the row entirely. The
+        # old gap-fill kept the existing (bad) box and skipped ours. Overlap uses
+        # intersection-over-smaller-box, which also collapses OmniParser's
+        # glyph-in-cell duplicates ("5" + "5" -> "5 5") into one external box.
+        kept_text, kept_bbox, replaced = [], [], 0
+        for ob, ot in zip(ocr_bbox, ocr_text):
+            if any(self._overlap_min(eb, ob) >= self._ocr_dedup_iou
+                   for eb, _ in clean_extra):
+                replaced += 1
                 continue
-            # Gap-fill: only add our OCR where OmniParser has no text there.
-            # Use overlap-over-smaller-box (not IoU): OmniParser's glyph box is
-            # tiny vs our cell box, so their IoU is low even when they mark the
-            # same text — IoU-dedup let both through and OmniParser concatenated
-            # them ("5" + "5" -> "5 5"). Overlap-over-min catches that.
-            if any(self._overlap_min(bb, ob) >= self._ocr_dedup_iou for ob in ocr_bbox):
-                continue
-            ocr_bbox.append(list(bb))
-            ocr_text.append(str(txt))
-            added += 1
-        log.info("OCR ensemble (gap-fill): OmniParser %d + %d new external = %d text boxes",
-                 base_n, added, len(ocr_text))
-        return ocr_text, ocr_bbox
+            kept_bbox.append(ob)
+            kept_text.append(ot)
+        for eb, et in clean_extra:
+            kept_bbox.append(eb)
+            kept_text.append(et)
+        log.info("OCR ensemble (prefer-external): OmniParser %d (kept %d, replaced %d) "
+                 "+ %d external = %d text boxes",
+                 base_n, len(kept_text) - len(clean_extra), replaced,
+                 len(clean_extra), len(kept_text))
+        return kept_text, kept_bbox
 
     @staticmethod
     def _overlap_min(a, b) -> float:

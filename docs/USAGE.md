@@ -163,6 +163,30 @@ Locate elements by **role/text/spatial** rather than pixel coordinates — e.g.
 `text=Login`, `hint=Email`, `role=button`, `right_of="Label"`, `below="Title"`,
 `within="Form"` — so tests survive layout and theme changes.
 
+### Fallback chains — combine locators with `||`
+
+Put the cheap deterministic locator first and the resilient one last; the first
+alternative that resolves to **exactly one** element wins (ADR-024):
+
+```robotframework
+Click Visual    text=Save || desc="save button in the toolbar"
+Click Visual    role=button text=OK || desc="confirm button"      # AND inside, OR between
+```
+
+- **space = AND** within an alternative (unchanged), **`||` = ordered OR** between them.
+- An alternative falls through when it finds **nothing** *or* is **ambiguous** —
+  an ambiguous `text=Delete` is as unusable as a missing one.
+- When a later alternative wins, a **warning** names the one that failed: that's a
+  signal the primary locator has gone stale (useful, not noise — don't ignore it).
+- If the whole chain fails, the error lists every attempt and why:
+  `#1 'text=Save' -> not found; #2 'desc=…' -> no grounding tier confident`.
+- Existence checks (`Visual Should Exist`, `Get Visual Elements`) accept many
+  matches, so there the first alternative matching *anything* wins.
+- Splitting is quote-aware, so `text="a || b"` is not split.
+
+Cost stays on the happy path: `desc=` (which may call a model) is only reached
+when the deterministic locator has already failed.
+
 ### Verifying values after an action (recap)
 
 The DOM is a snapshot — after `Type Text Visual`, a plain `Get Element Text` would

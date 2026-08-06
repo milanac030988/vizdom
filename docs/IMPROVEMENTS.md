@@ -105,6 +105,39 @@ their captions, where "Close"/"Minimize" are the correct names.
 Config: `symbols.enabled`, `symbols.min_score` (null = calibrated ~0.70; raise =
 stricter, lower = recover faint glyphs).
 
+## 3b. OmniParser + OCR ensemble: prefer-external and split guards
+
+**Problem (from a real-app comparison across four detector/OCR combinations).**
+With `omniparser + easyocr`, (a) small status texts (*Active*, *Inactive*,
+*Low Protection*, a username) vanished from the DOM even though plain
+`uied + easyocr` read them fine, and (b) tile buttons whose caption is two words
+("Check Now", "Software Center", "Send Log Logfiles") were split into two or
+three half-buttons.
+
+**Diagnosis.** (a) The ADR-016 ensemble *gap-filled* — it only added our
+upscaling-OCR boxes where OmniParser had none. Where OmniParser's native OCR
+produced a garbage read in a tiny box (`~ctive` for *Active*, `VGcJC` for
+*UGCIHC*, 8 px tall), the ensemble kept the garbage and skipped our good read;
+the 8 px boxes then died in the pipeline's minimum-size filter, deleting the
+row entirely. (b) The rule-based splitter divides any control containing 2+
+OCR boxes — correct for UIED's merged blobs, wrong for a single tile whose
+caption has two words (EasyOCR emits word boxes; Tesseract emits one line box,
+which is why the split only appeared with EasyOCR).
+
+**Fix.** (a) The ensemble is now a **prefer-external union**: external boxes
+*replace* overlapped OmniParser OCR boxes (overlap-over-smaller-box), instead of
+being skipped — the external read is the higher-quality one by construction.
+(b) The splitter now skips any control the detector marked as one interactable
+(OmniParser's own segmentation is the better authority), and otherwise requires
+a clear gap between texts (≥ 1.5× median text height) before splitting.
+Additionally, a configured-but-missing OCR engine now **fails fast** with an
+install hint instead of silently degrading the run (observed with `paddleocr`
+absent).
+
+**Result** on the comparison screenshot: every previously missing status text
+recovered with correct content; all tile buttons whole; bottom hyperlinks still
+separate; calculator and synthetic benchmarks unchanged.
+
 ## 4. Detection-threshold sensitivity (faint small controls)
 
 **Problem.** A minimize "–" button detected in one capture vanished in another of
@@ -116,6 +149,42 @@ confidence cutoff at the new scale.
 cleanly (+2 legitimate detections; 0.01 admits noise). Exposed as
 `detector.omniparser_box_threshold` (default unchanged at 0.05) and the
 `OMNIPARSER_BOX_THRESHOLD` env var for the Viewer.
+
+## 5. Session provenance (which application was analyzed)
+
+**Problem.** Every Viewer run saves a session folder (screenshot, raw detections,
+compiled DOM, stats), but nothing recorded *which application* it came from —
+comparing sessions across different apps became guesswork.
+
+**Approach & result.** Identifying the target is a **capture-port concern**, not a
+caller's: `CaptureStrategy.describe_target()` (optional override, returns `{}` by
+default and never raises) lets each strategy name its own target, so provenance is
+platform-agnostic at the call site:
+
+| Strategy | What it reports | Confidence |
+|---|---|---|
+| `windows` | foreground window title + process, **skipping our own process** by walking the Z-order (a full-screen grab is taken while the Viewer itself is foreground) | authoritative |
+| `linux` | active window title via `xdotool`, else `xprop` (X11; Wayland exposes nothing to unprivileged clients) | authoritative on X11 |
+| `android` | the **resumed activity** (`package/.Activity`) via `adb shell dumpsys activity` — Android's exact equivalent of a window title | authoritative |
+| `camera` | only the capture device: a camera photographs an *external* display, so no OS metadata exists | none (`target_hint`) |
+| `grpc` | the remote endpoint (naming the app on that host would need a provenance field in the capture RPC — future work) | endpoint only |
+
+`session_info.json` merges whatever the strategy reports plus `capture_source`;
+the window-handler path uses its connected target instead (precise), and opening
+an image records `file:<name>` + `source_path`. Inferred values must carry
+`guess_source` (e.g. `ocr`, `vlm`) so a guess is never mistaken for a fact. The
+dashboard's session cards show the app name and detector. Older sessions simply
+lack the fields.
+
+**Camera naming (open question).** For camera capture there is nothing to query.
+Options, cheapest first: (1) take the title text from the analysed DOM's top strip
+— free, deterministic, but fails on full-screen/kiosk HMIs with no title bar;
+(2) an operator-supplied **session label** in the Viewer — most reliable, since
+the person aiming the camera knows what it is pointed at; (3) an opt-in **VLM
+guess** ("which application is this?") using the existing vision backend — useful
+where no title text exists, but it will confidently mislabel look-alike screens,
+so it must be stored as a guess with the model recorded. Recommended: (2) as the
+default with (1) prefilling it, and (3) strictly opt-in.
 
 ## Which knobs are configurable — and why not all of them
 

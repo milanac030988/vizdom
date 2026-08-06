@@ -27,6 +27,20 @@ class CameraCapture(CaptureStrategy):
         except Exception:
             return False
 
+    def describe_target(self) -> dict:
+        """
+        A camera photographs an EXTERNAL display: there is no OS to ask, so no
+        authoritative window title exists. Record what we do know (the capture
+        device) and leave naming to the caller — see docs for the options
+        (title-strip OCR from the analysed DOM, an operator-supplied session
+        label, or an opt-in VLM guess, which must be stored with
+        ``guess_source``).
+        """
+        return {
+            "target_hint": f"external display via camera device {self._device!r}",
+            "camera_device": self._device,
+        }
+
     def capture(self) -> np.ndarray:
         import cv2
         if self._cap is None:
