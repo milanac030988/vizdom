@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>VizDOM — Trình bày đồ án</title>
+<style>
+:root{
+  --bg:#0e1420; --bg2:#141c2b; --fg:#e8eef7; --dim:#93a4bd; --line:#26334a;
+  --accent:#4db6ac; --accent2:#7aa2f7; --warn:#e0af68; --bad:#f7768e; --good:#9ece6a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;background:var(--bg);color:var(--fg);
+  font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+body{overflow:hidden}
+
+/* ---------- deck ---------- */
+#deck{height:100vh;width:100vw;position:relative}
+.slide{
+  position:absolute;inset:0;display:none;
+  padding:3.2vh 4.5vw 8vh;overflow:auto;
+  animation:fade .18s ease-out;
+}
+.slide.active{display:flex;flex-direction:column}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+h1{font-size:clamp(28px,4.4vw,58px);line-height:1.08;margin:0 0 .5em;letter-spacing:-.02em}
+h2{font-size:clamp(21px,2.75vw,38px);line-height:1.15;margin:0 0 .8em;letter-spacing:-.01em;
+   color:#fff;border-bottom:2px solid var(--line);padding-bottom:.4em}
+h3{font-size:clamp(15px,1.5vw,21px);margin:1.1em 0 .4em;color:var(--accent)}
+p,li{font-size:clamp(14px,1.32vw,20px);line-height:1.55;color:var(--fg)}
+ul{margin:.2em 0 .6em 0;padding-left:1.2em}
+li{margin:.42em 0}
+li::marker{color:var(--accent)}
+strong{color:#fff}
+em{color:var(--accent);font-style:normal;font-weight:600}
+code{font-family:"Cascadia Code",Consolas,monospace;background:#1b2536;
+  border:1px solid var(--line);border-radius:4px;padding:.08em .35em;
+  font-size:.88em;color:var(--accent)}
+.dim{color:var(--dim)}
+.small{font-size:clamp(12px,1.05vw,15px);color:var(--dim);line-height:1.5}
+
+/* ---------- layout helpers ---------- */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:2.2vw;align-items:start}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6vw}
+.grow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+.center{align-items:center;justify-content:center;text-align:center}
+.fig{display:flex;align-items:center;justify-content:center;min-height:0;flex:1;position:relative}
+.fig img{max-width:100%;max-height:62vh;object-fit:contain;
+  background:#fff;border-radius:8px;padding:8px;box-shadow:0 8px 28px #0008;
+  cursor:zoom-in;transition:box-shadow .15s}
+.fig img:hover{box-shadow:0 8px 28px #000a,0 0 0 2px var(--accent)}
+.fig::after{content:"bấm để phóng to";position:absolute;right:2px;bottom:-1.35em;
+  font-size:clamp(10px,.85vw,12px);color:var(--dim);opacity:.75;pointer-events:none}
+
+/* ---------- diagram lightbox (zoom / pan) ---------- */
+#lb{position:fixed;inset:0;z-index:60;display:none;background:#05080ff2;
+  align-items:center;justify-content:center;overflow:hidden}
+#lb.show{display:flex}
+#lb img{max-width:none;max-height:none;background:#fff;border-radius:6px;padding:10px;
+  transform-origin:center center;cursor:grab;user-select:none;-webkit-user-drag:none;
+  box-shadow:0 12px 40px #000b}
+#lb img.grabbing{cursor:grabbing}
+#lbctl{position:fixed;bottom:2.2vh;left:50%;transform:translateX(-50%);z-index:61;
+  display:flex;gap:.45em;align-items:center;background:var(--bg2);
+  border:1px solid var(--line);border-radius:999px;padding:.42em .55em;
+  box-shadow:0 6px 22px #0009}
+#lbctl button{font:inherit;font-size:clamp(12px,1.1vw,15px);min-width:2.3em;
+  background:#1b2536;color:var(--fg);border:1px solid var(--line);border-radius:999px;
+  padding:.3em .7em;cursor:pointer;line-height:1.1}
+#lbctl button:hover{border-color:var(--accent);color:#fff}
+#lbpct{font-size:clamp(11px,1vw,13px);color:var(--dim);min-width:3.6em;text-align:center;
+  font-variant-numeric:tabular-nums}
+#lbhint{position:fixed;top:2vh;left:50%;transform:translateX(-50%);z-index:61;
+  font-size:clamp(11px,1vw,13px);color:var(--dim)}
+.card{background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--accent);
+  border-radius:8px;padding:1em 1.2em}
+.card.warn{border-left-color:var(--warn)}
+.card.bad{border-left-color:var(--bad)}
+.card.good{border-left-color:var(--good)}
+.kpi{display:flex;gap:1.4vw;flex-wrap:wrap;margin:.6em 0}
+.kpi div{background:var(--bg2);border:1px solid var(--line);border-radius:10px;
+  padding:.7em 1.1em;text-align:center;min-width:8.5em}
+.kpi b{display:block;font-size:clamp(20px,2.4vw,34px);color:var(--accent);line-height:1.1}
+.kpi span{font-size:clamp(11px,.95vw,13px);color:var(--dim)}
+
+/* ---------- tables ---------- */
+table{border-collapse:collapse;width:100%;margin:.5em 0;font-size:clamp(11px,1.1vw,17px)}
+th,td{text-align:left;padding:.44em .6em;border-bottom:1px solid var(--line)}
+th{color:var(--accent);font-weight:600;border-bottom:2px solid var(--line)}
+td.n,th.n{text-align:center;font-variant-numeric:tabular-nums}
+tr.hi td{background:#1a2740}
+.win{color:var(--good);font-weight:700}
+.lose{color:var(--bad)}
+.tag{display:inline-block;font-size:.72em;padding:.12em .5em;border-radius:999px;
+  border:1px solid var(--line);color:var(--dim);vertical-align:middle}
+
+/* ---------- chrome ---------- */
+#bar{position:fixed;left:0;bottom:0;height:3px;background:var(--accent);z-index:20;transition:width .2s}
+#num{position:fixed;right:1.3vw;bottom:1.4vh;font-size:12px;color:var(--dim);z-index:20;
+  font-variant-numeric:tabular-nums}
+#title-chip{position:fixed;left:1.5vw;bottom:1.4vh;font-size:12px;color:var(--dim);z-index:20}
+#title-chip a{color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent)}
+#title-chip a:hover{color:#fff;border-color:#fff}
+#help{position:fixed;inset:0;background:#050810ee;z-index:40;display:none;
+  align-items:center;justify-content:center}
+#help.show{display:flex}
+#help div{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:2em 2.6em}
+kbd{font-family:inherit;background:#1b2536;border:1px solid var(--line);border-bottom-width:2px;
+  border-radius:5px;padding:.1em .45em;font-size:.9em;color:#fff}
+
+/* ---------- overview mode ---------- */
+#deck.overview{overflow:auto;display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;padding:16px;height:100vh}
+#deck.overview .slide{position:static;display:block;inset:auto;height:150px;overflow:hidden;
+  border:1px solid var(--line);border-radius:8px;padding:10px;cursor:pointer;
+  background:var(--bg2);animation:none}
+#deck.overview .slide *{pointer-events:none}
+#deck.overview .slide h1{font-size:15px;margin:0 0 4px}
+#deck.overview .slide h2{font-size:13px;border:0;padding:0;margin:0 0 4px}
+#deck.overview .slide h3{font-size:10px;margin:3px 0}
+#deck.overview .slide p,#deck.overview .slide li,#deck.overview .slide td,
+#deck.overview .slide th,#deck.overview .slide .small{font-size:8px;line-height:1.25}
+#deck.overview .slide .fig img{max-height:70px}
+#deck.overview .slide .kpi b{font-size:12px}
+#deck.overview .slide.active{outline:2px solid var(--accent)}
+
+/* ---------- notes ---------- */
+.notes{display:none;margin-top:auto;padding:.7em 1em;background:#0b1220;
+  border-top:1px solid var(--line);border-radius:6px}
+body.notes-on .slide.active .notes{display:block}
+.notes b{color:var(--warn)}
+
+/* ---------- print / PDF ---------- */
+@page{size:A4 landscape;margin:10mm}
+@media print{
+  html,body{height:auto;overflow:visible;background:#fff;color:#111}
+  #bar,#num,#help,#title-chip,#lb,#lbctl,#lbhint{display:none!important}
+  .fig::after{display:none}
+  .fig img{cursor:default}
+  #deck{height:auto;display:block}
+  .slide{display:flex!important;position:static;inset:auto;height:186mm;
+    page-break-after:always;border:0;animation:none;padding:8mm}
+  h2{color:#000;border-color:#bbb}h1{color:#000}h3{color:#0a6b60}
+  p,li,td,th{color:#111}.dim,.small{color:#444}em{color:#0a6b60}
+  strong{color:#000}
+  code{background:#f2f4f7;border-color:#ddd;color:#0a6b60}
+  .card,.kpi div,.notes{background:#f7f9fc;border-color:#ccc}
+  .fig img{box-shadow:none;border:1px solid #ddd}
+  tr.hi td{background:#eef3fb}
+  .notes{display:none!important}
+}
+</style>
+</head>
+<body>
+<div id="deck">
+<!-- 1 ─────────────────────────────────────────── -->
+<section class="slide center">
+<div class="grow center" style="display:flex;flex-direction:column">
+<div class="dim" style="letter-spacing:.22em;font-size:clamp(11px,1.1vw,14px);margin-bottom:1.2em">
+      ĐỒ ÁN ỨNG DỤNG CAO HỌC  ·  <strong style="color:var(--accent)">PHƯƠNG THỨC 3</strong>
+       ·  BÁO CÁO TIẾN ĐỘ
+    </div>
+<h1>VizDOM<span style="color:var(--accent)">.</span><br/><span style="font-size:.5em;font-weight:500;color:var(--fg)">Tái dựng Visual DOM từ ảnh chụp màn hình GUI<br/>cho kiểm thử tự động</span></h1>
+<p class="dim" style="margin-top:1.4em">Nguyễn Huỳnh Trí Cương  ·  Khoa Công nghệ Thông tin<br/>Trường Đại học Khoa học Tự nhiên, ĐHQG-HCM<br/><span class="small">Giảng viên hướng dẫn: PGS. TS. Nguyễn Văn Vũ</span></p>
+<div class="card" style="margin-top:1.8em;max-width:46em;text-align:left">
+<p class="small" style="margin:0;color:var(--fg)"><strong>Phương thức 3 — đồ án ứng dụng:</strong> tập trung xây dựng một giải pháp kỹ thuật hoàn chỉnh, có nội dung khoa học; <em>không đặt mục tiêu</em> đề xuất một thuật toán mới. Sản phẩm đầu ra là một <strong>công cụ hoạt động được và có khả năng mở rộng</strong>. Giá trị khoa học thể hiện qua các phép đo so sánh, các quyết định thiết kế được tài liệu hóa và những cải tiến có kết quả đánh giá cụ thể.</p>
+</div>
+<p class="small" style="margin-top:1.6em">
+<kbd>→</kbd> tiếp   <kbd>←</kbd> lùi   <kbd>o</kbd> toàn cảnh  
+      <kbd>n</kbd> ghi chú   <kbd>?</kbd> trợ giúp  · 
+      <span style="color:var(--accent)">bấm vào sơ đồ để phóng to</span>
+</p>
+</div>
+<div class="notes"><b>Dẫn nhập:</b> CV kết hợp với một mô hình nhỏ để biến ảnh chụp màn hình thành DOM có thể truy vấn, giúp kiểm thử GUI hoạt động ngay cả khi ứng dụng không cung cấp accessibility tree. Đây là đồ án ứng dụng theo Phương thức 3, với trọng tâm là giải pháp kỹ thuật có nội dung khoa học.</div>
+</section>
+<!-- 2 ─────────────────────────────────────────── -->
+<section class="slide">
+<h2>Bài toán: không có accessibility tree, công cụ kiểm thử mất khả năng định vị</h2>
+<div class="grow">
+<div class="cols">
+<div>
+<p>Các công cụ kiểm thử GUI như Appium, Selenium hay UI Automator định vị và điều khiển phần tử thông qua <em>accessibility tree</em> (cây trợ năng). Đây là cách tiếp cận chuẩn — <strong>khi ứng dụng thực sự cung cấp cây này.</strong></p>
+<h3>Những trường hợp không có accessibility tree</h3>
+<ul>
+<li>Các giao diện được <strong>render tùy biến bằng Qt / QML / OpenGL</strong>, canvas hoặc game engine</li>
+<li><strong>HMI nhúng và HMI công nghiệp</strong>, màn hình infotainment trên ô tô</li>
+<li>Màn hình chỉ có thể quan sát qua <strong>camera</strong>, capture card hoặc luồng video</li>
+</ul>
+</div>
+<div>
+<div class="card bad">
+<h3 style="margin-top:0;color:var(--bad)">Cách xử lý phổ biến hiện nay</h3>
+<p style="margin:0">Viết script theo tọa độ hoặc dùng template matching — không có ngữ nghĩa phần tử và rất dễ hỏng khi bố cục, theme hoặc độ phân giải thay đổi.</p>
+</div>
+<div class="card good" style="margin-top:1.1em">
+<h3 style="margin-top:0;color:var(--good)">Ý tưởng cốt lõi</h3>
+<p style="margin:0">Tester có thể nhìn vào màn hình và nhận ra đâu là phần tử có thể tương tác. Nếu con người làm được, hệ thống cũng nên có thể suy ra điều đó — <strong>chỉ từ các pixel trên màn hình.</strong></p>
+</div>
+</div>
+</div>
+</div>
+<div class="notes"><b>Khoảng trống cần giải quyết:</b> VizDOM không thay thế Appium; dự án nhắm đúng vào những giao diện mà Appium và các công cụ dựa trên accessibility tree không thể quan sát.</div>
+</section>
+<!-- 3 ─────────────────────────────────────────── -->
+<section class="slide">
+<h2>Vì sao phát hiện phần tử GUI là bài toán khó</h2>
+<div class="cols" style="flex:1;min-height:0">
+<div>
+<h3>Ở mức phần tử</h3>
+<ul>
+<li><strong>Cùng một loại phần tử có rất nhiều biến thể</strong> — một <code>button</code> có thể khác nhau về kích thước, hình dạng, màu sắc và cách trình bày</li>
+<li><strong>Các loại phần tử khác nhau lại rất dễ giống nhau</strong> — button và spinner đôi khi chỉ khác một đường viền mảnh hoặc một glyph nhỏ</li>
+</ul>
+<h3>Ở mức toàn giao diện</h3>
+<ul>
+<li><strong>Nhiều loại nội dung xuất hiện cùng lúc</strong> — widget, hình ảnh và văn bản nằm sát nhau</li>
+<li><strong>Các phần tử dày đặc và liền kề</strong> — đôi khi chỉ cách nhau vài pixel</li>
+<li><strong>Bounding box phải đủ chính xác</strong> — một khung bao rộng có thể đủ để nhận diện vật thể, nhưng chưa đủ để click chính xác vào một control</li>
+</ul>
+<p class="small">Phân loại dựa trên Xie và cộng sự, <em>Object Detection for Graphical User Interface: Old Fashioned or Deep Learning or a Combination?</em> (FSE 2020) — bài báo nền tảng mà nhóm đã nghiên cứu.</p>
+</div>
+<div class="fig"><img alt="Phạm vi vấn đề" src="figures/problem_space.svg"/></div>
+</div>
+<div class="notes"><b>Điểm cần nhấn mạnh:</b> đây không phải bài toán object detection thông thường. Năm đặc điểm này giải thích vì sao pipeline cần các bước làm sạch, gộp phần tử và xử lý khác biệt về quy ước bounding box.</div>
+</section>
+<!-- 4 ─────────────────────────────────────────── -->
+<section class="slide">
+<h2>So sánh các phương pháp — vị trí của DOM được tái dựng</h2>
+<div class="grow">
+<table>
+<tr><th>Phương pháp</th><th class="n">Không cần accessibility tree</th><th class="n">GUI tùy biến / camera</th>
+<th class="n">Cây có cấu trúc</th><th class="n">Locator ổn định</th><th class="n">Kết quả có thể tái sử dụng</th></tr>
+<tr><td>Tọa độ / record–replay</td><td class="n">Có</td><td class="n">Có</td>
+<td class="n lose">Không</td><td class="n lose">Không</td><td class="n dim">một phần</td></tr>
+<tr><td>Template matching</td><td class="n">Có</td><td class="n">Có</td>
+<td class="n lose">Không</td><td class="n lose">Không</td><td class="n dim">một phần</td></tr>
+<tr><td>Accessibility tree <span class="tag">Appium</span></td><td class="n lose">Không</td>
+<td class="n lose">Không</td><td class="n win">Có</td><td class="n win">Có</td><td class="n win">Có</td></tr>
+<tr><td>VLM grounding cho từng yêu cầu</td><td class="n">Có</td><td class="n">Có</td>
+<td class="n lose">Không</td><td class="n dim">một phần</td><td class="n lose">Không</td></tr>
+<tr class="hi"><td><strong>VizDOM — DOM được tái dựng</strong></td><td class="n win">Có</td>
+<td class="n win">Có</td><td class="n win">Có</td><td class="n win">Có</td><td class="n win">Có</td></tr>
+</table>
+<div class="cols" style="margin-top:1em">
+<div class="card"><p style="margin:0"><strong>Ý tưởng:</strong> tạo ra một cấu trúc dữ liệu tương tự accessibility tree từ pixel, nhờ đó các kỹ thuật kiểm thử dựa trên cây có thể áp dụng cho cả những GUI không cung cấp cây.</p></div>
+<div class="card warn"><p style="margin:0"><strong>Đánh đổi:</strong> kết quả nhận diện chỉ mang tính xấp xỉ — DOM là bản tái dựng tốt nhất có thể, không phải ground truth. Vì vậy hệ thống cho phép thay detector và đánh giá kết quả theo từng loại phần tử.</p></div>
+</div>
+</div>
+<div class="notes"><b>Bốn lợi ích chính:</b> áp dụng được trên nhiều loại giao diện, locator mang ngữ nghĩa, kết quả phân tích có thể tái sử dụng và chi phí được kiểm soát vì pipeline nhận diện chỉ chạy một lần cho mỗi màn hình, không phải cho từng thao tác.</div>
+</section>
+<!-- 5 ─────────────────────────────────────────── -->
+<section class="slide">
+<h2>Tổng quan hệ thống</h2>
+<div class="fig"><img alt="Tổng quan hệ thống" src="figures/System_Overview.svg"/></div>
+<p class="small" style="text-align:center">Ảnh chụp màn hình → phát hiện bằng CV + OCR → gộp và loại trùng → dựng cấu trúc phân cấp → tạo DOM (role, thuộc tính tương tác, label, locator) → sử dụng qua Robot Framework keywords.</p>
+<div class="notes"><b>Hai thành phần bàn giao:</b> Visual DOM engine và thư viện Robot Framework sử dụng DOM được sinh ra.</div>
+</section>
+<!-- 5b ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Các chức năng đã được hiện thực</h2>
+<div class="grow">
+<div class="cols3">
+<div class="card">
+<h3 style="margin-top:0">1 · Sinh DOM từ ảnh chụp màn hình</h3>
+<p class="small" style="color:var(--fg);margin:0">Mỗi phần tử có bounding box, <strong>role</strong>, text, label, thuộc tính tương tác (clickable / editable / scrollable), <strong>cấu trúc phân cấp</strong> và nhiều <strong>locator</strong> sẵn dùng — được xuất dưới dạng JSON tương tự UI Automator.</p>
+</div>
+<div class="card">
+<h3 style="margin-top:0">2 · Chọn bộ phát hiện</h3>
+<p class="small" style="color:var(--fg);margin:0"><strong>4 detector backend</strong> có thể chọn bằng cấu hình: <code>uied</code> (CPU, không cần model weights), <code>yolo</code>, <code>omniparser</code> (GPU, tốt nhất với các phần tử có thể tương tác) và <code>grpc</code> (remote). OCR hỗ trợ EasyOCR / PaddleOCR / Tesseract.</p>
+</div>
+<div class="card">
+<h3 style="margin-top:0">3 · Chụp màn hình từ nhiều nguồn</h3>
+<p class="small" style="color:var(--fg);margin:0"><strong>5 nguồn capture</strong>: <code>windows</code>, <code>linux</code>, <code>android</code> (ADB), <code>camera</code> (tự hiệu chỉnh phối cảnh màn hình), <code>grpc</code> — ngoài ra còn hỗ trợ ảnh tĩnh và plugin do người dùng bổ sung.</p>
+</div>
+<div class="card">
+<h3 style="margin-top:0">4 · Điều khiển ứng dụng</h3>
+<p class="small" style="color:var(--fg);margin:0">Click, nhập văn bản, nhấn phím, cuộn và kéo–thả qua <code>desktop</code> / <code>android</code> / <code>grpc</code> hoặc plugin <strong>cánh tay robot</strong>. Tất cả sử dụng tọa độ chuẩn hóa, nên cùng một test có thể chạy trên nhiều target.</p>
+</div>
+<div class="card">
+<h3 style="margin-top:0">5 · Viết kiểm thử bằng Robot Framework</h3>
+<p class="small" style="color:var(--fg);margin:0"><strong>24 từ khóa</strong> — Connect,
+          Dump Visual DOM, Click Visual, Type Text Visual, Visual Should Exist,
+          Wait Until Visual Appears, Get Element Property/Text/Label/Center, …</p>
+</div>
+<div class="card">
+<h3 style="margin-top:0">6 · Tìm phần tử bằng 6 loại locator</h3>
+<p class="small" style="color:var(--fg);margin:0"><code>id=</code> <code>text=</code> <code>hint=</code> <code>role=</code>, locator theo quan hệ không gian (<code>within</code>, <code>right_of</code>, <code>below</code>, …) và <code>desc=</code> — mô tả bằng ngôn ngữ tự nhiên.</p>
+</div>
+<div class="card good">
+<h3 style="margin-top:0;color:var(--good)">7 · Cấu hình toàn bộ session bằng một file</h3>
+<p class="small" style="color:var(--fg);margin:0">Một file JSON cấu hình toàn bộ session; <code>--init</code> tạo file mẫu có chú thích và <code>--check</code> kiểm tra tính hợp lệ. Có thể tinh chỉnh pipeline mà không cần sửa code.</p>
+</div>
+<div class="card good">
+<h3 style="margin-top:0;color:var(--good)">8 · Triển khai phân tán khi cần</h3>
+<p class="small" style="color:var(--fg);margin:0">Detector, capture và actuator có thể chạy dưới dạng <strong>gRPC service</strong> trên các máy khác nhau. Một model đã được nạp sẵn trên GPU có thể phục vụ nhiều client mà không cần thay đổi test.</p>
+</div>
+<div class="card good">
+<h3 style="margin-top:0;color:var(--good)">9 · Quan sát, đánh giá và mở rộng</h3>
+<p class="small" style="color:var(--fg);margin:0"><strong>Viewer</strong> tương tác để xem và chỉnh sửa DOM, xuất resource cho Robot Framework; <strong>bộ công cụ đánh giá</strong> tạo metrics và report; các bộ sinh dataset; cùng cơ chế <strong>plugin</strong> chỉ cần bổ sung một file.</p>
+</div>
+</div>
+<p class="small" style="margin-top:.8em">Tùy chọn: một bước tinh chỉnh bằng LM/VLM nhỏ (tách / đổi loại / gộp / gán label). Mỗi session lưu lại screenshot, detections và DOM để có thể kiểm tra lại. <span class="dim">Hai thành phần chính: engine và thư viện Robot Framework sử dụng engine này.</span></p>
+</div>
+<div class="notes"><b>Slide trọng tâm của Phương thức 3:</b> đây là phần thể hiện sản phẩm kỹ thuật. Mỗi chức năng đều đã được hiện thực và có thể demo; các con số 4 detector, 5 nguồn capture và 24 keywords cũng là bằng chứng cho quality scenario về khả năng mở rộng (Q-01).</div>
+</section>
+<!-- 6 ─────────────────────────────────────────── -->
+<section class="slide">
+<h2>Pipeline xử lý ảnh (CV pipeline)</h2>
+<div class="cols" style="flex:1;min-height:0">
+<div>
+<ol style="padding-left:1.3em">
+<li><strong>Phát hiện văn bản</strong> — OCR bằng EasyOCR / PaddleOCR / Tesseract, có upscale cho chữ nhỏ</li>
+<li><strong>Phát hiện phần tử</strong> — detector backend có thể thay thế (UIED / YOLO / OmniParser)</li>
+<li><strong>Gộp và loại trùng</strong> — NMS, cross-type suppression theo luật ưu tiên và gộp thông minh các label bị phân mảnh</li>
+<li><strong>Nhận dạng ký hiệu</strong> — đọc các glyph toán tử mà OCR bỏ sót</li>
+<li><strong>Sắp xếp thứ tự đọc</strong> — từ trên xuống dưới, từ trái sang phải</li>
+<li><strong>Tinh chỉnh bằng SLM (tùy chọn)</strong> — tách / đổi loại / gộp / gán label</li>
+<li><strong>Dựng cấu trúc phân cấp</strong> — quan hệ bao chứa, căn chỉnh và liên kết label</li>
+<li><strong>Tạo DOM</strong> — role, thuộc tính tương tác và nhiều locator</li>
+</ol>
+<p class="small">Các threshold được định nghĩa theo mốc 1080p rồi tự điều chỉnh theo độ phân giải; toàn bộ pipeline được điều khiển bởi một file JSON cấu hình session.</p>
+</div>
+<div class="fig"><img alt="Chi tiết CV pipeline" src="figures/CV_Pipeline_Detail.svg"/></div>
+</div>
+<div class="notes"><b>Điểm cần nhấn mạnh:</b> các bước làm sạch xuất phát trực tiếp từ đặc trưng của GUI ở slide 3 — phần tử dày đặc, nằm sát nhau và thường bị detector chia quá nhỏ.</div>
+</section>
+<!-- 7 ─────────────────────────────────────────── -->
+<section class="slide">
+<h2>Bức tranh các mô hình: parser và grounder</h2>
+<div class="grow">
+<table>
+<tr><th>Hệ thống</th><th>Cách tiếp cận</th><th>Dạng đầu ra</th><th class="n">GPU</th>
+<th>Kiến trúc / kích thước</th><th>Giấy phép</th></tr>
+<tr class="hi"><td><strong>VizDOM</strong> (đề xuất)</td><td>parser (CV + SLM)</td>
+<td><strong>Cây DOM có cấu trúc phân cấp</strong></td><td class="n">Không*</td>
+<td>Pipeline kết hợp</td><td>Theo từng backend</td></tr>
+<tr><td>UIED</td><td>CV truyền thống</td><td>Danh sách phần tử phẳng</td><td class="n">Không</td><td>—</td><td>Chỉ dùng cho nghiên cứu</td></tr>
+<tr><td>OmniParser V2</td><td>Detector + image captioning</td><td>Bounding box có label + thông tin tương tác</td>
+<td class="n">Có</td><td>YOLOv8 + Florence-2</td><td>AGPL-3.0 / MIT</td></tr>
+<tr><td>Aria-UI</td><td>Visual grounding</td><td>Một tọa độ</td><td class="n">Có</td>
+<td>Aria MoE, 3.9B active parameters</td><td>n/v</td></tr>
+<tr><td>ELAM-7B</td><td>Grounding + đánh giá</td><td>Một tọa độ + PASSED/FAILED</td><td class="n">Có</td>
+<td>Molmo-7B-D</td><td>Apache-2.0</td></tr>
+<tr><td>Jedi-3B/7B</td><td>Visual grounding</td><td>Một tọa độ</td><td class="n">Có</td>
+<td>3B / 7B</td><td>n/v</td></tr>
+</table>
+<div class="cols" style="margin-top:.8em">
+<div class="card"><p style="margin:0"><strong>Parser</strong> liệt kê toàn bộ phần tử trên màn hình. <strong>Grounder</strong> trả về một vị trí cho từng câu lệnh bằng ngôn ngữ tự nhiên. Chỉ parser mới có thể tạo ra một cây đầy đủ.</p></div>
+<div class="card good"><p style="margin:0"><strong>Không hệ thống nào trong bảng xây dựng cấu trúc phân cấp</strong> — đây chính là phần đóng góp khác biệt của VizDOM.</p></div>
+</div>
+<p class="small">*UIED chạy hoàn toàn trên CPU; OmniParser cần GPU. Các số liệu do tác giả công bố trên những benchmark khác nhau nên không được gộp để xếp hạng trực tiếp.</p>
+</div>
+<div class="notes"><b>Cách định vị đóng góp:</b> element detection đang dần trở thành một tầng có thể thay thế. OmniParser cũng đi đến cách phân rã “CV xử lý hình học, model bổ sung ngữ nghĩa”. Vì vậy VizDOM xem detector là backend hoán đổi được và tập trung đóng góp ở các tầng phía trên.</div>
+</section>
+<!-- 7b ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Vì sao xây dựng một parser thay vì dùng trực tiếp Aria-UI / ELAM-7B / Jedi?</h2>
+<div class="grow">
+<div class="cols">
+<div>
+<h3>1 · Chi phí trong vòng lặp kiểm thử</h3>
+<p class="small">Grounder xử lý <em>từng yêu cầu riêng lẻ</em>: mỗi thao tác click hay assertion đều cần một lần suy luận mới bằng model lớn. Parser chỉ phân tích <strong>một lần cho mỗi trạng thái màn hình</strong>; mọi lần tìm kiếm sau đó chỉ là truy vấn trong bộ nhớ.</p>
+<table>
+<tr><th>Test gồm 5 màn hình, 40 bước</th><th class="n">Số lần gọi model</th><th class="n">Chi phí mỗi lần tìm</th></tr>
+<tr class="hi"><td><strong>VizDOM</strong> (parse một lần cho mỗi màn hình)</td>
+<td class="n win">5</td><td class="n win">Trong bộ nhớ (~0 ms)</td></tr>
+<tr><td>Grounder (mỗi yêu cầu một lần)</td><td class="n lose">40</td>
+<td class="n lose">Một lần suy luận trên GPU</td></tr>
+</table>
+<p class="small"><strong>Chi phí tăng theo số trạng thái màn hình, không theo số bước kiểm thử.</strong>
+Trên detector service đã nạp sẵn model, model chỉ được load <em>một lần</em> (~14–32 giây); sau đó mỗi lần inference mất <strong>0,6 giây ở trạng thái warm</strong> (2,5 giây khi cold). Việc khởi tạo pipeline lần thứ hai trong cùng process mất <strong>0,00 giây</strong> nhờ model cache.
+<span class="dim">Đồ án chưa đo trực tiếp thời gian chạy của các grounder; tuy nhiên model 3,9–7B active parameters về bản chất vẫn cần GPU cho mỗi lần gọi.</span></p>
+<div class="card good"><p class="small" style="margin:0;color:var(--fg)">
+<strong>Lợi ích từ việc tái sử dụng:</strong> một lần parse phục vụ cho nhiều locator <em>và</em> assertion — DOM được tái sử dụng, không phải chạy inference lại.</p></div>
+</div>
+<div>
+<h3>2 · Bốn lý do khác ngoài tốc độ</h3>
+<ul>
+<li><strong>Dạng đầu ra.</strong> Grounder chỉ trả về một <em>tọa độ</em>. Trong khi đó, test còn cần kiểm tra phần tử có tồn tại hay không, đọc text / role / state, đếm số phần tử khớp và biểu diễn quan hệ như <code>within=Form</code> — một tọa độ không cung cấp được các thông tin này.</li>
+<li><strong>Tính xác định.</strong> Một bài kiểm thử cần thất bại vì nguyên nhân thực sự. Thực nghiệm cho thấy caption có thể thay đổi chỉ vì nhiễu pixel rất nhỏ; thậm chí một model 3B nhận phần tử ở góc trên bên trái thành <em>“top right”</em> với confidence 0,95.</li>
+<li><strong>Khả năng giải thích.</strong> Khi CI báo lỗi, cần biết <em>vì sao</em>. Một DOM có thể xem, so sánh và truy vết rõ ràng hơn nhiều so với một tọa độ được trả về từ black box.</li>
+<li><strong>Phần cứng và giấy phép.</strong> Nhánh CPU của VizDOM có thể chạy toàn bộ test suite mà không cần GPU hay network (Q-04), trong khi grounder phụ thuộc GPU. Giấy phép của các model là Apache-2.0 hoặc chưa được xác minh đầy đủ, vì vậy model được đặt sau một port có thể thay thế.</li>
+</ul>
+<div class="card warn"><p class="small" style="margin:0;color:var(--fg)">
+Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <strong>bài toán khác</strong>: instruction grounding, không phải liệt kê toàn bộ phần tử. Vì vậy không thể gộp các kết quả này với detection F1 để so sánh trực tiếp.</p></div>
+</div>
+</div>
+<div class="card" style="margin-top:.7em"><p style="margin:0">
+<strong>Không phải chọn một bỏ một — VizDOM dùng grounding ở nơi nó thực sự có giá trị.</strong> Tier&nbsp;2 của locator <code>desc=</code> chính là một VLM grounder, chỉ được gọi cho những trường hợp khó mà các tier deterministic không giải quyết được; kết quả sau đó được ánh xạ ngược về một phần tử DOM bằng Set-of-Mark. Trong roadmap, một grounder chuyên dụng thuộc nhóm Aria-UI / ELAM có thể được thêm làm Tier-2 backend khác phía sau cùng một interface.
+<span class="dim">Parse một lần để lấy cấu trúc; chỉ grounding phần còn lại.</span></p></div>
+</div>
+<div class="notes"><b>Câu hỏi có khả năng được đặt ra:</b> bắt đầu bằng bảng chi phí — chi phí tăng theo số trạng thái màn hình chứ không theo số bước test — rồi chuyển sang dạng đầu ra: một tọa độ không đủ cho assertion. Kết thúc bằng ý “không phải chọn một bỏ một”: VizDOM đã tích hợp grounding như một tier có kiểm soát, cho thấy đây là lựa chọn có cân nhắc chứ không phải né tránh grounder.</div>
+</section>
+<!-- 8 ─────────────────────────────────────────── -->
+<section class="slide">
+<h2>Nhóm giải pháp: CV truyền thống, deep learning hay kết hợp?</h2>
+<div class="grow">
+<div class="cols3">
+<div class="card">
+<h3 style="margin-top:0">CV truyền thống</h3>
+<p class="small" style="color:var(--fg)">Phân tích cạnh và contour, template matching. Không cần training, dễ giải thích và thường cho bounding box sát; nhưng yếu khi GUI chứa nhiều hình ảnh hoặc widget có thiết kế phức tạp.</p>
+</div>
+<div class="card">
+<h3 style="margin-top:0">Deep learning</h3>
+<p class="small" style="color:var(--fg)">Các mô hình anchor-based như Faster R-CNN, YOLO và anchor-free như CenterNet có khả năng khái quát tốt hơn; tuy nhiên độ chính xác bounding box vẫn bị giới hạn bởi quá trình hồi quy trên feature map.</p>
+</div>
+<div class="card good">
+<h3 style="margin-top:0;color:var(--good)">Kết hợp ✓</h3>
+<p class="small" style="color:var(--fg)">Dùng CV truyền thống để đề xuất vùng và lấy bounding box chính xác cho phần tử phi văn bản; dùng deep learning cho text và ngữ nghĩa. UIED đã chứng minh hiệu quả của cách kết hợp này — và VizDOM cũng theo hướng đó.</p>
+</div>
+</div>
+<h3>VizDOM đưa cách tiếp cận này vào thực tế như thế nào</h3>
+<ul>
+<li>Text trên GUI là <strong>scene text</strong>, không giống văn bản tài liệu — cần pipeline OCR chuyên biệt thay vì dùng một model cho mọi loại nội dung</li>
+<li>Text và phần tử phi văn bản được xử lý bằng <strong>hai pipeline chuyên biệt</strong>, sau đó mới được hợp nhất</li>
+<li>Detector được đặt sau một <strong>port có thể thay thế</strong>; vì vậy lựa chọn “CV truyền thống / deep learning / kết hợp” trở thành cấu hình runtime và có thể được đánh giá theo từng loại phần tử</li>
+</ul>
+</div>
+<div class="notes">Slide này liên kết trực tiếp nội dung bài báo nhóm đã nghiên cứu với quyết định kiến trúc ADR-015.</div>
+</section>
+<!-- 9 ─────────────────────────────────────────── -->
+<section class="slide">
+<h2>Kiến trúc Hexagonal — Ports &amp; Adapters</h2>
+<div class="cols" style="flex:1;min-height:0">
+<div>
+<p>Domain core chỉ phụ thuộc vào các <strong>port trừu tượng</strong>:</p>
+<ul>
+<li><code>DetectorPort</code> — UIED / YOLO / OmniParser / gRPC</li>
+<li><code>OcrPort</code> · <code>RefinerPort</code></li>
+<li><code>CapturePort</code> — windows / linux / android / camera / gRPC</li>
+<li><code>ActuatorPort</code> — desktop / android / gRPC / cánh tay robot</li>
+</ul>
+<h3>Strategy + registry + auto-discovery</h3>
+<p>Người dùng thêm backend mới bằng cách đặt một file vào <code>plugins/</code>; registry tự động nạp và cho phép chọn backend theo tên trong cấu hình — <strong>không cần thay đổi core.</strong></p>
+<p class="small">Kiến trúc này được chọn để tăng <strong>testability</strong> (core có thể chạy không cần I/O) và <strong>substitutability</strong> (dễ thay backend) — mục tiêu chất lượng quan trọng nhất của đồ án. ADR-015 / 017 / 018 / 019.</p>
+</div>
+<div class="fig"><img alt="Kiến trúc lục giác" src="figures/Architecture.svg"/></div>
+</div>
+<div class="notes"><b>Các quality attribute chính:</b> khả năng mở rộng/thay đổi, khả năng triển khai và khả năng kiểm thử. Mỗi thuộc tính đều được truy vết tới một architecture driver đã xếp hạng trong tài liệu arc42.</div>
+</section>
+<!-- 10 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Các architecture driver — thứ tự ưu tiên và lý do</h2>
+<div class="grow">
+<p class="small">Phương pháp SWA / arc42: <strong>architecture driver → giải pháp → tài liệu hóa → xác minh</strong>. Mọi quyết định kiến trúc quan trọng đều được truy vết về một driver đã xếp hạng.</p>
+<div class="cols">
+<div>
+<table>
+<tr><th class="n">Hạng</th><th>Driver</th><th>Diễn giải cụ thể</th></tr>
+<tr class="hi"><td class="n">#1</td><td>Khả năng thay đổi (modifiability)</td>
+<td>Thêm detector / capture / actuator mới mà không sửa core</td></tr>
+<tr class="hi"><td class="n">#2</td><td><strong>Khả năng triển khai</strong></td>
+<td>Port có thể chạy in-process hoặc remote chỉ bằng thay đổi cấu hình</td></tr>
+<tr><td class="n">#3</td><td>Khả năng kiểm thử</td><td>Chạy toàn bộ pipeline mà không cần GPU hoặc network</td></tr>
+<tr><td class="n">#4</td><td>Độ chính xác</td><td>F1 / IoU của detection trên GUI thực tế</td></tr>
+<tr><td class="n">#5</td><td>Hiệu năng</td><td>Tái sử dụng model đã nạp sẵn; độ trễ trên mỗi request</td></tr>
+<tr><td class="n">—</td><td class="dim">Khả năng hoạt động offline</td>
+<td class="dim">Ràng buộc: proxy chặn public host → vendor dependency và tài liệu offline</td></tr>
+<tr><td class="n">—</td><td class="dim">Không dùng container</td>
+<td class="dim">Ràng buộc: triển khai phân tán không phụ thuộc Docker / orchestrator</td></tr>
+</table>
+<p class="small">VizDOM là một đồ án greenfield với mục tiêu chính là mở rộng qua nhiều detector và nhiều thiết bị. Vì vậy khả năng mở rộng và triển khai được ưu tiên cao hơn độ chính xác thuần túy. Nếu đây là sản phẩm cố định trên một nền tảng duy nhất, accuracy và reliability sẽ phải đứng đầu.</p>
+</div>
+<div>
+<h3>Xung đột giữa các driver và cách xử lý</h3>
+<div class="card warn">
+<p style="margin:0"><strong>Accuracy vs. testability.</strong> Detector chính xác nhất là OmniParser nhưng cần GPU và khoảng 1 GB model weights — mâu thuẫn với yêu cầu “chạy được trên laptop”.</p>
+<p class="small" style="margin:.5em 0 0;color:var(--fg)">→ Giải quyết bằng cách đặt detector sau một <strong>port</strong>: UIED làm CPU baseline cho laptop; khi cần accuracy cao hơn có thể chuyển sang remote GPU service.</p>
+</div>
+<div class="card warn" style="margin-top:1em">
+<p style="margin:0"><strong>Deployability vs. simplicity.</strong> gRPC service làm hệ thống có thêm nhiều thành phần cần vận hành.</p>
+<p class="small" style="margin:.5em 0 0;color:var(--fg)">→ Giải quyết bằng cách để gRPC là <strong>tùy chọn</strong>; in-process vẫn là chế độ mặc định, nên trường hợp đơn giản không phải chịu thêm chi phí vận hành.</p>
+</div>
+<p class="small" style="margin-top:1em">Cả hai xung đột đều được giải quyết bằng cùng một cơ chế — <strong>port abstraction</strong>. Vì vậy cùng một pattern được áp dụng nhất quán cho ba driven port: detection, capture và actuation.</p>
+</div>
+</div>
+</div>
+<div class="notes"><b>Điểm có thể bảo vệ:</b> thứ tự ưu tiên được giải thích bằng mục tiêu của đồ án, đồng thời nêu rõ điều kiện nào sẽ làm thay đổi thứ tự này. Các trade-off được trình bày trực tiếp thay vì che giấu.</div>
+</section>
+<!-- 11 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Quyết định kiến trúc then chốt — được đánh giá bằng ma trận điểm</h2>
+<div class="grow">
+<p>Làm thế nào để ba khâu detection / capture / actuation vừa dễ mở rộng, vừa có thể triển khai linh hoạt? Ba phương án được chấm từ 1–5 theo các tiêu chí có trọng số lấy từ thứ hạng architecture driver:</p>
+<table>
+<tr><th>Tiêu chí</th><th class="n">Trọng số</th>
+<th class="n">A · Hard-code theo từng consumer</th>
+<th class="n">B · Shared library, chỉ chạy in-process</th>
+<th class="n">C · Strategy + registry + gRPC tùy chọn</th></tr>
+<tr><td>Khả năng thay đổi (modifiability)</td><td class="n">5</td><td class="n">1 <span class="dim">(5)</span></td>
+<td class="n">4 <span class="dim">(20)</span></td><td class="n win">5 <span class="dim">(25)</span></td></tr>
+<tr><td>Khả năng triển khai</td><td class="n">5</td><td class="n">1 <span class="dim">(5)</span></td>
+<td class="n">2 <span class="dim">(10)</span></td><td class="n win">5 <span class="dim">(25)</span></td></tr>
+<tr><td>Khả năng kiểm thử</td><td class="n">4</td><td class="n">2 <span class="dim">(8)</span></td>
+<td class="n">4 <span class="dim">(16)</span></td><td class="n win">5 <span class="dim">(20)</span></td></tr>
+<tr><td>Độ phức tạp thiết kế (thấp hơn là tốt)</td><td class="n">3</td>
+<td class="n">4 <span class="dim">(12)</span></td><td class="n">4 <span class="dim">(12)</span></td>
+<td class="n lose">2 <span class="dim">(6)</span></td></tr>
+<tr><td>Độ phức tạp vận hành (thấp hơn là tốt)</td><td class="n">3</td>
+<td class="n">5 <span class="dim">(15)</span></td><td class="n">4 <span class="dim">(12)</span></td>
+<td class="n lose">2 <span class="dim">(6)</span></td></tr>
+<tr class="hi"><td><strong>Tổng có trọng số</strong></td><td class="n"></td>
+<td class="n">45</td><td class="n">70</td><td class="n win"><strong>82</strong></td></tr>
+</table>
+<p class="small"><strong>Cách chấm:</strong> mỗi ô gồm điểm gốc 1–5 và phần đóng góp sau khi nhân trọng số trong ngoặc; tổng điểm = Σ trọng số × điểm. Trọng số lấy từ thứ hạng driver (5 là mức ưu tiên cao nhất). Với hai tiêu chí về độ phức tạp, điểm cao tương ứng với độ phức tạp thấp.</p>
+<div class="card good"><p style="margin:0"><strong>Kết quả: chọn phương án C.</strong> Phương án này vượt trội ở hai driver có ưu tiên cao nhất, đổi lại thiết kế và vận hành phức tạp hơn. Trade-off được giảm bớt bằng cách giữ gRPC là tùy chọn — chế độ local mặc định vẫn tương đương phương án B — và dùng chung một registry pattern cho cả ba port. Quyết định được ghi trong ADR-015 / 017 / 018 / 019.</p></div>
+</div>
+<div class="notes">Slide này thể hiện phương pháp ra quyết định: các phương án được chấm theo tiêu chí có trọng số, điểm yếu về độ phức tạp được nêu rõ và biện pháp giảm thiểu cũng cụ thể.</div>
+</section>
+<!-- 12 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Định hướng microservice, nhưng không bắt buộc luôn chạy phân tán</h2>
+<div class="grow">
+<div class="cols">
+<div>
+<p>Mỗi port có thể trở thành một <strong>service độc lập</strong>, với protobuf contract có version và một gRPC server riêng:</p>
+<table>
+<tr><th>Dịch vụ</th><th class="n">Cổng</th><th>Vị trí triển khai</th></tr>
+<tr><td>Detector</td><td class="n"><code>50051</code></td><td>GPU host — một model đã nạp sẵn phục vụ nhiều client</td></tr>
+<tr><td>Capture</td><td class="n"><code>50053</code></td><td>Thiết bị đang được kiểm thử</td></tr>
+<tr><td>Actuator</td><td class="n"><code>50054</code></td><td>SUT hoặc bộ điều khiển cánh tay robot</td></tr>
+</table>
+<p class="small">Tọa độ truyền qua mạng được <strong>chuẩn hóa trong [0,1]</strong> kèm kích thước ảnh, nên protocol không phụ thuộc độ phân giải. Mỗi strategy tự ánh xạ tọa độ sang không gian thiết bị tương ứng; với cánh tay robot, plugin áp dụng calibration homography.</p>
+</div>
+<div>
+<div class="card"><h3 style="margin-top:0">Vì sao cần triển khai phân tán?</h3>
+<ul style="margin-bottom:0">
+<li>Scale model nặng một cách độc lập</li>
+<li>Đặt từng service đúng nơi có tài nguyên phù hợp (thiết bị / GPU / bộ điều khiển)</li>
+<li>Cô lập lỗi và tài nguyên</li>
+<li>Có thể thay implementation bằng ngôn ngữ khác mà vẫn giữ nguyên contract</li>
+</ul>
+</div>
+<div class="card warn" style="margin-top:1em"><p style="margin:0"><strong>Tuy nhiên, in-process vẫn là mặc định.</strong> gRPC chỉ là <em>cơ chế transport, không phải yêu cầu bắt buộc</em>. Khi các thành phần có thể chạy cùng máy, chúng vẫn nằm trong một process, nhờ đó trường hợp phổ biến không phải chịu thêm chi phí vận hành.</p></div>
+</div>
+</div>
+</div>
+<div class="notes"><b>Việc phân tán xuất phát từ vị trí vật lý và nhu cầu tài nguyên, không phải chạy theo xu hướng.</b> Đây là cách áp dụng microservice hợp lý và có thể bảo vệ cho một đồ án do một người phát triển.</div>
+</section>
+<!-- 13 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Cách sử dụng từ phía client: một cấu hình, nhiều giao diện</h2>
+<div class="grow">
+<div class="cols">
+<div>
+<h3>Một file JSON cấu hình session (ADR-020)</h3>
+<p class="small">Lựa chọn detector và OCR, các threshold gộp/loại trùng, hierarchy, symbol reader, filter, capture và grounding — tất cả nằm trong một file được validate. <code>--init</code> tạo file mẫu có chú thích; <code>--check</code> kiểm tra tính hợp lệ.</p>
+<h3>Python</h3>
+<p class="small" style="font-family:Consolas,monospace;color:var(--fg)">
+          session = connect("vizdom.config.json")<br/>dom = session.analyze("screen.png")</p>
+<h3>Robot Framework</h3>
+<p class="small" style="font-family:Consolas,monospace;color:var(--fg)">
+          Connect  vizdom.config.json<br/>Dump Visual DOM<br/>Click Visual  text=Login</p>
+</div>
+<div>
+<h3>Các loại locator</h3>
+<ul>
+<li><code>id=</code> <code>text=</code> <code>hint=</code> <code>role=</code></li>
+<li>Quan hệ không gian: <code>within=</code> <code>right_of=</code> <code>below=</code></li>
+<li><code>desc=</code> — mô tả bằng ngôn ngữ tự nhiên <span class="tag">mới</span></li>
+</ul>
+<p class="small">Mỗi action được xử lý theo chuỗi <strong>locator → element → tâm chuẩn hóa → actuator</strong>. Nhờ đó cùng một test có thể chạy local, qua gRPC hoặc trên cánh tay robot mà không cần sửa đổi.</p>
+<div class="card" style="margin-top:.8em"><p class="small" style="margin:0;color:var(--fg)">Model chỉ được nạp <strong>một lần cho mỗi session</strong> và được tái sử dụng cho nhiều screenshot — toàn bộ test suite chỉ chịu chi phí load model một lần.</p></div>
+</div>
+</div>
+</div>
+<div class="notes">Có sẵn demo tại <code>examples/windows_calculator_demo/</code>: khởi động detector service, sau đó chạy <code>robot calculator_demo.robot</code> để điều khiển Windows Calculator thông qua Visual DOM.</div>
+</section>
+<!-- 14 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Quality scenarios và bằng chứng xác minh</h2>
+<div class="grow">
+<p class="small">Mỗi quality goal được cụ thể hóa thành một kịch bản có thể đo lường: <strong>stimulus → response → response measure</strong>, sau đó được xác minh. Những phát biểu mơ hồ như “hệ thống nên modular” không thể kiểm chứng; các kịch bản dưới đây thì có thể.</p>
+<table style="font-size:clamp(10px,1.05vw,15px)">
+<tr><th>ID</th><th>Chất lượng</th><th>Response measure / tiêu chí chấp nhận</th><th>Trạng thái</th></tr>
+<tr><td>Q-01</td><td>Khả năng thay đổi (modifiability)</td>
+<td>1 file mới + 1 dòng đăng ký trong registry, không sửa core; mỗi port có ≥2 implementation</td>
+<td class="win">Đã xác minh — 4 detector, 5 nguồn capture, 3 actuator</td></tr>
+<tr><td>Q-02</td><td>Khả năng triển khai</td>
+<td>Chỉ thay cấu hình (strategy + host:port), không sửa code; end-to-end round trip thành công</td>
+<td class="win">Đã xác minh — screenshot khớp từng pixel, ánh xạ actuator chính xác</td></tr>
+<tr><td>Q-03</td><td>Hiệu năng</td>
+<td>Model chỉ load 1 lần trong vòng đời service; các request sau chỉ chạy inference</td>
+<td class="win">Đã xác minh về chức năng</td></tr>
+<tr><td>Q-04</td><td>Khả năng kiểm thử</td>
+<td>Toàn bộ pipeline và RF keywords chạy được mà không cần GPU hoặc network</td>
+<td class="win">Đã xác minh</td></tr>
+<tr class="hi"><td>Q-05</td><td>Độ chính xác</td>
+<td>Mục tiêu F1 ≥ 0.80, mIoU ≥ 0.60 trên benchmark có ground truth</td>
+<td class="lose">Kết quả: mIoU 0.68 đạt; F1 0.58 chưa đạt</td></tr>
+</table>
+<div class="cols" style="margin-top:.5em">
+<div class="card good"><p class="small" style="margin:0;color:var(--fg)"><strong>Bốn trong năm mục tiêu đã được xác minh.</strong> Các mục tiêu kiến trúc trọng tâm của đồ án đều có bằng chứng cụ thể, không chỉ là nhận định định tính.</p></div>
+<div class="card bad"><p class="small" style="margin:0;color:var(--fg)"><strong>Accuracy vẫn là mục tiêu chưa hoàn thành.</strong> F1 tổng hợp chưa đạt ngưỡng; tuy nhiên recall theo loại trên các control có thể thao tác (0.83 theo IoU / 0.97 center-hit) phản ánh sát hơn nhu cầu kiểm thử. Điểm này được ghi rõ trong risk register.</p></div>
+</div>
+<p class="small">Các rủi ro khác cũng được ghi nhận: ADR-017 vẫn ở trạng thái <em>Proposed</em> dù bằng chứng deployability phụ thuộc vào quyết định này; các kênh gRPC hiện chưa mã hóa và chỉ phù hợp với môi trường LAN tin cậy.</p>
+</div>
+<div class="notes">Slide phương pháp: quality tree theo arc42, các scenario theo phong cách ATAM và một vòng review D-CAR tạo ra bảng này. Dòng Q-05 được trình bày trung thực để chủ động mở thảo luận về accuracy.</div>
+</section>
+<!-- 15 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Đánh giá: phương pháp và cách xây dựng dataset</h2>
+<div class="grow">
+<div class="cols">
+<div>
+<h3>Bốn nhóm chỉ số</h3>
+<ul>
+<li><strong>Element detection</strong> — precision, recall, F1 và mean IoU</li>
+<li><strong>OCR</strong> — character accuracy, CER / WER</li>
+<li><strong>Hierarchy</strong> — độ chính xác của quan hệ bao chứa và liên kết label; cần ground truth dạng cây</li>
+<li><strong>Locator quality</strong> — uniqueness và stability <span class="dim">(future work)</span></li>
+</ul>
+<p class="small">Prediction và ground truth được ghép cặp theo chiến lược greedy với ngưỡng IoU 0.5, sau đó tính trên toàn bộ phần tử. Các chỉ số được tạo bởi bộ công cụ đánh giá của dự án (<code>visual_dom.evaluation</code>).</p>
+</div>
+<div>
+<h3>Không có public benchmark phù hợp, nên dự án tự xây dựng dataset</h3>
+<ul>
+<li><strong>Programmatic synthesis</strong> — kết hợp template × theme × độ phân giải, có ground truth chính xác → 167 ảnh train / 44 ảnh test ở 1920×1080</li>
+<li><strong>LLM-designed layouts</strong> — dùng LLM như một UI designer (ví dụ giao diện infotainment) để tăng độ đa dạng về cấu trúc</li>
+<li><strong>Camera-style augmentation</strong> — biến dạng phối cảnh, glare, blur và noise; đồng thời kiểm tra pipeline hiệu chỉnh màn hình</li>
+</ul>
+<p class="small">Chỉ clean synthetic split được dùng để tính điểm. Hai lớp còn lại phục vụ phát triển và kiểm thử robustness.</p>
+</div>
+</div>
+</div>
+<div class="notes"><b>Cần nêu rõ hạn chế:</b> dataset hiện tại là dữ liệu tổng hợp và tương đối sạch. Xây dựng một tập ảnh thực tế có label là ưu tiên cao nhất trong phần future work.</div>
+</section>
+<!-- 16 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Kết quả — vì sao một chỉ số tổng hợp chưa đủ</h2>
+<div class="grow">
+<div class="cols">
+<div>
+<h3>Kết quả tổng quan trên 44 ảnh test</h3>
+<table>
+<tr><th>Detector</th><th class="n">P</th><th class="n">R</th><th class="n">F1</th>
+<th class="n">mIoU</th><th class="n">Char. acc.</th></tr>
+<tr><td>UIED <span class="tag">CPU</span></td><td class="n">0.39</td><td class="n win">0.71</td>
+<td class="n">0.51</td><td class="n win">0.68</td><td class="n">0.92</td></tr>
+<tr><td>OmniParser</td><td class="n win">0.56</td><td class="n">0.59</td>
+<td class="n win">0.58</td><td class="n">0.67</td><td class="n win">0.95</td></tr>
+</table>
+<div class="card warn"><p class="small" style="margin:0;color:var(--fg)">Kết quả tổng hợp bị text chi phối vì text chiếm 63% số phần tử trong ground truth. Vì vậy recall theo từng loại phần tử phản ánh nhu cầu kiểm thử tốt hơn. Báo cáo dùng hai góc nhìn: IoU ≥ 0.5 và <strong>center-hit</strong> — bounding box dự đoán có chứa tâm để có thể click hay không.</p></div>
+<p class="small" style="margin-top:.7em"><strong>Cách đọc chỉ số:</strong> mọi giá trị nằm trong [0,1], càng cao càng tốt. P = precision, R = recall, F1 là trung bình điều hòa của precision và recall. Các bounding box được matching theo chiến lược greedy tại IoU ≥ 0.5. mIoU là IoU trung bình của các cặp đã match; Char. acc. là độ chính xác OCR ở mức ký tự (1 − CER).</p>
+</div>
+<div>
+<h3>Recall theo loại phần tử — IoU / center-hit</h3>
+<table>
+<tr><th>Loại</th><th class="n">UIED</th><th class="n">OmniParser</th></tr>
+<tr><td>button</td><td class="n">0.82 / 0.96</td><td class="n win">1.00 / 1.00</td></tr>
+<tr><td>input_field</td><td class="n">0.95 / 0.99</td><td class="n win">0.99 / 0.99</td></tr>
+<tr><td>icon</td><td class="n lose">0.08 / 0.28</td><td class="n win">0.67 / 1.00</td></tr>
+<tr><td>checkbox</td><td class="n win">0.68 / 0.82</td><td class="n">0.20 / 0.87</td></tr>
+<tr><td>text</td><td class="n win">0.79 / 0.99</td><td class="n">0.59 / 0.98</td></tr>
+<tr class="hi"><td>Có thể thao tác</td><td class="n">0.77 / 0.89</td>
+<td class="n win">0.83 / 0.97</td></tr>
+</table>
+<p class="small"><strong>OmniParser tốt hơn trên các control mà test cần thao tác</strong>; UIED tốt hơn ở checkbox và text. Với checkbox, IoU thấp (0.20) nhưng center-hit cao (0.87) là do khác biệt về quy ước bounding box: OmniParser chỉ bao quanh dấu check, nhưng vị trí vẫn đủ chính xác để click.</p>
+<p class="small"><strong>Cách tính:</strong> recall được báo cáo theo từng loại ground truth. IoU ≥ 0.5 nghĩa là bounding box dự đoán overlap ít nhất 50% với ground truth; center-hit nghĩa là bounding box dự đoán chứa tâm của phần tử. Số lượng: button 183, input 135, icon 36, checkbox 76, text 1074; nhóm có thể thao tác gồm 430 phần tử.</p>
+</div>
+</div>
+</div>
+<div class="notes"><b>Đối chiếu NFR5:</b> mIoU đạt mục tiêu ≥ 0.60; F1 chưa đạt mục tiêu ≥ 0.80. Cần nói thẳng điều này và chuyển trọng tâm sang recall theo loại trên các control có thể thao tác — chỉ số phù hợp hơn với use case kiểm thử.</div>
+</section>
+<!-- 17 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Tổng hợp các kỹ thuật và thuật toán</h2>
+<div class="grow">
+<table style="font-size:clamp(10px,1.0vw,15px)">
+<tr><th>Giai đoạn</th><th>Kỹ thuật / thuật toán</th><th>Mục đích</th></tr>
+<tr><td>Phát hiện</td><td>CV truyền thống coarse-to-fine theo UIED (binarization → connected components); YOLOv8 phát hiện icon + Florence-2 tạo caption trong OmniParser</td>
+<td>Tạo bounding box từ pixel bằng CV truyền thống hoặc deep learning, tùy cấu hình</td></tr>
+<tr><td>OCR</td><td>Upscale khoảng 3× cho chữ nhỏ; chạy OCR lần hai bằng engine khác khi confidence thấp; đưa OCR ensemble vào OmniParser để bù vùng bị bỏ sót</td>
+<td>Khôi phục text nhỏ hoặc mờ bị lần OCR đầu bỏ sót</td></tr>
+<tr><td>Gộp và loại trùng</td><td>NMS theo từng loại; cross-type suppression theo luật ưu tiên; loại các detection gần trùng; quét lại từng region; tách theo vị trí text; smart-merge có guard dựa trên fill ratio</td>
+<td>Mỗi control chỉ còn một detection nhất quán trên GUI dày đặc</td></tr>
+<tr><td>Ánh xạ vai trò</td><td>Thông tin tương tác + geometry tự điều chỉnh theo độ phân giải + caption keyword để phân biệt các role</td>
+<td>Suy ra role button / input / checkbox / icon từ đầu ra chỉ có text hoặc icon → accuracy 0.09 → 0.87</td></tr>
+<tr><td>Đọc ký hiệu</td><td>Crop sát và chuẩn hóa glyph → loại outline rỗng → template matching với mẫu render từ font bằng Dice score và threshold riêng cho từng ký hiệu</td>
+<td>Đọc các ký hiệu + − = × ÷ mà OCR bỏ sót → 14/15 trường hợp đúng</td></tr>
+<tr><td>Phân cấp</td><td>Containment threshold, nhóm theo alignment, liên kết label theo khoảng cách và vị trí, sắp xếp theo reading order</td>
+<td>Tạo cây có thể truy vấn — tầng mà các hệ thống so sánh chưa xây dựng</td></tr>
+<tr><td>Ngữ nghĩa</td><td>Tách riêng hai kênh <code>text</code> / <code>label</code>; ưu tiên label lân cận &gt; caption &gt; text của chính phần tử</td>
+<td>Giá trị đọc trực tiếp không bị model prediction ghi đè</td></tr>
+<tr><td>SLM / VLM</td><td>Các thao tác tinh chỉnh chỉ được phép trên tập ứng viên đã lọc theo geometry; các tier của <code>desc=</code>: lexical scoring → SLM over DOM có bước kiểm tra ID → Set-of-Mark visual grounding</td>
+<td>Model nhỏ hỗ trợ xử lý ngữ nghĩa nhưng luôn bị giới hạn và kiểm chứng</td></tr>
+<tr><td>Robustness</td><td>Threshold quy chiếu theo 1080p rồi scale; hiệu chỉnh phối cảnh màn hình từ camera; cache model đã nạp sẵn</td>
+<td>Giữ hành vi nhất quán giữa các độ phân giải, thiết bị và lần khởi động</td></tr>
+</table>
+<p class="small"><strong>Nguyên tắc xuyên suốt:</strong> xử lý geometry bằng thuật toán deterministic trước; chỉ dùng model ở nơi thực sự cần ngữ nghĩa và luôn có bước validate hoặc guard. Ba slide tiếp theo trình bày các cải tiến có số đo trước/sau.</p>
+</div>
+<div class="notes">Nếu được hỏi “em đã thực hiện những gì?”, đây là slide trả lời tổng quát nhất. Mỗi dòng đều ánh xạ tới code và một ADR; các phần in đậm là những quyết định không hiển nhiên.</div>
+</section>
+<!-- 18 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Cải tiến 1 — khôi phục role của phần tử</h2>
+<div class="grow">
+<p><strong>Vấn đề.</strong> OmniParser ban đầu chỉ trả về <code>text</code> hoặc <code>icon</code> cho mỗi detection. Vì vậy DOM thiếu các role <code>button</code>, <code>input_field</code> và <code>checkbox</code>; test logic dựa trên role không thể sử dụng kết quả này.</p>
+<div class="cols">
+<div>
+<table>
+<tr><th>Loại</th><th class="n">Ban đầu</th><th class="n">Cải tiến bước 1</th><th class="n">Hiện tại</th></tr>
+<tr><td>button</td><td class="n">0.00</td><td class="n">0.91</td><td class="n">0.89</td></tr>
+<tr><td>input_field</td><td class="n">0.00</td><td class="n">0.99</td><td class="n">0.99</td></tr>
+<tr><td>checkbox</td><td class="n">0.00</td><td class="n lose">0.12</td><td class="n">0.55</td></tr>
+<tr><td>icon</td><td class="n">1.00*</td><td class="n lose">0.00</td><td class="n win">0.89</td></tr>
+<tr class="hi"><td>Các control có thể thao tác</td><td class="n">0.09</td>
+<td class="n">0.73</td><td class="n win">0.87</td></tr>
+</table>
+<p class="small">*Mapping ban đầu gán mọi phần tử phi văn bản thành <code>icon</code>. Vì vậy icon đạt 1.00 một cách mặc định, còn tất cả role khác đều bằng 0.</p>
+<p class="small"><strong>Cách đo:</strong> type-classification accuracy là tỷ lệ các control có thể thao tác đã match (IoU ≥ 0.5) và được gán đúng role. Chỉ số nằm trong [0,1] và chỉ đánh giá loại phần tử; localization không thay đổi. Dùng cùng tập test 44 ảnh.</p>
+</div>
+<div>
+<h3>Hai bước cải tiến và kết quả thực tế</h3>
+<ul>
+<li><strong>Cải tiến bước 1</strong> — dùng thông tin tương tác và geometry, accuracy tăng lên 0.73 nhưng icon giảm về 0.00. Quy tắc hình học phân loại nhầm các glyph vuông nhỏ; checkbox vẫn chỉ đạt 0.12 vì gần như không thể phân biệt với icon chỉ bằng geometry.</li>
+<li><strong>Hiện tại</strong> — bổ sung caption của OmniParser để nhận diện checkbox và điều chỉnh lại ngưỡng width/aspect giữa button và icon.</li>
+</ul>
+<div class="kpi"><div><b>0.09 → 0.87</b><span>độ chính xác vai trò (thao tác được)</span></div></div>
+<p class="small">Checkbox vẫn là role yếu nhất (0.55) vì chỉ nhận diện tốt khi caption đủ đặc trưng. Đây là một hướng cần cải thiện tiếp.</p>
+</div>
+</div>
+</div>
+<div class="notes"><b>Điểm phương pháp:</b> nên trình bày cả regression ở bước sửa đầu tiên. Nó cho thấy chỉ geometry là chưa đủ và caption thực sự là tín hiệu cần thiết, không chỉ là phần bổ sung mang tính trang trí.</div>
+</section>
+<!-- 19 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Cải tiến 2 — đọc các glyph mà OCR bỏ sót</h2>
+<div class="grow">
+<div class="cols">
+<div>
+<p><strong>Vấn đề.</strong> OCR thường đọc sai các phím toán tử (<code>+ − = × ÷</code>) vì glyph quá nhỏ. Bộ nhận dạng dựa trên rule trước đó dùng projection profile trên toàn bộ button, nhưng không nhận đúng phím nào trong bộ thử nghiệm thực tế. Nó còn nhận nhầm biểu tượng maximize rỗng <code>□</code> thành dấu <code>+</code>, vì các cạnh của hình vuông tạo thành một giao điểm ở giữa.</p>
+<h3>Thiết kế lại: template matching trên vùng glyph được crop sát</h3>
+<ol style="padding-left:1.3em">
+<li>Upscale ảnh vì các nét anti-alias gần như biến mất ở kích thước gốc</li>
+<li>Binarize và crop đúng bounding box của glyph → <strong>chuẩn hóa theo tỷ lệ</strong></li>
+<li>Loại bỏ các hình outline rỗng bằng kiểm tra cấu trúc</li>
+<li>So khớp bằng Dice score với <strong>template được render từ font</strong>; chỉ nhận kết quả tốt nhất khi đủ confidence và đủ khác biệt so với ứng viên kế tiếp</li>
+</ol>
+</div>
+<div>
+<div class="kpi">
+<div><b>14/15</b><span>Control thử nghiệm được nhận đúng</span></div>
+<div><b>21 → 4</b><span>Detection trên một ảnh tổng hợp<br/>(phần giảm là false positive)</span></div>
+</div>
+<div class="card good"><p style="margin:0"><code>÷ × − + =.</code> đều được nhận đúng · dấu gạch trên title bar → <code>-</code> · nút Close → <code>×</code> · nút Maximize được <strong>loại đúng</strong> · chữ số và icon không liên quan được bỏ qua</p></div>
+<div class="card warn" style="margin-top:.9em"><p class="small" style="margin:0;color:var(--fg)">Trường hợp chưa nhận được: phím <code>±</code> trên Windows dùng một glyph ghép có đường chéo, không khớp với template hiện tại. Hệ thống trả về <strong>không có kết quả thay vì trả kết quả sai</strong>.</p></div>
+<p class="small">Để hỗ trợ ký hiệu mới chỉ cần thêm ký tự vào danh sách cấu hình; tập ký hiệu là dữ liệu, không hard-code trong logic. Ngưỡng confidence cũng có thể cấu hình.</p>
+</div>
+</div>
+</div>
+<div class="notes"><b>Bài học thiết kế:</b> các threshold chỉnh tay ở kích thước 8–20 px rất mong manh — sửa được trường hợp này lại dễ làm hỏng trường hợp khác. Template matching kết hợp confidence gate đã thay thế khoảng 10 heuristic riêng lẻ.</div>
+</section>
+<!-- 20 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Cải tiến 3 — điều đọc được và điều suy luận</h2>
+<div class="grow">
+<div class="cols">
+<div>
+<div class="card bad">
+<h3 style="margin-top:0;color:var(--bad)">Một kết quả đo được</h3>
+<p style="margin:0">Hai ảnh chụp của <strong>cùng một GUI</strong>, nhìn bằng mắt gần như giống hệt nhau, chỉ khác bởi nhiễu do tái mã hóa rất nhỏ (<strong>≤7/255</strong> mỗi kênh trên khoảng 90% pixel), đã làm caption của cùng một icon thay đổi từ <strong>“Maximize” thành “Page”</strong>.</p>
+<p class="small" style="margin:.6em 0 0">Model cho kết quả deterministic trong cùng một lần chạy; vì vậy đây là <em>input sensitivity</em>, không phải randomness do sampling. Glyph Maximize chỉ là một hình vuông rỗng <code>□</code>, vốn thực sự mơ hồ đối với caption model.</p>
+</div>
+<p class="small">Khi chạy lại code hiện tại trên ảnh cũ, kết quả cho thấy regression <strong>không nằm trong code của dự án</strong>. Một vấn đề riêng khác là confidence của detector: dấu gạch mờ của nút Minimize có thể rơi ngay dưới threshold 0.05 khi scale thay đổi. Threshold này hiện đã được đưa thành tham số cấu hình.</p>
+</div>
+<div>
+<h3>Giải pháp: tách riêng hai kênh dữ liệu</h3>
+<table>
+<tr><th>Trường</th><th>Ý nghĩa</th><th>Nguồn</th></tr>
+<tr><td><code>text</code></td><td><strong>Giá trị đọc trực tiếp từ pixel</strong></td><td>OCR / bộ đọc ký hiệu</td></tr>
+<tr><td><code>label</code></td><td>Tên ngữ nghĩa</td><td>Label lân cận &gt; caption &gt; text của chính phần tử</td></tr>
+</table>
+<p>Nút Close hiện có <code>text='×'</code> và <code>label='Close'</code>. Nếu glyph không đọc được, phần tử có <code>text=None</code> và vẫn giữ caption làm <code>label</code> theo cơ chế best-effort.</p>
+<div class="card"><p class="small" style="margin:0;color:var(--fg)"><strong>Khuyến nghị khi viết test:</strong> dùng <code>text=</code> cho control có text; với control chỉ có icon, dùng <code>role=</code> kết hợp quan hệ không gian. Caption từ model chỉ nên xem là <em>gợi ý, không phải một ID ổn định</em>.</p></div>
+</div>
+</div>
+</div>
+<div class="notes"><b>Giá trị khoa học:</b> đây là một phép đo có thể tái lập về robustness của caption model trên GUI glyph. Kết quả đáng được báo cáo như một kết quả nghiên cứu, không chỉ như một bug fix.</div>
+</section>
+<!-- 21 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Tính năng mới — tìm phần tử bằng mô tả tự nhiên</h2>
+<div class="grow">
+<p>Các locator dựa trên thuộc tính thường thất bại đúng tại những nơi kết quả nhận diện chưa đủ tin cậy. Vì vậy tester có thể mô tả <strong>ý định</strong>: <code>Click Visual  desc="settings button"</code>. Cách này kết hợp tư duy <em>grounder</em> vào một hệ thống parser, nhưng DOM vẫn là source of truth.</p>
+<div class="cols3">
+<div class="card"><h3 style="margin-top:0">Tier 0 · Lexical matching</h3>
+<p class="small" style="color:var(--fg)">Không dùng model. Tính điểm dựa trên token, từ đồng nghĩa, role và thông tin vị trí. Chỉ chấp nhận khi đạt điểm tối thiểu <em>và</em> có margin đủ lớn; nếu hòa điểm thì chuyển lên tier tiếp theo thay vì đoán.</p></div>
+<div class="card"><h3 style="margin-top:0">Tier 1 · SLM over DOM</h3>
+<p class="small" style="color:var(--fg)">Một language model nhỏ với temperature 0 chọn ID từ bảng phần tử rút gọn. ID được <strong>validate lại với DOM</strong>; ID không tồn tại trong DOM sẽ bị loại.</p></div>
+<div class="card"><h3 style="margin-top:0">Tier 2 · VLM Set-of-Mark</h3>
+<p class="small" style="color:var(--fg)">Các bounding box ứng viên được <strong>đánh số trực tiếp trên screenshot</strong>; model chỉ cần chọn một số. Bài toán multiple-choice ổn định hơn coordinate regression và kết quả luôn ánh xạ về một phần tử DOM.</p></div>
+</div>
+<div class="cols" style="margin-top:.9em">
+<div class="card good"><p style="margin:0"><strong>5/5</strong> câu mô tả thử nghiệm được resolve đúng trên một session thực tế, bao gồm các cách diễn đạt khác nhau qua tier SLM. Một mô tả vô nghĩa trả về <strong>lỗi rõ ràng</strong> cùng danh sách ứng viên thay vì chọn bừa.</p></div>
+<div class="card warn"><p style="margin:0"><strong>Phát hiện đáng chú ý:</strong> một model 3B từng tự tin gọi phần tử ở góc trên trái là “top right”. Vì vậy mọi từ chỉ vị trí được xử lý <strong>bằng geometry trước khi gọi model</strong>; thông tin vị trí không được giao hoàn toàn cho mô hình.</p></div>
+</div>
+<p class="small">Tính deterministic được kiểm soát bằng policy cấu hình: chuỗi tier có thể cấu hình; CI có thể chỉ bật lexical tier; kết quả được cache theo từng screen; mỗi lần resolve đều ghi lại tier đã trả lời. Nhờ đó chiến lược <strong>“parse once, resolve long-tail locators”</strong> có thể đo lường được.</p>
+</div>
+<div class="notes">ADR-022. Đây là phần mới nhất và có thể phát triển thành một thí nghiệm phù hợp cho luận văn: đo tỷ lệ resolve đúng của từng tier trên dataset có label.</div>
+</section>
+<!-- 22 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Đóng góp và vị trí của VizDOM</h2>
+<div class="grow">
+<div class="cols">
+<div>
+<h3>Những điểm khác biệt chính</h3>
+<ul>
+<li><strong>Hierarchy construction</strong> — quan hệ bao chứa, alignment và liên kết label được tổng hợp thành một cây có thể truy vấn; các hệ thống so sánh chưa tạo ra cấu trúc này</li>
+<li><strong>Định hướng kiểm thử</strong> — locator, assertion và Robot Framework keywords</li>
+<li><strong>Hiệu quả tái sử dụng</strong> — một lần parse phục vụ nhiều locator và assertion; grounder phải inference lại cho từng câu lệnh</li>
+<li><strong>Explainability</strong> — có thể kiểm tra cây DOM và truy vết rule matching, thay vì chỉ nhận một tọa độ từ black box</li>
+</ul>
+</div>
+<div>
+<h3>Các thành phần đã bàn giao</h3>
+<ul>
+<li>Hexagonal engine với <strong>5 port</strong>; 3 port có thể chạy dưới dạng gRPC service tùy chọn</li>
+<li><strong>22 ADR</strong>; tài liệu kiến trúc arc42 bằng tiếng Anh và tiếng Việt</li>
+<li>Thư viện Robot Framework; Viewer tương tác; bộ công cụ đánh giá</li>
+<li>Benchmark có label; công cụ augmentation và sinh dữ liệu bằng LLM</li>
+<li>Trang tài liệu đã được triển khai; demo chạy được trên Windows</li>
+</ul>
+<div class="card"><p class="small" style="margin:0;color:var(--fg)">Element detection đang dần trở thành một tầng tiêu chuẩn và không còn là điểm khác biệt chính; một nhóm nghiên cứu công nghiệp cũng đi đến cùng cách phân rã. Vì vậy VizDOM xem detector là backend có thể hoán đổi và tập trung đóng góp ở các tầng phía trên.</p></div>
+</div>
+</div>
+</div>
+<div class="notes">Đây là slide trả lời câu hỏi “em thực sự đóng góp gì?”. Nên mở đầu bằng hierarchy construction và lớp API dành cho kiểm thử.</div>
+</section>
+<!-- 23 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Các hạn chế hiện tại</h2>
+<div class="grow">
+<ul>
+<li><strong>Benchmark hiện là dữ liệu tổng hợp và tương đối sạch.</strong> Kết quả tuyệt đối có thể khác trên GUI thực tế có nhiều gradient, theme và background phức tạp. Dataset thực tế được gán label là ưu tiên cao nhất.</li>
+<li><strong>Chưa đạt mục tiêu F1.</strong> NFR5 đặt F1 ≥ 0.80 và mIoU ≥ 0.60. mIoU đạt 0.67–0.68, nhưng F1 chỉ đạt 0.51–0.58. F1 tổng hợp bị text chi phối; recall theo loại trên control có thể thao tác (0.83 / 0.97 center-hit) phù hợp hơn với use case.</li>
+<li><strong>Role checkbox vẫn yếu nhất</strong> (0.55) và chỉ nhận diện tốt khi caption đủ đặc trưng.</li>
+<li><strong>Caption không ổn định với các icon nhỏ chỉ có glyph.</strong> Đây là hạn chế của caption model; việc tách <code>text</code> và <code>label</code> giúp giảm ảnh hưởng nhưng chưa loại bỏ hoàn toàn.</li>
+<li><strong>Hierarchy và locator chưa được chấm điểm.</strong> Ground truth hiện chỉ là danh sách phẳng có parent reference, chưa có cây đầy đủ và chưa chứa locator.</li>
+<li><strong>Chưa có benchmark thời gian chạy thực tế.</strong> Hiệu năng mới được phân tích theo kiến trúc — warm-model service và CPU path — thay vì có số đo wall-clock.</li>
+<li><strong>ADR-017 vẫn ở trạng thái Proposed.</strong> Khả năng triển khai đã có demo và bằng chứng kỹ thuật nhưng quyết định chưa được chính thức chấp thuận. Các kênh gRPC hiện chưa mã hóa, chỉ phù hợp với LAN tin cậy.</li>
+</ul>
+</div>
+<div class="notes">Không nên che giấu các hạn chế này. Chủ động nêu limitation giúp báo cáo mang tính kỹ thuật và khoa học hơn, đồng thời trả lời trước các câu hỏi dễ được đặt ra.</div>
+</section>
+<!-- 24 ────────────────────────────────────────── -->
+<section class="slide">
+<h2>Kế hoạch tiếp theo</h2>
+<div class="grow">
+<div class="cols">
+<div>
+<h3>Ngắn hạn</h3>
+<ul>
+<li>Xây dựng dataset thực tế có label — hạn chế lớn nhất của phần đánh giá accuracy</li>
+<li>Thực hiện thí nghiệm <code>desc=</code> — tự sinh mô tả cho phần tử có label và báo cáo tỷ lệ resolve đúng theo từng tier</li>
+<li>Benchmark thời gian chạy: in-process so với warm gRPC service</li>
+<li>Bộ gán label chuẩn cho các nút cửa sổ: Minimize / Maximize / Close</li>
+<li>Chọn đúng ứng dụng đích theo window title trên Windows hoặc activity trên Android</li>
+</ul>
+</div>
+<div>
+<h3>Dài hạn</h3>
+<ul>
+<li><strong>Self-healing locator</strong> — cache các mô tả đã resolve thành alias, để test suite dần chuyển từ model-resolved sang deterministic</li>
+<li>Embedding tier để so khớp semantic similarity mà không cần text generation</li>
+<li>Grounder chuyên dụng làm backend thay thế cho Tier 2</li>
+<li>Bổ sung ground truth cho hierarchy và locator để đánh giá hai nhóm chỉ số còn lại</li>
+<li>Bổ sung TLS và authentication cho các kênh gRPC</li>
+</ul>
+</div>
+</div>
+<div class="card" style="margin-top:.6em"><p style="margin:0"><strong>Xin ý kiến Thầy:</strong> hướng nào phù hợp hơn để phát triển thành luận văn — xây dựng dataset thực tế hay thực hiện thí nghiệm grounding theo mô tả?</p></div>
+</div>
+<div class="notes">Kết thúc bằng một câu hỏi cụ thể để Thầy có thể định hướng mức độ ưu tiên cho giai đoạn tiếp theo.</div>
+</section>
+<!-- 25 ────────────────────────────────────────── -->
+<section class="slide center">
+<div class="grow center" style="display:flex;flex-direction:column">
+<h1 style="font-size:clamp(30px,4vw,52px)">Xin cảm ơn<span style="color:var(--accent)">.</span></h1>
+<p class="dim">Câu hỏi &amp; thảo luận</p>
+<div class="kpi" style="justify-content:center;margin-top:1.4em">
+<div><b>0.09→0.87</b><span>độ chính xác vai trò</span></div>
+<div><b>0.97</b><span>trúng tâm (thao tác được)</span></div>
+<div><b>14/15</b><span>đọc glyph</span></div>
+<div><b>22</b><span>ADR</span></div>
+</div>
+<p class="small" style="margin-top:2em">Tài liệu và báo cáo: <code>docs/</code> · <code>report/</code> (tổng quan + arc42, tiếng Anh + tiếng Việt)<br/>Trang tài liệu: <strong>milanac030988.github.io/vizdom</strong></p>
+</div>
+<div class="notes">Tài liệu dự phòng khi được hỏi: sequence diagram, component diagram, tài liệu cấu hình theo từng stage, demo Windows Calculator và kết quả của các session trong <code>output/sessions/</code>.</div>
+</section>
+</div><!-- /deck -->
+<div id="bar"></div>
+<div id="title-chip">VizDOM — trình bày đồ án  ·  <a href="index.html">EN</a></div>
+<div id="num"></div>
+<!-- lớp phủ phóng to sơ đồ -->
+<div id="lb">
+<img alt="" id="lbimg"/>
+<div id="lbhint">cuộn để phóng  ·  kéo để di chuyển  ·  bấm đúp để vừa khung  ·  Esc để đóng</div>
+<div id="lbctl">
+<button id="lbout" title="Thu nhỏ (-)">−</button>
+<span id="lbpct">100%</span>
+<button id="lbin" title="Phóng to (+)">+</button>
+<button id="lbfit" title="Vừa khung (0)">Vừa</button>
+<button id="lb1" title="Kích thước thật (1)">1:1</button>
+<button id="lbx" title="Đóng (Esc)">✕</button>
+</div>
+</div>
+<div id="help"><div>
+<h3 style="margin-top:0">Điều hướng</h3>
+<p class="small" style="color:var(--fg)">
+<kbd>→</kbd> <kbd>space</kbd> tiếp  ·  <kbd>←</kbd> lùi<br/>
+<kbd>Home</kbd> / <kbd>End</kbd> slide đầu / cuối<br/>
+<kbd>o</kbd> lưới toàn cảnh (bấm một slide để nhảy tới)<br/>
+<kbd>n</kbd> ghi chú người trình bày  ·  <kbd>f</kbd> toàn màn hình<br/>
+<kbd>Ctrl</kbd>+<kbd>P</kbd> in / xuất PDF
+  </p>
+<h3>Sơ đồ — bấm vào sơ đồ để phóng to</h3>
+<p class="small" style="color:var(--fg)">
+<kbd>cuộn</kbd> phóng tại con trỏ  ·  <kbd>kéo</kbd> di chuyển<br/>
+<kbd>+</kbd> / <kbd>−</kbd> phóng/thu  ·  <kbd>0</kbd> vừa khung  · 
+    <kbd>1</kbd> kích thước thật<br/>
+<kbd>↑↓←→</kbd> dịch nhẹ  ·  <kbd>bấm đúp</kbd> vừa khung lại  ·  <kbd>Esc</kbd> đóng
+  </p>
+<p class="small" style="margin-top:1.2em"><kbd>?</kbd> hoặc <kbd>Esc</kbd> đóng bảng này</p>
+</div></div>
+<script>
+(function(){
+  var deck   = document.getElementById('deck'),
+      slides = Array.prototype.slice.call(deck.querySelectorAll('.slide')),
+      bar    = document.getElementById('bar'),
+      num    = document.getElementById('num'),
+      help   = document.getElementById('help'),
+      i = 0;
+
+  function show(n){
+    i = Math.max(0, Math.min(slides.length-1, n));
+    slides.forEach(function(s,k){ s.classList.toggle('active', k===i); });
+    bar.style.width = ((i+1)/slides.length*100) + '%';
+    num.textContent = (i+1) + ' / ' + slides.length;
+    if(location.hash !== '#'+(i+1)) history.replaceState(null,'','#'+(i+1));
+    if(!deck.classList.contains('overview')) slides[i].scrollTop = 0;
+  }
+  function overview(on){
+    deck.classList.toggle('overview', on);
+    if(on) slides.forEach(function(s){ s.classList.add('active'); });
+    else show(i);
+  }
+
+  /* ---------- phóng to / di chuyển sơ đồ ---------- */
+  var lb   = document.getElementById('lb'),
+      lbimg= document.getElementById('lbimg'),
+      lbpct= document.getElementById('lbpct'),
+      zoom = 1, tx = 0, ty = 0, fitZoom = 1;
+
+  function lbOpen(){ return lb.classList.contains('show'); }
+  function apply(){
+    lbimg.style.transform = 'translate('+tx+'px,'+ty+'px) scale('+zoom+')';
+    lbpct.textContent = Math.round(zoom*100) + '%';
+  }
+  function fit(){
+    var nw = lbimg.naturalWidth || lbimg.width, nh = lbimg.naturalHeight || lbimg.height;
+    fitZoom = Math.min((innerWidth*0.92)/nw, (innerHeight*0.82)/nh, 1) || 1;
+    zoom = fitZoom; tx = ty = 0; apply();
+  }
+  function lbZoom(f, cx, cy){
+    var prev = zoom;
+    zoom = Math.max(fitZoom*0.5, Math.min(fitZoom*12, zoom*f));
+    if(cx !== undefined){
+      var r = zoom/prev;
+      tx = cx - (cx - tx)*r;
+      ty = cy - (cy - ty)*r;
+    }
+    apply();
+  }
+  function lbShow(src, alt){
+    lbimg.src = src; lbimg.alt = alt || '';
+    lb.classList.add('show');
+    if(lbimg.complete) fit(); else lbimg.onload = fit;
+  }
+  function lbClose(){ lb.classList.remove('show'); lbimg.src = ''; }
+
+  slides.forEach(function(s){
+    s.querySelectorAll('.fig img').forEach(function(img){
+      img.addEventListener('click', function(ev){
+        if(deck.classList.contains('overview')) return;
+        ev.stopPropagation();
+        lbShow(img.getAttribute('src'), img.alt);
+      });
+    });
+  });
+
+  document.getElementById('lbin').onclick  = function(e){ e.stopPropagation(); lbZoom(1.25); };
+  document.getElementById('lbout').onclick = function(e){ e.stopPropagation(); lbZoom(0.8); };
+  document.getElementById('lbfit').onclick = function(e){ e.stopPropagation(); fit(); };
+  document.getElementById('lb1').onclick   = function(e){ e.stopPropagation(); zoom=1; tx=ty=0; apply(); };
+  document.getElementById('lbx').onclick   = function(e){ e.stopPropagation(); lbClose(); };
+  lb.addEventListener('click', function(e){ if(e.target === lb) lbClose(); });
+  lbimg.addEventListener('dblclick', function(e){ e.stopPropagation(); fit(); });
+
+  lb.addEventListener('wheel', function(e){
+    if(!lbOpen()) return;
+    e.preventDefault();
+    lbZoom(e.deltaY < 0 ? 1.15 : 1/1.15,
+           e.clientX - innerWidth/2,
+           e.clientY - innerHeight/2);
+  }, {passive:false});
+
+  var dragging=false, sx=0, sy=0;
+  lbimg.addEventListener('mousedown', function(e){
+    dragging=true; sx=e.clientX-tx; sy=e.clientY-ty;
+    lbimg.classList.add('grabbing'); e.preventDefault();
+  });
+  window.addEventListener('mousemove', function(e){
+    if(!dragging) return;
+    tx = e.clientX - sx; ty = e.clientY - sy; apply();
+  });
+  window.addEventListener('mouseup', function(){
+    dragging=false; lbimg.classList.remove('grabbing');
+  });
+  window.addEventListener('resize', function(){ if(lbOpen()) fit(); });
+
+  document.addEventListener('keydown', function(e){
+    if(e.ctrlKey || e.metaKey || e.altKey) return;
+    var k = e.key;
+    if(lbOpen()){
+      if(k==='Escape'){ lbClose(); }
+      else if(k==='+'||k==='='){ lbZoom(1.25); }
+      else if(k==='-'||k==='_'){ lbZoom(0.8); }
+      else if(k==='0'||k==='f'||k==='F'){ fit(); }
+      else if(k==='1'){ zoom=1; tx=ty=0; apply(); }
+      else if(k==='ArrowLeft'){ tx += 60; apply(); }
+      else if(k==='ArrowRight'){ tx -= 60; apply(); }
+      else if(k==='ArrowUp'){ ty += 60; apply(); }
+      else if(k==='ArrowDown'){ ty -= 60; apply(); }
+      e.preventDefault();
+      return;
+    }
+    if(k==='?' ){ help.classList.toggle('show'); e.preventDefault(); return; }
+    if(k==='Escape'){ help.classList.remove('show'); if(deck.classList.contains('overview')) overview(false); return; }
+    if(k==='o'||k==='O'){ overview(!deck.classList.contains('overview')); return; }
+    if(k==='n'||k==='N'){ document.body.classList.toggle('notes-on'); return; }
+    if(k==='f'||k==='F'){
+      if(document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+      return;
+    }
+    if(deck.classList.contains('overview')) return;
+    if(k==='ArrowRight'||k==='PageDown'||k===' '){ show(i+1); e.preventDefault(); }
+    else if(k==='ArrowLeft'||k==='PageUp'){ show(i-1); e.preventDefault(); }
+    else if(k==='Home'){ show(0); }
+    else if(k==='End'){ show(slides.length-1); }
+  });
+
+  slides.forEach(function(s,k){
+    s.addEventListener('click', function(){
+      if(deck.classList.contains('overview')){ i=k; overview(false); }
+    });
+  });
+  help.addEventListener('click', function(){ help.classList.remove('show'); });
+
+  var x0=null;
+  deck.addEventListener('touchstart', function(e){ x0=e.touches[0].clientX; }, {passive:true});
+  deck.addEventListener('touchend', function(e){
+    if(x0===null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if(Math.abs(dx)>60) show(i + (dx<0?1:-1));
+    x0=null;
+  }, {passive:true});
+
+  var start = parseInt((location.hash||'').replace('#',''),10);
+  show(isNaN(start)?0:start-1);
+})();
+</script>
+</body>
+</html>
