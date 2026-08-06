@@ -35,7 +35,7 @@ The detector loads the heavy model **once** and serves the test over gRPC:
 cd <repo-root>
 start_detector.bat --backend omniparser
 :: equivalent to:
-:: python -m visual_dom.rpc.detector_server --backend omniparser --port 50051
+:: python -m visual_dom.adapters.inbound.grpc.detector_server --backend omniparser --port 50051
 ```
 
 Wait until it logs that it is **ready / HealthCheck** — leave this terminal running.

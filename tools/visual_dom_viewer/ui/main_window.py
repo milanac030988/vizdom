@@ -835,7 +835,7 @@ class VisualDOMViewerWindow(QMainWindow):
         # no connection needed.
         self._capture_source_combo.addItem("window (handler)")
         try:
-            from visual_dom.capture import list_captures
+            from visual_dom.adapters.outbound.capture import list_captures
             for c in list_captures():
                 label = c["name"] if c["available"] else f"{c['name']} (n/a)"
                 self._capture_source_combo.addItem(label, c["name"])
@@ -1230,7 +1230,7 @@ class VisualDOMViewerWindow(QMainWindow):
     def _capture_via_strategy(self, name, kwargs):
         """Grab one frame via a CaptureStrategy and return PNG bytes."""
         import cv2
-        from visual_dom.capture import create_capture
+        from visual_dom.adapters.outbound.capture import create_capture
         cap = create_capture(name, **kwargs)
         try:
             frame = cap.capture()
@@ -1378,9 +1378,9 @@ class VisualDOMViewerWindow(QMainWindow):
                 print("[Viewer] Importing Visual DOM modules...")
                 QApplication.processEvents()
 
-                from visual_dom.cv.pipeline import VisualDOMPipeline
-                from visual_dom.compiler.dom_compiler import DOMCompiler
-                from visual_dom.hierarchy.coarse_builder import CoarseHierarchyBuilder
+                from visual_dom.core.domain.pipeline import VisualDOMPipeline
+                from visual_dom.core.domain.compiler.dom_compiler import DOMCompiler
+                from visual_dom.core.domain.hierarchy.coarse_builder import CoarseHierarchyBuilder
                 print("[Viewer] Modules imported successfully")
 
                 self._show_progress("Initializing pipeline (loading OCR model)...", 75)

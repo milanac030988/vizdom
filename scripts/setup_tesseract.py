@@ -83,7 +83,7 @@ def main():
             configure_pytesseract(tesseract_path)
             print("\nTesseract is ready to use!")
             print("\nTo use in the pipeline:")
-            print("  from visual_dom.cv import TextDetector")
+            print("  from visual_dom.adapters.outbound.ocr.text_detector import TextDetector")
             print("  detector = TextDetector(ocr_engine='tesseract')")
             return 0
     else:

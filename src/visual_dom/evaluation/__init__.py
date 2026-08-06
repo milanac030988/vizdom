@@ -8,14 +8,14 @@ Provides metrics and tools for evaluating Visual DOM detection quality:
 - Locator quality metrics
 """
 
-from .metrics import (
+from visual_dom.evaluation.metrics import (
     ElementMetrics,
     OCRMetrics,
     HierarchyMetrics,
     LocatorMetrics,
 )
-from .evaluator import VisualDOMEvaluator
-from .report import EvaluationReport
+from visual_dom.evaluation.evaluator import VisualDOMEvaluator
+from visual_dom.evaluation.report import EvaluationReport
 
 __all__ = [
     "ElementMetrics",

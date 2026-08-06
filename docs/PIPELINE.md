@@ -614,9 +614,9 @@ DOMCompiler(
 
 | Component | Location |
 |-----------|----------|
-| CV Pipeline | `src/visual_dom/cv/pipeline.py` |
-| Text Detector | `src/visual_dom/cv/text_detector.py` |
-| UIED Detector | `src/visual_dom/cv/uied_detection.py` |
+| CV Pipeline | `src/visual_dom/core/domain/pipeline.py` |
+| Text Detector | `src/visual_dom/adapters/outbound/ocr/text_detector.py` |
+| UIED Detector | `src/visual_dom/adapters/outbound/detectors/uied_detection.py` |
 | Hierarchy Builder | `src/visual_dom/hierarchy/coarse_builder.py` |
 | LLM Refiner | `src/visual_dom/hierarchy/llm_refiner.py` |
 | DOM Compiler | `src/visual_dom/compiler/dom_compiler.py` |
@@ -626,7 +626,7 @@ DOMCompiler(
 ## Usage Example
 
 ```python
-from visual_dom.cv.pipeline import VisualDOMPipeline
+from visual_dom.core.domain.pipeline import VisualDOMPipeline
 from visual_dom.hierarchy.coarse_builder import CoarseHierarchyBuilder
 from visual_dom.compiler.dom_compiler import DOMCompiler
 
@@ -666,10 +666,10 @@ with open("output.json", "w") as f:
 
 ```bash
 # Run full pipeline
-python -m visual_dom.cv.pipeline screenshot.png -o output.json --visualize viz.png
+python -m visual_dom.core.domain.pipeline screenshot.png -o output.json --visualize viz.png
 
 # Run with specific options
-python -m visual_dom.cv.pipeline screenshot.png \
+python -m visual_dom.core.domain.pipeline screenshot.png \
     --ocr easyocr \
     --no-gpu \
     -o output.json

@@ -9,7 +9,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, Optional, List
 
-from .evaluator import EvaluationResult, BatchEvaluationResult
+from visual_dom.evaluation.evaluator import EvaluationResult, BatchEvaluationResult
 
 
 class EvaluationReport:

@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple, Set
 from dataclasses import dataclass, field
 
-from .metrics import (
+from visual_dom.evaluation.metrics import (
     ElementMetrics,
     OCRMetrics,
     HierarchyMetrics,

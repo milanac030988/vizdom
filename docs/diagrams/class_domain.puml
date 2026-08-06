@@ -1,0 +1,111 @@
+@startuml Class_Domain
+!pragma layout smetana
+top to bottom direction
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam classAttributeIconSize 0
+skinparam nodesep 16
+skinparam ranksep 32
+skinparam class {
+    BorderColor #555555
+    ArrowColor #333333
+}
+hide empty members
+
+title Detail - Domain analysis engine (core.domain)\nData-model spine flows down: Detection -> UIElement -> TreeNode -> DOMNode.\nOCR/refiner are adapters the pipeline currently constructs directly (tracked hexagon debt).
+
+package "core.domain (pipeline + data model)" #FFF3E0 {
+    class VisualDOMPipeline {
+        +detector_mode: str
+        -_primary_backend: DetectorBackend
+        +process(image): dict
+        -_convert_detections()
+        -_merge_text_and_elements()
+        -_apply_cross_type_nms()
+        -_merge_oversegmented_elements()
+        -_detect_symbols()
+        -_slm_review()
+        -_build_hierarchy()
+    }
+    class UIElement <<dataclass>> {
+        +id: str
+        +bounds: (x1,y1,x2,y2)
+        +visual_type: str
+        +confidence: float
+        +ocr_text: Optional<str>
+        +label: Optional<str>
+        +interactable: Optional<bool>
+        +to_dict(): dict
+    }
+    class ReadingOrder <<module>> {
+        +sort_reading_order(items)
+        +order_tree(children)
+    }
+}
+
+package "core.domain.hierarchy" #FCE4EC {
+    class CoarseHierarchyBuilder {
+        +containment_threshold / label_max_distance
+        +build(elements): dict
+        -_associate_labels()
+        -_assign_own_text_labels()
+    }
+    class TreeNode <<dataclass>> {
+        +id / element_id
+        +bounds / visual_type / role
+        +text / hint / label
+        +associated_label_id
+        +children: List<TreeNode>
+    }
+    class LLMHierarchyRefiner {
+        +refine(elements, hierarchy, image_size)
+    }
+}
+
+package "core.domain.compiler" #E0F7FA {
+    class DOMCompiler {
+        +generate_locators: bool
+        +compile(elements, hierarchy, image_size): dict
+    }
+    class DOMNode <<dataclass>> {
+        +id / bounds / role / visual_type
+        +text / hint / label
+        +clickable / editable / scrollable
+        +locators: dict
+        +children: List<DOMNode>
+        +to_dict(): dict
+    }
+}
+
+package "core.domain.schema" #ECEFF1 {
+    class Schema <<module>> {
+        +DOM_SCHEMA
+        +validate_dom(dom)
+    }
+}
+
+' collaborators the pipeline uses (adapters — shown for context)
+package "adapters.outbound (used by pipeline)" #E8F5E9 {
+    class TextDetector {
+        +ocr_engine / upscale
+        +detect(image): List<TextElement>
+    }
+    class SLMAdvisor {
+        +backend / model / host
+        +review_elements(...): List<dict>
+    }
+}
+
+VisualDOMPipeline --> TextDetector : OCR (debt)
+VisualDOMPipeline --> SLMAdvisor : review, optional (debt)
+VisualDOMPipeline --> ReadingOrder
+VisualDOMPipeline ..> UIElement : produces
+UIElement ..> CoarseHierarchyBuilder : input
+CoarseHierarchyBuilder ..> TreeNode : builds
+CoarseHierarchyBuilder --> ReadingOrder
+CoarseHierarchyBuilder ..> LLMHierarchyRefiner : optional refine
+CoarseHierarchyBuilder ..> DOMCompiler : tree
+DOMCompiler ..> DOMNode : emits
+DOMCompiler ..> Schema : validated by
+@enduml

@@ -13,7 +13,7 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root / "src"))
 
-from visual_dom.hierarchy import CoarseHierarchyBuilder, build_hierarchy
+from visual_dom.core.domain.hierarchy import CoarseHierarchyBuilder, build_hierarchy
 
 
 def test_with_sample_data():

@@ -87,9 +87,9 @@ def process_image(
         Dictionary with elements and hierarchy
     """
     import cv2
-    from visual_dom.cv.pipeline import VisualDOMPipeline
-    from visual_dom.hierarchy import CoarseHierarchyBuilder, LLMHierarchyRefiner
-    from visual_dom.compiler import DOMCompiler
+    from visual_dom.core.domain.pipeline import VisualDOMPipeline
+    from visual_dom.core.domain.hierarchy import CoarseHierarchyBuilder, LLMHierarchyRefiner
+    from visual_dom.core.domain.compiler import DOMCompiler
 
     # Load image
     image = cv2.imread(image_path)
@@ -454,7 +454,7 @@ Examples:
 
     args = parser.parse_args()
 
-    from visual_dom.capture import list_captures, create_capture, auto_select
+    from visual_dom.adapters.outbound.capture import list_captures, create_capture, auto_select
 
     # --list-captures: show strategies and exit
     if args.list_captures:

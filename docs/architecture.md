@@ -22,10 +22,37 @@ All diagrams below are **single-sourced** from `docs/diagrams/*.puml` via
 !include diagrams/component.puml
 ```
 
-## Class diagram (core)
+## Class diagram — overview
+
+A high-level view: the driven ports, the adapter families (collapsed), and the
+domain data-model spine. Detailed per-component diagrams follow below.
 
 ```plantuml
 !include diagrams/class.puml
+```
+
+### Detail — detector port & adapters
+
+```plantuml
+!include diagrams/class_detectors.puml
+```
+
+### Detail — capture port & adapters (ADR-018)
+
+```plantuml
+!include diagrams/class_capture.puml
+```
+
+### Detail — actuator port & adapters (ADR-019)
+
+```plantuml
+!include diagrams/class_actuator.puml
+```
+
+### Detail — domain analysis engine
+
+```plantuml
+!include diagrams/class_domain.puml
 ```
 
 ## Sequence — screenshot → DOM
@@ -47,7 +74,7 @@ ports that can each run in-process or as a remote gRPC service.
 
 The ports are first-class **service boundaries**, not just internal seams. Each of
 **detector**, **capture**, and **actuator** has a versioned protobuf contract
-(`protos/*.proto`) and a standalone gRPC server (`python -m visual_dom.rpc.*_server`),
+(`protos/*.proto`) and a standalone gRPC server (`python -m visual_dom.adapters.inbound.grpc.*_server`),
 so any port can be deployed, scaled, and upgraded as an independent microservice.
 That orientation buys the microservice benefits exactly where this problem needs them:
 

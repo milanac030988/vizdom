@@ -1,7 +1,7 @@
 """Unit tests for DOM schema validation."""
 
 import pytest
-from visual_dom.schema.dom_schema import DOM_SCHEMA, validate_dom
+from visual_dom.core.domain.schema.dom_schema import DOM_SCHEMA, validate_dom
 
 
 class TestDOMSchema:

@@ -11,7 +11,7 @@ import os
 
 import numpy as np
 
-from visual_dom.capture import CaptureStrategy
+from visual_dom.core.ports.outbound.capture_port import CaptureStrategy
 
 
 class StaticImageCapture(CaptureStrategy):

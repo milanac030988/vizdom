@@ -1,0 +1,58 @@
+@startuml Class_Capture
+!pragma layout smetana
+top to bottom direction
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam classAttributeIconSize 0
+skinparam nodesep 16
+skinparam ranksep 34
+skinparam class {
+    BorderColor #555555
+    ArrowColor #333333
+}
+hide empty members
+
+title Detail - Capture port & adapters (ADR-018)\n(core.ports.outbound.capture_port + adapters.outbound.capture)
+
+package "core.ports.outbound.capture_port" #FFECB3 {
+    abstract class CaptureStrategy {
+        +name: str
+        +platform: str
+        +description: str
+        +{abstract} capture(): np.ndarray
+        +{static} is_available(): bool
+        +close()
+    }
+}
+
+package "adapters.outbound.capture" #E1F5FE {
+    class CaptureRegistry <<module>> {
+        +create_capture(name, kwargs)
+        +list_captures()
+        +discover(force)
+        +auto_select()
+    }
+    class WindowsCapture
+    class LinuxCapture
+    class AndroidCapture {
+        +serial: str
+    }
+    class CameraCapture {
+        +device_index: int
+    }
+    class GrpcCaptureStrategy {
+        +target: str
+        +capture(): np.ndarray
+    }
+    class "plugins/capture/*\n(user, auto-discovered)" as CapPlugins
+}
+
+WindowsCapture --|> CaptureStrategy
+LinuxCapture --|> CaptureStrategy
+AndroidCapture --|> CaptureStrategy
+CameraCapture --|> CaptureStrategy
+GrpcCaptureStrategy --|> CaptureStrategy
+CapPlugins ..|> CaptureStrategy
+CaptureRegistry ..> CaptureStrategy : creates / discovers
+@enduml

@@ -1,223 +1,125 @@
 @startuml Class_Diagram
 !pragma layout smetana
+top to bottom direction
 
 skinparam backgroundColor #FEFEFE
 skinparam defaultFontName Arial
 skinparam defaultFontSize 11
 skinparam classAttributeIconSize 0
+skinparam nodesep 14
+skinparam ranksep 34
 skinparam class {
     BorderColor #555555
     ArrowColor #333333
 }
+skinparam packageStyle rectangle
+hide empty members
 
-title VizDOM - Class Diagram (core)
+title VizDOM - Class Diagram (core)\nConcrete strategies collapsed per port; the spine is the data flow Detection -> UIElement -> TreeNode -> DOMNode.
 
-package "cv.detectors" #FFE0B2 {
+' ============================================================
+' PORTS (core.ports.outbound) — stacked vertically (hidden edges) to stay narrow
+' ============================================================
+package "core.ports.outbound" #FFECB3 {
     abstract class DetectorBackend {
-        +name: str
-        +description: str
-        +license: str
-        +requires_gpu: bool
-        +{abstract} detect(image): List<Detection>
-        +{static} is_available(): bool
+        +name / license / requires_gpu
+        +{abstract} detect(img): List<Detection>
     }
-    class Detection <<dataclass>> {
-        +bounds: (x1,y1,x2,y2)
-        +visual_type: str
-        +confidence: float
-        +text: Optional<str>
-        +interactable: Optional<bool>
-        +source: str
-        +parent_id / children_ids
-        +extra: dict
+    abstract class CaptureStrategy {
+        +name / platform
+        +{abstract} capture(): ndarray
     }
-    class UIEDBackend
-    class YOLOBackend
-    class OmniParserBackend {
-        +ocr_provider: Callable
-        +ocr_ensemble: bool
-        -_apply_ocr_provider()
+    abstract class ActuatorStrategy {
+        +{abstract} tap / type_text / press_key
+        +{abstract} scroll / swipe
+        +device_size() / _to_device()
     }
-    class Registry <<module>> {
-        +create_detector(name, kwargs)
-        +list_detectors()
-        +register()
-    }
-    class UIEDDetector {
-        +detect(image): List<DetectedElement>
-    }
+    DetectorBackend -[hidden]down- CaptureStrategy
+    CaptureStrategy -[hidden]down- ActuatorStrategy
 }
 
-package "cv.pipeline" #FFF3E0 {
+' ============================================================
+' DRIVEN ADAPTERS (adapters.outbound) — one collapsed box per port, stacked
+' ============================================================
+package "adapters.outbound" #E8F5E9 {
+    class "detectors\nUIED · YOLO · OmniParser · Grpc\n+ registry create_detector()\n+ UIEDDetector (classical)\n+ ocr.TextDetector · refiner.SLMAdvisor" as DetImpls
+    class "capture (ADR-018)\nWindows/Linux/Android/Camera/Grpc\n+ registry create_capture()" as CapImpls
+    class "actuator (ADR-019)\nDesktop/Android/Grpc\n+ registry create_actuator()" as ActImpls
+    DetImpls -[hidden]down- CapImpls
+    CapImpls -[hidden]down- ActImpls
+}
+
+' ============================================================
+' DOMAIN (core.domain) — orchestration + the data-model spine
+' ============================================================
+package "core.domain" #FFF3E0 {
     class VisualDOMPipeline {
         +detector_mode: str
-        -_primary_backend: DetectorBackend
-        -_slm_advisor: SLMAdvisor
-        -_text_ensemble: bool
-        -_merge_oversegmented: bool
         +process(image): dict
-        -_convert_detections()
         -_merge_oversegmented_elements()
-        -_find_merge_candidates()
-        -_find_line_text_candidates()
         -_slm_review()
     }
+    class Detection <<dataclass>> {
+        +bounds / visual_type / confidence
+        +text / label / interactable / source
+    }
     class UIElement <<dataclass>> {
-        +id: str
-        +bounds: (x1,y1,x2,y2)
-        +visual_type: str
-        +confidence: float
-        +ocr_text: Optional<str>
-        +source: str
-        +interactable: Optional<bool>
-        +label: Optional<str>
+        +id / bounds / visual_type
+        +ocr_text / label / interactable
         +to_dict(): dict
     }
-    class TextDetector {
-        +ocr_engine: str
-        +upscale: bool
-        +detect(image): List<TextElement>
-    }
-    class SLMAdvisor {
-        +backend / model / host
-        +review_elements(elems, size, image_path, merge_candidates): List<dict>
-    }
-}
-
-package "capture (ADR-018)" #E1F5FE {
-    abstract class CaptureStrategy {
-        +name: str
-        +platform: str
-        +description: str
-        +{abstract} capture(): np.ndarray
-        +{static} is_available(): bool
-        +close()
-    }
-    class WindowsCapture
-    class LinuxCapture
-    class AndroidCapture
-    class CameraCapture
-    class GrpcCaptureStrategy {
-        +target: str
-        +capture(): np.ndarray
-    }
-    class CaptureRegistry <<module>> {
-        +create_capture(name, kwargs)
-        +list_captures()
-        +discover(force)
-        +auto_select()
-    }
-}
-
-package "hierarchy" #FCE4EC {
     class CoarseHierarchyBuilder {
         +build(elements): dict
-        -_associate_labels()
-        -_assign_own_text_labels()
     }
     class TreeNode <<dataclass>> {
-        +id / element_id
-        +bounds / visual_type / role
+        +id / bounds / role
         +text / hint / label
-        +associated_label_id
         +children: List<TreeNode>
     }
-}
-
-package "compiler" #E0F7FA {
     class DOMCompiler {
-        +generate_locators: bool
-        +compile(elements, hierarchy, image_size): dict
+        +compile(elements, hierarchy, size): dict
     }
     class DOMNode <<dataclass>> {
         +id / bounds / role / visual_type
-        +text / hint / label
         +clickable / editable / scrollable
         +locators: dict
         +children: List<DOMNode>
-        +to_dict(): dict
     }
 }
 
-package "shared" #ECEFF1 {
-    class ReadingOrder <<module>> {
-        +sort_reading_order(items)
-        +order_tree(children)
-    }
-    class LoggingUtils <<module>> {
-        +get_logger(name)
-        +log_timing(log, label)
-    }
-}
-
-package "actuator (ADR-019)" #E1F5FE {
-    abstract class ActuatorStrategy {
-        +name / platform / description
-        +{abstract} tap(nx, ny, image_size, click_type)
-        +{abstract} type_text(text)
-        +{abstract} press_key(key)
-        +{abstract} scroll(nx, ny, direction, amount, image_size)
-        +{abstract} swipe(nx1, ny1, nx2, ny2, image_size, duration)
-        +device_size() / _to_device()
-    }
-    class DesktopActuator
-    class AndroidActuator
-    class GrpcActuatorStrategy {
-        +target: str
-    }
-    class ActuatorRegistry <<module>> {
-        +create_actuator(name, kwargs)
-        +list_actuators()
-        +auto_select()
-    }
-}
-
-package "visual_gui_library (RF, thin client)" #F3E5F5 {
-    class Locator
+' ============================================================
+' CONSUMER (thin client)
+' ============================================================
+package "visual_gui_library (RF)" #F3E5F5 {
     class Keywords {
         actions / assertions / capture
         (orchestrates capture + actuator)
     }
+    class Locator
 }
 
-' --- relationships ---
-UIEDBackend --|> DetectorBackend
-YOLOBackend --|> DetectorBackend
-OmniParserBackend --|> DetectorBackend
+' ============================================================
+' Relationships — adapters implement ports (inward); domain spine flows down
+' ============================================================
+DetImpls ..|> DetectorBackend
+CapImpls ..|> CaptureStrategy
+ActImpls ..|> ActuatorStrategy
+
+' pipeline depends on the ports (not the concretes)
+VisualDOMPipeline --> DetectorBackend : detect
 DetectorBackend ..> Detection : returns
-Registry ..> DetectorBackend : creates
-UIEDBackend --> UIEDDetector
 
-WindowsCapture --|> CaptureStrategy
-LinuxCapture --|> CaptureStrategy
-AndroidCapture --|> CaptureStrategy
-CameraCapture --|> CaptureStrategy
-GrpcCaptureStrategy --|> CaptureStrategy
-CaptureRegistry ..> CaptureStrategy : creates
-CaptureStrategy ..> VisualDOMPipeline : image feeds
-
-VisualDOMPipeline --> Registry : builds backend
-VisualDOMPipeline --> TextDetector
-VisualDOMPipeline --> SLMAdvisor
-VisualDOMPipeline ..> UIElement : produces
-OmniParserBackend ..> TextDetector : ocr_provider
+' the data-model spine (top -> bottom)
 Detection ..> UIElement : converted to
+UIElement ..> CoarseHierarchyBuilder : input
+CoarseHierarchyBuilder ..> TreeNode : builds
+CoarseHierarchyBuilder ..> DOMCompiler : tree
+DOMCompiler ..> DOMNode : emits
 
-VisualDOMPipeline ..> CoarseHierarchyBuilder : (via caller)
-CoarseHierarchyBuilder ..> TreeNode
-CoarseHierarchyBuilder --> ReadingOrder
-VisualDOMPipeline --> ReadingOrder
-VisualDOMPipeline --> LoggingUtils
-
-CoarseHierarchyBuilder ..> DOMCompiler
-DOMCompiler ..> DOMNode
-DOMCompiler --> Locator
+' consumer
+DOMNode ..> Locator : located by
 Locator --> Keywords
-
-DesktopActuator --|> ActuatorStrategy
-AndroidActuator --|> ActuatorStrategy
-GrpcActuatorStrategy --|> ActuatorStrategy
-ActuatorRegistry ..> ActuatorStrategy : creates
 Keywords --> CaptureStrategy : capture
 Keywords --> ActuatorStrategy : actuate
+
 @enduml
