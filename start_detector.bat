@@ -21,7 +21,7 @@ cd /d "%~dp0"
 set PYTHONPATH=%~dp0src
 if "%~1"=="" (
     REM no args -> lightweight uied service for a quick connectivity test
-    "D:\Python\python39\python.exe" -m visual_dom.rpc.detector_server --backend uied --port 50051
+    "D:\Python\python39\python.exe" -m visual_dom.adapters.inbound.grpc.detector_server --backend uied --port 50051
 ) else (
-    "D:\Python\python39\python.exe" -m visual_dom.rpc.detector_server %*
+    "D:\Python\python39\python.exe" -m visual_dom.adapters.inbound.grpc.detector_server %*
 )

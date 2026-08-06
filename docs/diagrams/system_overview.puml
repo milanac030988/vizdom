@@ -12,13 +12,13 @@ skinparam component {
 
 title VizDOM - System Overview\nScreenshot -> Visual DOM -> GUI Test Automation
 
-package "Capture (visual_dom.capture, ADR-018)" #E3F2FD {
+package "Capture (adapters.outbound.capture, ADR-018)" #E3F2FD {
     [CaptureStrategy\nwindows / linux / android / camera\n+ custom plugins (auto-discovered)] as capture
     [GrpcCaptureStrategy\n-> remote Capture service (SUT host)] as rcapture
     [GUI Screenshot\n(BGR image, or file)] as screenshot
 }
 
-package "CV Pipeline (visual_dom.cv.pipeline)" #FFF3E0 {
+package "CV Pipeline (core.domain.pipeline + adapters.outbound.{ocr,detectors})" #FFF3E0 {
     [Text Detector\n(EasyOCR / PaddleOCR / Tesseract,\nupscaling)] as ocr
 
     package "Detector backend (pluggable, registry)" #FFE0B2 {
@@ -34,12 +34,12 @@ package "CV Pipeline (visual_dom.cv.pipeline)" #FFF3E0 {
     [SLM Advisor (optional VLM)\nsplit / retype / merge / label\n(merges gated to candidates)] as slm
 }
 
-package "Hierarchy Builder (visual_dom.hierarchy)" #FCE4EC {
+package "Hierarchy Builder (core.domain.hierarchy)" #FCE4EC {
     [Coarse Builder\n(containment, alignment,\nlabel association)] as coarse
     [LLM Refiner\n(Qwen2.5 / Ollama, optional)] as llm_refine
 }
 
-package "DOM Compiler (visual_dom.compiler)" #E0F7FA {
+package "DOM Compiler (core.domain.compiler)" #E0F7FA {
     [DOM Compiler\nroles + locators + flags + label] as compiler
 }
 

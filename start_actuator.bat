@@ -18,4 +18,4 @@ REM   start_actuator.bat --list                 (show discovered strategies)
 
 cd /d "%~dp0"
 set PYTHONPATH=%~dp0src
-"D:\Python\python39\python.exe" -m visual_dom.rpc.actuator_server %*
+"D:\Python\python39\python.exe" -m visual_dom.adapters.inbound.grpc.actuator_server %*

@@ -132,7 +132,7 @@ def test_ocr_detection(ocr_engine="tesseract"):
             os.environ["TESSDATA_PREFIX"] = tessdata_path
 
     import cv2
-    from visual_dom.cv.text_detector import TextDetector
+    from visual_dom.adapters.outbound.ocr.text_detector import TextDetector
 
     samples_dir = project_root / "tests" / "samples"
     image_path = samples_dir / "login_screen.png"
@@ -173,7 +173,7 @@ def test_full_pipeline(ocr_engine="tesseract"):
     print("=" * 60)
 
     import cv2
-    from visual_dom.cv.pipeline import VisualDOMPipeline
+    from visual_dom.core.domain.pipeline import VisualDOMPipeline
 
     samples_dir = project_root / "tests" / "samples"
     image_path = samples_dir / "login_screen.png"

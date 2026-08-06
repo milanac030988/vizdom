@@ -48,9 +48,9 @@ on the device under test, and actuation happens wherever the SUT is (ADR-017/018
 
 | Service | Default port | Start command |
 |---|---|---|
-| Detector | 50051 | `python -m visual_dom.rpc.detector_server --backend omniparser --port 50051` |
-| Capture | 50053 | `python -m visual_dom.rpc.capture_server --strategy windows --port 50053` |
-| Actuator | 50054 | `python -m visual_dom.rpc.actuator_server --strategy desktop --port 50054` |
+| Detector | 50051 | `python -m visual_dom.adapters.inbound.grpc.detector_server --backend omniparser --port 50051` |
+| Capture | 50053 | `python -m visual_dom.adapters.inbound.grpc.capture_server --strategy windows --port 50053` |
+| Actuator | 50054 | `python -m visual_dom.adapters.inbound.grpc.actuator_server --strategy desktop --port 50054` |
 
 On Windows the `start_detector.bat` / `start_capture.bat` / `start_actuator.bat`
 launchers wrap these (and set `PYTHONPATH`). The detector server also accepts
@@ -68,7 +68,7 @@ that runs until you stop it with `Ctrl-C`; give each its own terminal. On Window
 **Detector** — loads the model once and serves many clients (run it on the GPU host):
 
 ```bash
-python -m visual_dom.rpc.detector_server --backend omniparser --port 50051 \
+python -m visual_dom.adapters.inbound.grpc.detector_server --backend omniparser --port 50051 \
     --icon-detect  models/omniparser/icon_detect/model.pt \
     --icon-caption models/omniparser/icon_caption_florence
 # Windows:  start_detector.bat --backend omniparser
@@ -78,7 +78,7 @@ python -m visual_dom.rpc.detector_server --backend omniparser --port 50051 \
 **Capture** — grabs the screen on the device under test:
 
 ```bash
-python -m visual_dom.rpc.capture_server --strategy windows --port 50053
+python -m visual_dom.adapters.inbound.grpc.capture_server --strategy windows --port 50053
 # strategies: windows | linux | android (--serial <device>) | camera
 # Windows:  start_capture.bat --strategy windows
 ```
@@ -86,7 +86,7 @@ python -m visual_dom.rpc.capture_server --strategy windows --port 50053
 **Actuator** — clicks / types on the device, or drives a robot arm:
 
 ```bash
-python -m visual_dom.rpc.actuator_server --strategy desktop --port 50054
+python -m visual_dom.adapters.inbound.grpc.actuator_server --strategy desktop --port 50054
 # strategies: desktop | android (--serial <device>) | <your plugin>
 # Windows:  start_actuator.bat --strategy desktop
 ```
@@ -112,7 +112,7 @@ dom = session.analyze("screenshot.png")
 Or without a config object, straight through the pipeline:
 
 ```python
-from visual_dom.cv.pipeline import VisualDOMPipeline
+from visual_dom.core.domain.pipeline import VisualDOMPipeline
 pipe = VisualDOMPipeline(detector="grpc", detector_kwargs={"target": "gpu-host:50051"})
 result = pipe.process("screenshot.png")   # {"elements": [...], "image_size": {...}}
 ```
@@ -120,8 +120,8 @@ result = pipe.process("screenshot.png")   # {"elements": [...], "image_size": {.
 Capture and actuation have matching clients when you need them:
 
 ```python
-from visual_dom.capture import create_capture
-from visual_dom.actuator import create_actuator
+from visual_dom.adapters.outbound.capture import create_capture
+from visual_dom.adapters.outbound.actuator import create_actuator
 
 shot = create_capture("grpc", target="sut-device:50053").capture()   # BGR frame
 create_actuator("grpc", target="sut-device:50054").tap(0.5, 0.5)      # normalized xy

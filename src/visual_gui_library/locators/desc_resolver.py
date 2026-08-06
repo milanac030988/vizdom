@@ -286,7 +286,7 @@ class DescriptionResolver:
         return "\n".join(lines)
 
     def _make_advisor(self, model: str):
-        from visual_dom.cv.slm_advisor import SLMAdvisor
+        from visual_dom.adapters.outbound.refiner.slm_advisor import SLMAdvisor
         return SLMAdvisor(backend=self.backend, model=model, host=self.host,
                           temperature=0.0)
 

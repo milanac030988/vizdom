@@ -252,7 +252,7 @@ def run_benchmark(
     config: BenchmarkConfig,
 ) -> Tuple[BenchmarkResult, Dict]:
     """Run pipeline with a specific configuration and collect metrics."""
-    from visual_dom.cv.pipeline import VisualDOMPipeline
+    from visual_dom.core.domain.pipeline import VisualDOMPipeline
 
     # Create pipeline
     pipeline = VisualDOMPipeline(

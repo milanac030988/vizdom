@@ -67,7 +67,7 @@ configuration, and how to drive VizDOM from your own code or tests. Key pages:
 | [Architecture](https://milanac030988.github.io/vizdom/architecture/) | Hexagonal ports, microservice-oriented gRPC services, diagrams |
 | [CV Pipeline](https://milanac030988.github.io/vizdom/PIPELINE/) | The screenshot → DOM stages in detail |
 | [Evaluation](https://milanac030988.github.io/vizdom/EVALUATION/) | Benchmark, metrics, dataset construction, before/after improvements |
-| [Architecture Decisions](https://milanac030988.github.io/vizdom/adr/) | ADRs 001–020 |
+| [Architecture Decisions](https://milanac030988.github.io/vizdom/adr/) | ADRs 001–023 |
 
 The same content lives under [`docs/`](docs/) if you prefer to read it in the repo.
 
@@ -126,9 +126,9 @@ one warm model:
 
 | Service | When you need it | Start it (Windows launcher · any-OS command) |
 |---|---|---|
-| **Detector** `:50051` | Share one warm GPU model across clients / detect on a GPU box | `start_detector.bat --backend omniparser` · `python -m visual_dom.rpc.detector_server --backend omniparser --port 50051` |
-| **Capture** `:50053` | Grab the screen on the device under test | `start_capture.bat --strategy windows` · `python -m visual_dom.rpc.capture_server --strategy windows --port 50053` |
-| **Actuator** `:50054` | Click/type on the device or drive a robot arm | `start_actuator.bat --strategy desktop` · `python -m visual_dom.rpc.actuator_server --strategy desktop --port 50054` |
+| **Detector** `:50051` | Share one warm GPU model across clients / detect on a GPU box | `start_detector.bat --backend omniparser` · `python -m visual_dom.adapters.inbound.grpc.detector_server --backend omniparser --port 50051` |
+| **Capture** `:50053` | Grab the screen on the device under test | `start_capture.bat --strategy windows` · `python -m visual_dom.adapters.inbound.grpc.capture_server --strategy windows --port 50053` |
+| **Actuator** `:50054` | Click/type on the device or drive a robot arm | `start_actuator.bat --strategy desktop` · `python -m visual_dom.adapters.inbound.grpc.actuator_server --strategy desktop --port 50054` |
 
 Prerequisite once: `pip install grpcio grpcio-tools`. The detector host also needs the
 OmniParser weights (auto-detected under `models/omniparser/`). Then point the client
@@ -159,7 +159,7 @@ python tests/samples/generate_test_ui.py
 python -c "
 import sys; sys.path.insert(0, 'src')
 import cv2
-from visual_dom.cv import UIEDDetector
+from visual_dom.adapters.outbound.detectors.uied_detection import UIEDDetector
 
 image = cv2.imread('tests/samples/login_screen.png')
 detector = UIEDDetector()
@@ -170,7 +170,7 @@ for e in elements:
 "
 
 # Run full pipeline with OCR (requires easyocr)
-python -m src.visual_dom.cv.pipeline tests/samples/login_screen.png \
+python -m visual_dom.core.domain.pipeline tests/samples/login_screen.png \
     --output output/result.json \
     --visualize output/result.png
 ```
@@ -201,7 +201,7 @@ pip install pytesseract
 # Use in pipeline
 python -c "
 import sys; sys.path.insert(0, 'src')
-from visual_dom.cv import TextDetector
+from visual_dom.adapters.outbound.ocr.text_detector import TextDetector
 import cv2
 
 image = cv2.imread('tests/samples/login_screen.png')
@@ -227,14 +227,17 @@ pip install paddlepaddle paddleocr
 ```
 MasterProject/
 ├── src/
-│   ├── visual_dom/              # Core engine
-│   │   ├── cv/                  # Pipeline + OCR; detectors/ (UIED, YOLO, OmniParser, gRPC)
-│   │   ├── capture/             # CapturePort: strategies (windows/linux/android/camera) + gRPC
-│   │   ├── actuator/            # ActuatorPort: strategies (desktop/android) + gRPC
-│   │   ├── hierarchy/           # Hierarchy building (coarse + LLM refiner)
-│   │   ├── compiler/            # DOM compiler (roles, flags, locators, labels)
-│   │   ├── rpc/                 # gRPC servers: detector, capture, actuator
-│   │   └── evaluation/          # Evaluation framework (metrics, reports)
+│   ├── visual_dom/              # Core engine — hexagonal (ports & adapters)
+│   │   ├── core/                # the hexagon interior (no I/O, no models)
+│   │   │   ├── domain/          #   pipeline, hierarchy, compiler, schema, reading-order, cvops
+│   │   │   └── ports/outbound/  #   port interfaces: detector_port, capture_port, actuator_port
+│   │   ├── adapters/            # concrete implementations of the ports
+│   │   │   ├── inbound/grpc/    #   driving: detector/capture/actuator gRPC servers
+│   │   │   └── outbound/        #   driven: detectors/, ocr/, refiner/, capture/, actuator/
+│   │   ├── context.py           # composition root (connect() / Session wiring)
+│   │   ├── config.py            # one JSON session config (VizDomConfig)
+│   │   ├── generated/           # protobuf stubs (gitignored; regenerated from protos/)
+│   │   └── evaluation/          # evaluation harness (tooling, outside the hexagon)
 │   └── visual_gui_library/      # Robot Framework library (thin client over capture + actuator)
 │       ├── keywords/            # RF keywords (actions, assertions, capture)
 │       └── locators/            # Locator strategies (id/text/hint/role/spatial)

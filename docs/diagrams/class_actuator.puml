@@ -1,0 +1,55 @@
+@startuml Class_Actuator
+!pragma layout smetana
+top to bottom direction
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam classAttributeIconSize 0
+skinparam nodesep 16
+skinparam ranksep 34
+skinparam class {
+    BorderColor #555555
+    ArrowColor #333333
+}
+hide empty members
+
+title Detail - Actuator port & adapters (ADR-019)\n(core.ports.outbound.actuator_port + adapters.outbound.actuator)\nNormalized [0,1] coords on the wire; each strategy maps to its device space.
+
+package "core.ports.outbound.actuator_port" #FFECB3 {
+    abstract class ActuatorStrategy {
+        +name / platform / description
+        +{abstract} tap(nx, ny, image_size, click_type)
+        +{abstract} type_text(text)
+        +{abstract} press_key(key)
+        +{abstract} scroll(nx, ny, direction, amount, image_size)
+        +{abstract} swipe(nx1, ny1, nx2, ny2, image_size, duration)
+        +device_size(): (w,h)
+        #_to_device(nx, ny, image_size): (px,py)
+    }
+}
+
+package "adapters.outbound.actuator" #E1F5FE {
+    class ActuatorRegistry <<module>> {
+        +create_actuator(name, kwargs)
+        +list_actuators()
+        +auto_select()
+    }
+    class DesktopActuator {
+        (pyautogui; device_size = screen)
+    }
+    class AndroidActuator {
+        +serial: str
+        (adb input; device_size = wm size)
+    }
+    class GrpcActuatorStrategy {
+        +target: str
+    }
+    class "plugins/actuator/*\ne.g. robot-arm\n(overrides _to_device: homography)" as ActPlugins
+}
+
+DesktopActuator --|> ActuatorStrategy
+AndroidActuator --|> ActuatorStrategy
+GrpcActuatorStrategy --|> ActuatorStrategy
+ActPlugins ..|> ActuatorStrategy
+ActuatorRegistry ..> ActuatorStrategy : creates / discovers
+@enduml

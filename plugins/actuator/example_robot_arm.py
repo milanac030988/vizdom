@@ -19,7 +19,7 @@ work-area limits, speed caps, and an e-stop. This stub only prints.
 
 import os
 
-from visual_dom.actuator import ActuatorStrategy
+from visual_dom.core.ports.outbound.actuator_port import ActuatorStrategy
 
 
 class RobotArmActuator(ActuatorStrategy):

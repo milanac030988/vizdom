@@ -1,0 +1,75 @@
+@startuml Class_Detectors
+!pragma layout smetana
+top to bottom direction
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam classAttributeIconSize 0
+skinparam nodesep 16
+skinparam ranksep 34
+skinparam class {
+    BorderColor #555555
+    ArrowColor #333333
+}
+hide empty members
+
+title Detail - Detector port & adapters\n(core.ports.outbound.detector_port + adapters.outbound.detectors)
+
+package "core.ports.outbound.detector_port" #FFECB3 {
+    abstract class DetectorBackend {
+        +name: str
+        +description: str
+        +license: str
+        +requires_gpu: bool
+        +{abstract} detect(image): List<Detection>
+        +{static} is_available(): bool
+    }
+    class Detection <<dataclass>> {
+        +bounds: (x1,y1,x2,y2)
+        +visual_type: str
+        +confidence: float
+        +text: Optional<str>
+        +label: Optional<str>
+        +interactable: Optional<bool>
+        +source: str
+        +parent_id / children_ids
+        +extra: dict
+    }
+}
+
+package "adapters.outbound.detectors" #E8F5E9 {
+    class Registry <<module>> {
+        +create_detector(name, kwargs)
+        +list_detectors()
+        +register(name, factory, meta)
+    }
+    class UIEDBackend
+    class YOLOBackend
+    class OmniParserBackend {
+        +box_threshold: float
+        +ocr_provider: Callable
+        +ocr_ensemble: bool
+        -_infer_visual_type()
+    }
+    class GrpcDetectorBackend {
+        +target: str
+    }
+    class UIEDDetector {
+        +min_element_area / nms_threshold
+        +detect(image): List<DetectedElement>
+    }
+    class DetectedElement <<dataclass>> {
+        +bounds / element_type / confidence
+    }
+}
+
+UIEDBackend --|> DetectorBackend
+YOLOBackend --|> DetectorBackend
+OmniParserBackend --|> DetectorBackend
+GrpcDetectorBackend --|> DetectorBackend
+DetectorBackend ..> Detection : returns
+Registry ..> DetectorBackend : creates
+UIEDBackend --> UIEDDetector : wraps
+UIEDDetector ..> DetectedElement : returns
+GrpcDetectorBackend ..> Detection : (remote server\nreturns Detections)
+@enduml

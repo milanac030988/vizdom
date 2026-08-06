@@ -44,7 +44,7 @@ def test_uied_detection():
     print(f"Size: {image.shape[1]}x{image.shape[0]}")
 
     # Run UIED detection
-    from visual_dom.cv.uied_detection import UIEDDetector
+    from visual_dom.adapters.outbound.detectors.uied_detection import UIEDDetector
 
     detector = UIEDDetector(
         min_element_area=100,
@@ -81,7 +81,7 @@ def test_text_detection():
 
     # Check if OCR is available
     try:
-        from visual_dom.cv.text_detector import TextDetector
+        from visual_dom.adapters.outbound.ocr.text_detector import TextDetector
 
         detector = TextDetector(
             ocr_engine="easyocr",
@@ -120,7 +120,7 @@ def test_full_pipeline():
     image = cv2.imread(str(image_path))
 
     try:
-        from visual_dom.cv.pipeline import VisualDOMPipeline
+        from visual_dom.core.domain.pipeline import VisualDOMPipeline
 
         pipeline = VisualDOMPipeline(
             ocr_engine="easyocr",
@@ -175,7 +175,7 @@ def test_without_ocr():
 
     image = cv2.imread(str(image_path))
 
-    from visual_dom.cv.pipeline import VisualDOMPipeline
+    from visual_dom.core.domain.pipeline import VisualDOMPipeline
 
     pipeline = VisualDOMPipeline(
         confidence_threshold=0.3,

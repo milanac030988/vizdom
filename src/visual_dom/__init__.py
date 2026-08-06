@@ -14,18 +14,18 @@ __version__ = "0.1.0"
 
 
 def connect(config=None):
-    """Start a configured VizDOM session. See :func:`visual_dom.session.connect`.
+    """Start a configured VizDOM session. See :func:`visual_dom.context.connect`.
 
     Imported lazily so ``import visual_dom`` stays cheap and free of heavy CV
     dependencies until a session is actually created.
     """
-    from .session import connect as _connect
+    from visual_dom.context import connect as _connect
     return _connect(config)
 
 
 def load_config(source=None):
     """Load a :class:`visual_dom.config.VizDomConfig` from a file/dict/None."""
-    from .config import VizDomConfig
+    from visual_dom.config import VizDomConfig
     return VizDomConfig.load(source)
 
 

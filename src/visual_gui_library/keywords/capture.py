@@ -54,7 +54,7 @@ class CaptureKeywords:
             if td is not None and getattr(td, "ocr_engine", None) not in (None, "none", ""):
                 return td
         if self._refresh_ocr is None:
-            from visual_dom.cv.text_detector import TextDetector
+            from visual_dom.adapters.outbound.ocr.text_detector import TextDetector
             engine = getattr(self, "ocr_engine", None) or "tesseract"
             self._refresh_ocr = TextDetector(ocr_engine=engine, upscale=True)
         return self._refresh_ocr
@@ -139,7 +139,7 @@ class CaptureKeywords:
             | Connect |
         """
         from visual_dom.config import VizDomConfig
-        from visual_dom.session import Session
+        from visual_dom.context import Session
 
         cfg = VizDomConfig.load(config)
         self._session_config = cfg
@@ -162,7 +162,7 @@ class CaptureKeywords:
     def capture_screen(self, region: Optional[str] = None) -> np.ndarray:
         """
         Capture the current screen via the configured capture strategy
-        (visual_dom.capture: windows/linux/android/camera/grpc/<plugin>).
+        (visual_dom.adapters.outbound.capture: windows/linux/android/camera/grpc/<plugin>).
 
         Args:
             region: Optional region to crop, "x,y,width,height"
@@ -234,9 +234,9 @@ class CaptureKeywords:
             return dom
 
         # Ad-hoc fallback: build a default pipeline from the call arguments.
-        from visual_dom.cv.pipeline import VisualDOMPipeline
-        from visual_dom.hierarchy import CoarseHierarchyBuilder, LLMHierarchyRefiner
-        from visual_dom.compiler import DOMCompiler
+        from visual_dom.core.domain.pipeline import VisualDOMPipeline
+        from visual_dom.core.domain.hierarchy import CoarseHierarchyBuilder, LLMHierarchyRefiner
+        from visual_dom.core.domain.compiler import DOMCompiler
 
         height, width = image.shape[:2]
 

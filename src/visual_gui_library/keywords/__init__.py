@@ -17,8 +17,8 @@ class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
     run **in-process** or **remotely over gRPC**, selected by name.
 
     Two driven ports back every keyword:
-      - capture  (visual_dom.capture, ADR-018): windows/linux/android/camera/grpc/<plugin>
-      - actuator (visual_dom.actuator, ADR-019): desktop/android/grpc/<plugin, e.g. robot-arm>
+      - capture  (visual_dom.adapters.outbound.capture, ADR-018): windows/linux/android/camera/grpc/<plugin>
+      - actuator (visual_dom.adapters.outbound.actuator, ADR-019): desktop/android/grpc/<plugin, e.g. robot-arm>
 
     Locator Strategies:
         - id=E12            : Find by exact DOM element id (case-insensitive)
@@ -92,7 +92,7 @@ class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
     def _get_capture(self):
         """The visual_dom capture strategy (in-process or gRPC), created on first use."""
         if self._capture is None:
-            from visual_dom.capture import create_capture, auto_select
+            from visual_dom.adapters.outbound.capture import create_capture, auto_select
             name = self._capture_name or auto_select()
             if not name:
                 raise RuntimeError("No capture strategy available; pass capture=<name>.")
@@ -102,7 +102,7 @@ class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
     def _get_actuator(self):
         """The visual_dom actuator strategy (in-process or gRPC), created on first use."""
         if self._actuator is None:
-            from visual_dom.actuator import create_actuator, auto_select
+            from visual_dom.adapters.outbound.actuator import create_actuator, auto_select
             name = self._actuator_name or auto_select()
             if not name:
                 raise RuntimeError("No actuator strategy available; pass actuator=<name>.")

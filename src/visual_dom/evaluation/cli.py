@@ -12,8 +12,8 @@ import sys
 from pathlib import Path
 from typing import List
 
-from .evaluator import VisualDOMEvaluator, EvaluationConfig
-from .report import EvaluationReport, BatchEvaluationReport
+from visual_dom.evaluation.evaluator import VisualDOMEvaluator, EvaluationConfig
+from visual_dom.evaluation.report import EvaluationReport, BatchEvaluationReport
 
 
 def evaluate_single(

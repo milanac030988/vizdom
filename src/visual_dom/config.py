@@ -34,7 +34,7 @@ from dataclasses import dataclass, field, fields, is_dataclass, asdict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-from .logging_utils import get_logger
+from visual_dom.logging_utils import get_logger
 
 log = get_logger(__name__)
 

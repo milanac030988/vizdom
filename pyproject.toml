@@ -119,9 +119,9 @@ all = [
 
 [project.scripts]
 # `uv run vizdom-detector -- --backend omniparser ...` (or plain python -m).
-vizdom-detector = "visual_dom.rpc.detector_server:main"
-vizdom-capture = "visual_dom.rpc.capture_server:main"
-vizdom-actuator = "visual_dom.rpc.actuator_server:main"
+vizdom-detector = "visual_dom.adapters.inbound.grpc.detector_server:main"
+vizdom-capture = "visual_dom.adapters.inbound.grpc.capture_server:main"
+vizdom-actuator = "visual_dom.adapters.inbound.grpc.actuator_server:main"
 
 [project.urls]
 Homepage = "https://github.com/yourusername/visual-gui-automation"

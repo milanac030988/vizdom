@@ -103,5 +103,5 @@ report/*.fdb_latexmk
 report/*.synctex.gz
 report/*.lof
 report/*.lot
-src/visual_dom/rpc/*_pb2.py
-src/visual_dom/rpc/*_pb2_grpc.py
+src/visual_dom/generated/*_pb2.py
+src/visual_dom/generated/*_pb2_grpc.py

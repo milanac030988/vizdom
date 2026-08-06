@@ -355,17 +355,24 @@ this measures \emph{type} only.}
 \textbf{Building block} & \textbf{Responsibility} \\
 \midrule
 \endhead
-\code{visual\_dom.cv} & Pipeline orchestration; OCR; symbol/screen detection; the pluggable \emph{detectors} subpackage; the SLM advisor. \\
-\code{visual\_dom.capture} & CapturePort: strategy base, registry, built-ins (windows/linux/android/camera), gRPC client, user plugins. \\
-\code{visual\_dom.actuator} & ActuatorPort: strategy base, registry, built-ins (desktop/android), gRPC client, user plugins. \\
-\code{visual\_dom.hierarchy} & Coarse hierarchy builder; optional LLM refiner. \\
-\code{visual\_dom.compiler} & DOM compiler: roles, flags, locators, labels; schema. \\
-\code{visual\_dom.rpc} & gRPC servers for detector, capture, actuator. \\
-\code{visual\_dom} (shared) & Reading-order, logging, schema. \\
+\code{visual\_dom.core.domain} & The hexagon interior (pure, no I/O): pipeline orchestration; hierarchy builder + optional LLM refiner; DOM compiler; schema; reading-order; \code{cvops} (symbol/screen detection, image processing). \\
+\code{visual\_dom.core.ports.\allowbreak outbound} & The driven-port interfaces the core depends on: \code{detector\_port}, \code{capture\_port}, \code{actuator\_port}. \\
+\code{visual\_dom.adapters.\allowbreak outbound} & Concrete implementations of the ports: \code{detectors} (UIED/YOLO/OmniParser/gRPC + registry), \code{ocr} (text detector), \code{refiner} (SLM advisor), \code{capture} and \code{actuator} (built-ins + gRPC client + user plugins). \\
+\code{visual\_dom.adapters.\allowbreak inbound.grpc} & Driving adapters: the detector, capture and actuator gRPC servers. \\
+\code{visual\_dom.context} & Composition root --- \code{connect()} / \code{Session} wire adapters to the core from one config. \\
+\code{visual\_dom} (config, generated, shared) & \code{config} (VizDomConfig), \code{generated} (protobuf stubs), \code{logging\_utils}; \code{evaluation} is a harness outside the hexagon. \\
 \code{visual\_gui\_library} & Robot Framework keyword library (thin client over capture + actuator). \\
 tools & PyQt5 Viewer, Streamlit dashboard, annotator. \\
 \bottomrule
 \end{longtable}
+
+\noindent The package tree deliberately mirrors ports \& adapters --- \code{core/}
+(domain + ports) inward, \code{adapters/} (inbound + outbound) outward --- so the
+layout \emph{is} the architecture. An automated fitness test
+(\code{tests/architecture/test\_hexagon.py}) asserts the dependency direction: it
+fails if \code{core/} gains a new import of \code{adapters/}. The current, tracked
+exceptions are the pipeline directly constructing its OCR/UIED/refiner backends;
+they retire when those move behind ports.
 
 \begin{figure}[H]
   \centering
@@ -392,9 +399,10 @@ Every driven port (detector, capture, actuator) shares the same internal structu
 This single pattern, repeated three times, is the mechanism behind NFR1 and NFR2.
 
 \section{Level 2 --- the CV pipeline internals}
-The \code{detectors} subpackage holds a \code{DetectorBackend} interface, a registry
-factory, and the UIED/YOLO/OmniParser/gRPC backends; the pipeline additionally owns
-merge/split/NMS, smart-merge, reading-order, and the SLM-review stages (Ch.~6).
+The \code{adapters.outbound.detectors} package holds the \code{DetectorBackend}
+port implementation set --- a registry factory plus the UIED/YOLO/OmniParser/gRPC
+backends; the \code{core.domain.pipeline} additionally owns merge/split/NMS,
+smart-merge, reading-order, and the SLM-review stages (Ch.~6).
 
 % =====================================================================
 \chapter{Runtime View}
