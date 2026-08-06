@@ -1,0 +1,1354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VizDOM — Supervisor Presentation</title>
+<style>
+:root{
+  --bg:#0e1420; --bg2:#141c2b; --fg:#e8eef7; --dim:#93a4bd; --line:#26334a;
+  --accent:#4db6ac; --accent2:#7aa2f7; --warn:#e0af68; --bad:#f7768e; --good:#9ece6a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;background:var(--bg);color:var(--fg);
+  font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+body{overflow:hidden}
+
+/* ---------- deck ---------- */
+#deck{height:100vh;width:100vw;position:relative}
+.slide{
+  position:absolute;inset:0;display:none;
+  padding:3.2vh 4.5vw 8vh;overflow:auto;
+  animation:fade .18s ease-out;
+}
+.slide.active{display:flex;flex-direction:column}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+h1{font-size:clamp(28px,4.4vw,58px);line-height:1.08;margin:0 0 .5em;letter-spacing:-.02em}
+h2{font-size:clamp(22px,2.9vw,40px);line-height:1.15;margin:0 0 .8em;letter-spacing:-.01em;
+   color:#fff;border-bottom:2px solid var(--line);padding-bottom:.4em}
+h3{font-size:clamp(15px,1.5vw,21px);margin:1.1em 0 .4em;color:var(--accent)}
+p,li{font-size:clamp(14px,1.35vw,20px);line-height:1.5;color:var(--fg)}
+ul{margin:.2em 0 .6em 0;padding-left:1.2em}
+li{margin:.42em 0}
+li::marker{color:var(--accent)}
+strong{color:#fff}
+em{color:var(--accent);font-style:normal;font-weight:600}
+code{font-family:"Cascadia Code",Consolas,monospace;background:#1b2536;
+  border:1px solid var(--line);border-radius:4px;padding:.08em .35em;
+  font-size:.88em;color:var(--accent)}
+.dim{color:var(--dim)}
+.small{font-size:clamp(12px,1.05vw,15px);color:var(--dim);line-height:1.45}
+
+/* ---------- layout helpers ---------- */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:2.2vw;align-items:start}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6vw}
+.grow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center}
+.center{align-items:center;justify-content:center;text-align:center}
+.fig{display:flex;align-items:center;justify-content:center;min-height:0;flex:1;position:relative}
+.fig img{max-width:100%;max-height:62vh;object-fit:contain;
+  background:#fff;border-radius:8px;padding:8px;box-shadow:0 8px 28px #0008;
+  cursor:zoom-in;transition:box-shadow .15s}
+.fig img:hover{box-shadow:0 8px 28px #000a,0 0 0 2px var(--accent)}
+.fig::after{content:"click to zoom";position:absolute;right:2px;bottom:-1.35em;
+  font-size:clamp(10px,.85vw,12px);color:var(--dim);opacity:.75;pointer-events:none}
+
+/* ---------- diagram lightbox (zoom / pan) ---------- */
+#lb{position:fixed;inset:0;z-index:60;display:none;background:#05080ff2;
+  align-items:center;justify-content:center;overflow:hidden}
+#lb.show{display:flex}
+#lb img{max-width:none;max-height:none;background:#fff;border-radius:6px;padding:10px;
+  transform-origin:center center;cursor:grab;user-select:none;-webkit-user-drag:none;
+  box-shadow:0 12px 40px #000b}
+#lb img.grabbing{cursor:grabbing}
+#lbctl{position:fixed;bottom:2.2vh;left:50%;transform:translateX(-50%);z-index:61;
+  display:flex;gap:.45em;align-items:center;background:var(--bg2);
+  border:1px solid var(--line);border-radius:999px;padding:.42em .55em;
+  box-shadow:0 6px 22px #0009}
+#lbctl button{font:inherit;font-size:clamp(12px,1.1vw,15px);min-width:2.3em;
+  background:#1b2536;color:var(--fg);border:1px solid var(--line);border-radius:999px;
+  padding:.3em .7em;cursor:pointer;line-height:1.1}
+#lbctl button:hover{border-color:var(--accent);color:#fff}
+#lbpct{font-size:clamp(11px,1vw,13px);color:var(--dim);min-width:3.6em;text-align:center;
+  font-variant-numeric:tabular-nums}
+#lbhint{position:fixed;top:2vh;left:50%;transform:translateX(-50%);z-index:61;
+  font-size:clamp(11px,1vw,13px);color:var(--dim)}
+.card{background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--accent);
+  border-radius:8px;padding:1em 1.2em}
+.card.warn{border-left-color:var(--warn)}
+.card.bad{border-left-color:var(--bad)}
+.card.good{border-left-color:var(--good)}
+.kpi{display:flex;gap:1.4vw;flex-wrap:wrap;margin:.6em 0}
+.kpi div{background:var(--bg2);border:1px solid var(--line);border-radius:10px;
+  padding:.7em 1.1em;text-align:center;min-width:8.5em}
+.kpi b{display:block;font-size:clamp(20px,2.4vw,34px);color:var(--accent);line-height:1.1}
+.kpi span{font-size:clamp(11px,.95vw,13px);color:var(--dim)}
+
+/* ---------- tables ---------- */
+table{border-collapse:collapse;width:100%;margin:.5em 0;font-size:clamp(11px,1.12vw,17px)}
+th,td{text-align:left;padding:.44em .6em;border-bottom:1px solid var(--line)}
+th{color:var(--accent);font-weight:600;white-space:nowrap;border-bottom:2px solid var(--line)}
+td.n,th.n{text-align:center;font-variant-numeric:tabular-nums}
+tr.hi td{background:#1a2740}
+.win{color:var(--good);font-weight:700}
+.lose{color:var(--bad)}
+.tag{display:inline-block;font-size:.72em;padding:.12em .5em;border-radius:999px;
+  border:1px solid var(--line);color:var(--dim);vertical-align:middle}
+
+/* ---------- chrome ---------- */
+#bar{position:fixed;left:0;bottom:0;height:3px;background:var(--accent);z-index:20;transition:width .2s}
+#num{position:fixed;right:1.3vw;bottom:1.4vh;font-size:12px;color:var(--dim);z-index:20;
+  font-variant-numeric:tabular-nums}
+#title-chip{position:fixed;left:1.5vw;bottom:1.4vh;font-size:12px;color:var(--dim);z-index:20}
+#title-chip a{color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent)}
+#title-chip a:hover{color:#fff;border-color:#fff}
+#help{position:fixed;inset:0;background:#050810ee;z-index:40;display:none;
+  align-items:center;justify-content:center}
+#help.show{display:flex}
+#help div{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:2em 2.6em}
+kbd{font-family:inherit;background:#1b2536;border:1px solid var(--line);border-bottom-width:2px;
+  border-radius:5px;padding:.1em .45em;font-size:.9em;color:#fff}
+
+/* ---------- overview mode ---------- */
+#deck.overview{overflow:auto;display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;padding:16px;height:100vh}
+#deck.overview .slide{position:static;display:block;inset:auto;height:150px;overflow:hidden;
+  border:1px solid var(--line);border-radius:8px;padding:10px;cursor:pointer;
+  background:var(--bg2);animation:none}
+#deck.overview .slide *{pointer-events:none}
+#deck.overview .slide h1{font-size:15px;margin:0 0 4px}
+#deck.overview .slide h2{font-size:13px;border:0;padding:0;margin:0 0 4px}
+#deck.overview .slide h3{font-size:10px;margin:3px 0}
+#deck.overview .slide p,#deck.overview .slide li,#deck.overview .slide td,
+#deck.overview .slide th,#deck.overview .slide .small{font-size:8px;line-height:1.25}
+#deck.overview .slide .fig img{max-height:70px}
+#deck.overview .slide .kpi b{font-size:12px}
+#deck.overview .slide.active{outline:2px solid var(--accent)}
+
+/* ---------- notes ---------- */
+.notes{display:none;margin-top:auto;padding:.7em 1em;background:#0b1220;
+  border-top:1px solid var(--line);border-radius:6px}
+body.notes-on .slide.active .notes{display:block}
+.notes b{color:var(--warn)}
+
+/* ---------- print / PDF ---------- */
+@page{size:A4 landscape;margin:10mm}
+@media print{
+  html,body{height:auto;overflow:visible;background:#fff;color:#111}
+  #bar,#num,#help,#title-chip,#lb,#lbctl,#lbhint{display:none!important}
+  .fig::after{display:none}
+  .fig img{cursor:default}
+  #deck{height:auto;display:block}
+  .slide{display:flex!important;position:static;inset:auto;height:186mm;
+    page-break-after:always;border:0;animation:none;padding:8mm}
+  h2{color:#000;border-color:#bbb}h1{color:#000}h3{color:#0a6b60}
+  p,li,td,th{color:#111}.dim,.small{color:#444}em{color:#0a6b60}
+  strong{color:#000}
+  code{background:#f2f4f7;border-color:#ddd;color:#0a6b60}
+  .card,.kpi div,.notes{background:#f7f9fc;border-color:#ccc}
+  .fig img{box-shadow:none;border:1px solid #ddd}
+  tr.hi td{background:#eef3fb}
+  .notes{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<div id="deck">
+
+<!-- 1 ─────────────────────────────────────────── -->
+<section class="slide center">
+  <div class="grow center" style="display:flex;flex-direction:column">
+    <div class="dim" style="letter-spacing:.22em;font-size:clamp(11px,1.1vw,14px);margin-bottom:1.2em">
+      MASTER'S APPLIED PROJECT &nbsp;·&nbsp; <strong style="color:var(--accent)">METHOD 3</strong>
+      &nbsp;·&nbsp; PROGRESS REVIEW
+    </div>
+    <h1>VizDOM<span style="color:var(--accent)">.</span><br>
+      <span style="font-size:.52em;font-weight:500;color:var(--fg)">Generating a Visual DOM from GUI Screenshots
+      for Test Automation</span></h1>
+    <p class="dim" style="margin-top:1.4em">
+      Nguyen Huynh Tri Cuong &nbsp;·&nbsp; Faculty of Information Technology<br>
+      University of Science, VNU-HCM<br>
+      <span class="small">Supervisor: Assoc. Prof. Dr. Nguyen Van Vu</span>
+    </p>
+    <div class="card" style="margin-top:1.8em;max-width:44em;text-align:left">
+      <p class="small" style="margin:0;color:var(--fg)">
+        <strong>Method 3 — applied project:</strong> solid engineering with scientific content,
+        <em>not</em> a novel-algorithm thesis. The deliverable is a <strong>working, extensible
+        tool</strong>; the scientific content lies in the measured comparisons, the documented
+        design decisions, and the reported improvements.</p>
+    </div>
+    <p class="small" style="margin-top:1.6em">
+      <kbd>→</kbd> next &nbsp; <kbd>←</kbd> back &nbsp; <kbd>o</kbd> overview &nbsp;
+      <kbd>n</kbd> notes &nbsp; <kbd>?</kbd> help &nbsp;·&nbsp;
+      <span style="color:var(--accent)">click any diagram to zoom</span>
+    </p>
+  </div>
+  <div class="notes"><b>Talk track:</b> CV + small LLM turns a screenshot into a queryable DOM so GUI tests
+    work where no accessibility tree exists. Method 3 — applied engineering with scientific content.</div>
+</section>
+
+<!-- 2 ─────────────────────────────────────────── -->
+<section class="slide">
+  <h2>The problem: automation stops where the tree stops</h2>
+  <div class="grow">
+    <div class="cols">
+      <div>
+        <p>GUI test tools (Appium, Selenium, UI&nbsp;Automator) drive an application through its
+          <em>accessibility tree</em>. It is the gold standard — <strong>when it exists.</strong></p>
+        <h3>Where it does not exist</h3>
+        <ul>
+          <li>custom-rendered <strong>Qt / QML / OpenGL</strong> canvases, game engines</li>
+          <li><strong>embedded &amp; industrial HMIs</strong>, automotive infotainment</li>
+          <li>any screen observed through a <strong>camera</strong> or video stream</li>
+        </ul>
+      </div>
+      <div>
+        <div class="card bad">
+          <h3 style="margin-top:0;color:var(--bad)">Today's fallback</h3>
+          <p style="margin:0">Coordinate scripts and image matching — no element semantics, and they break
+          on any layout, theme, or resolution change.</p>
+        </div>
+        <div class="card good" style="margin-top:1.1em">
+          <h3 style="margin-top:0;color:var(--good)">The premise</h3>
+          <p style="margin:0">A human tester looks at the screen and knows what is clickable.
+          If a human can, a machine should be able to — <strong>from pixels alone.</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><b>Frame the gap:</b> we are not competing with Appium — we target exactly the
+    screens Appium cannot see.</div>
+</section>
+
+<!-- 3 ─────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Why GUI element detection is hard</h2>
+  <div class="cols" style="flex:1;min-height:0">
+    <div>
+      <h3>Element level</h3>
+      <ul>
+        <li><strong>Large intra-class variation</strong> — one <code>button</code> varies in size,
+            shape, colour, styling</li>
+        <li><strong>High inter-class similarity</strong> — a button vs a spinner differ by a thin
+            border or a small glyph</li>
+      </ul>
+      <h3>GUI level</h3>
+      <ul>
+        <li><strong>Heterogeneous mix</strong> — widgets, images and text abut each other</li>
+        <li><strong>Dense, adjacent elements</strong> — separated by a few pixels</li>
+        <li><strong>High-precision regions required</strong> — a loose box is fine to
+            <em>recognise</em> an object, not to <em>click</em> a control</li>
+      </ul>
+      <p class="small">Taxonomy after Xie et al., <em>Object Detection for Graphical User Interface:
+        Old Fashioned or Deep Learning or a Combination?</em> (FSE 2020) — the paper our group studied.</p>
+    </div>
+    <div class="fig"><img src="figures/problem_space.svg" alt="Problem space taxonomy"></div>
+  </div>
+  <div class="notes"><b>Key point:</b> this is not ordinary object detection. These five properties
+    directly motivate the clean-up stages and explain the box-convention effects in the evaluation.</div>
+</section>
+
+<!-- 4 ─────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Methodologies compared — where a generated DOM sits</h2>
+  <div class="grow">
+    <table>
+      <tr><th>Methodology</th><th class="n">No a11y tree</th><th class="n">Custom / camera</th>
+          <th class="n">Structured tree</th><th class="n">Resilient locators</th><th class="n">Reusable artifact</th></tr>
+      <tr><td>Coordinate / record–replay</td><td class="n">Yes</td><td class="n">Yes</td>
+          <td class="n lose">No</td><td class="n lose">No</td><td class="n dim">partial</td></tr>
+      <tr><td>Image / template match</td><td class="n">Yes</td><td class="n">Yes</td>
+          <td class="n lose">No</td><td class="n lose">No</td><td class="n dim">partial</td></tr>
+      <tr><td>Accessibility tree <span class="tag">Appium</span></td><td class="n lose">No</td>
+          <td class="n lose">No</td><td class="n win">Yes</td><td class="n win">Yes</td><td class="n win">Yes</td></tr>
+      <tr><td>VLM grounding, per instruction</td><td class="n">Yes</td><td class="n">Yes</td>
+          <td class="n lose">No</td><td class="n dim">partial</td><td class="n lose">No</td></tr>
+      <tr class="hi"><td><strong>VizDOM — generated DOM</strong></td><td class="n win">Yes</td>
+          <td class="n win">Yes</td><td class="n win">Yes</td><td class="n win">Yes</td><td class="n win">Yes</td></tr>
+    </table>
+    <div class="cols" style="margin-top:1em">
+      <div class="card"><p style="margin:0"><strong>The idea:</strong> <em>synthesise</em> an
+        accessibility-tree-like artifact from pixels, so tree-style testing becomes available on UIs
+        that have no tree.</p></div>
+      <div class="card warn"><p style="margin:0"><strong>The price:</strong> perception is approximate —
+        the DOM is a best-effort reconstruction, not ground truth. Hence pluggable detectors and
+        per-type reporting.</p></div>
+    </div>
+  </div>
+  <div class="notes"><b>Four benefits:</b> universality, semantic locators, one reusable artifact,
+    bounded cost (perception runs once per screen, not per action).</div>
+</section>
+
+<!-- 5 ─────────────────────────────────────────── -->
+<section class="slide">
+  <h2>System overview</h2>
+  <div class="fig"><img src="figures/System_Overview.svg" alt="System overview"></div>
+  <p class="small" style="text-align:center">Screenshot → CV + OCR detection → merge &amp; deduplicate →
+    hierarchy → DOM compilation (roles, flags, labels, locators) → Robot Framework keywords.</p>
+  <div class="notes"><b>Two deliverables:</b> the Visual DOM engine, and the Robot Framework library
+    that consumes it.</div>
+</section>
+
+<!-- 5b ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>What the application actually does — features</h2>
+  <div class="grow">
+    <div class="cols3">
+      <div class="card">
+        <h3 style="margin-top:0">1 · Generate a DOM from a screenshot</h3>
+        <p class="small" style="color:var(--fg);margin:0">Bounds, <strong>roles</strong>, text, labels,
+          interaction flags (clickable / editable / scrollable), containment
+          <strong>hierarchy</strong>, and multiple ready-made <strong>locators</strong> per element —
+          as UI-Automator-like JSON.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">2 · Choose your detector</h3>
+        <p class="small" style="color:var(--fg);margin:0"><strong>4 backends</strong> by name:
+          <code>uied</code> (CPU, no weights), <code>yolo</code>, <code>omniparser</code> (GPU, best on
+          actionable controls), <code>grpc</code> (remote). OCR: EasyOCR / PaddleOCR / Tesseract.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">3 · Capture from anywhere</h3>
+        <p class="small" style="color:var(--fg);margin:0"><strong>5 sources</strong>:
+          <code>windows</code>, <code>linux</code>, <code>android</code> (adb),
+          <code>camera</code> (auto screen rectification), <code>grpc</code> — plus static images and
+          user plugins.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">4 · Drive the application</h3>
+        <p class="small" style="color:var(--fg);margin:0">Click, type, key press, scroll, drag &amp; drop
+          via <code>desktop</code> / <code>android</code> / <code>grpc</code> / a
+          <strong>robot-arm</strong> plugin — all on normalized coordinates, so one test fits every
+          target.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">5 · Write tests in Robot Framework</h3>
+        <p class="small" style="color:var(--fg);margin:0"><strong>24 keywords</strong> — Connect,
+          Dump Visual DOM, Click Visual, Type Text Visual, Visual Should Exist,
+          Wait Until Visual Appears, Get Element Property/Text/Label/Center, …</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">6 · Find elements 6 ways</h3>
+        <p class="small" style="color:var(--fg);margin:0"><code>id=</code> <code>text=</code>
+          <code>hint=</code> <code>role=</code>, spatial (<code>within</code>, <code>right_of</code>,
+          <code>below</code>, …) and <code>desc=</code> — plain-language description.</p>
+      </div>
+      <div class="card good">
+        <h3 style="margin-top:0;color:var(--good)">7 · Configure everything in one file</h3>
+        <p class="small" style="color:var(--fg);margin:0">One JSON session config drives every stage;
+          <code>--init</code> emits an annotated template, <code>--check</code> validates it.
+          No code change to retune a run.</p>
+      </div>
+      <div class="card good">
+        <h3 style="margin-top:0;color:var(--good)">8 · Scale out when needed</h3>
+        <p class="small" style="color:var(--fg);margin:0">Run detector / capture / actuator as
+          <strong>gRPC services</strong> across machines — one warm GPU model serving many clients —
+          with no change to the test.</p>
+      </div>
+      <div class="card good">
+        <h3 style="margin-top:0;color:var(--good)">9 · Inspect, evaluate, extend</h3>
+        <p class="small" style="color:var(--fg);margin:0">Interactive <strong>Viewer</strong> (browse and
+          edit the DOM, export RF resources), an <strong>evaluation harness</strong> (metrics + reports),
+          dataset generators, and <strong>plugins</strong> — drop in one file.</p>
+      </div>
+    </div>
+    <p class="small" style="margin-top:.8em">Optional: a small LM/VLM review stage (split / retype /
+      merge / label) and session-based output — every run saves screenshot + detections + DOM for
+      later inspection. <span class="dim">Two deliverables: the engine, and the Robot Framework
+      library that consumes it.</span></p>
+  </div>
+  <div class="notes"><b>Method-3 anchor slide:</b> for an applied project this is the deliverable —
+    spend time here. Every card is implemented and demonstrable; the numbers (4 detectors, 5 captures,
+    24 keywords) are the same evidence used for the modifiability quality scenario (Q-01).</div>
+</section>
+
+<!-- 6 ─────────────────────────────────────────── -->
+<section class="slide">
+  <h2>The CV pipeline</h2>
+  <div class="cols" style="flex:1;min-height:0">
+    <div>
+      <ol style="padding-left:1.3em">
+        <li><strong>Text detection</strong> — OCR (EasyOCR / PaddleOCR / Tesseract), upscaling for small text</li>
+        <li><strong>Element detection</strong> — pluggable backend (UIED / YOLO / OmniParser)</li>
+        <li><strong>Merge &amp; deduplicate</strong> — NMS, cross-type suppression, smart-merge of
+            over-segmented labels</li>
+        <li><strong>Symbol reading</strong> — glyph operators OCR cannot read</li>
+        <li><strong>Reading order</strong> — top→bottom, left→right</li>
+        <li><strong>Optional SLM review</strong> — split / retype / merge / label</li>
+        <li><strong>Hierarchy</strong> — containment, alignment, label association</li>
+        <li><strong>DOM compile</strong> — roles, flags, multiple locators</li>
+      </ol>
+      <p class="small">Every stage threshold is resolution-aware (defined at 1080p, scaled up) and
+        driven by one JSON session config.</p>
+    </div>
+    <div class="fig"><img src="figures/CV_Pipeline_Detail.svg" alt="CV pipeline detail"></div>
+  </div>
+  <div class="notes"><b>Emphasise:</b> the clean-up stages exist because of the problem-space
+    properties on slide 3 — dense, adjacent, over-segmented elements.</div>
+</section>
+
+<!-- 7 ─────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Model landscape: parsers vs grounders</h2>
+  <div class="grow">
+    <table>
+      <tr><th>System</th><th>Paradigm</th><th>Output granularity</th><th class="n">GPU</th>
+          <th>Base / size</th><th>License</th></tr>
+      <tr class="hi"><td><strong>VizDOM</strong> (ours)</td><td>parser (CV + SLM)</td>
+          <td><strong>hierarchical DOM tree</strong></td><td class="n">No*</td>
+          <td>composed pipeline</td><td>per backend</td></tr>
+      <tr><td>UIED</td><td>classical CV</td><td>flat elements</td><td class="n">No</td><td>—</td><td>research</td></tr>
+      <tr><td>OmniParser V2</td><td>detector + caption</td><td>flat labelled boxes + interactability</td>
+          <td class="n">Yes</td><td>YOLOv8 + Florence-2</td><td>AGPL-3.0 / MIT</td></tr>
+      <tr><td>Aria-UI</td><td>vision grounding</td><td>single point</td><td class="n">Yes</td>
+          <td>Aria MoE, 3.9B act.</td><td>n/v</td></tr>
+      <tr><td>ELAM-7B</td><td>grounding + eval</td><td>point + PASSED/FAILED</td><td class="n">Yes</td>
+          <td>Molmo-7B-D</td><td>Apache-2.0</td></tr>
+      <tr><td>Jedi-3B/7B</td><td>vision grounding</td><td>single point</td><td class="n">Yes</td>
+          <td>3B / 7B</td><td>n/v</td></tr>
+    </table>
+    <div class="cols" style="margin-top:.8em">
+      <div class="card"><p style="margin:0"><strong>Parsers</strong> enumerate elements.
+        <strong>Grounders</strong> return one point per natural-language instruction.
+        Only parsers can produce a complete tree.</p></div>
+      <div class="card good"><p style="margin:0"><strong>None of them builds a hierarchy</strong> —
+        that is where the contribution sits.</p></div>
+    </div>
+    <p class="small">*UIED backend is CPU-only; the OmniParser backend uses a GPU. Author-reported
+      figures; different benchmarks — not pooled.</p>
+  </div>
+  <div class="notes"><b>Honest framing:</b> detection is commoditised — an industrial lab (OmniParser)
+    converged on the same "CV owns geometry, a model adds semantics" split. So we treat detectors as
+    interchangeable and contribute above them.</div>
+</section>
+
+<!-- 7b ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Why compose a parser — and not simply adopt Aria-UI / ELAM-7B / Jedi?</h2>
+  <div class="grow">
+    <div class="cols">
+      <div>
+        <h3>1 · The test-loop economics</h3>
+        <p class="small">A grounder answers <em>one instruction at a time</em>: every click and every
+          assertion is a fresh large-model inference. A parser pays perception <strong>once per screen
+          state</strong>, then every lookup is an in-memory query.</p>
+        <table>
+          <tr><th>Test with 5 screens, 40 steps</th><th class="n">Model calls</th><th class="n">Per-lookup cost</th></tr>
+          <tr class="hi"><td><strong>VizDOM</strong> (parse once per screen)</td>
+              <td class="n win">5</td><td class="n win">in-memory (~0 ms)</td></tr>
+          <tr><td>Grounder (per instruction)</td><td class="n lose">40</td>
+              <td class="n lose">one GPU inference</td></tr>
+        </table>
+        <p class="small"><strong>Cost scales with screen states, not with test steps.</strong>
+          Measured on our warm detector service: model load happens <em>once</em> (~14–32 s), then
+          inference is <strong>0.6 s warm</strong> (2.5 s cold) and a second pipeline construction in the
+          same process costs <strong>0.00 s</strong> (model cache).
+          <span class="dim">Grounder wall-clock is not measured here — but 3.9–7B activated parameters
+          are GPU-bound by construction, per call.</span></p>
+        <div class="card good"><p class="small" style="margin:0;color:var(--fg)">
+          <strong>Reuse economics:</strong> one parse serves many locators <em>and</em> assertions —
+          the artifact is reused, the inference is not repeated.</p></div>
+      </div>
+      <div>
+        <h3>2 · Four reasons beyond speed</h3>
+        <ul>
+          <li><strong>Output shape.</strong> A grounder returns a <em>point</em>. A test also needs to
+            assert existence, read an element's text/role/state, count matches, and express
+            <code>within=Form</code> — a coordinate answers none of these.</li>
+          <li><strong>Determinism.</strong> A test must fail for a real reason. We measured the failure
+            modes directly: caption flips from imperceptible pixel noise, and a 3B model calling a
+            top-left element <em>“top right”</em> at 0.95 confidence.</li>
+          <li><strong>Explainability.</strong> When CI goes red you need <em>why</em> — an inspectable,
+            diffable DOM versus a coordinate from a black box.</li>
+          <li><strong>Hardware &amp; licence.</strong> Our CPU path runs the full suite with no GPU and
+            no network (Q-04); grounders are GPU-bound. Licences are Apache-2.0 or
+            <em>unverified</em> — so we keep the model behind a swappable port.</li>
+        </ul>
+        <div class="card warn"><p class="small" style="margin:0;color:var(--fg)">
+          Also: their published scores (ScreenSpot, OSWorld) measure a <strong>different task</strong> —
+          instruction grounding, not element enumeration. They cannot be pooled with detection F1.</p></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:.7em"><p style="margin:0">
+      <strong>Not either/or — we use grounding where it pays.</strong> The <code>desc=</code> locator's
+      Tier&nbsp;2 <em>is</em> a VLM grounder, invoked only for the long tail that deterministic tiers
+      cannot resolve, and snapped back onto a DOM element via Set-of-Mark. Roadmap: plug a dedicated
+      grounder (Aria-UI / ELAM class) in as an alternative Tier-2 backend behind the same interface.
+      <span class="dim">Parse once for structure; ground only what is left.</span></p></div>
+  </div>
+  <div class="notes"><b>The likely question, answered head-on.</b> Lead with the economics table
+    (cost scales with screen states, not steps), then output shape — a point cannot assert. Close with
+    "not either/or": we already integrate grounding as a gated tier, which shows the choice was
+    reasoned, not defensive.</div>
+</section>
+
+<!-- 8 ─────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Solution space: classical, deep, or a combination?</h2>
+  <div class="grow">
+    <div class="cols3">
+      <div class="card">
+        <h3 style="margin-top:0">Classical CV</h3>
+        <p class="small" style="color:var(--fg)">Edge/contour aggregation, template matching.
+          Training-free, interpretable, tight boxes — weak on artificial widgets and images.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Deep learning</h3>
+        <p class="small" style="color:var(--fg)">Anchor-based (Faster R-CNN, YOLO) and anchor-free
+          (CenterNet). Better coverage; bounding-box precision limited by feature-map regression.</p>
+      </div>
+      <div class="card good">
+        <h3 style="margin-top:0;color:var(--good)">Combination ✓</h3>
+        <p class="small" style="color:var(--fg)">Classical region proposal for accurate non-text boxes
+          + deep models for text and semantics. The UIED finding — and our architecture.</p>
+      </div>
+    </div>
+    <h3>How VizDOM operationalises the question</h3>
+    <ul>
+      <li>GUI text is <strong>scene text</strong>, not document text — dedicated OCR, not one model for everything</li>
+      <li>Non-text and text detected by <strong>separate specialised paths</strong>, then merged</li>
+      <li>The detector is a <strong>pluggable port</strong> — so "classical vs deep vs combination" becomes a
+          runtime configuration choice, and the answer is <em>measurable per element type</em></li>
+    </ul>
+  </div>
+  <div class="notes">This slide connects the group paper study directly to the architecture decision
+    (ADR-015).</div>
+</section>
+
+<!-- 9 ─────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Architecture: hexagonal ports &amp; adapters</h2>
+  <div class="cols" style="flex:1;min-height:0">
+    <div>
+      <p>A pure core depends only on <strong>abstract ports</strong>:</p>
+      <ul>
+        <li><code>DetectorPort</code> — UIED / YOLO / OmniParser / gRPC</li>
+        <li><code>OcrPort</code> · <code>RefinerPort</code></li>
+        <li><code>CapturePort</code> — windows / linux / android / camera / gRPC</li>
+        <li><code>ActuatorPort</code> — desktop / android / gRPC / robot arm</li>
+      </ul>
+      <h3>Strategy + registry + auto-discovery</h3>
+      <p>A user adds a backend by dropping <strong>one file</strong> into <code>plugins/</code>;
+        the registry loads it and it is selectable <em>by name from configuration</em> —
+        no core changes.</p>
+      <p class="small">Chosen for testability (core runs with no I/O) and substitutability —
+        the project's primary quality goal. ADR-015 / 017 / 018 / 019.</p>
+    </div>
+    <div class="fig"><img src="figures/Architecture.svg" alt="Hexagonal architecture"></div>
+  </div>
+  <div class="notes"><b>Quality attributes:</b> modifiability, deployability, testability — each
+    traced to a ranked driver in the arc42 document.</div>
+</section>
+
+<!-- 9a ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Architecture drivers — ranked, and why</h2>
+  <div class="grow">
+    <p class="small">Method: SWA / arc42 — <em>drivers → solution → documentation → verification.</em>
+      Every significant choice traces to a ranked driver.</p>
+    <div class="cols">
+      <div>
+        <table>
+          <tr><th class="n">Rank</th><th>Driver</th><th>Specific interpretation</th></tr>
+          <tr class="hi"><td class="n">#1</td><td><strong>Modifiability</strong></td>
+              <td>new detector / capture / actuator with <strong>no core changes</strong></td></tr>
+          <tr class="hi"><td class="n">#2</td><td><strong>Deployability</strong></td>
+              <td>ports runnable in-process or remote <strong>by config</strong></td></tr>
+          <tr><td class="n">#3</td><td>Testability</td><td>full runs with no GPU, no network</td></tr>
+          <tr><td class="n">#4</td><td>Accuracy</td><td>detection F1 / IoU on real UIs</td></tr>
+          <tr><td class="n">#5</td><td>Performance</td><td>warm-model reuse; per-request latency</td></tr>
+          <tr><td class="n">—</td><td class="dim">Offline operation</td>
+              <td class="dim">constraint: proxy blocks public hosts → vendoring, offline docs</td></tr>
+          <tr><td class="n">—</td><td class="dim">No containers</td>
+              <td class="dim">constraint: distribute without Docker / orchestrators</td></tr>
+        </table>
+        <p class="small">This is a <strong>greenfield applied project whose stated purpose is
+          extensibility</strong> across detectors and devices — so modifiability and deployability rank
+          <em>above</em> raw accuracy. Were VizDOM a fixed single-platform product, accuracy and
+          reliability would rank first.</p>
+      </div>
+      <div>
+        <h3>Driver conflicts — and how they were resolved</h3>
+        <div class="card warn">
+          <p style="margin:0"><strong>Accuracy vs Testability.</strong> The most accurate detector
+            (OmniParser) needs a GPU and ~1 GB of weights — conflicting with "runs on a laptop".</p>
+          <p class="small" style="margin:.5em 0 0;color:var(--fg)">→ Resolved by making the detector a
+            <em>port</em>: a CPU baseline (UIED) for laptops, plus a remote GPU service when accuracy
+            matters.</p>
+        </div>
+        <div class="card warn" style="margin-top:1em">
+          <p style="margin:0"><strong>Deployability vs Simplicity.</strong> gRPC services add moving
+            parts to every run.</p>
+          <p class="small" style="margin:.5em 0 0;color:var(--fg)">→ Resolved by making gRPC
+            <em>optional</em>: in-process is the default, so the simple case pays nothing.</p>
+        </div>
+        <p class="small" style="margin-top:1em">Both conflicts are resolved by the <strong>same
+          mechanism</strong> — the port abstraction — which is why one pattern is applied to all
+          three driven ports.</p>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><b>Key defensible point:</b> the ranking is justified by project purpose, and I
+    state explicitly what would change the ranking. Conflicts are named, not hidden.</div>
+</section>
+
+<!-- 9b ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>The key decision — scored, not asserted</h2>
+  <div class="grow">
+    <p><em>How should detection / capture / actuation be made extensible and deployable?</em>
+      Three alternatives, scored 1–5 against criteria weighted from the ranked drivers:</p>
+    <table>
+      <tr><th>Criterion</th><th class="n">Weight</th>
+          <th class="n">A · hard-coded per consumer</th>
+          <th class="n">B · shared library, in-process only</th>
+          <th class="n">C · strategy + registry + optional gRPC</th></tr>
+      <tr><td>Modifiability</td><td class="n">5</td><td class="n">1 <span class="dim">(5)</span></td>
+          <td class="n">4 <span class="dim">(20)</span></td><td class="n win">5 <span class="dim">(25)</span></td></tr>
+      <tr><td>Deployability</td><td class="n">5</td><td class="n">1 <span class="dim">(5)</span></td>
+          <td class="n">2 <span class="dim">(10)</span></td><td class="n win">5 <span class="dim">(25)</span></td></tr>
+      <tr><td>Testability</td><td class="n">4</td><td class="n">2 <span class="dim">(8)</span></td>
+          <td class="n">4 <span class="dim">(16)</span></td><td class="n win">5 <span class="dim">(20)</span></td></tr>
+      <tr><td>Complexity <span class="tag">lower better</span></td><td class="n">3</td>
+          <td class="n">4 <span class="dim">(12)</span></td><td class="n">4 <span class="dim">(12)</span></td>
+          <td class="n lose">2 <span class="dim">(6)</span></td></tr>
+      <tr><td>Operational complexity <span class="tag">lower better</span></td><td class="n">3</td>
+          <td class="n">5 <span class="dim">(15)</span></td><td class="n">4 <span class="dim">(12)</span></td>
+          <td class="n lose">2 <span class="dim">(6)</span></td></tr>
+      <tr class="hi"><td><strong>Weighted total</strong></td><td class="n"></td>
+          <td class="n">45</td><td class="n">70</td><td class="n win"><strong>82</strong></td></tr>
+    </table>
+    <p class="small"><strong>Scoring.</strong> Each cell = raw score 1–5, with
+      <span class="dim">(weighted contribution)</span> in parentheses; total = Σ&nbsp;weight&nbsp;×&nbsp;score.
+      Weights derive from driver rank (5 = top driver). For the two "lower is better" criteria a
+      <em>high</em> raw score means <em>low</em> complexity.</p>
+    <div class="card good"><p style="margin:0"><strong>Outcome: Option C.</strong> It wins decisively on
+      the two top drivers, at the explicitly accepted cost of higher intrinsic and operational
+      complexity — mitigated by keeping gRPC optional (Option B's behaviour <em>is</em> the default
+      local mode) and by sharing <strong>one</strong> registry pattern across all three ports.
+      Recorded in ADR-015 / 017 / 018 / 019.</p></div>
+  </div>
+  <div class="notes"><b>This is the slide that shows method:</b> the decision was scored against
+    weighted criteria, the losing dimension (complexity) is named, and the mitigation is concrete.</div>
+</section>
+
+<!-- 10 ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Microservice-oriented, not always-on microservices</h2>
+  <div class="grow">
+    <div class="cols">
+      <div>
+        <p>Each port is a <strong>first-class service boundary</strong> — a versioned protobuf
+          contract plus a standalone gRPC server:</p>
+        <table>
+          <tr><th>Service</th><th class="n">Port</th><th>Runs where</th></tr>
+          <tr><td>Detector</td><td class="n"><code>50051</code></td><td>GPU host — one warm model, many clients</td></tr>
+          <tr><td>Capture</td><td class="n"><code>50053</code></td><td>the device under test</td></tr>
+          <tr><td>Actuator</td><td class="n"><code>50054</code></td><td>the SUT / a robot-arm controller</td></tr>
+        </table>
+        <p class="small">Coordinates on the wire are <strong>normalized [0,1]</strong> + image size, so the
+          protocol is resolution-independent; each strategy maps to its own device space
+          (a robot arm applies a calibration homography).</p>
+      </div>
+      <div>
+        <div class="card"><h3 style="margin-top:0">Why distribute at all</h3>
+          <ul style="margin-bottom:0">
+            <li>independent scaling of the heavy model</li>
+            <li>heterogeneous placement (device / GPU / controller)</li>
+            <li>fault &amp; resource isolation</li>
+            <li>polyglot substitution behind one contract</li>
+          </ul>
+        </div>
+        <div class="card warn" style="margin-top:1em"><p style="margin:0">
+          <strong>But in-process is the default.</strong> gRPC is a <em>transport, not a requirement</em> —
+          the same services collapse into one process when co-location suffices, so we avoid the
+          operational tax on the common case.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><b>Distribution is driven by physical locality and resource — not fashion.</b>
+    This is the defensible version of "microservices" for a single-developer project.</div>
+</section>
+
+<!-- 11 ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Client surface: one config, three ways to consume</h2>
+  <div class="grow">
+    <div class="cols">
+      <div>
+        <h3>One JSON session config (ADR-020)</h3>
+        <p class="small">Detector &amp; OCR choice, merge/dedup thresholds, hierarchy, symbols,
+          filters, capture, grounding — all in one validated file
+          (<code>--init</code> emits an annotated template, <code>--check</code> validates).</p>
+        <h3>Python</h3>
+        <p class="small" style="font-family:Consolas,monospace;color:var(--fg)">
+          session = connect("vizdom.config.json")<br>dom = session.analyze("screen.png")</p>
+        <h3>Robot Framework</h3>
+        <p class="small" style="font-family:Consolas,monospace;color:var(--fg)">
+          Connect&nbsp;&nbsp;vizdom.config.json<br>Dump Visual DOM<br>Click Visual&nbsp;&nbsp;text=Login</p>
+      </div>
+      <div>
+        <h3>Locator strategies</h3>
+        <ul>
+          <li><code>id=</code> <code>text=</code> <code>hint=</code> <code>role=</code></li>
+          <li>spatial: <code>within=</code> <code>right_of=</code> <code>below=</code></li>
+          <li><code>desc=</code> — natural language <span class="tag">new</span></li>
+        </ul>
+        <p class="small">Actions resolve a locator → element → normalized centre → actuator, so the
+          <strong>same test runs locally, over gRPC, or against a robot arm unchanged</strong>.</p>
+        <div class="card" style="margin-top:.8em"><p class="small" style="margin:0;color:var(--fg)">
+          Models load <strong>once per session</strong> and are reused across screenshots — a suite pays
+          the model-load cost a single time.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">Demo available: <code>examples/windows_calculator_demo/</code> — start the detector
+    service, then <code>robot calculator_demo.robot</code> drives Windows Calculator by its Visual DOM.</div>
+</section>
+
+<!-- 11b ───────────────────────────────────────── -->
+<section class="slide">
+  <h2>Quality scenarios &amp; verification — the evidence</h2>
+  <div class="grow">
+    <p class="small">Each quality goal is written as a <strong>measurable scenario</strong>
+      (stimulus → response → response measure), then verified. Vague goals like "should be modular"
+      are not verifiable; these are.</p>
+    <table style="font-size:clamp(10px,1.05vw,15px)">
+      <tr><th>ID</th><th>Quality</th><th>Response measure (the acceptance test)</th><th>Status</th></tr>
+      <tr><td>Q-01</td><td>Modifiability</td>
+          <td>1 new file + 1 registry line, <strong>0 core edits</strong>; ≥2 implementations per port</td>
+          <td class="win">Verified — 4 detectors, 5 captures, 3 actuators</td></tr>
+      <tr><td>Q-02</td><td>Deployability</td>
+          <td><strong>Config-only</strong> change (strategy name + host:port), 0 code changes;
+              end-to-end round-trip succeeds</td>
+          <td class="win">Verified — capture pixel-identical, actuator mapping exact</td></tr>
+      <tr><td>Q-03</td><td>Performance</td>
+          <td>Model load count = <strong>1</strong> per service lifetime; later requests pay inference only</td>
+          <td class="win">Verified functionally</td></tr>
+      <tr><td>Q-04</td><td>Testability</td>
+          <td>Full pipeline + RF keywords complete with <strong>zero GPU / network</strong></td>
+          <td class="win">Verified</td></tr>
+      <tr class="hi"><td>Q-05</td><td>Accuracy</td>
+          <td>Target <strong>F1 ≥ 0.80</strong>, <strong>mIoU ≥ 0.60</strong> on a labelled benchmark</td>
+          <td class="lose">Measured: mIoU 0.68 <strong>met</strong>; F1 0.58 <strong>not met</strong></td></tr>
+    </table>
+    <div class="cols" style="margin-top:.5em">
+      <div class="card good"><p class="small" style="margin:0;color:var(--fg)">
+        <strong>Four of five verified.</strong> The architectural goals — the ones this project is
+        <em>about</em> — hold with concrete evidence, not assertions.</p></div>
+      <div class="card bad"><p class="small" style="margin:0;color:var(--fg)">
+        <strong>Accuracy is the open one.</strong> Aggregate F1 misses the target; per-type recall on
+        actionable controls (0.83 IoU / 0.97 center-hit) is the testing-relevant result. Logged as a
+        risk, not glossed over.</p></div>
+    </div>
+    <p class="small">Also logged as risks: <strong>ADR-017 is still <em>Proposed</em></strong> while
+      deployability evidence leans on it, and gRPC channels are insecure (LAN/trusted only).</p>
+  </div>
+  <div class="notes"><b>Method slide:</b> arc42 quality tree + ATAM-style scenarios + a D-CAR review
+    produced these. The honest Q-05 row is deliberate — it invites the accuracy discussion on my terms.</div>
+</section>
+
+<!-- 12 ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Evaluation: methodology &amp; dataset construction</h2>
+  <div class="grow">
+    <div class="cols">
+      <div>
+        <h3>Four measured axes</h3>
+        <ul>
+          <li><strong>Element detection</strong> — precision, recall, F1, mean IoU</li>
+          <li><strong>OCR</strong> — character accuracy, CER / WER</li>
+          <li><strong>Hierarchy</strong> — containment &amp; label association <span class="tag">needs tree GT</span></li>
+          <li><strong>Locator quality</strong> — uniqueness, stability <span class="tag">future</span></li>
+        </ul>
+        <p class="small">Greedy matching by IoU at 0.5, pooled over all elements. Computed by the
+          project's own harness (<code>visual_dom.evaluation</code>).</p>
+      </div>
+      <div>
+        <h3>No public benchmark fits — so we built one</h3>
+        <ul>
+          <li><strong>Programmatic synthesis</strong> — templates × themes × resolutions with
+            <em>exact</em> ground truth → <strong>167 train / 44 test</strong> at 1920×1080</li>
+          <li><strong>LLM-designed layouts</strong> — an LLM as UI designer (e.g. car infotainment)
+            for structural diversity</li>
+          <li><strong>Camera-style augmentation</strong> — perspective, glare, blur, noise;
+            exercises the screen-rectification path</li>
+        </ul>
+        <p class="small"><strong>Only the clean synthetic split is scored.</strong> The other layers are
+          development / robustness aids.</p>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><b>Be explicit about the caveat:</b> synthetic and clean. A real-world labelled
+    set is the top future-work item.</div>
+</section>
+
+<!-- 13 ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Results — and why one number misleads</h2>
+  <div class="grow">
+    <div class="cols">
+      <div>
+        <h3>Overall (44-image test set)</h3>
+        <table>
+          <tr><th>Detector</th><th class="n">P</th><th class="n">R</th><th class="n">F1</th>
+              <th class="n">mIoU</th><th class="n">Char acc</th></tr>
+          <tr><td>UIED <span class="tag">CPU</span></td><td class="n">0.39</td><td class="n win">0.71</td>
+              <td class="n">0.51</td><td class="n win">0.68</td><td class="n">0.92</td></tr>
+          <tr><td>OmniParser</td><td class="n win">0.56</td><td class="n">0.59</td>
+              <td class="n win">0.58</td><td class="n">0.67</td><td class="n win">0.95</td></tr>
+        </table>
+        <div class="card warn"><p class="small" style="margin:0;color:var(--fg)">
+          Aggregates are dominated by <strong>text</strong> (63% of ground-truth elements), so per-type
+          recall is the testing-relevant measure. Two lenses: strict <strong>IoU≥0.5</strong> and
+          <strong>center-hit</strong> (is it click-targetable?).</p></div>
+        <p class="small" style="margin-top:.7em"><strong>Metrics.</strong> All scores are unitless
+          proportions in <strong>[0,&nbsp;1]</strong>, higher&nbsp;=&nbsp;better.
+          P&nbsp;=&nbsp;precision, R&nbsp;=&nbsp;recall, F1&nbsp;=&nbsp;their harmonic mean, computed by
+          greedy box matching at IoU&nbsp;≥&nbsp;0.5, pooled over all elements.
+          mIoU&nbsp;=&nbsp;mean intersection-over-union of matched boxes.
+          Char&nbsp;acc&nbsp;=&nbsp;character-level OCR accuracy (1&nbsp;−&nbsp;CER).</p>
+      </div>
+      <div>
+        <h3>Recall by element type — IoU / center-hit</h3>
+        <table>
+          <tr><th>Type</th><th class="n">UIED</th><th class="n">OmniParser</th></tr>
+          <tr><td>button</td><td class="n">0.82 / 0.96</td><td class="n win">1.00 / 1.00</td></tr>
+          <tr><td>input_field</td><td class="n">0.95 / 0.99</td><td class="n win">0.99 / 0.99</td></tr>
+          <tr><td>icon</td><td class="n lose">0.08 / 0.28</td><td class="n win">0.67 / 1.00</td></tr>
+          <tr><td>checkbox</td><td class="n win">0.68 / 0.82</td><td class="n">0.20 / 0.87</td></tr>
+          <tr><td>text</td><td class="n win">0.79 / 0.99</td><td class="n">0.59 / 0.98</td></tr>
+          <tr class="hi"><td><strong>actionable</strong></td><td class="n">0.77 / 0.89</td>
+              <td class="n win">0.83 / 0.97</td></tr>
+        </table>
+        <p class="small">OmniParser leads on the controls a test <em>drives</em>; UIED on checkbox and text.
+          Its low checkbox IoU (0.20) with high center-hit (0.87) is a <strong>box-convention</strong>
+          effect — it boxes the check glyph, so the control is still clickable.</p>
+        <p class="small"><strong>Metric.</strong> Recall per ground-truth type, two lenses:
+          <em>IoU&nbsp;≥&nbsp;0.5</em> = a predicted box overlaps the GT box by ≥&nbsp;50%;
+          <em>center-hit</em> = a predicted box contains the GT element's centre (click-targetable).
+          GT counts: button&nbsp;183, input&nbsp;135, icon&nbsp;36, checkbox&nbsp;76, text&nbsp;1074;
+          actionable&nbsp;=&nbsp;pooled 430.</p>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><b>Target check (NFR5):</b> mIoU target ≥0.60 met; F1 target ≥0.80
+    <b>not met</b> — state this plainly. Per-type recall on actionable controls is the meaningful result.</div>
+</section>
+
+<!-- 13b ───────────────────────────────────────── -->
+<section class="slide">
+  <h2>Techniques &amp; algorithms — the full inventory</h2>
+  <div class="grow">
+    <table style="font-size:clamp(10px,1.02vw,15px)">
+      <tr><th>Stage</th><th>Technique / algorithm</th><th>Purpose</th></tr>
+      <tr><td>Detection</td><td>UIED-style classical coarse-to-fine (binarize → connected components);
+          YOLOv8 icon detection + Florence-2 captioning (OmniParser)</td>
+          <td>element boxes from pixels, classical or deep — per config</td></tr>
+      <tr><td>OCR</td><td>upscaling (~3×) for small text; <strong>dual-engine re-OCR</strong> of
+          low-confidence reads; <strong>OCR ensemble</strong> fed into OmniParser (gap-fill)</td>
+          <td>recover small/faint text the base pass misses</td></tr>
+      <tr><td>Merge &amp; dedup</td><td>per-type <strong>NMS</strong>; cross-type suppression with
+          priority rules; near-duplicate removal; region <strong>re-scan</strong>; text-position
+          splitting; <strong>smart-merge</strong> with fill-ratio guard</td>
+          <td>one clean element per control on dense UIs</td></tr>
+      <tr><td>Role mapping</td><td>interactivity + <strong>resolution-aware geometry</strong> +
+          caption-keyword disambiguation</td>
+          <td>button / input / checkbox / icon roles from text-or-icon output → 0.09→0.87</td></tr>
+      <tr><td>Symbol reading</td><td>tight-glyph normalisation → hollow-shape rejection →
+          <strong>font-template matching (Dice score)</strong> with per-symbol thresholds</td>
+          <td>read + − = × ÷ glyphs OCR cannot → 14/15</td></tr>
+      <tr><td>Hierarchy</td><td>containment thresholding, alignment grouping,
+          <strong>label association</strong> by distance + position, reading-order sort</td>
+          <td>the queryable tree — the layer no compared system builds</td></tr>
+      <tr><td>Semantics</td><td><code>text</code>/<code>label</code> channel split; label priority
+          <em>nearby&nbsp;label &gt; caption &gt; own text</em></td>
+          <td>literal reads never polluted by model predictions</td></tr>
+      <tr><td>SLM / VLM</td><td>review actions <strong>gated to geometric candidates</strong>;
+          desc= tiers: lexical scoring → SLM-over-DOM with id validation →
+          <strong>Set-of-Mark</strong> visual grounding</td>
+          <td>small models help, but never free-rein</td></tr>
+      <tr><td>Robustness</td><td>thresholds referenced to 1080p and scaled; camera
+          <strong>screen rectification</strong> (perspective); warm-model caching</td>
+          <td>same behaviour across resolutions, devices, restarts</td></tr>
+    </table>
+    <p class="small">Common thread: <strong>deterministic geometry first, models only where semantics
+      are genuinely needed — and always validated or gated.</strong> Next three slides: the ones with
+      measured before/after.</p>
+  </div>
+  <div class="notes"><b>If asked "what did you actually do":</b> this is the answer in one screen.
+    Each row maps to code + an ADR; the bolded items are the non-obvious ones.</div>
+</section>
+
+<!-- 14 ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Improvement 1 — recovering element roles</h2>
+  <div class="grow">
+    <p><strong>Problem.</strong> OmniParser tags every detection only <code>text</code> or
+      <code>icon</code>, so the DOM carried no <code>button</code> / <code>input_field</code> /
+      <code>checkbox</code> roles — role-based test logic could not use it.</p>
+    <div class="cols">
+      <div>
+        <table>
+          <tr><th>Type</th><th class="n">before</th><th class="n">first fix</th><th class="n">now</th></tr>
+          <tr><td>button</td><td class="n">0.00</td><td class="n">0.91</td><td class="n">0.89</td></tr>
+          <tr><td>input_field</td><td class="n">0.00</td><td class="n">0.99</td><td class="n">0.99</td></tr>
+          <tr><td>checkbox</td><td class="n">0.00</td><td class="n lose">0.12</td><td class="n">0.55</td></tr>
+          <tr><td>icon</td><td class="n">1.00*</td><td class="n lose">0.00</td><td class="n win">0.89</td></tr>
+          <tr class="hi"><td><strong>actionable</strong></td><td class="n">0.09</td>
+              <td class="n">0.73</td><td class="n win">0.87</td></tr>
+        </table>
+        <p class="small">*The original mapping labelled all non-text <code>icon</code>, so icons scored
+          correct trivially while every other role scored 0.</p>
+        <p class="small"><strong>Metric.</strong> Type-classification accuracy = fraction of
+          <em>matched</em> actionable controls (IoU&nbsp;≥&nbsp;0.5) assigned the correct role;
+          proportion in [0,&nbsp;1]. Measures <em>type only</em> — localisation is unchanged.
+          Same 44-image test set.</p>
+      </div>
+      <div>
+        <h3>Two stages, honestly reported</h3>
+        <ul>
+          <li><strong>First fix</strong> — interactivity + geometry → 0.73, but it
+            <em>regressed icons to 0.00</em>: the geometry rule reclassified small square glyphs, and
+            checkboxes stayed at 0.12 (geometrically identical to icons)</li>
+          <li><strong>Now</strong> — added OmniParser's <strong>caption</strong> to disambiguate
+            checkboxes and re-tuned the button/icon width boundary</li>
+        </ul>
+        <div class="kpi"><div><b>0.09 → 0.87</b><span>actionable type accuracy</span></div></div>
+        <p class="small">Checkbox (0.55) remains weakest — recovered only when the caption is
+          distinctive. Future work.</p>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><b>Method point:</b> the regression is worth showing — it is evidence that
+    geometry alone is insufficient and that the caption signal was necessary, not decorative.</div>
+</section>
+
+<!-- 15 ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Improvement 2 — reading glyphs OCR cannot</h2>
+  <div class="grow">
+    <div class="cols">
+      <div>
+        <p><strong>Problem.</strong> Operator keys (<code>+ − = × ÷</code>) read as garbage: OCR fails on
+          small glyphs, and the rule-based detector (projection profiles over the whole button) failed on
+          <em>every</em> real calculator key — and false-fired <code>+</code> on the hollow
+          maximize <code>□</code>, whose edge rows average to a central cross.</p>
+        <h3>Redesign: template matching on the tight glyph</h3>
+        <ol style="padding-left:1.3em">
+          <li>upscale (anti-aliased strokes dissolve at native size)</li>
+          <li>binarize, crop to the glyph's own bbox → <strong>scale-normalised</strong></li>
+          <li>reject hollow outline shapes <em>structurally</em></li>
+          <li>Dice-match against <strong>font-rendered templates</strong>, accept only a confident,
+              unambiguous best</li>
+        </ol>
+      </div>
+      <div>
+        <div class="kpi">
+          <div><b>14/15</b><span>probed controls correct</span></div>
+          <div><b>21 → 4</b><span>firings on a synthetic image<br>(removed = false positives)</span></div>
+        </div>
+        <div class="card good"><p style="margin:0"><code>÷ × − + = .</code> all correct · title-bar dash
+          → <code>-</code> · close → <code>×</code> · maximize correctly <strong>rejected</strong> ·
+          digits and icons correctly ignored</p></div>
+        <div class="card warn" style="margin-top:.9em"><p class="small" style="margin:0;color:var(--fg)">
+          Known miss: the Windows <code>±</code> key draws a diagonal composite no template matches — it
+          returns <strong>nothing rather than something wrong</strong>.</p></div>
+        <p class="small">Adding a symbol is adding a character to one list — the recognised set is data,
+          not code. Strictness is configurable.</p>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><b>Design lesson:</b> hand-tuned thresholds at 8–20 px are fragile — fixing one
+    shape broke another. Template matching + a confidence gate replaced ~10 heuristics.</div>
+</section>
+
+<!-- 16 ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Improvement 3 — what is <em>read</em> vs what is <em>inferred</em></h2>
+  <div class="grow">
+    <div class="cols">
+      <div>
+        <div class="card bad">
+          <h3 style="margin-top:0;color:var(--bad)">A measured finding</h3>
+          <p style="margin:0">Two captures of the <strong>same UI</strong>, visually identical, differing
+            only by imperceptible re-encoding noise (<strong>≤7/255</strong> per channel, ~90% of pixels),
+            flipped an icon caption from <strong>“Maximize” → “Page”</strong>.</p>
+          <p class="small" style="margin:.6em 0 0">Deterministic within a run — so it is
+            <em>input sensitivity</em>, not sampling. The maximize glyph is a bare square <code>□</code>:
+            genuinely ambiguous to the caption model.</p>
+        </div>
+        <p class="small">Diagnosed by re-running current code on the old capture: the regression was
+          <strong>not</strong> in our code. Detector confidence sensitivity (a faint minimize dash falling
+          just under a 0.05 cutoff at a different scale) was a second, separate finding — now a
+          config knob.</p>
+      </div>
+      <div>
+        <h3>The fix: split the two channels</h3>
+        <table>
+          <tr><th>Field</th><th>Meaning</th><th>Source</th></tr>
+          <tr><td><code>text</code></td><td><strong>literal pixel read</strong></td><td>OCR / symbol reader</td></tr>
+          <tr><td><code>label</code></td><td>semantic name</td><td>nearby label &gt; caption &gt; own text</td></tr>
+        </table>
+        <p>A close button now reads <code>text='×'</code>, <code>label='Close'</code>; an unreadable glyph
+          has <code>text=None</code> and keeps its caption as a best-effort <code>label</code>.</p>
+        <div class="card"><p class="small" style="margin:0;color:var(--fg)">
+          <strong>Testing guidance:</strong> locate text-bearing controls by <code>text=</code>;
+          icon-only controls by <code>role=</code> + spatial relations. A visual caption is a
+          <em>hint, not a stable id</em>.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><b>Scientific value:</b> this is a reproducible robustness measurement of a
+    caption model on GUI glyphs — worth reporting as a finding, not just a bug fix.</div>
+</section>
+
+<!-- 17 ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>New capability — locating by description</h2>
+  <div class="grow">
+    <p>Property locators break exactly where perception is weak. So the tester can state
+      <strong>intent</strong>: <code>Click Visual&nbsp;&nbsp;desc="settings button"</code> —
+      importing the <em>grounder</em> paradigm into the parser system, with the DOM as source of truth.</p>
+    <div class="cols3">
+      <div class="card"><h3 style="margin-top:0">Tier 0 · lexical</h3>
+        <p class="small" style="color:var(--fg)">No model. Token/synonym overlap + role words +
+          positions. Accepts only with a score floor <em>and</em> a margin — ties escalate rather
+          than guess.</p></div>
+      <div class="card"><h3 style="margin-top:0">Tier 1 · SLM over DOM</h3>
+        <p class="small" style="color:var(--fg)">Small text LM (temperature 0) picks an id from a compact
+          element table. The id is <strong>validated</strong> against the DOM — hallucinations rejected.</p></div>
+      <div class="card"><h3 style="margin-top:0">Tier 2 · VLM Set-of-Mark</h3>
+        <p class="small" style="color:var(--fg)">Candidate boxes are <strong>numbered on the screenshot</strong>;
+          the model picks a number. Multiple choice beats coordinate regression — and the answer is a DOM
+          element <em>by construction</em>.</p></div>
+    </div>
+    <div class="cols" style="margin-top:.9em">
+      <div class="card good"><p style="margin:0"><strong>5/5</strong> probe descriptions resolved on a real
+        session (paraphrases via the SLM tier); a nonsense description <strong>failed loudly</strong> with
+        the candidate list.</p></div>
+      <div class="card warn"><p style="margin:0"><strong>Finding:</strong> a 3B model confidently called a
+        top-left element “top right”. Positional words are therefore enforced
+        <strong>geometrically, before any model</strong> — position is never delegated.</p></div>
+    </div>
+    <p class="small">Determinism is policy: the tier chain is configured (CI can pin lexical-only),
+      results cached per screen, and every hit records which tier answered — making
+      “parse once, ground the long tail” <strong>measurable</strong>.</p>
+  </div>
+  <div class="notes">ADR-022. This is the newest work and a natural thesis experiment: per-tier
+    resolution accuracy over the labelled set.</div>
+</section>
+
+<!-- 18 ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Contributions &amp; positioning</h2>
+  <div class="grow">
+    <div class="cols">
+      <div>
+        <h3>What is genuinely distinctive</h3>
+        <ul>
+          <li><strong>Hierarchy construction</strong> — containment, alignment and label association
+            compiled into a queryable tree; <em>no compared system produces one</em></li>
+          <li><strong>Testing orientation</strong> — locators, assertions, Robot Framework keywords</li>
+          <li><strong>Reuse economics</strong> — one parse serves many locators and assertions,
+            whereas grounders re-infer per instruction</li>
+          <li><strong>Explainability</strong> — an inspectable tree with traceable matching rules,
+            versus a coordinate from a black box</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Engineering deliverables</h3>
+        <ul>
+          <li>Hexagonal engine, <strong>5 ports</strong>, 3 as optional gRPC services</li>
+          <li><strong>22 ADRs</strong>; arc42 architecture document (EN + VI)</li>
+          <li>Robot Framework library; interactive Viewer; evaluation harness</li>
+          <li>Labelled benchmark + augmentation &amp; LLM data-generation tooling</li>
+          <li>Published documentation site; runnable Windows demo</li>
+        </ul>
+        <div class="card"><p class="small" style="margin:0;color:var(--fg)">
+          Detection is a commoditised layer — an industrial lab converged on the same decomposition.
+          We therefore treat detectors as <strong>interchangeable backends</strong> and contribute in
+          the layers above.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">This is the "what did you actually contribute" slide — lead with hierarchy
+    construction and the testing surface.</div>
+</section>
+
+<!-- 19 ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Limitations — stated plainly</h2>
+  <div class="grow">
+    <ul>
+      <li><strong>Synthetic, clean benchmark.</strong> Absolute scores will differ on gradient-heavy
+        real-world UIs. A real labelled set is the top priority.</li>
+      <li><strong>F1 target not met.</strong> NFR5 targets F1 ≥ 0.80 / mIoU ≥ 0.60 — mIoU is met
+        (0.67–0.68), F1 is <strong>0.51–0.58</strong>. Aggregate F1 is text-dominated; per-type recall on
+        actionable controls (0.83 / 0.97 center-hit) is the meaningful figure.</li>
+      <li><strong>Checkbox roles weakest</strong> (0.55) — recovered only when the caption is distinctive.</li>
+      <li><strong>Caption instability</strong> on small glyph-only icons is inherent to the caption model;
+        mitigated by the <code>text</code>/<code>label</code> split, not eliminated.</li>
+      <li><strong>Hierarchy &amp; locator axes not yet scored</strong> — the ground truth is a flat list
+        with parent references, no tree, no locators.</li>
+      <li><strong>No wall-clock benchmark</strong> yet; efficiency is argued structurally (warm-model
+        service, CPU path) rather than measured.</li>
+      <li><strong>ADR-017 still <em>Proposed</em></strong> — the deployability claim is demonstrated,
+        not ratified. Security: gRPC channels are insecure (LAN/trusted only).</li>
+    </ul>
+  </div>
+  <div class="notes"><b>Do not hide these.</b> Volunteering limitations is what distinguishes an
+    engineering report from a sales pitch — and it pre-empts the obvious questions.</div>
+</section>
+
+<!-- 20 ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>Roadmap</h2>
+  <div class="grow">
+    <div class="cols">
+      <div>
+        <h3>Near term</h3>
+        <ul>
+          <li><strong>Real-world labelled set</strong> — the headline accuracy caveat</li>
+          <li><strong>desc= experiment</strong> — auto-generate descriptions for labelled elements,
+            report <em>per-tier resolution accuracy</em></li>
+          <li>Wall-clock benchmark: in-process vs warm gRPC service</li>
+          <li>Window-control labeller (canonical minimize/maximize/close)</li>
+          <li>App targeting: window title (Windows) / activity (Android)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Longer term</h3>
+        <ul>
+          <li><strong>Self-healing locators</strong> — cache resolved descriptions as aliases so a suite
+            migrates from model-resolved to deterministic over time</li>
+          <li>Embedding tier (semantic similarity, no generation)</li>
+          <li>A dedicated grounder as an alternative Tier-2 backend</li>
+          <li>Hierarchy/locator ground truth → score the remaining two axes</li>
+          <li>TLS + authentication on the service channels</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="margin-top:.6em"><p style="margin:0">
+      <strong>Ask:</strong> which of these best serves the thesis — a real-world dataset, or the
+      description-grounding experiment?</p></div>
+  </div>
+  <div class="notes">End with a concrete question so the supervisor can steer priorities.</div>
+</section>
+
+<!-- 21 ────────────────────────────────────────── -->
+<section class="slide center">
+  <div class="grow center" style="display:flex;flex-direction:column">
+    <h1 style="font-size:clamp(30px,4vw,52px)">Thank you<span style="color:var(--accent)">.</span></h1>
+    <p class="dim">Questions &amp; discussion</p>
+    <div class="kpi" style="justify-content:center;margin-top:1.4em">
+      <div><b>0.09→0.87</b><span>role accuracy</span></div>
+      <div><b>0.97</b><span>actionable center-hit</span></div>
+      <div><b>14/15</b><span>glyph reading</span></div>
+      <div><b>22</b><span>ADRs</span></div>
+    </div>
+    <p class="small" style="margin-top:2em">
+      Docs &amp; report: <code>docs/</code> · <code>report/</code> (general + arc42, EN + VI)<br>
+      Published site: milanac030988.github.io/vizdom
+    </p>
+  </div>
+  <div class="notes"><b>Backup material if asked:</b> sequence diagram, component diagram, per-stage
+    config reference, the calculator demo, session outputs in <code>output/sessions/</code>.</div>
+</section>
+
+</div><!-- /deck -->
+
+<div id="bar"></div>
+<div id="title-chip">VizDOM — progress review &nbsp;·&nbsp; <a href="vi.html">VI</a></div>
+<div id="num"></div>
+
+<!-- diagram zoom overlay -->
+<div id="lb">
+  <img id="lbimg" alt="">
+  <div id="lbhint">scroll to zoom &nbsp;·&nbsp; drag to pan &nbsp;·&nbsp; double-click to fit &nbsp;·&nbsp; Esc to close</div>
+  <div id="lbctl">
+    <button id="lbout" title="Zoom out (-)">&minus;</button>
+    <span id="lbpct">100%</span>
+    <button id="lbin" title="Zoom in (+)">+</button>
+    <button id="lbfit" title="Fit to screen (0)">Fit</button>
+    <button id="lb1" title="Actual size (1)">1:1</button>
+    <button id="lbx" title="Close (Esc)">✕</button>
+  </div>
+</div>
+
+<div id="help"><div>
+  <h3 style="margin-top:0">Navigation</h3>
+  <p class="small" style="color:var(--fg)">
+    <kbd>→</kbd> <kbd>space</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> previous<br>
+    <kbd>Home</kbd> / <kbd>End</kbd> first / last slide<br>
+    <kbd>o</kbd> overview grid (click a slide to jump)<br>
+    <kbd>n</kbd> presenter notes &nbsp;·&nbsp; <kbd>f</kbd> fullscreen<br>
+    <kbd>Ctrl</kbd>+<kbd>P</kbd> print / export PDF
+  </p>
+  <h3>Diagrams — click any diagram to zoom</h3>
+  <p class="small" style="color:var(--fg)">
+    <kbd>scroll</kbd> zoom at cursor &nbsp;·&nbsp; <kbd>drag</kbd> pan<br>
+    <kbd>+</kbd> / <kbd>−</kbd> zoom &nbsp;·&nbsp; <kbd>0</kbd> fit &nbsp;·&nbsp; <kbd>1</kbd> actual size<br>
+    <kbd>↑↓←→</kbd> nudge &nbsp;·&nbsp; <kbd>double-click</kbd> refit &nbsp;·&nbsp; <kbd>Esc</kbd> close
+  </p>
+  <p class="small" style="margin-top:1.2em"><kbd>?</kbd> or <kbd>Esc</kbd> closes this panel</p>
+</div></div>
+
+<script>
+(function(){
+  var deck   = document.getElementById('deck'),
+      slides = Array.prototype.slice.call(deck.querySelectorAll('.slide')),
+      bar    = document.getElementById('bar'),
+      num    = document.getElementById('num'),
+      help   = document.getElementById('help'),
+      i = 0;
+
+  function show(n){
+    i = Math.max(0, Math.min(slides.length-1, n));
+    slides.forEach(function(s,k){ s.classList.toggle('active', k===i); });
+    bar.style.width = ((i+1)/slides.length*100) + '%';
+    num.textContent = (i+1) + ' / ' + slides.length;
+    if(location.hash !== '#'+(i+1)) history.replaceState(null,'','#'+(i+1));
+    if(!deck.classList.contains('overview')) slides[i].scrollTop = 0;
+  }
+  function overview(on){
+    deck.classList.toggle('overview', on);
+    if(on) slides.forEach(function(s){ s.classList.add('active'); });
+    else show(i);
+  }
+
+  /* ---------- diagram lightbox: zoom + pan ---------- */
+  var lb   = document.getElementById('lb'),
+      lbimg= document.getElementById('lbimg'),
+      lbpct= document.getElementById('lbpct'),
+      zoom = 1, tx = 0, ty = 0, fitZoom = 1;
+
+  function lbOpen(){ return lb.classList.contains('show'); }
+  function apply(){
+    lbimg.style.transform = 'translate('+tx+'px,'+ty+'px) scale('+zoom+')';
+    lbpct.textContent = Math.round(zoom*100) + '%';   // relative to actual pixel size
+  }
+  function fit(){
+    // scale so the natural-size image fits the viewport with a small margin
+    var nw = lbimg.naturalWidth || lbimg.width, nh = lbimg.naturalHeight || lbimg.height;
+    fitZoom = Math.min((innerWidth*0.92)/nw, (innerHeight*0.82)/nh, 1) || 1;
+    zoom = fitZoom; tx = ty = 0; apply();
+  }
+  function lbZoom(f, cx, cy){
+    var prev = zoom;
+    zoom = Math.max(fitZoom*0.5, Math.min(fitZoom*12, zoom*f));
+    if(cx !== undefined){                       // keep the cursor point anchored
+      var r = zoom/prev;
+      tx = cx - (cx - tx)*r;
+      ty = cy - (cy - ty)*r;
+    }
+    apply();
+  }
+  function lbShow(src, alt){
+    lbimg.src = src; lbimg.alt = alt || '';
+    lb.classList.add('show');
+    if(lbimg.complete) fit(); else lbimg.onload = fit;
+  }
+  function lbClose(){ lb.classList.remove('show'); lbimg.src = ''; }
+
+  // open on figure click (not in overview mode)
+  slides.forEach(function(s){
+    s.querySelectorAll('.fig img').forEach(function(img){
+      img.addEventListener('click', function(ev){
+        if(deck.classList.contains('overview')) return;
+        ev.stopPropagation();
+        lbShow(img.getAttribute('src'), img.alt);
+      });
+    });
+  });
+
+  document.getElementById('lbin').onclick  = function(e){ e.stopPropagation(); lbZoom(1.25); };
+  document.getElementById('lbout').onclick = function(e){ e.stopPropagation(); lbZoom(0.8); };
+  document.getElementById('lbfit').onclick = function(e){ e.stopPropagation(); fit(); };
+  document.getElementById('lb1').onclick   = function(e){ e.stopPropagation(); zoom=1; tx=ty=0; apply(); };
+  document.getElementById('lbx').onclick   = function(e){ e.stopPropagation(); lbClose(); };
+  lb.addEventListener('click', function(e){ if(e.target === lb) lbClose(); });   // backdrop
+  lbimg.addEventListener('dblclick', function(e){ e.stopPropagation(); fit(); });
+
+  // wheel zoom, anchored at the pointer so the spot under the cursor stays put
+  lb.addEventListener('wheel', function(e){
+    if(!lbOpen()) return;
+    e.preventDefault();
+    lbZoom(e.deltaY < 0 ? 1.15 : 1/1.15,
+           e.clientX - innerWidth/2,          // offsets from the container centre,
+           e.clientY - innerHeight/2);        // which is the image's transform origin
+  }, {passive:false});
+
+  // drag to pan
+  var dragging=false, sx=0, sy=0;
+  lbimg.addEventListener('mousedown', function(e){
+    dragging=true; sx=e.clientX-tx; sy=e.clientY-ty;
+    lbimg.classList.add('grabbing'); e.preventDefault();
+  });
+  window.addEventListener('mousemove', function(e){
+    if(!dragging) return;
+    tx = e.clientX - sx; ty = e.clientY - sy; apply();
+  });
+  window.addEventListener('mouseup', function(){
+    dragging=false; lbimg.classList.remove('grabbing');
+  });
+  window.addEventListener('resize', function(){ if(lbOpen()) fit(); });
+
+  document.addEventListener('keydown', function(e){
+    if(e.ctrlKey || e.metaKey || e.altKey) return;         // leave Ctrl+P etc. alone
+    var k = e.key;
+    // lightbox owns the keyboard while it is open
+    if(lbOpen()){
+      if(k==='Escape'){ lbClose(); }
+      else if(k==='+'||k==='='){ lbZoom(1.25); }
+      else if(k==='-'||k==='_'){ lbZoom(0.8); }
+      else if(k==='0'||k==='f'||k==='F'){ fit(); }
+      else if(k==='1'){ zoom=1; tx=ty=0; apply(); }
+      else if(k==='ArrowLeft'){ tx += 60; apply(); }
+      else if(k==='ArrowRight'){ tx -= 60; apply(); }
+      else if(k==='ArrowUp'){ ty += 60; apply(); }
+      else if(k==='ArrowDown'){ ty -= 60; apply(); }
+      e.preventDefault();
+      return;
+    }
+    if(k==='?' ){ help.classList.toggle('show'); e.preventDefault(); return; }
+    if(k==='Escape'){ help.classList.remove('show'); if(deck.classList.contains('overview')) overview(false); return; }
+    if(k==='o'||k==='O'){ overview(!deck.classList.contains('overview')); return; }
+    if(k==='n'||k==='N'){ document.body.classList.toggle('notes-on'); return; }
+    if(k==='f'||k==='F'){
+      if(document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+      return;
+    }
+    if(deck.classList.contains('overview')) return;
+    if(k==='ArrowRight'||k==='PageDown'||k===' '){ show(i+1); e.preventDefault(); }
+    else if(k==='ArrowLeft'||k==='PageUp'){ show(i-1); e.preventDefault(); }
+    else if(k==='Home'){ show(0); }
+    else if(k==='End'){ show(slides.length-1); }
+  });
+
+  // click a thumbnail in overview mode to jump
+  slides.forEach(function(s,k){
+    s.addEventListener('click', function(){
+      if(deck.classList.contains('overview')){ i=k; overview(false); }
+    });
+  });
+  help.addEventListener('click', function(){ help.classList.remove('show'); });
+
+  // touch swipe
+  var x0=null;
+  deck.addEventListener('touchstart', function(e){ x0=e.touches[0].clientX; }, {passive:true});
+  deck.addEventListener('touchend', function(e){
+    if(x0===null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if(Math.abs(dx)>60) show(i + (dx<0?1:-1));
+    x0=null;
+  }, {passive:true});
+
+  var start = parseInt((location.hash||'').replace('#',''),10);
+  show(isNaN(start)?0:start-1);
+})();
+</script>
+</body>
+</html>
