@@ -83,3 +83,4 @@ nav:
       - 019 Pluggable Actuator Service: adr/019-pluggable-actuator-service.md
       - 020 Client Session Config: adr/020-client-session-config.md
       - 022 Description-Based Locator: adr/022-description-based-locator.md
+      - 023 Post-Action Recap: adr/023-post-action-recap.md

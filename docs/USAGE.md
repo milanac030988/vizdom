@@ -163,6 +163,30 @@ Locate elements by **role/text/spatial** rather than pixel coordinates — e.g.
 `text=Login`, `hint=Email`, `role=button`, `right_of="Label"`, `below="Title"`,
 `within="Form"` — so tests survive layout and theme changes.
 
+### Verifying values after an action (recap)
+
+The DOM is a snapshot — after `Type Text Visual`, a plain `Get Element Text` would
+return the *pre-typing* value. The act → read back → assert pattern is one keyword
+(ADR-023):
+
+```robotframework
+Type Text Visual        hint=Email    user@example.com
+Verify Element Value    hint=Email    user@example.com
+```
+
+`Verify Element Value` (and `Get Element Value`) default to **`refresh=element`**:
+the screen is re-captured and *only that element's bounds* are re-OCR'd — fast, and
+usually more accurate than the full-screen pass because the small crop gets the OCR
+upscaling treatment. Comparison is whitespace-normalized (`exact=True` /
+`ignore_case=True` available).
+
+The classic getters (`Get Element Property/Text/Label`) keep their cached-read
+behaviour but accept the same option: `refresh=none` (default) | `element` |
+`screen` (full re-dump). Every action keyword marks the DOM stale, and a cached
+read after an action logs a warning naming the fix. Rule of thumb: **`element`**
+to read one value back; **`screen`** when the action may have changed the layout
+or other elements (dialogs, buttons enabling).
+
 ### Locating by description (`desc=`)
 
 You can also identify an element by *describing* it (ADR-022):

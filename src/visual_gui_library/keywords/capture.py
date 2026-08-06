@@ -24,10 +24,90 @@ class CaptureKeywords:
         # instead of the ad-hoc default pipeline.
         self._session = None
         self._session_config = None
+        # Post-action staleness (ADR-023): actions set this; a cache read
+        # (refresh=none) while stale logs a warning. Dump/Load clear it.
+        self._dom_stale = False
+        self._refresh_ocr = None  # lazy TextDetector for element-region re-OCR
 
     def _get_capture(self):
         """Get the visual_dom capture strategy - provided by VisualGuiLibrary."""
         raise NotImplementedError("VisualGuiLibrary provides _get_capture")
+
+    # --- post-action recap (ADR-023) -----------------------------------------
+
+    def _mark_dom_stale(self):
+        """Called by action keywords: the screen may no longer match the DOM."""
+        self._dom_stale = True
+
+    def _warn_if_stale(self, keyword_name: str):
+        if self._dom_stale:
+            print(f"WARN: {keyword_name} is reading a DOM captured BEFORE the last "
+                  f"action - the value may be stale. Pass refresh=element (or "
+                  f"refresh=screen), use 'Verify Element Value', or re-run "
+                  f"'Dump Visual DOM'.")
+
+    def _get_refresh_ocr(self):
+        """TextDetector for element-region re-OCR, created once and reused."""
+        if self._session is not None:
+            # Reuse the session pipeline's already-loaded OCR engine.
+            td = getattr(self._session._pipeline, "text_detector", None)
+            if td is not None and getattr(td, "ocr_engine", None) not in (None, "none", ""):
+                return td
+        if self._refresh_ocr is None:
+            from visual_dom.cv.text_detector import TextDetector
+            engine = getattr(self, "ocr_engine", None) or "tesseract"
+            self._refresh_ocr = TextDetector(ocr_engine=engine, upscale=True)
+        return self._refresh_ocr
+
+    def _refresh_element(self, element: dict, pad: int = 8) -> dict:
+        """
+        Element-region recap: re-capture the screen, re-OCR ONLY this element's
+        bounds (+pad), and update the element's text in the cached DOM.
+
+        Cheap (no detector / hierarchy rebuild) and typically MORE accurate than
+        the full-screen pass, because the small crop gets the OCR upscaling
+        treatment. Updates one element only - if the whole layout may have
+        changed, use refresh=screen / 'Dump Visual DOM' instead.
+        """
+        shot = self._get_capture().capture()
+        self._current_screenshot = shot
+        h, w = shot.shape[:2]
+        x1, y1, x2, y2 = element.get("bounds", [0, 0, 0, 0])
+        x1, y1 = max(0, x1 - pad), max(0, y1 - pad)
+        x2, y2 = min(w, x2 + pad), min(h, y2 + pad)
+        if x2 <= x1 or y2 <= y1:
+            raise ValueError(f"Element bounds {element.get('bounds')} lie outside "
+                             f"the captured screen ({w}x{h}).")
+        crop = shot[y1:y2, x1:x2]
+
+        texts = self._get_refresh_ocr().detect(crop)
+        # Reading order (top->bottom, left->right), then join the pieces.
+        texts.sort(key=lambda t: (t.bounds[1], t.bounds[0]))
+        new_text = " ".join(t.text for t in texts if t.text).strip()
+
+        if new_text:
+            element["text"] = new_text
+        else:
+            element.pop("text", None)
+        # The finder's text index is now out of date for this element.
+        if self._current_dom:
+            from ..locators import ElementFinder
+            self._finder = ElementFinder(self._current_dom)
+        return element
+
+    def _resolve_with_refresh(self, locator: str, refresh: str, keyword_name: str) -> dict:
+        """Common locator resolution honouring refresh=none|element|screen."""
+        mode = (refresh or "none").strip().lower()
+        if mode not in ("none", "element", "screen"):
+            raise ValueError(f"refresh must be none|element|screen, got {refresh!r}")
+        if mode == "screen":
+            self.dump_visual_dom()
+            return self.get_visual_element(locator)
+        element = self.get_visual_element(locator)
+        if mode == "element":
+            return self._refresh_element(element)
+        self._warn_if_stale(keyword_name)
+        return element
 
     @keyword("Connect")
     def connect(self, config: Optional[str] = None) -> dict:
@@ -149,6 +229,7 @@ class CaptureKeywords:
         if self._session is not None:
             dom = self._session.analyze(image, save_path=save_path)
             self._current_dom = dom
+            self._dom_stale = False
             self._update_finder()
             return dom
 
@@ -191,6 +272,7 @@ class CaptureKeywords:
                 json.dump(dom, f, indent=2, ensure_ascii=False)
 
         self._current_dom = dom
+        self._dom_stale = False
         self._update_finder()
 
         return dom
@@ -236,6 +318,7 @@ class CaptureKeywords:
             dom = json.load(f)
 
         self._current_dom = dom
+        self._dom_stale = False
         self._update_finder()
 
         return dom
@@ -331,6 +414,7 @@ class CaptureKeywords:
         locator: str,
         name: str,
         default: Any = _UNSET,
+        refresh: str = "none",
     ) -> Any:
         """
         Get a single property of a visual element from the current DOM.
@@ -351,6 +435,11 @@ class CaptureKeywords:
             name: Property name to read (case-insensitive).
             default: Value to return when the property is absent. If omitted, an
                 absent property raises an error.
+            refresh: ``none`` (default) reads the cached DOM; ``element``
+                re-captures and re-OCRs ONLY this element's bounds (updates its
+                ``text``); ``screen`` re-runs the full Dump Visual DOM first
+                (ADR-023). Use ``element``/``screen`` after an action changed
+                the screen.
 
         Returns:
             The property value.
@@ -360,8 +449,9 @@ class CaptureKeywords:
             | ${role}=      | Get Element Property | id=E12         | role  |
             | ${clickable}= | Get Element Property | text=Submit    | clickable |
             | ${hint}=      | Get Element Property | role=textField | hint | default=${EMPTY} |
+            | ${value}=     | Get Element Property | hint=Email     | text | refresh=element |
         """
-        element = self.get_visual_element(locator)
+        element = self._resolve_with_refresh(locator, refresh, "Get Element Property")
         return self._read_property(element, name, default, locator)
 
     def _read_property(self, element: dict, name: str, default: Any, locator: str) -> Any:
@@ -399,29 +489,107 @@ class CaptureKeywords:
         )
 
     @keyword("Get Element Text")
-    def get_element_text(self, locator: str, default: Any = _UNSET) -> str:
+    def get_element_text(self, locator: str, default: Any = _UNSET,
+                         refresh: str = "none") -> str:
         """
         Get the OCR/visible text of an element (convenience for
-        ``Get Element Property  <locator>  text``).
+        ``Get Element Property  <locator>  text``). See ``refresh`` on
+        `Get Element Property` (ADR-023).
 
         Example:
             | ${txt}= | Get Element Text | id=E12 |
             | ${txt}= | Get Element Text | role=staticText | default=${EMPTY} |
+            | ${txt}= | Get Element Text | hint=Email | refresh=element |
         """
-        element = self.get_visual_element(locator)
+        element = self._resolve_with_refresh(locator, refresh, "Get Element Text")
         return self._read_property(element, "text", default, locator)
 
     @keyword("Get Element Label")
-    def get_element_label(self, locator: str, default: Any = _UNSET) -> str:
+    def get_element_label(self, locator: str, default: Any = _UNSET,
+                          refresh: str = "none") -> str:
         """
         Get the associated label of an element (convenience for
-        ``Get Element Property  <locator>  label``).
+        ``Get Element Property  <locator>  label``). See ``refresh`` on
+        `Get Element Property` (ADR-023).
 
         Example:
             | ${label}= | Get Element Label | role=textField |
         """
-        element = self.get_visual_element(locator)
+        element = self._resolve_with_refresh(locator, refresh, "Get Element Label")
         return self._read_property(element, "label", default, locator)
+
+    @keyword("Get Element Value")
+    def get_element_value(self, locator: str, refresh: str = "element") -> str:
+        """
+        Get an element's CURRENT visible text, re-read from the live screen.
+
+        Unlike `Get Element Text`, this defaults to ``refresh=element``
+        (ADR-023): the screen is re-captured and ONLY this element's bounds are
+        re-OCR'd, so the value reflects the state AFTER the last action - the
+        right keyword for reading back what was just typed. Returns an empty
+        string when the region contains no readable text.
+
+        Note: region refresh updates this one element only. If the action may
+        have moved the layout or changed other elements, use
+        ``refresh=screen`` (full re-analysis) instead.
+
+        Example:
+            | Type Text Visual | hint=Email | user@example.com |
+            | ${value}= | Get Element Value | hint=Email |
+            | Should Be Equal | ${value} | user@example.com |
+        """
+        element = self._resolve_with_refresh(locator, refresh, "Get Element Value")
+        return element.get("text", "") or ""
+
+    @keyword("Verify Element Value")
+    def verify_element_value(
+        self,
+        locator: str,
+        expected: str,
+        refresh: str = "element",
+        exact: bool = False,
+        ignore_case: bool = False,
+        message: Optional[str] = None,
+    ) -> None:
+        """
+        Assert that an element's CURRENT visible text equals ``expected``,
+        re-reading it from the live screen first (``refresh=element`` default,
+        ADR-023) - the act -> read back -> assert pattern in one keyword.
+
+        Comparison is whitespace-normalized by default (leading/trailing
+        stripped, internal runs collapsed), because OCR spacing is not
+        pixel-stable; pass ``exact=True`` for strict equality and
+        ``ignore_case=True`` to compare case-insensitively.
+
+        Args:
+            locator: Element locator string.
+            expected: Expected visible text.
+            refresh: ``element`` (default) | ``screen`` | ``none``.
+            exact: Strict string equality instead of normalized comparison.
+            ignore_case: Case-insensitive comparison.
+            message: Custom failure message.
+
+        Example:
+            | Type Text Visual     | hint=Email | user@example.com |
+            | Verify Element Value | hint=Email | user@example.com |
+        """
+        element = self._resolve_with_refresh(locator, refresh, "Verify Element Value")
+        actual = element.get("text", "") or ""
+
+        def _norm(s: str) -> str:
+            if not exact:
+                s = " ".join(s.split())
+            if ignore_case:
+                s = s.lower()
+            return s
+
+        if _norm(actual) != _norm(str(expected)):
+            raise AssertionError(
+                message or
+                f"Element value mismatch for {locator}: "
+                f"expected {expected!r}, got {actual!r} "
+                f"(refresh={refresh}, exact={exact}, ignore_case={ignore_case})"
+            )
 
     # Existence assertions live in AssertionKeywords as the canonical
     # 'Visual Should Exist' / 'Visual Should Not Exist' (they add a custom
