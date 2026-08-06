@@ -61,6 +61,38 @@ def _extract_symbol_strokes(gray: np.ndarray) -> Optional[np.ndarray]:
     return candidates[0][0]
 
 
+def _stroke_candidates(gray: np.ndarray) -> list:
+    """
+    ALL plausible binarizations of a button region (both Otsu polarities +
+    adaptive), density-filtered. detect_symbol template-matches every candidate
+    and keeps the best overall — choosing by a density heuristic alone proved
+    wrong on thick-glyph themes, where an adaptive-threshold *ring* artifact
+    (glyph appearing as a hole in a blob) had the "best" density and won.
+    """
+    h, w = gray.shape
+    margin_x = int(w * 0.2)
+    margin_y = int(h * 0.2)
+    out = []
+
+    otsu_thresh, _ = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    _, bin_inv = cv2.threshold(gray, otsu_thresh, 255, cv2.THRESH_BINARY_INV)
+    _, bin_norm = cv2.threshold(gray, otsu_thresh, 255, cv2.THRESH_BINARY)
+    blurred = cv2.GaussianBlur(gray, (3, 3), 0)
+    block = max(11, (min(w, h) // 3) | 1)
+    adaptive = cv2.adaptiveThreshold(
+        blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+        cv2.THRESH_BINARY_INV, blockSize=block, C=3
+    )
+    for binary in (bin_inv, bin_norm, adaptive):
+        center = binary[margin_y:h - margin_y, margin_x:w - margin_x]
+        if center.size == 0:
+            continue
+        density = np.sum(center > 0) / center.size
+        if 0.005 < density < 0.6:
+            out.append(center)
+    return out
+
+
 def _tighten_to_glyph(binary: np.ndarray) -> Optional[Tuple[np.ndarray, float]]:
     """
     Crop a binary stroke image to the glyph's own bounding box.
@@ -102,9 +134,17 @@ _SYMBOLS = [
     ("+", "+"), ("-", "-"), ("=", "="), ("×", "×"), ("÷", "÷"),
     ("±", "±"), ("+/-", "±"), (".", "."), ("%", "%"),
 ]
+# Canonical semantic names for read glyphs. Used to label operator keys where a
+# caption model produced a look-alike guess ("Add" on ÷, "Close" on ×,
+# "Minimize" on −): the pixel read is authoritative outside the title bar.
+SYMBOL_LABELS = {
+    "+": "Plus", "-": "Minus", "×": "Multiply", "÷": "Divide",
+    "=": "Equals", "±": "Plus/Minus", ".": "Decimal", "%": "Percent",
+}
+
 # Per-symbol Dice acceptance (default 0.70). "=" varies with bar spacing across
 # fonts; the "+/-" composite is an approximation of the real key glyph.
-_MIN_SCORE = {"=": 0.60, "±": 0.55}
+_MIN_SCORE = {"=": 0.60, "±": 0.75}  # ± composite is promiscuous; keep strict
 _DEFAULT_MIN_SCORE = 0.70
 _CANON = 32                   # canonical patch size
 _TEMPLATE_CACHE: Optional[list] = None
@@ -128,9 +168,12 @@ def _build_templates() -> list:
 
     font_paths = [
         "C:/Windows/Fonts/segoeui.ttf",
+        "C:/Windows/Fonts/segoeuib.ttf",   # bold — thick-glyph themes (e.g. Win11 calc)
         "C:/Windows/Fonts/arial.ttf",
+        "C:/Windows/Fonts/arialbd.ttf",    # bold
         "C:/Windows/Fonts/seguisym.ttf",
         "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
     ]
     templates = []
     for path in font_paths:
@@ -217,17 +260,37 @@ def detect_symbol(
         f = int(np.ceil(64.0 / min(h, w)))
         gray = cv2.resize(gray, (w * f, h * f), interpolation=cv2.INTER_CUBIC)
 
-    strokes = _extract_symbol_strokes(gray)
-    if strokes is None:
-        return None
-    density = np.sum(strokes > 0) / strokes.size
-    if density < 0.005 or density > 0.6:
+    if _TEMPLATE_CACHE is None:
+        _TEMPLATE_CACHE = _build_templates()
+    if not _TEMPLATE_CACHE:
         return None
 
+    # Evaluate EVERY binarization candidate (both polarities + adaptive) and keep
+    # the best accepted match. On thick-glyph themes the density heuristic used
+    # to pick an inverted "ring" artifact (glyph as a hole in a blob) and lose
+    # the real glyph; template scores separate them reliably — ring candidates
+    # match nothing, the correct polarity matches its symbol.
+    best_overall: Optional[Tuple[str, float]] = None
+    for strokes in _stroke_candidates(gray):
+        result = _classify_candidate(strokes, min_score, region_h=gray.shape[0])
+        if result is None:
+            continue
+        sym, score = result
+        if best_overall is None or score > best_overall[1]:
+            best_overall = (sym, score)
+    return best_overall[0] if best_overall else None
+
+
+def _classify_candidate(
+    strokes: np.ndarray,
+    min_score: Optional[float],
+    region_h: int,
+) -> Optional[Tuple[str, float]]:
+    """Tighten + guard + template-match ONE binarization candidate."""
     tightened = _tighten_to_glyph(strokes)
     if tightened is None:
         return None
-    glyph, _ = tightened
+    glyph, area_ratio = tightened
     gh, gw = glyph.shape
 
     # A single thin solid bar is a minus/dash — classify directly, since a
@@ -235,7 +298,7 @@ def detect_symbol(
     # title-bar minimize dash).
     fill = np.sum(glyph > 0) / glyph.size
     if gw / max(1, gh) >= 4.0 and fill >= 0.6:
-        return "-"
+        return ("-", 1.0)
 
     if gh < 6 or gw < 6:  # too small to classify reliably (post-upscale)
         return None
@@ -253,17 +316,23 @@ def detect_symbol(
     if h_segments >= 2 and v_segments >= 2 and center_fill < 0.2:
         return None
 
-    if _TEMPLATE_CACHE is None:
-        _TEMPLATE_CACHE = _build_templates()
-    if not _TEMPLATE_CACHE:
-        return None
-
     patch = _canonicalize(glyph)
     scores: dict = {}
     for sym, tmpl in _TEMPLATE_CACHE:
         s = _dice(patch, tmpl)
         if s > scores.get(sym, 0.0):
             scores[sym] = s
+
+    # Structural gate for "." — a decimal dot is a TINY compact blob relative to
+    # its key. Without this, any fat glyph blob (a thick ×, a bold +) Dice-matches
+    # the filled dot template and wins falsely.
+    if "." in scores:
+        dot_plausible = (area_ratio < 0.12 and 0.5 <= gw / max(1, gh) <= 2.0
+                         and gh <= max(8, region_h // 3))
+        if not dot_plausible:
+            scores.pop(".")
+    if not scores:
+        return None
 
     ranked = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)
     best_sym, best = ranked[0]
@@ -275,7 +344,7 @@ def detect_symbol(
     if min_score is not None:
         thr = max(thr, min_score)
     if best >= thr and (best - runner) >= 0.03:
-        return best_sym
+        return (best_sym, best)
     return None
 
 

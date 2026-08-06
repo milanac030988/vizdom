@@ -841,6 +841,15 @@ class VisualDOMPipeline:
             symbol = detect_symbol(image, elem.bounds, min_score=self._symbol_min_score)
             if symbol:
                 elem.ocr_text = symbol
+                # The pixel read is authoritative: outside the title-bar strip a
+                # look-alike caption ("Add" on ÷, "Close" on ×, "Minimize" on −)
+                # is noise, so the label becomes the canonical operator name.
+                # Inside the title bar the caption IS the semantic name
+                # (Close/Minimize/Maximize) and is kept.
+                in_titlebar = elem.bounds[3] <= int(0.08 * image.shape[0])
+                if not in_titlebar:
+                    from visual_dom.core.domain.cvops.symbol_detector import SYMBOL_LABELS
+                    elem.label = SYMBOL_LABELS.get(symbol, symbol)
                 symbol_count += 1
 
         if symbol_count > 0:

@@ -33,7 +33,7 @@
 
 \title{\textbf{VizDOM --- Tài liệu Kiến trúc}\\[0.3em]
 \large theo mẫu arc42}
-\author{Nguyễn Huỳnh Trí Cường\\
+\author{Nguyễn Huỳnh Trí Cương\\
 \small Đồ án ứng dụng cao học (Khoa học máy tính) --- Trường Đại học Khoa học Tự nhiên, TP. Hồ Chí Minh\\
 \small Khoa Công nghệ Thông tin\\
 \small Giảng viên hướng dẫn: PGS. TS. Nguyễn Văn Vũ}
@@ -359,24 +359,25 @@ chỉ đo \emph{loại phần tử}.}
 \textbf{Khối xây dựng} & \textbf{Trách nhiệm} \\
 \midrule
 \endhead
-\code{visual\_dom.core.domain} & Phần lõi của hexagon (thuần, không I/O): điều phối pipeline; hierarchy builder + LLM refiner tùy chọn; DOM compiler; schema; reading-order; \code{cvops} (phát hiện symbol/screen, image processing). \\
-\code{visual\_dom.core.ports.\allowbreak outbound} & Các interface driven-port mà lõi phụ thuộc: \code{detector\_port}, \code{capture\_port}, \code{actuator\_port}. \\
-\code{visual\_dom.adapters.\allowbreak outbound} & Hiện thực cụ thể của các port: \code{detectors} (UIED/YOLO/OmniParser/gRPC + registry), \code{ocr} (text detector), \code{refiner} (SLM advisor), \code{capture} và \code{actuator} (built-in + gRPC client + plugin người dùng). \\
-\code{visual\_dom.adapters.\allowbreak inbound.grpc} & Driving adapter: các gRPC server detector, capture và actuator. \\
-\code{visual\_dom.context} & Composition root --- \code{connect()} / \code{Session} nối adapter vào lõi từ một file cấu hình. \\
-\code{visual\_dom} (config, generated, dùng chung) & \code{config} (VizDomConfig), \code{generated} (protobuf stub), \code{logging\_utils}; \code{evaluation} là harness nằm ngoài hexagon. \\
+\code{visual\_dom.core.domain} & Phần lõi bên trong kiến trúc lục giác (thuần, không I/O): điều phối pipeline; hierarchy builder và LLM refiner tùy chọn; DOM compiler; schema; reading order; \code{cvops} (phát hiện symbol/screen và xử lý ảnh). \\
+\code{visual\_dom.core.ports.\allowbreak outbound} & Các interface của driven port mà core phụ thuộc vào: \code{detector\_port}, \code{capture\_port}, \code{actuator\_port}. \\
+\code{visual\_dom.adapters.\allowbreak outbound} & Các implementation cụ thể của port: \code{detectors} (UIED/YOLO/OmniParser/gRPC + registry), \code{ocr} (text detector), \code{refiner} (SLM advisor), \code{capture} và \code{actuator} (các implementation tích hợp sẵn + gRPC client + plugin của người dùng). \\
+\code{visual\_dom.adapters.\allowbreak inbound.grpc} & Các driving adapter: gRPC server cho detector, capture và actuator. \\
+\code{visual\_dom.context} & Composition root --- \code{connect()} / \code{Session} kết nối các adapter với core từ một file cấu hình duy nhất. \\
+\code{visual\_dom} (config, generated, shared) & \code{config} (VizDomConfig), \code{generated} (protobuf stub), \code{logging\_utils}; \code{evaluation} là evaluation harness nằm ngoài kiến trúc lục giác. \\
 \code{visual\_gui\_library} & Robot Framework keyword library, đóng vai trò thin client trên capture + actuator. \\
 tools & PyQt5 Viewer, Streamlit dashboard và công cụ annotation. \\
 \bottomrule
 \end{longtable}
 
-\noindent Cây package cố ý phản chiếu ports \& adapters --- \code{core/} (domain +
-ports) hướng vào trong, \code{adapters/} (inbound + outbound) hướng ra ngoài ---
-nên bố cục thư mục \emph{chính là} kiến trúc. Một fitness test tự động
-(\code{tests/architecture/test\_hexagon.py}) kiểm tra chiều phụ thuộc: nó fail nếu
-\code{core/} phát sinh một import mới tới \code{adapters/}. Ngoại lệ hiện tại (được
-ghi nhận) là pipeline trực tiếp khởi tạo các backend OCR/UIED/refiner; chúng sẽ được
-gỡ khi các thành phần đó chuyển ra sau port.
+\noindent Cấu trúc package được thiết kế để phản chiếu trực tiếp kiến trúc ports \& adapters:
+\code{core/} (domain + ports) hướng vào trong, còn \code{adapters/} (inbound + outbound)
+hướng ra ngoài; nói cách khác, layout của source code cũng chính là kiến trúc. Một
+automated fitness test (\code{tests/architecture/test\_hexagon.py}) kiểm tra hướng
+dependency và sẽ fail nếu \code{core/} xuất hiện import mới từ \code{adapters/}.
+Các ngoại lệ hiện tại được theo dõi gồm việc pipeline vẫn trực tiếp khởi tạo các backend
+OCR/UIED/refiner; các ngoại lệ này sẽ được loại bỏ khi những thành phần tương ứng được
+đưa hoàn toàn ra sau các port.
 
 \begin{figure}[H]
   \centering
@@ -403,10 +404,10 @@ Mỗi driven port (detector, capture, actuator) dùng chung một cấu trúc n�
 Việc lặp lại một mẫu duy nhất cho ba port là cơ chế hiện thực hóa NFR1 và NFR2.
 
 \section{Cấp 2 --- thành phần nội bộ của CV pipeline}
-Package \code{adapters.outbound.detectors} chứa tập hiện thực port
-\code{DetectorBackend} --- một registry factory cùng các backend
-UIED/YOLO/OmniParser/gRPC; \code{core.domain.pipeline} còn sở hữu các bước
-merge/split/NMS, smart-merge, reading-order và SLM review (Ch.~6).
+Package \code{adapters.outbound.detectors} chứa tập implementation của port
+\code{DetectorBackend} --- gồm registry factory và các backend
+UIED/YOLO/OmniParser/gRPC. Trong khi đó, \code{core.domain.pipeline} đảm nhiệm các bước
+merge/split/NMS, smart-merge, reading order và SLM review (Ch.~6).
 
 % =====================================================================
 \chapter{Góc nhìn Runtime}
