@@ -58,6 +58,9 @@ results/
 # User's own session config (keep the tracked template vizdom.config.example.json)
 vizdom.config.json
 
+# Scratch / personal working files (never part of the project)
+tmp/
+
 # OS
 .DS_Store
 Thumbs.db

@@ -43,6 +43,7 @@ class ActionKeywords:
         nx, ny = self._norm_point(element)
         self._get_actuator().tap(nx, ny, self._image_size(), click_type=click_type)
         time.sleep(self.click_delay)
+        self._mark_dom_stale()  # ADR-023: screen may no longer match the DOM
 
     @keyword("Click At Coordinates")
     def click_at_coordinates(self, x: int, y: int, click_type: str = "single") -> None:
@@ -61,6 +62,7 @@ class ActionKeywords:
         nx, ny = self._norm_xy(int(x), int(y))
         self._get_actuator().tap(nx, ny, self._image_size(), click_type=click_type)
         time.sleep(self.click_delay)
+        self._mark_dom_stale()  # ADR-023
 
     @keyword("Type Text Visual")
     def type_text_visual(self, locator: str, text: str, clear_first: bool = False) -> None:
@@ -77,6 +79,7 @@ class ActionKeywords:
             actuator.clear_text()
             time.sleep(0.05)
         actuator.type_text(text)
+        self._mark_dom_stale()  # ADR-023
 
     @keyword("Type Text")
     def type_text(self, text: str) -> None:
@@ -87,6 +90,7 @@ class ActionKeywords:
             | Type Text | Hello World |
         """
         self._get_actuator().type_text(text)
+        self._mark_dom_stale()  # ADR-023
 
     @keyword("Press Key")
     def press_key(self, key: str) -> None:
@@ -99,6 +103,7 @@ class ActionKeywords:
             | Press Key | alt+f4 |
         """
         self._get_actuator().press_key(key)
+        self._mark_dom_stale()  # ADR-023
 
     @keyword("Clear Text Visual")
     def clear_text_visual(self, locator: str) -> None:
@@ -110,6 +115,7 @@ class ActionKeywords:
         """
         self.click_visual(locator)
         self._get_actuator().clear_text()
+        self._mark_dom_stale()  # ADR-023
 
     @keyword("Scroll Visual")
     def scroll_visual(
@@ -131,6 +137,7 @@ class ActionKeywords:
             nx, ny = 0.5, 0.5  # screen center
         self._get_actuator().scroll(nx, ny, direction=direction,
                                     amount=int(amount), image_size=self._image_size())
+        self._mark_dom_stale()  # ADR-023
 
     @keyword("Wait And Click Visual")
     def wait_and_click_visual(
@@ -155,6 +162,7 @@ class ActionKeywords:
                     nx, ny = self._norm_point(element)
                     self._get_actuator().tap(nx, ny, self._image_size(), click_type=click_type)
                     time.sleep(self.click_delay)
+                    self._mark_dom_stale()  # ADR-023
                     return
             except (ValueError, RuntimeError):
                 pass
@@ -180,3 +188,4 @@ class ActionKeywords:
         nx2, ny2 = self._norm_point(self._find_element(target_locator))
         self._get_actuator().swipe(nx1, ny1, nx2, ny2,
                                    image_size=self._image_size(), duration=float(duration))
+        self._mark_dom_stale()  # ADR-023

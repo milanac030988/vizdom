@@ -36,6 +36,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [019](019-pluggable-actuator-service.md) | Pluggable Input Actuation (Strategy + Auto-Discovery + Service) | Accepted | 2026-07-27 |
 | [020](020-client-session-config.md) | Client Session Configuration (`connect` + JSON config) | Accepted | 2026-07-29 |
 | [022](022-description-based-locator.md) | Description-Based Locator (`desc=`) via Tiered Grounding | Accepted | 2026-07-30 |
+| [023](023-post-action-recap.md) | Post-Action Recap for Property Verification | Accepted | 2026-07-31 |
 
 ## Summary
 
