@@ -679,7 +679,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 <tr><td>Ánh xạ vai trò</td><td>Thông tin tương tác + geometry tự điều chỉnh theo độ phân giải + caption keyword để phân biệt các role</td>
 <td>Suy ra role button / input / checkbox / icon từ đầu ra chỉ có text hoặc icon → accuracy 0.09 → 0.87</td></tr>
 <tr><td>Đọc ký hiệu</td><td>Crop sát và chuẩn hóa glyph → loại outline rỗng → template matching với mẫu render từ font bằng Dice score và threshold riêng cho từng ký hiệu</td>
-<td>Đọc các ký hiệu + − = × ÷ mà OCR bỏ sót → 14/15 trường hợp đúng</td></tr>
+<td>Đọc các ký hiệu + − = × ÷ mà OCR bỏ sót → 20/20 trường hợp đúng</td></tr>
 <tr><td>Phân cấp</td><td>Containment threshold, nhóm theo alignment, liên kết label theo khoảng cách và vị trí, sắp xếp theo reading order</td>
 <td>Tạo cây có thể truy vấn — tầng mà các hệ thống so sánh chưa xây dựng</td></tr>
 <tr><td>Ngữ nghĩa</td><td>Tách riêng hai kênh <code>text</code> / <code>label</code>; ưu tiên label lân cận &gt; caption &gt; text của chính phần tử</td>
@@ -742,7 +742,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 <div>
 <div class="kpi">
-<div><b>14/15</b><span>Control thử nghiệm được nhận đúng</span></div>
+<div><b>20/20</b><span>Control thử nghiệm được nhận đúng</span></div>
 <div><b>21 → 4</b><span>Detection trên một ảnh tổng hợp<br/>(phần giảm là false positive)</span></div>
 </div>
 <div class="card good"><p style="margin:0"><code>÷ × − + =.</code> đều được nhận đúng · dấu gạch trên title bar → <code>-</code> · nút Close → <code>×</code> · nút Maximize được <strong>loại đúng</strong> · chữ số và icon không liên quan được bỏ qua</p></div>
@@ -884,7 +884,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 <div class="kpi" style="justify-content:center;margin-top:1.4em">
 <div><b>0.09→0.87</b><span>độ chính xác vai trò</span></div>
 <div><b>0.97</b><span>trúng tâm (thao tác được)</span></div>
-<div><b>14/15</b><span>đọc glyph</span></div>
+<div><b>20/20</b><span>đọc glyph</span></div>
 <div><b>22</b><span>ADR</span></div>
 </div>
 <p class="small" style="margin-top:2em">Tài liệu và báo cáo: <code>docs/</code> · <code>report/</code> (tổng quan + arc42, tiếng Anh + tiếng Việt)<br/>Trang tài liệu: <strong>milanac030988.github.io/vizdom</strong></p>

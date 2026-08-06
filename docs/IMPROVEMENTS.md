@@ -85,6 +85,22 @@ only accepts sure matches). Known miss: the Windows `±` key draws a diagonal
 something wrong. Symbol results feed `text` (they are literal pixel reads), so a
 `+` key is clickable as `text="+"` even when its caption is noise.
 
+**Second iteration — thick-glyph themes and canonical labels.** A larger capture
+(402×625, thick rounded glyphs) broke the reader again: the binarization
+*selected the wrong candidate* — an adaptive-threshold **ring artifact** (the
+glyph appearing as a hole inside a blob) had the density closest to the selection
+heuristic, so a fat `×` matched the filled-dot template (`'.'`) and `÷`/`−` matched
+nothing. Fixes: (a) **evaluate every binarization candidate** (both Otsu
+polarities + adaptive) through template matching and keep the best overall — ring
+artifacts match nothing, the correct polarity wins by score; (b) a structural
+gate for `.` (a decimal dot must be tiny relative to its key), killing the
+fat-blob false positives class-wide; (c) **bold font templates** for thick-rendered
+glyphs. Result: **20/20 across both themes** with zero regressions. Additionally,
+a confident glyph read now sets a **canonical semantic label** (`÷`→"Divide",
+`×`→"Multiply", `−`→"Minus") outside the title bar, replacing look-alike caption
+noise ("Add"/"Close"/"Minimize" on operator keys) — while title-bar controls keep
+their captions, where "Close"/"Minimize" are the correct names.
+
 **Code / config.** `src/visual_dom/cv/symbol_detector.py`; pipeline stage 4c.
 Config: `symbols.enabled`, `symbols.min_score` (null = calibrated ~0.70; raise =
 stricter, lower = recover faint glyphs).
