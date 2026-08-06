@@ -31,10 +31,21 @@ class AssertionKeywords:
         return finder
 
     def _match(self, locator: str) -> list:
-        """Elements in the current DOM matching ``locator`` (may be empty)."""
+        """
+        Elements in the current DOM matching ``locator`` (may be empty).
+
+        Honours ``||`` fallback chains (ADR-024): alternatives are tried in
+        order and the first that matches anything is returned. For an existence
+        check, several matches are fine (unlike a click), so ambiguity is not a
+        miss here.
+        """
         from ..locators import LocatorParser
         finder = self._assert_finder()
-        return finder.find(LocatorParser.parse(locator))
+        for group in LocatorParser.parse_alternatives(locator):
+            found = finder.find(group)
+            if found:
+                return found
+        return []
 
     @staticmethod
     def _to_secs(value) -> float:

@@ -280,9 +280,10 @@ body.notes-on .slide.active .notes{display:block}
 </div>
 <div class="card">
 <h3 style="margin-top:0">5 · Viết kiểm thử bằng Robot Framework</h3>
-<p class="small" style="color:var(--fg);margin:0"><strong>24 từ khóa</strong> — Connect,
-          Dump Visual DOM, Click Visual, Type Text Visual, Visual Should Exist,
-          Wait Until Visual Appears, Get Element Property/Text/Label/Center, …</p>
+<p class="small" style="color:var(--fg);margin:0"><strong>25 từ khóa</strong> — Connect,
+          Dump Visual DOM, Click Visual, Type Text Visual, <strong>Verify Element Value</strong>
+          (đọc lại trực tiếp từ màn hình), Visual Should Exist, Wait Until Visual Appears,
+          Get Element Property/Text/Label/Center, …</p>
 </div>
 <div class="card">
 <h3 style="margin-top:0">6 · Tìm phần tử bằng 6 loại locator</h3>
@@ -298,12 +299,12 @@ body.notes-on .slide.active .notes{display:block}
 </div>
 <div class="card good">
 <h3 style="margin-top:0;color:var(--good)">9 · Quan sát, đánh giá và mở rộng</h3>
-<p class="small" style="color:var(--fg);margin:0"><strong>Viewer</strong> tương tác để xem và chỉnh sửa DOM, xuất resource cho Robot Framework; <strong>bộ công cụ đánh giá</strong> tạo metrics và report; các bộ sinh dataset; cùng cơ chế <strong>plugin</strong> chỉ cần bổ sung một file.</p>
+<p class="small" style="color:var(--fg);margin:0"><strong>Viewer</strong> tương tác để xem và chỉnh sửa DOM, xuất resource cho Robot Framework; <strong>bộ công cụ đánh giá</strong> tạo metrics và report; các bộ sinh dataset; cùng cơ chế <strong>plugin</strong> chỉ cần bổ sung một file. Mỗi lần chạy còn lưu một <strong>session</strong> gồm screenshot, detections, DOM và <strong>window title / process</strong> đã được phân tích để tiện đối chiếu về sau.</p>
 </div>
 </div>
 <p class="small" style="margin-top:.8em">Tùy chọn: một bước tinh chỉnh bằng LM/VLM nhỏ (tách / đổi loại / gộp / gán label). Mỗi session lưu lại screenshot, detections và DOM để có thể kiểm tra lại. <span class="dim">Hai thành phần chính: engine và thư viện Robot Framework sử dụng engine này.</span></p>
 </div>
-<div class="notes"><b>Slide trọng tâm của Phương thức 3:</b> đây là phần thể hiện sản phẩm kỹ thuật. Mỗi chức năng đều đã được hiện thực và có thể demo; các con số 4 detector, 5 nguồn capture và 24 keywords cũng là bằng chứng cho quality scenario về khả năng mở rộng (Q-01).</div>
+<div class="notes"><b>Slide trọng tâm của Phương thức 3:</b> đây là phần thể hiện sản phẩm kỹ thuật. Mỗi chức năng đều đã được hiện thực và có thể demo; các con số 4 detector, 5 nguồn capture và 25 keywords cũng là bằng chứng cho quality scenario về khả năng mở rộng (Q-01).</div>
 </section>
 <!-- 6 ─────────────────────────────────────────── -->
 <section class="slide">
@@ -672,13 +673,13 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 <tr><th>Giai đoạn</th><th>Kỹ thuật / thuật toán</th><th>Mục đích</th></tr>
 <tr><td>Phát hiện</td><td>CV truyền thống coarse-to-fine theo UIED (binarization → connected components); YOLOv8 phát hiện icon + Florence-2 tạo caption trong OmniParser</td>
 <td>Tạo bounding box từ pixel bằng CV truyền thống hoặc deep learning, tùy cấu hình</td></tr>
-<tr><td>OCR</td><td>Upscale khoảng 3× cho chữ nhỏ; chạy OCR lần hai bằng engine khác khi confidence thấp; đưa OCR ensemble vào OmniParser để bù vùng bị bỏ sót</td>
+<tr><td>OCR</td><td>Upscale khoảng 3× cho chữ nhỏ; chạy OCR lần hai bằng engine khác khi confidence thấp; đưa OCR ensemble vào OmniParser theo cơ chế <strong>prefer-external union</strong></td>
 <td>Khôi phục text nhỏ hoặc mờ bị lần OCR đầu bỏ sót</td></tr>
-<tr><td>Gộp và loại trùng</td><td>NMS theo từng loại; cross-type suppression theo luật ưu tiên; loại các detection gần trùng; quét lại từng region; tách theo vị trí text; smart-merge có guard dựa trên fill ratio</td>
+<tr><td>Gộp và loại trùng</td><td>NMS theo từng loại; cross-type suppression theo luật ưu tiên; loại các detection gần trùng; quét lại từng region; chỉ tách theo vị trí text khi detector không đánh dấu đó là một control tương tác duy nhất và khoảng cách giữa các từ đủ lớn; smart-merge có guard dựa trên fill ratio</td>
 <td>Mỗi control chỉ còn một detection nhất quán trên GUI dày đặc</td></tr>
 <tr><td>Ánh xạ vai trò</td><td>Thông tin tương tác + geometry tự điều chỉnh theo độ phân giải + caption keyword để phân biệt các role</td>
 <td>Suy ra role button / input / checkbox / icon từ đầu ra chỉ có text hoặc icon → accuracy 0.09 → 0.87</td></tr>
-<tr><td>Đọc ký hiệu</td><td>Crop sát và chuẩn hóa glyph → loại outline rỗng → template matching với mẫu render từ font bằng Dice score và threshold riêng cho từng ký hiệu</td>
+<tr><td>Đọc ký hiệu</td><td>Crop sát và chuẩn hóa glyph → loại outline rỗng → template matching bằng Dice trên <em>tất cả</em> kết quả nhị phân hóa, với threshold riêng cho từng ký hiệu</td>
 <td>Đọc các ký hiệu + − = × ÷ mà OCR bỏ sót → 20/20 trường hợp đúng</td></tr>
 <tr><td>Phân cấp</td><td>Containment threshold, nhóm theo alignment, liên kết label theo khoảng cách và vị trí, sắp xếp theo reading order</td>
 <td>Tạo cây có thể truy vấn — tầng mà các hệ thống so sánh chưa xây dựng</td></tr>
@@ -739,13 +740,16 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 <li>Loại bỏ các hình outline rỗng bằng kiểm tra cấu trúc</li>
 <li>So khớp bằng Dice score với <strong>template được render từ font</strong>; chỉ nhận kết quả tốt nhất khi đủ confidence và đủ khác biệt so với ứng viên kế tiếp</li>
 </ol>
+<div class="card warn"><p class="small" style="margin:0;color:var(--fg)">
+<strong>Vòng cải tiến thứ hai — một theme có nét glyph dày hơn lại làm lỗi xuất hiện.</strong> Bước binarization đã <em>chọn nhầm candidate</em>: adaptive threshold tạo ra một <strong>artefact dạng vòng</strong> (glyph trở thành lỗ rỗng bên trong một khối), nhưng candidate này lại có điểm density cao nhất. Kết quả là dấu <code>×</code> nét dày bị match thành dấu chấm đặc. Cách sửa: đưa <strong>tất cả</strong> phương án binarization qua template matching rồi chọn kết quả tốt nhất; artefact dạng vòng không khớp template nào. Đồng thời bổ sung size gate cho dấu <code>.</code> và các template font đậm.</p></div>
 </div>
 <div>
 <div class="kpi">
-<div><b>20/20</b><span>Control thử nghiệm được nhận đúng</span></div>
+<div><b>20/20</b><span>Control thử nghiệm trên hai theme</span></div>
 <div><b>21 → 4</b><span>Detection trên một ảnh tổng hợp<br/>(phần giảm là false positive)</span></div>
 </div>
-<div class="card good"><p style="margin:0"><code>÷ × − + =.</code> đều được nhận đúng · dấu gạch trên title bar → <code>-</code> · nút Close → <code>×</code> · nút Maximize được <strong>loại đúng</strong> · chữ số và icon không liên quan được bỏ qua</p></div>
+<div class="card good"><p style="margin:0"><code>÷ × − + = .</code> đều được nhận đúng · dấu gạch trên title bar → <code>-</code> · nút Close → <code>×</code> · nút Maximize được <strong>loại đúng</strong> · chữ số và icon không liên quan được bỏ qua</p></div>
+<div class="card good" style="margin-top:.9em"><p class="small" style="margin:0;color:var(--fg)">Khi nhận dạng đủ tin cậy, hệ thống còn gán <strong>label chuẩn hóa</strong>: <code>÷</code>→“Divide”, <code>×</code>→“Multiply”, <code>−</code>→“Minus”. Các label này thay thế caption bị nhiễu như “Add” / “Close” / “Minimize” trên phím toán tử; còn control trên title bar vẫn giữ caption vì đó mới là tên thực của chúng.</p></div>
 <div class="card warn" style="margin-top:.9em"><p class="small" style="margin:0;color:var(--fg)">Trường hợp chưa nhận được: phím <code>±</code> trên Windows dùng một glyph ghép có đường chéo, không khớp với template hiện tại. Hệ thống trả về <strong>không có kết quả thay vì trả kết quả sai</strong>.</p></div>
 <p class="small">Để hỗ trợ ký hiệu mới chỉ cần thêm ký tự vào danh sách cấu hình; tập ký hiệu là dữ liệu, không hard-code trong logic. Ngưỡng confidence cũng có thể cấu hình.</p>
 </div>
@@ -779,6 +783,34 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 </div>
 <div class="notes"><b>Giá trị khoa học:</b> đây là một phép đo có thể tái lập về robustness của caption model trên GUI glyph. Kết quả đáng được báo cáo như một kết quả nghiên cứu, không chỉ như một bug fix.</div>
+</section>
+<!-- 16b ───────────────────────────────────────── -->
+<section class="slide">
+<h2>Cải tiến 4 — đánh giá tổ hợp detector × OCR trên ứng dụng thực tế</h2>
+<div class="grow">
+<p class="small">Đánh giá định tính A/B/C/D trên một ứng dụng doanh nghiệp thực tế (980×562) — đúng loại màn hình dự án hướng tới, không phải dữ liệu tổng hợp. Mỗi ô thể hiện một nhóm lỗi đã quan sát được.</p>
+<table>
+<tr><th>Tổ hợp</th><th>Icon</th><th>Nút dạng tile</th><th>Text trạng thái nhỏ</th><th>Link cuối màn hình</th></tr>
+<tr><td>UIED + EasyOCR</td><td class="n lose">Bỏ sót một số</td><td class="n win">Giữ nguyên khối</td>
+<td class="n win">Đọc được</td><td class="n lose">Bị gộp thành một</td></tr>
+<tr><td>OmniParser + EasyOCR <span class="tag">trước khi sửa</span></td><td class="n win">Đầy đủ</td>
+<td class="n lose">Bị tách thành 2–3 phần</td><td class="n lose">Bỏ sót nhiều dòng</td><td class="n win">Tách đúng</td></tr>
+<tr><td>OmniParser + Tesseract</td><td class="n win">Đầy đủ</td><td class="n win">Giữ nguyên khối</td>
+<td class="n lose">Bỏ sót nhiều dòng</td><td class="n win">Tách đúng</td></tr>
+<tr class="hi"><td><strong>OmniParser + EasyOCR</strong> <span class="tag">sau khi sửa</span></td>
+<td class="n win">Đầy đủ</td><td class="n win">Giữ nguyên khối</td><td class="n win">Đọc được</td>
+<td class="n win">Tách đúng</td></tr>
+</table>
+<div class="cols" style="margin-top:.7em">
+<div class="card bad"><h3 style="margin-top:0;color:var(--bad)">Hai lỗi nằm trong pipeline của dự án, không phải ở model</h3>
+<p class="small" style="margin:0;color:var(--fg)"><strong>Mất các dòng trạng thái:</strong> OCR ensemble trước đây chỉ <em>bù chỗ trống</em>. Khi OCR nội bộ của OmniParser đã tạo một kết quả rác trong box cao 8 px (<code>~ctive</code> thay vì “Active”), kết quả tốt hơn từ OCR có upscale bị bỏ qua vì bị xem là trùng; box nhỏ sau đó lại bị size filter loại bỏ, khiến cả dòng biến mất.<br/>
+<strong>Nút tile bị tách:</strong> splitter chia mọi control chứa từ hai OCR box trở lên. EasyOCR trả box theo <em>từng từ</em>, nên “Check Now” bị tách thành hai nửa; Tesseract trả box theo dòng nên không lộ lỗi này.</p></div>
+<div class="card good"><h3 style="margin-top:0;color:var(--good)">Cách sửa</h3>
+<p class="small" style="margin:0;color:var(--fg)">OCR ensemble chuyển sang cơ chế <strong>prefer-external union</strong>: kết quả từ OCR có upscale sẽ thay thế kết quả yếu hơn nếu hai box overlap. Splitter <strong>không bao giờ chia một control đã được detector đánh dấu là một phần tử tương tác duy nhất</strong>; các trường hợp khác chỉ được tách khi khoảng cách thực sự đủ lớn (≥1,5× chiều cao text). Nếu cấu hình một OCR engine chưa được cài đặt, hệ thống giờ <strong>fail fast</strong> kèm hướng dẫn cài đặt thay vì âm thầm suy giảm chất lượng.</p></div>
+</div>
+<p class="small"><strong>Kết quả:</strong> tổ hợp được khuyến nghị hiện đã rõ ràng — OmniParser + EasyOCR đạt kết quả tốt ở cả bốn nhóm lỗi, đồng thời không gây regression trên bộ thử máy tính và benchmark tổng hợp.</p>
+</div>
+<div class="notes"><b>Điểm phương pháp:</b> đây là đánh giá định tính trên ứng dụng thật, bổ sung cho các chỉ số trên dữ liệu tổng hợp. Hai lỗi đều nằm trong pipeline của dự án và chỉ được phát hiện khi so sánh nhiều tổ hợp — một minh chứng thực tế cho việc detector và OCR engine cần có khả năng hoán đổi.</div>
 </section>
 <!-- 21 ────────────────────────────────────────── -->
 <section class="slide">

@@ -323,51 +323,95 @@ class CaptureKeywords:
 
         return dom
 
+    def _resolve_alternative(self, locators) -> tuple:
+        """
+        Resolve ONE alternative (an AND-group of locators) to a single element.
+
+        Returns (element_or_None, reason). `reason` explains a miss so a failed
+        chain can report why each alternative did not resolve.
+        """
+        from ..locators.locator import LocatorStrategy
+        try:
+            element = self._finder.find_one(locators)
+        except ValueError as exc:              # find_one raises on ambiguity
+            return None, str(exc)
+        if element is not None:
+            return element, "ok"
+
+        # desc= escalation (ADR-022): the finder only runs the deterministic
+        # lexical tier. If that missed and this alternative is a lone
+        # description, escalate through the configured chain (SLM over DOM,
+        # optionally VLM Set-of-Mark over the screenshot).
+        if len(locators) == 1 and locators[0].strategy == LocatorStrategy.DESC:
+            resolver = self._get_desc_resolver()
+            element, info = resolver.resolve(locators[0].value)
+            if element is not None:
+                print(f"desc= resolved by tier '{info['tier']}' "
+                      f"({info['reason']}) -> {element.get('id')}")
+                return element, "ok"
+            cands = ", ".join(str(c) for c in info.get("candidates", [])) or "none"
+            return None, f"no grounding tier confident (nearest: {cands})"
+
+        return None, "not found"
+
     @keyword("Get Visual Element")
     def get_visual_element(self, locator: str) -> dict:
         """
         Get element metadata from current DOM.
 
+        Supports **fallback chains** (ADR-024): alternatives separated by
+        ``||`` are tried in order and the first that resolves to exactly one
+        element wins. Within an alternative, several locators still mean AND.
+        An alternative that finds nothing *or* is ambiguous falls through to the
+        next one, so put the cheap deterministic locator first and the
+        resilient one last:
+
+            ``text=Save || desc="save button in the toolbar"``
+
+        When a later alternative wins, a warning names the one that failed —
+        that is a signal the primary locator has gone stale.
+
         Args:
-            locator: Element locator string
+            locator: Element locator string, optionally a ``||`` chain
 
         Returns:
             Element metadata dictionary
 
         Example:
             | ${elem}= | Get Visual Element | text=Login |
-            | Log | Element bounds: ${elem['bounds']} |
+            | ${elem}= | Get Visual Element | text=Login \\|\\| desc="login button" |
         """
         if not self._finder:
             raise RuntimeError("No DOM loaded. Call 'Dump Visual DOM' first.")
 
         from ..locators import LocatorParser
-        from ..locators.locator import LocatorStrategy
-        locators = LocatorParser.parse(locator)
-        element = self._finder.find_one(locators)
+        alternatives = LocatorParser.parse_alternatives(locator)
+        if not alternatives:
+            raise ValueError(f"Could not parse locator: {locator!r}")
 
-        # desc= escalation (ADR-022): the finder only runs the deterministic
-        # lexical tier. If that missed and the locator is a lone description,
-        # escalate through the configured chain (SLM over DOM, optionally VLM
-        # Set-of-Mark over the screenshot).
-        if element is None and len(locators) == 1 \
-                and locators[0].strategy == LocatorStrategy.DESC:
-            resolver = self._get_desc_resolver()
-            element, info = resolver.resolve(locators[0].value)
+        attempts = []
+        for index, group in enumerate(alternatives):
+            element, reason = self._resolve_alternative(group)
+            rendered = LocatorParser.render(group)
             if element is not None:
-                print(f"desc= resolved by tier '{info['tier']}' "
-                      f"({info['reason']}) -> {element.get('id')}")
-            else:
-                cands = ", ".join(str(c) for c in info.get("candidates", [])) or "none"
-                raise ValueError(
-                    f"Element not found: {locator} "
-                    f"(no grounding tier was confident; nearest candidates: {cands})"
-                )
+                if index > 0:
+                    failed = "; ".join(f"{r} ({why})" for r, why in attempts)
+                    print(f"WARN: locator fallback — used alternative #{index + 1} "
+                          f"'{rendered}' -> {element.get('id')}; earlier alternative(s) "
+                          f"failed: {failed}. The primary locator may be stale.")
+                return element
+            attempts.append((rendered, reason))
 
-        if element is None:
+        detail = "; ".join(f"#{i + 1} '{r}' -> {why}"
+                           for i, (r, why) in enumerate(attempts))
+        # "not found" would be wrong when the cause was ambiguity, so state the
+        # actual contract that failed: exactly one element.
+        if len(attempts) == 1 and attempts[0][1] == "not found":
             raise ValueError(f"Element not found: {locator}")
-
-        return element
+        raise ValueError(
+            f"Locator did not resolve to exactly one element: {locator} "
+            f"[tried {detail}]"
+        )
 
     @keyword("Get Visual Elements")
     def get_visual_elements(self, locator: str) -> list:
@@ -386,9 +430,14 @@ class CaptureKeywords:
         if not self._finder:
             raise RuntimeError("No DOM loaded. Call 'Dump Visual DOM' first.")
 
+        # Honours ``||`` fallback chains (ADR-024): the first alternative that
+        # matches anything wins; many matches are expected here by design.
         from ..locators import LocatorParser
-        locators = LocatorParser.parse(locator)
-        return self._finder.find(locators)
+        for group in LocatorParser.parse_alternatives(locator):
+            found = self._finder.find(group)
+            if found:
+                return found
+        return []
 
     @keyword("Get Element Center")
     def get_element_center(self, locator: str) -> Tuple[int, int]:

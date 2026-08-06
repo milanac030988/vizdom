@@ -28,6 +28,35 @@ class LinuxCapture(CaptureStrategy):
         except Exception:
             return False
 
+    def describe_target(self) -> dict:
+        """
+        Active window title via xdotool, else xprop (X11). Wayland exposes no
+        equivalent to unprivileged clients, so this returns {} there.
+        """
+        import shutil
+        import subprocess
+        try:
+            if shutil.which("xdotool"):
+                out = subprocess.run(["xdotool", "getactivewindow", "getwindowname"],
+                                     capture_output=True, timeout=5)
+                title = out.stdout.decode(errors="replace").strip()
+                if out.returncode == 0 and title:
+                    return {"window_title": title}
+            if shutil.which("xprop"):
+                root = subprocess.run(["xprop", "-root", "_NET_ACTIVE_WINDOW"],
+                                      capture_output=True, timeout=5)
+                text = root.stdout.decode(errors="replace")
+                win = text.rsplit(" ", 1)[-1].strip() if "0x" in text else ""
+                if win:
+                    name = subprocess.run(["xprop", "-id", win, "WM_NAME"],
+                                          capture_output=True, timeout=5)
+                    line = name.stdout.decode(errors="replace")
+                    if '"' in line:
+                        return {"window_title": line.split('"', 1)[1].rsplit('"', 1)[0]}
+        except Exception:
+            pass
+        return {}
+
     def capture(self) -> np.ndarray:
         import cv2
         import mss

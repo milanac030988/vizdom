@@ -22,6 +22,33 @@ class AndroidCapture(CaptureStrategy):
     def is_available(cls) -> bool:
         return shutil.which("adb") is not None
 
+    def describe_target(self) -> dict:
+        """The resumed activity — Android's precise equivalent of a window title."""
+        try:
+            cmd = [self._adb]
+            if self._serial:
+                cmd += ["-s", self._serial]
+            cmd += ["shell", "dumpsys", "activity", "activities"]
+            out = subprocess.run(cmd, capture_output=True, timeout=10)
+            if out.returncode != 0:
+                return {}
+            text = out.stdout.decode(errors="replace")
+            for line in text.splitlines():
+                if "mResumedActivity" in line or "mFocusedActivity" in line:
+                    for part in line.split():
+                        token = part.strip("{}")
+                        if "/" in token and "." in token:
+                            package, _, activity = token.partition("/")
+                            return {
+                                "window_title": token,   # package/.Activity
+                                "process_name": package,
+                                "activity": token,
+                                "device_serial": self._serial,
+                            }
+            return {"device_serial": self._serial} if self._serial else {}
+        except Exception:
+            return {}
+
     def capture(self) -> np.ndarray:
         import cv2
         cmd = [self._adb]

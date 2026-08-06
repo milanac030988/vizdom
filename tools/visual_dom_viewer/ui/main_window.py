@@ -1007,13 +1007,33 @@ class VisualDOMViewerWindow(QMainWindow):
         pass  # Could update status bar
 
     def _on_tree_selection_changed(self, selected, deselected):
-        """Handle tree view selection change."""
-        indexes = self._tree_view.selectedIndexes()
-        if indexes:
-            item = self._tree_model.itemFromIndex(indexes[0])
-            if item:
-                element_id = item.data(Qt.UserRole)
-                self._model.select_element(element_id)
+        """
+        Handle tree view selection change.
+
+        The tree is ExtendedSelection (Ctrl/Shift multi-select), so push ALL
+        selected ids to the model: the canvas highlights every one, and the last
+        becomes the primary selection for the property panel. selectedIndexes()
+        yields one index per (row, column), so de-duplicate by row.
+        """
+        seen, element_ids = set(), []
+        for index in self._tree_view.selectedIndexes():
+            key = (index.row(), index.parent())
+            if key in seen:
+                continue
+            seen.add(key)
+            item = self._tree_model.itemFromIndex(index)
+            if not item:
+                continue
+            element_id = item.data(Qt.UserRole)
+            if element_id and element_id not in element_ids:
+                element_ids.append(element_id)
+
+        if element_ids:
+            self._model.select_elements(element_ids)
+            if len(element_ids) > 1:
+                self._statusbar.showMessage(f"{len(element_ids)} elements selected")
+        else:
+            self._model.clear_selection()
 
     def _on_selection_changed(self, element: Optional[DOMElement]):
         """Handle selection changed in model."""
@@ -1111,6 +1131,14 @@ class VisualDOMViewerWindow(QMainWindow):
         )
         if not filepath:
             return
+
+        # Session provenance: offline analysis of a file — no live window.
+        self._capture_context = {
+            "capture_source": f"file:{os.path.basename(filepath)}",
+            "source_path": filepath,
+            "window_title": None,
+            "process_name": None,
+        }
 
         try:
             import cv2
@@ -1228,11 +1256,24 @@ class VisualDOMViewerWindow(QMainWindow):
             self._capture_action.setEnabled(True)
 
     def _capture_via_strategy(self, name, kwargs):
-        """Grab one frame via a CaptureStrategy and return PNG bytes."""
+        """
+        Grab one frame via a CaptureStrategy and return PNG bytes.
+
+        Also records session provenance by asking the strategy itself
+        (`describe_target()`, ADR-018): each strategy knows how to identify its
+        own target — Win32/X11 window title, the Android resumed activity, a
+        camera device, a remote endpoint — so this stays platform-agnostic here.
+        """
         import cv2
         from visual_dom.adapters.outbound.capture import create_capture
         cap = create_capture(name, **kwargs)
         try:
+            try:
+                target = cap.describe_target() or {}
+            except Exception:
+                target = {}
+            self._capture_context = dict(target)
+            self._capture_context["capture_source"] = f"strategy:{name}"
             frame = cap.capture()
         finally:
             try:
@@ -1271,6 +1312,18 @@ class VisualDOMViewerWindow(QMainWindow):
         if not self._platform_manager.is_connected:
             QMessageBox.warning(self, "Not Connected", "Please connect to a target first.")
             return
+
+        # Session provenance: the handler knows its connected target precisely.
+        try:
+            cfg = self._platform_manager.current_config
+            tgt = getattr(cfg, "target", None) if cfg else None
+            self._capture_context = {
+                "capture_source": f"window-handler:{getattr(cfg, 'platform', '?')}" if cfg else "window-handler",
+                "window_title": getattr(tgt, "title", None),
+                "process_name": getattr(tgt, "process_name", None),
+            }
+        except Exception:
+            self._capture_context = {"capture_source": "window-handler"}
 
         try:
             import time
@@ -1581,6 +1634,10 @@ class VisualDOMViewerWindow(QMainWindow):
                             "element_count": len(elements),
                             "cv_stats": result.get("stats", {}),
                         }
+                        # Session provenance: which app/window (or file) was
+                        # analyzed — set at acquisition time by the capture /
+                        # open-image paths.
+                        session_info.update(getattr(self, "_capture_context", None) or {})
                         info_path = os.path.join(session_dir, 'session_info.json')
                         with open(info_path, 'w', encoding='utf-8') as f:
                             _json.dump(session_info, f, indent=2)

@@ -245,6 +245,28 @@ class DOMViewerModel:
         )
         self._notify('selection_changed', self.selected_element)
 
+    def select_elements(self, element_ids) -> None:
+        """
+        Replace the whole selection with `element_ids` (order-preserving input).
+
+        Used by the tree view's ExtendedSelection: the LAST id becomes the
+        primary selection (drives the property panel) and ALL ids populate
+        `multi_selected_ids`, so the canvas highlights every selected element
+        rather than only one.
+        """
+        ids = [i for i in (element_ids or []) if i]
+        primary = ids[-1] if ids else None
+        selection = SelectionState(
+            selected_id=primary,
+            hovered_id=self.state.selection.hovered_id,
+            multi_selected_ids=set(ids),
+        )
+        self._update_state(
+            selection=selection,
+            mode=ViewerMode.SELECT if primary else ViewerMode.EXPLORE,
+        )
+        self._notify('selection_changed', self.selected_element)
+
     def select_element_at_point(self, x: int, y: int) -> Optional[DOMElement]:
         """Select element at given screen coordinates."""
         if not self._dom_tree:

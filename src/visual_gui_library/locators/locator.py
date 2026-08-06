@@ -75,6 +75,67 @@ class LocatorParser:
 
         return locators
 
+    #: separator between fallback alternatives in a multi-locator chain (ADR-024)
+    ALT_SEPARATOR = "||"
+
+    @classmethod
+    def split_alternatives(cls, locator_string: str) -> List[str]:
+        """
+        Split a locator string on ``||`` into ordered alternatives, ignoring any
+        separator that appears inside a quoted value.
+
+        ``text="a || b" || desc=fallback`` -> ['text="a || b"', 'desc=fallback']
+        """
+        parts, buf, in_quote, i = [], [], False, 0
+        s = locator_string or ""
+        while i < len(s):
+            ch = s[i]
+            if ch == '"':
+                in_quote = not in_quote
+                buf.append(ch)
+                i += 1
+                continue
+            if not in_quote and s.startswith(cls.ALT_SEPARATOR, i):
+                parts.append("".join(buf))
+                buf = []
+                i += len(cls.ALT_SEPARATOR)
+                continue
+            buf.append(ch)
+            i += 1
+        parts.append("".join(buf))
+        return [p.strip() for p in parts if p.strip()]
+
+    @classmethod
+    def parse_alternatives(cls, locator_string: str) -> List[List["Locator"]]:
+        """
+        Parse a locator chain into ordered alternatives (ADR-024).
+
+        Within an alternative, several locators still mean **AND** (the existing
+        intersection semantics); ``||`` separates alternatives to be tried in
+        order, e.g.::
+
+            role=button text=Save || desc="save button in the toolbar"
+
+        A string without ``||`` yields exactly one alternative, so existing
+        callers are unaffected.
+        """
+        groups = []
+        for raw in cls.split_alternatives(locator_string):
+            parsed = cls.parse(raw)
+            if parsed:
+                groups.append(parsed)
+        return groups
+
+    @staticmethod
+    def render(locators: List["Locator"]) -> str:
+        """Render a parsed alternative back to string form, for log/error text."""
+        out = []
+        for loc in locators:
+            value = loc.value
+            shown = f'"{value}"' if (" " in value or not value) else value
+            out.append(f"{loc.strategy.value}={shown}")
+        return " ".join(out)
+
 
 class ElementFinder:
     """Find elements in DOM using locators."""

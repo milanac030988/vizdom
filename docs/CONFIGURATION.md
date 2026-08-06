@@ -26,6 +26,11 @@ Unknown keys are rejected (so a typo like `backendd` fails loudly instead of bei
 silently ignored). Keys beginning with `_` (e.g. the `_help` block in the
 template) are treated as comments and ignored.
 
+A configured OCR engine that isn't installed also **fails fast** at
+`connect()` with an install hint — e.g. `ocr.engine: "paddleocr"` without the
+package raises rather than silently falling back to the detector's own OCR, which
+previously caused a quiet drop in text quality.
+
 ## 2. Use it from Python
 
 ```python

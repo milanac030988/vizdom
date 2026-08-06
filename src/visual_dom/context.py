@@ -48,8 +48,27 @@ class Session:
     # ---- construction of stage components -------------------------------- #
 
     @staticmethod
+    def _probe_ocr_engine(engine: str) -> None:
+        """
+        Fail fast when the configured OCR engine isn't installed. Without this a
+        missing engine silently degrades the run (e.g. `paddleocr` configured but
+        absent -> ensemble provider fails -> OmniParser's own OCR only), which is
+        exactly the kind of quiet quality loss a config should never cause.
+        """
+        import importlib.util
+        need = {"easyocr": "easyocr", "paddleocr": "paddleocr", "tesseract": "pytesseract"}
+        mod = need.get((engine or "").lower())
+        if mod and importlib.util.find_spec(mod) is None:
+            raise ValueError(
+                f"Configured OCR engine '{engine}' is not installed "
+                f"(missing package: {mod}). Install it (pip install {mod}) "
+                f"or set ocr.engine to an available one."
+            )
+
+    @staticmethod
     def _build_pipeline(cfg: VizDomConfig):
         from visual_dom.core.domain.pipeline import VisualDOMPipeline
+        Session._probe_ocr_engine(cfg.ocr.engine)
 
         det = cfg.detector
         detector_kwargs: Dict[str, Any] = {}
