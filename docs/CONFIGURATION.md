@@ -197,3 +197,114 @@ the application under test instead of whatever window happens to be on top.
     `window_scope`, a strategy that cannot scope to a window (a camera, an older
     service) falls back to a full-screen grab **with a warning** — element
     coordinates stay correct, but the DOM will include other windows.
+
+<!-- BEGIN GENERATED CONFIG REFERENCE (scripts/gen_config_reference.py) -->
+
+## 5. Full parameter reference
+
+Every field, generated from the config dataclasses and their in-code help
+(the same text `--init` embeds as the template's `_help` block) — a unit test
+keeps this section in sync with the code. `null` means "use the default
+described here".
+
+### `detector` — Stage 2 - element detection backend and its parameters
+
+| Parameter | Type | Default | Meaning |
+|---|---|---|---|
+| `backend` | str | `"uied"` | uied (CPU baseline) \| yolo \| omniparser (best actionable) \| hybrid |
+| `use_gpu` | bool | `true` | run the detector on CUDA when available (OmniParser/YOLO); UIED is CPU-only |
+| `confidence_threshold` | float | `0.3` | 0..1; lower = more detections (higher recall) |
+| `yolo_model_path` | str | `null` | path to trained YOLO weights (required for backend=yolo/hybrid) |
+| `omniparser_icon_detect_path` | str | `null` | null = auto-resolve from models/omniparser/ |
+| `omniparser_icon_caption_path` | str | `null` | null = auto-resolve from models/omniparser/icon_caption_florence |
+| `omniparser_text_ensemble` | bool | `true` | feed VizDOM OCR into OmniParser to recover text (ADR-016) |
+| `omniparser_box_threshold` | float | `0.05` | YOLO icon confidence cutoff (default 0.05); lower to ~0.03 to recover faint glyphs like a minimize button |
+| `grpc_target` | str | `"localhost:50051"` | host:port of a running detector gRPC service (used only when backend == 'grpc', ADR-017) |
+
+### `ocr` — Stage 1 - text detection engine
+
+| Parameter | Type | Default | Meaning |
+|---|---|---|---|
+| `engine` | str | `"easyocr"` | easyocr \| paddleocr \| tesseract \| none |
+| `languages` | list of str | `['en']` | OCR language codes passed to the engine, e.g. ["en"] |
+| `confidence_threshold` | float | `0.3` | drop OCR detections below this confidence (0..1) |
+
+### `refiner` — Stage 8 - optional small-LM/VLM element review (needs a running backend)
+
+| Parameter | Type | Default | Meaning |
+|---|---|---|---|
+| `enabled` | bool | `false` | run the optional small-LM/VLM element review stage (needs a running backend) |
+| `backend` | str | `"ollama"` | ollama \| openai |
+| `model` | str | `"qwen2.5:3b"` | model for the review pass, e.g. qwen2.5:3b |
+| `host` | str | `"http://localhost:11434"` | backend endpoint, e.g. http://localhost:11434 |
+
+### `merge` — Stage 2.5 - Merge & Deduplicate
+
+| Parameter | Type | Default | Meaning |
+|---|---|---|---|
+| `nms_iou_threshold` | float | `0.5` | per-type non-max-suppression IoU |
+| `cross_type_iou` | float | `0.4` | suppress overlapping boxes of different types above this IoU |
+| `duplicate_tolerance_px` | int | `5` | boxes whose corners differ by <= this many px (at 1080p) are duplicates |
+| `merge_oversegmented` | bool | `true` | fuse split multi-line labels/buttons back together |
+| `group_fill_ratio_min` | float | `0.5` | apply a merge only when members fill >= this fraction of the merged box (guards against fusing distinct controls) |
+
+### `hierarchy` — Stage 3 - Hierarchy Building (containment tree)
+
+| Parameter | Type | Default | Meaning |
+|---|---|---|---|
+| `containment_threshold` | float | `0.85` | fraction of a child's area that must sit inside its parent |
+| `min_containment_margin` | int | `5` | minimum px margin between child and parent edges for nesting |
+| `use_llm` | bool | `false` | let the refiner LLM adjust the built hierarchy (needs refiner.enabled) |
+| `llm_model` | str | `"ollama"` | model used for LLM hierarchy refinement |
+
+### `symbols` — Stage 4c - glyph/operator reading (+ - = x / etc.) via template matching
+
+| Parameter | Type | Default | Meaning |
+|---|---|---|---|
+| `enabled` | bool | `true` | run the glyph/operator reader (stage 4c) on textless elements |
+| `min_score` | float | `null` | null = structure decides (default); a value adds a template-agreement veto (raise = stricter) |
+
+### `filter` — resolution-aware size/count filters (referenced to 1080p)
+
+| Parameter | Type | Default | Meaning |
+|---|---|---|---|
+| `min_element_area` | int | `100` | drop elements smaller than this area in px^2 (referenced to 1080p) |
+| `min_element_size` | int | `10` | drop elements narrower or shorter than this many px (referenced to 1080p) |
+| `max_elements` | int | `200` | cap on elements kept per screen |
+
+### `capture` — how screens are acquired (RF client layer, ADR-018)
+
+| Parameter | Type | Default | Meaning |
+|---|---|---|---|
+| `strategy` | str | `null` | null=auto \| windows \| linux \| android \| camera \| grpc \| <plugin> |
+| `target` | str | `null` | host:port of a running capture gRPC service (when strategy == grpc) |
+| `camera_mode` | bool | `false` | rectify a physical screen photographed by a camera before analysis |
+| `window_title` | str | `null` | app under test to raise: window title, or package[/.Activity] on Android (ADR-021) |
+| `focus_before_capture` | bool | `false` | raise window_title before every grab, so the DOM is built from the app under test and not from whatever window is on top |
+| `window_scope` | bool | `false` | capture ONLY window_title's client area instead of the whole screen, so the DOM contains just that app (implies focusing; falls back to full screen with a warning if the strategy cannot) |
+
+### `actuator` — how input is delivered (RF client layer, ADR-019)
+
+| Parameter | Type | Default | Meaning |
+|---|---|---|---|
+| `strategy` | str | `null` | null=platform default \| desktop \| android \| grpc \| <plugin> |
+| `target` | str | `null` | host:port of a running actuator gRPC service (when strategy == grpc) |
+| `window_title` | str | `null` | app to raise for input; null = inherit capture.window_title (ADR-021) |
+
+### `grounding` — desc= locator resolution (ADR-022): tiered natural-language grounding
+
+| Parameter | Type | Default | Meaning |
+|---|---|---|---|
+| `tiers` | list of str | `['lexical', 'slm']` | escalation order; lexical (no model) \| slm (text LM over DOM) \| vlm (Set-of-Mark over image, opt-in) |
+| `backend` | str | `"ollama"` | ollama \| openai (for the slm/vlm tiers) |
+| `model` | str | `"qwen2.5:3b"` | text model for the slm tier |
+| `vision_model` | str | `"qwen2.5-vl:3b"` | vision model for the vlm (Set-of-Mark) tier |
+| `host` | str | `"http://localhost:11434"` | backend endpoint for the grounding tiers |
+
+### `output` — DOM compilation options
+
+| Parameter | Type | Default | Meaning |
+|---|---|---|---|
+| `generate_locators` | bool | `true` | emit ready-made locator suggestions per element into the DOM |
+
+<!-- END GENERATED CONFIG REFERENCE -->
