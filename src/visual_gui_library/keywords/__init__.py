@@ -54,6 +54,10 @@ class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
         actuator: str = None,
         capture_target: str = None,
         actuator_target: str = None,
+        app_title: str = None,
+        focus_before_capture: bool = False,
+        window_scope: bool = False,
+        screenshot_on_failure: bool = True,
         **kwargs
     ):
         """
@@ -70,6 +74,14 @@ class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
                 platform; desktop -> "desktop", android -> "android").
             capture_target: host:port for a remote capture service (capture=grpc).
             actuator_target: host:port for a remote actuator service (actuator=grpc).
+            app_title: Window title of the application under test (Android: package
+                or package/.Activity), used by ``Bring App To Front`` (ADR-021).
+            focus_before_capture: Raise ``app_title`` before every screen grab.
+            window_scope: Capture only ``app_title``'s window instead of the whole
+                screen, so the DOM contains just that application (ADR-021).
+            screenshot_on_failure: Attach a screenshot to the Robot log whenever a
+                keyword of this library fails (default on). Toggle at runtime with
+                ``Set Screenshot On Failure``.
         """
         CaptureKeywords.__init__(self)
         AssertionKeywords.__init__(self)
@@ -86,6 +98,76 @@ class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
         self._actuator_kwargs = {"target": actuator_target} if actuator_target else {}
         self._capture = None
         self._actuator = None
+
+        # Application targeting / focus (ADR-021). `Connect` overrides these from
+        # the config's capture.window_title / capture.focus_before_capture.
+        self._app_title = app_title
+        self._actuator_app_title = app_title
+        self._focus_before_capture = bool(focus_before_capture)
+        self._window_scope = bool(window_scope)
+        # Geometry of the last grab when it was window-scoped (a CaptureFrame), so
+        # coordinates measured on the crop map back to the device space.
+        self._capture_frame = None
+
+        # Failure evidence: capture the screen THROUGH THE CAPTURE PORT when one
+        # of our keywords fails, and embed it in the Robot log. Going through the
+        # port matters on a distributed run - the screenshot shows the machine
+        # under test (via the capture service), not the runner's desktop.
+        self._screenshot_on_failure = bool(screenshot_on_failure)
+        self._shot_index = 0
+        self._last_shot_exc = None      # dedup: one shot per propagating exception
+        self._capturing_failure = False  # re-entrancy guard
+        self._wrap_keywords_for_failure_capture()
+
+    # --- failure screenshots -------------------------------------------------
+
+    def _wrap_keywords_for_failure_capture(self):
+        """
+        Wrap every keyword so a failure captures the screen before re-raising.
+
+        A wrapper (rather than a Robot listener) is deliberate: inside the failing
+        keyword's execution the log message lands UNDER that keyword in log.html,
+        exactly where someone debugging looks - a listener's message would not.
+        Instance attributes shadow the class methods, so nested keyword calls
+        (Click Visual -> Get Visual Element) go through the wrappers too; the
+        exception-identity dedup below keeps that to ONE screenshot per failure.
+        """
+        import functools
+        import sys
+
+        for name in dir(type(self)):
+            if name.startswith("_"):
+                continue
+            attr = getattr(self, name)
+            if not callable(attr) or not hasattr(attr, "robot_name"):
+                continue
+            if name == "take_screenshot":   # taking the evidence must not recurse
+                continue
+
+            @functools.wraps(attr)
+            def wrapper(*args, __orig=attr, **kwargs):
+                try:
+                    return __orig(*args, **kwargs)
+                except Exception:
+                    exc = sys.exc_info()[1]
+                    if self._last_shot_exc is not exc:   # once per exception
+                        self._last_shot_exc = exc
+                        self._capture_failure_screenshot(__orig.__name__)
+                    raise
+
+            setattr(self, name, wrapper)
+
+    def _capture_failure_screenshot(self, keyword_name: str):
+        """Best-effort evidence capture; must never mask the original error."""
+        if not self._screenshot_on_failure or self._capturing_failure:
+            return
+        self._capturing_failure = True
+        try:
+            self.take_screenshot(name=f"fail-{keyword_name}")
+        except Exception as exc:  # noqa: BLE001 - the original failure wins
+            print(f"WARN: could not capture a failure screenshot: {exc}")
+        finally:
+            self._capturing_failure = False
 
     # --- strategy accessors (lazy) -------------------------------------------
 
@@ -134,7 +216,17 @@ class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
         return ((b[0] + b[2]) // 2, (b[1] + b[3]) // 2)
 
     def _norm_xy(self, x, y):
-        """Image-space pixel (x, y) -> normalized (nx, ny) using the current image size."""
+        """
+        Image-space pixel (x, y) -> normalized (nx, ny) for the actuator.
+
+        With a window-scoped capture (ADR-021) the image is a crop, so its pixels
+        must first be shifted by the crop's screen origin and then normalized
+        against the *device's* coordinate space - otherwise a click computed on a
+        402x658 crop would be applied to a 1920x1080 screen and land far away.
+        """
+        frame = getattr(self, "_capture_frame", None)
+        if frame is not None:
+            return frame.to_normalized(x, y)
         size = self._image_size()
         if not size:
             # Fall back to the actuator's own device size (e.g. desktop screen).

@@ -46,6 +46,68 @@ class CaptureKeywords:
                   f"refresh=screen), use 'Verify Element Value', or re-run "
                   f"'Dump Visual DOM'.")
 
+    # --- application focus (ADR-021) -----------------------------------------
+
+    def _grab_frame(self):
+        """
+        One screen grab, honouring the configured window scope (ADR-021).
+
+        Returns the BGR image and records the capture geometry on the library
+        (`self._capture_frame`), which `_norm_xy` uses to map coordinates measured
+        on a crop back to the device's own space. Every grab in the session must go
+        through here: mixing a window-scoped capture with a full-screen one would
+        invalidate cached element bounds (notably the recap re-grab, ADR-023).
+        """
+        cap = self._get_capture()
+        if getattr(self, "_window_scope", False) and getattr(self, "_app_title", None):
+            frame = None
+            try:
+                frame = cap.capture_window(self._app_title)
+            except Exception as exc:      # a strategy should not raise; be safe
+                print(f"WARN: window capture failed ({exc}); using the full screen")
+            if frame is not None:
+                self._capture_frame = frame
+                return frame.image
+            print(f"WARN: capture strategy '{cap.name}' could not capture "
+                  f"{self._app_title!r} alone (unsupported, not found, or it could "
+                  f"not be raised) - falling back to a full-screen grab. Element "
+                  f"coordinates stay correct; the DOM will include other windows.")
+        self._focus_before_grab()
+        image = cap.capture()
+        # A full-screen grab also has a place in the device space: the monitor it
+        # came from may not start at (0, 0) on a multi-monitor desktop. Strategies
+        # that report None (e.g. Android, where the capture buffer and the input
+        # resolution can differ) keep the proportional image-space mapping.
+        self._capture_frame = None
+        try:
+            geometry = cap.frame_geometry()
+        except Exception:
+            geometry = None
+        if geometry:
+            from visual_dom.core.ports.outbound.capture_port import CaptureFrame
+            origin, device_origin, device_size = geometry
+            self._capture_frame = CaptureFrame(
+                image=image, origin=tuple(origin),
+                device_size=tuple(device_size), device_origin=tuple(device_origin))
+        return image
+
+    def _focus_before_grab(self):
+        """
+        Opt-in hygiene before a screen grab: raise the SUT so we photograph IT and
+        not whatever window is on top (``capture.focus_before_capture``).
+
+        A failure only warns: the grab may still be perfectly usable, and one
+        transient foreground lock should not abort a suite. Use the explicit
+        `Bring App To Front` keyword where the raise must be fatal.
+        """
+        if not getattr(self, "_focus_before_capture", False):
+            return
+        if not getattr(self, "_app_title", None):
+            print("WARN: focus_before_capture is enabled but no window title is "
+                  "set - nothing to raise. Set capture.window_title in the config.")
+            return
+        self.bring_app_to_front(required=False)
+
     def _get_refresh_ocr(self):
         """TextDetector for element-region re-OCR, created once and reused."""
         if self._session is not None:
@@ -69,7 +131,7 @@ class CaptureKeywords:
         treatment. Updates one element only - if the whole layout may have
         changed, use refresh=screen / 'Dump Visual DOM' instead.
         """
-        shot = self._get_capture().capture()
+        shot = self._grab_frame()
         self._current_screenshot = shot
         h, w = shot.shape[:2]
         x1, y1, x2, y2 = element.get("bounds", [0, 0, 0, 0])
@@ -80,7 +142,21 @@ class CaptureKeywords:
                              f"the captured screen ({w}x{h}).")
         crop = shot[y1:y2, x1:x2]
 
-        texts = self._get_refresh_ocr().detect(crop)
+        # OCR the crop, escalating the upscale on an empty read: EasyOCR's text
+        # detection stage regularly drops an ISOLATED small character (a lone "4"
+        # on a key reads as nothing at native size but perfectly at 2x), and a
+        # single character is precisely what a value recap often looks at. Only
+        # the text matters here, not its coordinates, so re-rendering larger is
+        # free of side effects.
+        import cv2
+        texts = []
+        for factor in (1, 2, 4):
+            probe = crop if factor == 1 else cv2.resize(
+                crop, (crop.shape[1] * factor, crop.shape[0] * factor),
+                interpolation=cv2.INTER_CUBIC)
+            texts = self._get_refresh_ocr().detect(probe)
+            if texts:
+                break
         # Reading order (top->bottom, left->right), then join the pieces.
         texts.sort(key=lambda t: (t.bounds[1], t.bounds[0]))
         new_text = " ".join(t.text for t in texts if t.text).strip()
@@ -120,9 +196,10 @@ class CaptureKeywords:
         and parameters, Stage 2.5 merge/dedup, Stage 3 hierarchy, filters, the
         optional refiner, and capture. Call with no argument for all-defaults.
 
-        The config's ``capture`` section (strategy/target/camera_mode) is also
-        applied to this library's capture port, so a single file configures both
-        DOM generation and screen acquisition.
+        The config's ``capture`` and ``actuator`` sections (strategy/target) are
+        also applied to this library's ports, so a single file configures all
+        three: DOM generation (detector), screen acquisition, and input --- each
+        of which may be local or a remote gRPC service.
 
         Args:
             config: Path to a VizDOM JSON config file, or ``None`` for defaults.
@@ -156,7 +233,176 @@ class CaptureKeywords:
             self._capture_kwargs = {"target": cap.target} if cap.target else {}
             self._capture = None
 
+        # Same for the actuator port (ADR-019), so ONE config file drives all
+        # three ports - detector (via the session), capture and actuator.
+        act = getattr(cfg, "actuator", None)
+        if act and act.strategy and hasattr(self, "_actuator_name"):
+            self._actuator_name = act.strategy
+            self._actuator_kwargs = {"target": act.target} if act.target else {}
+            self._actuator = None
+
+        # Application targeting (ADR-021). The title is passed to focus_target()
+        # per call rather than into the constructor, so it works identically for a
+        # local grabber and for a remote strategy (whose constructor takes no
+        # title - the Focus RPC carries it instead).
+        if hasattr(self, "_app_title"):
+            if cap.window_title:
+                self._app_title = cap.window_title
+            act_title = getattr(act, "window_title", None) if act else None
+            # Both ports normally drive the same app, so the actuator inherits.
+            self._actuator_app_title = act_title or self._app_title
+            self._focus_before_capture = bool(
+                getattr(cap, "focus_before_capture", False)) or self._focus_before_capture
+            self._window_scope = bool(
+                getattr(cap, "window_scope", False)) or self._window_scope
+            if self._window_scope and not self._app_title:
+                raise ValueError(
+                    "capture.window_scope is enabled but capture.window_title is "
+                    "not set - there is no window to scope the capture to.")
+
         return cfg.to_dict()
+
+    @keyword("Bring App To Front")
+    def bring_app_to_front(self, title: Optional[str] = None,
+                           required: bool = True) -> bool:
+        """
+        Raise the application under test so it is the foreground window (ADR-021).
+
+        Why this matters: a screen grab photographs whatever is on top, clicks land
+        on whatever window is at that coordinate, and typed text goes to whatever
+        holds keyboard focus. If another window covers the SUT, the DOM is built
+        from the wrong pixels and the actions go to the wrong application.
+
+        Both ports can focus, so the capture strategy is tried first and the
+        actuator second --- that way a setup where only one of them can influence
+        the screen (e.g. a camera capture paired with a desktop actuator) still
+        works. Success is *verified* by the strategy, never assumed.
+
+        Args:
+            title: Window title to raise (Android: package or package/.Activity).
+                Defaults to ``capture.window_title`` from the config / the
+                library's ``app_title`` argument.
+            required: When true (default) an unfocusable target fails the keyword.
+                Pass ``${False}`` to downgrade it to a warning and return False.
+
+        Returns:
+            True if a strategy confirmed the target is now foreground.
+
+        Example:
+            | Bring App To Front | Calculator |
+            | Bring App To Front |            | # uses capture.window_title |
+            | Dump Visual DOM    |            |
+
+        Note:
+            Focusing mutates the SUT (it can dismiss tooltips or transient popups),
+            which is why it is an explicit step rather than implicit in every grab.
+            Windows may refuse the raise outright (foreground lock) --- that is
+            reported as a failure rather than hidden.
+        """
+        wanted = title or getattr(self, "_app_title", None)
+        if not wanted:
+            raise ValueError(
+                "Bring App To Front needs a window title: pass one, or set "
+                "capture.window_title in the config (or app_title= at import).")
+
+        # Per-port titles: the two ports may name the same app differently (an
+        # Android capture identifies it by activity, for instance).
+        act_title = title or getattr(self, "_actuator_app_title", None) or wanted
+        tried = []
+        for port_name, getter, port_title in (
+                ("capture", self._get_capture, wanted),
+                ("actuator", getattr(self, "_get_actuator", None), act_title)):
+            if getter is None:
+                continue
+            try:
+                strategy = getter()
+            except Exception as exc:      # port not available in this setup
+                tried.append(f"{port_name} unavailable ({exc})")
+                continue
+            if strategy.focus_target(port_title):
+                print(f"INFO: brought {wanted!r} to front via the {port_name} port "
+                      f"({strategy.name})")
+                return True
+            tried.append(f"{port_name}={strategy.name} declined")
+
+        message = (f"Could not bring {wanted!r} to the foreground "
+                   f"[{'; '.join(tried) or 'no port available'}]. The window may not "
+                   f"exist, its title may be ambiguous, or the OS refused the raise.")
+        if required:
+            raise AssertionError(message)
+        print(f"WARN: {message}")
+        return False
+
+    @keyword("Take Screenshot")
+    def take_screenshot(self, name: str = "vizdom-screenshot") -> str:
+        """
+        Capture the screen through the configured capture port and embed the
+        image in the Robot Framework log.
+
+        Because the grab goes through the capture strategy, it shows the machine
+        under test even in a distributed run (``capture=grpc`` fetches the frame
+        from the remote capture service), honours ``window_scope`` (the image is
+        the application under test, not the whole desktop), and raises the app
+        first when focusing is configured.
+
+        With ``screenshot_on_failure`` (default on), every failing keyword of
+        this library calls this automatically — the image lands in log.html
+        directly under the failing keyword.
+
+        Args:
+            name: Base name for the image file (saved in the Robot output dir).
+
+        Returns:
+            Path of the written PNG.
+
+        Example:
+            | Take Screenshot |
+            | Take Screenshot | after-login |
+            | # in a teardown, only when the test failed:
+            | Run Keyword If Test Failed | Take Screenshot |
+        """
+        import os
+        import re
+        import cv2
+
+        shot = self._grab_frame()
+
+        outdir = os.getcwd()
+        try:
+            from robot.libraries.BuiltIn import BuiltIn
+            outdir = BuiltIn().get_variable_value("${OUTPUTDIR}") or outdir
+        except Exception:
+            pass  # not running under Robot - save to cwd, skip log embedding
+
+        self._shot_index = getattr(self, "_shot_index", 0) + 1
+        safe = re.sub(r"[^\w.-]+", "_", name).strip("_") or "vizdom-screenshot"
+        filename = f"{safe}-{self._shot_index}.png"
+        path = os.path.join(outdir, filename)
+        if not cv2.imwrite(path, shot):
+            raise RuntimeError(f"could not write screenshot to {path}")
+
+        try:
+            from robot.api import logger
+            # Relative src keeps log.html portable when the output dir moves.
+            logger.info(f'<a href="{filename}"><img src="{filename}" '
+                        f'width="800px"></a>', html=True)
+        except Exception:
+            print(f"Screenshot saved: {path}")
+        return path
+
+    @keyword("Set Screenshot On Failure")
+    def set_screenshot_on_failure(self, enabled: bool = True) -> bool:
+        """
+        Turn automatic failure screenshots on or off for this session.
+
+        Returns the previous setting, so a suite can restore it:
+        | ${old}= | Set Screenshot On Failure | ${False} |
+        | ...     |
+        | Set Screenshot On Failure | ${old} |
+        """
+        previous = getattr(self, "_screenshot_on_failure", True)
+        self._screenshot_on_failure = bool(enabled)
+        return previous
 
     @keyword("Capture Screen")
     def capture_screen(self, region: Optional[str] = None) -> np.ndarray:
@@ -174,7 +420,7 @@ class CaptureKeywords:
             | ${img}= | Capture Screen |
             | ${img}= | Capture Screen | region=0,0,800,600 |
         """
-        screenshot = self._get_capture().capture()
+        screenshot = self._grab_frame()
 
         if region:
             parts = [int(x.strip()) for x in region.split(",")]
@@ -354,6 +600,37 @@ class CaptureKeywords:
 
         return None, "not found"
 
+    def _disambiguate_with_desc(self, group, rendered: str, desc_values) -> Optional[dict]:
+        """
+        Ambiguity arbitration (ADR-024): a property locator matched SEVERAL
+        elements — let a desc= from the same chain judge which one was meant,
+        by grounding the description over just those candidates.
+
+        This runs *before* falling through to the next alternative, because the
+        ambiguous matches carry real information: the wanted element is almost
+        certainly among them, and a 2-3 element pool is exactly where grounding
+        is at its most reliable (even the model-free lexical tier usually
+        separates "Plus" from "±"; configured SLM/VLM tiers judge a short,
+        focused list). Not confident -> return None and the chain continues
+        unchanged, so this can rescue a resolution but never corrupt one.
+        """
+        try:
+            candidates = self._finder.find(group)
+        except Exception:
+            return None
+        if len(candidates) < 2:
+            return None
+        resolver = self._get_desc_resolver()
+        for desc in desc_values:
+            element, info = resolver.resolve(desc, within=candidates)
+            if element is not None:
+                ids = ", ".join(str(c.get("id")) for c in candidates)
+                print(f"INFO: '{rendered}' matched {len(candidates)} elements "
+                      f"({ids}); desc={desc!r} disambiguated to "
+                      f"{element.get('id')} (tier '{info['tier']}', {info['reason']})")
+                return element
+        return None
+
     @keyword("Get Visual Element")
     def get_visual_element(self, locator: str) -> dict:
         """
@@ -385,14 +662,26 @@ class CaptureKeywords:
             raise RuntimeError("No DOM loaded. Call 'Dump Visual DOM' first.")
 
         from ..locators import LocatorParser
+        from ..locators.locator import LocatorStrategy
         alternatives = LocatorParser.parse_alternatives(locator)
         if not alternatives:
             raise ValueError(f"Could not parse locator: {locator!r}")
+
+        # Descriptions available for AMBIGUITY ARBITRATION: when a property
+        # locator matches several elements, a desc= elsewhere in the chain can
+        # judge WHICH of those candidates was meant — grounding over 2-3
+        # candidates is far more reliable than over the whole DOM, so this
+        # rescues chains like `text=+ || desc="plus button"` where the ± key's
+        # composite glyph also OCRs as "+".
+        desc_values = [g[0].value for g in alternatives
+                       if len(g) == 1 and g[0].strategy == LocatorStrategy.DESC]
 
         attempts = []
         for index, group in enumerate(alternatives):
             element, reason = self._resolve_alternative(group)
             rendered = LocatorParser.render(group)
+            if element is None and desc_values and "Multiple elements match" in reason:
+                element = self._disambiguate_with_desc(group, rendered, desc_values)
             if element is not None:
                 if index > 0:
                     failed = "; ".join(f"{r} ({why})" for r, why in attempts)
