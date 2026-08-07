@@ -97,6 +97,48 @@ def serve(backend_name, port, detector_kwargs, max_workers=4):
     server.wait_for_termination()
 
 
+def _resolve_omniparser_paths(args) -> dict:
+    """
+    Fill in OmniParser weight/repo paths the caller didn't give, from the
+    standard project locations — the same auto-resolution the in-process
+    pipeline does, so the service does not need three long flags to start.
+    Explicit flags and OMNIPARSER_* env vars still win.
+    """
+    import os
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                        "..", "..", "..", "..", ".."))
+    out = {}
+    if not args.icon_detect and not os.environ.get("OMNIPARSER_ICON_DETECT"):
+        cand = os.path.join(root, "models", "omniparser", "icon_detect", "model.pt")
+        if os.path.exists(cand):
+            out["icon_detect_path"] = cand
+    if not args.icon_caption and not os.environ.get("OMNIPARSER_ICON_CAPTION"):
+        cand = os.path.join(root, "models", "omniparser", "icon_caption_florence")
+        if os.path.isdir(cand):
+            out["icon_caption_path"] = cand
+    if not args.omniparser_root and not os.environ.get("OMNIPARSER_ROOT"):
+        cand = os.path.join(root, "third_party", "OmniParser")
+        if os.path.isdir(cand):
+            out["omniparser_root"] = cand
+    return out
+
+
+def _build_ocr_provider(engine: str, use_gpu: bool):
+    """
+    Build the OCR-ensemble provider for a server-side OmniParser (ADR-016).
+
+    The ensemble normally injects the *client* pipeline's upscaling OCR into
+    OmniParser, but that is a Python callable and cannot cross gRPC — so a
+    remote detector would silently fall back to OmniParser's own (weaker) OCR.
+    Constructing the TextDetector here restores the prefer-external ensemble on
+    the service side, which is what recovers small/low-contrast text rows.
+    """
+    from visual_dom.adapters.outbound.ocr.text_detector import TextDetector
+    detector = TextDetector(ocr_engine=engine, gpu=use_gpu, upscale=True)
+    log.info("OCR ensemble enabled on the service (engine=%s)", engine)
+    return lambda image: [(t.bounds, t.text) for t in detector.detect(image)]
+
+
 def main():
     ap = argparse.ArgumentParser(description="VizDOM detector gRPC server (ADR-017)")
     ap.add_argument("--backend", default="omniparser", choices=["uied", "yolo", "omniparser"])
@@ -106,12 +148,21 @@ def main():
     ap.add_argument("--icon-caption", default=None, help="OmniParser icon_caption dir")
     ap.add_argument("--omniparser-root", default=None)
     ap.add_argument("--yolo-model", default=None)
+    ap.add_argument("--ocr", default=None, metavar="ENGINE",
+                    help="OCR engine for the OmniParser text ensemble, run ON THIS "
+                         "SERVICE (easyocr|paddleocr|tesseract). Without it a remote "
+                         "OmniParser uses only its own OCR, since the client's OCR "
+                         "callable cannot cross gRPC.")
+    ap.add_argument("--box-threshold", type=float, default=None,
+                    help="OmniParser YOLO confidence cutoff (default 0.05); lower "
+                         "to ~0.03 to recover faint glyphs.")
     args = ap.parse_args()
 
     # Only backends that accept use_gpu get it (UIED is CPU-only, no such arg).
     kwargs = {}
+    use_gpu = not args.no_gpu
     if args.backend in ("yolo", "omniparser"):
-        kwargs["use_gpu"] = not args.no_gpu
+        kwargs["use_gpu"] = use_gpu
     if args.backend == "omniparser":
         if args.icon_detect:
             kwargs["icon_detect_path"] = args.icon_detect
@@ -119,6 +170,12 @@ def main():
             kwargs["icon_caption_path"] = args.icon_caption
         if args.omniparser_root:
             kwargs["omniparser_root"] = args.omniparser_root
+        kwargs.update(_resolve_omniparser_paths(args))
+        if args.box_threshold is not None:
+            kwargs["box_threshold"] = args.box_threshold
+        if args.ocr:
+            kwargs["ocr_provider"] = _build_ocr_provider(args.ocr, use_gpu)
+            kwargs["ocr_ensemble"] = True
     elif args.backend == "yolo" and args.yolo_model:
         kwargs["model_path"] = args.yolo_model
 

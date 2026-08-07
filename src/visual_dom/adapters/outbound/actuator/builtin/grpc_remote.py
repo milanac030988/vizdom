@@ -21,6 +21,9 @@ import os
 from typing import Optional, Tuple
 
 from visual_dom.core.ports.outbound.actuator_port import ActuatorStrategy
+from visual_dom.logging_utils import get_logger
+
+log = get_logger(__name__)
 
 
 class GrpcActuatorStrategy(ActuatorStrategy):
@@ -93,6 +96,27 @@ class GrpcActuatorStrategy(ActuatorStrategy):
         self._check(self._stub.Swipe(actuator_pb2.SwipeRequest(
             nx1=nx1, ny1=ny1, nx2=nx2, ny2=ny2,
             image_size=self._img(image_size), duration=duration), timeout=self.timeout))
+
+    def focus_target(self, title: Optional[str] = None) -> bool:
+        """
+        Ask the remote actuator service to raise the SUT window (ADR-021).
+
+        Unlike the action RPCs this does NOT raise on failure: focus is advisory
+        (the caller decides whether to abort), and a False must stay
+        distinguishable from an exception. Returns the server's *verified* result.
+        """
+        from visual_dom.generated import actuator_pb2
+        try:
+            self._connect()
+            resp = self._stub.Focus(
+                actuator_pb2.FocusRequest(title=title or ""), timeout=self.timeout)
+            if not resp.focused and resp.detail:
+                log.warning("Remote actuator %s could not focus %r: %s",
+                            self.target, title or "<server default>", resp.detail)
+            return bool(resp.focused)
+        except Exception as exc:  # noqa: BLE001 - best effort by contract
+            log.warning("Focus RPC to %s failed: %s", self.target, exc)
+            return False
 
     def close(self) -> None:
         if self._channel is not None:

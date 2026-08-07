@@ -1255,9 +1255,28 @@ class VisualDOMViewerWindow(QMainWindow):
         else:
             self._capture_action.setEnabled(True)
 
+    def _connected_target_title(self):
+        """Title of the window connected via the platform handler, if any."""
+        try:
+            if not self._platform_manager.is_connected:
+                return None
+            cfg = self._platform_manager.current_config
+            tgt = getattr(cfg, "target", None) if cfg else None
+            title = getattr(tgt, "title", None)
+            return title or None
+        except Exception:
+            return None
+
     def _capture_via_strategy(self, name, kwargs):
         """
         Grab one frame via a CaptureStrategy and return PNG bytes.
+
+        When a target window is connected, ask the strategy to capture **only that
+        window** (ADR-021). This is what makes "Connect to Calculator" meaningful on
+        the strategy path — including via the gRPC capture service, where the crop
+        is performed on the machine that owns the screen. If the strategy cannot do
+        it, fall back to raising the window and grabbing the full screen, so the app
+        is at least visible in the frame.
 
         Also records session provenance by asking the strategy itself
         (`describe_target()`, ADR-018): each strategy knows how to identify its
@@ -1267,6 +1286,7 @@ class VisualDOMViewerWindow(QMainWindow):
         import cv2
         from visual_dom.adapters.outbound.capture import create_capture
         cap = create_capture(name, **kwargs)
+        title = self._connected_target_title()
         try:
             try:
                 target = cap.describe_target() or {}
@@ -1274,7 +1294,38 @@ class VisualDOMViewerWindow(QMainWindow):
                 target = {}
             self._capture_context = dict(target)
             self._capture_context["capture_source"] = f"strategy:{name}"
-            frame = cap.capture()
+
+            captured = None
+            if title:
+                try:
+                    captured = cap.capture_window(title)
+                except Exception as e:
+                    print(f"[Viewer] Window capture failed ({e}); using full screen")
+                    captured = None
+                if captured is None:
+                    print(f"[Viewer] '{name}' cannot capture window {title!r} alone; "
+                          f"raising it and capturing the full screen instead")
+                    try:
+                        cap.focus_target(title)
+                    except Exception:
+                        pass
+
+            if captured is not None:
+                frame = captured.image
+                # Geometry is provenance AND the key to mapping DOM coordinates
+                # back to the screen (a second monitor may start at a negative x).
+                self._capture_context.update({
+                    "capture_scope": "window",
+                    "window_title": captured.window_title or title,
+                    "capture_origin": list(captured.origin),
+                    "device_origin": list(captured.device_origin),
+                    "device_size": list(captured.device_size),
+                })
+                print(f"[Viewer] Captured window {captured.window_title!r}: "
+                      f"{frame.shape[1]}x{frame.shape[0]} at origin {captured.origin}")
+            else:
+                frame = cap.capture()
+                self._capture_context["capture_scope"] = "screen"
         finally:
             try:
                 cap.close()
@@ -1341,11 +1392,15 @@ class VisualDOMViewerWindow(QMainWindow):
             self._show_progress("Step 2/3: Capturing screenshot...", 30)
             handler = self._platform_manager.current_handler
 
-            # Try multiple times to bring window to front
+            # Retry, but stop as soon as the raise is CONFIRMED: bring_to_front
+            # now verifies the foreground window (ADR-021) instead of reporting
+            # success whenever it did not throw.
             for _ in range(3):
                 if handler and hasattr(handler, 'bring_to_front'):
-                    handler.bring_to_front()
-                    time.sleep(0.3)  # Wait for window to come to front
+                    if handler.bring_to_front():
+                        QApplication.processEvents()
+                        break
+                    time.sleep(0.3)  # not there yet - let the WM settle and retry
                 QApplication.processEvents()
 
             # Additional delay to ensure window is fully rendered

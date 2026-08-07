@@ -2,6 +2,7 @@
 
 import shutil
 import subprocess
+import time
 
 import numpy as np
 
@@ -13,10 +14,13 @@ class AndroidCapture(CaptureStrategy):
     platform = "android"
     description = "Screenshot from a connected Android device/emulator via adb."
 
-    def __init__(self, serial: str = None, adb: str = "adb"):
+    def __init__(self, serial: str = None, adb: str = "adb", activity: str = None):
         # serial: target a specific device when several are attached (-s <serial>)
         self._serial = serial
         self._adb = adb
+        # activity: default target for focus_target(), "package/.Activity" or a
+        # bare package name (config: capture.window_title)
+        self._activity = activity
 
     @classmethod
     def is_available(cls) -> bool:
@@ -48,6 +52,33 @@ class AndroidCapture(CaptureStrategy):
             return {"device_serial": self._serial} if self._serial else {}
         except Exception:
             return {}
+
+    def focus_target(self, title: str = None) -> bool:
+        """
+        Bring an app to the foreground with `am start` (ADR-021).
+
+        ``title`` is a component (``com.example/.MainActivity``) or a bare package
+        name, in which case the launcher intent is used. Success is verified
+        against the resumed activity rather than adb's exit code — `am start`
+        happily reports success for an activity that then finishes.
+        """
+        wanted = (title or self._activity or "").strip()
+        if not wanted:
+            return False
+        try:
+            base = [self._adb] + (["-s", self._serial] if self._serial else [])
+            if "/" in wanted:
+                cmd = base + ["shell", "am", "start", "-n", wanted]
+            else:
+                cmd = base + ["shell", "monkey", "-p", wanted,
+                              "-c", "android.intent.category.LAUNCHER", "1"]
+            subprocess.run(cmd, capture_output=True, timeout=15)
+            time.sleep(0.6)                      # app launch is asynchronous
+            resumed = (self.describe_target().get("activity") or "")
+            package = wanted.split("/", 1)[0]
+            return package.lower() in resumed.lower()
+        except Exception:
+            return False
 
     def capture(self) -> np.ndarray:
         import cv2

@@ -10,12 +10,18 @@ REM   "D:\Python\python39\python.exe" -m pip install grpcio grpcio-tools
 REM   generate stubs (see docs/adr/017-distributed-hexagonal-grpc.md).
 REM
 REM Usage:
-REM   start_detector.bat                                      (uied, port 50051 - quick test)
-REM   start_detector.bat --backend omniparser --port 50051 ^
-REM       --icon-detect models\omniparser\icon_detect\model.pt ^
-REM       --icon-caption models\omniparser\icon_caption_florence
+REM   start_detector.bat                                 (uied, port 50051 - quick test)
+REM   start_detector.bat --backend omniparser --ocr easyocr
 REM   start_detector.bat --backend yolo --yolo-model models\pretrained\best.pt
-REM   (omniparser also auto-detects models\omniparser\ + third_party\OmniParser)
+REM
+REM   Weight paths auto-resolve from models\omniparser\ + third_party\OmniParser
+REM   (override with --icon-detect / --icon-caption / --omniparser-root, or the
+REM   OMNIPARSER_* env vars).
+REM
+REM   --ocr <engine> runs the OCR text ensemble ON THIS SERVICE. Use it: the
+REM   client's OCR callable cannot cross gRPC, so without --ocr a remote
+REM   OmniParser falls back to its own weaker OCR and small low-contrast text
+REM   rows get lost. --box-threshold 0.03 recovers faint glyphs.
 
 cd /d "%~dp0"
 set PYTHONPATH=%~dp0src

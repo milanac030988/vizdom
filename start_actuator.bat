@@ -14,7 +14,13 @@ REM   start_actuator.bat                        (OS auto-select strategy, port 5
 REM   start_actuator.bat --strategy desktop
 REM   start_actuator.bat --strategy android --serial <device>
 REM   start_actuator.bat --strategy robot-arm --kw port=COM3
+REM   start_actuator.bat --strategy desktop --window-title "Calculator"
 REM   start_actuator.bat --list                 (show discovered strategies)
+REM
+REM   --window-title <title> is the app this service raises when a client calls
+REM   Focus (ADR-021) without naming one. Focusing matters for correctness: a tap
+REM   lands on whatever window is at that coordinate, and typed text goes to
+REM   whatever holds keyboard focus.
 
 cd /d "%~dp0"
 set PYTHONPATH=%~dp0src

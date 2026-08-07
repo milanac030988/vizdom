@@ -18,10 +18,17 @@
     "hierarchy": "Stage 3 - Hierarchy Building (containment tree)",
     "hierarchy.containment_threshold": "fraction of a child's area that must sit inside its parent",
     "symbols": "Stage 4c - glyph/operator reading (+ - = x / etc.) via template matching",
-    "symbols.min_score": "null = calibrated defaults (~0.70 Dice); raise = stricter, lower = recover faint glyphs",
+    "symbols.min_score": "null = structure decides (default); a value adds a template-agreement veto (raise = stricter)",
     "filter": "resolution-aware size/count filters (referenced to 1080p)",
     "capture": "how screens are acquired (RF client layer, ADR-018)",
     "capture.strategy": "null=auto | windows | linux | android | camera | grpc | <plugin>",
+    "capture.window_title": "app under test to raise: window title, or package[/.Activity] on Android (ADR-021)",
+    "capture.focus_before_capture": "raise window_title before every grab, so the DOM is built from the app under test and not from whatever window is on top",
+    "capture.window_scope": "capture ONLY window_title's client area instead of the whole screen, so the DOM contains just that app (implies focusing; falls back to full screen with a warning if the strategy cannot)",
+    "actuator": "how input is delivered (RF client layer, ADR-019)",
+    "actuator.strategy": "null=platform default | desktop | android | grpc | <plugin>",
+    "actuator.target": "host:port of a running actuator gRPC service (when strategy == grpc)",
+    "actuator.window_title": "app to raise for input; null = inherit capture.window_title (ADR-021)",
     "grounding": "desc= locator resolution (ADR-022): tiered natural-language grounding",
     "grounding.tiers": "escalation order; lexical (no model) | slm (text LM over DOM) | vlm (Set-of-Mark over image, opt-in)",
     "output": "DOM compilation options"
@@ -75,7 +82,15 @@
   "capture": {
     "strategy": null,
     "target": null,
-    "camera_mode": false
+    "camera_mode": false,
+    "window_title": null,
+    "focus_before_capture": false,
+    "window_scope": false
+  },
+  "actuator": {
+    "strategy": null,
+    "target": null,
+    "window_title": null
   },
   "grounding": {
     "tiers": [

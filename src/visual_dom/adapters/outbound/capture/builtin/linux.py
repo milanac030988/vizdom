@@ -1,5 +1,7 @@
 """Linux screen capture (mss)."""
 
+import threading
+
 import numpy as np
 
 from visual_dom.core.ports.outbound.capture_port import CaptureStrategy
@@ -10,9 +12,15 @@ class LinuxCapture(CaptureStrategy):
     platform = "linux"
     description = "Full-screen grab on Linux/X11 via mss (needs a display)."
 
-    def __init__(self, monitor: int = 1):
+    def __init__(self, monitor: int = 1, window_title: str = None):
         self._monitor = monitor
-        self._sct = None
+        # window_title: default target for focus_target() (config: capture.window_title)
+        self._window_title = window_title
+        # One mss instance per thread: mss is not thread-safe and this strategy is
+        # shared by the gRPC service's worker pool (see the Windows strategy).
+        self._local = threading.local()
+        self._instances = []
+        self._lock = threading.Lock()
 
     @classmethod
     def is_available(cls) -> bool:
@@ -57,18 +65,37 @@ class LinuxCapture(CaptureStrategy):
             pass
         return {}
 
+    def focus_target(self, title: str = None) -> bool:
+        """Activate the SUT window via wmctrl/xdotool (X11 only) — ADR-021."""
+        from visual_dom.adapters.outbound import x11_window
+        wanted = title or self._window_title
+        if not wanted:
+            return False
+        return x11_window.focus_window_by_title(wanted)
+
+    def _sct(self):
+        """This thread's mss instance, created on first use."""
+        import mss
+        got = getattr(self._local, "sct", None)
+        if got is None:
+            got = mss.mss()
+            self._local.sct = got
+            with self._lock:
+                self._instances.append(got)
+        return got
+
     def capture(self) -> np.ndarray:
         import cv2
-        import mss
-        if self._sct is None:
-            self._sct = mss.mss()
-        shot = self._sct.grab(self._sct.monitors[self._monitor])
+        sct = self._sct()
+        shot = sct.grab(sct.monitors[self._monitor])
         return cv2.cvtColor(np.array(shot), cv2.COLOR_BGRA2BGR)
 
     def close(self) -> None:
-        if self._sct is not None:
+        with self._lock:
+            instances, self._instances = self._instances, []
+        for sct in instances:
             try:
-                self._sct.close()
+                sct.close()
             except Exception:
                 pass
-            self._sct = None
+        self._local = threading.local()

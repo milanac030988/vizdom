@@ -88,6 +88,29 @@ class ActuatorServicer:
             image_size=_img_size(request.image_size),
             duration=request.duration or 0.3))
 
+    def Focus(self, request, context):
+        """
+        Raise the SUT window on THIS machine so subsequent Tap/TypeText land on it
+        (ADR-021). Deliberately not routed through `_run`: a refusal is a normal
+        response carrying a reason, not a gRPC error.
+        """
+        rid = request.request_id or "-"
+        title = request.title or None
+        try:
+            ok = bool(self._strategy.focus_target(title))
+        except Exception as e:      # a strategy must not raise, but never trust it
+            log.error("Focus [%s] failed: %s", rid, e)
+            return self._pb2.FocusResponse(focused=False, detail=str(e),
+                                           actuator=self._strategy.name, request_id=rid)
+        if ok:
+            detail = f"focused {title!r}" if title else "focused the configured target"
+        else:
+            detail = (f"could not focus {title!r}" if title else
+                      "no target given and the strategy has no configured default")
+        log.info("Focus [%s]: %s (%s)", rid, ok, detail)
+        return self._pb2.FocusResponse(focused=ok, detail=detail,
+                                       actuator=self._strategy.name, request_id=rid)
+
     def HealthCheck(self, request, context):
         return self._pb2.HealthResponse(
             ready=True, actuator=self._strategy.name,
@@ -128,6 +151,9 @@ def main():
                     help="actuator strategy name (default: OS auto-select)")
     ap.add_argument("--port", type=int, default=50054)
     ap.add_argument("--serial", default=None, help="android device serial (adb -s)")
+    ap.add_argument("--window-title", default=None,
+                    help="default window title (Android: package or package/.Activity) "
+                         "raised by the Focus RPC when the client sends no title")
     ap.add_argument("--kw", action="append", default=[],
                     help="strategy constructor arg key=value (repeatable)")
     ap.add_argument("--list", action="store_true", help="list strategies and exit")
@@ -147,6 +173,9 @@ def main():
     kwargs = _parse_kw(args.kw)
     if args.serial:
         kwargs["serial"] = args.serial
+    if args.window_title:
+        # Android names its target by component, the desktop actuator by title
+        kwargs["activity" if strategy_name == "android" else "window_title"] = args.window_title
 
     serve(strategy_name, args.port, kwargs)
 

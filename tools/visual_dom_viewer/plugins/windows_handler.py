@@ -430,90 +430,19 @@ class WindowsPlatformHandler(PlatformHandler):
             return None
 
     def bring_to_front(self) -> bool:
-        """Bring target window to foreground using robust methods."""
+        """
+        Bring the target window to the foreground.
+
+        Delegates to the shared adapter helper (ADR-021), which is where this
+        routine now lives so the capture strategies, the actuator strategies and
+        this handler all use ONE implementation. Unlike the previous local copy,
+        the result is verified: False means the window really is not foreground
+        (Windows can refuse the raise), not merely that no exception was thrown.
+        """
         if not IS_WINDOWS or not self._target_hwnd:
             return False
-
-        try:
-            hwnd = self._target_hwnd
-
-            # Constants
-            SW_RESTORE = 9
-            SW_SHOW = 5
-            SW_SHOWNORMAL = 1
-            HWND_TOPMOST = -1
-            HWND_NOTOPMOST = -2
-            SWP_NOMOVE = 0x0002
-            SWP_NOSIZE = 0x0001
-            SWP_SHOWWINDOW = 0x0040
-            VK_MENU = 0x12  # Alt key
-            KEYEVENTF_EXTENDEDKEY = 0x0001
-            KEYEVENTF_KEYUP = 0x0002
-
-            # First, restore window if minimized
-            user32.ShowWindow(hwnd, SW_RESTORE)
-
-            # Get current foreground window and thread IDs
-            current_hwnd = user32.GetForegroundWindow()
-            current_thread = user32.GetWindowThreadProcessId(current_hwnd, None)
-            target_thread = user32.GetWindowThreadProcessId(hwnd, None)
-            our_thread = kernel32.GetCurrentThreadId()
-
-            # METHOD 1: Attach thread input to allow SetForegroundWindow
-            # This tricks Windows into thinking we have focus
-            attached_current = False
-            attached_target = False
-
-            try:
-                # Attach our thread to the foreground window's thread
-                if current_thread != our_thread:
-                    attached_current = user32.AttachThreadInput(our_thread, current_thread, True)
-
-                # Attach our thread to the target window's thread
-                if target_thread != our_thread and target_thread != current_thread:
-                    attached_target = user32.AttachThreadInput(our_thread, target_thread, True)
-
-                # METHOD 2: Simulate Alt key press to bypass focus restrictions
-                # Windows allows SetForegroundWindow after receiving input
-                user32.keybd_event(VK_MENU, 0, KEYEVENTF_EXTENDEDKEY, 0)
-                user32.keybd_event(VK_MENU, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0)
-
-                # Show and activate the window
-                user32.ShowWindow(hwnd, SW_SHOWNORMAL)
-                user32.SetForegroundWindow(hwnd)
-                user32.BringWindowToTop(hwnd)
-
-                # METHOD 3: Set as topmost temporarily
-                user32.SetWindowPos(
-                    hwnd, HWND_TOPMOST, 0, 0, 0, 0,
-                    SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW
-                )
-
-                # Activate and focus
-                user32.SetForegroundWindow(hwnd)
-                user32.SetActiveWindow(hwnd)
-                user32.SetFocus(hwnd)
-
-                # Remove topmost flag but keep visible
-                user32.SetWindowPos(
-                    hwnd, HWND_NOTOPMOST, 0, 0, 0, 0,
-                    SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW
-                )
-
-                # Final foreground attempt
-                user32.SetForegroundWindow(hwnd)
-
-            finally:
-                # Detach thread input
-                if attached_current:
-                    user32.AttachThreadInput(our_thread, current_thread, False)
-                if attached_target:
-                    user32.AttachThreadInput(our_thread, target_thread, False)
-
-            return True
-        except Exception as e:
-            print(f"Error bringing window to front: {e}")
-            return False
+        from visual_dom.adapters.outbound.win32_window import bring_to_front
+        return bring_to_front(self._target_hwnd)
 
     def refresh_target_info(self) -> Optional[TargetApplication]:
         """Refresh target window information."""

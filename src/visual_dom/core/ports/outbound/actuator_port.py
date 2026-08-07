@@ -67,6 +67,18 @@ class ActuatorStrategy(ABC):
             f"{type(self).__name__} must implement device_size() or receive image_size"
         )
 
+    def device_origin(self) -> Tuple[int, int]:
+        """
+        Where this device's coordinate space begins, in the device's own units.
+
+        Almost always ``(0, 0)``. It exists for the desktop case: a second monitor
+        placed left of or above the primary one starts at a **negative** screen
+        coordinate, so a coordinate space anchored at (0, 0) cannot address it and
+        normalized coordinates would clamp to the primary monitor's edge. Override
+        together with `device_size` to describe such a space.
+        """
+        return (0, 0)
+
     def _to_device(self, nx: float, ny: float,
                    image_size: Optional[Tuple[int, int]] = None) -> Tuple[int, int]:
         """
@@ -74,7 +86,9 @@ class ActuatorStrategy(ABC):
         for non-linear mappings (e.g. a robot-arm calibration homography).
         """
         w, h = self.device_size(image_size)
-        return int(round(_clamp01(nx) * w)), int(round(_clamp01(ny) * h))
+        ox, oy = self.device_origin()
+        return (int(round(ox + _clamp01(nx) * w)),
+                int(round(oy + _clamp01(ny) * h)))
 
     # --- primitive actions (implement these) ---------------------------------
 
@@ -119,6 +133,22 @@ class ActuatorStrategy(ABC):
         """Clear text in the focused element."""
         self.select_all()
         self.press_key("delete")
+
+    def focus_target(self, title: Optional[str] = None) -> bool:
+        """
+        Bring the application under test to the foreground. Optional override.
+
+        The write-side twin of `CaptureStrategy.focus_target` (ADR-021), and for
+        the same correctness reason: `tap` clicks whatever window happens to be at
+        that coordinate, and `type_text` goes to whatever holds *keyboard focus*.
+        Without focus management a test can click and type into the wrong
+        application entirely.
+
+        ``title`` names the window/activity to raise; when omitted the strategy
+        uses its configured target. Returns True only on confident success (see
+        the capture port for why a hopeful True is harmful). Must never raise.
+        """
+        return False
 
     @classmethod
     def is_available(cls) -> bool:

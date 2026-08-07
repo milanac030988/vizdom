@@ -14,7 +14,12 @@ REM   start_capture.bat                       (OS auto-select strategy, port 500
 REM   start_capture.bat --strategy windows
 REM   start_capture.bat --strategy android --serial <device>
 REM   start_capture.bat --strategy camera --kw device=0
+REM   start_capture.bat --strategy windows --window-title "Calculator"
 REM   start_capture.bat --list                (show discovered strategies)
+REM
+REM   --window-title <title> is the app this service raises when a client calls
+REM   Focus (ADR-021) without naming one. Focus can only happen on the machine
+REM   that owns the screen, which is why it is served here.
 
 cd /d "%~dp0"
 set PYTHONPATH=%~dp0src
