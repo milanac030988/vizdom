@@ -35,6 +35,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [018](018-pluggable-capture-service.md) | Pluggable Screenshot Capture (Strategy + Auto-Discovery + Service) | Accepted | 2026-07-26 |
 | [019](019-pluggable-actuator-service.md) | Pluggable Input Actuation (Strategy + Auto-Discovery + Service) | Accepted | 2026-07-27 |
 | [020](020-client-session-config.md) | Client Session Configuration (`connect` + JSON config) | Accepted | 2026-07-29 |
+| [021](021-application-targeting-and-focus.md) | Application Targeting and Focus (`focus_target` on both ports, `Focus` RPC) | Accepted | 2026-08-06 |
 | [022](022-description-based-locator.md) | Description-Based Locator (`desc=`) via Tiered Grounding | Accepted | 2026-07-30 |
 | [023](023-post-action-recap.md) | Post-Action Recap for Property Verification | Accepted | 2026-07-31 |
 | [024](024-multi-locator-fallback-chains.md) | Multi-Locator Fallback Chains (`||`) | Accepted | 2026-08-06 |

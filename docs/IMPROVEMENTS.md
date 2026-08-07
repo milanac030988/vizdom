@@ -101,9 +101,51 @@ a confident glyph read now sets a **canonical semantic label** (`÷`→"Divide",
 noise ("Add"/"Close"/"Minimize" on operator keys) — while title-bar controls keep
 their captions, where "Close"/"Minimize" are the correct names.
 
-**Code / config.** `src/visual_dom/cv/symbol_detector.py`; pipeline stage 4c.
-Config: `symbols.enabled`, `symbols.min_score` (null = calibrated ~0.70; raise =
-stricter, lower = recover faint glyphs).
+**Third iteration — structure first, templates as evidence.** Scaling the
+evaluation up exposed that Dice scores *alone* cannot carry the decision. A
+130-case labelled set — four real Windows 11 Calculator renderings (Scientific +
+Standard layout, 100% + 125% display scaling, dark + light theme), every key
+labelled including the ones that must be **rejected** — scored the v2 detector at
+**51/130**. Two systematic failure modes:
+
+- *Confident misreads*: canonicalised to 32×32, a word key ("mod", "exp", "ln"),
+  a backspace ⌫ icon, or a digit becomes a bar-like smear that Dice-matches `-`
+  or `=` above threshold. Nothing in a similarity score says "this is not even a
+  symbol".
+- *Degraded binarizations win*: the thin-bar shortcut returned score **1.0**, so
+  any candidate binarization that lost structure (the dots of `÷`, the second
+  bar of `=`) instantly beat every honest match from a better candidate —
+  `÷`→`-` and `=`→`-` at some scales, correct at others.
+
+The rewrite classifies by **connected-component structure** — `÷` must be a wide
+bar with one dot above and one below, `=` exactly two stacked solid bars, `+` a
+centred cross with empty corners, `×` ink living on both diagonals — with the
+font templates demoted to supporting evidence where structure alone is loose.
+Candidates are then ranked by **specificity**: a binarization that explains
+*more* components wins (`÷` beats `-`), because degradation can only lose
+structure, never invent it. A glyph fitting no structure is rejected — which is
+what kills the word/icon/digit misreads. Two supporting fixes: a second
+low-margin crop pass (a *tight* detector box loses its outer components to the
+20% margin — a hamburger ☰ was reading as `-`), and a ☰ veto ranked above the
+bar family. Result: **130/130**, plus on the synthetic dashboard the new
+detector fixed three false positives *and* recovered two real `%` glyphs the old
+one missed. The set is a permanent data-driven pytest
+(`tests/unit/test_symbol_detector.py`); a failing new theme belongs in the
+manifest, with the fix measured against all renderings at once.
+
+**Known upstream artifact (future work).** Composite key glyphs can defeat OCR in
+a *scale-dependent* way — at a narrow window width the `²√x` key's superscript
+reads as a bare `2`, and the `±` key's `+/-` reads as `+` — and because those
+elements then HAVE text, the symbol reader (which only runs on textless elements)
+never gets to correct them. The result is a *duplicate-text* ambiguity
+(`text=2`, `text=+` matching two keys). Mitigated today by fallback-chain
+ambiguity arbitration (ADR-024 v1.1: the chain's `desc=` judges among the
+matched candidates); a fuller fix would let a confident symbol/structure read
+override a low-confidence single-character OCR fragment on key-sized elements.
+
+**Code / config.** `src/visual_dom/core/domain/cvops/symbol_detector.py`;
+pipeline stage 4c. Config: `symbols.enabled`, `symbols.min_score` (structure
+decides; the threshold only vetoes low template agreement).
 
 ## 3b. OmniParser + OCR ensemble: prefer-external and split guards
 
@@ -185,6 +227,94 @@ guess** ("which application is this?") using the existing vision backend — use
 where no title text exists, but it will confidently mislabel look-alike screens,
 so it must be stored as a guess with the model recorded. Recommended: (2) as the
 default with (1) prefilling it, and (3) strictly opt-in.
+
+## 6. Application targeting and focus (the SUT must be the window we see)
+
+**Problem.** VizDOM grabs the **whole screen** and actuates by **absolute
+coordinate**, so both are silently wrong whenever the application under test is not
+in front: `capture()` photographs whatever is on top (a DOM of the wrong app), while
+`tap()` clicks whatever window is at that point and `type_text()` goes to whatever
+holds *keyboard focus* (input delivered to the wrong app). Nothing in the DOM can
+detect it — the coordinates were correct for that screenshot, and the screenshot was
+correct for its moment. The project had already hit this twice: the Viewer hides
+itself before grabbing and carries a hardened Win32 `bring_to_front()`, and
+`describe_target()` walks the Z-order *past our own process* precisely because "the
+foreground window" and "the SUT" routinely differ.
+
+**Approach & result (ADR-021).** Promote the Viewer's proven implementation to an
+optional `focus_target(title) -> bool` on **both** driven ports — the same
+optional-hook pattern as `describe_target()`, so no plugin is forced to implement it:
+
+| Strategy | Mechanism | Verifies by |
+|---|---|---|
+| `windows` capture / `desktop` actuator (Win32) | `SW_RESTORE` → `AttachThreadInput` → synthetic Alt tap → temporary `HWND_TOPMOST` | `GetForegroundWindow()` after a settle delay |
+| `linux` / `desktop` (X11) | `wmctrl -a`, then `xdotool windowactivate --sync` | active window title |
+| `android` (both ports) | `am start -n pkg/.Activity` (or the `monkey` launcher intent) | the resumed activity |
+| `camera` | — (observes an external display it cannot control) | always `False` |
+| `grpc` (both ports) | a new **`Focus` RPC**, run server-side | the server's own verification |
+
+Two decisions carry most of the value. First, **verify instead of assume**: the
+original code returned `True` whenever it had not thrown, which cannot distinguish
+"raised" from "the OS refused" — exactly the case that yields a wrong screenshot.
+Second, **focus crosses the wire as its own RPC**, because a window can only be
+raised on the machine that owns the screen; without it the feature would be missing
+from the one configuration the reference demo uses (capture *and* actuator over
+gRPC). Ambiguity fails loudly: a title matching several windows logs the candidates
+and returns `False` rather than driving a coin-flip window.
+
+Exposed as an explicit `Bring App To Front  [title]` keyword (fatal on failure,
+`required=${False}` to soften) **and** an opt-in `capture.focus_before_capture` flag
+that raises `capture.window_title` before every grab, including the ADR-023 recap
+(warn-only there — the grab may still be usable and one transient foreground lock
+should not abort a suite). Off by default, because raising a window is an *action*:
+it can dismiss tooltips and transient popups.
+
+**Verified** on Windows: focus from both ports, through both the in-process and gRPC
+paths, plus the negative cases (missing window, ambiguous title, no title
+configured, camera) — each returning `False` with a reason rather than a false
+positive.
+
+### 6b. Capturing the window, not the screen — and the coordinate space it implies
+
+Focusing makes the SUT *visible*; it does not stop the DOM from containing every other
+window. A capture of a dual-monitor desktop produced 131–200 elements where the
+application itself has ~50, and a full-screen grab of the *primary* monitor did not
+even contain an application sitting on the secondary one. So the capture port gained
+`capture_window(title)`, returning the window's client area — and, over gRPC, cropping
+**on the machine that owns the screen** (`GrabRequest.window_title`), since only that
+machine knows where the window is and a separate "give me the rectangle" call would
+race a moving window.
+
+The interesting part is not the cropping but what it forces you to be honest about.
+Actuators take **normalized [0,1]** coordinates over the device's space, so a DOM
+built from a 402×658 crop and mapped back against a 1920×1080 screen puts every click
+in the wrong place. `CaptureFrame` therefore carries the pixels *and* the geometry
+(`origin`, `device_origin`, `device_size`), and three separate defects had to be fixed
+before a click computed on a crop reliably landed on its button:
+
+| Defect | Symptom | Resolution |
+|---|---|---|
+| Capture normalized against the **monitor**, actuator against the **desktop** | a click meant for x = −710 on the second display landed at x = +499 on the primary | both ports derive the space from one helper: the **virtual desktop** |
+| A **full-screen** grab carried no geometry | once the actuator spanned the desktop, the centre of a primary-monitor grab (0.5) mapped to x = 0 — the boundary between displays | `frame_geometry()`: a strategy states where its plain frames sit; `None` keeps the proportional image-space mapping, which is correct for Android |
+| **DPI awareness** is process-global and first-come-first-served | `import pyautogui` calls `SetProcessDPIAware()`; `GetSystemMetrics` then reported the desktop as 4320×1350 instead of 3840×1080, and clicks were ~330 px off | claim per-monitor-v2 awareness **before** importing pyautogui, and read the desktop from the display driver (`EnumDisplaySettings`), which is awareness-independent |
+
+The third is the nastiest: with per-monitor scaling the distortion is **not uniform**
+(×1.125 in x, ×1.25 in y on the test machine), so it cannot be undone by a single
+factor after the fact. When a foreign import wins the race anyway, the mismatch is
+detected and reported with the remedy instead of silently misplacing clicks.
+
+**Verified** end-to-end on a dual-monitor machine with *mixed* scaling (primary 125%,
+secondary 100%): a Robot Framework suite drove the Windows Calculator through the
+**capture service** with `window_scope`, producing a 53-element Calculator-only DOM
+(`image_size` 402×658, not 1920×1080) and clicking `7` then `8` on a window at
+**negative** screen coordinates — the display read `78`. The full-screen path
+round-trips exactly (960, 540) → (960, 540) and is unchanged for single-monitor users.
+
+**Found while testing** (unrelated to this feature, fixed): the in-process pipeline
+computed the project root with one `../` too few after the ADR-014 restructure, so
+`backend: "omniparser"` never found its weights and **silently degraded to
+OCR-text-only** — the exact trap its own comment warned about. The service had its own
+correct copy, which is why only in-process runs were affected.
 
 ## Which knobs are configurable — and why not all of them
 

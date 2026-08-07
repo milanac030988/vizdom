@@ -16,6 +16,7 @@ Development Team
 
 | Date | Version | Description |
 |------|---------|-------------|
+| 2026-08-07 | 1.1 | **Ambiguity arbitration**: when an alternative matches *several* elements and the chain contains a `desc=`, the description is grounded over just those candidates to judge which was meant — before falling through. Rescues `text=+ \|\| desc="plus button"` where the `±` key's composite glyph also OCRs as `+`. Unconfident arbitration falls through unchanged. |
 | 2026-08-06 | 1.0 | `||` separates ordered alternatives in a locator string; the first alternative resolving to exactly one element wins. Falls through on **not found** *and* **ambiguous**. Warning names the failed primary (stale-locator signal); a failed chain reports every attempt with its reason. Honoured by `Get Visual Element` (and therefore all actions), `Get Visual Elements`, and the assertion/wait keywords. |
 
 ## Context
@@ -62,6 +63,23 @@ Rules:
    ambiguity is not a failure when the question is "does it exist".
 5. **Ordering is the user's cost control**: deterministic/free first (`text=`,
    `role=`), model-backed last (`desc=`). The happy path costs nothing extra.
+
+### Ambiguity arbitration (v1.1)
+
+An ambiguous match carries real information: the wanted element is almost
+certainly *among* the matches. So before an ambiguous alternative falls through,
+any `desc=` in the chain is resolved **restricted to those candidates**
+(`DescriptionResolver.resolve(desc, within=...)`). Grounding over 2–3 elements is
+where every tier is at its most reliable — the model-free lexical tier usually
+separates "Plus" from "±" by label alone, and the SLM/VLM tiers judge a short,
+focused list instead of the whole DOM (with Set-of-Mark, the VLM sees the actual
+glyphs, which distinguishes candidates whose *DOM data* is identical).
+
+The arbitration is logged (`matched N elements; desc=... disambiguated to ...`),
+and an unconfident result falls through to the ordinary chain — it can rescue a
+resolution, never corrupt one. Limits are inherited from the grounding data: if
+OCR read the `±` key as `+` and no visual tier is configured, no resolver can
+know it is not the plus key.
 
 ## Consequences
 

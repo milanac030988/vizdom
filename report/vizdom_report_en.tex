@@ -10,6 +10,7 @@
 \geometry{margin=2.5cm}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{amssymb}      % \checkmark in the defect-comparison table
 \usepackage{caption}
 \usepackage{enumitem}
 \usepackage{xcolor}
@@ -598,12 +599,28 @@ An adaptive-threshold \emph{ring artifact} (the glyph appearing as a hole inside
 blob) scored best on the density heuristic that selected among binarisations, so a
 fat ``$\times$'' matched the filled-dot template while ``$\div$'' and ``$-$''
 matched nothing. The stage therefore now scores \emph{every} binarisation
-candidate (both polarities plus adaptive) through template matching and keeps the
-best overall --- ring artifacts match no template, so the correct polarity wins on
-evidence rather than on a heuristic --- with an added size gate for ``.'' and bold
-font templates. Across both themes it now reads \textbf{20 of 20} probed controls
-correctly (the composite ``$\pm$'' glyph is still safely rejected rather than
-misread). Its output feeds \code{text} --- a symbol is a literal read --- so an
+candidate (both polarities plus adaptive), with an added size gate for ``.'' and
+bold font templates.
+
+Scaling the evaluation up forced a third, deeper revision: a similarity score
+alone cannot say ``this is not a symbol at all''. On a 130-case labelled set ---
+four real renderings of the same application (two keypad layouts, 100\% and 125\%
+display scaling, dark and light theme), including every key that must be
+\emph{rejected} --- the template matcher scored 51/130: canonicalised to a fixed
+patch, a word key (``mod''), a backspace icon, or a digit becomes a bar-like
+smear that matches ``$-$'' or ``$=$'' above threshold, and a \emph{degraded}
+binarisation that loses components (the dots of ``$\div$'', the second bar of
+``$=$'') outscored honest readings from better candidates. The final design
+classifies by \emph{connected-component structure} --- ``$\div$'' must be a wide
+bar with one dot above and one below, ``$=$'' exactly two stacked solid bars,
+``$+$'' a centred cross with empty corners --- with templates demoted to
+supporting evidence, and ranks binarisation candidates by \emph{specificity}:
+the reading that explains more components wins, because degradation can only
+lose structure, never invent it. A glyph fitting no structure is rejected. The
+result is \textbf{130 of 130} across all four renderings, kept as a data-driven
+regression test; on the synthetic set the same change removed three false
+positives and recovered two previously-missed ``\%'' glyphs. Its output feeds
+\code{text} --- a symbol is a literal read --- so an
 operator key is drivable as \code{text="+"} even when its caption is noise; a
 confident read additionally assigns a \emph{canonical} label
 (``$\div$''$\rightarrow$Divide, ``$\times$''$\rightarrow$Multiply), replacing
@@ -616,7 +633,7 @@ The second deliverable is a Robot Framework library \cite{robotframework} that a
 as a thin orchestrator over the capture and actuator ports. Representative keywords:
 \begin{itemize}[leftmargin=1.4em]
   \item \emph{Capture / analysis}: \code{Capture Screen}, \code{Dump Visual DOM},
-        \code{Load Visual DOM};
+        \code{Load Visual DOM}, \code{Bring App To Front};
   \item \emph{Queries}: \code{Get Visual Element}, \code{Get Element Property},
         \code{Get Element Text}, \code{Get Element Label}, \code{Get Element Center};
   \item \emph{Actions}: \code{Click Visual}, \code{Type Text Visual},
@@ -648,7 +665,37 @@ listed as future work (ADR-024).
 
 Actions resolve a locator to an element, convert its center to normalized
 coordinates, and delegate to the actuator, so the same test runs locally, over
-gRPC, or against a robot arm without change. Figure~\ref{fig:seq} shows the
+gRPC, or against a robot arm without change.
+
+\subsubsection*{Targeting the right application}
+A less obvious correctness requirement follows from the two design choices above:
+the system captures the \emph{whole screen} and actuates by \emph{absolute
+coordinate}. Both are silently wrong whenever the application under test is not the
+foreground window. A grab taken while another window overlaps it produces a Visual
+DOM of the wrong application, and a click at coordinates that were correct for that
+screenshot lands on whatever window now occupies the point --- while typed text goes
+to whatever holds keyboard focus. Nothing in the DOM can reveal the mistake: the
+coordinates were consistent with the screenshot, and the screenshot was consistent
+with its moment.
+
+The system therefore treats ``bring the application to the front'' as an explicit
+capability of both driven ports (\code{focus\_target()}, ADR-021), implemented per
+platform: the Win32 escalation sequence (restore, borrow the foreground thread's
+input queue, synthetic modifier tap, temporary top-most) on Windows,
+\code{wmctrl}/\code{xdotool} on X11, and \code{am start} against the resumed
+activity on Android. Two properties make it trustworthy rather than merely
+convenient. First, success is \emph{verified} --- the strategy re-reads the actual
+foreground window afterwards --- because the operating system may legitimately
+refuse the request (Windows' foreground lock), and an optimistic ``true'' would
+convert that refusal into an unexplained wrong screenshot. Second, focus is
+performed \emph{where the screen is}: in a distributed run it travels as its own
+\code{Focus} RPC to the capture and actuator services, since a client on another
+host cannot raise a window it does not own. Ambiguity is a failure, not a guess: a
+window title matching several windows is reported with its candidates instead of
+driving an arbitrary one. Exposure is deliberately two-tiered --- an explicit
+keyword that fails the test, and an opt-in configuration flag that raises the target
+before every capture and only warns --- because raising a window is itself an action
+that can dismiss transient UI, so it must never be implied by a read. Figure~\ref{fig:seq} shows the
 end-to-end interaction for a single screenshot-to-DOM cycle.
 
 \begin{figure}[H]

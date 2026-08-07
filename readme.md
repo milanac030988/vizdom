@@ -343,6 +343,7 @@ A Robot Framework library exposing **visual keywords**, driven by:
 - `Clear Text Visual`
 - `Scroll Visual` (container-aware)
 - `Get Visual Element` (returns element metadata for debugging)
+- `Bring App To Front` (raise the app under test so the grab and the clicks reach it)
 
 ### Locator strategies (robust by design)
 Instead of relying on fragile coordinates, locators use the DOM:
@@ -463,4 +464,5 @@ python scripts/evaluation/evaluate_model.py --model models/finetuned/qwen2.5-3b-
 | 11. Distributed services (ADR-017/018/019) | ✅ Done | Hexagonal ports; gRPC detector/capture/actuator; user plugins (camera, robot-arm) |
 | 12. Benchmark & evaluation | ✅ Done | Synthetic 44-img set; UIED vs OmniParser; OmniParser type-mapping 0.09→0.87 |
 | 13. Docs site + report | ✅ Done | ProperDocs (GitHub Pages-ready); LaTeX reports (general + arc42, EN + VI) |
-| 14. Real-world dataset & hardening | ⏳ Pending | Real-UI labelled benchmark; TLS/auth on gRPC; E2E production hardening |
+| 14. Client robustness (ADR-021/022/023/024) | ✅ Done | App targeting + focus on both ports (incl. `Focus` RPC); `desc=` grounding; post-action recap; `||` fallback chains |
+| 15. Real-world dataset & hardening | ⏳ Pending | Real-UI labelled benchmark; TLS/auth on gRPC; E2E production hardening |

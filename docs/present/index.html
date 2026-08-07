@@ -332,11 +332,12 @@ body.notes-on .slide.active .notes{display:block}
         <p class="small" style="color:var(--fg);margin:0">Click, type, key press, scroll, drag &amp; drop
           via <code>desktop</code> / <code>android</code> / <code>grpc</code> / a
           <strong>robot-arm</strong> plugin — all on normalized coordinates, so one test fits every
-          target.</p>
+          target. Both the capture and actuator ports can also <strong>raise the app under
+          test</strong>, so the screenshot and the clicks reach it and not the window on top.</p>
       </div>
       <div class="card">
         <h3 style="margin-top:0">5 · Write tests in Robot Framework</h3>
-        <p class="small" style="color:var(--fg);margin:0"><strong>25 keywords</strong> — Connect,
+        <p class="small" style="color:var(--fg);margin:0"><strong>26 keywords</strong> — Connect,
           Dump Visual DOM, Click Visual, Type Text Visual, <strong>Verify Element Value</strong>
           (re-reads the live screen), Visual Should Exist, Wait Until Visual Appears,
           Get Element Property/Text/Label/Center, …</p>
@@ -882,7 +883,7 @@ body.notes-on .slide.active .notes{display:block}
           <td>button / input / checkbox / icon roles from text-or-icon output → 0.09→0.87</td></tr>
       <tr><td>Symbol reading</td><td>tight-glyph normalisation → hollow-shape rejection →
           <strong>font-template matching (Dice)</strong> over <em>all</em> binarizations, per-symbol thresholds</td>
-          <td>read + − = × ÷ glyphs OCR cannot → 20/20</td></tr>
+          <td>read + − = × ÷ glyphs OCR cannot → 130/130</td></tr>
       <tr><td>Hierarchy</td><td>containment thresholding, alignment grouping,
           <strong>label association</strong> by distance + position, reading-order sort</td>
           <td>the queryable tree — the layer no compared system builds</td></tr>
@@ -977,7 +978,7 @@ body.notes-on .slide.active .notes{display:block}
       </div>
       <div>
         <div class="kpi">
-          <div><b>20/20</b><span>probed controls, two themes</span></div>
+          <div><b>130/130</b><span>labelled cells, 4 renderings</span></div>
           <div><b>21 → 4</b><span>firings on a synthetic image<br>(removed = false positives)</span></div>
         </div>
         <div class="card good"><p style="margin:0"><code>÷ × − + = .</code> all correct · title-bar dash
@@ -1122,6 +1123,56 @@ body.notes-on .slide.active .notes{display:block}
     resolution accuracy over the labelled set.</div>
 </section>
 
+<!-- 17b ───────────────────────────────────────── -->
+<section class="slide">
+  <h2>A correctness bug that no detector can fix — targeting the right window</h2>
+  <div class="grow">
+    <p>Two design choices make the system portable: it captures the <strong>whole screen</strong> and
+      actuates by <strong>absolute coordinate</strong>. Both are silently wrong the moment the
+      application under test is <em>not</em> the front window.</p>
+    <div class="cols">
+      <div class="card bad"><h3 style="margin-top:0">What goes wrong</h3>
+        <ul class="small" style="color:var(--fg);margin:0">
+          <li>A grab photographs whatever is on top → a DOM of the <strong>wrong application</strong></li>
+          <li><code>tap()</code> hits whatever window is at that point; typed text follows
+            <strong>keyboard focus</strong> → input delivered elsewhere</li>
+          <li><strong>Undetectable from the DOM:</strong> the coordinates were correct for that
+            screenshot, and the screenshot was correct for its moment</li>
+        </ul>
+      </div>
+      <div class="card good"><h3 style="margin-top:0">The fix — a port capability</h3>
+        <ul class="small" style="color:var(--fg);margin:0">
+          <li><code>focus_target(title)</code> on <strong>both</strong> driven ports — optional hook,
+            default no-op, so no plugin is forced to implement it</li>
+          <li>Win32 escalation (restore → borrow the foreground input queue → synthetic modifier tap →
+            temporary top-most); <code>wmctrl</code>/<code>xdotool</code> on X11;
+            <code>am start</code> on Android</li>
+          <li>Exposed as <code>Bring App To Front</code> (fatal) <em>or</em>
+            <code>focus_before_capture</code> (warn-only)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cols" style="margin-top:.9em">
+      <div class="card"><p style="margin:0"><strong>Verify, never assume.</strong> The promoted code
+        returned <em>true</em> whenever it had not thrown — which cannot tell “raised” from “the OS
+        refused”, the exact case that yields a wrong screenshot. Now the strategy re-reads the actual
+        foreground window; an honest <strong>false</strong> is what lets a test fail loudly.</p></div>
+      <div class="card"><p style="margin:0"><strong>Focus happens where the screen is.</strong> A client
+        on another host cannot raise a window it does not own, so focus travels as its own
+        <strong><code>Focus</code> RPC</strong> — otherwise the feature would be missing from the one
+        configuration the reference demo uses (capture <em>and</em> actuator over gRPC).</p></div>
+    </div>
+    <p class="small">Off by default, because raising a window <strong>is an action</strong> — it can
+      dismiss tooltips and transient popups, so it must never be implied by a read. Ambiguity fails
+      with its candidate list rather than driving a coin-flip window.</p>
+  </div>
+  <div class="notes">ADR-021. The Viewer already carried this Win32 code and worked around the problem
+    by hiding itself — the capability existed in the wrong layer. Promoting it to the ports made it
+    reachable from Robot Framework, the CLI and the remote services, with one implementation per OS
+    instead of two. Good example of the architecture paying off: a new cross-cutting capability needed
+    no new port, no new config section, and no change to any test.</div>
+</section>
+
 <!-- 18 ────────────────────────────────────────── -->
 <section class="slide">
   <h2>Contributions &amp; positioning</h2>
@@ -1143,7 +1194,7 @@ body.notes-on .slide.active .notes{display:block}
         <h3>Engineering deliverables</h3>
         <ul>
           <li>Hexagonal engine, <strong>5 ports</strong>, 3 as optional gRPC services</li>
-          <li><strong>22 ADRs</strong>; arc42 architecture document (EN + VI)</li>
+          <li><strong>24 ADRs</strong>; arc42 architecture document (EN + VI)</li>
           <li>Robot Framework library; interactive Viewer; evaluation harness</li>
           <li>Labelled benchmark + augmentation &amp; LLM data-generation tooling</li>
           <li>Published documentation site; runnable Windows demo</li>
@@ -1227,7 +1278,7 @@ body.notes-on .slide.active .notes{display:block}
     <div class="kpi" style="justify-content:center;margin-top:1.4em">
       <div><b>0.09→0.87</b><span>role accuracy</span></div>
       <div><b>0.97</b><span>actionable center-hit</span></div>
-      <div><b>20/20</b><span>glyph reading</span></div>
+      <div><b>130/130</b><span>glyph reading</span></div>
       <div><b>22</b><span>ADRs</span></div>
     </div>
     <p class="small" style="margin-top:2em">

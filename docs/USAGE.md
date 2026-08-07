@@ -68,18 +68,29 @@ that runs until you stop it with `Ctrl-C`; give each its own terminal. On Window
 **Detector** — loads the model once and serves many clients (run it on the GPU host):
 
 ```bash
-python -m visual_dom.adapters.inbound.grpc.detector_server --backend omniparser --port 50051 \
-    --icon-detect  models/omniparser/icon_detect/model.pt \
-    --icon-caption models/omniparser/icon_caption_florence
-# Windows:  start_detector.bat --backend omniparser
+python -m visual_dom.adapters.inbound.grpc.detector_server \
+    --backend omniparser --ocr easyocr --port 50051
+# Windows:  start_detector.bat --backend omniparser --ocr easyocr
 # backends: omniparser | yolo (--yolo-model <path>) | uied (CPU, no weights)
+# weights auto-resolve from models/omniparser/ + third_party/OmniParser
+#   (override with --icon-detect / --icon-caption / --omniparser-root)
+# --box-threshold 0.03  recovers faint glyphs (default 0.05)
 ```
+
+!!! warning "Pass `--ocr` when serving OmniParser remotely"
+    The OCR text ensemble (ADR-016) normally injects the *client* pipeline's
+    upscaling OCR into OmniParser — but that is a Python callable and **cannot
+    cross gRPC**. Without `--ocr`, a remote OmniParser silently falls back to its
+    own weaker OCR, and small low-contrast text rows are lost. `--ocr easyocr`
+    builds the ensemble OCR **on the service**, restoring in-process text quality
+    (verified: identical element count and all previously-missing status rows).
 
 **Capture** — grabs the screen on the device under test:
 
 ```bash
 python -m visual_dom.adapters.inbound.grpc.capture_server --strategy windows --port 50053
 # strategies: windows | linux | android (--serial <device>) | camera
+# --window-title "Calculator"  default app raised by the Focus RPC (ADR-021)
 # Windows:  start_capture.bat --strategy windows
 ```
 
@@ -88,8 +99,13 @@ python -m visual_dom.adapters.inbound.grpc.capture_server --strategy windows --p
 ```bash
 python -m visual_dom.adapters.inbound.grpc.actuator_server --strategy desktop --port 50054
 # strategies: desktop | android (--serial <device>) | <your plugin>
+# --window-title "Calculator"  default app raised by the Focus RPC (ADR-021)
 # Windows:  start_actuator.bat --strategy desktop
 ```
+
+Both services also expose a **`Focus`** RPC, because a window can only be raised on
+the machine that owns the screen — so `Bring App To Front` works identically for an
+in-process run and a fully remote one.
 
 Each server logs a `HealthCheck` line when it is ready. Leave them running, then
 start a client (below) pointed at their `host:port`.
@@ -123,7 +139,11 @@ Capture and actuation have matching clients when you need them:
 from visual_dom.adapters.outbound.capture import create_capture
 from visual_dom.adapters.outbound.actuator import create_actuator
 
-shot = create_capture("grpc", target="sut-device:50053").capture()   # BGR frame
+cap = create_capture("grpc", target="sut-device:50053")
+cap.focus_target("Calculator")     # raise the SUT first (ADR-021) -> True/False
+shot = cap.capture()                                                 # BGR frame
+frame = cap.capture_window("Calculator")   # or just that window (crop + geometry)
+shot = frame.image                          # None if it cannot be scoped
 create_actuator("grpc", target="sut-device:50054").tap(0.5, 0.5)      # normalized xy
 ```
 
@@ -159,6 +179,53 @@ Library    VisualGuiLibrary    capture=grpc    capture_target=sut:50053
 ...                            actuator=grpc   actuator_target=sut:50054
 ```
 
+### Keeping the app under test in front
+
+VizDOM grabs the **whole screen** and clicks by **coordinate**, so if another window
+covers the SUT the DOM is built from the wrong pixels and the clicks land in the
+wrong application. Raise it first (ADR-021):
+
+```robotframework
+Bring App To Front    Calculator
+Dump Visual DOM
+```
+
+Better still, capture **only that window**, so the DOM contains just the application
+— no desktop, no other windows:
+
+```json
+"capture": { "window_title": "Calculator", "window_scope": true }
+```
+
+```robotframework
+Connect             vizdom.config.json
+Dump Visual DOM       # the DOM is now the app's own client area
+Click Visual        text=7
+```
+
+Or keep the full screen and merely raise the app before each grab:
+
+```json
+"capture": { "window_title": "Calculator", "focus_before_capture": true }
+```
+
+- The title can also come from `Library  VisualGuiLibrary  app_title=Calculator`;
+  with it set, `Bring App To Front` needs no argument.
+- Success is **verified** (the window really is foreground), never assumed — the OS
+  can refuse the raise, and an ambiguous title fails instead of guessing.
+- The explicit keyword **fails the test** when it cannot focus (`required=${False}`
+  downgrades it to a warning); `focus_before_capture` only warns, since the grab may
+  still be usable.
+- It works remotely too: capture and actuator services expose a `Focus` RPC, and
+  `window_scope` crops **on the service**, so both happen on the machine that owns
+  the screen. Clicks stay correct because the crop's origin and the device's
+  coordinate space travel back with the pixels — including for a window on a second
+  monitor, whose screen coordinates can be negative.
+- If the strategy cannot scope to a window (a camera, an older service), you get a
+  full-screen grab **and a warning** rather than a wrong crop.
+- Focusing is an *action* — it can dismiss tooltips or transient popups. That is why
+  it is opt-in rather than implicit in every capture.
+
 Locate elements by **role/text/spatial** rather than pixel coordinates — e.g.
 `text=Login`, `hint=Email`, `role=button`, `right_of="Label"`, `below="Title"`,
 `within="Form"` — so tests survive layout and theme changes.
@@ -176,6 +243,11 @@ Click Visual    role=button text=OK || desc="confirm button"      # AND inside, 
 - **space = AND** within an alternative (unchanged), **`||` = ordered OR** between them.
 - An alternative falls through when it finds **nothing** *or* is **ambiguous** —
   an ambiguous `text=Delete` is as unusable as a missing one.
+- **Ambiguity arbitration**: before an ambiguous alternative falls through, a
+  `desc=` in the chain judges *which* of the matched elements was meant (the
+  description is grounded over just those candidates). E.g. when the `±` key's
+  glyph also OCRs as `+`, `text="+" || desc="plus button"` still picks the real
+  plus. Logged as `matched N elements; desc=... disambiguated to ...`.
 - When a later alternative wins, a **warning** names the one that failed: that's a
   signal the primary locator has gone stale (useful, not noise — don't ignore it).
 - If the whole chain fails, the error lists every attempt and why:
@@ -186,6 +258,28 @@ Click Visual    role=button text=OK || desc="confirm button"      # AND inside, 
 
 Cost stays on the happy path: `desc=` (which may call a model) is only reached
 when the deterministic locator has already failed.
+
+### Failure screenshots
+
+Every failing keyword of the library automatically captures the screen and embeds
+the image in `log.html`, directly under the failing keyword. The grab goes through
+the **capture port**, so in a distributed run the evidence shows the machine under
+test (fetched from the capture service), honours `window_scope`, and falls back to
+a full-screen grab when the window cannot be raised — which is often exactly the
+evidence you need (it shows *what was covering the app*).
+
+```robotframework
+Set Screenshot On Failure    ${False}      # opt out for a session
+Take Screenshot              after-login   # explicit evidence, any time
+Run Keyword If Test Failed   Take Screenshot   # classic teardown idiom
+```
+
+Automatic capture is on by default (`Library  VisualGuiLibrary
+screenshot_on_failure=${False}` to disable at import). One screenshot per failure:
+nested keyword calls that fail on the same exception do not duplicate it. Note the
+automatic hook covers *this library's* keywords — a plain BuiltIn assertion
+(`Should Be Equal`) does not trigger it; use the teardown idiom above to cover
+those too.
 
 ### Verifying values after an action (recap)
 
@@ -257,9 +351,8 @@ Robot Framework test** that drives the Windows Calculator from its Visual DOM �
 :: Terminal 1 — start the detector service (warm model on :50051)
 start_detector.bat --backend omniparser
 
-:: Terminal 2 — run the test
-set PYTHONPATH=%CD%\src
-robot examples\windows_calculator_demo\calculator_demo.robot
+:: Terminal 2 — run the test (pins the project's Python + PYTHONPATH)
+run_demo.bat
 ```
 
 The test launches `calc.exe`, `Connect`s the config, `Dump Visual DOM`, then clicks

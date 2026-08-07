@@ -4,7 +4,7 @@ VizDOM is configured with a single JSON file that a client provides **once** at
 the start of a session. That one file drives every pipeline stage — which
 detector and OCR engine to use and their parameters, the Stage 2.5 merge/dedup
 tunables, the Stage 3 hierarchy tunables, size filters, the optional refiner, and
-how screens are captured. Both the Python API (`connect`) and the Robot Framework
+how screens are captured and input delivered. Both the Python API (`connect`) and the Robot Framework
 `Connect` keyword read the same file.
 
 ## 1. Get a template
@@ -62,14 +62,22 @@ Login Works
     Visual Should Exist  text=Welcome
 ```
 
-Call `Connect` with no argument for all-defaults. The config's `capture` section
-(`strategy` / `target` / `camera_mode`) is applied to the library's capture port
-too, so one file configures both DOM generation **and** screen acquisition — e.g.
-capture from a remote device over gRPC:
+Call `Connect` with no argument for all-defaults. The config's `capture` and
+`actuator` sections are applied to the library's ports too, so **one file
+configures all three**: DOM generation (detector), screen acquisition, and input
+— each independently local or a remote gRPC service:
 
 ```json
-"capture": { "strategy": "grpc", "target": "sut-device:50053" }
+{
+  "detector": { "backend": "grpc",  "grpc_target": "gpu-host:50051" },
+  "capture":  { "strategy": "grpc", "target":      "sut-host:50053" },
+  "actuator": { "strategy": "grpc", "target":      "sut-host:50054" }
+}
 ```
+
+The test file is byte-identical between a local and a fully distributed run — only
+this file changes. A runnable example is in
+`examples/windows_calculator_demo/`.
 
 When a session is connected, the per-call arguments of `Dump Visual DOM`
 (`ocr_engine`, `use_llm`, `llm_model`) are ignored — the config wins. They only
@@ -86,9 +94,10 @@ The template groups options by pipeline stage:
 | `refiner` | Stage 8 — SLM/VLM review | `enabled`, `backend`, `model`, `host` |
 | `merge` | **Stage 2.5 — Merge & Deduplicate** | `nms_iou_threshold`, `cross_type_iou`, `duplicate_tolerance_px`, `merge_oversegmented`, `group_fill_ratio_min` |
 | `hierarchy` | **Stage 3 — Hierarchy Building** | `containment_threshold`, `min_containment_margin`, `use_llm`, `llm_model` |
-| `symbols` | Stage 4c — glyph/operator reading (`+ − = × ÷ …`) | `enabled`, `min_score` (null = calibrated ~0.70; raise = stricter, lower = recover faint glyphs) |
+| `symbols` | Stage 4c — glyph/operator reading (`+ − = × ÷ …`) | `enabled`, `min_score` (structure decides; the threshold only vetoes low template agreement) |
 | `filter` | size / count filters | `min_element_area`, `min_element_size`, `max_elements` |
-| `capture` | acquisition (ADR-018) | `strategy`, `target`, `camera_mode` |
+| `capture` | acquisition (ADR-018) | `strategy`, `target`, `camera_mode`, `window_title` + `focus_before_capture` + `window_scope` (app targeting, ADR-021) |
+| `actuator` | input delivery (ADR-019) | `strategy` (`desktop`/`android`/`grpc`/plugin), `target` (host:port when `grpc`), `window_title` (ADR-021) |
 | `grounding` | `desc=` locator resolution (ADR-022) | `tiers` (`lexical`/`slm`/`vlm`, escalation order), `backend`, `model`, `vision_model`, `host` |
 | `output` | DOM compilation | `generate_locators` |
 
@@ -144,3 +153,47 @@ cutoff to recover it (0.03 is usually clean; below ~0.02 starts adding noise):
   "refiner": { "enabled": true, "backend": "ollama", "model": "qwen2.5:3b" }
 }
 ```
+
+**Name the application under test, and capture only it (ADR-021):**
+
+```json
+{
+  "capture":  { "strategy": "windows", "window_title": "Calculator",
+                "window_scope": true },
+  "actuator": { "strategy": "desktop" }
+}
+```
+
+`window_scope` captures the window's client area instead of the whole screen, so the
+DOM contains just that application — no desktop, no other windows. It works
+identically with `"strategy": "grpc"`: the crop is performed on the machine that owns
+the screen and its geometry travels back with the pixels, so clicks stay correct even
+for a window on a second monitor (which can start at a *negative* screen coordinate).
+
+Use `focus_before_capture` instead when you want the whole screen but need the app in
+front. `window_scope` already implies focusing, since a crop of an occluded window
+would show whatever covers it:
+
+```json
+{
+  "capture":  { "strategy": "windows", "window_title": "Calculator",
+                "focus_before_capture": true }
+}
+```
+
+`window_title` is the window to raise (on Android a package or
+`package/.Activity`); `actuator.window_title` inherits it when omitted, since both
+ports normally drive the same app. With `focus_before_capture` the SUT is raised
+before every grab — including the ADR-023 element recap — so the DOM is built from
+the application under test instead of whatever window happens to be on top.
+
+!!! note "Focus is verified, and can legitimately fail"
+    Raising a window is an *action*: it can dismiss tooltips or transient popups,
+    and Windows may refuse it outright (foreground lock). VizDOM therefore checks
+    that the window really became foreground rather than assuming success. A
+    failure during `focus_before_capture` only **warns** (the grab may still be
+    fine); use the explicit `Bring App To Front` keyword where it must be fatal.
+    An ambiguous title (two windows matching) fails instead of guessing. With
+    `window_scope`, a strategy that cannot scope to a window (a camera, an older
+    service) falls back to a full-screen grab **with a warning** — element
+    coordinates stay correct, but the DOM will include other windows.

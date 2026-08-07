@@ -22,6 +22,9 @@ package "core.ports.outbound.capture_port" #FFECB3 {
         +description: str
         +{abstract} capture(): np.ndarray
         +{static} is_available(): bool
+        --optional hooks--
+        +describe_target(): dict
+        +focus_target(title): bool
         +close()
     }
 }
@@ -55,4 +58,6 @@ CameraCapture --|> CaptureStrategy
 GrpcCaptureStrategy --|> CaptureStrategy
 CapPlugins ..|> CaptureStrategy
 CaptureRegistry ..> CaptureStrategy : creates / discovers
+WindowsCapture ..> WinHelpers : focus_target
+LinuxCapture ..> WinHelpers : focus_target
 @enduml
