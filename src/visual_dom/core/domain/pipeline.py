@@ -239,7 +239,12 @@ class VisualDOMPipeline:
             # backend fails to construct and the pipeline silently degrades to
             # OCR-text-only -- a trap that quietly invalidates "omniparser" runs.
             import os as _os
-            _root = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "..", "..", ".."))
+            # core/domain/ -> core -> visual_dom -> src -> project root (4 levels).
+            # This module lives two packages deeper since the ADR-014 restructure;
+            # with one ".." too few the candidates below never exist and every
+            # in-process "omniparser" run silently degrades to OCR-text-only.
+            _root = _os.path.abspath(_os.path.join(_os.path.dirname(__file__),
+                                                   "..", "..", "..", ".."))
             if "icon_detect_path" not in detector_kwargs and not _os.environ.get("OMNIPARSER_ICON_DETECT"):
                 _cand = _os.path.join(_root, "models", "omniparser", "icon_detect", "model.pt")
                 if _os.path.exists(_cand):
