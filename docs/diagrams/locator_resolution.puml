@@ -5,13 +5,22 @@ skinparam defaultFontSize 11
 skinparam defaultFontName Arial
 skinparam activityDiamondFontSize 11
 
+<style>
+' Named node styles instead of the deprecated "#RRGGBB:label;" colour prefix,
+' which newer PlantUML rejects in favour of a trailing <<stereotype>>.
+' This form renders on both old and new versions.
+.found   { BackgroundColor #C8E6C9 }
+.slm     { BackgroundColor #FFE0B2 }
+.vlm     { BackgroundColor #BBDEFB }
+.failure { BackgroundColor #FFCDD2 }
+</style>
+
 title Locating an element - resolution flow (ADR-022 / ADR-024)\nClick Visual  text=Save || desc="save button in the toolbar"
 
 start
 :locator string from the test;
 if (a DOM is loaded?) then (no)
-  #FFCDD2:error: "No DOM loaded.
-  Call 'Dump Visual DOM' first.";
+  :error: "No DOM loaded.\nCall 'Dump Visual DOM' first."; <<failure>>
   stop
 else (yes)
 endif
@@ -26,7 +35,7 @@ while (next alternative?) is (yes)
     :match every locator in the group
     and INTERSECT the results;
     if (how many matched?) then (exactly 1)
-      #C8E6C9:element found;
+      :element found; <<found>>
       detach
     elseif (several - AMBIGUOUS) then
       if (chain also has a desc= ?) then (yes)
@@ -35,8 +44,7 @@ while (next alternative?) is (yes)
           JUST these candidates
           (2-3 elements = most reliable);
           if (confident?) then (yes)
-            #BBDEFB:element found
-            (log: disambiguated to E48);
+            :element found\n(log: disambiguated to E48); <<vlm>>
             detach
           else (no)
           endif
@@ -51,8 +59,7 @@ while (next alternative?) is (yes)
           lexical -> SLM over DOM -> VLM Set-of-Mark
           (see the grounding diagram);
           if (a tier is confident?) then (yes)
-            #FFE0B2:element found
-            (log: tier that answered);
+            :element found\n(log: tier that answered); <<slm>>
             detach
           else (no)
           endif
@@ -68,10 +75,7 @@ while (next alternative?) is (yes)
   and fall through to the next alternative;
 endwhile (no more)
 
-#FFCDD2:FAIL LOUDLY - every attempt reported:
-Locator did not resolve to exactly one element
-   tried 1) text=Save    -> not found
-         2) desc=...     -> no grounding tier confident;
+:FAIL LOUDLY - every attempt reported:\nLocator did not resolve to exactly one element\ntried 1) text=Save    -> not found\n2) desc=...     -> no grounding tier confident; <<failure>>
 stop
 
 legend bottom
