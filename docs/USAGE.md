@@ -150,6 +150,10 @@ create_actuator("grpc", target="sut-device:50054").tap(0.5, 0.5)      # normaliz
 Coordinates on the actuator port are **normalized** `[0,1]` (resolution-independent);
 the service maps them to device pixels.
 
+Both ports accept **user plugins** (a frame grabber, a serial touch-injector, a
+robot arm): drop one file in `plugins/capture/` or `plugins/actuator/` and select
+it by name like any built-in — see **[Writing Plugins](PLUGINS.md)**.
+
 ## 3. Robot Framework
 
 `Connect` is the recommended first keyword — it applies one config file to the whole

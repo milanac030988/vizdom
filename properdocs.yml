@@ -41,6 +41,7 @@ nav:
   - Setup (uv): uv-setup.md
   - Configuration & Sessions: CONFIGURATION.md
   - Using as a Client: USAGE.md
+  - Writing Plugins: PLUGINS.md
   - Architecture: architecture.md
   - CV Pipeline: PIPELINE.md
   - Algorithms & Improvements: IMPROVEMENTS.md
