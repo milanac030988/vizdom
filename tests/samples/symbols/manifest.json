@@ -1,0 +1,1322 @@
+[
+ {
+  "image": "tests/samples/symbols/win11dark_s100.png",
+  "cases": [
+   {
+    "key": "2nd",
+    "bbox": [
+     2,
+     322,
+     84,
+     362
+    ],
+    "expect": null
+   },
+   {
+    "key": "pi",
+    "bbox": [
+     84,
+     322,
+     167,
+     362
+    ],
+    "expect": null
+   },
+   {
+    "key": "e",
+    "bbox": [
+     167,
+     322,
+     250,
+     362
+    ],
+    "expect": null
+   },
+   {
+    "key": "C",
+    "bbox": [
+     250,
+     322,
+     333,
+     362
+    ],
+    "expect": null
+   },
+   {
+    "key": "backspace",
+    "bbox": [
+     333,
+     322,
+     412,
+     362
+    ],
+    "expect": null
+   },
+   {
+    "key": "x2",
+    "bbox": [
+     2,
+     366,
+     84,
+     406
+    ],
+    "expect": null
+   },
+   {
+    "key": "1/x",
+    "bbox": [
+     84,
+     366,
+     167,
+     406
+    ],
+    "expect": null
+   },
+   {
+    "key": "|x|",
+    "bbox": [
+     167,
+     366,
+     250,
+     406
+    ],
+    "expect": null
+   },
+   {
+    "key": "exp",
+    "bbox": [
+     250,
+     366,
+     333,
+     406
+    ],
+    "expect": null
+   },
+   {
+    "key": "mod",
+    "bbox": [
+     333,
+     366,
+     412,
+     406
+    ],
+    "expect": null
+   },
+   {
+    "key": "sqrt",
+    "bbox": [
+     2,
+     410,
+     84,
+     450
+    ],
+    "expect": null
+   },
+   {
+    "key": "(",
+    "bbox": [
+     84,
+     410,
+     167,
+     450
+    ],
+    "expect": null
+   },
+   {
+    "key": ")",
+    "bbox": [
+     167,
+     410,
+     250,
+     450
+    ],
+    "expect": null
+   },
+   {
+    "key": "n!",
+    "bbox": [
+     250,
+     410,
+     333,
+     450
+    ],
+    "expect": null
+   },
+   {
+    "key": "DIV",
+    "bbox": [
+     333,
+     410,
+     412,
+     450
+    ],
+    "expect": "÷"
+   },
+   {
+    "key": "xy",
+    "bbox": [
+     2,
+     454,
+     84,
+     494
+    ],
+    "expect": null
+   },
+   {
+    "key": "7",
+    "bbox": [
+     84,
+     454,
+     167,
+     494
+    ],
+    "expect": null
+   },
+   {
+    "key": "8",
+    "bbox": [
+     167,
+     454,
+     250,
+     494
+    ],
+    "expect": null
+   },
+   {
+    "key": "9",
+    "bbox": [
+     250,
+     454,
+     333,
+     494
+    ],
+    "expect": null
+   },
+   {
+    "key": "MUL",
+    "bbox": [
+     333,
+     454,
+     412,
+     494
+    ],
+    "expect": "×"
+   },
+   {
+    "key": "10x",
+    "bbox": [
+     2,
+     498,
+     84,
+     538
+    ],
+    "expect": null
+   },
+   {
+    "key": "4",
+    "bbox": [
+     84,
+     498,
+     167,
+     538
+    ],
+    "expect": null
+   },
+   {
+    "key": "5",
+    "bbox": [
+     167,
+     498,
+     250,
+     538
+    ],
+    "expect": null
+   },
+   {
+    "key": "6",
+    "bbox": [
+     250,
+     498,
+     333,
+     538
+    ],
+    "expect": null
+   },
+   {
+    "key": "MINUS",
+    "bbox": [
+     333,
+     498,
+     412,
+     538
+    ],
+    "expect": "-"
+   },
+   {
+    "key": "log",
+    "bbox": [
+     2,
+     543,
+     84,
+     583
+    ],
+    "expect": null
+   },
+   {
+    "key": "1",
+    "bbox": [
+     84,
+     543,
+     167,
+     583
+    ],
+    "expect": null
+   },
+   {
+    "key": "2",
+    "bbox": [
+     167,
+     543,
+     250,
+     583
+    ],
+    "expect": null
+   },
+   {
+    "key": "3",
+    "bbox": [
+     250,
+     543,
+     333,
+     583
+    ],
+    "expect": null
+   },
+   {
+    "key": "PLUS",
+    "bbox": [
+     333,
+     543,
+     412,
+     583
+    ],
+    "expect": "+"
+   },
+   {
+    "key": "ln",
+    "bbox": [
+     2,
+     587,
+     84,
+     627
+    ],
+    "expect": null
+   },
+   {
+    "key": "PM",
+    "bbox": [
+     84,
+     587,
+     167,
+     627
+    ],
+    "expect": "±"
+   },
+   {
+    "key": "0",
+    "bbox": [
+     167,
+     587,
+     250,
+     627
+    ],
+    "expect": null
+   },
+   {
+    "key": "DOT",
+    "bbox": [
+     250,
+     587,
+     333,
+     627
+    ],
+    "expect": "."
+   },
+   {
+    "key": "EQ",
+    "bbox": [
+     333,
+     587,
+     412,
+     627
+    ],
+    "expect": "="
+   },
+   {
+    "key": "title_min",
+    "bbox": [
+     276,
+     0,
+     322,
+     40
+    ],
+    "expect": "-"
+   },
+   {
+    "key": "title_max",
+    "bbox": [
+     322,
+     0,
+     368,
+     40
+    ],
+    "expect": null
+   },
+   {
+    "key": "title_close",
+    "bbox": [
+     368,
+     0,
+     412,
+     40
+    ],
+    "expect": "×"
+   }
+  ]
+ },
+ {
+  "image": "tests/samples/symbols/win11dark_s125.png",
+  "cases": [
+   {
+    "key": "2nd",
+    "bbox": [
+     2,
+     410,
+     105,
+     454
+    ],
+    "expect": null
+   },
+   {
+    "key": "pi",
+    "bbox": [
+     105,
+     410,
+     209,
+     454
+    ],
+    "expect": null
+   },
+   {
+    "key": "e",
+    "bbox": [
+     209,
+     410,
+     313,
+     454
+    ],
+    "expect": null
+   },
+   {
+    "key": "C",
+    "bbox": [
+     313,
+     410,
+     417,
+     454
+    ],
+    "expect": null
+   },
+   {
+    "key": "backspace",
+    "bbox": [
+     417,
+     410,
+     518,
+     454
+    ],
+    "expect": null
+   },
+   {
+    "key": "x2",
+    "bbox": [
+     2,
+     464,
+     105,
+     508
+    ],
+    "expect": null
+   },
+   {
+    "key": "1/x",
+    "bbox": [
+     105,
+     464,
+     209,
+     508
+    ],
+    "expect": null
+   },
+   {
+    "key": "|x|",
+    "bbox": [
+     209,
+     464,
+     313,
+     508
+    ],
+    "expect": null
+   },
+   {
+    "key": "exp",
+    "bbox": [
+     313,
+     464,
+     417,
+     508
+    ],
+    "expect": null
+   },
+   {
+    "key": "mod",
+    "bbox": [
+     417,
+     464,
+     518,
+     508
+    ],
+    "expect": null
+   },
+   {
+    "key": "sqrt",
+    "bbox": [
+     2,
+     518,
+     105,
+     562
+    ],
+    "expect": null
+   },
+   {
+    "key": "(",
+    "bbox": [
+     105,
+     518,
+     209,
+     562
+    ],
+    "expect": null
+   },
+   {
+    "key": ")",
+    "bbox": [
+     209,
+     518,
+     313,
+     562
+    ],
+    "expect": null
+   },
+   {
+    "key": "n!",
+    "bbox": [
+     313,
+     518,
+     417,
+     562
+    ],
+    "expect": null
+   },
+   {
+    "key": "DIV",
+    "bbox": [
+     417,
+     518,
+     518,
+     562
+    ],
+    "expect": "÷"
+   },
+   {
+    "key": "xy",
+    "bbox": [
+     2,
+     572,
+     105,
+     616
+    ],
+    "expect": null
+   },
+   {
+    "key": "7",
+    "bbox": [
+     105,
+     572,
+     209,
+     616
+    ],
+    "expect": null
+   },
+   {
+    "key": "8",
+    "bbox": [
+     209,
+     572,
+     313,
+     616
+    ],
+    "expect": null
+   },
+   {
+    "key": "9",
+    "bbox": [
+     313,
+     572,
+     417,
+     616
+    ],
+    "expect": null
+   },
+   {
+    "key": "MUL",
+    "bbox": [
+     417,
+     572,
+     518,
+     616
+    ],
+    "expect": "×"
+   },
+   {
+    "key": "10x",
+    "bbox": [
+     2,
+     626,
+     105,
+     670
+    ],
+    "expect": null
+   },
+   {
+    "key": "4",
+    "bbox": [
+     105,
+     626,
+     209,
+     670
+    ],
+    "expect": null
+   },
+   {
+    "key": "5",
+    "bbox": [
+     209,
+     626,
+     313,
+     670
+    ],
+    "expect": null
+   },
+   {
+    "key": "6",
+    "bbox": [
+     313,
+     626,
+     417,
+     670
+    ],
+    "expect": null
+   },
+   {
+    "key": "MINUS",
+    "bbox": [
+     417,
+     626,
+     518,
+     670
+    ],
+    "expect": "-"
+   },
+   {
+    "key": "log",
+    "bbox": [
+     2,
+     680,
+     105,
+     724
+    ],
+    "expect": null
+   },
+   {
+    "key": "1",
+    "bbox": [
+     105,
+     680,
+     209,
+     724
+    ],
+    "expect": null
+   },
+   {
+    "key": "2",
+    "bbox": [
+     209,
+     680,
+     313,
+     724
+    ],
+    "expect": null
+   },
+   {
+    "key": "3",
+    "bbox": [
+     313,
+     680,
+     417,
+     724
+    ],
+    "expect": null
+   },
+   {
+    "key": "PLUS",
+    "bbox": [
+     417,
+     680,
+     518,
+     724
+    ],
+    "expect": "+"
+   },
+   {
+    "key": "ln",
+    "bbox": [
+     2,
+     734,
+     105,
+     778
+    ],
+    "expect": null
+   },
+   {
+    "key": "PM",
+    "bbox": [
+     105,
+     734,
+     209,
+     778
+    ],
+    "expect": "±"
+   },
+   {
+    "key": "0",
+    "bbox": [
+     209,
+     734,
+     313,
+     778
+    ],
+    "expect": null
+   },
+   {
+    "key": "DOT",
+    "bbox": [
+     313,
+     734,
+     417,
+     778
+    ],
+    "expect": "."
+   },
+   {
+    "key": "EQ",
+    "bbox": [
+     417,
+     734,
+     518,
+     778
+    ],
+    "expect": "="
+   },
+   {
+    "key": "title_min",
+    "bbox": [
+     345,
+     0,
+     403,
+     50
+    ],
+    "expect": "-"
+   },
+   {
+    "key": "title_max",
+    "bbox": [
+     403,
+     0,
+     461,
+     50
+    ],
+    "expect": null
+   },
+   {
+    "key": "title_close",
+    "bbox": [
+     461,
+     0,
+     518,
+     50
+    ],
+    "expect": "×"
+   }
+  ]
+ },
+ {
+  "image": "tests/samples/symbols/win11dark_std100.png",
+  "cases": [
+   {
+    "key": "PCT",
+    "bbox": [
+     2,
+     250,
+     104,
+     294
+    ],
+    "expect": "%"
+   },
+   {
+    "key": "CE",
+    "bbox": [
+     104,
+     250,
+     207,
+     294
+    ],
+    "expect": null
+   },
+   {
+    "key": "C",
+    "bbox": [
+     207,
+     250,
+     310,
+     294
+    ],
+    "expect": null
+   },
+   {
+    "key": "backspace",
+    "bbox": [
+     310,
+     250,
+     412,
+     294
+    ],
+    "expect": null
+   },
+   {
+    "key": "1/x",
+    "bbox": [
+     2,
+     313,
+     104,
+     357
+    ],
+    "expect": null
+   },
+   {
+    "key": "x2",
+    "bbox": [
+     104,
+     313,
+     207,
+     357
+    ],
+    "expect": null
+   },
+   {
+    "key": "sqrt",
+    "bbox": [
+     207,
+     313,
+     310,
+     357
+    ],
+    "expect": null
+   },
+   {
+    "key": "DIV",
+    "bbox": [
+     310,
+     313,
+     412,
+     357
+    ],
+    "expect": "÷"
+   },
+   {
+    "key": "7",
+    "bbox": [
+     2,
+     376,
+     104,
+     420
+    ],
+    "expect": null
+   },
+   {
+    "key": "8",
+    "bbox": [
+     104,
+     376,
+     207,
+     420
+    ],
+    "expect": null
+   },
+   {
+    "key": "9",
+    "bbox": [
+     207,
+     376,
+     310,
+     420
+    ],
+    "expect": null
+   },
+   {
+    "key": "MUL",
+    "bbox": [
+     310,
+     376,
+     412,
+     420
+    ],
+    "expect": "×"
+   },
+   {
+    "key": "4",
+    "bbox": [
+     2,
+     439,
+     104,
+     483
+    ],
+    "expect": null
+   },
+   {
+    "key": "5",
+    "bbox": [
+     104,
+     439,
+     207,
+     483
+    ],
+    "expect": null
+   },
+   {
+    "key": "6",
+    "bbox": [
+     207,
+     439,
+     310,
+     483
+    ],
+    "expect": null
+   },
+   {
+    "key": "MINUS",
+    "bbox": [
+     310,
+     439,
+     412,
+     483
+    ],
+    "expect": "-"
+   },
+   {
+    "key": "1",
+    "bbox": [
+     2,
+     503,
+     104,
+     547
+    ],
+    "expect": null
+   },
+   {
+    "key": "2",
+    "bbox": [
+     104,
+     503,
+     207,
+     547
+    ],
+    "expect": null
+   },
+   {
+    "key": "3",
+    "bbox": [
+     207,
+     503,
+     310,
+     547
+    ],
+    "expect": null
+   },
+   {
+    "key": "PLUS",
+    "bbox": [
+     310,
+     503,
+     412,
+     547
+    ],
+    "expect": "+"
+   },
+   {
+    "key": "PM",
+    "bbox": [
+     2,
+     566,
+     104,
+     610
+    ],
+    "expect": "±"
+   },
+   {
+    "key": "0",
+    "bbox": [
+     104,
+     566,
+     207,
+     610
+    ],
+    "expect": null
+   },
+   {
+    "key": "DOT",
+    "bbox": [
+     207,
+     566,
+     310,
+     610
+    ],
+    "expect": "."
+   },
+   {
+    "key": "EQ",
+    "bbox": [
+     310,
+     566,
+     412,
+     610
+    ],
+    "expect": "="
+   },
+   {
+    "key": "title_min",
+    "bbox": [
+     276,
+     0,
+     322,
+     40
+    ],
+    "expect": "-"
+   },
+   {
+    "key": "title_max",
+    "bbox": [
+     322,
+     0,
+     368,
+     40
+    ],
+    "expect": null
+   },
+   {
+    "key": "title_close",
+    "bbox": [
+     368,
+     0,
+     412,
+     40
+    ],
+    "expect": "×"
+   }
+  ]
+ },
+ {
+  "image": "tests/samples/symbols/win11dark_std125.png",
+  "cases": [
+   {
+    "key": "PCT",
+    "bbox": [
+     2,
+     312,
+     131,
+     368
+    ],
+    "expect": "%"
+   },
+   {
+    "key": "CE",
+    "bbox": [
+     131,
+     312,
+     260,
+     368
+    ],
+    "expect": null
+   },
+   {
+    "key": "C",
+    "bbox": [
+     260,
+     312,
+     389,
+     368
+    ],
+    "expect": null
+   },
+   {
+    "key": "backspace",
+    "bbox": [
+     389,
+     312,
+     518,
+     368
+    ],
+    "expect": null
+   },
+   {
+    "key": "1/x",
+    "bbox": [
+     2,
+     392,
+     131,
+     448
+    ],
+    "expect": null
+   },
+   {
+    "key": "x2",
+    "bbox": [
+     131,
+     392,
+     260,
+     448
+    ],
+    "expect": null
+   },
+   {
+    "key": "sqrt",
+    "bbox": [
+     260,
+     392,
+     389,
+     448
+    ],
+    "expect": null
+   },
+   {
+    "key": "DIV",
+    "bbox": [
+     389,
+     392,
+     518,
+     448
+    ],
+    "expect": "÷"
+   },
+   {
+    "key": "7",
+    "bbox": [
+     2,
+     471,
+     131,
+     527
+    ],
+    "expect": null
+   },
+   {
+    "key": "8",
+    "bbox": [
+     131,
+     471,
+     260,
+     527
+    ],
+    "expect": null
+   },
+   {
+    "key": "9",
+    "bbox": [
+     260,
+     471,
+     389,
+     527
+    ],
+    "expect": null
+   },
+   {
+    "key": "MUL",
+    "bbox": [
+     389,
+     471,
+     518,
+     527
+    ],
+    "expect": "×"
+   },
+   {
+    "key": "4",
+    "bbox": [
+     2,
+     551,
+     131,
+     607
+    ],
+    "expect": null
+   },
+   {
+    "key": "5",
+    "bbox": [
+     131,
+     551,
+     260,
+     607
+    ],
+    "expect": null
+   },
+   {
+    "key": "6",
+    "bbox": [
+     260,
+     551,
+     389,
+     607
+    ],
+    "expect": null
+   },
+   {
+    "key": "MINUS",
+    "bbox": [
+     389,
+     551,
+     518,
+     607
+    ],
+    "expect": "-"
+   },
+   {
+    "key": "1",
+    "bbox": [
+     2,
+     630,
+     131,
+     686
+    ],
+    "expect": null
+   },
+   {
+    "key": "2",
+    "bbox": [
+     131,
+     630,
+     260,
+     686
+    ],
+    "expect": null
+   },
+   {
+    "key": "3",
+    "bbox": [
+     260,
+     630,
+     389,
+     686
+    ],
+    "expect": null
+   },
+   {
+    "key": "PLUS",
+    "bbox": [
+     389,
+     630,
+     518,
+     686
+    ],
+    "expect": "+"
+   },
+   {
+    "key": "PM",
+    "bbox": [
+     2,
+     710,
+     131,
+     766
+    ],
+    "expect": "±"
+   },
+   {
+    "key": "0",
+    "bbox": [
+     131,
+     710,
+     260,
+     766
+    ],
+    "expect": null
+   },
+   {
+    "key": "DOT",
+    "bbox": [
+     260,
+     710,
+     389,
+     766
+    ],
+    "expect": "."
+   },
+   {
+    "key": "EQ",
+    "bbox": [
+     389,
+     710,
+     518,
+     766
+    ],
+    "expect": "="
+   },
+   {
+    "key": "title_min",
+    "bbox": [
+     345,
+     0,
+     403,
+     50
+    ],
+    "expect": "-"
+   },
+   {
+    "key": "title_max",
+    "bbox": [
+     403,
+     0,
+     461,
+     50
+    ],
+    "expect": null
+   },
+   {
+    "key": "title_close",
+    "bbox": [
+     461,
+     0,
+     518,
+     50
+    ],
+    "expect": "×"
+   }
+  ]
+ }
+]
