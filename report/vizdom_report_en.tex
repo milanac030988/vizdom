@@ -859,6 +859,27 @@ The end-to-end system and its distributed services were verified functionally:
         recording actuator and a robot-arm homography stub).
 \end{itemize}
 
+Figure~\ref{fig:robotsuite} shows the shipped end-to-end demo as it actually
+executes: a Robot Framework suite driving the Windows Calculator with all three
+ports as gRPC services. It also makes the cost structure concrete --- the suite
+performs \textbf{two} detector calls in total (one in the suite setup, one before
+the assertion that inspects the display content), and the second test case adds
+none at all, because its clicks resolve against the Visual DOM the first test
+already built. This is the reuse property claimed in
+Section~\ref{sec:dombenefits}, observed on a real run rather than argued.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Robot_Suite_Sequence.png}
+  \caption{The runnable demo suite end to end
+  (\code{examples/windows\_calculator\_demo}). Services are started once and
+  outlive many runs; the suite setup raises the application under test and builds
+  the DOM once; each subsequent action is a cached-DOM lookup plus one normalised
+  \code{Tap}; and reading a value back uses the region-level recap instead of a
+  further detector pass.}
+  \label{fig:robotsuite}
+\end{figure}
+
 \subsection{Quantitative results on the synthetic benchmark}
 Table~\ref{tab:results} reports overall (pooled) element-detection and OCR metrics
 on the 44-image synthetic test set; Table~\ref{tab:pertype} breaks recall down by

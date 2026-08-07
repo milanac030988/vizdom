@@ -395,6 +395,13 @@ start_detector.bat --backend omniparser
 run_demo.bat
 ```
 
+The diagram below is what that suite actually does across the three services —
+including where the cost sits (perception once per screen state, never per click):
+
+```plantuml
+!include diagrams/robot_suite_sequence.puml
+```
+
 The test launches `calc.exe`, `Connect`s the config, `Dump Visual DOM`, then clicks
 `7`, `+`, `5`, `=` and asserts `12`. A no-service variant (detector in-process) is
 documented in the example's README.
