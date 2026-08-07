@@ -118,6 +118,48 @@ class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
         self._last_shot_exc = None      # dedup: one shot per propagating exception
         self._capturing_failure = False  # re-entrancy guard
         self._wrap_keywords_for_failure_capture()
+        self._attach_robot_log_bridge()
+
+    def _attach_robot_log_bridge(self):
+        """
+        Forward visual_dom log records into the Robot Framework log.
+
+        The package logger deliberately does not propagate to the root logger
+        (so plain-Python use never double-prints), which also means Robot's
+        automatic logging capture never sees it - detector/pipeline log lines
+        ended up only on the console and in logs/vizdom.log, invisible in
+        log.html. This bridge emits each record via robot.api.logger, which
+        files it under the keyword that was executing - exactly where someone
+        debugging a failed dump looks. Level policy follows the package logger
+        (VIZDOM_LOG_LEVEL). Idempotent; a no-op outside Robot.
+        """
+        import logging
+        try:
+            from robot.api import logger as rf_logger
+        except ImportError:
+            return
+        from visual_dom.logging_utils import configure_logging
+        pkg = configure_logging()
+        if any(getattr(h, "_vizdom_rf_bridge", False) for h in pkg.handlers):
+            return
+
+        class _RobotBridge(logging.Handler):
+            def emit(self, record):
+                try:
+                    msg = self.format(record)
+                    if record.levelno >= logging.ERROR:
+                        rf_logger.error(msg)
+                    elif record.levelno >= logging.WARNING:
+                        rf_logger.warn(msg)
+                    else:
+                        rf_logger.info(msg)
+                except Exception:   # logging must never break a keyword
+                    pass
+
+        handler = _RobotBridge()
+        handler.setFormatter(logging.Formatter("%(name)s | %(message)s"))
+        handler._vizdom_rf_bridge = True
+        pkg.addHandler(handler)
 
     # --- failure screenshots -------------------------------------------------
 

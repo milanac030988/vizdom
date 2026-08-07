@@ -263,6 +263,33 @@ Click Visual    role=button text=OK || desc="confirm button"      # AND inside, 
 Cost stays on the happy path: `desc=` (which may call a model) is only reached
 when the deterministic locator has already failed.
 
+### Where are the logs?
+
+Every VizDOM component logs through one channel (timestamped, module-tagged),
+which lands in **three places**:
+
+1. **`logs/vizdom.log`** — a rotating file (5 MB × 5) at the repo root of the
+   machine the code ran on. This is the after-the-fact record: slow stages, model
+   load times, merge decisions.
+2. **The console** of whatever launched the code (the `robot` terminal, a
+   service's terminal).
+3. **Robot's `log.html`** — the library forwards VizDOM log records to Robot, so
+   pipeline and detector lines appear *under the keyword that produced them*
+   (expand `Dump Visual DOM` to see the detector, merge, and symbol stages of
+   exactly that dump).
+
+Tune with environment variables: `VIZDOM_LOG_LEVEL` (`DEBUG`/`INFO`/`WARNING`,
+default `INFO` — set `DEBUG` before a run you want to diagnose),
+`VIZDOM_LOG_DIR`, `VIZDOM_LOG_FILE`, `VIZDOM_LOG_CONSOLE=0` to silence the
+console.
+
+!!! note "Distributed runs: each machine keeps its own log"
+    When the detector (or capture/actuator) runs as a **gRPC service**, the heavy
+    work logs on the *service's* machine — its terminal and its `logs/vizdom.log`.
+    Your Robot log then contains the client-side lines (`gRPC detect [id] →
+    host:port done in N s`, with the request id) — use that id to correlate with
+    the service's log when diagnosing a slow or failed detection.
+
 ### Failure screenshots
 
 Every failing keyword of the library automatically captures the screen and embeds
