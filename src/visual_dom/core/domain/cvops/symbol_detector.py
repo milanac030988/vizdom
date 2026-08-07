@@ -11,56 +11,6 @@ import numpy as np
 from typing import Optional, Tuple
 
 
-def _extract_symbol_strokes(gray: np.ndarray) -> Optional[np.ndarray]:
-    """
-    Extract foreground strokes from a grayscale button region.
-
-    Tries multiple binarization strategies and picks the one that
-    produces a clean, sparse foreground (likely a symbol).
-
-    Returns:
-        Binary image of center region (cropped), or None.
-    """
-    h, w = gray.shape
-    margin_x = int(w * 0.2)
-    margin_y = int(h * 0.2)
-
-    candidates = []
-
-    # Method 1: Otsu (light background)
-    otsu_thresh, _ = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    _, bin_inv = cv2.threshold(gray, otsu_thresh, 255, cv2.THRESH_BINARY_INV)
-    _, bin_norm = cv2.threshold(gray, otsu_thresh, 255, cv2.THRESH_BINARY)
-
-    for binary in [bin_inv, bin_norm]:
-        center = binary[margin_y:h - margin_y, margin_x:w - margin_x]
-        if center.size > 0:
-            density = np.sum(center > 0) / center.size
-            # Good candidate: sparse foreground (symbol strokes)
-            if 0.01 < density < 0.55:
-                candidates.append((center, density))
-
-    # Method 2: Adaptive threshold
-    blurred = cv2.GaussianBlur(gray, (3, 3), 0)
-    block = max(11, (min(w, h) // 3) | 1)
-    adaptive = cv2.adaptiveThreshold(
-        blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-        cv2.THRESH_BINARY_INV, blockSize=block, C=3
-    )
-    center = adaptive[margin_y:h - margin_y, margin_x:w - margin_x]
-    if center.size > 0:
-        density = np.sum(center > 0) / center.size
-        if 0.01 < density < 0.55:
-            candidates.append((center, density))
-
-    if not candidates:
-        return None
-
-    # Pick the candidate with density closest to 0.1 (typical for a clean symbol)
-    candidates.sort(key=lambda c: abs(c[1] - 0.10))
-    return candidates[0][0]
-
-
 def _stroke_candidates(gray: np.ndarray) -> list:
     """
     ALL plausible binarizations of a button region (both Otsu polarities +
@@ -149,10 +99,6 @@ SYMBOL_LABELS = {
     "=": "Equals", "±": "Plus/Minus", ".": "Decimal", "%": "Percent",
 }
 
-# Per-symbol Dice acceptance (default 0.70). "=" varies with bar spacing across
-# fonts; the "+/-" composite is an approximation of the real key glyph.
-_MIN_SCORE = {"=": 0.60, "±": 0.75}  # ± composite is promiscuous; keep strict
-_DEFAULT_MIN_SCORE = 0.70
 _CANON = 32                   # canonical patch size
 _TEMPLATE_CACHE: Optional[list] = None
 
@@ -559,45 +505,3 @@ def _count_segments(active: np.ndarray) -> int:
         elif not val:
             in_segment = False
     return segments
-
-
-def _check_diagonal(binary: np.ndarray) -> float:
-    """Check for diagonal stroke presence. Returns 0-1 score."""
-    h, w = binary.shape
-    if h < 4 or w < 4:
-        return 0
-
-    # Check main diagonal (top-left to bottom-right)
-    diag1_pixels = 0
-    diag2_pixels = 0
-    total_checked = 0
-
-    for i in range(min(h, w)):
-        # Map to the other dimension proportionally
-        r1 = int(i * h / min(h, w))
-        c1 = int(i * w / min(h, w))
-        r2 = int(i * h / min(h, w))
-        c2 = int((min(h, w) - 1 - i) * w / min(h, w))
-
-        if 0 <= r1 < h and 0 <= c1 < w:
-            # Check a small neighborhood
-            r_lo = max(0, r1 - 1)
-            r_hi = min(h, r1 + 2)
-            c_lo = max(0, c1 - 1)
-            c_hi = min(w, c1 + 2)
-            if np.any(binary[r_lo:r_hi, c_lo:c_hi] > 0):
-                diag1_pixels += 1
-            total_checked += 1
-
-        if 0 <= r2 < h and 0 <= c2 < w:
-            r_lo = max(0, r2 - 1)
-            r_hi = min(h, r2 + 2)
-            c_lo = max(0, c2 - 1)
-            c_hi = min(w, c2 + 2)
-            if np.any(binary[r_lo:r_hi, c_lo:c_hi] > 0):
-                diag2_pixels += 1
-
-    if total_checked == 0:
-        return 0
-
-    return max(diag1_pixels, diag2_pixels) / total_checked
