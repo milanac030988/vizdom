@@ -1,0 +1,76 @@
+@startuml Desc_Grounding
+
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+skinparam activityDiamondFontSize 11
+
+title desc= locator - tiered grounding over the DOM (ADR-022, ADR-024)\nDescriptionResolver.resolve()
+
+start
+:desc="settings button top right"
+inputs: current DOM (+ screenshot stored at dump time);
+if (per-screen cache hit?) then (yes)
+  :return cached result;
+  stop
+else (no)
+endif
+
+partition "Tier 1 - lexical  (no model, always on)" #E8F5E9 {
+  :score every element:
+  token/synonym overlap vs label / text / hint
+  + role words ("button", "field", ...);
+  if (confident?\nscore floor AND margin over runner-up) then (yes)
+    #C8E6C9:element (log: tier=lexical);
+    stop
+  else (no - a tie escalates,\nnever a guess)
+  endif
+}
+
+:positional words ("top right", "left", ...)?
+enforce GEOMETRICALLY on the candidate set
+- never delegated to a model;
+note right
+  a 3B model confidently called a
+  top-left element "top right" -
+  position is deterministic geometry
+end note
+
+partition "Tier 2 - SLM over DOM  (if configured)" #FFF3E0 {
+  :compact element table (id | role | text | label | position)
+  -> small text LM, temperature 0
+  -> returns an element id;
+  if (id exists in the DOM?) then (no)
+    :reject - hallucinated id;
+  else (yes)
+    #FFE0B2:element (log: tier=slm);
+    stop
+  endif
+}
+
+partition "Tier 3 - VLM Set-of-Mark  (opt-in)" #E3F2FD {
+  :number the candidate boxes ON THE STORED SCREENSHOT
+  -> vision model picks a number
+  (no re-capture, no coordinate regression);
+  if (confident pick?) then (yes)
+    #BBDEFB:element - a real DOM element
+    BY CONSTRUCTION (log: tier=vlm);
+    stop
+  else (no)
+  endif
+}
+
+#FFCDD2:FAIL LOUDLY:
+"no grounding tier confident
+(nearest: E1, E10, E23, ...)";
+stop
+
+legend bottom
+  **Ambiguity arbitration (ADR-024 v1.1):** when a property locator
+  (text=+) matches SEVERAL elements and the chain has a desc=, the same
+  resolver runs restricted to just those candidates (within=...) -
+  a 2-3 element pool is where every tier is most reliable.
+  Every escalated hit logs which tier answered.
+end legend
+
+@enduml

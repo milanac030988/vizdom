@@ -717,6 +717,7 @@ unfindable by \code{text=}. A \code{desc=} locator therefore lets the tester sta
 paradigm (Section~\ref{sec:dombenefits}) into the parser system, with the DOM kept
 as the source of truth. Resolution escalates through configurable tiers, each
 cheaper and more deterministic than the next, stopping at the first confident hit:
+(Figure~\ref{fig:descgrounding})
 (i) a \emph{lexical} tier (model-free) scores token/synonym overlap against
 \code{label}/\code{text}/\code{hint} plus role words, accepting only with a score
 floor \emph{and} a margin over the runner-up --- ties escalate rather than guess;
@@ -734,6 +735,19 @@ screen, and every hit records which tier answered --- making the ``parse once,
 ground only the long tail'' economics measurable. On a real calculator session the
 chain resolved 5/5 probe descriptions (paraphrases via the SLM tier) and correctly
 rejected a nonsense description with the candidate list (ADR-022).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.62\linewidth]{Desc_Grounding.png}
+  \caption{Tiered grounding of a \code{desc=} locator (ADR-022). Each tier is
+  cheaper and more deterministic than the next; a tie \emph{escalates} rather
+  than guesses, positional words are enforced geometrically before any model,
+  a hallucinated id is rejected against the DOM, and the VLM tier answers with
+  a DOM element by construction (Set-of-Mark over the stored screenshot). The
+  same resolver, restricted to the ambiguous candidates, arbitrates
+  duplicate-property matches (ADR-024).}
+  \label{fig:descgrounding}
+\end{figure}
 
 \subsection{Engineering environment}
 The system runs on Python~3.9 with a CUDA-enabled PyTorch build; environments are

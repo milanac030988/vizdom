@@ -346,7 +346,12 @@ Click Visual    desc="close button top right"
 ```
 
 Resolution escalates through configurable tiers, stopping at the first confident
-match — and every hit logs which tier answered:
+match:
+
+```plantuml
+!include diagrams/desc_grounding.puml
+```
+
 
 1. **lexical** (always on, no model) — deterministic token/role/position matching
    against the DOM's `label`/`text`/`hint`;
