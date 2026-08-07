@@ -68,10 +68,15 @@ def _stroke_candidates(gray: np.ndarray) -> list:
     and keeps the best overall — choosing by a density heuristic alone proved
     wrong on thick-glyph themes, where an adaptive-threshold *ring* artifact
     (glyph appearing as a hole in a blob) had the "best" density and won.
+
+    Each binarization is offered at TWO crop margins. The wide margin (20%)
+    strips button borders on loose key-cell boxes; but on a box drawn tightly
+    around the glyph it amputates structure — a hamburger menu loses its outer
+    bars and the survivor reads as a plausible "-". The narrow-margin sibling
+    keeps the full structure, and the specificity ranking prefers whichever view
+    explains more components.
     """
     h, w = gray.shape
-    margin_x = int(w * 0.2)
-    margin_y = int(h * 0.2)
     out = []
 
     otsu_thresh, _ = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -83,13 +88,15 @@ def _stroke_candidates(gray: np.ndarray) -> list:
         blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
         cv2.THRESH_BINARY_INV, blockSize=block, C=3
     )
-    for binary in (bin_inv, bin_norm, adaptive):
-        center = binary[margin_y:h - margin_y, margin_x:w - margin_x]
-        if center.size == 0:
-            continue
-        density = np.sum(center > 0) / center.size
-        if 0.005 < density < 0.6:
-            out.append(center)
+    for margin in (0.2, 0.05):
+        margin_x, margin_y = int(w * margin), int(h * margin)
+        for binary in (bin_inv, bin_norm, adaptive):
+            center = binary[margin_y:h - margin_y, margin_x:w - margin_x]
+            if center.size == 0:
+                continue
+            density = np.sum(center > 0) / center.size
+            if 0.005 < density < 0.6:
+                out.append(center)
     return out
 
 
@@ -217,6 +224,19 @@ def _dice(a: np.ndarray, b: np.ndarray) -> float:
     return 2.0 * inter / denom if denom else 0.0
 
 
+# Specificity rank: when different binarizations of one region disagree, prefer
+# the reading that explains MORE structure. A degraded binarization can only
+# lose components (the dots of ÷, the second bar of =) — so "÷ from candidate A"
+# beats "- from candidate B", never the other way round. Without this, any
+# candidate that degenerates into a wide blob wins as a high-scoring "-".
+# "menu" is a veto sentinel, not a symbol: a hamburger icon (three stacked
+# bars) must silence the bar family, because a binarization that merges or drops
+# one bar reads convincingly as "-" or "=". Its rank sits above both so the
+# candidate that SAW all three bars wins, and detect_symbol maps it to None.
+_SPECIFICITY = {"÷": 6, "%": 6, "±": 5, "menu": 4.5, "=": 4, "+": 3, "×": 3,
+                ".": 2, "-": 1}
+
+
 def detect_symbol(
     image: np.ndarray,
     bbox: Tuple[int, int, int, int],
@@ -225,18 +245,22 @@ def detect_symbol(
     """
     Detect a common UI symbol in the given region.
 
-    Recognises the arithmetic/UI glyphs in ``_SYMBOLS`` (+ - = × ÷ ± . %) by
-    template-matching the glyph's tight bounding box against font-rendered
-    templates (Dice score). Hollow outline shapes (a window-maximize square, a
-    checkbox frame) are rejected before matching.
+    Recognises the arithmetic/UI glyphs in ``_SYMBOLS`` (+ - = × ÷ ± . %).
+    Classification is **structure-first**: the glyph's connected components must
+    form the symbol's actual shape (÷ = bar with a dot above and below, = = two
+    stacked bars, + = centred cross, ...), with font-template Dice scores as
+    supporting evidence where structure alone is loose (+ × ±). A region whose
+    glyph fits no structure is rejected — which is what keeps word keys ("mod",
+    "exp"), icons (a backspace ⌫), and digits from being misread as operators:
+    canonicalised, those all look bar-like enough to fool a template score, but
+    none of them survives a component-level test.
 
     Args:
         image: BGR image (full screenshot)
         bbox: Region to analyze (x1, y1, x2, y2)
-        min_score: Override for the default Dice acceptance threshold (0.70).
-            Per-symbol calibrated thresholds still apply, but are raised to at
-            least this value; i.e. raising it makes everything stricter,
-            lowering it only loosens default-tier symbols.
+        min_score: Optional extra strictness: when set, the winning symbol's
+            template Dice score must also reach this value. Structure decides;
+            this only vetoes.
 
     Returns:
         Detected symbol string (e.g., "+", "-", "=") or None
@@ -265,20 +289,81 @@ def detect_symbol(
     if not _TEMPLATE_CACHE:
         return None
 
-    # Evaluate EVERY binarization candidate (both polarities + adaptive) and keep
-    # the best accepted match. On thick-glyph themes the density heuristic used
-    # to pick an inverted "ring" artifact (glyph as a hole in a blob) and lose
-    # the real glyph; template scores separate them reliably — ring candidates
-    # match nothing, the correct polarity matches its symbol.
-    best_overall: Optional[Tuple[str, float]] = None
+    # Evaluate EVERY binarization candidate (both polarities + adaptive); pick
+    # the winner by (specificity, score) — see _SPECIFICITY.
+    best: Optional[Tuple[int, float, str]] = None
     for strokes in _stroke_candidates(gray):
         result = _classify_candidate(strokes, min_score, region_h=gray.shape[0])
         if result is None:
             continue
         sym, score = result
-        if best_overall is None or score > best_overall[1]:
-            best_overall = (sym, score)
-    return best_overall[0] if best_overall else None
+        key = (_SPECIFICITY.get(sym, 0), score)
+        if best is None or key > (best[0], best[1]):
+            best = (key[0], key[1], sym)
+    if best is None or best[2] == "menu":     # hamburger veto — not a symbol
+        return None
+    return best[2]
+
+
+def _components(glyph: np.ndarray) -> list:
+    """
+    Connected components of a tight binary glyph, as dicts with geometry.
+
+    Specks below 2% of the total ink are dropped (anti-aliasing debris) so that
+    component COUNTS are meaningful: ÷ must yield exactly 3, = exactly 2.
+    """
+    n, labels, stats, centroids = cv2.connectedComponentsWithStats(
+        (glyph > 0).astype(np.uint8), connectivity=8)
+    total_ink = int(np.sum(glyph > 0))
+    comps = []
+    for i in range(1, n):
+        x, y, cw, ch, area = stats[i]
+        if area < max(2, 0.02 * total_ink):
+            continue
+        comps.append({
+            "x": int(x), "y": int(y), "w": int(cw), "h": int(ch),
+            "area": int(area), "cx": float(centroids[i][0]),
+            "cy": float(centroids[i][1]),
+            "fill": area / max(1, cw * ch),
+            "mask": (labels == i),
+        })
+    comps.sort(key=lambda c: c["area"], reverse=True)
+    return comps
+
+
+def _is_bar(c: dict) -> bool:
+    """A solid, clearly-horizontal stroke."""
+    return c["w"] / max(1, c["h"]) >= 2.2 and c["fill"] >= 0.55
+
+
+def _diagonal_coverage(glyph: np.ndarray) -> Tuple[float, float, float]:
+    """
+    (main-diagonal coverage, anti-diagonal coverage, fraction of ink inside the
+    two diagonal bands). An × has BOTH diagonals covered and nearly all its ink
+    on them; a ⌫ icon or a digit covers at most one, or carries most of its ink
+    elsewhere.
+
+    The band is NARROW (12% of the width, min 1.5 px): a wide band degenerates
+    into "everything is ×", because with enough slack any blob touches both
+    diagonals.
+    """
+    h, w = glyph.shape
+    if h < 4 or w < 4:
+        return 0.0, 0.0, 0.0
+    ink = glyph > 0
+    rows = np.arange(h, dtype=np.float32)
+    cols = np.arange(w, dtype=np.float32)
+    # Expected column of each diagonal per row, as a (h, 1) column vector.
+    main_c = (rows * (w - 1) / max(1, h - 1)).reshape(-1, 1)
+    anti_c = (w - 1) - main_c
+    band = max(1.5, 0.12 * w)
+    on_main = np.abs(cols.reshape(1, -1) - main_c) <= band     # (h, w)
+    on_anti = np.abs(cols.reshape(1, -1) - anti_c) <= band
+    d1 = np.sum(np.any(ink & on_main, axis=1)) / h   # rows where the main diag has ink
+    d2 = np.sum(np.any(ink & on_anti, axis=1)) / h
+    total = np.sum(ink)
+    on = np.sum(ink & (on_main | on_anti))
+    return float(d1), float(d2), float(on / total if total else 0.0)
 
 
 def _classify_candidate(
@@ -286,65 +371,177 @@ def _classify_candidate(
     min_score: Optional[float],
     region_h: int,
 ) -> Optional[Tuple[str, float]]:
-    """Tighten + guard + template-match ONE binarization candidate."""
+    """Tighten + structurally classify ONE binarization candidate."""
     tightened = _tighten_to_glyph(strokes)
     if tightened is None:
         return None
     glyph, area_ratio = tightened
     gh, gw = glyph.shape
-
-    # A single thin solid bar is a minus/dash — classify directly, since a
-    # 20x2 bar canonicalises poorly against thick font hyphens (e.g. the
-    # title-bar minimize dash).
+    aspect = gw / max(1, gh)
     fill = np.sum(glyph > 0) / glyph.size
-    if gw / max(1, gh) >= 4.0 and fill >= 0.6:
-        return ("-", 1.0)
-
-    if gh < 6 or gw < 6:  # too small to classify reliably (post-upscale)
-        return None
 
     # Reject hollow outline shapes (maximize square, checkbox frame): strong
     # strokes only along the bbox edges and an empty centre.
-    h_norm = np.sum(glyph > 0, axis=1) / gw
-    v_norm = np.sum(glyph > 0, axis=0) / gh
-    h_segments = _count_segments(h_norm > 0.55)
-    v_segments = _count_segments(v_norm > 0.55)
-    cy0, cy1 = gh // 2 - max(1, gh // 6), gh // 2 + max(1, gh // 6) + 1
-    cx0, cx1 = gw // 2 - max(1, gw // 6), gw // 2 + max(1, gw // 6) + 1
-    center_fill = np.sum(glyph[max(0, cy0):cy1, max(0, cx0):cx1] > 0) / \
-        max(1, (cy1 - max(0, cy0)) * (cx1 - max(0, cx0)))
-    if h_segments >= 2 and v_segments >= 2 and center_fill < 0.2:
-        return None
+    if gh >= 6 and gw >= 6:
+        h_norm = np.sum(glyph > 0, axis=1) / gw
+        v_norm = np.sum(glyph > 0, axis=0) / gh
+        h_segments = _count_segments(h_norm > 0.55)
+        v_segments = _count_segments(v_norm > 0.55)
+        cy0, cy1 = gh // 2 - max(1, gh // 6), gh // 2 + max(1, gh // 6) + 1
+        cx0, cx1 = gw // 2 - max(1, gw // 6), gw // 2 + max(1, gw // 6) + 1
+        center_fill = np.sum(glyph[max(0, cy0):cy1, max(0, cx0):cx1] > 0) / \
+            max(1, (cy1 - max(0, cy0)) * (cx1 - max(0, cx0)))
+        if h_segments >= 2 and v_segments >= 2 and center_fill < 0.2:
+            return None
 
-    patch = _canonicalize(glyph)
+    # Template Dice scores: supporting evidence, never the decision alone.
     scores: dict = {}
-    for sym, tmpl in _TEMPLATE_CACHE:
-        s = _dice(patch, tmpl)
-        if s > scores.get(sym, 0.0):
-            scores[sym] = s
+    if gh >= 4 and gw >= 4:
+        patch = _canonicalize(glyph)
+        for sym, tmpl in _TEMPLATE_CACHE:
+            s = _dice(patch, tmpl)
+            if s > scores.get(sym, 0.0):
+                scores[sym] = s
 
-    # Structural gate for "." — a decimal dot is a TINY compact blob relative to
-    # its key. Without this, any fat glyph blob (a thick ×, a bold +) Dice-matches
-    # the filled dot template and wins falsely.
-    if "." in scores:
-        dot_plausible = (area_ratio < 0.12 and 0.5 <= gw / max(1, gh) <= 2.0
-                         and gh <= max(8, region_h // 3))
-        if not dot_plausible:
-            scores.pop(".")
-    if not scores:
+    comps = _components(glyph)
+    if not comps:
         return None
 
-    ranked = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)
-    best_sym, best = ranked[0]
-    runner = ranked[1][1] if len(ranked) > 1 else 0.0
+    result = _structural_symbol(glyph, comps, aspect, fill, area_ratio,
+                                region_h, scores)
+    if result is None:
+        return None
+    sym, score = result
+    if min_score is not None and scores.get(sym, 0.0) < min_score:
+        return None
+    return (sym, score)
 
-    # Accept only a confident, unambiguous match (per-symbol thresholds).
-    default_thr = min_score if min_score is not None else _DEFAULT_MIN_SCORE
-    thr = _MIN_SCORE.get(best_sym, default_thr)
-    if min_score is not None:
-        thr = max(thr, min_score)
-    if best >= thr and (best - runner) >= 0.03:
-        return (best_sym, best)
+
+def _structural_symbol(glyph, comps, aspect, fill, area_ratio,
+                       region_h, dice) -> Optional[Tuple[str, float]]:
+    """
+    Match the component layout against each symbol's actual shape.
+    Checked most-specific first; the caller additionally ranks across
+    binarization candidates with _SPECIFICITY.
+    """
+    gh, gw = glyph.shape
+    n = len(comps)
+
+    # -- ☰ : three or more stacked bars is a hamburger MENU, not an operator ---
+    # Aspect-only (no fill test): a clipped outer bar binarizes patchily, but
+    # three WIDE stacked strokes already rule out every symbol we recognise.
+    if n >= 3:
+        bars = [c for c in comps if c["w"] / max(1, c["h"]) >= 2.2]
+        if len(bars) == n:
+            bars.sort(key=lambda c: c["cy"])
+            widths = [c["w"] for c in bars]
+            overlaps = all(
+                min(a["x"] + a["w"], b["x"] + b["w"]) - max(a["x"], b["x"])
+                >= 0.6 * max(a["w"], b["w"])
+                for a, b in zip(bars, bars[1:]))
+            if min(widths) / max(widths) >= 0.6 and overlaps:
+                return ("menu", 0.9)
+
+    # -- ÷ : wide bar + one dot above + one dot below --------------------------
+    if n == 3:
+        bar = max(comps, key=lambda c: c["w"])
+        dots = [c for c in comps if c is not bar]
+        if (_is_bar(bar) and bar["w"] >= 0.7 * gw
+                and all(0.35 <= d["w"] / max(1, d["h"]) <= 2.8 for d in dots)
+                and all(d["area"] <= 0.9 * bar["area"] for d in dots)
+                and min(d["cy"] for d in dots) < bar["cy"] - bar["h"]
+                and max(d["cy"] for d in dots) > bar["cy"] + bar["h"]
+                and all(abs(d["cx"] - gw / 2.0) <= 0.3 * gw for d in dots)):
+            return ("÷", max(0.9, dice.get("÷", 0.0)))
+
+    # -- % : two compact dots on opposite corners of a diagonal stroke ---------
+    if n == 3:
+        slash = max(comps, key=lambda c: c["h"])
+        dots = [c for c in comps if c is not slash]
+        if (slash["h"] >= 0.7 * gh
+                and all(0.4 <= d["w"] / max(1, d["h"]) <= 2.5 for d in dots)):
+            top = min(dots, key=lambda d: d["cy"])
+            bot = max(dots, key=lambda d: d["cy"])
+            if (top["cy"] < gh * 0.45 and bot["cy"] > gh * 0.55
+                    and top["cx"] < gw * 0.5 < bot["cx"]
+                    and dice.get("%", 0.0) >= 0.5):
+                return ("%", max(0.9, dice.get("%", 0.0)))
+
+    # -- = : exactly two stacked, similar, solid horizontal bars ---------------
+    if n == 2:
+        a, b = sorted(comps, key=lambda c: c["cy"])
+        x_overlap = min(a["x"] + a["w"], b["x"] + b["w"]) - max(a["x"], b["x"])
+        if (_is_bar(a) and _is_bar(b)
+                and a["h"] >= 2 and b["h"] >= 2
+                and min(a["w"], b["w"]) / max(a["w"], b["w"]) >= 0.65
+                and x_overlap >= 0.6 * max(a["w"], b["w"])
+                and (b["cy"] - a["cy"]) >= max(2.0, 0.9 * max(a["h"], b["h"]))):
+            return ("=", max(0.9, dice.get("=", 0.0)))
+
+    # -- ± : the calculator key draws "+/-": a cross top-left, a slash, a bar
+    #        bottom-right. Structure: one wide solid bar sitting below AND right
+    #        of everything else (÷ cannot match — its dots straddle the bar; the
+    #        template composite backs it up when binarization merges components).
+    if 2 <= n <= 4 and 0.55 <= aspect <= 1.9:
+        bars = [c for c in comps if _is_bar(c) and c["fill"] >= 0.7]
+        others = [c for c in comps if c not in bars]
+        structural_pm = (
+            len(bars) == 1 and others
+            and all(bars[0]["cy"] > o["cy"] for o in others)
+            and all(bars[0]["cx"] > o["cx"] for o in others)
+            and any(o["h"] >= 0.4 * gh for o in others)   # the slash / cross part
+        )
+        # Structure is required — a Dice-only acceptance proved too loose (an
+        # inverted-polarity '6' is a blob plus its counter-hole, and the composite
+        # template scored it 0.63).
+        if structural_pm:
+            return ("±", max(0.85, dice.get("±", 0.0)))
+
+    if n == 1:
+        c = comps[0]
+
+        # -- . : tiny, near-round, solid blob relative to its key. Aspect cap
+        #        1.5, not 2.0: a smeared minus dash reaches 1.63 and must not
+        #        outrank the true '-' reading from a cleaner binarization.
+        if (gh <= max(6, region_h / 4.0) and 0.5 <= aspect <= 1.5
+                and fill >= 0.6 and area_ratio < 0.1):
+            return (".", max(0.85, dice.get(".", 0.0)))
+
+        # -- - : one solid clearly-horizontal stroke. Fill 0.7 is the floor that
+        #        separates real bars (measured 0.72-0.98) from a merged lowercase
+        #        word ("ln" binarises to a 50x22 blob at fill 0.67). The relaxed
+        #        branch covers a thin dash smeared square-ish by the cubic
+        #        upscale (a title-bar minimize at 125% scaling): tiny relative
+        #        height + template agreement stand in for the lost aspect ratio.
+        if fill >= 0.7 and (
+                (aspect >= 2.2 and gh <= 0.5 * region_h)
+                or (aspect >= 1.4 and gh <= 0.30 * region_h
+                    and dice.get("-", 0.0) >= 0.6)):
+            return ("-", max(0.9, dice.get("-", 0.0)))
+
+        # -- + : centred cross: full-width middle row, full-height middle col,
+        #        empty corners. The corner test is what digits fail.
+        if 0.55 <= aspect <= 1.8 and gh >= 6 and gw >= 6:
+            band_h = max(1, int(0.12 * gh))
+            band_w = max(1, int(0.12 * gw))
+            mid_rows = glyph[gh // 2 - band_h: gh // 2 + band_h + 1, :]
+            mid_cols = glyph[:, gw // 2 - band_w: gw // 2 + band_w + 1]
+            row_span = np.sum(np.any(mid_rows > 0, axis=0)) / gw
+            col_span = np.sum(np.any(mid_cols > 0, axis=1)) / gh
+            ch_, cw_ = max(2, gh // 3), max(2, gw // 3)
+            corners = [glyph[:ch_, :cw_], glyph[:ch_, -cw_:],
+                       glyph[-ch_:, :cw_], glyph[-ch_:, -cw_:]]
+            corner_fill = max(np.sum(c_ > 0) / c_.size for c_ in corners)
+            if (row_span >= 0.75 and col_span >= 0.75
+                    and corner_fill <= 0.30 and dice.get("+", 0.0) >= 0.5):
+                return ("+", max(0.85, dice.get("+", 0.0)))
+
+        # -- × : both diagonals covered, and the ink LIVES on the diagonals ----
+        if 0.55 <= aspect <= 1.8 and gh >= 6 and gw >= 6:
+            d1, d2, on_band = _diagonal_coverage(glyph)
+            if min(d1, d2) >= 0.7 and on_band >= 0.75 and dice.get("×", 0.0) >= 0.5:
+                return ("×", max(0.85, dice.get("×", 0.0)))
+
     return None
 
 
