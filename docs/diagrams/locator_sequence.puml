@@ -1,0 +1,82 @@
+@startuml Locator_Sequence
+
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam ParticipantPadding 12
+skinparam BoxPadding 10
+
+title Locating and clicking an element - end to end\nClick Visual  text=Save || desc="save button"
+
+actor "Robot Framework\ntest" as test #FFFFFF
+participant "VisualGuiLibrary" as lib #E8F5E9
+participant "LocatorParser" as parse #ECEFF1
+participant "ElementFinder" as finder #E0F7FA
+participant "DescriptionResolver" as desc #FFF3E0
+participant "Ollama\n(SLM / VLM)" as model #F3E5F5
+participant "CaptureStrategy" as cap #E1F5FE
+participant "ActuatorStrategy" as act #FCE4EC
+
+== Once per screen: build the DOM (parse-once economics) ==
+test -> lib : Dump Visual DOM
+lib -> cap : capture() / capture_window(title)
+cap --> lib : frame + geometry (ADR-021)
+note right of lib
+  detector + OCR + merge + hierarchy
+  (see the screenshot->DOM sequence)
+end note
+lib -> finder : build index over the DOM
+lib --> test : dom
+
+== Per action: resolve against the CACHED DOM - no re-capture ==
+test -> lib : Click Visual  text=Save || desc="save button"
+activate lib
+lib -> parse : parse_alternatives(locator)
+parse --> lib : [[text=Save], [desc="save button"]]
+
+group Alternative #1  (deterministic, free)
+  lib -> finder : find([text=Save])
+  finder --> lib : []  (nothing matched)
+end
+
+group Alternative #2  (desc= escalation, ADR-022)
+  lib -> finder : find([desc="save button"])
+  finder --> lib : []  (tier-0 lexical missed)
+  lib -> desc : resolve("save button")
+  desc -> desc : tier 1 - lexical scoring (no model)
+  desc -> model : tier 2 - pick an id from the element table
+  model --> desc : "E42"
+  desc -> desc : validate E42 exists in the DOM
+  desc --> lib : element E42 (tier=slm)
+end
+
+note over lib #FFF9C4
+  WARN: fallback - a later alternative won.
+  The primary 'text=Save' may be stale
+  (the self-healing-locator signal)
+end note
+
+lib -> lib : centre of E42 -> normalized (nx, ny)\nvia the capture frame geometry
+lib -> act : tap(nx, ny, image_size)
+act -> act : normalized -> device pixels\n(device_origin + n * device_size)
+act --> lib : ok
+lib -> lib : mark DOM stale (ADR-023)
+lib --> test : (clicked)
+deactivate lib
+
+== Reading a value back after the action (ADR-023 recap) ==
+test -> lib : Verify Element Value  hint=Email  user@example.com
+lib -> cap : re-capture (same scope as the dump)
+cap --> lib : frame
+lib -> lib : re-OCR ONLY this element's bounds\n(escalating upscale on an empty read)
+lib --> test : PASS / FAIL with both values
+
+legend bottom
+  The costly step (detector + OCR) runs ONCE per screen; every locator after
+  that is a lookup in the cached DOM, and a click never re-captures. Only a
+  changed screen needs a new dump - or, for a single value, the cheap
+  region-level recap above.
+end legend
+
+@enduml

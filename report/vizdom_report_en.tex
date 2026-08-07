@@ -667,6 +667,30 @@ Actions resolve a locator to an element, convert its center to normalized
 coordinates, and delegate to the actuator, so the same test runs locally, over
 gRPC, or against a robot arm without change.
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.72\linewidth]{Locator_Resolution.png}
+  \caption{Resolving a locator to exactly one element. Alternatives separated by
+  \code{||} are tried in order; an alternative is abandoned when it matches
+  \emph{nothing} or is \emph{ambiguous}, a \code{desc=} in the chain may first
+  arbitrate among ambiguous candidates (ADR-024), a lone description escalates
+  through the grounding tiers (Figure~\ref{fig:descgrounding}), and a chain that
+  fails reports every attempt with its reason.}
+  \label{fig:locatorflow}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Locator_Sequence.png}
+  \caption{End-to-end interaction for one action. The costly perception step runs
+  \emph{once} per screen; each subsequent locator is a lookup in the cached DOM and
+  a click never re-captures. The element centre is normalised through the capture
+  frame's geometry before the actuator maps it into device pixels
+  (Section~\ref{sec:impl}), and reading a value back uses the region-level recap
+  rather than a new detector pass.}
+  \label{fig:locatorseq}
+\end{figure}
+
 \subsubsection*{Targeting the right application}
 A less obvious correctness requirement follows from the two design choices above:
 the system captures the \emph{whole screen} and actuates by \emph{absolute

@@ -247,6 +247,10 @@ Click Visual    role=button text=OK || desc="confirm button"      # AND inside, 
 - **space = AND** within an alternative (unchanged), **`||` = ordered OR** between them.
 - An alternative falls through when it finds **nothing** *or* is **ambiguous** —
   an ambiguous `text=Delete` is as unusable as a missing one.
+```plantuml
+!include diagrams/locator_resolution.puml
+```
+
 - **Ambiguity arbitration**: before an ambiguous alternative falls through, a
   `desc=` in the chain judges *which* of the matched elements was meant (the
   description is grounded over just those candidates). E.g. when the `±` key's
