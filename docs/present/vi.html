@@ -276,11 +276,11 @@ body.notes-on .slide.active .notes{display:block}
 </div>
 <div class="card">
 <h3 style="margin-top:0">4 · Điều khiển ứng dụng</h3>
-<p class="small" style="color:var(--fg);margin:0">Click, nhập văn bản, nhấn phím, cuộn và kéo–thả qua <code>desktop</code> / <code>android</code> / <code>grpc</code> hoặc plugin <strong>cánh tay robot</strong>. Tất cả sử dụng tọa độ chuẩn hóa, nên cùng một test có thể chạy trên nhiều target.</p>
+<p class="small" style="color:var(--fg);margin:0">Click, nhập văn bản, nhấn phím, cuộn và kéo–thả qua <code>desktop</code> / <code>android</code> / <code>grpc</code> hoặc plugin <strong>cánh tay robot</strong>. Tất cả sử dụng tọa độ chuẩn hóa, nên cùng một test có thể chạy trên nhiều target. Cả capture port và actuator port còn có thể <strong>đưa ứng dụng đang kiểm thử lên foreground</strong>, bảo đảm screenshot và thao tác click không bị gửi nhầm đến cửa sổ đang nằm phía trên.</p>
 </div>
 <div class="card">
 <h3 style="margin-top:0">5 · Viết kiểm thử bằng Robot Framework</h3>
-<p class="small" style="color:var(--fg);margin:0"><strong>25 từ khóa</strong> — Connect,
+<p class="small" style="color:var(--fg);margin:0"><strong>26 từ khóa</strong> — Connect,
           Dump Visual DOM, Click Visual, Type Text Visual, <strong>Verify Element Value</strong>
           (đọc lại trực tiếp từ màn hình), Visual Should Exist, Wait Until Visual Appears,
           Get Element Property/Text/Label/Center, …</p>
@@ -680,7 +680,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 <tr><td>Ánh xạ vai trò</td><td>Thông tin tương tác + geometry tự điều chỉnh theo độ phân giải + caption keyword để phân biệt các role</td>
 <td>Suy ra role button / input / checkbox / icon từ đầu ra chỉ có text hoặc icon → accuracy 0.09 → 0.87</td></tr>
 <tr><td>Đọc ký hiệu</td><td>Crop sát và chuẩn hóa glyph → loại outline rỗng → template matching bằng Dice trên <em>tất cả</em> kết quả nhị phân hóa, với threshold riêng cho từng ký hiệu</td>
-<td>Đọc các ký hiệu + − = × ÷ mà OCR bỏ sót → 20/20 trường hợp đúng</td></tr>
+<td>Đọc các ký hiệu + − = × ÷ mà OCR bỏ sót → 130/130 trường hợp đúng</td></tr>
 <tr><td>Phân cấp</td><td>Containment threshold, nhóm theo alignment, liên kết label theo khoảng cách và vị trí, sắp xếp theo reading order</td>
 <td>Tạo cây có thể truy vấn — tầng mà các hệ thống so sánh chưa xây dựng</td></tr>
 <tr><td>Ngữ nghĩa</td><td>Tách riêng hai kênh <code>text</code> / <code>label</code>; ưu tiên label lân cận &gt; caption &gt; text của chính phần tử</td>
@@ -745,7 +745,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 <div>
 <div class="kpi">
-<div><b>20/20</b><span>Control thử nghiệm trên hai theme</span></div>
+<div><b>130/130</b><span>Ô được gán nhãn trên 4 kiểu render</span></div>
 <div><b>21 → 4</b><span>Detection trên một ảnh tổng hợp<br/>(phần giảm là false positive)</span></div>
 </div>
 <div class="card good"><p style="margin:0"><code>÷ × − + = .</code> đều được nhận đúng · dấu gạch trên title bar → <code>-</code> · nút Close → <code>×</code> · nút Maximize được <strong>loại đúng</strong> · chữ số và icon không liên quan được bỏ qua</p></div>
@@ -833,6 +833,35 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 <div class="notes">ADR-022. Đây là phần mới nhất và có thể phát triển thành một thí nghiệm phù hợp cho luận văn: đo tỷ lệ resolve đúng của từng tier trên dataset có label.</div>
 </section>
+<!-- 21b ───────────────────────────────────────── -->
+<section class="slide">
+<h2>Một lỗi về tính đúng đắn mà detector không thể sửa — nhắm đúng cửa sổ</h2>
+<div class="grow">
+<p>Hai lựa chọn thiết kế giúp hệ thống hoạt động trên nhiều nền tảng: chụp <strong>toàn bộ màn hình</strong> và thao tác bằng <strong>tọa độ tuyệt đối</strong>. Cả hai đều có thể âm thầm cho kết quả sai ngay khi ứng dụng đang kiểm thử <em>không nằm ở foreground</em>.</p>
+<div class="cols">
+<div class="card bad"><h3 style="margin-top:0">Điều gì sẽ xảy ra</h3>
+<ul class="small" style="color:var(--fg);margin:0">
+<li>Ảnh chụp ghi lại cửa sổ đang nằm trên cùng → tạo DOM của <strong>nhầm ứng dụng</strong></li>
+<li><code>tap()</code> tác động lên cửa sổ đang chiếm tọa độ đó; văn bản được nhập theo <strong>keyboard focus</strong> → input có thể được gửi sang nơi khác</li>
+<li><strong>Không thể phát hiện từ DOM:</strong> tọa độ vẫn đúng với screenshot, và screenshot cũng đúng tại thời điểm nó được chụp</li>
+</ul>
+</div>
+<div class="card good"><h3 style="margin-top:0">Cách xử lý — một capability của port</h3>
+<ul class="small" style="color:var(--fg);margin:0">
+<li><code>focus_target(title)</code> được hỗ trợ trên <strong>cả hai</strong> driven port dưới dạng hook tùy chọn; mặc định là no-op, nên plugin không bắt buộc phải triển khai</li>
+<li>Trên Win32: restore → gắn vào input queue của foreground thread → gửi modifier giả lập → tạm đặt top-most; trên X11 dùng <code>wmctrl</code>/<code>xdotool</code>; trên Android dùng <code>am start</code></li>
+<li>Được cung cấp qua keyword <code>Bring App To Front</code> — thất bại sẽ làm test fail — hoặc tùy chọn <code>focus_before_capture</code> chỉ ghi warning</li>
+</ul>
+</div>
+</div>
+<div class="cols" style="margin-top:.9em">
+<div class="card"><p style="margin:0"><strong>Luôn xác minh, không giả định.</strong> Code trước đây trả về <em>true</em> miễn là không phát sinh exception, nên không phân biệt được giữa “đã đưa cửa sổ lên trước” và “hệ điều hành từ chối” — chính trường hợp gây ra screenshot sai. Strategy hiện đọc lại foreground window thực tế; giá trị <strong>false</strong> trung thực giúp test thất bại rõ ràng.</p></div>
+<div class="card"><p style="margin:0"><strong>Focus phải được thực hiện tại nơi màn hình tồn tại.</strong> Client chạy trên máy khác không thể đưa một cửa sổ không thuộc máy đó lên foreground. Vì vậy thao tác focus có riêng một <strong><code>Focus</code> RPC</strong>; nếu không, tính năng này sẽ không hoạt động trong cấu hình demo tham chiếu, nơi cả capture và actuator đều chạy qua gRPC.</p></div>
+</div>
+<p class="small">Tính năng này mặc định tắt vì đưa cửa sổ lên foreground <strong>là một action</strong>: nó có thể làm tooltip hoặc popup tạm thời biến mất, nên không được ngầm thực hiện như một phần của thao tác đọc. Khi window title khớp nhiều cửa sổ, hệ thống báo lỗi kèm danh sách ứng viên thay vì chọn ngẫu nhiên.</p>
+</div>
+<div class="notes"><b>ADR-021.</b> Viewer đã có sẵn đoạn code Win32 này và né lỗi bằng cách tự ẩn cửa sổ của nó — capability đúng nhưng nằm sai layer. Đưa nó vào các port giúp Robot Framework, CLI và remote service đều sử dụng được, đồng thời mỗi hệ điều hành chỉ cần một implementation. Đây là ví dụ rõ ràng cho lợi ích của kiến trúc: một capability cross-cutting mới không cần thêm port, không cần thêm section cấu hình và không làm thay đổi test.</div>
+</section>
 <!-- 22 ────────────────────────────────────────── -->
 <section class="slide">
 <h2>Đóng góp và vị trí của VizDOM</h2>
@@ -851,7 +880,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 <h3>Các thành phần đã bàn giao</h3>
 <ul>
 <li>Hexagonal engine với <strong>5 port</strong>; 3 port có thể chạy dưới dạng gRPC service tùy chọn</li>
-<li><strong>22 ADR</strong>; tài liệu kiến trúc arc42 bằng tiếng Anh và tiếng Việt</li>
+<li><strong>24 ADR</strong>; tài liệu kiến trúc arc42 bằng tiếng Anh và tiếng Việt</li>
 <li>Thư viện Robot Framework; Viewer tương tác; bộ công cụ đánh giá</li>
 <li>Benchmark có label; công cụ augmentation và sinh dữ liệu bằng LLM</li>
 <li>Trang tài liệu đã được triển khai; demo chạy được trên Windows</li>
@@ -916,7 +945,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 <div class="kpi" style="justify-content:center;margin-top:1.4em">
 <div><b>0.09→0.87</b><span>độ chính xác vai trò</span></div>
 <div><b>0.97</b><span>trúng tâm (thao tác được)</span></div>
-<div><b>20/20</b><span>đọc glyph</span></div>
+<div><b>130/130</b><span>đọc glyph</span></div>
 <div><b>22</b><span>ADR</span></div>
 </div>
 <p class="small" style="margin-top:2em">Tài liệu và báo cáo: <code>docs/</code> · <code>report/</code> (tổng quan + arc42, tiếng Anh + tiếng Việt)<br/>Trang tài liệu: <strong>milanac030988.github.io/vizdom</strong></p>

@@ -82,6 +82,7 @@ nav:
       - 018 Pluggable Capture Service: adr/018-pluggable-capture-service.md
       - 019 Pluggable Actuator Service: adr/019-pluggable-actuator-service.md
       - 020 Client Session Config: adr/020-client-session-config.md
+      - 021 Application Targeting and Focus: adr/021-application-targeting-and-focus.md
       - 022 Description-Based Locator: adr/022-description-based-locator.md
       - 023 Post-Action Recap: adr/023-post-action-recap.md
       - 024 Multi-Locator Fallback Chains: adr/024-multi-locator-fallback-chains.md

@@ -10,6 +10,7 @@
 \geometry{margin=2.5cm}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{amssymb}      % \checkmark trong bảng so sánh lỗi
 \usepackage{caption}
 \usepackage{enumitem}
 \usepackage{xcolor}
@@ -615,16 +616,33 @@ phân hóa} đã chọn sai. Adaptive threshold tạo ra một \emph{artefact d�
 (glyph xuất hiện như một lỗ rỗng bên trong một khối), nhưng candidate này lại đạt
 điểm cao nhất theo density heuristic dùng để chọn giữa các phương án binarization.
 Vì vậy, dấu ``$\times$'' nét dày bị match thành template dấu chấm đặc, còn
-``$\div$'' và ``$-$'' không match được gì. Giai đoạn này hiện đưa \emph{mọi}
-candidate nhị phân hóa (cả hai polarity và adaptive threshold) qua template
-matching rồi chọn kết quả tốt nhất trên toàn bộ tập candidate. Artefact dạng vòng
-không khớp template nào, nên polarity đúng được chọn theo bằng chứng từ phép so khớp
-thay vì bằng heuristic. Hệ thống đồng thời bổ sung size gate cho dấu ``.'' và các
-template dùng font đậm.
+``$\div$'' và ``$-$'' không match được gì. Giai đoạn này hiện chấm điểm
+\emph{mọi} candidate nhị phân hóa --- cả hai polarity và adaptive threshold ---
+bằng template matching, đồng thời bổ sung size gate cho dấu ``.'' và các template
+dùng font đậm.
 
-Trên cả hai theme, cơ chế hiện đọc đúng \textbf{20 trên 20} control được kiểm tra;
-glyph tổ hợp ``$\pm$'' vẫn được từ chối an toàn thay vì bị nhận dạng sai. Kết quả
-được đưa vào \code{text} --- vì ký hiệu là nội dung được đọc trực tiếp --- nên một
+Việc mở rộng đánh giá đã buộc phải có một vòng sửa thứ ba, sâu hơn: một similarity
+score đơn thuần không thể cho biết ``đây hoàn toàn không phải là ký hiệu''. Trên
+tập 130 trường hợp đã gán nhãn --- bốn kiểu render thực tế của cùng một ứng dụng
+(hai bố cục keypad, display scaling 100\% và 125\%, theme tối và sáng), bao gồm
+cả mọi phím bắt buộc phải bị \emph{từ chối} --- template matcher chỉ đạt 51/130.
+Sau khi được chuẩn hóa về một patch cố định, một phím chữ như ``mod'', icon
+backspace hoặc một chữ số có thể biến thành vệt giống thanh và vượt threshold của
+``$-$'' hoặc ``$=$''; đồng thời một candidate binarization \emph{suy giảm} làm
+mất component --- chẳng hạn hai chấm của ``$\div$'' hoặc thanh thứ hai của
+``$=$'' --- đôi khi lại được chấm cao hơn cách đọc trung thực từ candidate tốt hơn.
+
+Thiết kế cuối cùng phân loại dựa trên \emph{cấu trúc connected component}:
+``$\div$'' phải gồm một thanh ngang rộng với một chấm ở trên và một chấm ở dưới,
+``$=$'' phải có đúng hai thanh đặc xếp chồng, còn ``$+$'' phải là một dấu thập cân
+giữa với bốn góc rỗng. Template chỉ còn đóng vai trò bằng chứng hỗ trợ. Các
+candidate binarization được xếp hạng theo \emph{mức độ đặc hiệu}: kết quả giải
+thích được nhiều component hơn sẽ thắng, vì quá trình suy giảm chỉ có thể làm mất
+cấu trúc chứ không thể tự tạo thêm cấu trúc hợp lệ. Glyph không khớp cấu trúc nào
+sẽ bị từ chối. Kết quả đạt \textbf{130 trên 130} trên cả bốn kiểu render và được
+giữ lại như một regression test dựa trên dữ liệu; trên tập tổng hợp, cùng thay đổi
+này loại bỏ thêm ba false positive và khôi phục hai glyph ``\%'' từng bị bỏ sót.
+Kết quả được đưa vào \code{text} --- vì ký hiệu là nội dung được đọc trực tiếp --- nên một
 phím toán tử vẫn có thể được điều khiển bằng \code{text="+"} ngay cả khi caption
 bị nhiễu. Khi kết quả đủ tin cậy, hệ thống còn gán một \emph{label chuẩn hóa}
 (``$\div$''$\rightarrow$Divide, ``$\times$''$\rightarrow$Multiply), thay thế
@@ -638,7 +656,7 @@ như một orchestrator mỏng phía trên các port capture và actuator. Một
 đại diện:
 \begin{itemize}[leftmargin=1.4em]
   \item \emph{Capture / phân tích}: \code{Capture Screen}, \code{Dump Visual DOM},
-        \code{Load Visual DOM};
+        \code{Load Visual DOM}, \code{Bring App To Front};
   \item \emph{Truy vấn}: \code{Get Visual Element}, \code{Get Element Property},
         \code{Get Element Text}, \code{Get Element Label}, \code{Get Element Center};
   \item \emph{Action}: \code{Click Visual}, \code{Type Text Visual},
@@ -655,7 +673,40 @@ Locator hỗ trợ \code{id=}, \code{text=}, \code{hint=}, \code{role=}, các qu
 
 \noindent Một phương án bị bỏ qua không chỉ khi không tìm thấy kết quả, mà cả khi kết quả \emph{mơ hồ}; locator trả về nhiều phần tử cũng không thể sử dụng an toàn như locator không tìm thấy phần tử. Khi cả chain thất bại, thông báo lỗi liệt kê từng phương án đã thử cùng nguyên nhân tương ứng để vẫn có thể debug. Do các phương án có thứ tự, người viết test cũng kiểm soát được chi phí: lookup xác định bằng \code{text=} gần như không tốn chi phí và được chạy trước; \code{desc=} chỉ được sử dụng sau khi phương án trước thất bại và có thể gọi model. Khi một phương án phía sau thành công, thư viện phát warning và chỉ rõ phương án nào đã thất bại. Đây là tín hiệu cho thấy locator chính đã lỗi thời, đồng thời là đầu vào có thể đo lường cho cơ chế self-healing locator được liệt kê trong phần công việc tương lai (ADR-024).
 
-Action phân giải locator thành phần tử, chuyển center sang tọa độ chuẩn hóa rồi ủy quyền cho actuator. Nhờ vậy, cùng một bài kiểm thử có thể chạy cục bộ, qua gRPC hoặc với cánh tay robot mà không cần thay đổi. Hình~\ref{fig:seq} mô tả tương tác đầu-cuối của một chu kỳ từ ảnh chụp màn hình đến DOM.
+Action phân giải locator thành phần tử, chuyển center sang tọa độ chuẩn hóa rồi ủy quyền cho actuator. Nhờ vậy, cùng một bài kiểm thử có thể chạy cục bộ, qua gRPC hoặc với cánh tay robot mà không cần thay đổi.
+
+\subsubsection*{Nhắm đúng ứng dụng}
+Một yêu cầu đúng đắn ít hiển nhiên hơn xuất phát từ chính hai lựa chọn thiết kế
+phía trên: hệ thống chụp \emph{toàn bộ màn hình} và thao tác bằng \emph{tọa độ
+tuyệt đối}. Cả hai đều âm thầm cho kết quả sai khi ứng dụng đang kiểm thử không
+phải foreground window. Nếu một cửa sổ khác che phía trên, ảnh chụp sẽ tạo ra
+Visual DOM của nhầm ứng dụng; một click tại tọa độ vốn đúng với screenshot sẽ rơi
+vào bất kỳ cửa sổ nào đang chiếm điểm đó, còn văn bản được nhập vào nơi đang giữ
+keyboard focus. DOM không thể chỉ ra sai sót này: tọa độ vẫn nhất quán với
+screenshot, và screenshot cũng nhất quán với thời điểm được chụp.
+
+Vì vậy, hệ thống xem ``đưa ứng dụng lên foreground'' là một capability tường minh
+của cả hai driven port (\code{focus\_target()}, ADR-021), với implementation
+riêng theo nền tảng: chuỗi xử lý Win32 trên Windows --- restore, gắn vào input
+queue của foreground thread, gửi một modifier giả lập và tạm đặt top-most ---
+\code{wmctrl}/\code{xdotool} trên X11, và \code{am start} để đưa activity về
+trạng thái resumed trên Android. Hai đặc tính giúp cơ chế này đáng tin cậy thay vì
+chỉ tiện dụng. Thứ nhất, thành công luôn được \emph{xác minh}: strategy đọc lại
+foreground window thực tế sau thao tác, vì hệ điều hành có thể từ chối yêu cầu một
+cách hợp lệ --- chẳng hạn foreground lock của Windows --- và việc lạc quan trả về
+``true'' sẽ biến lần từ chối đó thành một screenshot sai khó giải thích. Thứ hai,
+focus được thực hiện \emph{tại nơi màn hình tồn tại}: trong cấu hình phân tán, thao
+tác này được truyền bằng một \code{Focus} RPC riêng đến capture service và
+actuator service, vì client trên máy khác không thể đưa một cửa sổ không thuộc máy
+đó lên foreground. Trường hợp mơ hồ được xem là lỗi chứ không phải cơ hội để đoán:
+nếu window title khớp nhiều cửa sổ, hệ thống trả về danh sách ứng viên thay vì
+điều khiển một cửa sổ tùy ý. Cơ chế được cung cấp theo hai mức có chủ ý --- một
+keyword tường minh làm test thất bại khi không focus được, và một cờ cấu hình
+opt-in đưa target lên foreground trước mỗi lần capture nhưng chỉ ghi warning ---
+vì đưa cửa sổ lên foreground bản thân nó là một action có thể làm biến mất UI tạm
+thời; do đó không bao giờ được ngầm thực hiện như một phần của thao tác đọc.
+
+Hình~\ref{fig:seq} mô tả tương tác đầu-cuối của một chu kỳ từ ảnh chụp màn hình đến DOM.
 
 \begin{figure}[H]
   \centering

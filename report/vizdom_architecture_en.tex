@@ -181,7 +181,7 @@ the ability to actuate input. Figure~\ref{fig:overview} shows the end-to-end flo
 \textbf{Neighbour} & \textbf{Direction} & \textbf{Interface} \\
 \midrule
 \endhead
-App under test & inbound & Screenshot (BGR image) via a capture strategy; input events via an actuator strategy. \\
+App under test & inbound & Screenshot (BGR image) via a capture strategy; input events via an actuator strategy. Optionally \emph{raised to the foreground} first (window title / Android activity), since a whole-screen grab and coordinate-based input both silently target the wrong application otherwise (ADR-021). \\
 OCR engines & outbound & EasyOCR~\cite{easyocr} / PaddleOCR / Tesseract~\cite{tesseract} (in-process libraries). \\
 OmniParser & outbound & Vendored repo~\cite{omniparser2024} + Florence-2~\cite{florence2} / YOLO~\cite{ultralytics} weights (local files). \\
 Ollama & outbound & HTTP to a local/remote small LM/VLM for optional refinement. \\
@@ -531,8 +531,10 @@ verification caveat (Ch.~11).
 018 & Pluggable screenshot capture (strategy + service) & Accepted \\
 019 & Pluggable input actuation (strategy + service) & Accepted \\
 020 & Client session configuration (\code{connect} + one JSON config for all stages) & Accepted \\
+021 & Application targeting and focus (\code{focus\_target()} on both driven ports; \code{Focus} RPC; verified, never assumed) & Accepted \\
 022 & Description-based locator (\code{desc=}) via tiered grounding (lexical $\rightarrow$ SLM-over-DOM $\rightarrow$ VLM Set-of-Mark) & Accepted \\
 023 & Post-action recap for property verification (\code{refresh=none|element|screen}; region re-OCR) & Accepted \\
+024 & Multi-locator fallback chains (\code{||}: ordered OR between alternatives, AND within one) & Accepted \\
 \bottomrule
 \end{longtable}
 

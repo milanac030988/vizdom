@@ -184,14 +184,18 @@ orchestration only when nodes actually come and go.
 
 ### Code generation
 
+> The `rpc/` package below became `src/visual_dom/generated/` (stubs) plus
+> `adapters/inbound/grpc/` (servers) in the ADR-014 hexagonal restructure. The
+> current command is:
+
 ```bash
 pip install grpcio grpcio-tools
 python -m grpc_tools.protoc -I protos \
-  --python_out=src/visual_dom/rpc --grpc_python_out=src/visual_dom/rpc \
-  protos/detector.proto
-# protoc emits an absolute import that breaks inside a package — make it relative:
-sed -i 's/^import detector_pb2/from . import detector_pb2/' \
-  src/visual_dom/rpc/detector_pb2_grpc.py
+  --python_out=src/visual_dom/generated --grpc_python_out=src/visual_dom/generated \
+  protos/detector.proto protos/capture.proto protos/actuator.proto
+# protoc emits a bare import that breaks inside a package — qualify it:
+sed -i 's/^import detector_pb2 as /from visual_dom.generated import detector_pb2 as /' \
+  src/visual_dom/generated/detector_pb2_grpc.py
 ```
 
 **Verified end-to-end (2026-07-26):** with the `uied` backend, client → gRPC

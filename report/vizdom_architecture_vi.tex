@@ -182,7 +182,7 @@ thực thi input. Hình~\ref{fig:overview} mô tả luồng end-to-end.
 \textbf{Hệ thống lân cận} & \textbf{Hướng} & \textbf{Interface} \\
 \midrule
 \endhead
-Application under test & vào & Screenshot (ảnh BGR) thông qua capture strategy; các input event thông qua actuator strategy. \\
+Application under test & vào & Screenshot (ảnh BGR) thông qua capture strategy; các input event thông qua actuator strategy. Tùy chọn, hệ thống đưa ứng dụng lên foreground trước (theo window title / Android activity), vì nếu không, cả thao tác chụp toàn màn hình lẫn input theo tọa độ đều có thể âm thầm nhắm nhầm ứng dụng (ADR-021). \\
 OCR engine & ra & EasyOCR~\cite{easyocr} / PaddleOCR / Tesseract~\cite{tesseract} dưới dạng thư viện in-process. \\
 OmniParser & ra & Repository được vendor~\cite{omniparser2024} cùng weight Florence-2~\cite{florence2} / YOLO~\cite{ultralytics} lưu cục bộ. \\
 Ollama & ra & HTTP đến small LM/VLM cục bộ hoặc từ xa để refinement tùy chọn. \\
@@ -537,8 +537,10 @@ có ý nghĩa kiến trúc cùng trạng thái hiện tại được trình bày
 018 & Screenshot capture có thể thay thế (strategy + service) & Đã chấp thuận \\
 019 & Input actuation có thể thay thế (strategy + service) & Đã chấp thuận \\
 020 & Cấu hình phiên phía client (\code{connect} + một file JSON cho toàn bộ các stage) & Đã chấp thuận \\
+021 & Nhắm đúng ứng dụng và quản lý focus (\code{focus\_target()} trên cả hai driven port; \code{Focus} RPC; luôn xác minh, không giả định) & Đã chấp thuận \\
 022 & Locator dựa trên mô tả (\code{desc=}) thông qua grounding phân tầng (lexical $\rightarrow$ SLM-over-DOM $\rightarrow$ VLM Set-of-Mark) & Đã chấp thuận \\
 023 & Tái thu nhận sau thao tác để xác minh thuộc tính (\code{refresh=none|element|screen}; OCR lại theo vùng) & Đã chấp thuận \\
+024 & Fallback chain gồm nhiều locator (\code{||}: OR có thứ tự giữa các phương án, AND bên trong từng phương án) & Đã chấp thuận \\
 \bottomrule
 \end{longtable}
 

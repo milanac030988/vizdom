@@ -25,6 +25,8 @@ package "core.ports.outbound.actuator_port" #FFECB3 {
         +{abstract} swipe(nx1, ny1, nx2, ny2, image_size, duration)
         +device_size(): (w,h)
         #_to_device(nx, ny, image_size): (px,py)
+        --optional hook--
+        +focus_target(title): bool
     }
 }
 
@@ -52,4 +54,12 @@ AndroidActuator --|> ActuatorStrategy
 GrpcActuatorStrategy --|> ActuatorStrategy
 ActPlugins ..|> ActuatorStrategy
 ActuatorRegistry ..> ActuatorStrategy : creates / discovers
+
+note bottom of DesktopActuator
+  ADR-021: focus_target() reuses the
+  capture side's win32_window /
+  x11_window helpers - a tap lands on
+  whatever window is at that point, so
+  focus is a correctness concern
+end note
 @enduml

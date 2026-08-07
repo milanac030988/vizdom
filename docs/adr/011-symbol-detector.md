@@ -72,11 +72,28 @@ Created `src/visual_dom/cv/symbol_detector.py` using projection-based pattern ma
 
 ### Known Limitations
 
-- Windows Calculator with dark gradient theme: low detection rate
-- Very small symbols (<30px): `×` and `.` unreliable
-- Cannot distinguish similar shapes (e.g., `x` letter vs `×` multiply)
+- Cannot distinguish similar shapes (e.g., `x` letter vs `×` multiply) when the
+  glyph is genuinely ambiguous in isolation
+
+## Revisions
+
+The original projection-rule design was replaced twice (see
+`IMPROVEMENTS.md` §3 for the full account):
+
+1. **v2 — template matching** (Dice against font-rendered templates on the
+   tight, scale-normalised glyph), which fixed the theme-dependence above;
+2. **v3 — structure first** (2026-08-07): connected-component structural
+   classification (`÷` = bar + dot above + dot below, `=` = two stacked bars,
+   `+` = centred cross with empty corners, ...) with templates demoted to
+   supporting evidence, candidate binarizations ranked by *specificity* (the
+   reading that explains more components wins), and rejection when no structure
+   fits — which is what stops word keys, icons, and digits from being misread as
+   operators. Verified 130/130 on a four-rendering labelled set
+   (`tests/unit/test_symbol_detector.py`, data in `tests/samples/symbols/`).
 
 ## Files Changed
 
-- `src/visual_dom/cv/symbol_detector.py` — New: symbol detection module
-- `src/visual_dom/cv/pipeline.py` — Added `_detect_symbols()` as Step 4c
+- `src/visual_dom/core/domain/cvops/symbol_detector.py` — symbol detection module
+- `src/visual_dom/core/domain/pipeline.py` — `_detect_symbols()` as Step 4c
+- `tests/unit/test_symbol_detector.py` + `tests/samples/symbols/` — labelled
+  regression set (four real renderings, 130 cases)

@@ -49,6 +49,17 @@ domain data-model spine. Detailed per-component diagrams follow below.
 !include diagrams/class_actuator.puml
 ```
 
+Both driven ports carry the same two **optional** hooks, defaulting to a harmless
+no-op so a plugin never has to implement them:
+
+- `describe_target()` — names *what* was captured for session provenance (ADR-018);
+- `focus_target(title)` — raises the application under test (ADR-021).
+
+Each strategy answers for its own platform, which is why these belong to the port
+rather than the caller: the OS grabbers ask the window manager, ADB asks for the
+resumed activity, a camera can answer neither, and the gRPC strategies forward the
+question to the machine that owns the screen.
+
 ### Detail — domain analysis engine
 
 ```plantuml
