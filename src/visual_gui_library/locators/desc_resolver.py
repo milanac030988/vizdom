@@ -194,19 +194,35 @@ class DescriptionResolver:
 
     # -- public ------------------------------------------------------------
 
-    def resolve(self, description: str) -> Tuple[Optional[Dict[str, Any]], Dict[str, Any]]:
+    def resolve(
+        self,
+        description: str,
+        within: Optional[List[Dict[str, Any]]] = None,
+    ) -> Tuple[Optional[Dict[str, Any]], Dict[str, Any]]:
         """
         Resolve a description to an element.
+
+        Args:
+            description: The natural-language description.
+            within: Optional restriction of the search space to these elements.
+                Used to *disambiguate*: when a property locator (``text=+``)
+                matched several elements, grounding the description over just
+                those candidates is both cheaper and far more reliable than over
+                the whole DOM — two candidates instead of fifty, so even the
+                model-free lexical tier usually separates them, and the SLM/VLM
+                tiers judge a short, focused list.
 
         Returns:
             (element or None, info) where info = {"tier": ..., "reason": ...,
             "candidates": [...ids...]} for logging / error messages.
         """
         key = description.strip().lower()
+        if within is not None:
+            key = (key, tuple(sorted(str(e.get("id")) for e in within)))
         if key in self._cache:
             return self._cache[key]
 
-        result = self._resolve_uncached(description)
+        result = self._resolve_uncached(description, within=within)
         self._cache[key] = result
         return result
 
@@ -220,16 +236,17 @@ class DescriptionResolver:
             return sz[0], sz[1]
         return None
 
-    def _resolve_uncached(self, description: str):
+    def _resolve_uncached(self, description: str, within=None):
+        pool = within if within is not None else self.elements
         ranked = []
         if "lexical" in self.tiers:
-            ranked = lexical_rank(self.elements, description, self._image_size())
+            ranked = lexical_rank(pool, description, self._image_size())
             elem = lexical_confident(ranked)
             if elem is not None:
                 return elem, {"tier": "lexical", "reason": f"score={ranked[0][0]:.2f}",
                               "candidates": [e.get("id") for _, e in ranked[:5]]}
 
-        candidates = [e for _, e in ranked[:8]] or self.elements
+        candidates = [e for _, e in ranked[:8]] or pool
 
         # Positional words are deterministic geometry - small LMs reason poorly
         # about coordinates (a 3B model happily calls top-left "top right"), so
