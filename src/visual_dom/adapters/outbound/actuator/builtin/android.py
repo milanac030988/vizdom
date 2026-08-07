@@ -7,6 +7,7 @@ may differ from the captured screenshot buffer.
 
 import shutil
 import subprocess
+import time
 from typing import Optional, Tuple
 
 from visual_dom.core.ports.outbound.actuator_port import ActuatorStrategy
@@ -22,9 +23,13 @@ class AndroidActuator(ActuatorStrategy):
         "delete": "67", "backspace": "67", "space": "62", "escape": "111",
     }
 
-    def __init__(self, serial: Optional[str] = None, adb: str = "adb"):
+    def __init__(self, serial: Optional[str] = None, adb: str = "adb",
+                 activity: Optional[str] = None):
         self._serial = serial
         self._adb = adb
+        # activity: default target for focus_target(), "package/.Activity" or a
+        # bare package name (config: actuator.window_title)
+        self._activity = activity
         self._size = None  # cached (w, h) from `wm size`
 
     @classmethod
@@ -85,6 +90,31 @@ class AndroidActuator(ActuatorStrategy):
             self._shell("input", "swipe", str(x), str(y), str(x + dist), str(y), "300")
         elif direction == "right":
             self._shell("input", "swipe", str(x), str(y), str(x - dist), str(y), "300")
+
+    def focus_target(self, title: Optional[str] = None) -> bool:
+        """
+        Bring an app to the foreground with `am start` (ADR-021), verified against
+        the resumed activity — `am start` reports success even for an activity
+        that immediately finishes.
+        """
+        wanted = (title or self._activity or "").strip()
+        if not wanted:
+            return False
+        try:
+            if "/" in wanted:
+                self._shell("am", "start", "-n", wanted)
+            else:
+                self._shell("monkey", "-p", wanted,
+                            "-c", "android.intent.category.LAUNCHER", "1")
+            time.sleep(0.6)                     # app launch is asynchronous
+            out = self._shell("dumpsys", "activity", "activities").stdout or ""
+            package = wanted.split("/", 1)[0].lower()
+            for line in out.splitlines():
+                if "mResumedActivity" in line or "mFocusedActivity" in line:
+                    return package in line.lower()
+            return False
+        except Exception:
+            return False
 
     def swipe(self, nx1, ny1, nx2, ny2, image_size=None, duration=0.3):
         x1, y1 = self._to_device(nx1, ny1, image_size)

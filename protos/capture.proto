@@ -8,12 +8,31 @@ package visualdom.capture.v1;
 service Capture {
   // Grab one screenshot from the server's configured CaptureStrategy.
   rpc Grab(GrabRequest) returns (GrabResponse);
+  // Bring the application under test to the foreground before grabbing, so the
+  // screenshot shows the SUT and not whatever window is on top (ADR-021).
+  rpc Focus(FocusRequest) returns (FocusResponse);
   // Liveness/readiness + which strategy is loaded.
   rpc HealthCheck(HealthRequest) returns (HealthResponse);
 }
 
+message FocusRequest {
+  string title = 1;        // window title / activity to raise; empty = server default
+  string request_id = 2;
+}
+
+message FocusResponse {
+  bool focused = 1;        // true ONLY when the server verified the target is foreground
+  string detail = 2;       // what was raised, or why it could not be
+  string strategy = 3;
+  string request_id = 4;
+}
+
 message GrabRequest {
   string request_id = 1;   // correlation id for cross-service tracing
+  // Capture ONLY this window instead of the whole screen (ADR-021). The server
+  // raises it, crops to its client area, and returns the geometry below. Empty =
+  // full screen. FAILED_PRECONDITION if the server's strategy cannot do it.
+  string window_title = 2;
 }
 
 message GrabResponse {
@@ -24,6 +43,19 @@ message GrabResponse {
   string strategy = 5;     // e.g. "windows", "android", "camera"
   string request_id = 6;
   double grab_ms = 7;      // server-side capture time (ms)
+
+  // Geometry of a window-scoped grab, so the client can map coordinates computed
+  // on the crop back to the device's own space (ADR-021). All in the server's
+  // screen coordinates; device_origin may be NEGATIVE for a monitor placed left
+  // of / above the primary one. Absent (all zero) for a full-screen grab, where
+  // image size == device size.
+  int32 origin_x = 8;         // image top-left in screen coordinates
+  int32 origin_y = 9;
+  int32 device_origin_x = 10; // start of the coordinate space (monitor origin)
+  int32 device_origin_y = 11;
+  int32 device_width = 12;    // size of that coordinate space
+  int32 device_height = 13;
+  string window_title = 14;   // the window actually captured
 }
 
 message HealthRequest {}

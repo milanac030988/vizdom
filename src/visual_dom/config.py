@@ -105,8 +105,8 @@ class HierarchyConfig:
 class SymbolConfig:
     """Stage 4c - symbol reading on glyph-only elements (template matching)."""
     enabled: bool = True
-    # Dice acceptance threshold override (null = calibrated defaults, ~0.70).
-    # Raise for fewer false positives, lower to recover faint glyphs.
+    # Extra strictness: when set, the winning symbol's template Dice score must
+    # also reach this value. Structure decides (ADR-011 v3); this only vetoes.
     min_score: Optional[float] = None
 
 
@@ -124,6 +124,28 @@ class CaptureConfig:
     strategy: Optional[str] = None        # null=auto | windows|linux|android|camera|grpc|<plugin>
     target: Optional[str] = None          # host:port when strategy=grpc
     camera_mode: bool = False             # rectify a screen photographed by a camera
+    # Application under test, raised by `Bring App To Front` / focus_before_capture
+    # (ADR-021). Window title on desktop; package or package/.Activity on Android.
+    window_title: Optional[str] = None
+    # Raise window_title before every screen grab, so the DOM is always built from
+    # the SUT and not from whatever window happens to be on top. Off by default:
+    # focusing mutates SUT state, so it is opt-in.
+    focus_before_capture: bool = False
+    # Capture ONLY window_title's client area instead of the whole screen, giving a
+    # DOM with just the SUT's elements. Implies focusing (a crop of an occluded
+    # window would show whatever covers it). Falls back to a full-screen grab, with
+    # a warning, when the capture strategy cannot scope to a window.
+    window_scope: bool = False
+
+
+@dataclass
+class ActuatorConfig:
+    """How input is delivered (ADR-019). Used by the RF client layer."""
+    strategy: Optional[str] = None   # null=platform default | desktop|android|grpc|<plugin>
+    target: Optional[str] = None     # host:port when strategy=grpc
+    # Application under test for `Bring App To Front` (ADR-021); defaults to
+    # capture.window_title when omitted, since normally both drive the same app.
+    window_title: Optional[str] = None
 
 
 @dataclass
@@ -165,6 +187,7 @@ class VizDomConfig:
     symbols: SymbolConfig = field(default_factory=SymbolConfig)
     filter: FilterConfig = field(default_factory=FilterConfig)
     capture: CaptureConfig = field(default_factory=CaptureConfig)
+    actuator: ActuatorConfig = field(default_factory=ActuatorConfig)
     grounding: GroundingConfig = field(default_factory=GroundingConfig)
     output: OutputConfig = field(default_factory=OutputConfig)
 
@@ -279,10 +302,17 @@ _FIELD_HELP: Dict[str, str] = {
     "hierarchy": "Stage 3 - Hierarchy Building (containment tree)",
     "hierarchy.containment_threshold": "fraction of a child's area that must sit inside its parent",
     "symbols": "Stage 4c - glyph/operator reading (+ - = x / etc.) via template matching",
-    "symbols.min_score": "null = calibrated defaults (~0.70 Dice); raise = stricter, lower = recover faint glyphs",
+    "symbols.min_score": "null = structure decides (default); a value adds a template-agreement veto (raise = stricter)",
     "filter": "resolution-aware size/count filters (referenced to 1080p)",
     "capture": "how screens are acquired (RF client layer, ADR-018)",
     "capture.strategy": "null=auto | windows | linux | android | camera | grpc | <plugin>",
+    "capture.window_title": "app under test to raise: window title, or package[/.Activity] on Android (ADR-021)",
+    "capture.focus_before_capture": "raise window_title before every grab, so the DOM is built from the app under test and not from whatever window is on top",
+    "capture.window_scope": "capture ONLY window_title's client area instead of the whole screen, so the DOM contains just that app (implies focusing; falls back to full screen with a warning if the strategy cannot)",
+    "actuator": "how input is delivered (RF client layer, ADR-019)",
+    "actuator.strategy": "null=platform default | desktop | android | grpc | <plugin>",
+    "actuator.target": "host:port of a running actuator gRPC service (when strategy == grpc)",
+    "actuator.window_title": "app to raise for input; null = inherit capture.window_title (ADR-021)",
     "grounding": "desc= locator resolution (ADR-022): tiered natural-language grounding",
     "grounding.tiers": "escalation order; lexical (no model) | slm (text LM over DOM) | vlm (Set-of-Mark over image, opt-in)",
     "output": "DOM compilation options",

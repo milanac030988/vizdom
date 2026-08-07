@@ -41,6 +41,14 @@ class CameraCapture(CaptureStrategy):
             "camera_device": self._device,
         }
 
+    def focus_target(self, title: str = None) -> bool:
+        """
+        Always False: a camera observes an external display and has no control
+        over what that machine shows (ADR-021). Arrange the SUT window before the
+        run, or drive focus through a separate actuator on the target device.
+        """
+        return False
+
     def capture(self) -> np.ndarray:
         import cv2
         if self._cap is None:

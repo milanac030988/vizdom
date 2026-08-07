@@ -13,7 +13,22 @@ service Actuator {
   rpc PressKey(PressKeyRequest) returns (ActionResponse);
   rpc Scroll(ScrollRequest) returns (ActionResponse);
   rpc Swipe(SwipeRequest) returns (ActionResponse);
+  // Bring the application under test to the foreground, so clicks land on it and
+  // typed text reaches ITS keyboard focus (ADR-021).
+  rpc Focus(FocusRequest) returns (FocusResponse);
   rpc HealthCheck(HealthRequest) returns (HealthResponse);
+}
+
+message FocusRequest {
+  string title = 1;           // window title / activity to raise; empty = server default
+  string request_id = 2;
+}
+
+message FocusResponse {
+  bool focused = 1;           // true ONLY when the server verified the target is foreground
+  string detail = 2;          // what was raised, or why it could not be
+  string actuator = 3;
+  string request_id = 4;
 }
 
 // Source image dimensions the normalized coords were computed against.
