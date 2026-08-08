@@ -6,6 +6,10 @@ from .capture import CaptureKeywords
 from .assertions import AssertionKeywords
 from .actions import ActionKeywords
 
+from visual_dom.logging_utils import get_logger
+
+log = get_logger(__name__)
+
 
 class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
     """
@@ -207,7 +211,7 @@ class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
         try:
             self.take_screenshot(name=f"fail-{keyword_name}")
         except Exception as exc:  # noqa: BLE001 - the original failure wins
-            print(f"WARN: could not capture a failure screenshot: {exc}")
+            log.warning(f"could not capture a failure screenshot: {exc}")
         finally:
             self._capturing_failure = False
 

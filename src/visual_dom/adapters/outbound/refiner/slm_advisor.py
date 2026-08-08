@@ -18,6 +18,10 @@ import json
 import re
 from typing import List, Dict, Any, Optional, Tuple
 
+from visual_dom.logging_utils import get_logger
+
+log = get_logger(__name__)
+
 
 # Models known to support vision
 VISION_MODELS = {
@@ -111,7 +115,7 @@ class SLMAdvisor:
                                            merge_candidates=merge_candidates)
 
         if not prompt:
-            print("  SLM: no suspicious elements found, skipping")
+            log.info("SLM: no suspicious elements found, skipping")
             return []
 
         try:
@@ -121,7 +125,7 @@ class SLMAdvisor:
 
             # Log elements being reviewed
             mode = "VLM (with image)" if use_vision else "text-only"
-            print(f"  SLM reviewing {len(elements)} elements [{mode}], prompt: {len(prompt)} chars")
+            log.info(f"SLM reviewing {len(elements)} elements [{mode}], prompt: {len(prompt)} chars")
             for elem in elements:
                 text = elem.get("ocr_text", "")
                 if text:
@@ -130,7 +134,7 @@ class SLMAdvisor:
                     bounds = elem.get("bounds", [0,0,0,0])
                     w = bounds[2] - bounds[0]
                     h = bounds[3] - bounds[1]
-                    print(f"    {eid}: {vtype} {w}x{h} text=\"{text}\"")
+                    log.info(f"{eid}: {vtype} {w}x{h} text=\"{text}\"")
 
             # Encode image for VLM
             image_b64 = None
@@ -138,15 +142,15 @@ class SLMAdvisor:
                 image_b64 = self._encode_image(image_path)
 
             response = self._call_llm(prompt, image_b64=image_b64)
-            print(f"  SLM response ({len(response)} chars): {response[:300]}")
+            log.info(f"SLM response ({len(response)} chars): {response[:300]}")
             suggestions = self._parse_suggestions(response)
             if suggestions:
-                print(f"  SLM parsed {len(suggestions)} suggestions")
+                log.info(f"SLM parsed {len(suggestions)} suggestions")
             else:
-                print(f"  SLM: no actionable suggestions parsed")
+                log.info(f"SLM: no actionable suggestions parsed")
             return suggestions
         except Exception as e:
-            print(f"  SLM advisor failed: {e}")
+            log.warning(f"SLM advisor failed: {e}")
             return []
 
     def _encode_image(self, image_path: str) -> Optional[str]:
@@ -155,14 +159,14 @@ class SLMAdvisor:
             with open(image_path, "rb") as f:
                 return base64.b64encode(f.read()).decode("utf-8")
         except Exception as e:
-            print(f"  Warning: could not encode image: {e}")
+            log.warning(f"could not encode image: {e}")
             return None
 
     def _warmup_ollama(self):
         """Pre-load the model in Ollama to avoid timeout on first real request."""
         import requests
         try:
-            print("  SLM: warming up model...")
+            log.info("SLM: warming up model...")
             payload = {
                 "model": self.model,
                 "prompt": "hi",
@@ -174,7 +178,7 @@ class SLMAdvisor:
                 json=payload,
                 timeout=self.timeout,
             )
-            print("  SLM: model ready")
+            log.info("SLM: model ready")
         except Exception:
             pass  # If warmup fails, the real call will report the error
 
