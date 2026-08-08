@@ -374,6 +374,60 @@ Shows the count of each locator type:
 - `bounds` - Bounding box coordinates
 - `center` - Center point coordinates
 
+## Full-lifecycle benchmark (unified, cross-model)
+
+Per-stage metrics grade a component; a test suite lives or dies on the **whole
+lifecycle** — locate → act → verify. The lifecycle benchmark
+(`visual_dom.evaluation.lifecycle`) runs every system under comparison over **one
+unified step set** and scores the same outcomes, so parser-based systems and
+per-step grounding models become directly comparable.
+
+**Steps carry a dual representation** derived automatically from the element
+ground truth (only captions *unique* in their state are used):
+
+- a **locator** (`text="Save"`) for DOM-based executors, and
+- a **natural-language instruction** ("click the 'Save' button") for grounders,
+- plus GT target bounds and, for verification steps, an expected verdict —
+  including **negative oracle steps** on deliberately absent targets, because a
+  *testing* system's worst failure is a **false pass**, a metric agent
+  benchmarks do not measure.
+
+**Executors:**
+
+| Executor | Paradigm | Cost model |
+|---|---|---|
+| `vizdom-uied`, `vizdom-omniparser` | parse once per state, resolve each step in the cached DOM | N parses + cheap lookups |
+| `elam-7b` (Apache-2.0, Molmo-7B-D) | per-step grounding **with a native PASSED/FAILED verdict mode** | 1 inference per step |
+| `ui-tars-1.5-7b` (Apache-2.0, Qwen2.5-VL) | per-step grounding; verdicts proxied via grounding success | 1 inference per step |
+| `aria-ui` | 25.3 B MoE — **not runnable on workstation hardware**; column cited from published numbers | — |
+
+```bash
+python -m visual_dom.evaluation.lifecycle.generate            # (re)build steps.json
+python -m visual_dom.evaluation.lifecycle.runner     --executors vizdom-uied,vizdom-omniparser                 # runnable today
+# grounder columns (7-8 B VLMs; needs torch+transformers+accelerate+bitsandbytes,
+# ~15 GB weight download each; on a 6 GB GPU they run 4-bit + CPU-offload, slowly):
+python -m visual_dom.evaluation.lifecycle.runner --executors elam-7b
+```
+
+**First baseline** — `lifecycle-synthetic-v1`: 44 states, 514 steps
+(213 action / 213 positive verify / 88 negative verify):
+
+| executor | action-hit | verify acc | false-pass | resolution / step | parse cost |
+|---|---|---|---|---|---|
+| vizdom-uied | **0.803** | 0.957 | **0.000** | < 1 ms | 44 parses, 92 s |
+| vizdom-omniparser | **0.916** | 0.957 | **0.000** | < 1 ms | 44 parses, 234 s |
+
+Reading the numbers: OmniParser converts its detection edge into an 11-point
+action-hit lead; both stacks share the identical verify accuracy (the same 13
+captions are misread by OCR upstream of both) — and both hold a **zero
+false-pass rate**, which the exactly-one resolution contract guarantees by
+construction. Every result file is stamped with dataset id + git commit;
+per-step outcomes are kept so failures remain attributable to a stage.
+
+Planned extensions: the grounder columns above, real-application states in the
+same schema, `desc=` per-tier accuracy as an additional locator column, and
+defect injection (mutate a state, measure whether the suite catches it).
+
 ## Interpreting Results
 
 ### Quality Levels
