@@ -49,21 +49,37 @@ class VizDomExecutor:
         self._session = None
         self._dom_cache = {}
         self._parse_seconds = {}
+        self._load_seconds = 0.0
 
     def _connect(self):
+        # Session creation loads the models. That is a ONE-TIME warm-up cost -
+        # precisely the amortization claim under test (NFR3) - so it is timed
+        # separately and must never contaminate any state's parse time.
         if self._session is None:
+            import numpy as np
             from visual_dom import connect
+            t0 = time.perf_counter()
             self._session = connect({
                 "detector": {"backend": self.detector},
                 "ocr": {"engine": self.ocr},
             })
+            # Warm-up analyze on a dummy frame: several components (the easyocr
+            # reader, detector weights) initialize lazily on FIRST USE, and
+            # without this they would land inside one arbitrary state's parse
+            # time instead of the load figure.
+            try:
+                self._session.analyze(np.zeros((64, 64, 3), dtype=np.uint8))
+            except Exception:
+                pass  # a dummy-frame quirk must not fail the benchmark
+            self._load_seconds = time.perf_counter() - t0
         return self._session
 
     def _dom_for(self, state):
         sid = state["id"]
         if sid not in self._dom_cache:
+            session = self._connect()          # outside the parse timing
             t0 = time.perf_counter()
-            dom = self._connect().analyze(state["image"])
+            dom = session.analyze(state["image"])
             self._parse_seconds[sid] = time.perf_counter() - t0
             self._dom_cache[sid] = dom
         return self._dom_cache[sid]
@@ -98,8 +114,12 @@ class VizDomExecutor:
                 "detail": f"{len(matches)} matches"}
 
     def cost_summary(self):
-        return {"parses": len(self._parse_seconds),
-                "parse_seconds_total": round(sum(self._parse_seconds.values()), 2)}
+        parses = self._parse_seconds
+        return {"parses": len(parses),
+                "model_load_seconds": round(self._load_seconds, 2),
+                "parse_seconds_total": round(sum(parses.values()), 2),
+                "parse_seconds_mean": round(sum(parses.values()) / len(parses), 2)
+                if parses else None}
 
 
 class GrounderExecutor:

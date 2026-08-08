@@ -412,16 +412,21 @@ python -m visual_dom.evaluation.lifecycle.runner --executors elam-7b
 **First baseline** — `lifecycle-synthetic-v1`: 44 states, 514 steps
 (213 action / 213 positive verify / 88 negative verify):
 
-| executor | action-hit | verify acc | false-pass | resolution / step | parse cost |
-|---|---|---|---|---|---|
-| vizdom-uied | **0.803** | 0.957 | **0.000** | < 1 ms | 44 parses, 92 s |
-| vizdom-omniparser | **0.916** | 0.957 | **0.000** | < 1 ms | 44 parses, 234 s |
+| executor | action-hit | verify acc | false-pass | resolution / step | one-time load | parse / state |
+|---|---|---|---|---|---|---|
+| vizdom-uied | **0.803** | 0.957 | **0.000** | < 1 ms | 7.2 s | 2.11 s (44 states, 92.9 s) |
+| vizdom-omniparser | **0.916** | 0.957 | **0.000** | < 1 ms | 26.9 s | 4.81 s (44 states, 211.8 s) |
+
+Model load is reported **separately** from parsing (a dummy-frame warm-up at
+connect time flushes lazy first-use initializations such as the EasyOCR
+reader): warm-model amortization is itself a claim under test (NFR3), so it
+must not be smeared into one arbitrary state's parse time.
 
 Reading the numbers: OmniParser converts its detection edge into an 11-point
-action-hit lead; both stacks share the identical verify accuracy (the same 13
-captions are misread by OCR upstream of both) — and both hold a **zero
-false-pass rate**, which the exactly-one resolution contract guarantees by
-construction. Every result file is stamped with dataset id + git commit;
+action-hit lead at ~2.3× the parse cost; both stacks share the identical
+verify accuracy (the same 13 captions are misread by OCR upstream of both) —
+and both hold a **zero false-pass rate**, which the exactly-one resolution
+contract guarantees by construction. Every result file is stamped with dataset id + git commit;
 per-step outcomes are kept so failures remain attributable to a stage.
 
 Planned extensions: the grounder columns above, real-application states in the
