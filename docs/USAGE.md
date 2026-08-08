@@ -282,6 +282,12 @@ which lands in **three places**:
    (expand `Dump Visual DOM` to see the detector, merge, and symbol stages of
    exactly that dump).
 
+Everything goes through one call (`get_logger(__name__)`), so the three
+destinations always agree; component names carry a layer tag
+(`visual_dom.rf.*` = the keyword library, `visual_dom.viewer.*` = the Viewer,
+`visual_dom.adapters.*` = an adapter). Library code **logs**; `print` is reserved
+for the user-facing output of CLI entry points.
+
 Tune with environment variables: `VIZDOM_LOG_LEVEL` (`DEBUG`/`INFO`/`WARNING`,
 default `INFO` — set `DEBUG` before a run you want to diagnose),
 `VIZDOM_LOG_DIR`, `VIZDOM_LOG_FILE`, `VIZDOM_LOG_CONSOLE=0` to silence the

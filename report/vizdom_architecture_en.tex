@@ -360,7 +360,7 @@ this measures \emph{type} only.}
 \code{visual\_dom.adapters.\allowbreak outbound} & Concrete implementations of the ports: \code{detectors} (UIED/YOLO/OmniParser/gRPC + registry), \code{ocr} (text detector), \code{refiner} (SLM advisor), \code{capture} and \code{actuator} (built-ins + gRPC client + user plugins). \\
 \code{visual\_dom.adapters.\allowbreak inbound.grpc} & Driving adapters: the detector, capture and actuator gRPC servers. \\
 \code{visual\_dom.context} & Composition root --- \code{connect()} / \code{Session} wire adapters to the core from one config. \\
-\code{visual\_dom} (config, generated, shared) & \code{config} (VizDomConfig), \code{generated} (protobuf stubs), \code{logging\_utils}; \code{evaluation} is a harness outside the hexagon. \\
+\code{visual\_dom} (config, generated, shared) & \code{config} (VizDomConfig), \code{generated} (protobuf stubs), \code{logging\_utils} (one logger for every component; file + console + Robot-log destinations --- see Ch.~8); \code{evaluation} is a harness outside the hexagon. \\
 \code{visual\_gui\_library} & Robot Framework keyword library (thin client over capture + actuator). \\
 tools & PyQt5 Viewer, Streamlit dashboard, annotator. \\
 \bottomrule
@@ -505,6 +505,24 @@ correlation ids on each gRPC request; per-request timing logged by each service.
   \item[Configuration] Strategy selection is by name from CLI flags / library
     arguments / environment variables; targets for remote ports are host:port
     strings.
+  \item[Logging and observability] One building block, \code{logging\_utils},
+    serves every component. \code{get\_logger(\_\_name\_\_)} returns a logger under
+    the \code{visual\_dom} namespace, configuring it on first use; sibling packages
+    are re-homed with an identifying tag (\code{visual\_dom.rf.*},
+    \code{visual\_dom.viewer.*}) so a line is never misattributed to another layer.
+    Records reach \textbf{three} destinations from that single call: a rotating
+    file (\code{logs/vizdom.log}, 5\,MB $\times$ 5), the console, and --- under
+    Robot Framework --- the test log, via a bridge handler that files each record
+    beneath the keyword that produced it. The package logger deliberately does
+    \emph{not} propagate to the root logger (plain-Python use would double-print),
+    which is precisely why that bridge is needed. Levels and destinations are
+    environment-configured (\code{VIZDOM\_LOG\_LEVEL}, \code{\_DIR}, \code{\_FILE},
+    \code{\_CONSOLE}); a file-handler failure is tolerated, because logging must
+    never break a run. \emph{Policy:} library and adapter code \textbf{logs};
+    \code{print} is reserved for the user-facing stdout of CLI entry points
+    (\code{--init}, \code{--list}, script output). In a distributed run each host
+    keeps its own file, and the per-request correlation id in the service logs is
+    the key that joins client and server sides.
   \item[Persistence] Analyses are written to timestamped session folders
     (screenshot, CV result, DOM, metadata).
   \item[Licensing] AGPL obligations attach when the OmniParser backend is
