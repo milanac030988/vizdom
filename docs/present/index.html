@@ -337,7 +337,7 @@ body.notes-on .slide.active .notes{display:block}
       </div>
       <div class="card">
         <h3 style="margin-top:0">5 · Write tests in Robot Framework</h3>
-        <p class="small" style="color:var(--fg);margin:0"><strong>26 keywords</strong> — Connect,
+        <p class="small" style="color:var(--fg);margin:0"><strong>28 keywords</strong> — Connect,
           Dump Visual DOM, Click Visual, Type Text Visual, <strong>Verify Element Value</strong>
           (re-reads the live screen), Visual Should Exist, Wait Until Visual Appears,
           Get Element Property/Text/Label/Center, …</p>
@@ -459,18 +459,19 @@ body.notes-on .slide.active .notes{display:block}
           assertion is a fresh large-model inference. A parser pays perception <strong>once per screen
           state</strong>, then every lookup is an in-memory query.</p>
         <table>
-          <tr><th>Test with 5 screens, 40 steps</th><th class="n">Model calls</th><th class="n">Per-lookup cost</th></tr>
-          <tr class="hi"><td><strong>VizDOM</strong> (parse once per screen)</td>
-              <td class="n win">5</td><td class="n win">in-memory (~0 ms)</td></tr>
-          <tr><td>Grounder (per instruction)</td><td class="n lose">40</td>
+          <tr><th>Benchmark run: 44 states, 514 steps</th><th class="n">Model calls</th><th class="n">Per-step cost</th></tr>
+          <tr class="hi"><td><strong>VizDOM</strong> (parse once per state)</td>
+              <td class="n win">44</td><td class="n win">&lt; 1 ms lookup</td></tr>
+          <tr><td>Grounder (per instruction)</td><td class="n lose">514</td>
               <td class="n lose">one GPU inference</td></tr>
         </table>
-        <p class="small"><strong>Cost scales with screen states, not with test steps.</strong>
-          Measured on our warm detector service: model load happens <em>once</em> (~14–32 s), then
-          inference is <strong>0.6 s warm</strong> (2.5 s cold) and a second pipeline construction in the
-          same process costs <strong>0.00 s</strong> (model cache).
-          <span class="dim">Grounder wall-clock is not measured here — but 3.9–7B activated parameters
-          are GPU-bound by construction, per call.</span></p>
+        <p class="small"><strong>Cost scales with screen states, not with test steps —
+          now measured, not argued.</strong> On the unified lifecycle benchmark VizDOM pays
+          <em>load once</em> (7&nbsp;s UIED / 27&nbsp;s OmniParser) + <strong>44 parses</strong>
+          (2.1&nbsp;s / 4.8&nbsp;s per state) + 514 sub-millisecond lookups. A grounder pays
+          <strong>514 inferences</strong>: <strong>11.7× more model calls</strong> for the same suite.
+          <span class="dim">Grounder wall-clock awaits a bigger GPU — the harness runs them behind one
+          flag; 7–8B parameters are GPU-bound per call by construction.</span></p>
         <div class="card good"><p class="small" style="margin:0;color:var(--fg)">
           <strong>Reuse economics:</strong> one parse serves many locators <em>and</em> assertions —
           the artifact is reused, the inference is not repeated.</p></div>
@@ -862,6 +863,64 @@ body.notes-on .slide.active .notes{display:block}
     <b>not met</b> — state this plainly. Per-type recall on actionable controls is the meaningful result.</div>
 </section>
 
+<!-- 12c ───────────────────────────────────────── -->
+<section class="slide">
+  <h2>Testing effectiveness, end to end — one unified benchmark</h2>
+  <div class="grow">
+    <p>Stage metrics grade a <em>component</em>. A test suite lives or dies on the whole
+      lifecycle: <strong>locate → act → verify</strong>. So every system under comparison runs the
+      <strong>same 514 steps</strong> over the same 44 states and is scored on the same outcomes.</p>
+    <div class="cols">
+      <div>
+        <h3>How the steps exist at all</h3>
+        <ul>
+          <li><strong>Derived from the element ground truth</strong> — zero new annotation:
+            every actionable element whose caption is <em>unique in its state</em> becomes a step</li>
+          <li><strong>Dual representation</strong> — a <code>locator</code> for DOM systems
+            <em>and</em> an instruction ("click the 'Save' button") for grounding models, so both
+            receive the task in their native form</li>
+          <li><strong>Negative oracle steps</strong> — 88 deliberately <em>absent</em> captions
+            expecting FAILED</li>
+        </ul>
+        <div class="card good"><p class="small" style="margin:0;color:var(--fg)">
+          That last one is the <strong>testing-specific</strong> metric: an agent benchmark asks
+          <em>did it click correctly</em>; a test benchmark must also ask <em>does it judge
+          correctly</em> — a <strong>false pass</strong> is the worst failure a test system can
+          produce, and agent benchmarks do not measure it.</p></div>
+      </div>
+      <div>
+        <h3>Baseline — measured</h3>
+        <table>
+          <tr><th>Executor</th><th class="n">action-hit</th><th class="n">verify</th>
+              <th class="n">false-pass</th><th class="n">cost / state</th></tr>
+          <tr><td>VizDOM + UIED <span class="dim">CPU</span></td><td class="n">0.803</td>
+              <td class="n">0.957</td><td class="n win">0.000</td><td class="n">2.1 s</td></tr>
+          <tr class="hi"><td><strong>VizDOM + OmniParser</strong></td><td class="n win">0.916</td>
+              <td class="n">0.957</td><td class="n win">0.000</td><td class="n">4.8 s</td></tr>
+          <tr><td>ELAM-7B <span class="dim">native verdicts</span></td>
+              <td class="n dim">pending</td><td class="n dim">pending</td>
+              <td class="n dim">pending</td><td class="n dim">1 inference / step</td></tr>
+          <tr><td>UI-TARS-1.5-7B</td><td class="n dim">pending</td><td class="n dim">pending</td>
+              <td class="n dim">pending</td><td class="n dim">1 inference / step</td></tr>
+        </table>
+        <p class="small"><strong>Reading it:</strong> OmniParser converts its detection edge into an
+          <strong>11-point action-hit lead</strong> at ~2.3× the parse cost. Both stacks share the
+          identical verify accuracy — the same 13 captions are misread by OCR <em>upstream of both</em>
+          — and both hold <strong>zero false passes</strong>, which the exactly-one resolution contract
+          guarantees <em>by construction</em>. That row is what the grounder columns must answer.</p>
+        <p class="small dim">Adapters for ELAM-7B / UI-TARS are written and tested; the runs await a
+          GPU with ≥16 GB. Aria-UI (25.3B MoE) needs a multi-GPU server — reported as a cited column
+          rather than silently omitted.</p>
+      </div>
+    </div>
+  </div>
+  <div class="notes">This is the answer to "how do you know it works for <i>testing</i>". Two levels
+    over one dataset: stage metrics keep every end-to-end failure attributable, the lifecycle score
+    says whether a suite would work. The false-pass column is the part reviewers have not seen in
+    agent benchmarks — and the cost columns turn slide 9's economics argument into measurement:
+    44 parses vs 514 inferences for the same suite.</div>
+</section>
+
 <!-- 13b ───────────────────────────────────────── -->
 <section class="slide">
   <h2>Techniques &amp; algorithms — the full inventory</h2>
@@ -1197,6 +1256,8 @@ body.notes-on .slide.active .notes{display:block}
           <li><strong>24 ADRs</strong>; arc42 architecture document (EN + VI)</li>
           <li>Robot Framework library; interactive Viewer; evaluation harness</li>
           <li>Labelled benchmark + augmentation &amp; LLM data-generation tooling</li>
+          <li><strong>Unified lifecycle benchmark</strong> — 514 auto-derived steps, dual
+            locator/instruction form, false-pass metric: parsers and grounders in one table</li>
           <li>Published documentation site; runnable Windows demo</li>
         </ul>
         <div class="card"><p class="small" style="margin:0;color:var(--fg)">
@@ -1245,8 +1306,13 @@ body.notes-on .slide.active .notes{display:block}
         <ul>
           <li><strong>Real-world labelled set</strong> — the headline accuracy caveat</li>
           <li><strong>desc= experiment</strong> — auto-generate descriptions for labelled elements,
-            report <em>per-tier resolution accuracy</em></li>
-          <li>Wall-clock benchmark: in-process vs warm gRPC service</li>
+            report <em>per-tier resolution accuracy</em>
+            <span class="dim">(now one column of the lifecycle benchmark, not a separate effort)</span></li>
+          <li><strong>Grounder columns</strong> (ELAM-7B, UI-TARS-1.5) — adapters ready and tested,
+            awaiting a ≥16 GB GPU</li>
+          <li><strong>Defect injection</strong> — mutate a state, measure whether the suite
+            <em>catches</em> it: mutation testing for GUI automation</li>
+          <li><s>Wall-clock benchmark</s> — <strong>done</strong> for the pipeline (load vs parse separated, cost per state); service-vs-in-process split remains</li>
           <li>Window-control labeller (canonical minimize/maximize/close)</li>
           <li><s>App targeting: window title / activity</s> — <strong>done</strong> (ADR-021, slide 25)</li>
         </ul>
