@@ -376,6 +376,11 @@ Shows the count of each locator type:
 
 ## Full-lifecycle benchmark (unified, cross-model)
 
+> The complete methodology — mechanism, test plan, flow diagram, and metric
+> definitions — is in
+> [`benchmarks/README.md`](https://github.com/milanac030988/vizdom/blob/main/benchmarks/README.md);
+> this section is the summary.
+
 Per-stage metrics grade a component; a test suite lives or dies on the **whole
 lifecycle** — locate → act → verify. The lifecycle benchmark
 (`visual_dom.evaluation.lifecycle`) runs every system under comparison over **one
