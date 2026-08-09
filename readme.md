@@ -75,25 +75,29 @@ The same content lives under [`docs/`](docs/) if you prefer to read it in the re
 
 ### Installation
 
-```bash
-# Clone the repository
+Installed with [**uv**](https://docs.astral.sh/uv/) — it fetches its own Python,
+so no pre-existing local interpreter is required:
+
+```bat
 git clone <repo-url>
 cd MasterProject
 
-# Create virtual environment (recommended)
-python -m venv venv
-venv\Scripts\activate  # Windows
-# source venv/bin/activate  # Linux/Mac
+pip install uv                     :: once per machine
+uv python install 3.12             :: managed CPython (~21 MB)
+uv venv --python 3.12              :: creates .venv in the repo root
 
-# Install base dependencies
-pip install -e .
-
-# Install with OCR support
-pip install -e ".[ocr]"
-
-# Install all dependencies (for development)
-pip install -e ".[ocr,training,cv-training,annotation,desktop,dev]"
+uv pip install -e ".[ocr]"         :: pipeline + Robot Framework library (CPU)
+uv pip install -e ".[ocr,grpc]"    :: + detector / capture / actuator services
+uv pip install -e ".[all]"         :: everything (incl. OmniParser: torch, ~2.5 GB)
 ```
+
+The `start_*.bat` / `run_demo.bat` launchers detect `.venv` automatically. Full
+guide — dependency groups, GPU notes, interpreter resolution order, and how to
+install into an existing interpreter instead — in
+**[Setup with uv](docs/uv-setup.md)**.
+
+Verify with `start_capture.bat --list`, then
+`uv run python -m pytest tests/unit tests/architecture -q`.
 
 ### Configure a session (recommended)
 
