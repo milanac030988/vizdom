@@ -52,8 +52,10 @@ on the device under test, and actuation happens wherever the SUT is (ADR-017/018
 | Capture | 50053 | `python -m visual_dom.adapters.inbound.grpc.capture_server --strategy windows --port 50053` |
 | Actuator | 50054 | `python -m visual_dom.adapters.inbound.grpc.actuator_server --strategy desktop --port 50054` |
 
-On Windows the `start_detector.bat` / `start_capture.bat` / `start_actuator.bat`
-launchers wrap these (and set `PYTHONPATH`). The detector server also accepts
+Launchers wrap these and set `PYTHONPATH`: `start_detector.bat` /
+`start_capture.bat` / `start_actuator.bat` on Windows, and the same names with
+`.sh` on Linux and macOS (`./start_detector.sh --backend uied`).
+The detector server also accepts
 `--icon-detect` / `--icon-caption` / `--omniparser-root` / `--yolo-model`
 (OmniParser auto-detects `models/omniparser/` + `third_party/OmniParser`).
 

@@ -11,7 +11,7 @@ backend (alongside the default `uied` and `yolo`). See
 > but shipping or network-serving the project with this backend active carries AGPL
 > obligations. For permissive reuse, prefer an Apache-licensed detector instead.
 
-## TL;DR
+## Quick start
 
 Run the setup script with the **same interpreter the app uses** (the Viewer and
 dashboard run on Python 3.9 at `%VIZDOM_PY%`):

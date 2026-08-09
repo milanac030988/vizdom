@@ -1,0 +1,30 @@
+# Line endings are not cosmetic here: a shell script checked out with CRLF fails
+# on Linux with `\r: command not found`, and a .bat with LF can break `goto`
+# targets in cmd.exe. Pin both explicitly so neither depends on a contributor's
+# core.autocrlf setting.
+
+* text=auto
+
+# POSIX launchers and shell scripts - always LF
+*.sh            text eol=lf
+*.bash          text eol=lf
+
+# Windows launchers and PowerShell - always CRLF
+*.bat           text eol=crlf
+*.cmd           text eol=crlf
+*.ps1           text eol=crlf
+
+# Robot Framework suites/resources are read by the same runner on both platforms;
+# LF keeps diffs stable across contributors.
+*.robot         text eol=lf
+*.resource      text eol=lf
+
+# Binary assets - never touch
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+*.pdf           binary
+*.jar           binary
+*.pt            binary
+*.zip           binary
+*.xdv           binary
