@@ -34,8 +34,6 @@ package "core.ports.outbound" #FFECB3 {
         +{abstract} scroll / swipe
         +device_size() / _to_device()
     }
-    DetectorBackend -[hidden]down- CaptureStrategy
-    CaptureStrategy -[hidden]down- ActuatorStrategy
 }
 
 ' ============================================================
@@ -45,8 +43,6 @@ package "adapters.outbound" #E8F5E9 {
     class "detectors\nUIED · YOLO · OmniParser · Grpc\n+ registry create_detector()\n+ UIEDDetector (classical)\n+ ocr.TextDetector · refiner.SLMAdvisor" as DetImpls
     class "capture (ADR-018)\nWindows/Linux/Android/Camera/Grpc\n+ registry create_capture()" as CapImpls
     class "actuator (ADR-019)\nDesktop/Android/Grpc\n+ registry create_actuator()" as ActImpls
-    DetImpls -[hidden]down- CapImpls
-    CapImpls -[hidden]down- ActImpls
 }
 
 ' ============================================================
@@ -99,6 +95,27 @@ package "visual_gui_library (RF)" #F3E5F5 {
 }
 
 ' ============================================================
+' CROSSCUTTING / SHARED  (used by every package above)
+' ============================================================
+package "shared (crosscutting)" #ECEFF1 {
+    class "logging_utils" as Logging <<module>> {
+        +get_logger(name): Logger
+        +configure_logging(level, file, console)
+        +log_timing(logger, label)
+        --one channel, three sinks--
+        rotating file  logs/vizdom.log
+        console
+        Robot log (bridge handler)
+    }
+    class VizDomConfig {
+        detector / ocr / refiner / merge
+        hierarchy / symbols / filter
+        capture / actuator / grounding / output
+        +load(path|dict) / to_dict() / save()
+    }
+}
+
+' ============================================================
 ' Relationships — adapters implement ports (inward); domain spine flows down
 ' ============================================================
 DetImpls ..|> DetectorBackend
@@ -122,40 +139,22 @@ Locator --> Keywords
 Keywords --> CaptureStrategy : capture
 Keywords --> ActuatorStrategy : actuate
 
+' Layout only (no dependency implied - see the note on Logging): anchor the
+' crosscutting package to the END of the data-flow spine so it fills the empty
+' bottom-right area instead of widening the canvas on the left.
+DOMNode -[hidden]right-> VizDomConfig
 
-' ============================================================
-' CROSSCUTTING / SHARED  (used by every package above)
-' ============================================================
-package "shared (crosscutting)" #ECEFF1 {
-    class "logging_utils" as Logging <<module>> {
-        +get_logger(name): Logger
-        +configure_logging(level, file, console)
-        +log_timing(logger, label)
-        --one channel, three sinks--
-        rotating file  logs/vizdom.log
-        console
-        Robot log (bridge handler)
-    }
-    class VizDomConfig {
-        detector / ocr / refiner / merge
-        hierarchy / symbols / filter
-        capture / actuator / grounding / output
-        +load(path|dict) / to_dict() / save()
-    }
-}
 
-note bottom of Logging
-  **Dependencies deliberately not drawn.** Every class in every
-  package above calls get_logger(__name__); arrows would add ~20
-  edges and hide the data-flow spine this diagram exists to show.
-  Names are re-homed under the visual_dom namespace with a layer
-  tag (visual_dom.rf.* / .viewer.* / .adapters.*) so a line is
-  never misattributed. See arc42 Ch.8 (Crosscutting Concepts).
-end note
 
-note bottom of VizDomConfig
-  One session config (ADR-020) selects the strategies and tunes
-  every stage; the ports above are chosen BY NAME from it, which
-  is why no arrow points at a concrete adapter.
-end note
+legend left
+  **shared (crosscutting)** — dependencies deliberately not drawn.
+  Every class in every package calls get_logger(__name__); ~20 edges
+  would bury the Detection -> UIElement -> TreeNode -> DOMNode spine
+  this diagram exists to show. Logger names are re-homed under the
+  visual_dom namespace with a layer tag (visual_dom.rf.* / .viewer.* /
+  .adapters.*) so a line is never misattributed to the wrong layer.
+  VizDomConfig (ADR-020) selects the strategies BY NAME, which is why
+  no arrow points at a concrete adapter. See arc42 Ch.8.
+end legend
+
 @enduml
