@@ -122,4 +122,40 @@ Locator --> Keywords
 Keywords --> CaptureStrategy : capture
 Keywords --> ActuatorStrategy : actuate
 
+
+' ============================================================
+' CROSSCUTTING / SHARED  (used by every package above)
+' ============================================================
+package "shared (crosscutting)" #ECEFF1 {
+    class "logging_utils" as Logging <<module>> {
+        +get_logger(name): Logger
+        +configure_logging(level, file, console)
+        +log_timing(logger, label)
+        --one channel, three sinks--
+        rotating file  logs/vizdom.log
+        console
+        Robot log (bridge handler)
+    }
+    class VizDomConfig {
+        detector / ocr / refiner / merge
+        hierarchy / symbols / filter
+        capture / actuator / grounding / output
+        +load(path|dict) / to_dict() / save()
+    }
+}
+
+note bottom of Logging
+  **Dependencies deliberately not drawn.** Every class in every
+  package above calls get_logger(__name__); arrows would add ~20
+  edges and hide the data-flow spine this diagram exists to show.
+  Names are re-homed under the visual_dom namespace with a layer
+  tag (visual_dom.rf.* / .viewer.* / .adapters.*) so a line is
+  never misattributed. See arc42 Ch.8 (Crosscutting Concepts).
+end note
+
+note bottom of VizDomConfig
+  One session config (ADR-020) selects the strategies and tunes
+  every stage; the ports above are chosen BY NAME from it, which
+  is why no arrow points at a concrete adapter.
+end note
 @enduml
