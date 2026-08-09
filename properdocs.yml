@@ -87,3 +87,4 @@ nav:
       - 022 Description-Based Locator: adr/022-description-based-locator.md
       - 023 Post-Action Recap: adr/023-post-action-recap.md
       - 024 Multi-Locator Fallback Chains: adr/024-multi-locator-fallback-chains.md
+      - 025 Session Orchestrator Service: adr/025-session-orchestrator-service.md

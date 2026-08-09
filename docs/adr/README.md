@@ -39,6 +39,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [022](022-description-based-locator.md) | Description-Based Locator (`desc=`) via Tiered Grounding | Accepted | 2026-07-30 |
 | [023](023-post-action-recap.md) | Post-Action Recap for Property Verification | Accepted | 2026-07-31 |
 | [024](024-multi-locator-fallback-chains.md) | Multi-Locator Fallback Chains (`||`) | Accepted | 2026-08-06 |
+| [025](025-session-orchestrator-service.md) | Session Orchestrator Service (forwarding gateway rejected; orchestrator deferred against trigger conditions) | **Proposed** | 2026-08-09 |
 
 ## Summary
 
