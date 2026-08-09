@@ -6,7 +6,7 @@ REM Point clients at this host with the `grpc` capture strategy and
 REM VIZDOM_CAPTURE_TARGET=<this-host>:50053 (or target=<host:port>).
 REM
 REM Prerequisites (once, in the app's Python 3.9):
-REM   "D:\Python\python39\python.exe" -m pip install grpcio grpcio-tools
+REM   "%VIZDOM_PY%" -m pip install grpcio grpcio-tools
 REM   generate stubs (see docs/adr/018-pluggable-capture-service.md).
 REM
 REM Usage:
@@ -22,5 +22,6 @@ REM   Focus (ADR-021) without naming one. Focus can only happen on the machine
 REM   that owns the screen, which is why it is served here.
 
 cd /d "%~dp0"
+call "%~dp0python_env.bat" || exit /b 1
 set PYTHONPATH=%~dp0src
-"D:\Python\python39\python.exe" -m visual_dom.adapters.inbound.grpc.capture_server %*
+"%VIZDOM_PY%" -m visual_dom.adapters.inbound.grpc.capture_server %*

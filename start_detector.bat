@@ -6,7 +6,7 @@ REM each loading it. Point clients at this host with --detector grpc
 REM --detector-target <this-host>:50051 (CLI) or the Viewer's grpc target field.
 REM
 REM Prerequisites (once, in the app's Python 3.9):
-REM   "D:\Python\python39\python.exe" -m pip install grpcio grpcio-tools
+REM   "%VIZDOM_PY%" -m pip install grpcio grpcio-tools
 REM   generate stubs (see docs/adr/017-distributed-hexagonal-grpc.md).
 REM
 REM Usage:
@@ -24,10 +24,11 @@ REM   OmniParser falls back to its own weaker OCR and small low-contrast text
 REM   rows get lost. --box-threshold 0.03 recovers faint glyphs.
 
 cd /d "%~dp0"
+call "%~dp0python_env.bat" || exit /b 1
 set PYTHONPATH=%~dp0src
 if "%~1"=="" (
     REM no args -> lightweight uied service for a quick connectivity test
-    "D:\Python\python39\python.exe" -m visual_dom.adapters.inbound.grpc.detector_server --backend uied --port 50051
+    "%VIZDOM_PY%" -m visual_dom.adapters.inbound.grpc.detector_server --backend uied --port 50051
 ) else (
-    "D:\Python\python39\python.exe" -m visual_dom.adapters.inbound.grpc.detector_server %*
+    "%VIZDOM_PY%" -m visual_dom.adapters.inbound.grpc.detector_server %*
 )

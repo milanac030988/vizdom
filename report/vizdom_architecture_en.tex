@@ -682,6 +682,7 @@ D-03 & \textbf{Four known hexagon violations}: \code{core/domain/pipeline.py} im
 D-04 & No automated integration tests: 8 test files for 55 modules, \code{tests/integration/} empty; end-to-end confidence comes from the runnable demo and manual runs & Med / -- & Promote the demo suite (or a headless variant with the static-image capture plugin) into CI. \\
 D-05 & The Viewer builds its pipeline directly and so lacks the fail-fast OCR probe \code{connect()} has --- a dead engine silently yields zero text boxes & Low / Med & Reuse the session probe on the Viewer path. \\
 D-06 & Plugin constructor parameters cannot be expressed in the JSON config (environment variables or \code{--kw} only) & Low / -- & Add a generic \code{kwargs} map to the \code{capture}/\code{actuator} sections. \\
+D-07 & Environment reproducibility: uv is documented as the installer while launchers hardcoded one absolute interpreter path, so the repository ran only on the author's machine & Low / -- & \emph{Resolved}: one \code{python\_env.bat} resolver (override $\rightarrow$ in-project \code{.venv} $\rightarrow$ known 3.9 $\rightarrow$ \code{py -3.9} $\rightarrow$ PATH) used by every launcher; a lock file for the reference environment remains outstanding. \\
 \bottomrule
 \end{longtable}
 

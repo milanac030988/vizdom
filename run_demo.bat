@@ -14,5 +14,6 @@ REM   run_demo.bat                                  (both tests)
 REM   run_demo.bat --test "Calculator Adds*"        (any robot option is forwarded)
 
 cd /d "%~dp0"
+call "%~dp0python_env.bat" || exit /b 1
 set PYTHONPATH=%~dp0src
-"D:\Python\python39\python.exe" -m robot --outputdir output\demo_run %* examples\windows_calculator_demo\calculator_demo.robot
+"%VIZDOM_PY%" -m robot --outputdir output\demo_run %* examples\windows_calculator_demo\calculator_demo.robot

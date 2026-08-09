@@ -9,12 +9,38 @@ package/env manager) to install dependencies reproducibly from `pyproject.toml`.
 > weights, fetched by `scripts/setup_omniparser.py`), and **CUDA PyTorch**
 > (already installed in the app's Python 3.9 — see Path A below).
 
+## Which interpreter do the launchers use?
+
+Every `start_*.bat` / `run_demo.bat` resolves Python through **one** helper,
+`python_env.bat`, instead of hardcoding a path — so the repository runs on a
+machine that is not the author's. Resolution order, first hit wins:
+
+| # | Candidate | When it applies |
+|---|---|---|
+| 1 | `%VIZDOM_PYTHON%` | explicit override — always wins |
+| 2 | `.venv\Scripts\python.exe` | an in-project env (`uv venv`, `python -m venv`) |
+| 3 | `D:\Python\python39\python.exe` | this workstation's CUDA-enabled 3.9 |
+| 4 | `py -3.9` | the Windows launcher, if 3.9 is registered |
+| 5 | `python` on PATH | last resort |
+
+Nothing found → the launcher stops with the two commands that fix it. To use a
+specific interpreter for one session:
+
+```bat
+set VIZDOM_PYTHON=C:\path	o\python.exe
+start_detector.bat --backend uied
+```
+
+In the commands below, `%VIZDOM_PY%` means "the interpreter the resolver picked";
+substitute your own path if you are running them by hand.
+
 ## Prerequisites
-- The app runs on **Python 3.9** at `D:\Python\python39\python.exe` (has a
-  working `torch 2.4.1+cu124`).
+- The reference environment is **Python 3.9** with a working `torch 2.4.1+cu124`
+  (on the author's workstation: `D:\Python\python39\python.exe`, which is why
+  it is candidate #3 above).
 - Install uv into it (avoids the GitHub-blocked standalone installer):
   ```bat
-  "D:\Python\python39\python.exe" -m pip install uv
+  "%VIZDOM_PY%" -m pip install uv
   ```
 
 ## Path A — uv over the existing Python 3.9 (recommended here)
@@ -24,9 +50,9 @@ Keeps the working CUDA torch (no ~2.5 GB redownload). uv installs/locks the
 
 ```bat
 REM install a dependency group into the existing python39 (examples):
-"D:\Python\python39\python.exe" -m uv pip install --python "D:\Python\python39\python.exe" -e ".[grpc]"
-"D:\Python\python39\python.exe" -m uv pip install --python "D:\Python\python39\python.exe" -e ".[docs]"
-"D:\Python\python39\python.exe" -m uv pip install --python "D:\Python\python39\python.exe" -e ".[viewer,dashboard]"
+"%VIZDOM_PY%" -m uv pip install --python "%VIZDOM_PY%" -e ".[grpc]"
+"%VIZDOM_PY%" -m uv pip install --python "%VIZDOM_PY%" -e ".[docs]"
+"%VIZDOM_PY%" -m uv pip install --python "%VIZDOM_PY%" -e ".[viewer,dashboard]"
 ```
 
 > ⚠️ **Do NOT** run `uv sync` / a fresh `uv venv` in Path A — that creates an
@@ -54,10 +80,10 @@ block — use a system Python with `uv venv --python <path>` if so.)
 ## One-time external setup (either path)
 ```bat
 REM OmniParser detector backend (repo + weights); see docs/omniparser-setup.md
-"D:\Python\python39\python.exe" scripts\setup_omniparser.py --install-deps
+"%VIZDOM_PY%" scripts\setup_omniparser.py --install-deps
 
 REM gRPC stubs for the remote detector (ADR-017)
-"D:\Python\python39\python.exe" -m grpc_tools.protoc -I protos ^
+"%VIZDOM_PY%" -m grpc_tools.protoc -I protos ^
   --python_out=src\visual_dom\rpc --grpc_python_out=src\visual_dom\rpc protos\detector.proto
 REM then make the generated grpc import relative:
 REM   edit detector_pb2_grpc.py: `import detector_pb2` -> `from . import detector_pb2`
@@ -77,7 +103,7 @@ A resolved lock (112 pinned packages) over the runtime + tooling extras
 (`ocr,omniparser,grpc,viewer,dashboard,docs,desktop`), generated with:
 
 ```bat
-"D:\Python\python39\python.exe" -m uv pip compile pyproject.toml --python-version 3.9 ^
+"%VIZDOM_PY%" -m uv pip compile pyproject.toml --python-version 3.9 ^
   --extra ocr --extra omniparser --extra grpc --extra viewer --extra dashboard ^
   --extra docs --extra desktop -o requirements.lock
 ```

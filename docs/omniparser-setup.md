@@ -14,10 +14,10 @@ backend (alongside the default `uied` and `yolo`). See
 ## TL;DR
 
 Run the setup script with the **same interpreter the app uses** (the Viewer and
-dashboard run on Python 3.9 at `D:\Python\python39\python.exe`):
+dashboard run on Python 3.9 at `%VIZDOM_PY%`):
 
 ```bat
-"D:\Python\python39\python.exe" scripts\setup_omniparser.py --install-deps
+"%VIZDOM_PY%" scripts\setup_omniparser.py --install-deps
 ```
 
 Then launch `start_viewer.bat` and choose **`omniparser`** in the **Det** dropdown.
@@ -58,13 +58,13 @@ models/omniparser/
 
 ```bat
 REM 1. deps (into the 3.9 env)
-"D:\Python\python39\python.exe" -m pip install ultralytics supervision huggingface_hub
+"%VIZDOM_PY%" -m pip install ultralytics supervision huggingface_hub
 
 REM 2. clone the repo (provides util.utils)
 git clone --depth 1 https://github.com/microsoft/OmniParser.git third_party\OmniParser
 
 REM 3. weights
-"D:\Python\python39\python.exe" -c "from huggingface_hub import snapshot_download; snapshot_download('microsoft/OmniParser-v2.0', local_dir='models/omniparser', allow_patterns=['icon_detect/*','icon_caption/*'])"
+"%VIZDOM_PY%" -c "from huggingface_hub import snapshot_download; snapshot_download('microsoft/OmniParser-v2.0', local_dir='models/omniparser', allow_patterns=['icon_detect/*','icon_caption/*'])"
 move models\omniparser\icon_caption models\omniparser\icon_caption_florence
 ```
 
@@ -116,8 +116,9 @@ interactability and text, on GPU. Two issues had to be worked around:
    application`, a 32-bit/64-bit mismatch) shadows a good psutil in the main
    site-packages. It does not block OmniParser (ultralytics imports fine without
    it), but if something later needs psutil, remove
-   `C:\Users\ugc1hc\AppData\Roaming\Python\Python39\site-packages\psutil` so the
-   correct build in `D:\Python\python39\Lib\site-packages` is used.
+   the per-user copy (`%APPDATA%\Python\Python39\site-packages\psutil`) so the
+   correct build in the interpreter's own `Lib\site-packages` is used.
+   *(Paths in this note are from the author's workstation; adjust to yours.)*
 
 ## Version caveat
 

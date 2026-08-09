@@ -163,7 +163,7 @@ Equivalent manual command:
 ```bat
 cd <repo-root>
 set PYTHONPATH=%CD%\src
-"D:\Python\python39\python.exe" -m robot --outputdir output\demo_run examples\windows_calculator_demo\calculator_demo.robot
+"%VIZDOM_PY%" -m robot --outputdir output\demo_run examples\windows_calculator_demo\calculator_demo.robot
 ```
 
 Two cases run: `7 + 5 = 12`, and `8 ÷ 2` verified by re-reading the display from
