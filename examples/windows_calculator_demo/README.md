@@ -154,6 +154,12 @@ machines — **the test file does not change**. Validate the file any time with
 run_demo.bat
 ```
 
+This example is **Windows-only** — it launches `calc.exe` and locates keys in
+the Windows Calculator. On Linux/macOS the services and the library work the
+same way (`./start_detector.sh`, `./start_capture.sh`, `./start_actuator.sh`),
+but point the runner at a suite for an application that exists there:
+`./run_demo.sh my_suite.robot`.
+
 The launcher (repo root) pins the project's Python, sets `PYTHONPATH`, and writes
 results to `output\demo_run`. **Do not launch the `.robot` file directly** — that
 runs whatever Python owns the `.robot` file association, typically one without

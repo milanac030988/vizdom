@@ -92,7 +92,8 @@ uv pip install -e ".[ocr,grpc]"    :: + detector / capture / actuator services
 uv pip install -e ".[all]"         :: everything (incl. OmniParser: torch, ~2.5 GB)
 ```
 
-The `start_*.bat` / `run_demo.bat` launchers detect `.venv` automatically. Full
+The launchers detect `.venv` automatically — `start_*.bat` / `run_demo.bat` on
+Windows, `start_*.sh` / `run_demo.sh` on Linux and macOS. Full
 guide — dependency groups, GPU notes, interpreter resolution order, and how to
 install into an existing interpreter instead — in
 **[Setup with uv](docs/uv-setup.md)**.

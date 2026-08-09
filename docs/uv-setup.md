@@ -108,17 +108,29 @@ uv run python -m pytest tests/unit tests/architecture -q
 
 ## 5. Which interpreter do the launchers use?
 
-Every `start_*.bat` / `run_demo.bat` resolves Python through **one** helper,
-`python_env.bat`, rather than hardcoding a path — that is what makes the
-repository runnable on a machine that is not the author's. First hit wins:
+Every launcher resolves Python through **one** helper — `python_env.bat` on
+Windows, `python_env.sh` on Linux/macOS — rather than hardcoding a path. That is
+what makes the repository runnable on a machine that is not the author's.
+
+| Platform | Launchers |
+|---|---|
+| Windows | `start_detector.bat`, `start_capture.bat`, `start_actuator.bat`, `start_viewer.bat`, `start_dashboard.bat`, `run_demo.bat` |
+| Linux / macOS | the same names with `.sh` (`./start_detector.sh …`) |
+
+First hit wins:
 
 | # | Candidate | When it applies |
 |---|---|---|
 | 1 | `%VIZDOM_PYTHON%` | explicit override — always wins |
-| 2 | `.venv\Scripts\python.exe` | **the uv environment from §2 — the normal case** |
-| 3 | `D:\Python\python39\python.exe` | the author's workstation (legacy; predates uv) |
-| 4 | `py -3.9` | the Windows launcher, if 3.9 is registered |
+| 2 | `.venv\Scripts\python.exe` (Windows) / `.venv/bin/python` (POSIX) | **the uv environment from §2 — the normal case** |
+| 3 | `D:\Python\python39\python.exe` | the author's workstation (Windows only; legacy, predates uv) |
+| 4 | `py -3.9` (Windows) / `python3.12…3.9` (POSIX) | a versioned interpreter |
 | 5 | `python` on PATH | last resort |
+
+The POSIX resolver additionally **checks that the interpreter it found actually
+has the dependencies** and prints the install command if not: candidate 4/5 can
+easily be a bare `python3` that would otherwise fail much later with
+`ModuleNotFoundError: No module named 'cv2'`.
 
 Nothing usable → the launcher stops and prints the commands that fix it.
 
@@ -139,6 +151,21 @@ uv run robot --outputdir output\demo_run examples\windows_calculator_demo\calcul
 
 The console scripts declared in `pyproject.toml` are also available inside the
 environment: `vizdom-detector`, `vizdom-capture`, `vizdom-actuator`.
+
+## 5b. Linux specifics
+
+The pipeline, the Robot Framework library and the services are
+platform-independent; two adapters need system packages:
+
+| Concern | Requirement |
+|---|---|
+| `linux` capture strategy | an X11 display (`$DISPLAY`) and `mss` |
+| `focus_target` (ADR-021) | `wmctrl` **or** `xdotool` — `sudo apt install wmctrl xdotool` |
+| `desktop` actuator (pyautogui) | `sudo apt install python3-xlib scrot` |
+| Wayland | exposes no window control to unprivileged clients — focus returns `False`; run an X11 session for GUI driving |
+
+The bundled Calculator demo launches `calc.exe`, so it is Windows-only; on Linux
+point the runner at your own suite: `./run_demo.sh my_suite.robot`.
 
 ## 6. One-time external setup
 
