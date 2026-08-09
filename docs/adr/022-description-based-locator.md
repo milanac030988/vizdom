@@ -10,7 +10,11 @@ Accepted (Tiers 0–1 implemented; Tier 2 implemented behind config, needs a vis
 
 ## Author
 
-Development Team
+Nguyen Huynh Tri Cuong
+
+## Reviewer
+
+- Nguyen Huynh Tri Cuong
 
 ## History
 

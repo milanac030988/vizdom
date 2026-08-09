@@ -146,8 +146,10 @@ Proposed → Accepted → [Deprecated | Superseded]
 
 ## Creating a New ADR
 
-1. Copy `000-template.md` to `NNN-short-title.md`
-2. Fill in all sections
+1. Copy [`000-template.md`](000-template.md) to `NNN-short-title.md`
+2. Fill in all sections — **Author** and **Reviewer** are mandatory (they record
+   who decided and who checked; on a solo project both are the same person, and
+   saying so is more honest than leaving the field blank)
 3. Update this README index
 4. Submit for review
 

@@ -10,11 +10,11 @@ Accepted
 
 ## Author
 
-Development Team
+Nguyen Huynh Tri Cuong
 
 ## Reviewer
 
-- Project Lead
+- Nguyen Huynh Tri Cuong
 
 ## History
 

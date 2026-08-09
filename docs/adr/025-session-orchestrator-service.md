@@ -12,7 +12,11 @@ traceable rather than implicit.
 
 ## Author
 
-Development Team
+Nguyen Huynh Tri Cuong
+
+## Reviewer
+
+- Nguyen Huynh Tri Cuong
 
 ## History
 
