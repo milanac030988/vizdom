@@ -1,0 +1,90 @@
+@startuml Locator_Resolution
+
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontSize 11
+skinparam defaultFontName Arial
+skinparam activityDiamondFontSize 11
+
+<style>
+' Named node styles instead of the deprecated "#RRGGBB:label;" colour prefix,
+' which newer PlantUML rejects in favour of a trailing <<stereotype>>.
+' This form renders on both old and new versions.
+.found   { BackgroundColor #C8E6C9 }
+.slm     { BackgroundColor #FFE0B2 }
+.vlm     { BackgroundColor #BBDEFB }
+.failure { BackgroundColor #FFCDD2 }
+</style>
+
+title Locating an element - resolution flow (ADR-022 / ADR-024)\nClick Visual  text=Save || desc="save button in the toolbar"
+
+start
+:locator string from the test;
+if (a DOM is loaded?) then (no)
+  :error: "No DOM loaded.\nCall 'Dump Visual DOM' first."; <<failure>>
+  stop
+else (yes)
+endif
+
+:split on "||" (quote-aware)
+-> ordered ALTERNATIVES
+each alternative = AND-group of locators
+(id= text= hint= role= within= right_of= below= desc=);
+
+while (next alternative?) is (yes)
+  partition "Deterministic match  (ElementFinder)" #E8F5E9 {
+    :match every locator in the group
+    and INTERSECT the results;
+    if (how many matched?) then (exactly 1)
+      :element found; <<found>>
+      detach
+    elseif (several - AMBIGUOUS) then
+      if (chain also has a desc= ?) then (yes)
+        partition "Arbitration (ADR-024 v1.1)" #E3F2FD {
+          :ground that description over
+          JUST these candidates
+          (2-3 elements = most reliable);
+          if (confident?) then (yes)
+            :element found\n(log: disambiguated to E48); <<vlm>>
+            detach
+          else (no)
+          endif
+        }
+      else (no)
+      endif
+      :reason = "Multiple elements match";
+    else (none)
+      if (this alternative is a lone desc= ?) then (yes)
+        partition "Tiered grounding (ADR-022)" #FFF3E0 {
+          :DescriptionResolver.resolve()
+          lexical -> SLM over DOM -> VLM Set-of-Mark
+          (see the grounding diagram);
+          if (a tier is confident?) then (yes)
+            :element found\n(log: tier that answered); <<slm>>
+            detach
+          else (no)
+          endif
+        }
+        :reason = "no grounding tier confident
+        (nearest: ...)";
+      else (no)
+        :reason = "not found";
+      endif
+    endif
+  }
+  :record the attempt (rendered locator + reason)
+  and fall through to the next alternative;
+endwhile (no more)
+
+:FAIL LOUDLY - every attempt reported:\nLocator did not resolve to exactly one element\ntried 1) text=Save    -> not found\n2) desc=...     -> no grounding tier confident; <<failure>>
+stop
+
+legend bottom
+  **Exactly one, or fail.** An alternative is abandoned when it matches
+  NOTHING *or* is AMBIGUOUS - clicking a coin-flip element is worse than
+  failing. When a later alternative wins, a WARNING names the stale primary:
+  the signal that feeds the planned self-healing locators.
+  Existence checks (Visual Should Exist / Get Visual Elements) instead
+  accept many matches, so there the first non-empty alternative wins.
+end legend
+
+@enduml

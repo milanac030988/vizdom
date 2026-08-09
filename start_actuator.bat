@@ -6,7 +6,7 @@ REM input where the app-under-test is. Point clients at this host with the `grpc
 REM actuator strategy and VIZDOM_ACTUATOR_TARGET=<this-host>:50054 (or target=host:port).
 REM
 REM Prerequisites (once, in the app's Python 3.9):
-REM   "D:\Python\python39\python.exe" -m pip install grpcio grpcio-tools
+REM   "%VIZDOM_PY%" -m pip install grpcio grpcio-tools
 REM   generate stubs (see docs/adr/019-pluggable-actuator-service.md).
 REM
 REM Usage:
@@ -23,5 +23,6 @@ REM   lands on whatever window is at that coordinate, and typed text goes to
 REM   whatever holds keyboard focus.
 
 cd /d "%~dp0"
+call "%~dp0python_env.bat" || exit /b 1
 set PYTHONPATH=%~dp0src
-"D:\Python\python39\python.exe" -m visual_dom.adapters.inbound.grpc.actuator_server %*
+"%VIZDOM_PY%" -m visual_dom.adapters.inbound.grpc.actuator_server %*

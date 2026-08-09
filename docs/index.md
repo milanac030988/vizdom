@@ -92,6 +92,24 @@ Honest status — these are the open edges, roughly in priority order:
 
 ---
 
+## Get started
+
+Installed with [**uv**](https://docs.astral.sh/uv/), which fetches its own
+Python — no pre-existing local interpreter needed:
+
+```powershell
+# install uv once per machine (Linux/macOS: curl -LsSf https://astral.sh/uv/install.sh | sh)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+uv python install 3.12
+uv venv --python 3.12
+uv pip install -e ".[ocr,grpc]"
+```
+
+The `start_*.bat` launchers pick up the resulting `.venv` automatically. Full
+instructions — dependency groups, GPU notes, interpreter resolution order — in
+**[Setup with uv](uv-setup.md)**.
+
 ## Documentation map
 
 - **[Architecture](architecture.md)** — system, pipeline, component, class,
@@ -103,7 +121,7 @@ Honest status — these are the open edges, roughly in priority order:
   framework and the VLM experiments.
 - **[Model Discussion Notes](model-discussion.md)** — comparisons (OmniParser,
   Aria-UI, ELAM-7B, Jedi) that shaped the design.
-- **[Architecture Decisions](adr/README.md)** — the full ADR log (001–018).
+- **[Architecture Decisions](adr/README.md)** — the full ADR log (001–025).
 
 ## Two deliverables
 

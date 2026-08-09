@@ -10,7 +10,11 @@ Accepted (with limitations)
 
 ## Author
 
-Development Team
+Nguyen Huynh Tri Cuong
+
+## Reviewer
+
+- Nguyen Huynh Tri Cuong
 
 ## History
 

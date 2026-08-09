@@ -75,25 +75,30 @@ The same content lives under [`docs/`](docs/) if you prefer to read it in the re
 
 ### Installation
 
-```bash
-# Clone the repository
+Installed with [**uv**](https://docs.astral.sh/uv/) — it fetches its own Python,
+so no pre-existing local interpreter is required:
+
+```bat
 git clone <repo-url>
 cd MasterProject
 
-# Create virtual environment (recommended)
-python -m venv venv
-venv\Scripts\activate  # Windows
-# source venv/bin/activate  # Linux/Mac
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"   :: install uv, once per machine
+:: Linux/macOS:  curl -LsSf https://astral.sh/uv/install.sh | sh
+uv python install 3.12             :: managed CPython (~21 MB)
+uv venv --python 3.12              :: creates .venv in the repo root
 
-# Install base dependencies
-pip install -e .
-
-# Install with OCR support
-pip install -e ".[ocr]"
-
-# Install all dependencies (for development)
-pip install -e ".[ocr,training,cv-training,annotation,desktop,dev]"
+uv pip install -e ".[ocr]"         :: pipeline + Robot Framework library (CPU)
+uv pip install -e ".[ocr,grpc]"    :: + detector / capture / actuator services
+uv pip install -e ".[all]"         :: everything (incl. OmniParser: torch, ~2.5 GB)
 ```
+
+The `start_*.bat` / `run_demo.bat` launchers detect `.venv` automatically. Full
+guide — dependency groups, GPU notes, interpreter resolution order, and how to
+install into an existing interpreter instead — in
+**[Setup with uv](docs/uv-setup.md)**.
+
+Verify with `start_capture.bat --list`, then
+`uv run python -m pytest tests/unit tests/architecture -q`.
 
 ### Configure a session (recommended)
 
@@ -464,5 +469,5 @@ python scripts/evaluation/evaluate_model.py --model models/finetuned/qwen2.5-3b-
 | 11. Distributed services (ADR-017/018/019) | ✅ Done | Hexagonal ports; gRPC detector/capture/actuator; user plugins (camera, robot-arm) |
 | 12. Benchmark & evaluation | ✅ Done | Synthetic 44-img set; UIED vs OmniParser; OmniParser type-mapping 0.09→0.87 |
 | 13. Docs site + report | ✅ Done | ProperDocs (GitHub Pages-ready); LaTeX reports (general + arc42, EN + VI) |
-| 14. Client robustness (ADR-021/022/023/024) | ✅ Done | App targeting + focus on both ports (incl. `Focus` RPC); `desc=` grounding; post-action recap; `||` fallback chains |
+| 14. Client robustness (ADR-021/022/023/024) | ✅ Done | App targeting + focus on both ports (incl. `Focus` RPC); `desc=` grounding; post-action recap; <code>&#124;&#124;</code> fallback chains |
 | 15. Real-world dataset & hardening | ⏳ Pending | Real-UI labelled benchmark; TLS/auth on gRPC; E2E production hardening |

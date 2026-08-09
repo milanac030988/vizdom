@@ -1,0 +1,7674 @@
+{
+ "benchmark": "lifecycle-synthetic-v1",
+ "seed": 42,
+ "states": [
+  {
+   "id": "dashboard_0009",
+   "image": "data/synthetic/test/images/dashboard_0009.png",
+   "gt": "data/synthetic/test/labels/dashboard_0009.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "dashboard_0015",
+   "image": "data/synthetic/test/images/dashboard_0015.png",
+   "gt": "data/synthetic/test/labels/dashboard_0015.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "dashboard_0035",
+   "image": "data/synthetic/test/images/dashboard_0035.png",
+   "gt": "data/synthetic/test/labels/dashboard_0035.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "dashboard_0059",
+   "image": "data/synthetic/test/images/dashboard_0059.png",
+   "gt": "data/synthetic/test/labels/dashboard_0059.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "dashboard_0163",
+   "image": "data/synthetic/test/images/dashboard_0163.png",
+   "gt": "data/synthetic/test/labels/dashboard_0163.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "dashboard_0195",
+   "image": "data/synthetic/test/images/dashboard_0195.png",
+   "gt": "data/synthetic/test/labels/dashboard_0195.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "data_table_0078",
+   "image": "data/synthetic/test/images/data_table_0078.png",
+   "gt": "data/synthetic/test/labels/data_table_0078.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "data_table_0110",
+   "image": "data/synthetic/test/images/data_table_0110.png",
+   "gt": "data/synthetic/test/labels/data_table_0110.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "data_table_0142",
+   "image": "data/synthetic/test/images/data_table_0142.png",
+   "gt": "data/synthetic/test/labels/data_table_0142.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "data_table_0182",
+   "image": "data/synthetic/test/images/data_table_0182.png",
+   "gt": "data/synthetic/test/labels/data_table_0182.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "dialog_0037",
+   "image": "data/synthetic/test/images/dialog_0037.png",
+   "gt": "data/synthetic/test/labels/dialog_0037.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "dialog_0045",
+   "image": "data/synthetic/test/images/dialog_0045.png",
+   "gt": "data/synthetic/test/labels/dialog_0045.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "dialog_0061",
+   "image": "data/synthetic/test/images/dialog_0061.png",
+   "gt": "data/synthetic/test/labels/dialog_0061.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "dialog_0141",
+   "image": "data/synthetic/test/images/dialog_0141.png",
+   "gt": "data/synthetic/test/labels/dialog_0141.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "form_sidebar_0007",
+   "image": "data/synthetic/test/images/form_sidebar_0007.png",
+   "gt": "data/synthetic/test/labels/form_sidebar_0007.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "form_sidebar_0015",
+   "image": "data/synthetic/test/images/form_sidebar_0015.png",
+   "gt": "data/synthetic/test/labels/form_sidebar_0015.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "form_sidebar_0023",
+   "image": "data/synthetic/test/images/form_sidebar_0023.png",
+   "gt": "data/synthetic/test/labels/form_sidebar_0023.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "form_sidebar_0031",
+   "image": "data/synthetic/test/images/form_sidebar_0031.png",
+   "gt": "data/synthetic/test/labels/form_sidebar_0031.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "form_sidebar_0103",
+   "image": "data/synthetic/test/images/form_sidebar_0103.png",
+   "gt": "data/synthetic/test/labels/form_sidebar_0103.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "form_sidebar_0111",
+   "image": "data/synthetic/test/images/form_sidebar_0111.png",
+   "gt": "data/synthetic/test/labels/form_sidebar_0111.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "info_panel_0016",
+   "image": "data/synthetic/test/images/info_panel_0016.png",
+   "gt": "data/synthetic/test/labels/info_panel_0016.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "info_panel_0024",
+   "image": "data/synthetic/test/images/info_panel_0024.png",
+   "gt": "data/synthetic/test/labels/info_panel_0024.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "info_panel_0032",
+   "image": "data/synthetic/test/images/info_panel_0032.png",
+   "gt": "data/synthetic/test/labels/info_panel_0032.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "info_panel_0048",
+   "image": "data/synthetic/test/images/info_panel_0048.png",
+   "gt": "data/synthetic/test/labels/info_panel_0048.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "info_panel_0176",
+   "image": "data/synthetic/test/images/info_panel_0176.png",
+   "gt": "data/synthetic/test/labels/info_panel_0176.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "info_panel_0184",
+   "image": "data/synthetic/test/images/info_panel_0184.png",
+   "gt": "data/synthetic/test/labels/info_panel_0184.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "login_0017",
+   "image": "data/synthetic/test/images/login_0017.png",
+   "gt": "data/synthetic/test/labels/login_0017.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "login_0065",
+   "image": "data/synthetic/test/images/login_0065.png",
+   "gt": "data/synthetic/test/labels/login_0065.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "login_0137",
+   "image": "data/synthetic/test/images/login_0137.png",
+   "gt": "data/synthetic/test/labels/login_0137.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "login_0185",
+   "image": "data/synthetic/test/images/login_0185.png",
+   "gt": "data/synthetic/test/labels/login_0185.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "settings_0002",
+   "image": "data/synthetic/test/images/settings_0002.png",
+   "gt": "data/synthetic/test/labels/settings_0002.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "settings_0014",
+   "image": "data/synthetic/test/images/settings_0014.png",
+   "gt": "data/synthetic/test/labels/settings_0014.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "settings_0042",
+   "image": "data/synthetic/test/images/settings_0042.png",
+   "gt": "data/synthetic/test/labels/settings_0042.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "settings_0050",
+   "image": "data/synthetic/test/images/settings_0050.png",
+   "gt": "data/synthetic/test/labels/settings_0050.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "settings_0058",
+   "image": "data/synthetic/test/images/settings_0058.png",
+   "gt": "data/synthetic/test/labels/settings_0058.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "settings_0098",
+   "image": "data/synthetic/test/images/settings_0098.png",
+   "gt": "data/synthetic/test/labels/settings_0098.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "settings_0114",
+   "image": "data/synthetic/test/images/settings_0114.png",
+   "gt": "data/synthetic/test/labels/settings_0114.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "settings_0138",
+   "image": "data/synthetic/test/images/settings_0138.png",
+   "gt": "data/synthetic/test/labels/settings_0138.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "settings_0170",
+   "image": "data/synthetic/test/images/settings_0170.png",
+   "gt": "data/synthetic/test/labels/settings_0170.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "settings_0194",
+   "image": "data/synthetic/test/images/settings_0194.png",
+   "gt": "data/synthetic/test/labels/settings_0194.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "toolbar_0020",
+   "image": "data/synthetic/test/images/toolbar_0020.png",
+   "gt": "data/synthetic/test/labels/toolbar_0020.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "toolbar_0036",
+   "image": "data/synthetic/test/images/toolbar_0036.png",
+   "gt": "data/synthetic/test/labels/toolbar_0036.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "toolbar_0140",
+   "image": "data/synthetic/test/images/toolbar_0140.png",
+   "gt": "data/synthetic/test/labels/toolbar_0140.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  },
+  {
+   "id": "toolbar_0164",
+   "image": "data/synthetic/test/images/toolbar_0164.png",
+   "gt": "data/synthetic/test/labels/toolbar_0164.json",
+   "image_size": {
+    "width": 1920,
+    "height": 1080
+   }
+  }
+ ],
+ "steps": [
+  {
+   "id": "dashboard_0009/verify-neg/Frobnicate",
+   "state": "dashboard_0009",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dashboard_0009/verify-neg/Purple_Elephant",
+   "state": "dashboard_0009",
+   "kind": "verify",
+   "locator": "text=\"Purple Elephant\"",
+   "instruction": "the 'Purple Elephant' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dashboard_0015/verify-neg/Warp_Cores",
+   "state": "dashboard_0015",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dashboard_0015/verify-neg/Frobnicate",
+   "state": "dashboard_0015",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dashboard_0035/verify-neg/Zylophone",
+   "state": "dashboard_0035",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dashboard_0035/verify-neg/Frobnicate",
+   "state": "dashboard_0035",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dashboard_0059/verify-neg/Frobnicate",
+   "state": "dashboard_0059",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dashboard_0059/verify-neg/Moon_Cheese",
+   "state": "dashboard_0059",
+   "kind": "verify",
+   "locator": "text=\"Moon Cheese\"",
+   "instruction": "the 'Moon Cheese' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dashboard_0163/verify-neg/Frobnicate",
+   "state": "dashboard_0163",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dashboard_0163/verify-neg/Warp_Cores",
+   "state": "dashboard_0163",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dashboard_0195/verify-neg/Antigravity",
+   "state": "dashboard_0195",
+   "kind": "verify",
+   "locator": "text=\"Antigravity\"",
+   "instruction": "the 'Antigravity' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dashboard_0195/verify-neg/Purple_Elephant",
+   "state": "dashboard_0195",
+   "kind": "verify",
+   "locator": "text=\"Purple Elephant\"",
+   "instruction": "the 'Purple Elephant' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "data_table_0078/act/E2",
+   "state": "data_table_0078",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Export\"",
+   "instruction": "click the 'Export' button",
+   "target_id": "E2",
+   "target_bounds": [
+    1761,
+    24,
+    1893,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0078/verify/E2",
+   "state": "data_table_0078",
+   "kind": "verify",
+   "locator": "text=\"Export\"",
+   "instruction": "the 'Export' button is visible",
+   "expect": "PASSED",
+   "target_id": "E2",
+   "target_bounds": [
+    1761,
+    24,
+    1893,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0078/act/E3",
+   "state": "data_table_0078",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Add New\"",
+   "instruction": "click the 'Add New' button",
+   "target_id": "E3",
+   "target_bounds": [
+    1599,
+    24,
+    1747,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0078/verify/E3",
+   "state": "data_table_0078",
+   "kind": "verify",
+   "locator": "text=\"Add New\"",
+   "instruction": "the 'Add New' button is visible",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    1599,
+    24,
+    1747,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0078/act/E4",
+   "state": "data_table_0078",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Search...\"",
+   "instruction": "click the 'Search...' input field",
+   "target_id": "E4",
+   "target_bounds": [
+    27,
+    90,
+    464,
+    140
+   ]
+  },
+  {
+   "id": "data_table_0078/verify/E4",
+   "state": "data_table_0078",
+   "kind": "verify",
+   "locator": "text=\"Search...\"",
+   "instruction": "the 'Search...' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E4",
+   "target_bounds": [
+    27,
+    90,
+    464,
+    140
+   ]
+  },
+  {
+   "id": "data_table_0078/act/E100",
+   "state": "data_table_0078",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Prev\"",
+   "instruction": "click the 'Prev' button",
+   "target_id": "E100",
+   "target_bounds": [
+    1816,
+    643,
+    1893,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0078/verify/E100",
+   "state": "data_table_0078",
+   "kind": "verify",
+   "locator": "text=\"Prev\"",
+   "instruction": "the 'Prev' button is visible",
+   "expect": "PASSED",
+   "target_id": "E100",
+   "target_bounds": [
+    1816,
+    643,
+    1893,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0078/act/E101",
+   "state": "data_table_0078",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"1\"",
+   "instruction": "click the '1' button",
+   "target_id": "E101",
+   "target_bounds": [
+    1774,
+    643,
+    1809,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0078/verify/E101",
+   "state": "data_table_0078",
+   "kind": "verify",
+   "locator": "text=\"1\"",
+   "instruction": "the '1' button is visible",
+   "expect": "PASSED",
+   "target_id": "E101",
+   "target_bounds": [
+    1774,
+    643,
+    1809,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0078/act/E102",
+   "state": "data_table_0078",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"2\"",
+   "instruction": "click the '2' button",
+   "target_id": "E102",
+   "target_bounds": [
+    1732,
+    643,
+    1767,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0078/verify/E102",
+   "state": "data_table_0078",
+   "kind": "verify",
+   "locator": "text=\"2\"",
+   "instruction": "the '2' button is visible",
+   "expect": "PASSED",
+   "target_id": "E102",
+   "target_bounds": [
+    1732,
+    643,
+    1767,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0078/act/E103",
+   "state": "data_table_0078",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Next\"",
+   "instruction": "click the 'Next' button",
+   "target_id": "E103",
+   "target_bounds": [
+    1648,
+    643,
+    1725,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0078/verify/E103",
+   "state": "data_table_0078",
+   "kind": "verify",
+   "locator": "text=\"Next\"",
+   "instruction": "the 'Next' button is visible",
+   "expect": "PASSED",
+   "target_id": "E103",
+   "target_bounds": [
+    1648,
+    643,
+    1725,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0078/verify-neg/Purple_Elephant",
+   "state": "data_table_0078",
+   "kind": "verify",
+   "locator": "text=\"Purple Elephant\"",
+   "instruction": "the 'Purple Elephant' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "data_table_0078/verify-neg/Bogus_Panel",
+   "state": "data_table_0078",
+   "kind": "verify",
+   "locator": "text=\"Bogus Panel\"",
+   "instruction": "the 'Bogus Panel' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "data_table_0110/act/E2",
+   "state": "data_table_0110",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Export\"",
+   "instruction": "click the 'Export' button",
+   "target_id": "E2",
+   "target_bounds": [
+    1761,
+    24,
+    1893,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0110/verify/E2",
+   "state": "data_table_0110",
+   "kind": "verify",
+   "locator": "text=\"Export\"",
+   "instruction": "the 'Export' button is visible",
+   "expect": "PASSED",
+   "target_id": "E2",
+   "target_bounds": [
+    1761,
+    24,
+    1893,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0110/act/E3",
+   "state": "data_table_0110",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Add New\"",
+   "instruction": "click the 'Add New' button",
+   "target_id": "E3",
+   "target_bounds": [
+    1599,
+    24,
+    1747,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0110/verify/E3",
+   "state": "data_table_0110",
+   "kind": "verify",
+   "locator": "text=\"Add New\"",
+   "instruction": "the 'Add New' button is visible",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    1599,
+    24,
+    1747,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0110/act/E4",
+   "state": "data_table_0110",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Search...\"",
+   "instruction": "click the 'Search...' input field",
+   "target_id": "E4",
+   "target_bounds": [
+    27,
+    90,
+    518,
+    140
+   ]
+  },
+  {
+   "id": "data_table_0110/verify/E4",
+   "state": "data_table_0110",
+   "kind": "verify",
+   "locator": "text=\"Search...\"",
+   "instruction": "the 'Search...' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E4",
+   "target_bounds": [
+    27,
+    90,
+    518,
+    140
+   ]
+  },
+  {
+   "id": "data_table_0110/act/E78",
+   "state": "data_table_0110",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Prev\"",
+   "instruction": "click the 'Prev' button",
+   "target_id": "E78",
+   "target_bounds": [
+    1816,
+    784,
+    1893,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0110/verify/E78",
+   "state": "data_table_0110",
+   "kind": "verify",
+   "locator": "text=\"Prev\"",
+   "instruction": "the 'Prev' button is visible",
+   "expect": "PASSED",
+   "target_id": "E78",
+   "target_bounds": [
+    1816,
+    784,
+    1893,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0110/act/E79",
+   "state": "data_table_0110",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"1\"",
+   "instruction": "click the '1' button",
+   "target_id": "E79",
+   "target_bounds": [
+    1774,
+    784,
+    1809,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0110/verify/E79",
+   "state": "data_table_0110",
+   "kind": "verify",
+   "locator": "text=\"1\"",
+   "instruction": "the '1' button is visible",
+   "expect": "PASSED",
+   "target_id": "E79",
+   "target_bounds": [
+    1774,
+    784,
+    1809,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0110/act/E80",
+   "state": "data_table_0110",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"2\"",
+   "instruction": "click the '2' button",
+   "target_id": "E80",
+   "target_bounds": [
+    1732,
+    784,
+    1767,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0110/verify/E80",
+   "state": "data_table_0110",
+   "kind": "verify",
+   "locator": "text=\"2\"",
+   "instruction": "the '2' button is visible",
+   "expect": "PASSED",
+   "target_id": "E80",
+   "target_bounds": [
+    1732,
+    784,
+    1767,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0110/act/E81",
+   "state": "data_table_0110",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Next\"",
+   "instruction": "click the 'Next' button",
+   "target_id": "E81",
+   "target_bounds": [
+    1648,
+    784,
+    1725,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0110/verify/E81",
+   "state": "data_table_0110",
+   "kind": "verify",
+   "locator": "text=\"Next\"",
+   "instruction": "the 'Next' button is visible",
+   "expect": "PASSED",
+   "target_id": "E81",
+   "target_bounds": [
+    1648,
+    784,
+    1725,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0110/verify-neg/Zylophone",
+   "state": "data_table_0110",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "data_table_0110/verify-neg/Frobnicate",
+   "state": "data_table_0110",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "data_table_0142/act/E2",
+   "state": "data_table_0142",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Export\"",
+   "instruction": "click the 'Export' button",
+   "target_id": "E2",
+   "target_bounds": [
+    1761,
+    24,
+    1893,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0142/verify/E2",
+   "state": "data_table_0142",
+   "kind": "verify",
+   "locator": "text=\"Export\"",
+   "instruction": "the 'Export' button is visible",
+   "expect": "PASSED",
+   "target_id": "E2",
+   "target_bounds": [
+    1761,
+    24,
+    1893,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0142/act/E3",
+   "state": "data_table_0142",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Add New\"",
+   "instruction": "click the 'Add New' button",
+   "target_id": "E3",
+   "target_bounds": [
+    1599,
+    24,
+    1747,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0142/verify/E3",
+   "state": "data_table_0142",
+   "kind": "verify",
+   "locator": "text=\"Add New\"",
+   "instruction": "the 'Add New' button is visible",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    1599,
+    24,
+    1747,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0142/act/E4",
+   "state": "data_table_0142",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Search...\"",
+   "instruction": "click the 'Search...' input field",
+   "target_id": "E4",
+   "target_bounds": [
+    27,
+    90,
+    562,
+    140
+   ]
+  },
+  {
+   "id": "data_table_0142/verify/E4",
+   "state": "data_table_0142",
+   "kind": "verify",
+   "locator": "text=\"Search...\"",
+   "instruction": "the 'Search...' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E4",
+   "target_bounds": [
+    27,
+    90,
+    562,
+    140
+   ]
+  },
+  {
+   "id": "data_table_0142/act/E129",
+   "state": "data_table_0142",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Prev\"",
+   "instruction": "click the 'Prev' button",
+   "target_id": "E129",
+   "target_bounds": [
+    1816,
+    784,
+    1893,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0142/verify/E129",
+   "state": "data_table_0142",
+   "kind": "verify",
+   "locator": "text=\"Prev\"",
+   "instruction": "the 'Prev' button is visible",
+   "expect": "PASSED",
+   "target_id": "E129",
+   "target_bounds": [
+    1816,
+    784,
+    1893,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0142/act/E130",
+   "state": "data_table_0142",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"1\"",
+   "instruction": "click the '1' button",
+   "target_id": "E130",
+   "target_bounds": [
+    1774,
+    784,
+    1809,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0142/verify/E130",
+   "state": "data_table_0142",
+   "kind": "verify",
+   "locator": "text=\"1\"",
+   "instruction": "the '1' button is visible",
+   "expect": "PASSED",
+   "target_id": "E130",
+   "target_bounds": [
+    1774,
+    784,
+    1809,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0142/act/E131",
+   "state": "data_table_0142",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"2\"",
+   "instruction": "click the '2' button",
+   "target_id": "E131",
+   "target_bounds": [
+    1732,
+    784,
+    1767,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0142/verify/E131",
+   "state": "data_table_0142",
+   "kind": "verify",
+   "locator": "text=\"2\"",
+   "instruction": "the '2' button is visible",
+   "expect": "PASSED",
+   "target_id": "E131",
+   "target_bounds": [
+    1732,
+    784,
+    1767,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0142/act/E132",
+   "state": "data_table_0142",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Next\"",
+   "instruction": "click the 'Next' button",
+   "target_id": "E132",
+   "target_bounds": [
+    1648,
+    784,
+    1725,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0142/verify/E132",
+   "state": "data_table_0142",
+   "kind": "verify",
+   "locator": "text=\"Next\"",
+   "instruction": "the 'Next' button is visible",
+   "expect": "PASSED",
+   "target_id": "E132",
+   "target_bounds": [
+    1648,
+    784,
+    1725,
+    823
+   ]
+  },
+  {
+   "id": "data_table_0142/verify-neg/Purple_Elephant",
+   "state": "data_table_0142",
+   "kind": "verify",
+   "locator": "text=\"Purple Elephant\"",
+   "instruction": "the 'Purple Elephant' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "data_table_0142/verify-neg/Warp_Cores",
+   "state": "data_table_0142",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "data_table_0182/act/E2",
+   "state": "data_table_0182",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Export\"",
+   "instruction": "click the 'Export' button",
+   "target_id": "E2",
+   "target_bounds": [
+    1761,
+    24,
+    1893,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0182/verify/E2",
+   "state": "data_table_0182",
+   "kind": "verify",
+   "locator": "text=\"Export\"",
+   "instruction": "the 'Export' button is visible",
+   "expect": "PASSED",
+   "target_id": "E2",
+   "target_bounds": [
+    1761,
+    24,
+    1893,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0182/act/E3",
+   "state": "data_table_0182",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Add New\"",
+   "instruction": "click the 'Add New' button",
+   "target_id": "E3",
+   "target_bounds": [
+    1599,
+    24,
+    1747,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0182/verify/E3",
+   "state": "data_table_0182",
+   "kind": "verify",
+   "locator": "text=\"Add New\"",
+   "instruction": "the 'Add New' button is visible",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    1599,
+    24,
+    1747,
+    74
+   ]
+  },
+  {
+   "id": "data_table_0182/act/E4",
+   "state": "data_table_0182",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Search...\"",
+   "instruction": "click the 'Search...' input field",
+   "target_id": "E4",
+   "target_bounds": [
+    27,
+    90,
+    448,
+    140
+   ]
+  },
+  {
+   "id": "data_table_0182/verify/E4",
+   "state": "data_table_0182",
+   "kind": "verify",
+   "locator": "text=\"Search...\"",
+   "instruction": "the 'Search...' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E4",
+   "target_bounds": [
+    27,
+    90,
+    448,
+    140
+   ]
+  },
+  {
+   "id": "data_table_0182/act/E100",
+   "state": "data_table_0182",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Prev\"",
+   "instruction": "click the 'Prev' button",
+   "target_id": "E100",
+   "target_bounds": [
+    1816,
+    643,
+    1893,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0182/verify/E100",
+   "state": "data_table_0182",
+   "kind": "verify",
+   "locator": "text=\"Prev\"",
+   "instruction": "the 'Prev' button is visible",
+   "expect": "PASSED",
+   "target_id": "E100",
+   "target_bounds": [
+    1816,
+    643,
+    1893,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0182/act/E101",
+   "state": "data_table_0182",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"1\"",
+   "instruction": "click the '1' button",
+   "target_id": "E101",
+   "target_bounds": [
+    1774,
+    643,
+    1809,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0182/verify/E101",
+   "state": "data_table_0182",
+   "kind": "verify",
+   "locator": "text=\"1\"",
+   "instruction": "the '1' button is visible",
+   "expect": "PASSED",
+   "target_id": "E101",
+   "target_bounds": [
+    1774,
+    643,
+    1809,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0182/act/E102",
+   "state": "data_table_0182",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"2\"",
+   "instruction": "click the '2' button",
+   "target_id": "E102",
+   "target_bounds": [
+    1732,
+    643,
+    1767,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0182/verify/E102",
+   "state": "data_table_0182",
+   "kind": "verify",
+   "locator": "text=\"2\"",
+   "instruction": "the '2' button is visible",
+   "expect": "PASSED",
+   "target_id": "E102",
+   "target_bounds": [
+    1732,
+    643,
+    1767,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0182/act/E103",
+   "state": "data_table_0182",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Next\"",
+   "instruction": "click the 'Next' button",
+   "target_id": "E103",
+   "target_bounds": [
+    1648,
+    643,
+    1725,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0182/verify/E103",
+   "state": "data_table_0182",
+   "kind": "verify",
+   "locator": "text=\"Next\"",
+   "instruction": "the 'Next' button is visible",
+   "expect": "PASSED",
+   "target_id": "E103",
+   "target_bounds": [
+    1648,
+    643,
+    1725,
+    682
+   ]
+  },
+  {
+   "id": "data_table_0182/verify-neg/Zylophone",
+   "state": "data_table_0182",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "data_table_0182/verify-neg/Moon_Cheese",
+   "state": "data_table_0182",
+   "kind": "verify",
+   "locator": "text=\"Moon Cheese\"",
+   "instruction": "the 'Moon Cheese' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dialog_0037/act/E6",
+   "state": "dialog_0037",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Confirm\"",
+   "instruction": "click the 'Confirm' button",
+   "target_id": "E6",
+   "target_bounds": [
+    1124,
+    646,
+    1286,
+    703
+   ]
+  },
+  {
+   "id": "dialog_0037/verify/E6",
+   "state": "dialog_0037",
+   "kind": "verify",
+   "locator": "text=\"Confirm\"",
+   "instruction": "the 'Confirm' button is visible",
+   "expect": "PASSED",
+   "target_id": "E6",
+   "target_bounds": [
+    1124,
+    646,
+    1286,
+    703
+   ]
+  },
+  {
+   "id": "dialog_0037/verify-neg/Antigravity",
+   "state": "dialog_0037",
+   "kind": "verify",
+   "locator": "text=\"Antigravity\"",
+   "instruction": "the 'Antigravity' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dialog_0037/verify-neg/Frobnicate",
+   "state": "dialog_0037",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dialog_0045/act/E7",
+   "state": "dialog_0045",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Yes\"",
+   "instruction": "click the 'Yes' button",
+   "target_id": "E7",
+   "target_bounds": [
+    1225,
+    664,
+    1315,
+    721
+   ]
+  },
+  {
+   "id": "dialog_0045/verify/E7",
+   "state": "dialog_0045",
+   "kind": "verify",
+   "locator": "text=\"Yes\"",
+   "instruction": "the 'Yes' button is visible",
+   "expect": "PASSED",
+   "target_id": "E7",
+   "target_bounds": [
+    1225,
+    664,
+    1315,
+    721
+   ]
+  },
+  {
+   "id": "dialog_0045/verify-neg/Bogus_Panel",
+   "state": "dialog_0045",
+   "kind": "verify",
+   "locator": "text=\"Bogus Panel\"",
+   "instruction": "the 'Bogus Panel' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dialog_0045/verify-neg/Warp_Cores",
+   "state": "dialog_0045",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dialog_0061/act/E7",
+   "state": "dialog_0061",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Yes\"",
+   "instruction": "click the 'Yes' button",
+   "target_id": "E7",
+   "target_bounds": [
+    1160,
+    623,
+    1250,
+    680
+   ]
+  },
+  {
+   "id": "dialog_0061/verify/E7",
+   "state": "dialog_0061",
+   "kind": "verify",
+   "locator": "text=\"Yes\"",
+   "instruction": "the 'Yes' button is visible",
+   "expect": "PASSED",
+   "target_id": "E7",
+   "target_bounds": [
+    1160,
+    623,
+    1250,
+    680
+   ]
+  },
+  {
+   "id": "dialog_0061/verify-neg/Warp_Cores",
+   "state": "dialog_0061",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dialog_0061/verify-neg/Antigravity",
+   "state": "dialog_0061",
+   "kind": "verify",
+   "locator": "text=\"Antigravity\"",
+   "instruction": "the 'Antigravity' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dialog_0141/act/E7",
+   "state": "dialog_0141",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Retry\"",
+   "instruction": "click the 'Retry' button",
+   "target_id": "E7",
+   "target_bounds": [
+    1167,
+    624,
+    1293,
+    681
+   ]
+  },
+  {
+   "id": "dialog_0141/verify/E7",
+   "state": "dialog_0141",
+   "kind": "verify",
+   "locator": "text=\"Retry\"",
+   "instruction": "the 'Retry' button is visible",
+   "expect": "PASSED",
+   "target_id": "E7",
+   "target_bounds": [
+    1167,
+    624,
+    1293,
+    681
+   ]
+  },
+  {
+   "id": "dialog_0141/act/E8",
+   "state": "dialog_0141",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E8",
+   "target_bounds": [
+    1005,
+    624,
+    1149,
+    681
+   ]
+  },
+  {
+   "id": "dialog_0141/verify/E8",
+   "state": "dialog_0141",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E8",
+   "target_bounds": [
+    1005,
+    624,
+    1149,
+    681
+   ]
+  },
+  {
+   "id": "dialog_0141/verify-neg/Purple_Elephant",
+   "state": "dialog_0141",
+   "kind": "verify",
+   "locator": "text=\"Purple Elephant\"",
+   "instruction": "the 'Purple Elephant' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "dialog_0141/verify-neg/Antigravity",
+   "state": "dialog_0141",
+   "kind": "verify",
+   "locator": "text=\"Antigravity\"",
+   "instruction": "the 'Antigravity' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "form_sidebar_0007/act/E15",
+   "state": "form_sidebar_0007",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"John Doe\"",
+   "instruction": "click the 'John Doe' input field",
+   "target_id": "E15",
+   "target_bounds": [
+    360,
+    208,
+    1099,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/verify/E15",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"John Doe\"",
+   "instruction": "the 'John Doe' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E15",
+   "target_bounds": [
+    360,
+    208,
+    1099,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/act/E17",
+   "state": "form_sidebar_0007",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Stopped\"",
+   "instruction": "click the 'Stopped' input field",
+   "target_id": "E17",
+   "target_bounds": [
+    1135,
+    208,
+    1874,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/verify/E17",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"Stopped\"",
+   "instruction": "the 'Stopped' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E17",
+   "target_bounds": [
+    1135,
+    208,
+    1874,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/act/E19",
+   "state": "form_sidebar_0007",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Online\"",
+   "instruction": "click the 'Online' input field",
+   "target_id": "E19",
+   "target_bounds": [
+    360,
+    316,
+    1099,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/verify/E19",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"Online\"",
+   "instruction": "the 'Online' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E19",
+   "target_bounds": [
+    360,
+    316,
+    1099,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/act/E23",
+   "state": "form_sidebar_0007",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Disconnected\"",
+   "instruction": "click the 'Disconnected' input field",
+   "target_id": "E23",
+   "target_bounds": [
+    360,
+    424,
+    1099,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/verify/E23",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"Disconnected\"",
+   "instruction": "the 'Disconnected' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E23",
+   "target_bounds": [
+    360,
+    424,
+    1099,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/act/E27",
+   "state": "form_sidebar_0007",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Running\"",
+   "instruction": "click the 'Running' input field",
+   "target_id": "E27",
+   "target_bounds": [
+    360,
+    532,
+    1099,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/verify/E27",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"Running\"",
+   "instruction": "the 'Running' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E27",
+   "target_bounds": [
+    360,
+    532,
+    1099,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/act/E29",
+   "state": "form_sidebar_0007",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Warning\"",
+   "instruction": "click the 'Warning' input field",
+   "target_id": "E29",
+   "target_bounds": [
+    1135,
+    532,
+    1874,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/verify/E29",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"Warning\"",
+   "instruction": "the 'Warning' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E29",
+   "target_bounds": [
+    1135,
+    532,
+    1874,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/act/E33",
+   "state": "form_sidebar_0007",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Acme Corp\"",
+   "instruction": "click the 'Acme Corp' input field",
+   "target_id": "E33",
+   "target_bounds": [
+    1135,
+    640,
+    1874,
+    694
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/verify/E33",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"Acme Corp\"",
+   "instruction": "the 'Acme Corp' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E33",
+   "target_bounds": [
+    1135,
+    640,
+    1874,
+    694
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/act/E37",
+   "state": "form_sidebar_0007",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Inactive\"",
+   "instruction": "click the 'Inactive' input field",
+   "target_id": "E37",
+   "target_bounds": [
+    1135,
+    748,
+    1874,
+    802
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/verify/E37",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"Inactive\"",
+   "instruction": "the 'Inactive' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E37",
+   "target_bounds": [
+    1135,
+    748,
+    1874,
+    802
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/act/E40",
+   "state": "form_sidebar_0007",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E40",
+   "target_bounds": [
+    360,
+    990,
+    522,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/verify/E40",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E40",
+   "target_bounds": [
+    360,
+    990,
+    522,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/act/E41",
+   "state": "form_sidebar_0007",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E41",
+   "target_bounds": [
+    540,
+    990,
+    702,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/verify/E41",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E41",
+   "target_bounds": [
+    540,
+    990,
+    702,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/act/E42",
+   "state": "form_sidebar_0007",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Reset\"",
+   "instruction": "click the 'Reset' button",
+   "target_id": "E42",
+   "target_bounds": [
+    720,
+    990,
+    882,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/verify/E42",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"Reset\"",
+   "instruction": "the 'Reset' button is visible",
+   "expect": "PASSED",
+   "target_id": "E42",
+   "target_bounds": [
+    720,
+    990,
+    882,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0007/verify-neg/Quantum_Sync",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"Quantum Sync\"",
+   "instruction": "the 'Quantum Sync' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "form_sidebar_0007/verify-neg/Moon_Cheese",
+   "state": "form_sidebar_0007",
+   "kind": "verify",
+   "locator": "text=\"Moon Cheese\"",
+   "instruction": "the 'Moon Cheese' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "form_sidebar_0015/act/E15",
+   "state": "form_sidebar_0015",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"C:\\Users\\admin\"",
+   "instruction": "click the 'C:\\Users\\admin' input field",
+   "target_id": "E15",
+   "target_bounds": [
+    385,
+    208,
+    1112,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/verify/E15",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"C:\\Users\\admin\"",
+   "instruction": "the 'C:\\Users\\admin' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E15",
+   "target_bounds": [
+    385,
+    208,
+    1112,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/act/E17",
+   "state": "form_sidebar_0015",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Search...\"",
+   "instruction": "click the 'Search...' input field",
+   "target_id": "E17",
+   "target_bounds": [
+    1148,
+    208,
+    1875,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/verify/E17",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"Search...\"",
+   "instruction": "the 'Search...' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E17",
+   "target_bounds": [
+    1148,
+    208,
+    1875,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/act/E19",
+   "state": "form_sidebar_0015",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Comments\"",
+   "instruction": "click the 'Comments' input field",
+   "target_id": "E19",
+   "target_bounds": [
+    385,
+    316,
+    1112,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/verify/E19",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"Comments\"",
+   "instruction": "the 'Comments' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E19",
+   "target_bounds": [
+    385,
+    316,
+    1112,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/act/E21",
+   "state": "form_sidebar_0015",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Error\"",
+   "instruction": "click the 'Error' input field",
+   "target_id": "E21",
+   "target_bounds": [
+    1148,
+    316,
+    1875,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/verify/E21",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"Error\"",
+   "instruction": "the 'Error' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E21",
+   "target_bounds": [
+    1148,
+    316,
+    1875,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/act/E23",
+   "state": "form_sidebar_0015",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Offline\"",
+   "instruction": "click the 'Offline' input field",
+   "target_id": "E23",
+   "target_bounds": [
+    385,
+    424,
+    1112,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/verify/E23",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"Offline\"",
+   "instruction": "the 'Offline' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E23",
+   "target_bounds": [
+    385,
+    424,
+    1112,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/act/E29",
+   "state": "form_sidebar_0015",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Website\"",
+   "instruction": "click the 'Website' input field",
+   "target_id": "E29",
+   "target_bounds": [
+    1148,
+    532,
+    1875,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/verify/E29",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"Website\"",
+   "instruction": "the 'Website' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E29",
+   "target_bounds": [
+    1148,
+    532,
+    1875,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/act/E33",
+   "state": "form_sidebar_0015",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Enter name\"",
+   "instruction": "click the 'Enter name' input field",
+   "target_id": "E33",
+   "target_bounds": [
+    1148,
+    640,
+    1875,
+    694
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/verify/E33",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"Enter name\"",
+   "instruction": "the 'Enter name' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E33",
+   "target_bounds": [
+    1148,
+    640,
+    1875,
+    694
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/act/E35",
+   "state": "form_sidebar_0015",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"admin\"",
+   "instruction": "click the 'admin' input field",
+   "target_id": "E35",
+   "target_bounds": [
+    385,
+    748,
+    1112,
+    802
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/verify/E35",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"admin\"",
+   "instruction": "the 'admin' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E35",
+   "target_bounds": [
+    385,
+    748,
+    1112,
+    802
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/act/E38",
+   "state": "form_sidebar_0015",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E38",
+   "target_bounds": [
+    385,
+    990,
+    547,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/verify/E38",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E38",
+   "target_bounds": [
+    385,
+    990,
+    547,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/act/E39",
+   "state": "form_sidebar_0015",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E39",
+   "target_bounds": [
+    565,
+    990,
+    727,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/verify/E39",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E39",
+   "target_bounds": [
+    565,
+    990,
+    727,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/act/E40",
+   "state": "form_sidebar_0015",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Reset\"",
+   "instruction": "click the 'Reset' button",
+   "target_id": "E40",
+   "target_bounds": [
+    745,
+    990,
+    907,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/verify/E40",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"Reset\"",
+   "instruction": "the 'Reset' button is visible",
+   "expect": "PASSED",
+   "target_id": "E40",
+   "target_bounds": [
+    745,
+    990,
+    907,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0015/verify-neg/Antigravity",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"Antigravity\"",
+   "instruction": "the 'Antigravity' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "form_sidebar_0015/verify-neg/Quantum_Sync",
+   "state": "form_sidebar_0015",
+   "kind": "verify",
+   "locator": "text=\"Quantum Sync\"",
+   "instruction": "the 'Quantum Sync' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "form_sidebar_0023/act/E20",
+   "state": "form_sidebar_0023",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Active\"",
+   "instruction": "click the 'Active' input field",
+   "target_id": "E20",
+   "target_bounds": [
+    1156,
+    208,
+    1875,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/verify/E20",
+   "state": "form_sidebar_0023",
+   "kind": "verify",
+   "locator": "text=\"Active\"",
+   "instruction": "the 'Active' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E20",
+   "target_bounds": [
+    1156,
+    208,
+    1875,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/act/E22",
+   "state": "form_sidebar_0023",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Comments\"",
+   "instruction": "click the 'Comments' input field",
+   "target_id": "E22",
+   "target_bounds": [
+    401,
+    316,
+    1120,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/verify/E22",
+   "state": "form_sidebar_0023",
+   "kind": "verify",
+   "locator": "text=\"Comments\"",
+   "instruction": "the 'Comments' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E22",
+   "target_bounds": [
+    401,
+    316,
+    1120,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/act/E24",
+   "state": "form_sidebar_0023",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"john.doe@example.com\"",
+   "instruction": "click the 'john.doe@example.com' input field",
+   "target_id": "E24",
+   "target_bounds": [
+    1156,
+    316,
+    1875,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/verify/E24",
+   "state": "form_sidebar_0023",
+   "kind": "verify",
+   "locator": "text=\"john.doe@example.com\"",
+   "instruction": "the 'john.doe@example.com' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E24",
+   "target_bounds": [
+    1156,
+    316,
+    1875,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/act/E26",
+   "state": "form_sidebar_0023",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Connected\"",
+   "instruction": "click the 'Connected' input field",
+   "target_id": "E26",
+   "target_bounds": [
+    401,
+    424,
+    1120,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/verify/E26",
+   "state": "form_sidebar_0023",
+   "kind": "verify",
+   "locator": "text=\"Connected\"",
+   "instruction": "the 'Connected' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E26",
+   "target_bounds": [
+    401,
+    424,
+    1120,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/act/E30",
+   "state": "form_sidebar_0023",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Online\"",
+   "instruction": "click the 'Online' input field",
+   "target_id": "E30",
+   "target_bounds": [
+    401,
+    532,
+    1120,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/verify/E30",
+   "state": "form_sidebar_0023",
+   "kind": "verify",
+   "locator": "text=\"Online\"",
+   "instruction": "the 'Online' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E30",
+   "target_bounds": [
+    401,
+    532,
+    1120,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/act/E32",
+   "state": "form_sidebar_0023",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Description\"",
+   "instruction": "click the 'Description' input field",
+   "target_id": "E32",
+   "target_bounds": [
+    1156,
+    532,
+    1875,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/verify/E32",
+   "state": "form_sidebar_0023",
+   "kind": "verify",
+   "locator": "text=\"Description\"",
+   "instruction": "the 'Description' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E32",
+   "target_bounds": [
+    1156,
+    532,
+    1875,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/act/E42",
+   "state": "form_sidebar_0023",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Enter email\"",
+   "instruction": "click the 'Enter email' input field",
+   "target_id": "E42",
+   "target_bounds": [
+    401,
+    856,
+    1120,
+    910
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/verify/E42",
+   "state": "form_sidebar_0023",
+   "kind": "verify",
+   "locator": "text=\"Enter email\"",
+   "instruction": "the 'Enter email' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E42",
+   "target_bounds": [
+    401,
+    856,
+    1120,
+    910
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/act/E43",
+   "state": "form_sidebar_0023",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E43",
+   "target_bounds": [
+    401,
+    990,
+    563,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/verify/E43",
+   "state": "form_sidebar_0023",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E43",
+   "target_bounds": [
+    401,
+    990,
+    563,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/act/E44",
+   "state": "form_sidebar_0023",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E44",
+   "target_bounds": [
+    581,
+    990,
+    743,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/verify/E44",
+   "state": "form_sidebar_0023",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E44",
+   "target_bounds": [
+    581,
+    990,
+    743,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0023/verify-neg/Warp_Cores",
+   "state": "form_sidebar_0023",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "form_sidebar_0023/verify-neg/Frobnicate",
+   "state": "form_sidebar_0023",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "form_sidebar_0031/act/E16",
+   "state": "form_sidebar_0031",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Enabled\"",
+   "instruction": "click the 'Enabled' input field",
+   "target_id": "E16",
+   "target_bounds": [
+    394,
+    208,
+    1116,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/verify/E16",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"Enabled\"",
+   "instruction": "the 'Enabled' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E16",
+   "target_bounds": [
+    394,
+    208,
+    1116,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/act/E22",
+   "state": "form_sidebar_0031",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"New York\"",
+   "instruction": "click the 'New York' input field",
+   "target_id": "E22",
+   "target_bounds": [
+    1152,
+    316,
+    1874,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/verify/E22",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"New York\"",
+   "instruction": "the 'New York' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E22",
+   "target_bounds": [
+    1152,
+    316,
+    1874,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/act/E24",
+   "state": "form_sidebar_0031",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Connected\"",
+   "instruction": "click the 'Connected' input field",
+   "target_id": "E24",
+   "target_bounds": [
+    394,
+    424,
+    1116,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/verify/E24",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"Connected\"",
+   "instruction": "the 'Connected' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E24",
+   "target_bounds": [
+    394,
+    424,
+    1116,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/act/E26",
+   "state": "form_sidebar_0031",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Enter email\"",
+   "instruction": "click the 'Enter email' input field",
+   "target_id": "E26",
+   "target_bounds": [
+    1152,
+    424,
+    1874,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/verify/E26",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"Enter email\"",
+   "instruction": "the 'Enter email' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E26",
+   "target_bounds": [
+    1152,
+    424,
+    1874,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/act/E28",
+   "state": "form_sidebar_0031",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Failed\"",
+   "instruction": "click the 'Failed' input field",
+   "target_id": "E28",
+   "target_bounds": [
+    394,
+    532,
+    1116,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/verify/E28",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"Failed\"",
+   "instruction": "the 'Failed' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E28",
+   "target_bounds": [
+    394,
+    532,
+    1116,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/act/E36",
+   "state": "form_sidebar_0031",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Disconnected\"",
+   "instruction": "click the 'Disconnected' input field",
+   "target_id": "E36",
+   "target_bounds": [
+    394,
+    748,
+    1116,
+    802
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/verify/E36",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"Disconnected\"",
+   "instruction": "the 'Disconnected' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E36",
+   "target_bounds": [
+    394,
+    748,
+    1116,
+    802
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/act/E38",
+   "state": "form_sidebar_0031",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"APAC\\USER01\"",
+   "instruction": "click the 'APAC\\USER01' input field",
+   "target_id": "E38",
+   "target_bounds": [
+    1152,
+    748,
+    1874,
+    802
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/verify/E38",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"APAC\\USER01\"",
+   "instruction": "the 'APAC\\USER01' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E38",
+   "target_bounds": [
+    1152,
+    748,
+    1874,
+    802
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/act/E40",
+   "state": "form_sidebar_0031",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Comments\"",
+   "instruction": "click the 'Comments' input field",
+   "target_id": "E40",
+   "target_bounds": [
+    394,
+    856,
+    1116,
+    910
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/verify/E40",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"Comments\"",
+   "instruction": "the 'Comments' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E40",
+   "target_bounds": [
+    394,
+    856,
+    1116,
+    910
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/act/E41",
+   "state": "form_sidebar_0031",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E41",
+   "target_bounds": [
+    394,
+    990,
+    556,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/verify/E41",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E41",
+   "target_bounds": [
+    394,
+    990,
+    556,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/act/E42",
+   "state": "form_sidebar_0031",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E42",
+   "target_bounds": [
+    574,
+    990,
+    736,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/verify/E42",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E42",
+   "target_bounds": [
+    574,
+    990,
+    736,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/act/E43",
+   "state": "form_sidebar_0031",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Reset\"",
+   "instruction": "click the 'Reset' button",
+   "target_id": "E43",
+   "target_bounds": [
+    754,
+    990,
+    916,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/verify/E43",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"Reset\"",
+   "instruction": "the 'Reset' button is visible",
+   "expect": "PASSED",
+   "target_id": "E43",
+   "target_bounds": [
+    754,
+    990,
+    916,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0031/verify-neg/Zylophone",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "form_sidebar_0031/verify-neg/Antigravity",
+   "state": "form_sidebar_0031",
+   "kind": "verify",
+   "locator": "text=\"Antigravity\"",
+   "instruction": "the 'Antigravity' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "form_sidebar_0103/act/E14",
+   "state": "form_sidebar_0103",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"City\"",
+   "instruction": "click the 'City' input field",
+   "target_id": "E14",
+   "target_bounds": [
+    390,
+    208,
+    1114,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/verify/E14",
+   "state": "form_sidebar_0103",
+   "kind": "verify",
+   "locator": "text=\"City\"",
+   "instruction": "the 'City' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E14",
+   "target_bounds": [
+    390,
+    208,
+    1114,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/act/E16",
+   "state": "form_sidebar_0103",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Warning\"",
+   "instruction": "click the 'Warning' input field",
+   "target_id": "E16",
+   "target_bounds": [
+    1150,
+    208,
+    1874,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/verify/E16",
+   "state": "form_sidebar_0103",
+   "kind": "verify",
+   "locator": "text=\"Warning\"",
+   "instruction": "the 'Warning' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E16",
+   "target_bounds": [
+    1150,
+    208,
+    1874,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/act/E18",
+   "state": "form_sidebar_0103",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"10001\"",
+   "instruction": "click the '10001' input field",
+   "target_id": "E18",
+   "target_bounds": [
+    390,
+    316,
+    1114,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/verify/E18",
+   "state": "form_sidebar_0103",
+   "kind": "verify",
+   "locator": "text=\"10001\"",
+   "instruction": "the '10001' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E18",
+   "target_bounds": [
+    390,
+    316,
+    1114,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/act/E24",
+   "state": "form_sidebar_0103",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"APAC\\USER01\"",
+   "instruction": "click the 'APAC\\USER01' input field",
+   "target_id": "E24",
+   "target_bounds": [
+    1150,
+    424,
+    1874,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/verify/E24",
+   "state": "form_sidebar_0103",
+   "kind": "verify",
+   "locator": "text=\"APAC\\USER01\"",
+   "instruction": "the 'APAC\\USER01' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E24",
+   "target_bounds": [
+    1150,
+    424,
+    1874,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/act/E26",
+   "state": "form_sidebar_0103",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Running\"",
+   "instruction": "click the 'Running' input field",
+   "target_id": "E26",
+   "target_bounds": [
+    390,
+    532,
+    1114,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/verify/E26",
+   "state": "form_sidebar_0103",
+   "kind": "verify",
+   "locator": "text=\"Running\"",
+   "instruction": "the 'Running' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E26",
+   "target_bounds": [
+    390,
+    532,
+    1114,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/act/E28",
+   "state": "form_sidebar_0103",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Enter value\"",
+   "instruction": "click the 'Enter value' input field",
+   "target_id": "E28",
+   "target_bounds": [
+    1150,
+    532,
+    1874,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/verify/E28",
+   "state": "form_sidebar_0103",
+   "kind": "verify",
+   "locator": "text=\"Enter value\"",
+   "instruction": "the 'Enter value' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E28",
+   "target_bounds": [
+    1150,
+    532,
+    1874,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/act/E30",
+   "state": "form_sidebar_0103",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"New York\"",
+   "instruction": "click the 'New York' input field",
+   "target_id": "E30",
+   "target_bounds": [
+    390,
+    640,
+    1114,
+    694
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/verify/E30",
+   "state": "form_sidebar_0103",
+   "kind": "verify",
+   "locator": "text=\"New York\"",
+   "instruction": "the 'New York' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E30",
+   "target_bounds": [
+    390,
+    640,
+    1114,
+    694
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/act/E31",
+   "state": "form_sidebar_0103",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E31",
+   "target_bounds": [
+    390,
+    990,
+    552,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/verify/E31",
+   "state": "form_sidebar_0103",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E31",
+   "target_bounds": [
+    390,
+    990,
+    552,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/act/E32",
+   "state": "form_sidebar_0103",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E32",
+   "target_bounds": [
+    570,
+    990,
+    732,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/verify/E32",
+   "state": "form_sidebar_0103",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E32",
+   "target_bounds": [
+    570,
+    990,
+    732,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/act/E33",
+   "state": "form_sidebar_0103",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Reset\"",
+   "instruction": "click the 'Reset' button",
+   "target_id": "E33",
+   "target_bounds": [
+    750,
+    990,
+    912,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/verify/E33",
+   "state": "form_sidebar_0103",
+   "kind": "verify",
+   "locator": "text=\"Reset\"",
+   "instruction": "the 'Reset' button is visible",
+   "expect": "PASSED",
+   "target_id": "E33",
+   "target_bounds": [
+    750,
+    990,
+    912,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0103/verify-neg/Moon_Cheese",
+   "state": "form_sidebar_0103",
+   "kind": "verify",
+   "locator": "text=\"Moon Cheese\"",
+   "instruction": "the 'Moon Cheese' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "form_sidebar_0103/verify-neg/Purple_Elephant",
+   "state": "form_sidebar_0103",
+   "kind": "verify",
+   "locator": "text=\"Purple Elephant\"",
+   "instruction": "the 'Purple Elephant' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "form_sidebar_0111/act/E15",
+   "state": "form_sidebar_0111",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Online\"",
+   "instruction": "click the 'Online' input field",
+   "target_id": "E15",
+   "target_bounds": [
+    347,
+    208,
+    1093,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/verify/E15",
+   "state": "form_sidebar_0111",
+   "kind": "verify",
+   "locator": "text=\"Online\"",
+   "instruction": "the 'Online' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E15",
+   "target_bounds": [
+    347,
+    208,
+    1093,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/act/E17",
+   "state": "form_sidebar_0111",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Search...\"",
+   "instruction": "click the 'Search...' input field",
+   "target_id": "E17",
+   "target_bounds": [
+    1129,
+    208,
+    1875,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/verify/E17",
+   "state": "form_sidebar_0111",
+   "kind": "verify",
+   "locator": "text=\"Search...\"",
+   "instruction": "the 'Search...' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E17",
+   "target_bounds": [
+    1129,
+    208,
+    1875,
+    262
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/act/E19",
+   "state": "form_sidebar_0111",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Disconnected\"",
+   "instruction": "click the 'Disconnected' input field",
+   "target_id": "E19",
+   "target_bounds": [
+    347,
+    316,
+    1093,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/verify/E19",
+   "state": "form_sidebar_0111",
+   "kind": "verify",
+   "locator": "text=\"Disconnected\"",
+   "instruction": "the 'Disconnected' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E19",
+   "target_bounds": [
+    347,
+    316,
+    1093,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/act/E21",
+   "state": "form_sidebar_0111",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Enter email\"",
+   "instruction": "click the 'Enter email' input field",
+   "target_id": "E21",
+   "target_bounds": [
+    1129,
+    316,
+    1875,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/verify/E21",
+   "state": "form_sidebar_0111",
+   "kind": "verify",
+   "locator": "text=\"Enter email\"",
+   "instruction": "the 'Enter email' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E21",
+   "target_bounds": [
+    1129,
+    316,
+    1875,
+    370
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/act/E23",
+   "state": "form_sidebar_0111",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Inactive\"",
+   "instruction": "click the 'Inactive' input field",
+   "target_id": "E23",
+   "target_bounds": [
+    347,
+    424,
+    1093,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/verify/E23",
+   "state": "form_sidebar_0111",
+   "kind": "verify",
+   "locator": "text=\"Inactive\"",
+   "instruction": "the 'Inactive' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E23",
+   "target_bounds": [
+    347,
+    424,
+    1093,
+    478
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/act/E27",
+   "state": "form_sidebar_0111",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"APAC\\USER01\"",
+   "instruction": "click the 'APAC\\USER01' input field",
+   "target_id": "E27",
+   "target_bounds": [
+    347,
+    532,
+    1093,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/verify/E27",
+   "state": "form_sidebar_0111",
+   "kind": "verify",
+   "locator": "text=\"APAC\\USER01\"",
+   "instruction": "the 'APAC\\USER01' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E27",
+   "target_bounds": [
+    347,
+    532,
+    1093,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/act/E29",
+   "state": "form_sidebar_0111",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Connected\"",
+   "instruction": "click the 'Connected' input field",
+   "target_id": "E29",
+   "target_bounds": [
+    1129,
+    532,
+    1875,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/verify/E29",
+   "state": "form_sidebar_0111",
+   "kind": "verify",
+   "locator": "text=\"Connected\"",
+   "instruction": "the 'Connected' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E29",
+   "target_bounds": [
+    1129,
+    532,
+    1875,
+    586
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/act/E30",
+   "state": "form_sidebar_0111",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E30",
+   "target_bounds": [
+    347,
+    990,
+    509,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/verify/E30",
+   "state": "form_sidebar_0111",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E30",
+   "target_bounds": [
+    347,
+    990,
+    509,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/act/E31",
+   "state": "form_sidebar_0111",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E31",
+   "target_bounds": [
+    527,
+    990,
+    689,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/verify/E31",
+   "state": "form_sidebar_0111",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E31",
+   "target_bounds": [
+    527,
+    990,
+    689,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/act/E32",
+   "state": "form_sidebar_0111",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Reset\"",
+   "instruction": "click the 'Reset' button",
+   "target_id": "E32",
+   "target_bounds": [
+    707,
+    990,
+    869,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/verify/E32",
+   "state": "form_sidebar_0111",
+   "kind": "verify",
+   "locator": "text=\"Reset\"",
+   "instruction": "the 'Reset' button is visible",
+   "expect": "PASSED",
+   "target_id": "E32",
+   "target_bounds": [
+    707,
+    990,
+    869,
+    1051
+   ]
+  },
+  {
+   "id": "form_sidebar_0111/verify-neg/Frobnicate",
+   "state": "form_sidebar_0111",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "form_sidebar_0111/verify-neg/Zylophone",
+   "state": "form_sidebar_0111",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "info_panel_0016/act/E3",
+   "state": "info_panel_0016",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Export\"",
+   "instruction": "click the 'Export' button",
+   "target_id": "E3",
+   "target_bounds": [
+    1777,
+    10,
+    1893,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0016/verify/E3",
+   "state": "info_panel_0016",
+   "kind": "verify",
+   "locator": "text=\"Export\"",
+   "instruction": "the 'Export' button is visible",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    1777,
+    10,
+    1893,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0016/act/E4",
+   "state": "info_panel_0016",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Details\"",
+   "instruction": "click the 'Details' button",
+   "target_id": "E4",
+   "target_bounds": [
+    1633,
+    10,
+    1763,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0016/verify/E4",
+   "state": "info_panel_0016",
+   "kind": "verify",
+   "locator": "text=\"Details\"",
+   "instruction": "the 'Details' button is visible",
+   "expect": "PASSED",
+   "target_id": "E4",
+   "target_bounds": [
+    1633,
+    10,
+    1763,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0016/act/E5",
+   "state": "info_panel_0016",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Help\"",
+   "instruction": "click the 'Help' button",
+   "target_id": "E5",
+   "target_bounds": [
+    1531,
+    10,
+    1619,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0016/verify/E5",
+   "state": "info_panel_0016",
+   "kind": "verify",
+   "locator": "text=\"Help\"",
+   "instruction": "the 'Help' button is visible",
+   "expect": "PASSED",
+   "target_id": "E5",
+   "target_bounds": [
+    1531,
+    10,
+    1619,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0016/act/E44",
+   "state": "info_panel_0016",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Reset\"",
+   "instruction": "click the 'Reset' button",
+   "target_id": "E44",
+   "target_bounds": [
+    36,
+    999,
+    149,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0016/verify/E44",
+   "state": "info_panel_0016",
+   "kind": "verify",
+   "locator": "text=\"Reset\"",
+   "instruction": "the 'Reset' button is visible",
+   "expect": "PASSED",
+   "target_id": "E44",
+   "target_bounds": [
+    36,
+    999,
+    149,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0016/act/E45",
+   "state": "info_panel_0016",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E45",
+   "target_bounds": [
+    167,
+    999,
+    266,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0016/verify/E45",
+   "state": "info_panel_0016",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E45",
+   "target_bounds": [
+    167,
+    999,
+    266,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0016/act/E46",
+   "state": "info_panel_0016",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Apply\"",
+   "instruction": "click the 'Apply' button",
+   "target_id": "E46",
+   "target_bounds": [
+    284,
+    999,
+    397,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0016/verify/E46",
+   "state": "info_panel_0016",
+   "kind": "verify",
+   "locator": "text=\"Apply\"",
+   "instruction": "the 'Apply' button is visible",
+   "expect": "PASSED",
+   "target_id": "E46",
+   "target_bounds": [
+    284,
+    999,
+    397,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0016/verify-neg/Frobnicate",
+   "state": "info_panel_0016",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "info_panel_0016/verify-neg/Quantum_Sync",
+   "state": "info_panel_0016",
+   "kind": "verify",
+   "locator": "text=\"Quantum Sync\"",
+   "instruction": "the 'Quantum Sync' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "info_panel_0024/act/E3",
+   "state": "info_panel_0024",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Details\"",
+   "instruction": "click the 'Details' button",
+   "target_id": "E3",
+   "target_bounds": [
+    1763,
+    10,
+    1893,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0024/verify/E3",
+   "state": "info_panel_0024",
+   "kind": "verify",
+   "locator": "text=\"Details\"",
+   "instruction": "the 'Details' button is visible",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    1763,
+    10,
+    1893,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0024/act/E42",
+   "state": "info_panel_0024",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Check Now\"",
+   "instruction": "click the 'Check Now' button",
+   "target_id": "E42",
+   "target_bounds": [
+    36,
+    999,
+    205,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0024/verify/E42",
+   "state": "info_panel_0024",
+   "kind": "verify",
+   "locator": "text=\"Check Now\"",
+   "instruction": "the 'Check Now' button is visible",
+   "expect": "PASSED",
+   "target_id": "E42",
+   "target_bounds": [
+    36,
+    999,
+    205,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0024/act/E43",
+   "state": "info_panel_0024",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Reset\"",
+   "instruction": "click the 'Reset' button",
+   "target_id": "E43",
+   "target_bounds": [
+    223,
+    999,
+    336,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0024/verify/E43",
+   "state": "info_panel_0024",
+   "kind": "verify",
+   "locator": "text=\"Reset\"",
+   "instruction": "the 'Reset' button is visible",
+   "expect": "PASSED",
+   "target_id": "E43",
+   "target_bounds": [
+    223,
+    999,
+    336,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0024/verify-neg/Moon_Cheese",
+   "state": "info_panel_0024",
+   "kind": "verify",
+   "locator": "text=\"Moon Cheese\"",
+   "instruction": "the 'Moon Cheese' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "info_panel_0024/verify-neg/Warp_Cores",
+   "state": "info_panel_0024",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "info_panel_0032/act/E3",
+   "state": "info_panel_0032",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Export\"",
+   "instruction": "click the 'Export' button",
+   "target_id": "E3",
+   "target_bounds": [
+    1777,
+    10,
+    1893,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0032/verify/E3",
+   "state": "info_panel_0032",
+   "kind": "verify",
+   "locator": "text=\"Export\"",
+   "instruction": "the 'Export' button is visible",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    1777,
+    10,
+    1893,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0032/act/E4",
+   "state": "info_panel_0032",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Details\"",
+   "instruction": "click the 'Details' button",
+   "target_id": "E4",
+   "target_bounds": [
+    1633,
+    10,
+    1763,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0032/verify/E4",
+   "state": "info_panel_0032",
+   "kind": "verify",
+   "locator": "text=\"Details\"",
+   "instruction": "the 'Details' button is visible",
+   "expect": "PASSED",
+   "target_id": "E4",
+   "target_bounds": [
+    1633,
+    10,
+    1763,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0032/act/E23",
+   "state": "info_panel_0032",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Close\"",
+   "instruction": "click the 'Close' button",
+   "target_id": "E23",
+   "target_bounds": [
+    36,
+    999,
+    149,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0032/verify/E23",
+   "state": "info_panel_0032",
+   "kind": "verify",
+   "locator": "text=\"Close\"",
+   "instruction": "the 'Close' button is visible",
+   "expect": "PASSED",
+   "target_id": "E23",
+   "target_bounds": [
+    36,
+    999,
+    149,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0032/act/E24",
+   "state": "info_panel_0032",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Check Now\"",
+   "instruction": "click the 'Check Now' button",
+   "target_id": "E24",
+   "target_bounds": [
+    167,
+    999,
+    336,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0032/verify/E24",
+   "state": "info_panel_0032",
+   "kind": "verify",
+   "locator": "text=\"Check Now\"",
+   "instruction": "the 'Check Now' button is visible",
+   "expect": "PASSED",
+   "target_id": "E24",
+   "target_bounds": [
+    167,
+    999,
+    336,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0032/act/E25",
+   "state": "info_panel_0032",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E25",
+   "target_bounds": [
+    354,
+    999,
+    453,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0032/verify/E25",
+   "state": "info_panel_0032",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E25",
+   "target_bounds": [
+    354,
+    999,
+    453,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0032/verify-neg/Warp_Cores",
+   "state": "info_panel_0032",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "info_panel_0032/verify-neg/Antigravity",
+   "state": "info_panel_0032",
+   "kind": "verify",
+   "locator": "text=\"Antigravity\"",
+   "instruction": "the 'Antigravity' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "info_panel_0048/act/E3",
+   "state": "info_panel_0048",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Help\"",
+   "instruction": "click the 'Help' button",
+   "target_id": "E3",
+   "target_bounds": [
+    1805,
+    10,
+    1893,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0048/verify/E3",
+   "state": "info_panel_0048",
+   "kind": "verify",
+   "locator": "text=\"Help\"",
+   "instruction": "the 'Help' button is visible",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    1805,
+    10,
+    1893,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0048/act/E4",
+   "state": "info_panel_0048",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Refresh\"",
+   "instruction": "click the 'Refresh' button",
+   "target_id": "E4",
+   "target_bounds": [
+    1661,
+    10,
+    1791,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0048/verify/E4",
+   "state": "info_panel_0048",
+   "kind": "verify",
+   "locator": "text=\"Refresh\"",
+   "instruction": "the 'Refresh' button is visible",
+   "expect": "PASSED",
+   "target_id": "E4",
+   "target_bounds": [
+    1661,
+    10,
+    1791,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0048/act/E41",
+   "state": "info_panel_0048",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Apply\"",
+   "instruction": "click the 'Apply' button",
+   "target_id": "E41",
+   "target_bounds": [
+    36,
+    999,
+    149,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0048/verify/E41",
+   "state": "info_panel_0048",
+   "kind": "verify",
+   "locator": "text=\"Apply\"",
+   "instruction": "the 'Apply' button is visible",
+   "expect": "PASSED",
+   "target_id": "E41",
+   "target_bounds": [
+    36,
+    999,
+    149,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0048/act/E42",
+   "state": "info_panel_0048",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Close\"",
+   "instruction": "click the 'Close' button",
+   "target_id": "E42",
+   "target_bounds": [
+    167,
+    999,
+    280,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0048/verify/E42",
+   "state": "info_panel_0048",
+   "kind": "verify",
+   "locator": "text=\"Close\"",
+   "instruction": "the 'Close' button is visible",
+   "expect": "PASSED",
+   "target_id": "E42",
+   "target_bounds": [
+    167,
+    999,
+    280,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0048/act/E43",
+   "state": "info_panel_0048",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E43",
+   "target_bounds": [
+    298,
+    999,
+    397,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0048/verify/E43",
+   "state": "info_panel_0048",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E43",
+   "target_bounds": [
+    298,
+    999,
+    397,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0048/act/E44",
+   "state": "info_panel_0048",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Check Now\"",
+   "instruction": "click the 'Check Now' button",
+   "target_id": "E44",
+   "target_bounds": [
+    415,
+    999,
+    584,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0048/verify/E44",
+   "state": "info_panel_0048",
+   "kind": "verify",
+   "locator": "text=\"Check Now\"",
+   "instruction": "the 'Check Now' button is visible",
+   "expect": "PASSED",
+   "target_id": "E44",
+   "target_bounds": [
+    415,
+    999,
+    584,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0048/verify-neg/Purple_Elephant",
+   "state": "info_panel_0048",
+   "kind": "verify",
+   "locator": "text=\"Purple Elephant\"",
+   "instruction": "the 'Purple Elephant' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "info_panel_0048/verify-neg/Moon_Cheese",
+   "state": "info_panel_0048",
+   "kind": "verify",
+   "locator": "text=\"Moon Cheese\"",
+   "instruction": "the 'Moon Cheese' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "info_panel_0176/act/E3",
+   "state": "info_panel_0176",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Export\"",
+   "instruction": "click the 'Export' button",
+   "target_id": "E3",
+   "target_bounds": [
+    1777,
+    10,
+    1893,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0176/verify/E3",
+   "state": "info_panel_0176",
+   "kind": "verify",
+   "locator": "text=\"Export\"",
+   "instruction": "the 'Export' button is visible",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    1777,
+    10,
+    1893,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0176/act/E4",
+   "state": "info_panel_0176",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Details\"",
+   "instruction": "click the 'Details' button",
+   "target_id": "E4",
+   "target_bounds": [
+    1633,
+    10,
+    1763,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0176/verify/E4",
+   "state": "info_panel_0176",
+   "kind": "verify",
+   "locator": "text=\"Details\"",
+   "instruction": "the 'Details' button is visible",
+   "expect": "PASSED",
+   "target_id": "E4",
+   "target_bounds": [
+    1633,
+    10,
+    1763,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0176/act/E5",
+   "state": "info_panel_0176",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Help\"",
+   "instruction": "click the 'Help' button",
+   "target_id": "E5",
+   "target_bounds": [
+    1531,
+    10,
+    1619,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0176/verify/E5",
+   "state": "info_panel_0176",
+   "kind": "verify",
+   "locator": "text=\"Help\"",
+   "instruction": "the 'Help' button is visible",
+   "expect": "PASSED",
+   "target_id": "E5",
+   "target_bounds": [
+    1531,
+    10,
+    1619,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0176/act/E44",
+   "state": "info_panel_0176",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E44",
+   "target_bounds": [
+    36,
+    999,
+    135,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0176/verify/E44",
+   "state": "info_panel_0176",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E44",
+   "target_bounds": [
+    36,
+    999,
+    135,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0176/act/E45",
+   "state": "info_panel_0176",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Check Now\"",
+   "instruction": "click the 'Check Now' button",
+   "target_id": "E45",
+   "target_bounds": [
+    153,
+    999,
+    322,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0176/verify/E45",
+   "state": "info_panel_0176",
+   "kind": "verify",
+   "locator": "text=\"Check Now\"",
+   "instruction": "the 'Check Now' button is visible",
+   "expect": "PASSED",
+   "target_id": "E45",
+   "target_bounds": [
+    153,
+    999,
+    322,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0176/act/E46",
+   "state": "info_panel_0176",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Reset\"",
+   "instruction": "click the 'Reset' button",
+   "target_id": "E46",
+   "target_bounds": [
+    340,
+    999,
+    453,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0176/verify/E46",
+   "state": "info_panel_0176",
+   "kind": "verify",
+   "locator": "text=\"Reset\"",
+   "instruction": "the 'Reset' button is visible",
+   "expect": "PASSED",
+   "target_id": "E46",
+   "target_bounds": [
+    340,
+    999,
+    453,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0176/act/E47",
+   "state": "info_panel_0176",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Apply\"",
+   "instruction": "click the 'Apply' button",
+   "target_id": "E47",
+   "target_bounds": [
+    471,
+    999,
+    584,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0176/verify/E47",
+   "state": "info_panel_0176",
+   "kind": "verify",
+   "locator": "text=\"Apply\"",
+   "instruction": "the 'Apply' button is visible",
+   "expect": "PASSED",
+   "target_id": "E47",
+   "target_bounds": [
+    471,
+    999,
+    584,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0176/verify-neg/Bogus_Panel",
+   "state": "info_panel_0176",
+   "kind": "verify",
+   "locator": "text=\"Bogus Panel\"",
+   "instruction": "the 'Bogus Panel' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "info_panel_0176/verify-neg/Warp_Cores",
+   "state": "info_panel_0176",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "info_panel_0184/act/E3",
+   "state": "info_panel_0184",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Help\"",
+   "instruction": "click the 'Help' button",
+   "target_id": "E3",
+   "target_bounds": [
+    1805,
+    10,
+    1893,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0184/verify/E3",
+   "state": "info_panel_0184",
+   "kind": "verify",
+   "locator": "text=\"Help\"",
+   "instruction": "the 'Help' button is visible",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    1805,
+    10,
+    1893,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0184/act/E4",
+   "state": "info_panel_0184",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Export\"",
+   "instruction": "click the 'Export' button",
+   "target_id": "E4",
+   "target_bounds": [
+    1675,
+    10,
+    1791,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0184/verify/E4",
+   "state": "info_panel_0184",
+   "kind": "verify",
+   "locator": "text=\"Export\"",
+   "instruction": "the 'Export' button is visible",
+   "expect": "PASSED",
+   "target_id": "E4",
+   "target_bounds": [
+    1675,
+    10,
+    1791,
+    60
+   ]
+  },
+  {
+   "id": "info_panel_0184/act/E41",
+   "state": "info_panel_0184",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E41",
+   "target_bounds": [
+    36,
+    999,
+    135,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0184/verify/E41",
+   "state": "info_panel_0184",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E41",
+   "target_bounds": [
+    36,
+    999,
+    135,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0184/act/E42",
+   "state": "info_panel_0184",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Close\"",
+   "instruction": "click the 'Close' button",
+   "target_id": "E42",
+   "target_bounds": [
+    153,
+    999,
+    266,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0184/verify/E42",
+   "state": "info_panel_0184",
+   "kind": "verify",
+   "locator": "text=\"Close\"",
+   "instruction": "the 'Close' button is visible",
+   "expect": "PASSED",
+   "target_id": "E42",
+   "target_bounds": [
+    153,
+    999,
+    266,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0184/act/E43",
+   "state": "info_panel_0184",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Reset\"",
+   "instruction": "click the 'Reset' button",
+   "target_id": "E43",
+   "target_bounds": [
+    284,
+    999,
+    397,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0184/verify/E43",
+   "state": "info_panel_0184",
+   "kind": "verify",
+   "locator": "text=\"Reset\"",
+   "instruction": "the 'Reset' button is visible",
+   "expect": "PASSED",
+   "target_id": "E43",
+   "target_bounds": [
+    284,
+    999,
+    397,
+    1056
+   ]
+  },
+  {
+   "id": "info_panel_0184/verify-neg/Frobnicate",
+   "state": "info_panel_0184",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "info_panel_0184/verify-neg/Zylophone",
+   "state": "info_panel_0184",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "login_0017/act/E10",
+   "state": "login_0017",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Remember me\"",
+   "instruction": "click the 'Remember me' checkbox",
+   "target_id": "E10",
+   "target_bounds": [
+    698,
+    716,
+    820,
+    744
+   ]
+  },
+  {
+   "id": "login_0017/verify/E10",
+   "state": "login_0017",
+   "kind": "verify",
+   "locator": "text=\"Remember me\"",
+   "instruction": "the 'Remember me' checkbox is visible",
+   "expect": "PASSED",
+   "target_id": "E10",
+   "target_bounds": [
+    698,
+    716,
+    820,
+    744
+   ]
+  },
+  {
+   "id": "login_0017/act/E11",
+   "state": "login_0017",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Continue\"",
+   "instruction": "click the 'Continue' button",
+   "target_id": "E11",
+   "target_bounds": [
+    698,
+    766,
+    1221,
+    830
+   ]
+  },
+  {
+   "id": "login_0017/verify/E11",
+   "state": "login_0017",
+   "kind": "verify",
+   "locator": "text=\"Continue\"",
+   "instruction": "the 'Continue' button is visible",
+   "expect": "PASSED",
+   "target_id": "E11",
+   "target_bounds": [
+    698,
+    766,
+    1221,
+    830
+   ]
+  },
+  {
+   "id": "login_0017/verify-neg/Frobnicate",
+   "state": "login_0017",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "login_0017/verify-neg/Warp_Cores",
+   "state": "login_0017",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "login_0065/act/E12",
+   "state": "login_0065",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Remember me\"",
+   "instruction": "click the 'Remember me' checkbox",
+   "target_id": "E12",
+   "target_bounds": [
+    694,
+    762,
+    816,
+    790
+   ]
+  },
+  {
+   "id": "login_0065/verify/E12",
+   "state": "login_0065",
+   "kind": "verify",
+   "locator": "text=\"Remember me\"",
+   "instruction": "the 'Remember me' checkbox is visible",
+   "expect": "PASSED",
+   "target_id": "E12",
+   "target_bounds": [
+    694,
+    762,
+    816,
+    790
+   ]
+  },
+  {
+   "id": "login_0065/act/E16",
+   "state": "login_0065",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Apple\"",
+   "instruction": "click the 'Apple' button",
+   "target_id": "E16",
+   "target_bounds": [
+    694,
+    966,
+    859,
+    1020
+   ]
+  },
+  {
+   "id": "login_0065/verify/E16",
+   "state": "login_0065",
+   "kind": "verify",
+   "locator": "text=\"Apple\"",
+   "instruction": "the 'Apple' button is visible",
+   "expect": "PASSED",
+   "target_id": "E16",
+   "target_bounds": [
+    694,
+    966,
+    859,
+    1020
+   ]
+  },
+  {
+   "id": "login_0065/act/E17",
+   "state": "login_0065",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Google\"",
+   "instruction": "click the 'Google' button",
+   "target_id": "E17",
+   "target_bounds": [
+    877,
+    966,
+    1042,
+    1020
+   ]
+  },
+  {
+   "id": "login_0065/verify/E17",
+   "state": "login_0065",
+   "kind": "verify",
+   "locator": "text=\"Google\"",
+   "instruction": "the 'Google' button is visible",
+   "expect": "PASSED",
+   "target_id": "E17",
+   "target_bounds": [
+    877,
+    966,
+    1042,
+    1020
+   ]
+  },
+  {
+   "id": "login_0065/act/E18",
+   "state": "login_0065",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"GitHub\"",
+   "instruction": "click the 'GitHub' button",
+   "target_id": "E18",
+   "target_bounds": [
+    1060,
+    966,
+    1225,
+    1020
+   ]
+  },
+  {
+   "id": "login_0065/verify/E18",
+   "state": "login_0065",
+   "kind": "verify",
+   "locator": "text=\"GitHub\"",
+   "instruction": "the 'GitHub' button is visible",
+   "expect": "PASSED",
+   "target_id": "E18",
+   "target_bounds": [
+    1060,
+    966,
+    1225,
+    1020
+   ]
+  },
+  {
+   "id": "login_0065/verify-neg/Warp_Cores",
+   "state": "login_0065",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "login_0065/verify-neg/Antigravity",
+   "state": "login_0065",
+   "kind": "verify",
+   "locator": "text=\"Antigravity\"",
+   "instruction": "the 'Antigravity' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "login_0137/act/E10",
+   "state": "login_0137",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Login\"",
+   "instruction": "click the 'Login' button",
+   "target_id": "E10",
+   "target_bounds": [
+    694,
+    676,
+    1226,
+    740
+   ]
+  },
+  {
+   "id": "login_0137/verify/E10",
+   "state": "login_0137",
+   "kind": "verify",
+   "locator": "text=\"Login\"",
+   "instruction": "the 'Login' button is visible",
+   "expect": "PASSED",
+   "target_id": "E10",
+   "target_bounds": [
+    694,
+    676,
+    1226,
+    740
+   ]
+  },
+  {
+   "id": "login_0137/act/E13",
+   "state": "login_0137",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"GitHub\"",
+   "instruction": "click the 'GitHub' button",
+   "target_id": "E13",
+   "target_bounds": [
+    694,
+    830,
+    859,
+    884
+   ]
+  },
+  {
+   "id": "login_0137/verify/E13",
+   "state": "login_0137",
+   "kind": "verify",
+   "locator": "text=\"GitHub\"",
+   "instruction": "the 'GitHub' button is visible",
+   "expect": "PASSED",
+   "target_id": "E13",
+   "target_bounds": [
+    694,
+    830,
+    859,
+    884
+   ]
+  },
+  {
+   "id": "login_0137/act/E14",
+   "state": "login_0137",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Google\"",
+   "instruction": "click the 'Google' button",
+   "target_id": "E14",
+   "target_bounds": [
+    877,
+    830,
+    1042,
+    884
+   ]
+  },
+  {
+   "id": "login_0137/verify/E14",
+   "state": "login_0137",
+   "kind": "verify",
+   "locator": "text=\"Google\"",
+   "instruction": "the 'Google' button is visible",
+   "expect": "PASSED",
+   "target_id": "E14",
+   "target_bounds": [
+    877,
+    830,
+    1042,
+    884
+   ]
+  },
+  {
+   "id": "login_0137/act/E15",
+   "state": "login_0137",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Apple\"",
+   "instruction": "click the 'Apple' button",
+   "target_id": "E15",
+   "target_bounds": [
+    1060,
+    830,
+    1225,
+    884
+   ]
+  },
+  {
+   "id": "login_0137/verify/E15",
+   "state": "login_0137",
+   "kind": "verify",
+   "locator": "text=\"Apple\"",
+   "instruction": "the 'Apple' button is visible",
+   "expect": "PASSED",
+   "target_id": "E15",
+   "target_bounds": [
+    1060,
+    830,
+    1225,
+    884
+   ]
+  },
+  {
+   "id": "login_0137/verify-neg/Moon_Cheese",
+   "state": "login_0137",
+   "kind": "verify",
+   "locator": "text=\"Moon Cheese\"",
+   "instruction": "the 'Moon Cheese' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "login_0137/verify-neg/Warp_Cores",
+   "state": "login_0137",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "login_0185/act/E11",
+   "state": "login_0185",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Remember me\"",
+   "instruction": "click the 'Remember me' checkbox",
+   "target_id": "E11",
+   "target_bounds": [
+    663,
+    746,
+    785,
+    774
+   ]
+  },
+  {
+   "id": "login_0185/verify/E11",
+   "state": "login_0185",
+   "kind": "verify",
+   "locator": "text=\"Remember me\"",
+   "instruction": "the 'Remember me' checkbox is visible",
+   "expect": "PASSED",
+   "target_id": "E11",
+   "target_bounds": [
+    663,
+    746,
+    785,
+    774
+   ]
+  },
+  {
+   "id": "login_0185/act/E12",
+   "state": "login_0185",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Submit\"",
+   "instruction": "click the 'Submit' button",
+   "target_id": "E12",
+   "target_bounds": [
+    663,
+    796,
+    1257,
+    860
+   ]
+  },
+  {
+   "id": "login_0185/verify/E12",
+   "state": "login_0185",
+   "kind": "verify",
+   "locator": "text=\"Submit\"",
+   "instruction": "the 'Submit' button is visible",
+   "expect": "PASSED",
+   "target_id": "E12",
+   "target_bounds": [
+    663,
+    796,
+    1257,
+    860
+   ]
+  },
+  {
+   "id": "login_0185/verify-neg/Zylophone",
+   "state": "login_0185",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "login_0185/verify-neg/Moon_Cheese",
+   "state": "login_0185",
+   "kind": "verify",
+   "locator": "text=\"Moon Cheese\"",
+   "instruction": "the 'Moon Cheese' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0002/act/E5",
+   "state": "settings_0002",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Failed\"",
+   "instruction": "click the 'Failed' input field",
+   "target_id": "E5",
+   "target_bounds": [
+    1668,
+    142,
+    1884,
+    185
+   ]
+  },
+  {
+   "id": "settings_0002/verify/E5",
+   "state": "settings_0002",
+   "kind": "verify",
+   "locator": "text=\"Failed\"",
+   "instruction": "the 'Failed' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E5",
+   "target_bounds": [
+    1668,
+    142,
+    1884,
+    185
+   ]
+  },
+  {
+   "id": "settings_0002/act/E9",
+   "state": "settings_0002",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Pending\"",
+   "instruction": "click the 'Pending' input field",
+   "target_id": "E9",
+   "target_bounds": [
+    1668,
+    250,
+    1884,
+    293
+   ]
+  },
+  {
+   "id": "settings_0002/verify/E9",
+   "state": "settings_0002",
+   "kind": "verify",
+   "locator": "text=\"Pending\"",
+   "instruction": "the 'Pending' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E9",
+   "target_bounds": [
+    1668,
+    250,
+    1884,
+    293
+   ]
+  },
+  {
+   "id": "settings_0002/act/E15",
+   "state": "settings_0002",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Unknown\"",
+   "instruction": "click the 'Unknown' input field",
+   "target_id": "E15",
+   "target_bounds": [
+    1668,
+    435,
+    1884,
+    478
+   ]
+  },
+  {
+   "id": "settings_0002/verify/E15",
+   "state": "settings_0002",
+   "kind": "verify",
+   "locator": "text=\"Unknown\"",
+   "instruction": "the 'Unknown' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E15",
+   "target_bounds": [
+    1668,
+    435,
+    1884,
+    478
+   ]
+  },
+  {
+   "id": "settings_0002/act/E29",
+   "state": "settings_0002",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Online\"",
+   "instruction": "click the 'Online' input field",
+   "target_id": "E29",
+   "target_bounds": [
+    1668,
+    836,
+    1884,
+    879
+   ]
+  },
+  {
+   "id": "settings_0002/verify/E29",
+   "state": "settings_0002",
+   "kind": "verify",
+   "locator": "text=\"Online\"",
+   "instruction": "the 'Online' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E29",
+   "target_bounds": [
+    1668,
+    836,
+    1884,
+    879
+   ]
+  },
+  {
+   "id": "settings_0002/act/E31",
+   "state": "settings_0002",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Disconnected\"",
+   "instruction": "click the 'Disconnected' input field",
+   "target_id": "E31",
+   "target_bounds": [
+    1668,
+    890,
+    1884,
+    933
+   ]
+  },
+  {
+   "id": "settings_0002/verify/E31",
+   "state": "settings_0002",
+   "kind": "verify",
+   "locator": "text=\"Disconnected\"",
+   "instruction": "the 'Disconnected' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E31",
+   "target_bounds": [
+    1668,
+    890,
+    1884,
+    933
+   ]
+  },
+  {
+   "id": "settings_0002/act/E35",
+   "state": "settings_0002",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E35",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0002/verify/E35",
+   "state": "settings_0002",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E35",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0002/act/E36",
+   "state": "settings_0002",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E36",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0002/verify/E36",
+   "state": "settings_0002",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E36",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0002/verify-neg/Frobnicate",
+   "state": "settings_0002",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0002/verify-neg/Purple_Elephant",
+   "state": "settings_0002",
+   "kind": "verify",
+   "locator": "text=\"Purple Elephant\"",
+   "instruction": "the 'Purple Elephant' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0014/act/E9",
+   "state": "settings_0014",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Disconnected\"",
+   "instruction": "click the 'Disconnected' input field",
+   "target_id": "E9",
+   "target_bounds": [
+    1668,
+    250,
+    1884,
+    293
+   ]
+  },
+  {
+   "id": "settings_0014/verify/E9",
+   "state": "settings_0014",
+   "kind": "verify",
+   "locator": "text=\"Disconnected\"",
+   "instruction": "the 'Disconnected' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E9",
+   "target_bounds": [
+    1668,
+    250,
+    1884,
+    293
+   ]
+  },
+  {
+   "id": "settings_0014/act/E19",
+   "state": "settings_0014",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Enabled\"",
+   "instruction": "click the 'Enabled' input field",
+   "target_id": "E19",
+   "target_bounds": [
+    1668,
+    566,
+    1884,
+    609
+   ]
+  },
+  {
+   "id": "settings_0014/verify/E19",
+   "state": "settings_0014",
+   "kind": "verify",
+   "locator": "text=\"Enabled\"",
+   "instruction": "the 'Enabled' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E19",
+   "target_bounds": [
+    1668,
+    566,
+    1884,
+    609
+   ]
+  },
+  {
+   "id": "settings_0014/act/E21",
+   "state": "settings_0014",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Disabled\"",
+   "instruction": "click the 'Disabled' input field",
+   "target_id": "E21",
+   "target_bounds": [
+    1668,
+    620,
+    1884,
+    663
+   ]
+  },
+  {
+   "id": "settings_0014/verify/E21",
+   "state": "settings_0014",
+   "kind": "verify",
+   "locator": "text=\"Disabled\"",
+   "instruction": "the 'Disabled' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E21",
+   "target_bounds": [
+    1668,
+    620,
+    1884,
+    663
+   ]
+  },
+  {
+   "id": "settings_0014/act/E27",
+   "state": "settings_0014",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Error\"",
+   "instruction": "click the 'Error' input field",
+   "target_id": "E27",
+   "target_bounds": [
+    1668,
+    805,
+    1884,
+    848
+   ]
+  },
+  {
+   "id": "settings_0014/verify/E27",
+   "state": "settings_0014",
+   "kind": "verify",
+   "locator": "text=\"Error\"",
+   "instruction": "the 'Error' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E27",
+   "target_bounds": [
+    1668,
+    805,
+    1884,
+    848
+   ]
+  },
+  {
+   "id": "settings_0014/act/E29",
+   "state": "settings_0014",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Online\"",
+   "instruction": "click the 'Online' input field",
+   "target_id": "E29",
+   "target_bounds": [
+    1668,
+    859,
+    1884,
+    902
+   ]
+  },
+  {
+   "id": "settings_0014/verify/E29",
+   "state": "settings_0014",
+   "kind": "verify",
+   "locator": "text=\"Online\"",
+   "instruction": "the 'Online' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E29",
+   "target_bounds": [
+    1668,
+    859,
+    1884,
+    902
+   ]
+  },
+  {
+   "id": "settings_0014/act/E37",
+   "state": "settings_0014",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E37",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0014/verify/E37",
+   "state": "settings_0014",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E37",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0014/act/E38",
+   "state": "settings_0014",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E38",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0014/verify/E38",
+   "state": "settings_0014",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E38",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0014/verify-neg/Zylophone",
+   "state": "settings_0014",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0014/verify-neg/Antigravity",
+   "state": "settings_0014",
+   "kind": "verify",
+   "locator": "text=\"Antigravity\"",
+   "instruction": "the 'Antigravity' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0042/act/E5",
+   "state": "settings_0042",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Stopped\"",
+   "instruction": "click the 'Stopped' input field",
+   "target_id": "E5",
+   "target_bounds": [
+    1668,
+    142,
+    1884,
+    185
+   ]
+  },
+  {
+   "id": "settings_0042/verify/E5",
+   "state": "settings_0042",
+   "kind": "verify",
+   "locator": "text=\"Stopped\"",
+   "instruction": "the 'Stopped' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E5",
+   "target_bounds": [
+    1668,
+    142,
+    1884,
+    185
+   ]
+  },
+  {
+   "id": "settings_0042/act/E15",
+   "state": "settings_0042",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Offline\"",
+   "instruction": "click the 'Offline' input field",
+   "target_id": "E15",
+   "target_bounds": [
+    1668,
+    435,
+    1884,
+    478
+   ]
+  },
+  {
+   "id": "settings_0042/verify/E15",
+   "state": "settings_0042",
+   "kind": "verify",
+   "locator": "text=\"Offline\"",
+   "instruction": "the 'Offline' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E15",
+   "target_bounds": [
+    1668,
+    435,
+    1884,
+    478
+   ]
+  },
+  {
+   "id": "settings_0042/act/E17",
+   "state": "settings_0042",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Unknown\"",
+   "instruction": "click the 'Unknown' input field",
+   "target_id": "E17",
+   "target_bounds": [
+    1668,
+    489,
+    1884,
+    532
+   ]
+  },
+  {
+   "id": "settings_0042/verify/E17",
+   "state": "settings_0042",
+   "kind": "verify",
+   "locator": "text=\"Unknown\"",
+   "instruction": "the 'Unknown' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E17",
+   "target_bounds": [
+    1668,
+    489,
+    1884,
+    532
+   ]
+  },
+  {
+   "id": "settings_0042/act/E25",
+   "state": "settings_0042",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Enabled\"",
+   "instruction": "click the 'Enabled' input field",
+   "target_id": "E25",
+   "target_bounds": [
+    1668,
+    728,
+    1884,
+    771
+   ]
+  },
+  {
+   "id": "settings_0042/verify/E25",
+   "state": "settings_0042",
+   "kind": "verify",
+   "locator": "text=\"Enabled\"",
+   "instruction": "the 'Enabled' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E25",
+   "target_bounds": [
+    1668,
+    728,
+    1884,
+    771
+   ]
+  },
+  {
+   "id": "settings_0042/act/E37",
+   "state": "settings_0042",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E37",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0042/verify/E37",
+   "state": "settings_0042",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E37",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0042/act/E38",
+   "state": "settings_0042",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E38",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0042/verify/E38",
+   "state": "settings_0042",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E38",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0042/verify-neg/Warp_Cores",
+   "state": "settings_0042",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0042/verify-neg/Purple_Elephant",
+   "state": "settings_0042",
+   "kind": "verify",
+   "locator": "text=\"Purple Elephant\"",
+   "instruction": "the 'Purple Elephant' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0050/act/E5",
+   "state": "settings_0050",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Stopped\"",
+   "instruction": "click the 'Stopped' input field",
+   "target_id": "E5",
+   "target_bounds": [
+    1668,
+    142,
+    1884,
+    185
+   ]
+  },
+  {
+   "id": "settings_0050/verify/E5",
+   "state": "settings_0050",
+   "kind": "verify",
+   "locator": "text=\"Stopped\"",
+   "instruction": "the 'Stopped' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E5",
+   "target_bounds": [
+    1668,
+    142,
+    1884,
+    185
+   ]
+  },
+  {
+   "id": "settings_0050/act/E9",
+   "state": "settings_0050",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Enabled\"",
+   "instruction": "click the 'Enabled' input field",
+   "target_id": "E9",
+   "target_bounds": [
+    1668,
+    250,
+    1884,
+    293
+   ]
+  },
+  {
+   "id": "settings_0050/verify/E9",
+   "state": "settings_0050",
+   "kind": "verify",
+   "locator": "text=\"Enabled\"",
+   "instruction": "the 'Enabled' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E9",
+   "target_bounds": [
+    1668,
+    250,
+    1884,
+    293
+   ]
+  },
+  {
+   "id": "settings_0050/act/E21",
+   "state": "settings_0050",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Unknown\"",
+   "instruction": "click the 'Unknown' input field",
+   "target_id": "E21",
+   "target_bounds": [
+    1668,
+    620,
+    1884,
+    663
+   ]
+  },
+  {
+   "id": "settings_0050/verify/E21",
+   "state": "settings_0050",
+   "kind": "verify",
+   "locator": "text=\"Unknown\"",
+   "instruction": "the 'Unknown' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E21",
+   "target_bounds": [
+    1668,
+    620,
+    1884,
+    663
+   ]
+  },
+  {
+   "id": "settings_0050/act/E25",
+   "state": "settings_0050",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Online\"",
+   "instruction": "click the 'Online' input field",
+   "target_id": "E25",
+   "target_bounds": [
+    1668,
+    728,
+    1884,
+    771
+   ]
+  },
+  {
+   "id": "settings_0050/verify/E25",
+   "state": "settings_0050",
+   "kind": "verify",
+   "locator": "text=\"Online\"",
+   "instruction": "the 'Online' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E25",
+   "target_bounds": [
+    1668,
+    728,
+    1884,
+    771
+   ]
+  },
+  {
+   "id": "settings_0050/act/E27",
+   "state": "settings_0050",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Active\"",
+   "instruction": "click the 'Active' input field",
+   "target_id": "E27",
+   "target_bounds": [
+    1668,
+    782,
+    1884,
+    825
+   ]
+  },
+  {
+   "id": "settings_0050/verify/E27",
+   "state": "settings_0050",
+   "kind": "verify",
+   "locator": "text=\"Active\"",
+   "instruction": "the 'Active' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E27",
+   "target_bounds": [
+    1668,
+    782,
+    1884,
+    825
+   ]
+  },
+  {
+   "id": "settings_0050/act/E31",
+   "state": "settings_0050",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Completed\"",
+   "instruction": "click the 'Completed' input field",
+   "target_id": "E31",
+   "target_bounds": [
+    1668,
+    913,
+    1884,
+    956
+   ]
+  },
+  {
+   "id": "settings_0050/verify/E31",
+   "state": "settings_0050",
+   "kind": "verify",
+   "locator": "text=\"Completed\"",
+   "instruction": "the 'Completed' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E31",
+   "target_bounds": [
+    1668,
+    913,
+    1884,
+    956
+   ]
+  },
+  {
+   "id": "settings_0050/act/E33",
+   "state": "settings_0050",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Offline\"",
+   "instruction": "click the 'Offline' input field",
+   "target_id": "E33",
+   "target_bounds": [
+    1668,
+    967,
+    1884,
+    1010
+   ]
+  },
+  {
+   "id": "settings_0050/verify/E33",
+   "state": "settings_0050",
+   "kind": "verify",
+   "locator": "text=\"Offline\"",
+   "instruction": "the 'Offline' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E33",
+   "target_bounds": [
+    1668,
+    967,
+    1884,
+    1010
+   ]
+  },
+  {
+   "id": "settings_0050/act/E41",
+   "state": "settings_0050",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E41",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0050/verify/E41",
+   "state": "settings_0050",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E41",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0050/act/E42",
+   "state": "settings_0050",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E42",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0050/verify/E42",
+   "state": "settings_0050",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E42",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0050/verify-neg/Zylophone",
+   "state": "settings_0050",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0050/verify-neg/Antigravity",
+   "state": "settings_0050",
+   "kind": "verify",
+   "locator": "text=\"Antigravity\"",
+   "instruction": "the 'Antigravity' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0058/act/E5",
+   "state": "settings_0058",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Enabled\"",
+   "instruction": "click the 'Enabled' input field",
+   "target_id": "E5",
+   "target_bounds": [
+    1668,
+    142,
+    1884,
+    185
+   ]
+  },
+  {
+   "id": "settings_0058/verify/E5",
+   "state": "settings_0058",
+   "kind": "verify",
+   "locator": "text=\"Enabled\"",
+   "instruction": "the 'Enabled' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E5",
+   "target_bounds": [
+    1668,
+    142,
+    1884,
+    185
+   ]
+  },
+  {
+   "id": "settings_0058/act/E23",
+   "state": "settings_0058",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Inactive\"",
+   "instruction": "click the 'Inactive' input field",
+   "target_id": "E23",
+   "target_bounds": [
+    1668,
+    674,
+    1884,
+    717
+   ]
+  },
+  {
+   "id": "settings_0058/verify/E23",
+   "state": "settings_0058",
+   "kind": "verify",
+   "locator": "text=\"Inactive\"",
+   "instruction": "the 'Inactive' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E23",
+   "target_bounds": [
+    1668,
+    674,
+    1884,
+    717
+   ]
+  },
+  {
+   "id": "settings_0058/act/E27",
+   "state": "settings_0058",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Error\"",
+   "instruction": "click the 'Error' input field",
+   "target_id": "E27",
+   "target_bounds": [
+    1668,
+    782,
+    1884,
+    825
+   ]
+  },
+  {
+   "id": "settings_0058/verify/E27",
+   "state": "settings_0058",
+   "kind": "verify",
+   "locator": "text=\"Error\"",
+   "instruction": "the 'Error' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E27",
+   "target_bounds": [
+    1668,
+    782,
+    1884,
+    825
+   ]
+  },
+  {
+   "id": "settings_0058/act/E39",
+   "state": "settings_0058",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E39",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0058/verify/E39",
+   "state": "settings_0058",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E39",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0058/act/E40",
+   "state": "settings_0058",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E40",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0058/verify/E40",
+   "state": "settings_0058",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E40",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0058/verify-neg/Frobnicate",
+   "state": "settings_0058",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0058/verify-neg/Zylophone",
+   "state": "settings_0058",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0098/act/E31",
+   "state": "settings_0098",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E31",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0098/verify/E31",
+   "state": "settings_0098",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E31",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0098/act/E32",
+   "state": "settings_0098",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E32",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0098/verify/E32",
+   "state": "settings_0098",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E32",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0098/verify-neg/Warp_Cores",
+   "state": "settings_0098",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0098/verify-neg/Zylophone",
+   "state": "settings_0098",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0114/act/E5",
+   "state": "settings_0114",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Completed\"",
+   "instruction": "click the 'Completed' input field",
+   "target_id": "E5",
+   "target_bounds": [
+    1668,
+    142,
+    1884,
+    185
+   ]
+  },
+  {
+   "id": "settings_0114/verify/E5",
+   "state": "settings_0114",
+   "kind": "verify",
+   "locator": "text=\"Completed\"",
+   "instruction": "the 'Completed' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E5",
+   "target_bounds": [
+    1668,
+    142,
+    1884,
+    185
+   ]
+  },
+  {
+   "id": "settings_0114/act/E15",
+   "state": "settings_0114",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Warning\"",
+   "instruction": "click the 'Warning' input field",
+   "target_id": "E15",
+   "target_bounds": [
+    1668,
+    435,
+    1884,
+    478
+   ]
+  },
+  {
+   "id": "settings_0114/verify/E15",
+   "state": "settings_0114",
+   "kind": "verify",
+   "locator": "text=\"Warning\"",
+   "instruction": "the 'Warning' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E15",
+   "target_bounds": [
+    1668,
+    435,
+    1884,
+    478
+   ]
+  },
+  {
+   "id": "settings_0114/act/E21",
+   "state": "settings_0114",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E21",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0114/verify/E21",
+   "state": "settings_0114",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E21",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0114/act/E22",
+   "state": "settings_0114",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E22",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0114/verify/E22",
+   "state": "settings_0114",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E22",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0114/verify-neg/Moon_Cheese",
+   "state": "settings_0114",
+   "kind": "verify",
+   "locator": "text=\"Moon Cheese\"",
+   "instruction": "the 'Moon Cheese' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0114/verify-neg/Frobnicate",
+   "state": "settings_0114",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0138/act/E7",
+   "state": "settings_0138",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Unknown\"",
+   "instruction": "click the 'Unknown' input field",
+   "target_id": "E7",
+   "target_bounds": [
+    1668,
+    196,
+    1884,
+    239
+   ]
+  },
+  {
+   "id": "settings_0138/verify/E7",
+   "state": "settings_0138",
+   "kind": "verify",
+   "locator": "text=\"Unknown\"",
+   "instruction": "the 'Unknown' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E7",
+   "target_bounds": [
+    1668,
+    196,
+    1884,
+    239
+   ]
+  },
+  {
+   "id": "settings_0138/act/E9",
+   "state": "settings_0138",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Enabled\"",
+   "instruction": "click the 'Enabled' input field",
+   "target_id": "E9",
+   "target_bounds": [
+    1668,
+    250,
+    1884,
+    293
+   ]
+  },
+  {
+   "id": "settings_0138/verify/E9",
+   "state": "settings_0138",
+   "kind": "verify",
+   "locator": "text=\"Enabled\"",
+   "instruction": "the 'Enabled' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E9",
+   "target_bounds": [
+    1668,
+    250,
+    1884,
+    293
+   ]
+  },
+  {
+   "id": "settings_0138/act/E19",
+   "state": "settings_0138",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Error\"",
+   "instruction": "click the 'Error' input field",
+   "target_id": "E19",
+   "target_bounds": [
+    1668,
+    566,
+    1884,
+    609
+   ]
+  },
+  {
+   "id": "settings_0138/verify/E19",
+   "state": "settings_0138",
+   "kind": "verify",
+   "locator": "text=\"Error\"",
+   "instruction": "the 'Error' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E19",
+   "target_bounds": [
+    1668,
+    566,
+    1884,
+    609
+   ]
+  },
+  {
+   "id": "settings_0138/act/E39",
+   "state": "settings_0138",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E39",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0138/verify/E39",
+   "state": "settings_0138",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E39",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0138/act/E40",
+   "state": "settings_0138",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E40",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0138/verify/E40",
+   "state": "settings_0138",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E40",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0138/verify-neg/Moon_Cheese",
+   "state": "settings_0138",
+   "kind": "verify",
+   "locator": "text=\"Moon Cheese\"",
+   "instruction": "the 'Moon Cheese' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0138/verify-neg/Quantum_Sync",
+   "state": "settings_0138",
+   "kind": "verify",
+   "locator": "text=\"Quantum Sync\"",
+   "instruction": "the 'Quantum Sync' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0170/act/E7",
+   "state": "settings_0170",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Error\"",
+   "instruction": "click the 'Error' input field",
+   "target_id": "E7",
+   "target_bounds": [
+    1668,
+    196,
+    1884,
+    239
+   ]
+  },
+  {
+   "id": "settings_0170/verify/E7",
+   "state": "settings_0170",
+   "kind": "verify",
+   "locator": "text=\"Error\"",
+   "instruction": "the 'Error' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E7",
+   "target_bounds": [
+    1668,
+    196,
+    1884,
+    239
+   ]
+  },
+  {
+   "id": "settings_0170/act/E9",
+   "state": "settings_0170",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Warning\"",
+   "instruction": "click the 'Warning' input field",
+   "target_id": "E9",
+   "target_bounds": [
+    1668,
+    250,
+    1884,
+    293
+   ]
+  },
+  {
+   "id": "settings_0170/verify/E9",
+   "state": "settings_0170",
+   "kind": "verify",
+   "locator": "text=\"Warning\"",
+   "instruction": "the 'Warning' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E9",
+   "target_bounds": [
+    1668,
+    250,
+    1884,
+    293
+   ]
+  },
+  {
+   "id": "settings_0170/act/E19",
+   "state": "settings_0170",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Unknown\"",
+   "instruction": "click the 'Unknown' input field",
+   "target_id": "E19",
+   "target_bounds": [
+    1668,
+    543,
+    1884,
+    586
+   ]
+  },
+  {
+   "id": "settings_0170/verify/E19",
+   "state": "settings_0170",
+   "kind": "verify",
+   "locator": "text=\"Unknown\"",
+   "instruction": "the 'Unknown' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E19",
+   "target_bounds": [
+    1668,
+    543,
+    1884,
+    586
+   ]
+  },
+  {
+   "id": "settings_0170/act/E25",
+   "state": "settings_0170",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E25",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0170/verify/E25",
+   "state": "settings_0170",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E25",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0170/act/E26",
+   "state": "settings_0170",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E26",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0170/verify/E26",
+   "state": "settings_0170",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E26",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0170/verify-neg/Zylophone",
+   "state": "settings_0170",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0170/verify-neg/Moon_Cheese",
+   "state": "settings_0170",
+   "kind": "verify",
+   "locator": "text=\"Moon Cheese\"",
+   "instruction": "the 'Moon Cheese' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0194/act/E5",
+   "state": "settings_0194",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Stopped\"",
+   "instruction": "click the 'Stopped' input field",
+   "target_id": "E5",
+   "target_bounds": [
+    1668,
+    142,
+    1884,
+    185
+   ]
+  },
+  {
+   "id": "settings_0194/verify/E5",
+   "state": "settings_0194",
+   "kind": "verify",
+   "locator": "text=\"Stopped\"",
+   "instruction": "the 'Stopped' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E5",
+   "target_bounds": [
+    1668,
+    142,
+    1884,
+    185
+   ]
+  },
+  {
+   "id": "settings_0194/act/E9",
+   "state": "settings_0194",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Active\"",
+   "instruction": "click the 'Active' input field",
+   "target_id": "E9",
+   "target_bounds": [
+    1668,
+    250,
+    1884,
+    293
+   ]
+  },
+  {
+   "id": "settings_0194/verify/E9",
+   "state": "settings_0194",
+   "kind": "verify",
+   "locator": "text=\"Active\"",
+   "instruction": "the 'Active' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E9",
+   "target_bounds": [
+    1668,
+    250,
+    1884,
+    293
+   ]
+  },
+  {
+   "id": "settings_0194/act/E15",
+   "state": "settings_0194",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Failed\"",
+   "instruction": "click the 'Failed' input field",
+   "target_id": "E15",
+   "target_bounds": [
+    1668,
+    435,
+    1884,
+    478
+   ]
+  },
+  {
+   "id": "settings_0194/verify/E15",
+   "state": "settings_0194",
+   "kind": "verify",
+   "locator": "text=\"Failed\"",
+   "instruction": "the 'Failed' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E15",
+   "target_bounds": [
+    1668,
+    435,
+    1884,
+    478
+   ]
+  },
+  {
+   "id": "settings_0194/act/E17",
+   "state": "settings_0194",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Warning\"",
+   "instruction": "click the 'Warning' input field",
+   "target_id": "E17",
+   "target_bounds": [
+    1668,
+    489,
+    1884,
+    532
+   ]
+  },
+  {
+   "id": "settings_0194/verify/E17",
+   "state": "settings_0194",
+   "kind": "verify",
+   "locator": "text=\"Warning\"",
+   "instruction": "the 'Warning' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E17",
+   "target_bounds": [
+    1668,
+    489,
+    1884,
+    532
+   ]
+  },
+  {
+   "id": "settings_0194/act/E33",
+   "state": "settings_0194",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Completed\"",
+   "instruction": "click the 'Completed' input field",
+   "target_id": "E33",
+   "target_bounds": [
+    1668,
+    967,
+    1884,
+    1010
+   ]
+  },
+  {
+   "id": "settings_0194/verify/E33",
+   "state": "settings_0194",
+   "kind": "verify",
+   "locator": "text=\"Completed\"",
+   "instruction": "the 'Completed' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E33",
+   "target_bounds": [
+    1668,
+    967,
+    1884,
+    1010
+   ]
+  },
+  {
+   "id": "settings_0194/act/E37",
+   "state": "settings_0194",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Save\"",
+   "instruction": "click the 'Save' button",
+   "target_id": "E37",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0194/verify/E37",
+   "state": "settings_0194",
+   "kind": "verify",
+   "locator": "text=\"Save\"",
+   "instruction": "the 'Save' button is visible",
+   "expect": "PASSED",
+   "target_id": "E37",
+   "target_bounds": [
+    1740,
+    999,
+    1884,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0194/act/E38",
+   "state": "settings_0194",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "target_id": "E38",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0194/verify/E38",
+   "state": "settings_0194",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "expect": "PASSED",
+   "target_id": "E38",
+   "target_bounds": [
+    1578,
+    999,
+    1722,
+    1056
+   ]
+  },
+  {
+   "id": "settings_0194/verify-neg/Warp_Cores",
+   "state": "settings_0194",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "settings_0194/verify-neg/Moon_Cheese",
+   "state": "settings_0194",
+   "kind": "verify",
+   "locator": "text=\"Moon Cheese\"",
+   "instruction": "the 'Moon Cheese' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "toolbar_0020/act/E7",
+   "state": "toolbar_0020",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Copy\"",
+   "instruction": "click the 'Copy' button",
+   "target_id": "E7",
+   "target_bounds": [
+    1810,
+    9,
+    1902,
+    64
+   ]
+  },
+  {
+   "id": "toolbar_0020/verify/E7",
+   "state": "toolbar_0020",
+   "kind": "verify",
+   "locator": "text=\"Copy\"",
+   "instruction": "the 'Copy' button is visible",
+   "expect": "PASSED",
+   "target_id": "E7",
+   "target_bounds": [
+    1810,
+    9,
+    1902,
+    64
+   ]
+  },
+  {
+   "id": "toolbar_0020/act/E8",
+   "state": "toolbar_0020",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Connect\"",
+   "instruction": "click the 'Connect' button",
+   "target_id": "E8",
+   "target_bounds": [
+    1660,
+    9,
+    1800,
+    64
+   ]
+  },
+  {
+   "id": "toolbar_0020/verify/E8",
+   "state": "toolbar_0020",
+   "kind": "verify",
+   "locator": "text=\"Connect\"",
+   "instruction": "the 'Connect' button is visible",
+   "expect": "PASSED",
+   "target_id": "E8",
+   "target_bounds": [
+    1660,
+    9,
+    1800,
+    64
+   ]
+  },
+  {
+   "id": "toolbar_0020/act/E9",
+   "state": "toolbar_0020",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Uninstall\"",
+   "instruction": "click the 'Uninstall' button",
+   "target_id": "E9",
+   "target_bounds": [
+    1478,
+    9,
+    1650,
+    64
+   ]
+  },
+  {
+   "id": "toolbar_0020/verify/E9",
+   "state": "toolbar_0020",
+   "kind": "verify",
+   "locator": "text=\"Uninstall\"",
+   "instruction": "the 'Uninstall' button is visible",
+   "expect": "PASSED",
+   "target_id": "E9",
+   "target_bounds": [
+    1478,
+    9,
+    1650,
+    64
+   ]
+  },
+  {
+   "id": "toolbar_0020/act/E10",
+   "state": "toolbar_0020",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Stop\"",
+   "instruction": "click the 'Stop' button",
+   "target_id": "E10",
+   "target_bounds": [
+    1376,
+    9,
+    1468,
+    64
+   ]
+  },
+  {
+   "id": "toolbar_0020/verify/E10",
+   "state": "toolbar_0020",
+   "kind": "verify",
+   "locator": "text=\"Stop\"",
+   "instruction": "the 'Stop' button is visible",
+   "expect": "PASSED",
+   "target_id": "E10",
+   "target_bounds": [
+    1376,
+    9,
+    1468,
+    64
+   ]
+  },
+  {
+   "id": "toolbar_0020/verify-neg/Frobnicate",
+   "state": "toolbar_0020",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "toolbar_0020/verify-neg/Warp_Cores",
+   "state": "toolbar_0020",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "toolbar_0036/act/E10",
+   "state": "toolbar_0036",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Search...\"",
+   "instruction": "click the 'Search...' input field",
+   "target_id": "E10",
+   "target_bounds": [
+    452,
+    10,
+    778,
+    54
+   ]
+  },
+  {
+   "id": "toolbar_0036/verify/E10",
+   "state": "toolbar_0036",
+   "kind": "verify",
+   "locator": "text=\"Search...\"",
+   "instruction": "the 'Search...' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E10",
+   "target_bounds": [
+    452,
+    10,
+    778,
+    54
+   ]
+  },
+  {
+   "id": "toolbar_0036/act/E11",
+   "state": "toolbar_0036",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Refresh\"",
+   "instruction": "click the 'Refresh' button",
+   "target_id": "E11",
+   "target_bounds": [
+    1762,
+    9,
+    1902,
+    56
+   ]
+  },
+  {
+   "id": "toolbar_0036/verify/E11",
+   "state": "toolbar_0036",
+   "kind": "verify",
+   "locator": "text=\"Refresh\"",
+   "instruction": "the 'Refresh' button is visible",
+   "expect": "PASSED",
+   "target_id": "E11",
+   "target_bounds": [
+    1762,
+    9,
+    1902,
+    56
+   ]
+  },
+  {
+   "id": "toolbar_0036/act/E12",
+   "state": "toolbar_0036",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Download\"",
+   "instruction": "click the 'Download' button",
+   "target_id": "E12",
+   "target_bounds": [
+    1596,
+    9,
+    1752,
+    56
+   ]
+  },
+  {
+   "id": "toolbar_0036/verify/E12",
+   "state": "toolbar_0036",
+   "kind": "verify",
+   "locator": "text=\"Download\"",
+   "instruction": "the 'Download' button is visible",
+   "expect": "PASSED",
+   "target_id": "E12",
+   "target_bounds": [
+    1596,
+    9,
+    1752,
+    56
+   ]
+  },
+  {
+   "id": "toolbar_0036/act/E13",
+   "state": "toolbar_0036",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Connect\"",
+   "instruction": "click the 'Connect' button",
+   "target_id": "E13",
+   "target_bounds": [
+    1446,
+    9,
+    1586,
+    56
+   ]
+  },
+  {
+   "id": "toolbar_0036/verify/E13",
+   "state": "toolbar_0036",
+   "kind": "verify",
+   "locator": "text=\"Connect\"",
+   "instruction": "the 'Connect' button is visible",
+   "expect": "PASSED",
+   "target_id": "E13",
+   "target_bounds": [
+    1446,
+    9,
+    1586,
+    56
+   ]
+  },
+  {
+   "id": "toolbar_0036/act/E14",
+   "state": "toolbar_0036",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"New\"",
+   "instruction": "click the 'New' button",
+   "target_id": "E14",
+   "target_bounds": [
+    1360,
+    9,
+    1436,
+    56
+   ]
+  },
+  {
+   "id": "toolbar_0036/verify/E14",
+   "state": "toolbar_0036",
+   "kind": "verify",
+   "locator": "text=\"New\"",
+   "instruction": "the 'New' button is visible",
+   "expect": "PASSED",
+   "target_id": "E14",
+   "target_bounds": [
+    1360,
+    9,
+    1436,
+    56
+   ]
+  },
+  {
+   "id": "toolbar_0036/verify-neg/Quantum_Sync",
+   "state": "toolbar_0036",
+   "kind": "verify",
+   "locator": "text=\"Quantum Sync\"",
+   "instruction": "the 'Quantum Sync' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "toolbar_0036/verify-neg/Warp_Cores",
+   "state": "toolbar_0036",
+   "kind": "verify",
+   "locator": "text=\"Warp Cores\"",
+   "instruction": "the 'Warp Cores' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "toolbar_0140/act/E9",
+   "state": "toolbar_0140",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Search...\"",
+   "instruction": "click the 'Search...' input field",
+   "target_id": "E9",
+   "target_bounds": [
+    543,
+    10,
+    842,
+    69
+   ]
+  },
+  {
+   "id": "toolbar_0140/verify/E9",
+   "state": "toolbar_0140",
+   "kind": "verify",
+   "locator": "text=\"Search...\"",
+   "instruction": "the 'Search...' input field is visible",
+   "expect": "PASSED",
+   "target_id": "E9",
+   "target_bounds": [
+    543,
+    10,
+    842,
+    69
+   ]
+  },
+  {
+   "id": "toolbar_0140/act/E10",
+   "state": "toolbar_0140",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"New\"",
+   "instruction": "click the 'New' button",
+   "target_id": "E10",
+   "target_bounds": [
+    1826,
+    9,
+    1902,
+    71
+   ]
+  },
+  {
+   "id": "toolbar_0140/verify/E10",
+   "state": "toolbar_0140",
+   "kind": "verify",
+   "locator": "text=\"New\"",
+   "instruction": "the 'New' button is visible",
+   "expect": "PASSED",
+   "target_id": "E10",
+   "target_bounds": [
+    1826,
+    9,
+    1902,
+    71
+   ]
+  },
+  {
+   "id": "toolbar_0140/act/E11",
+   "state": "toolbar_0140",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Decline\"",
+   "instruction": "click the 'Decline' button",
+   "target_id": "E11",
+   "target_bounds": [
+    1676,
+    9,
+    1816,
+    71
+   ]
+  },
+  {
+   "id": "toolbar_0140/verify/E11",
+   "state": "toolbar_0140",
+   "kind": "verify",
+   "locator": "text=\"Decline\"",
+   "instruction": "the 'Decline' button is visible",
+   "expect": "PASSED",
+   "target_id": "E11",
+   "target_bounds": [
+    1676,
+    9,
+    1816,
+    71
+   ]
+  },
+  {
+   "id": "toolbar_0140/act/E12",
+   "state": "toolbar_0140",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Open\"",
+   "instruction": "click the 'Open' button",
+   "target_id": "E12",
+   "target_bounds": [
+    1574,
+    9,
+    1666,
+    71
+   ]
+  },
+  {
+   "id": "toolbar_0140/verify/E12",
+   "state": "toolbar_0140",
+   "kind": "verify",
+   "locator": "text=\"Open\"",
+   "instruction": "the 'Open' button is visible",
+   "expect": "PASSED",
+   "target_id": "E12",
+   "target_bounds": [
+    1574,
+    9,
+    1666,
+    71
+   ]
+  },
+  {
+   "id": "toolbar_0140/verify-neg/Zylophone",
+   "state": "toolbar_0140",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "toolbar_0140/verify-neg/Frobnicate",
+   "state": "toolbar_0140",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "toolbar_0164/act/E12",
+   "state": "toolbar_0164",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Delete\"",
+   "instruction": "click the 'Delete' button",
+   "target_id": "E12",
+   "target_bounds": [
+    1778,
+    9,
+    1902,
+    67
+   ]
+  },
+  {
+   "id": "toolbar_0164/verify/E12",
+   "state": "toolbar_0164",
+   "kind": "verify",
+   "locator": "text=\"Delete\"",
+   "instruction": "the 'Delete' button is visible",
+   "expect": "PASSED",
+   "target_id": "E12",
+   "target_bounds": [
+    1778,
+    9,
+    1902,
+    67
+   ]
+  },
+  {
+   "id": "toolbar_0164/act/E13",
+   "state": "toolbar_0164",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Redo\"",
+   "instruction": "click the 'Redo' button",
+   "target_id": "E13",
+   "target_bounds": [
+    1676,
+    9,
+    1768,
+    67
+   ]
+  },
+  {
+   "id": "toolbar_0164/verify/E13",
+   "state": "toolbar_0164",
+   "kind": "verify",
+   "locator": "text=\"Redo\"",
+   "instruction": "the 'Redo' button is visible",
+   "expect": "PASSED",
+   "target_id": "E13",
+   "target_bounds": [
+    1676,
+    9,
+    1768,
+    67
+   ]
+  },
+  {
+   "id": "toolbar_0164/act/E14",
+   "state": "toolbar_0164",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"New\"",
+   "instruction": "click the 'New' button",
+   "target_id": "E14",
+   "target_bounds": [
+    1590,
+    9,
+    1666,
+    67
+   ]
+  },
+  {
+   "id": "toolbar_0164/verify/E14",
+   "state": "toolbar_0164",
+   "kind": "verify",
+   "locator": "text=\"New\"",
+   "instruction": "the 'New' button is visible",
+   "expect": "PASSED",
+   "target_id": "E14",
+   "target_bounds": [
+    1590,
+    9,
+    1666,
+    67
+   ]
+  },
+  {
+   "id": "toolbar_0164/act/E15",
+   "state": "toolbar_0164",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Open\"",
+   "instruction": "click the 'Open' button",
+   "target_id": "E15",
+   "target_bounds": [
+    1488,
+    9,
+    1580,
+    67
+   ]
+  },
+  {
+   "id": "toolbar_0164/verify/E15",
+   "state": "toolbar_0164",
+   "kind": "verify",
+   "locator": "text=\"Open\"",
+   "instruction": "the 'Open' button is visible",
+   "expect": "PASSED",
+   "target_id": "E15",
+   "target_bounds": [
+    1488,
+    9,
+    1580,
+    67
+   ]
+  },
+  {
+   "id": "toolbar_0164/verify-neg/Bogus_Panel",
+   "state": "toolbar_0164",
+   "kind": "verify",
+   "locator": "text=\"Bogus Panel\"",
+   "instruction": "the 'Bogus Panel' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  },
+  {
+   "id": "toolbar_0164/verify-neg/Zylophone",
+   "state": "toolbar_0164",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null
+  }
+ ]
+}

@@ -26,6 +26,16 @@ Files here:
 | [`calculator_locators.resource`](calculator_locators.resource) | button definitions as `text=… \|\| desc=…` chains + `Enter Number` / `Compute` keywords |
 | [`calculator_demo.robot`](calculator_demo.robot) | the two test cases |
 
+## What the suite does, step by step
+
+A full sequence diagram of this exact suite — services, suite setup, both tests,
+teardown, and where each capture/detector call happens — is on the docs site under
+[Using as a Client](https://milanac030988.github.io/vizdom/USAGE/) (source:
+`docs/diagrams/robot_suite_sequence.puml`). The short version: the app is opened,
+connected and dumped **once**; every click after that is a cached-DOM lookup plus
+one normalized tap; the whole suite makes **2** detector calls and the second test
+case adds none.
+
 ## Why every button has two locators
 
 Each control is a **fallback chain** (ADR-024):
@@ -153,7 +163,7 @@ Equivalent manual command:
 ```bat
 cd <repo-root>
 set PYTHONPATH=%CD%\src
-"D:\Python\python39\python.exe" -m robot --outputdir output\demo_run examples\windows_calculator_demo\calculator_demo.robot
+"%VIZDOM_PY%" -m robot --outputdir output\demo_run examples\windows_calculator_demo\calculator_demo.robot
 ```
 
 Two cases run: `7 + 5 = 12`, and `8 ÷ 2` verified by re-reading the display from

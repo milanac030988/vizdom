@@ -1,0 +1,109 @@
+@startuml Robot_Suite_Sequence
+
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam ParticipantPadding 12
+skinparam BoxPadding 10
+
+title What a Robot Framework suite actually does\nexamples/windows_calculator_demo/calculator_demo.robot (all three ports over gRPC)
+
+actor "run_demo.bat\n(robot CLI)" as cli #FFFFFF
+participant "Robot suite\ncalculator_demo.robot" as suite #E8F5E9
+participant "VisualGuiLibrary\n(client, in the robot process)" as lib #C8E6C9
+participant "capture service\n:50053" as cap #E1F5FE
+participant "detector service\n:50051  (warm model)" as det #FFE0B2
+participant "actuator service\n:50054" as act #FCE4EC
+participant "Calculator\n(SUT)" as sut #ECEFF1
+
+note over cap, act
+  started once, BEFORE the suite
+  (start_detector / start_capture / start_actuator .bat).
+  They outlive many suite runs - the model loads once.
+end note
+
+cli -> suite : robot calculator_demo.robot
+
+== Suite Setup - Prepare Calculator (runs ONCE) ==
+suite -> sut : Start Process  calc.exe
+suite -> lib : Connect(vizdom.config.json)
+note right of lib
+  ONE file selects all three ports:
+  detector grpc :50051, capture grpc :50053,
+  actuator grpc :50054, window_scope=true
+end note
+suite -> lib : Bring App To Front
+lib -> cap : Focus("Calculator")
+cap -> sut : raise + verify foreground (ADR-021)
+cap --> lib : focused = true
+suite -> lib : Dump Visual DOM
+lib -> cap : Grab(window_title="Calculator")
+cap -> sut : crop the window's client area
+cap --> lib : frame 461x658 + geometry
+lib -> det : Detect(frame)
+det --> lib : ~53 detections  (server-side model)
+lib -> lib : OCR ensemble, merge, reading order,\nhierarchy, compile -> Visual DOM (cached)
+suite -> lib : Wait Until Visual Appears  ${BTN_7}
+lib --> suite : found (cache lookup - no capture)
+
+== Test 1 - Calculator Adds Two Numbers ==
+suite -> lib : Compute 7 add 5
+loop for each key: 7, +, 5, =
+  lib -> lib : resolve text=... || desc=... in the CACHED DOM
+  lib -> act : Tap(nx, ny)   ' normalized [0,1]
+  act -> sut : click at device pixels
+end
+note right of lib #FFF9C4
+  no capture and no detector call in this loop -
+  the DOM built in Suite Setup is reused
+end note
+suite -> lib : Dump Visual DOM
+lib -> cap : Grab(...)
+cap --> lib : frame
+lib -> det : Detect(frame)
+det --> lib : detections
+note right of suite
+  needed only because the ASSERTION is about
+  the display CONTENT ("12"), which cannot
+  exist in a pre-click DOM
+end note
+suite -> lib : Visual Should Exist  text=12
+lib --> suite : PASS
+
+== Test 2 - Divides And Verifies (reuses test 1's DOM) ==
+suite -> lib : Focus Calculator
+lib -> cap : Focus("Calculator")
+suite -> lib : Press Key  esc
+lib -> act : PressKey("esc")
+act -> sut : clear the display   ' actuator only - no capture
+suite -> lib : Compute 8 divide 2
+loop for each key: 8, /, 2, =
+  lib -> lib : resolve in the SAME cached DOM
+  lib -> act : Tap(nx, ny)
+  act -> sut : click
+end
+suite -> lib : Verify Element Value  text=4  4
+lib -> cap : Grab(...)      ' same window scope as the dump
+cap --> lib : frame
+lib -> lib : re-OCR ONLY that element's bounds\n(ADR-023 recap - NO detector call)
+lib --> suite : PASS (expected 4, read 4)
+
+== Suite Teardown ==
+suite -> sut : Terminate All Processes
+suite --> cli : report.html / log.html / output.xml
+
+note over suite, det #E8F5E9
+  Whole suite: **2 detector calls** (Suite Setup + test 1's re-dump).
+  Test 2 adds none. Every click is a cached-DOM lookup plus one Tap.
+end note
+
+legend bottom
+  **Where the cost is.** Perception (capture + detector) runs per *screen state*,
+  not per action - so adding assertions or keys is nearly free, while a grounder
+  would re-infer on every one. A failing keyword additionally asks the capture
+  service for a screenshot and embeds it in log.html, so failure evidence comes
+  from the machine under test.
+end legend
+
+@enduml

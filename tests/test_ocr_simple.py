@@ -1,7 +1,7 @@
 """
 Simple OCR test script.
 
-Run with: D:\Python\python39\python.exe tests\test_ocr_simple.py
+Run with: python tests/test_ocr_simple.py   (any interpreter with the [ocr] extra)
 
 Supports multiple OCR backends:
 - tesseract: Lightweight, requires Tesseract OCR installed

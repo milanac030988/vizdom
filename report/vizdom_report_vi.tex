@@ -675,6 +675,31 @@ Locator hỗ trợ \code{id=}, \code{text=}, \code{hint=}, \code{role=}, các qu
 
 Action phân giải locator thành phần tử, chuyển center sang tọa độ chuẩn hóa rồi ủy quyền cho actuator. Nhờ vậy, cùng một bài kiểm thử có thể chạy cục bộ, qua gRPC hoặc với cánh tay robot mà không cần thay đổi.
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.72\linewidth]{Locator_Resolution.png}
+  \caption{Quá trình phân giải locator về đúng một phần tử. Các phương án được
+  phân tách bằng \code{||} và thử theo thứ tự; một phương án bị bỏ qua nếu
+  \emph{không khớp phần tử nào} hoặc cho kết quả \emph{mơ hồ}. Nếu trong chain
+  có \code{desc=}, nó có thể trước hết dùng để phân xử giữa các candidate mơ hồ
+  (ADR-024); nếu chỉ có một description locator, quá trình sẽ tăng dần qua các
+  grounding tier (Hình~\ref{fig:descgrounding}). Khi cả chain thất bại, hệ thống
+  báo lại toàn bộ các phương án đã thử cùng nguyên nhân tương ứng.}
+  \label{fig:locatorflow}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Locator_Sequence.png}
+  \caption{Luồng tương tác đầu-cuối cho một action. Bước perception tốn chi phí
+  chỉ chạy \emph{một lần} cho mỗi màn hình; các locator sau đó chỉ là lookup trên
+  DOM đã cache và thao tác click không cần capture lại. Tâm của phần tử được chuẩn
+  hóa dựa trên geometry của capture frame trước khi actuator ánh xạ sang tọa độ
+  pixel của thiết bị (Phần~\ref{sec:impl}); khi cần đọc lại một giá trị, hệ thống
+  dùng region-level recapture thay vì chạy lại toàn bộ detector.}
+  \label{fig:locatorseq}
+\end{figure}
+
 \subsubsection*{Nhắm đúng ứng dụng}
 Một yêu cầu đúng đắn ít hiển nhiên hơn xuất phát từ chính hai lựa chọn thiết kế
 phía trên: hệ thống chụp \emph{toàn bộ màn hình} và thao tác bằng \emph{tọa độ
@@ -729,7 +754,8 @@ quả OCR nhiễu sẽ không thể được tìm bằng \code{text=}. Vì vậy
 (Phần~\ref{sec:dombenefits}) vào hệ thống parser, trong khi DOM vẫn được giữ làm
 source of truth. Quá trình phân giải được nâng dần qua các tier có thể cấu hình;
 mỗi tier rẻ hơn và có tính quyết định cao hơn tier kế tiếp, và chuỗi dừng ngay khi
-tìm được một kết quả đủ tin cậy:
+tìm được một kết quả đủ tin cậy. Luồng phân giải này được minh họa ở
+Hình~\ref{fig:descgrounding}:
 \begin{enumerate}[leftmargin=1.6em,label=(\roman*)]
   \item Tier \emph{lexical} không dùng mô hình, chấm điểm mức trùng khớp token và
         synonym với \code{label}/\code{text}/\code{hint}, kết hợp các từ chỉ role;
@@ -756,6 +782,20 @@ có thể được đo lường. Trong một session thực tế với ứng d�
 phân giải đúng 5/5 mô tả thử nghiệm (các cách diễn đạt lại được xử lý bởi tier SLM)
 và từ chối chính xác một mô tả vô nghĩa bằng cách trả về danh sách candidate
 (ADR-022).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.62\linewidth]{Desc_Grounding.png}
+  \caption{Grounding phân tầng cho locator \code{desc=} (ADR-022). Mỗi tier rẻ
+  hơn và có tính quyết định cao hơn tier tiếp theo; nếu có nhiều candidate ngang
+  nhau, hệ thống \emph{chuyển lên tier tiếp theo} thay vì đoán. Các từ chỉ vị trí
+  được áp dụng bằng geometry trước khi gọi model; id do model hallucinate sẽ bị
+  kiểm tra và loại bỏ dựa trên DOM; còn VLM tier trả về một phần tử DOM theo thiết
+  kế nhờ Set-of-Mark trên screenshot đã lưu. Cùng resolver này, khi bị giới hạn
+  trong tập candidate mơ hồ, cũng được dùng để phân xử các property locator trùng
+  khớp nhiều phần tử (ADR-024).}
+  \label{fig:descgrounding}
+\end{figure}
 
 \subsection{Môi trường kỹ thuật}
 Hệ thống chạy trên Python~3.9 với bản build PyTorch hỗ trợ CUDA; môi trường được quản

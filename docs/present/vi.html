@@ -280,7 +280,7 @@ body.notes-on .slide.active .notes{display:block}
 </div>
 <div class="card">
 <h3 style="margin-top:0">5 · Viết kiểm thử bằng Robot Framework</h3>
-<p class="small" style="color:var(--fg);margin:0"><strong>26 từ khóa</strong> — Connect,
+<p class="small" style="color:var(--fg);margin:0"><strong>28 từ khóa</strong> — Connect,
           Dump Visual DOM, Click Visual, Type Text Visual, <strong>Verify Element Value</strong>
           (đọc lại trực tiếp từ màn hình), Visual Should Exist, Wait Until Visual Appears,
           Get Element Property/Text/Label/Center, …</p>
@@ -304,7 +304,7 @@ body.notes-on .slide.active .notes{display:block}
 </div>
 <div class="card" style="margin-top:.8em"><p class="small" style="margin:0;color:var(--fg)"><strong>10 · Gán tên cho control không có text.</strong> Icon và phím chỉ có ký hiệu được bổ sung ngữ nghĩa theo nhiều lớp: <strong>symbol reader</strong> đọc trực tiếp các glyph như <code>+ − = × ÷</code> vào trường <code>text</code>; label do caption sinh ra được giữ tách biệt với text thực sự đọc được; các control đã nhận dạng có thêm tên chuẩn hóa như ÷ → “Divide”; và <code>desc=</code> đóng vai trò phương án cuối cho những trường hợp còn lại.</p></div><p class="small" style="margin-top:.6em">Tùy chọn: một bước tinh chỉnh bằng LM/VLM nhỏ (tách / đổi loại / gộp / gán label). Mỗi session lưu lại screenshot, detections và DOM để có thể kiểm tra lại. <span class="dim">Hai thành phần chính: engine và thư viện Robot Framework sử dụng engine này.</span></p>
 </div>
-<div class="notes"><b>Slide trọng tâm của Phương thức 3:</b> đây là phần thể hiện sản phẩm kỹ thuật. Mỗi chức năng đều đã được hiện thực và có thể demo; các con số 4 detector, 5 nguồn capture và 25 keywords cũng là bằng chứng cho quality scenario về khả năng mở rộng (Q-01).</div>
+<div class="notes"><b>Slide trọng tâm của Phương thức 3:</b> đây là phần thể hiện sản phẩm kỹ thuật. Mỗi chức năng đều đã được hiện thực và có thể demo; các con số 4 detector, 5 nguồn capture và 28 keywords cũng là bằng chứng cho quality scenario về khả năng mở rộng (Q-01).</div>
 </section>
 <!-- 6 ─────────────────────────────────────────── -->
 <section class="slide">
@@ -364,15 +364,15 @@ body.notes-on .slide.active .notes{display:block}
 <h3>1 · Chi phí trong vòng lặp kiểm thử</h3>
 <p class="small">Grounder xử lý <em>từng yêu cầu riêng lẻ</em>: mỗi thao tác click hay assertion đều cần một lần suy luận mới bằng model lớn. Parser chỉ phân tích <strong>một lần cho mỗi trạng thái màn hình</strong>; mọi lần tìm kiếm sau đó chỉ là truy vấn trong bộ nhớ.</p>
 <table>
-<tr><th>Test gồm 5 màn hình, 40 bước</th><th class="n">Số lần gọi model</th><th class="n">Chi phí mỗi lần tìm</th></tr>
-<tr class="hi"><td><strong>VizDOM</strong> (parse một lần cho mỗi màn hình)</td>
-<td class="n win">5</td><td class="n win">Trong bộ nhớ (~0 ms)</td></tr>
-<tr><td>Grounder (mỗi yêu cầu một lần)</td><td class="n lose">40</td>
-<td class="n lose">Một lần suy luận trên GPU</td></tr>
+<tr><th>Benchmark: 44 trạng thái, 514 bước</th><th class="n">Số lần gọi model</th><th class="n">Chi phí mỗi bước</th></tr>
+<tr class="hi"><td><strong>VizDOM</strong> (parse một lần cho mỗi trạng thái)</td>
+<td class="n win">44</td><td class="n win">Lookup &lt; 1 ms</td></tr>
+<tr><td>Grounder (mỗi yêu cầu một lần)</td><td class="n lose">514</td>
+<td class="n lose">Một lần inference trên GPU</td></tr>
 </table>
 <p class="small"><strong>Chi phí tăng theo số trạng thái màn hình, không theo số bước kiểm thử.</strong>
-Trên detector service đã nạp sẵn model, model chỉ được load <em>một lần</em> (~14–32 giây); sau đó mỗi lần inference mất <strong>0,6 giây ở trạng thái warm</strong> (2,5 giây khi cold). Việc khởi tạo pipeline lần thứ hai trong cùng process mất <strong>0,00 giây</strong> nhờ model cache.
-<span class="dim">Đồ án chưa đo trực tiếp thời gian chạy của các grounder; tuy nhiên model 3,9–7B active parameters về bản chất vẫn cần GPU cho mỗi lần gọi.</span></p>
+Trong unified lifecycle benchmark, VizDOM chỉ trả chi phí <em>load model một lần</em> (7&nbsp;giây với UIED / 27&nbsp;giây với OmniParser) + <strong>44 lần parse</strong> (2,1&nbsp;giây / 4,8&nbsp;giây cho mỗi trạng thái) + 514 lookup dưới một mili-giây. Grounder cần <strong>514 lần inference</strong>, tức <strong>nhiều hơn 11,7× số lần gọi model</strong> cho cùng test suite.
+<span class="dim">Wall-clock của grounder vẫn cần GPU lớn hơn để đo; benchmark harness đã hỗ trợ chạy chúng qua cùng một cờ cấu hình. Model 7–8B về bản chất vẫn cần GPU cho từng lần gọi.</span></p>
 <div class="card good"><p class="small" style="margin:0;color:var(--fg)">
 <strong>Lợi ích từ việc tái sử dụng:</strong> một lần parse phục vụ cho nhiều locator <em>và</em> assertion — DOM được tái sử dụng, không phải chạy inference lại.</p></div>
 </div>
@@ -665,6 +665,39 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 <div class="notes"><b>Đối chiếu NFR5:</b> mIoU đạt mục tiêu ≥ 0.60; F1 chưa đạt mục tiêu ≥ 0.80. Cần nói thẳng điều này và chuyển trọng tâm sang recall theo loại trên các control có thể thao tác — chỉ số phù hợp hơn với use case kiểm thử.</div>
 </section>
+
+<!-- 12c ───────────────────────────────────────── -->
+<section class="slide">
+<h2>Hiệu quả kiểm thử end-to-end — một benchmark thống nhất</h2>
+<div class="grow">
+<p>Metric theo từng stage chỉ đánh giá <em>một component</em>. Nhưng một test suite chỉ thực sự có giá trị khi toàn bộ vòng đời hoạt động: <strong>định vị → thao tác → xác minh</strong>. Vì vậy, mọi hệ thống được so sánh đều chạy cùng <strong>514 bước</strong> trên cùng 44 trạng thái và được chấm theo cùng một kết quả đầu-cuối.</p>
+<div class="cols">
+<div>
+<h3>Các bước kiểm thử được tạo như thế nào?</h3>
+<ul>
+<li><strong>Suy ra trực tiếp từ element ground truth</strong> — không cần annotation mới: mỗi phần tử có thể thao tác và có caption <em>duy nhất trong trạng thái đó</em> trở thành một bước kiểm thử</li>
+<li><strong>Hai cách biểu diễn song song</strong> — một <code>locator</code> dành cho hệ thống dựa trên DOM và một instruction như “click nút 'Save'” dành cho grounding model, để mỗi bên nhận bài toán theo đúng dạng đầu vào tự nhiên của nó</li>
+<li><strong>Các bước negative oracle</strong> — 88 caption được cố ý chọn là <em>không tồn tại</em> và kết quả mong đợi là FAILED</li>
+</ul>
+<div class="card good"><p class="small" style="margin:0;color:var(--fg)">Điểm cuối cùng chính là metric <strong>đặc thù cho kiểm thử</strong>: benchmark dành cho agent thường hỏi <em>có click đúng không</em>; benchmark dành cho test system còn phải hỏi <em>hệ thống có phán định đúng không</em>. Một <strong>false pass</strong> là loại lỗi nguy hiểm nhất của hệ thống kiểm thử, trong khi benchmark agent thông thường không đo điều này.</p></div>
+</div>
+<div>
+<h3>Baseline — đã đo</h3>
+<table>
+<tr><th>Executor</th><th class="n">action-hit</th><th class="n">verify</th><th class="n">false-pass</th><th class="n">chi phí / trạng thái</th></tr>
+<tr><td>VizDOM + UIED <span class="dim">CPU</span></td><td class="n">0.803</td><td class="n">0.957</td><td class="n win">0.000</td><td class="n">2.1 s</td></tr>
+<tr class="hi"><td><strong>VizDOM + OmniParser</strong></td><td class="n win">0.916</td><td class="n">0.957</td><td class="n win">0.000</td><td class="n">4.8 s</td></tr>
+<tr><td>ELAM-7B <span class="dim">native verdicts</span></td><td class="n dim">chưa đo</td><td class="n dim">chưa đo</td><td class="n dim">chưa đo</td><td class="n dim">1 inference / bước</td></tr>
+<tr><td>UI-TARS-1.5-7B</td><td class="n dim">chưa đo</td><td class="n dim">chưa đo</td><td class="n dim">chưa đo</td><td class="n dim">1 inference / bước</td></tr>
+</table>
+<p class="small"><strong>Cách đọc bảng:</strong> lợi thế detection của OmniParser chuyển thành <strong>mức action-hit cao hơn 11 điểm phần trăm</strong>, đổi lại chi phí parse khoảng 2,3×. Hai stack có cùng verify accuracy vì cùng 13 caption bị OCR đọc sai ở tầng <em>phía trước cả hai</em>. Cả hai đều giữ <strong>false pass bằng 0</strong> nhờ contract yêu cầu locator phải resolve chính xác về một phần tử. Đây chính là cột mà các grounder cần được đối chiếu.</p>
+<p class="small dim">Adapter cho ELAM-7B và UI-TARS đã được viết và kiểm tra; việc chạy benchmark đang chờ GPU có ít nhất 16 GB VRAM. Aria-UI với MoE 25,3B cần hệ thống multi-GPU, nên sẽ được trình bày bằng số liệu trích dẫn thay vì bị bỏ qua.</p>
+</div>
+</div>
+</div>
+<div class="notes">Đây là câu trả lời cho câu hỏi “làm sao biết hệ thống thực sự hiệu quả cho kiểm thử?”. Có hai mức đánh giá trên cùng một dataset: metric theo stage giúp truy nguyên nguyên nhân của từng lỗi end-to-end; lifecycle score cho biết cả test suite có thực sự hoạt động hay không. Cột false-pass là phần các agent benchmark thường không đo, còn cột chi phí biến lập luận ở slide parser-vs-grounder thành số đo thực tế: 44 lần parse so với 514 lần inference cho cùng một suite.</div>
+</section>
+
 <!-- 17 ────────────────────────────────────────── -->
 <section class="slide">
 <h2>Tổng hợp các kỹ thuật và thuật toán</h2>
@@ -883,6 +916,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 <li><strong>24 ADR</strong>; tài liệu kiến trúc arc42 bằng tiếng Anh và tiếng Việt</li>
 <li>Thư viện Robot Framework; Viewer tương tác; bộ công cụ đánh giá</li>
 <li>Benchmark có label; công cụ augmentation và sinh dữ liệu bằng LLM</li>
+<li><strong>Unified lifecycle benchmark</strong> — 514 bước được tự động suy ra, có cả dạng locator và instruction, cùng metric false-pass để đưa parser và grounder vào cùng một bảng so sánh</li>
 <li>Trang tài liệu đã được triển khai; demo chạy được trên Windows</li>
 </ul>
 <div class="card"><p class="small" style="margin:0;color:var(--fg)">Element detection đang dần trở thành một tầng tiêu chuẩn và không còn là điểm khác biệt chính; một nhóm nghiên cứu công nghiệp cũng đi đến cùng cách phân rã. Vì vậy VizDOM xem detector là backend có thể hoán đổi và tập trung đóng góp ở các tầng phía trên.</p></div>
@@ -916,10 +950,11 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 <h3>Ngắn hạn</h3>
 <ul>
 <li>Xây dựng dataset thực tế có label — hạn chế lớn nhất của phần đánh giá accuracy</li>
-<li>Thực hiện thí nghiệm <code>desc=</code> — tự sinh mô tả cho phần tử có label và báo cáo tỷ lệ resolve đúng theo từng tier</li>
-<li>Benchmark thời gian chạy: in-process so với warm gRPC service</li>
+<li>Thực hiện thí nghiệm <code>desc=</code> — tự sinh mô tả cho phần tử có label và báo cáo tỷ lệ resolve đúng theo từng tier <span class="dim">— một cột locator bổ sung trong lifecycle benchmark</span></li>
+<li><strong>Các cột grounder</strong> (ELAM-7B, UI-TARS-1.5) — adapter đã sẵn sàng và được kiểm tra, đang chờ GPU ≥16 GB</li>
+<li><strong>Defect injection</strong> — biến đổi một trạng thái rồi đo xem test suite có <em>bắt được lỗi</em> hay không: mutation testing cho GUI automation</li>
+<li>So sánh wall-clock giữa <em>warm gRPC service</em> và chế độ in-process (chi phí pipeline theo từng trạng thái đã được đo)</li>
 <li>Bộ gán label chuẩn cho các nút cửa sổ: Minimize / Maximize / Close</li>
-<li>Chọn đúng ứng dụng đích theo window title trên Windows hoặc activity trên Android</li>
 </ul>
 </div>
 <div>

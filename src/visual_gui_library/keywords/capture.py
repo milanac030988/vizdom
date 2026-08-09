@@ -7,6 +7,10 @@ from typing import Optional, Any, Tuple
 from robot.api.deco import keyword
 import numpy as np
 
+from visual_dom.logging_utils import get_logger
+
+log = get_logger(__name__)
+
 # Sentinel so `Get Element Property` can tell "no default given" (-> raise on a
 # missing property) apart from "default is None / empty" (-> return it).
 _UNSET = object()
@@ -41,10 +45,10 @@ class CaptureKeywords:
 
     def _warn_if_stale(self, keyword_name: str):
         if self._dom_stale:
-            print(f"WARN: {keyword_name} is reading a DOM captured BEFORE the last "
-                  f"action - the value may be stale. Pass refresh=element (or "
-                  f"refresh=screen), use 'Verify Element Value', or re-run "
-                  f"'Dump Visual DOM'.")
+            log.warning(f"{keyword_name} is reading a DOM captured BEFORE the last "
+                        f"action - the value may be stale. Pass refresh=element (or "
+                        f"refresh=screen), use 'Verify Element Value', or re-run "
+                        f"'Dump Visual DOM'.")
 
     # --- application focus (ADR-021) -----------------------------------------
 
@@ -64,14 +68,14 @@ class CaptureKeywords:
             try:
                 frame = cap.capture_window(self._app_title)
             except Exception as exc:      # a strategy should not raise; be safe
-                print(f"WARN: window capture failed ({exc}); using the full screen")
+                log.warning(f"window capture failed ({exc}); using the full screen")
             if frame is not None:
                 self._capture_frame = frame
                 return frame.image
-            print(f"WARN: capture strategy '{cap.name}' could not capture "
-                  f"{self._app_title!r} alone (unsupported, not found, or it could "
-                  f"not be raised) - falling back to a full-screen grab. Element "
-                  f"coordinates stay correct; the DOM will include other windows.")
+            log.warning(f"capture strategy '{cap.name}' could not capture "
+                        f"{self._app_title!r} alone (unsupported, not found, or it could "
+                        f"not be raised) - falling back to a full-screen grab. Element "
+                        f"coordinates stay correct; the DOM will include other windows.")
         self._focus_before_grab()
         image = cap.capture()
         # A full-screen grab also has a place in the device space: the monitor it
@@ -103,8 +107,8 @@ class CaptureKeywords:
         if not getattr(self, "_focus_before_capture", False):
             return
         if not getattr(self, "_app_title", None):
-            print("WARN: focus_before_capture is enabled but no window title is "
-                  "set - nothing to raise. Set capture.window_title in the config.")
+            log.warning("focus_before_capture is enabled but no window title is "
+                        "set - nothing to raise. Set capture.window_title in the config.")
             return
         self.bring_app_to_front(required=False)
 
@@ -320,8 +324,8 @@ class CaptureKeywords:
                 tried.append(f"{port_name} unavailable ({exc})")
                 continue
             if strategy.focus_target(port_title):
-                print(f"INFO: brought {wanted!r} to front via the {port_name} port "
-                      f"({strategy.name})")
+                log.info(f"brought {wanted!r} to front via the {port_name} port "
+                         f"({strategy.name})")
                 return True
             tried.append(f"{port_name}={strategy.name} declined")
 
@@ -330,7 +334,7 @@ class CaptureKeywords:
                    f"exist, its title may be ambiguous, or the OS refused the raise.")
         if required:
             raise AssertionError(message)
-        print(f"WARN: {message}")
+        log.warning(f"{message}")
         return False
 
     @keyword("Take Screenshot")
@@ -387,7 +391,7 @@ class CaptureKeywords:
             logger.info(f'<a href="{filename}"><img src="{filename}" '
                         f'width="800px"></a>', html=True)
         except Exception:
-            print(f"Screenshot saved: {path}")
+            log.info(f"Screenshot saved: {path}")
         return path
 
     @keyword("Set Screenshot On Failure")
@@ -504,7 +508,7 @@ class CaptureKeywords:
                 )
                 elements = llm_result["refined_elements"]
             except Exception as e:
-                print(f"LLM refinement failed: {e}")
+                log.warning(f"LLM refinement failed: {e}")
 
         compiler = DOMCompiler(generate_locators=True)
         dom = compiler.compile(
@@ -592,8 +596,8 @@ class CaptureKeywords:
             resolver = self._get_desc_resolver()
             element, info = resolver.resolve(locators[0].value)
             if element is not None:
-                print(f"desc= resolved by tier '{info['tier']}' "
-                      f"({info['reason']}) -> {element.get('id')}")
+                log.info(f"desc= resolved by tier '{info['tier']}' "
+                         f"({info['reason']}) -> {element.get('id')}")
                 return element, "ok"
             cands = ", ".join(str(c) for c in info.get("candidates", [])) or "none"
             return None, f"no grounding tier confident (nearest: {cands})"
@@ -625,9 +629,9 @@ class CaptureKeywords:
             element, info = resolver.resolve(desc, within=candidates)
             if element is not None:
                 ids = ", ".join(str(c.get("id")) for c in candidates)
-                print(f"INFO: '{rendered}' matched {len(candidates)} elements "
-                      f"({ids}); desc={desc!r} disambiguated to "
-                      f"{element.get('id')} (tier '{info['tier']}', {info['reason']})")
+                log.info(f"'{rendered}' matched {len(candidates)} elements "
+                         f"({ids}); desc={desc!r} disambiguated to "
+                         f"{element.get('id')} (tier '{info['tier']}', {info['reason']})")
                 return element
         return None
 
@@ -685,9 +689,9 @@ class CaptureKeywords:
             if element is not None:
                 if index > 0:
                     failed = "; ".join(f"{r} ({why})" for r, why in attempts)
-                    print(f"WARN: locator fallback — used alternative #{index + 1} "
-                          f"'{rendered}' -> {element.get('id')}; earlier alternative(s) "
-                          f"failed: {failed}. The primary locator may be stale.")
+                    log.warning(f"locator fallback — used alternative #{index + 1} "
+                                f"'{rendered}' -> {element.get('id')}; earlier alternative(s) "
+                                f"failed: {failed}. The primary locator may be stale.")
                 return element
             attempts.append((rendered, reason))
 

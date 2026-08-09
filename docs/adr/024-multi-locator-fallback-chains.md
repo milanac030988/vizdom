@@ -10,14 +10,18 @@ Accepted (implemented)
 
 ## Author
 
-Development Team
+Nguyen Huynh Tri Cuong
+
+## Reviewer
+
+- Nguyen Huynh Tri Cuong
 
 ## History
 
 | Date | Version | Description |
 |------|---------|-------------|
 | 2026-08-07 | 1.1 | **Ambiguity arbitration**: when an alternative matches *several* elements and the chain contains a `desc=`, the description is grounded over just those candidates to judge which was meant — before falling through. Rescues `text=+ \|\| desc="plus button"` where the `±` key's composite glyph also OCRs as `+`. Unconfident arbitration falls through unchanged. |
-| 2026-08-06 | 1.0 | `||` separates ordered alternatives in a locator string; the first alternative resolving to exactly one element wins. Falls through on **not found** *and* **ambiguous**. Warning names the failed primary (stale-locator signal); a failed chain reports every attempt with its reason. Honoured by `Get Visual Element` (and therefore all actions), `Get Visual Elements`, and the assertion/wait keywords. |
+| 2026-08-06 | 1.0 | <code>&#124;&#124;</code> separates ordered alternatives in a locator string; the first alternative resolving to exactly one element wins. Falls through on **not found** *and* **ambiguous**. Warning names the failed primary (stale-locator signal); a failed chain reports every attempt with its reason. Honoured by `Get Visual Element` (and therefore all actions), `Get Visual Elements`, and the assertion/wait keywords. |
 
 ## Context
 

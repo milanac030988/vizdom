@@ -40,6 +40,14 @@ from pathlib import Path
 _ROOT_LOGGER_NAME = "visual_dom"
 _configured = False
 
+#: Sibling packages that log through this configuration, and the short tag they
+#: appear under (see get_logger). Longest prefix first.
+_FOREIGN_ALIASES = (
+    ("tools.visual_dom_viewer", "viewer"),
+    ("visual_dom_viewer", "viewer"),
+    ("visual_gui_library", "rf"),
+)
+
 _FORMAT = "%(asctime)s.%(msecs)03d | %(levelname)-5s | %(name)s | %(message)s"
 _DATEFMT = "%Y-%m-%d %H:%M:%S"
 
@@ -128,14 +136,23 @@ def get_logger(name: str = None) -> logging.Logger:
     Pass ``__name__`` from the calling module. Names outside the ``visual_dom``
     package are re-homed under it so all project logs share one configuration and
     file (e.g. a script's ``__main__`` becomes ``visual_dom.__main__``).
+
+    Sibling packages keep an identifying prefix rather than only their last
+    component: the Robot Framework library's ``keywords.capture`` module would
+    otherwise log as ``visual_dom.capture``, indistinguishable from the capture
+    *adapter* — the log line would misattribute the message to another layer.
     """
     configure_logging()
     if not name or name == _ROOT_LOGGER_NAME:
         return logging.getLogger(_ROOT_LOGGER_NAME)
     if name.startswith(_ROOT_LOGGER_NAME + "."):
         return logging.getLogger(name)
-    # Re-home foreign names (e.g. "__main__", "tools.viewer...") under the package.
+    # Re-home foreign names under the package, keeping enough context to tell
+    # which component spoke.
     short = name.split(".")[-1]
+    for prefix, alias in _FOREIGN_ALIASES:
+        if name == prefix or name.startswith(prefix + "."):
+            return logging.getLogger(f"{_ROOT_LOGGER_NAME}.{alias}.{short}")
     return logging.getLogger(f"{_ROOT_LOGGER_NAME}.{short}")
 
 

@@ -8,7 +8,7 @@ export GRAPHVIZ_DOT="${GRAPHVIZ_DOT:-C:/Program Files/Graphviz/bin/dot.exe}"
 OUT="report/figures"
 mkdir -p "$OUT"
 
-for f in system_overview architecture cv_pipeline_detail sequence component problem_space desc_grounding; do
+for f in system_overview architecture cv_pipeline_detail sequence component problem_space desc_grounding locator_resolution locator_sequence robot_suite_sequence; do
   echo "rendering $f ..."
   java -jar tools/plantuml.jar -tpng -o "$(pwd)/$OUT" "docs/diagrams/$f.puml"
 done

@@ -247,6 +247,10 @@ Click Visual    role=button text=OK || desc="confirm button"      # AND inside, 
 - **space = AND** within an alternative (unchanged), **`||` = ordered OR** between them.
 - An alternative falls through when it finds **nothing** *or* is **ambiguous** —
   an ambiguous `text=Delete` is as unusable as a missing one.
+```plantuml
+!include diagrams/locator_resolution.puml
+```
+
 - **Ambiguity arbitration**: before an ambiguous alternative falls through, a
   `desc=` in the chain judges *which* of the matched elements was meant (the
   description is grounded over just those candidates). E.g. when the `±` key's
@@ -277,6 +281,12 @@ which lands in **three places**:
    pipeline and detector lines appear *under the keyword that produced them*
    (expand `Dump Visual DOM` to see the detector, merge, and symbol stages of
    exactly that dump).
+
+Everything goes through one call (`get_logger(__name__)`), so the three
+destinations always agree; component names carry a layer tag
+(`visual_dom.rf.*` = the keyword library, `visual_dom.viewer.*` = the Viewer,
+`visual_dom.adapters.*` = an adapter). Library code **logs**; `print` is reserved
+for the user-facing output of CLI entry points.
 
 Tune with environment variables: `VIZDOM_LOG_LEVEL` (`DEBUG`/`INFO`/`WARNING`,
 default `INFO` — set `DEBUG` before a run you want to diagnose),
@@ -389,6 +399,13 @@ start_detector.bat --backend omniparser
 
 :: Terminal 2 — run the test (pins the project's Python + PYTHONPATH)
 run_demo.bat
+```
+
+The diagram below is what that suite actually does across the three services —
+including where the cost sits (perception once per screen state, never per click):
+
+```plantuml
+!include diagrams/robot_suite_sequence.puml
 ```
 
 The test launches `calc.exe`, `Connect`s the config, `Dump Visual DOM`, then clicks

@@ -20,6 +20,10 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional, Tuple, Union
 from enum import Enum
 
+from visual_dom.logging_utils import get_logger
+
+log = get_logger(__name__)
+
 
 class EditOperation(Enum):
     """Allowed tree edit operations."""
@@ -156,7 +160,7 @@ class LLMHierarchyRefiner:
             import torch
 
             hf_name = self.config["hf_name"]
-            print(f"Loading model: {hf_name}")
+            log.info(f"Loading model: {hf_name}")
 
             self._tokenizer = AutoTokenizer.from_pretrained(hf_name)
 
@@ -170,7 +174,7 @@ class LLMHierarchyRefiner:
                 trust_remote_code=True,
             )
 
-            print(f"Model loaded successfully")
+            log.info(f"Model loaded successfully")
 
         except ImportError:
             raise ImportError(
@@ -319,17 +323,17 @@ class LLMHierarchyRefiner:
         prompt = self._build_prompt(elements, hierarchy, image_size)
 
         # Generate response
-        print("Calling LLM for hierarchy refinement...")
+        log.info("Calling LLM for hierarchy refinement...")
         response = self._generate(prompt)
-        print(f"LLM response received ({len(response)} chars)")
+        log.info(f"LLM response received ({len(response)} chars)")
 
         # Parse edits
         edits = self._parse_response(response)
-        print(f"Parsed {len(edits)} edit operations")
+        log.info(f"Parsed {len(edits)} edit operations")
 
         # Debug: save raw response if no edits found
         if not edits and response:
-            print(f"LLM response preview: {response[:500]}...")
+            log.info(f"LLM response preview: {response[:500]}...")
             # Save full response for debugging
             with open("llm_response_debug.txt", "w", encoding="utf-8") as f:
                 f.write(response)
@@ -466,7 +470,7 @@ YOUR RESPONSE (JSON array only):"""
             repaired = json_str[:last_complete + 1] + ']'
             try:
                 json.loads(repaired)
-                print(f"Repaired truncated JSON (removed incomplete tail)")
+                log.info(f"Repaired truncated JSON (removed incomplete tail)")
                 return repaired
             except json.JSONDecodeError:
                 pass
@@ -477,7 +481,7 @@ YOUR RESPONSE (JSON array only):"""
             repaired = json_str[:last_brace + 1] + ']'
             try:
                 json.loads(repaired)
-                print(f"Repaired truncated JSON (closed array after last object)")
+                log.info(f"Repaired truncated JSON (closed array after last object)")
                 return repaired
             except json.JSONDecodeError:
                 pass
@@ -518,14 +522,14 @@ YOUR RESPONSE (JSON array only):"""
                     try:
                         operations = json.loads(repaired)
                     except json.JSONDecodeError as e:
-                        print(f"Warning: Failed to parse extracted JSON: {e}")
+                        log.warning(f"Failed to parse extracted JSON: {e}")
 
         if operations is None:
-            print("Warning: No valid JSON array found in LLM response")
+            log.warning("No valid JSON array found in LLM response")
             return edits
 
         if not isinstance(operations, list):
-            print("Warning: LLM response is not a JSON array")
+            log.warning("LLM response is not a JSON array")
             return edits
 
         # Convert to TreeEdit objects

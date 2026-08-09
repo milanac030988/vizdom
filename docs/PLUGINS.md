@@ -136,6 +136,23 @@ desktop, an Android phone, or your plugin without change — the [calculator
 demo](https://github.com/milanac030988/vizdom/tree/main/examples/windows_calculator_demo)
 switches transports by config only.
 
+## Logging from a plugin
+
+Use the project logger rather than `print`, and your lines join everything else —
+timestamped and module-tagged in `logs/vizdom.log`, on the console, and (under
+Robot Framework) inside the test log beneath the keyword that triggered them:
+
+```python
+from visual_dom.logging_utils import get_logger
+
+log = get_logger(__name__)      # re-homed under the visual_dom namespace
+log.info("FooCorp SDK opened device %s", self._device)
+log.warning("frame dropped; retrying")
+```
+
+`print` is reserved for the user-facing stdout of CLI entry points. Set
+`VIZDOM_LOG_LEVEL=DEBUG` when diagnosing your plugin.
+
 ## Selecting your plugin
 
 By its `name`, exactly like a built-in:

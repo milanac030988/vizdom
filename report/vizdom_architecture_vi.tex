@@ -364,7 +364,7 @@ chỉ đo \emph{loại phần tử}.}
 \code{visual\_dom.adapters.\allowbreak outbound} & Các implementation cụ thể của port: \code{detectors} (UIED/YOLO/OmniParser/gRPC + registry), \code{ocr} (text detector), \code{refiner} (SLM advisor), \code{capture} và \code{actuator} (các implementation tích hợp sẵn + gRPC client + plugin của người dùng). \\
 \code{visual\_dom.adapters.\allowbreak inbound.grpc} & Các driving adapter: gRPC server cho detector, capture và actuator. \\
 \code{visual\_dom.context} & Composition root --- \code{connect()} / \code{Session} kết nối các adapter với core từ một file cấu hình duy nhất. \\
-\code{visual\_dom} (config, generated, shared) & \code{config} (VizDomConfig), \code{generated} (protobuf stub), \code{logging\_utils}; \code{evaluation} là evaluation harness nằm ngoài kiến trúc lục giác. \\
+\code{visual\_dom} (config, generated, shared) & \code{config} (VizDomConfig), \code{generated} (protobuf stub), \code{logging\_utils} (một cơ chế logging dùng chung cho mọi component, ghi ra file + console + Robot log --- xem Ch.~8); \code{evaluation} là evaluation harness nằm ngoài kiến trúc lục giác. \\
 \code{visual\_gui\_library} & Robot Framework keyword library, đóng vai trò thin client trên capture + actuator. \\
 tools & PyQt5 Viewer, Streamlit dashboard và công cụ annotation. \\
 \bottomrule
@@ -511,6 +511,24 @@ ID cho từng gRPC request; mỗi service ghi log thời gian xử lý theo requ
     và tiếp tục phục vụ. Các bước tùy chọn như SLM và refiner được graceful degradation.
   \item[Cấu hình] Strategy được lựa chọn theo tên từ CLI flag, library argument hoặc
     environment variable; target cho remote port là chuỗi host:port.
+  \item[Logging và observability] Một building block duy nhất, \code{logging\_utils},
+    được dùng cho mọi component. \code{get\_logger(\_\_name\_\_)} trả về logger nằm
+    dưới namespace \code{visual\_dom} và tự cấu hình ở lần sử dụng đầu tiên; các package
+    lân cận được đưa về cùng namespace nhưng gắn tag nhận diện
+    (\code{visual\_dom.rf.*}, \code{visual\_dom.viewer.*}) để log không bị gán nhầm
+    sang layer khác. Từ một lời gọi logger, record được đưa đến \textbf{ba} đích:
+    rotating file (\code{logs/vizdom.log}, 5\,MB $\times$ 5), console và --- khi chạy
+    trong Robot Framework --- test log thông qua một bridge handler, trong đó mỗi
+    record được đặt dưới keyword đã tạo ra nó. Package logger chủ động \emph{không}
+    propagate lên root logger vì khi dùng từ Python thông thường sẽ gây in log hai lần;
+    chính vì vậy bridge riêng cho Robot Framework là cần thiết. Log level và destination
+    được cấu hình qua environment variable (\code{VIZDOM\_LOG\_LEVEL},
+    \code{\_DIR}, \code{\_FILE}, \code{\_CONSOLE}); lỗi khi khởi tạo file handler
+    được chấp nhận và không được phép làm hỏng một test run. \emph{Quy ước:} code trong
+    library và adapter phải \textbf{ghi log}; \code{print} chỉ dành cho stdout hướng
+    tới người dùng của các CLI entry point như \code{--init}, \code{--list} và output
+    của script. Khi chạy phân tán, mỗi host giữ file log riêng; correlation id theo từng
+    request trong service log là khóa để nối trace giữa phía client và server.
   \item[Lưu trữ] Kết quả phân tích được ghi vào session folder có timestamp, gồm
     screenshot, kết quả CV, DOM và metadata.
   \item[Giấy phép] Nghĩa vụ AGPL được áp dụng khi OmniParser backend được cung cấp qua
@@ -541,6 +559,7 @@ có ý nghĩa kiến trúc cùng trạng thái hiện tại được trình bày
 022 & Locator dựa trên mô tả (\code{desc=}) thông qua grounding phân tầng (lexical $\rightarrow$ SLM-over-DOM $\rightarrow$ VLM Set-of-Mark) & Đã chấp thuận \\
 023 & Tái thu nhận sau thao tác để xác minh thuộc tính (\code{refresh=none|element|screen}; OCR lại theo vùng) & Đã chấp thuận \\
 024 & Fallback chain gồm nhiều locator (\code{||}: OR có thứ tự giữa các phương án, AND bên trong từng phương án) & Đã chấp thuận \\
+025 & Session orchestrator service --- không chọn mô hình forwarding gateway; chỉ bổ sung orchestrator sở hữu pipeline khi xuất hiện các trigger condition đã định trước & \textbf{Đề xuất} \\
 \bottomrule
 \end{longtable}
 
@@ -661,8 +680,16 @@ R-02 & Các kênh gRPC chưa được xác thực hoặc mã hóa & Cao / Trung 
 R-03 & Plugin auto-discovery thực thi code của người dùng; actuator có thể điều khiển robot arm vật lý & Cao / Thấp & Chính sách chỉ dùng plugin đáng tin cậy; ghi rõ an toàn như giới hạn vùng hoạt động và e-stop là trách nhiệm của plugin. \\
 R-04 & F1 tổng hợp dựa trên IoU thấp hơn mục tiêu (0.58 so với 0.80); một metric IoU duy nhất che khuất việc cả hai detector đều xác định click target tốt & Trung bình / Cao & Báo cáo center-hit cùng IoU; bổ sung tập dữ liệu thực tế có gán nhãn; xem xét lại liệu mục tiêu F1 0.80 có phải mục tiêu vận hành phù hợp hay không. \\
 R-05 & Over-segmentation trên UI thực tế có nhiều gradient & Trung bình / Trung bình & Smart-merge + guarded SLM; tiếp tục tinh chỉnh. \\
+R-06 & \textbf{Over-merge} các link một dòng nằm cạnh nhau thành một element duy nhất (đã quan sát trên một ứng dụng nội bộ thực tế): các mảnh OCR trên cùng dòng bị gộp bởi cơ chế sửa over-segmentation, trong khi \emph{interactable-members guard} không kích hoạt vì OCR box không được đánh dấu là interactable & Trung bình / Trung bình & Tín hiệu phân biệt thực ra đã có sẵn trong dữ liệu: các mảnh này ánh xạ tới những \emph{detector box khác nhau}; dùng thông tin đó làm điều kiện veto cho merge và đo lại trên session đã capture. \\
+R-07 & Composite glyph có thể làm OCR thất bại \emph{phụ thuộc vào scale} (\code{$^2\sqrt{x}$} bị đọc thành ``2'', \code{$\pm$} thành ``+''), tạo ra \textbf{mơ hồ do text trùng lặp}; symbol reader không thể sửa vì các element này đã có text & Trung bình / Trung bình & Đã giảm thiểu bằng cơ chế phân xử khi fallback chain gặp nhiều kết quả mơ hồ (ADR-024 v1.1); hướng xử lý đầy đủ hơn là cho phép một structural read có độ tin cậy cao ghi đè OCR fragment một ký tự có độ tin cậy thấp trên các element có kích thước tương đương phím bấm. \\
+R-08 & DPI awareness là trạng thái toàn cục của process và tuân theo nguyên tắc thành phần nào thiết lập trước thì thắng: một import bên ngoài như \code{pyautogui} có thể chiếm trạng thái này trước, khiến desktop được báo cáo với tỉ lệ \emph{không đồng nhất} trên hệ thống nhiều màn hình có mixed scaling & Trung bình / Thấp & Thiết lập DPI awareness trước import đó; đọc geometry từ display driver vốn không phụ thuộc awareness; nếu vẫn còn sai lệch thì báo rõ mismatch cùng cách khắc phục thay vì âm thầm click sai vị trí (ADR-021). \\
 D-01 & Metric hiện chỉ bao phủ element detection + OCR vì ground truth chưa có tree / locator & Thấp / -- & Các trục hierarchy + locator cần ground truth có cấu trúc cây. \\
-D-02 & Code registry/discovery bị lặp lại trên ba port & Thấp / -- & Tách một plugin-registry base dùng chung. \\
+D-02 & Code registry/discovery bị lặp lại trên ba port (117 / 138 / 144 dòng logic gần như giống nhau) & Thấp / -- & Tách một plugin-registry base dùng chung. \\
+D-03 & \textbf{Bốn vi phạm hexagonal architecture đã biết}: \code{core/domain/pipeline.py} import trực tiếp các module adapter (OCR, UIED, SLM advisor, detector registry) & Trung bình / -- & \emph{Đã khoanh vùng và được kiểm soát}: architecture fitness test sẽ fail khi xuất hiện bất kỳ vi phạm \emph{mới} nào và không cho phép mở rộng danh sách ngoại lệ nếu không có ADR. Xóa dần nợ này bằng cách đưa từng dependency ra sau port tương ứng. \\
+D-04 & Chưa có automated integration test: 8 file test cho 55 module, thư mục \code{tests/integration/} còn trống; độ tin cậy end-to-end hiện dựa vào runnable demo và các lần chạy thủ công & Trung bình / -- & Đưa demo suite, hoặc một biến thể headless dùng static-image capture plugin, vào CI. \\
+D-05 & Viewer tự dựng pipeline trực tiếp nên không có fail-fast OCR probe như \code{connect()}; khi OCR engine chết, Viewer có thể âm thầm trả về 0 text box & Thấp / Trung bình & Tái sử dụng session probe trên luồng của Viewer. \\
+D-06 & Không thể khai báo tham số constructor của plugin trong JSON config; hiện chỉ truyền được qua environment variable hoặc \code{--kw} & Thấp / -- & Bổ sung một map \code{kwargs} tổng quát vào các section \code{capture}/\code{actuator}. \\
+D-07 & Khả năng tái lập môi trường: tài liệu dùng uv làm installer nhưng launcher trước đây hard-code một đường dẫn interpreter tuyệt đối, khiến repository chỉ chạy được trên máy của tác giả & Thấp / -- & \emph{Đã xử lý}: mọi launcher dùng chung một resolver \code{python\_env.bat}, theo thứ tự override $\rightarrow$ \code{.venv} trong project $\rightarrow$ Python 3.9 đã biết $\rightarrow$ \code{py -3.9} $\rightarrow$ PATH; lock file cho reference environment vẫn còn là hạng mục cần bổ sung. \\
 \bottomrule
 \end{longtable}
 

@@ -10,13 +10,17 @@ Accepted (implemented)
 
 ## Author
 
-Development Team
+Nguyen Huynh Tri Cuong
+
+## Reviewer
+
+- Nguyen Huynh Tri Cuong
 
 ## History
 
 | Date | Version | Description |
 |------|---------|-------------|
-| 2026-07-31 | 1.0 | `refresh=none|element|screen` on property getters; element-region re-OCR; stale-DOM marking after actions; new `Get Element Value` / `Verify Element Value` keywords (default `refresh=element`). |
+| 2026-07-31 | 1.0 | <code>refresh=none&#124;element&#124;screen</code> on property getters; element-region re-OCR; stale-DOM marking after actions; new `Get Element Value` / `Verify Element Value` keywords (default `refresh=element`). |
 
 ## Context
 

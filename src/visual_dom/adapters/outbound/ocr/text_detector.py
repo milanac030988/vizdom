@@ -17,6 +17,10 @@ import numpy as np
 from dataclasses import dataclass
 from typing import List, Tuple, Optional, Union
 
+from visual_dom.logging_utils import get_logger
+
+log = get_logger(__name__)
+
 
 @dataclass
 class TextElement:
@@ -196,7 +200,7 @@ class TextDetector:
                 continue
 
         if retry_count > 0:
-            print(f"  Tesseract re-OCR improved {retry_count} low-confidence detections")
+            log.info(f"Tesseract re-OCR improved {retry_count} low-confidence detections")
 
         return results
 
@@ -322,7 +326,7 @@ class TextDetector:
             new_w = int(w * scale_factor)
             new_h = int(h * scale_factor)
             image = cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_CUBIC)
-            print(f"  OCR upscale: {w}x{h} -> {new_w}x{new_h} ({scale_factor:.1f}x)")
+            log.info(f"OCR upscale: {w}x{h} -> {new_w}x{new_h} ({scale_factor:.1f}x)")
 
         # Detect based on engine
         if self.ocr_engine == "easyocr":

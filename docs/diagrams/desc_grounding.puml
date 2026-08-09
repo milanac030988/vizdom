@@ -5,6 +5,16 @@ skinparam defaultFontSize 11
 skinparam defaultFontName Arial
 skinparam activityDiamondFontSize 11
 
+<style>
+' Named node styles instead of the deprecated "#RRGGBB:label;" colour prefix,
+' which newer PlantUML rejects in favour of a trailing <<stereotype>>.
+' This form renders on both old and new versions.
+.found   { BackgroundColor #C8E6C9 }
+.slm     { BackgroundColor #FFE0B2 }
+.vlm     { BackgroundColor #BBDEFB }
+.failure { BackgroundColor #FFCDD2 }
+</style>
+
 title desc= locator - tiered grounding over the DOM (ADR-022, ADR-024)\nDescriptionResolver.resolve()
 
 start
@@ -21,7 +31,7 @@ partition "Tier 1 - lexical  (no model, always on)" #E8F5E9 {
   token/synonym overlap vs label / text / hint
   + role words ("button", "field", ...);
   if (confident?\nscore floor AND margin over runner-up) then (yes)
-    #C8E6C9:element (log: tier=lexical);
+    :element (log: tier=lexical); <<found>>
     stop
   else (no - a tie escalates,\nnever a guess)
   endif
@@ -43,7 +53,7 @@ partition "Tier 2 - SLM over DOM  (if configured)" #FFF3E0 {
   if (id exists in the DOM?) then (no)
     :reject - hallucinated id;
   else (yes)
-    #FFE0B2:element (log: tier=slm);
+    :element (log: tier=slm); <<slm>>
     stop
   endif
 }
@@ -53,16 +63,13 @@ partition "Tier 3 - VLM Set-of-Mark  (opt-in)" #E3F2FD {
   -> vision model picks a number
   (no re-capture, no coordinate regression);
   if (confident pick?) then (yes)
-    #BBDEFB:element - a real DOM element
-    BY CONSTRUCTION (log: tier=vlm);
+    :element - a real DOM element\nBY CONSTRUCTION (log: tier=vlm); <<vlm>>
     stop
   else (no)
   endif
 }
 
-#FFCDD2:FAIL LOUDLY:
-"no grounding tier confident
-(nearest: E1, E10, E23, ...)";
+:FAIL LOUDLY:\n"no grounding tier confident\n(nearest: E1, E10, E23, ...)"; <<failure>>
 stop
 
 legend bottom

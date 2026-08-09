@@ -72,6 +72,12 @@ question to the machine that owns the screen.
 !include diagrams/sequence.puml
 ```
 
+## Sequence — locating and clicking an element
+
+```plantuml
+!include diagrams/locator_sequence.puml
+```
+
 ## Distributed / hexagonal architecture (ADR-017 / 018 / 019)
 
 Ports & adapters, with the detector, capture, and actuator as pluggable driven

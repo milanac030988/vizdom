@@ -360,7 +360,7 @@ this measures \emph{type} only.}
 \code{visual\_dom.adapters.\allowbreak outbound} & Concrete implementations of the ports: \code{detectors} (UIED/YOLO/OmniParser/gRPC + registry), \code{ocr} (text detector), \code{refiner} (SLM advisor), \code{capture} and \code{actuator} (built-ins + gRPC client + user plugins). \\
 \code{visual\_dom.adapters.\allowbreak inbound.grpc} & Driving adapters: the detector, capture and actuator gRPC servers. \\
 \code{visual\_dom.context} & Composition root --- \code{connect()} / \code{Session} wire adapters to the core from one config. \\
-\code{visual\_dom} (config, generated, shared) & \code{config} (VizDomConfig), \code{generated} (protobuf stubs), \code{logging\_utils}; \code{evaluation} is a harness outside the hexagon. \\
+\code{visual\_dom} (config, generated, shared) & \code{config} (VizDomConfig), \code{generated} (protobuf stubs), \code{logging\_utils} (one logger for every component; file + console + Robot-log destinations --- see Ch.~8); \code{evaluation} is a harness outside the hexagon. \\
 \code{visual\_gui\_library} & Robot Framework keyword library (thin client over capture + actuator). \\
 tools & PyQt5 Viewer, Streamlit dashboard, annotator. \\
 \bottomrule
@@ -505,6 +505,24 @@ correlation ids on each gRPC request; per-request timing logged by each service.
   \item[Configuration] Strategy selection is by name from CLI flags / library
     arguments / environment variables; targets for remote ports are host:port
     strings.
+  \item[Logging and observability] One building block, \code{logging\_utils},
+    serves every component. \code{get\_logger(\_\_name\_\_)} returns a logger under
+    the \code{visual\_dom} namespace, configuring it on first use; sibling packages
+    are re-homed with an identifying tag (\code{visual\_dom.rf.*},
+    \code{visual\_dom.viewer.*}) so a line is never misattributed to another layer.
+    Records reach \textbf{three} destinations from that single call: a rotating
+    file (\code{logs/vizdom.log}, 5\,MB $\times$ 5), the console, and --- under
+    Robot Framework --- the test log, via a bridge handler that files each record
+    beneath the keyword that produced it. The package logger deliberately does
+    \emph{not} propagate to the root logger (plain-Python use would double-print),
+    which is precisely why that bridge is needed. Levels and destinations are
+    environment-configured (\code{VIZDOM\_LOG\_LEVEL}, \code{\_DIR}, \code{\_FILE},
+    \code{\_CONSOLE}); a file-handler failure is tolerated, because logging must
+    never break a run. \emph{Policy:} library and adapter code \textbf{logs};
+    \code{print} is reserved for the user-facing stdout of CLI entry points
+    (\code{--init}, \code{--list}, script output). In a distributed run each host
+    keeps its own file, and the per-request correlation id in the service logs is
+    the key that joins client and server sides.
   \item[Persistence] Analyses are written to timestamped session folders
     (screenshot, CV result, DOM, metadata).
   \item[Licensing] AGPL obligations attach when the OmniParser backend is
@@ -535,6 +553,7 @@ verification caveat (Ch.~11).
 022 & Description-based locator (\code{desc=}) via tiered grounding (lexical $\rightarrow$ SLM-over-DOM $\rightarrow$ VLM Set-of-Mark) & Accepted \\
 023 & Post-action recap for property verification (\code{refresh=none|element|screen}; region re-OCR) & Accepted \\
 024 & Multi-locator fallback chains (\code{||}: ordered OR between alternatives, AND within one) & Accepted \\
+025 & Session orchestrator service --- forwarding gateway rejected; pipeline-owning orchestrator deferred against named trigger conditions & \textbf{Proposed} \\
 \bottomrule
 \end{longtable}
 
@@ -654,8 +673,16 @@ R-02 & gRPC channels are unauthenticated / unencrypted & High / Med & LAN-only u
 R-03 & Plugin auto-discovery executes user code; an actuator can move a physical arm & High / Low & Trusted-plugin policy; document safety (limits, e-stop) as plugin responsibility. \\
 R-04 & Aggregate IoU-based F1 below target (0.58 vs 0.80); a single IoU metric hides that both detectors are highly click-targetable & Med / High & Report center-hit alongside IoU; add a real-world labelled set; revisit whether the 0.80 F1 target is the right operational goal. \\
 R-05 & Over-segmentation on gradient-heavy real UIs & Med / Med & Smart-merge + guarded SLM; continue tuning. \\
+R-06 & \textbf{Over-merge} of adjacent one-line links into a single element (observed on a real internal app): same-line OCR fragments are fused by the over-segmentation repair, and the interactable-members guard does not fire because OCR boxes are not interactable & Med / Med & The distinguishing signal is already in the data --- the fragments map onto \emph{distinct} detector boxes; add that as a merge veto and re-measure on the captured session. \\
+R-07 & Composite glyphs can defeat OCR \emph{scale-dependently} (\code{$^2\sqrt{x}$} read as ``2'', \code{$\pm$} as ``+''), producing \textbf{duplicate-text} ambiguity; the symbol reader cannot correct them because those elements already have text & Med / Med & Mitigated by fallback-chain ambiguity arbitration (ADR-024 v1.1); a fuller fix lets a confident structural read override a low-confidence single-character OCR fragment on key-sized elements. \\
+R-08 & DPI awareness is process-global and first-come-first-served: a foreign import (\code{pyautogui}) can claim it first, after which the reported desktop is scaled \emph{non-uniformly} on mixed-scaling multi-monitor setups & Med / Low & Awareness is claimed before that import, geometry is read from the display driver (awareness-independent), and a residual mismatch is reported with the remedy instead of misplacing clicks (ADR-021). \\
 D-01 & Metrics cover only element-detection + OCR (GT lacks a tree / locators) & Low / -- & Hierarchy + locator axes await tree-bearing ground truth. \\
-D-02 & Registry/discovery code duplicated across 3 ports & Low / -- & Factor a shared plugin-registry base. \\
+D-02 & Registry/discovery code duplicated across 3 ports (117 / 138 / 144 lines of near-identical logic) & Low / -- & Factor a shared plugin-registry base. \\
+D-03 & \textbf{Four known hexagon violations}: \code{core/domain/pipeline.py} imports adapter modules directly (OCR, UIED, SLM advisor, detector registry) & Med / -- & \emph{Bounded and enforced}: an architecture fitness test fails on any \emph{new} violation and forbids extending the ledger without an ADR. Retire by moving each dependency behind its port. \\
+D-04 & No automated integration tests: 8 test files for 55 modules, \code{tests/integration/} empty; end-to-end confidence comes from the runnable demo and manual runs & Med / -- & Promote the demo suite (or a headless variant with the static-image capture plugin) into CI. \\
+D-05 & The Viewer builds its pipeline directly and so lacks the fail-fast OCR probe \code{connect()} has --- a dead engine silently yields zero text boxes & Low / Med & Reuse the session probe on the Viewer path. \\
+D-06 & Plugin constructor parameters cannot be expressed in the JSON config (environment variables or \code{--kw} only) & Low / -- & Add a generic \code{kwargs} map to the \code{capture}/\code{actuator} sections. \\
+D-07 & Environment reproducibility: uv is documented as the installer while launchers hardcoded one absolute interpreter path, so the repository ran only on the author's machine & Low / -- & \emph{Resolved}: one \code{python\_env.bat} resolver (override $\rightarrow$ in-project \code{.venv} $\rightarrow$ known 3.9 $\rightarrow$ \code{py -3.9} $\rightarrow$ PATH) used by every launcher; a lock file for the reference environment remains outstanding. \\
 \bottomrule
 \end{longtable}
 
