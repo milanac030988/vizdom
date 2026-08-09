@@ -97,8 +97,10 @@ Honest status — these are the open edges, roughly in priority order:
 Installed with [**uv**](https://docs.astral.sh/uv/), which fetches its own
 Python — no pre-existing local interpreter needed:
 
-```bat
-pip install uv
+```powershell
+# install uv once per machine (Linux/macOS: curl -LsSf https://astral.sh/uv/install.sh | sh)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
 uv python install 3.12
 uv venv --python 3.12
 uv pip install -e ".[ocr,grpc]"

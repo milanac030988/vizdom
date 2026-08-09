@@ -82,7 +82,8 @@ so no pre-existing local interpreter is required:
 git clone <repo-url>
 cd MasterProject
 
-pip install uv                     :: once per machine
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"   :: install uv, once per machine
+:: Linux/macOS:  curl -LsSf https://astral.sh/uv/install.sh | sh
 uv python install 3.12             :: managed CPython (~21 MB)
 uv venv --python 3.12              :: creates .venv in the repo root
 

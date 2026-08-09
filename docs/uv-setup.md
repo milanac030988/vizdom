@@ -15,15 +15,33 @@ environment in the project, and installs the pinned dependency groups from
 
 ## 1. Install uv (once per machine)
 
-```bat
-pip install uv
+Use the **standalone installer** — it installs uv itself, independent of any
+Python on the machine (which is the point: uv then provides the Python).
+
+Windows (PowerShell):
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-Or the standalone installer from the uv docs, if your network allows it. Check:
+Linux / macOS:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Open a new shell afterwards so `PATH` picks up `%USERPROFILE%\.local\bin`
+(Windows) / `~/.local/bin` (Linux, macOS), then check:
 
 ```bat
 uv --version
 ```
+
+!!! note "If the installer host is unreachable"
+    On a restricted network, either install uv from PyPI into any existing
+    Python (`pip install uv`) or drop the release binary somewhere on `PATH`.
+    Both give the same tool; only the bootstrap differs — everything from §2
+    onwards is identical.
 
 ## 2. Create the project environment
 
