@@ -465,8 +465,8 @@ body.notes-on .slide.active .notes{display:block}
           <tr><td>Grounder (per instruction)</td><td class="n lose">514</td>
               <td class="n lose">one GPU inference</td></tr>
         </table>
-        <p class="small"><strong>Cost scales with screen states, not with test steps —
-          now measured, not argued.</strong> On the unified lifecycle benchmark VizDOM pays
+        <p class="small"><strong>Cost scales with screen states, not with test steps.</strong>
+          On the unified lifecycle benchmark VizDOM pays
           <em>load once</em> (7&nbsp;s UIED / 27&nbsp;s OmniParser) + <strong>44 parses</strong>
           (2.1&nbsp;s / 4.8&nbsp;s per state) + 514 sub-millisecond lookups. A grounder pays
           <strong>514 inferences</strong>: <strong>11.7× more model calls</strong> for the same suite.
@@ -1307,14 +1307,14 @@ body.notes-on .slide.active .notes{display:block}
           <li><strong>Real-world labelled set</strong> — the headline accuracy caveat</li>
           <li><strong>desc= experiment</strong> — auto-generate descriptions for labelled elements,
             report <em>per-tier resolution accuracy</em>
-            <span class="dim">(now one column of the lifecycle benchmark, not a separate effort)</span></li>
+            <span class="dim">— an additional locator column of the lifecycle benchmark</span></li>
           <li><strong>Grounder columns</strong> (ELAM-7B, UI-TARS-1.5) — adapters ready and tested,
             awaiting a ≥16 GB GPU</li>
           <li><strong>Defect injection</strong> — mutate a state, measure whether the suite
             <em>catches</em> it: mutation testing for GUI automation</li>
-          <li><s>Wall-clock benchmark</s> — <strong>done</strong> for the pipeline (load vs parse separated, cost per state); service-vs-in-process split remains</li>
+          <li>Wall-clock comparison of a <em>warm gRPC service</em> against in-process
+            (per-state pipeline cost is already measured)</li>
           <li>Window-control labeller (canonical minimize/maximize/close)</li>
-          <li><s>App targeting: window title / activity</s> — <strong>done</strong> (ADR-021, slide 25)</li>
         </ul>
       </div>
       <div>
