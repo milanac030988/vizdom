@@ -32,7 +32,7 @@ markdown_extensions:
       # resolves includes relative to the process CWD = repo root under -pipe, so
       # the search path must point at docs/). Paths are relative to the repo root
       # (the build CWD).
-      plantuml_cmd: java -Dplantuml.include.path=docs -jar tools/plantuml.jar
+      plantuml_cmd: java -Dplantuml.include.path=docs -jar tools/plantuml.jar -charset UTF-8
       base_dir: docs
       format: svg
 
