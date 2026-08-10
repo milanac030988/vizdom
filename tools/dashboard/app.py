@@ -20,9 +20,12 @@ sys.path.insert(0, str(PROJECT_ROOT / "scripts" / "data_prep"))
 
 
 def main():
+    # The app icon, if it has been generated (tools/assets/make_app_icon.py);
+    # a Material glyph otherwise, so a fresh clone still runs.
+    icon = PROJECT_ROOT / "tools" / "visual_dom_viewer" / "resources" / "vizdom-256.png"
     st.set_page_config(
         page_title="VizDOM Dashboard",
-        page_icon=":material/dashboard:",
+        page_icon=str(icon) if icon.is_file() else ":material/dashboard:",
         layout="wide",
     )
 

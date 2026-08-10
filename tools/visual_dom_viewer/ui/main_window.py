@@ -19,9 +19,10 @@ try:
         QAction, QFileDialog, QLabel, QStatusBar, QMessageBox,
         QHeaderView, QAbstractItemView, QMenu, QLineEdit, QCheckBox,
         QPushButton, QGroupBox, QFormLayout, QListWidget, QListWidgetItem,
-        QFrame, QTabWidget, QScrollArea, QProgressBar, QComboBox
+        QFrame, QTabWidget, QScrollArea, QProgressBar, QComboBox,
+        QSizePolicy, QStyle, QToolButton
     )
-    from PyQt5.QtCore import Qt, QAbstractItemModel, QModelIndex, pyqtSignal, QPoint
+    from PyQt5.QtCore import Qt, QAbstractItemModel, QModelIndex, pyqtSignal, QPoint, QSize
     from PyQt5.QtGui import (
         QPixmap, QPainter, QPen, QColor, QBrush, QImage,
         QStandardItemModel, QStandardItem, QIcon, QFont
@@ -677,6 +678,12 @@ class VisualDOMViewerWindow(QMainWindow):
         self.setWindowTitle("Visual DOM Viewer - Not Connected")
         self.setGeometry(100, 100, 1400, 900)
 
+        # Set here as well as on the QApplication: the window keeps its identity
+        # when it is constructed by something other than run_viewer() (a test, an
+        # embedding host), and the child dialogs inherit it from the window.
+        from .branding import app_icon
+        self.setWindowIcon(app_icon())
+
         self._model = DOMViewerModel.get_instance()
         self._exporter = RobotResourceExporter()
         self._platform_manager = PlatformManager.get_instance()
@@ -732,107 +739,45 @@ class VisualDOMViewerWindow(QMainWindow):
         splitter.setSizes([600, 350, 350])
         main_layout.addWidget(splitter)
 
-    def _setup_toolbar(self):
-        """Setup the toolbar with actions."""
-        toolbar = QToolBar("Main Toolbar")
-        toolbar.setMovable(False)
-        self.addToolBar(toolbar)
+    # ======================================================================
+    # Menus and toolbar
+    #
+    # The toolbar used to carry 26 widgets in a single row: every pipeline knob
+    # next to every verb, so the primary actions were hard to pick out. It now
+    # carries VERBS only; the knobs live in Tools > Pipeline Settings, which
+    # hosts the very same widget objects (see settings_dialog.py), so there is
+    # still exactly one source of truth per setting.
+    # ======================================================================
 
-        # ========== Connection Section ==========
-        # Connect button
-        self._connect_action = QAction("Connect", self)
-        self._connect_action.setShortcut("Ctrl+N")
-        self._connect_action.triggered.connect(self._show_connect_dialog)
-        toolbar.addAction(self._connect_action)
+    def _pipeline_widgets(self) -> dict:
+        """The live pipeline controls, keyed for PipelineSettingsDialog."""
+        return {
+            "capture_source": self._capture_source_combo,
+            "capture_arg": self._capture_arg_edit,
+            "camera_mode": self._camera_mode_checkbox,
+            "detector": self._detector_combo,
+            "grpc_target": self._grpc_target_edit,
+            "merge": self._merge_checkbox,
+            "ocr": self._ocr_combo,
+            "text_ensemble": self._text_ensemble_checkbox,
+            "slm": self._slm_checkbox,
+            "slm_model": self._slm_model_combo,
+        }
 
-        # Disconnect button
-        self._disconnect_action = QAction("Disconnect", self)
-        self._disconnect_action.setEnabled(False)
-        self._disconnect_action.triggered.connect(self._disconnect)
-        toolbar.addAction(self._disconnect_action)
+    def _create_pipeline_controls(self):
+        """
+        Create the pipeline controls, unparented until a dialog claims them.
 
-        toolbar.addSeparator()
-
-        # ========== Capture Section ==========
-        # Capture & Analyze button (main action when connected)
-        self._capture_action = QAction("Capture && Analyze", self)
-        self._capture_action.setShortcut("F5")
-        self._capture_action.setEnabled(False)
-        self._capture_action.triggered.connect(self._capture_and_analyze)
-        toolbar.addAction(self._capture_action)
-
-        # Refresh (re-analyze current screenshot)
-        self._refresh_action = QAction("Re-Analyze", self)
-        self._refresh_action.setShortcut("F6")
-        self._refresh_action.setEnabled(False)
-        self._refresh_action.triggered.connect(self._analyze_current_screenshot)
-        toolbar.addAction(self._refresh_action)
-
-        toolbar.addSeparator()
-
-        # ========== File Section ==========
-        # Open Screenshot action (for offline mode) - loads image without analysing
-        open_action = QAction("Open Image", self)
-        open_action.setShortcut("Ctrl+O")
-        open_action.triggered.connect(self._open_screenshot)
-        toolbar.addAction(open_action)
-
-        # Open an image file AND run the Visual DOM pipeline on it (offline analysis)
-        analyze_image_action = QAction("Analyze Image", self)
-        analyze_image_action.setShortcut("Ctrl+Shift+O")
-        analyze_image_action.setToolTip(
-            "Open an image file and analyze it with the current pipeline settings "
-            "(detector / OCR / SLM), no device connection needed."
-        )
-        analyze_image_action.triggered.connect(self._open_and_analyze_image)
-        toolbar.addAction(analyze_image_action)
-
-        # Open DOM JSON action
-        open_dom_action = QAction("Open DOM", self)
-        open_dom_action.triggered.connect(self._open_dom_json)
-        toolbar.addAction(open_dom_action)
-
-        toolbar.addSeparator()
-
-        # ========== View Section ==========
-        # Toggle Explore Mode
-        self._explore_action = QAction("Explore Mode", self)
-        self._explore_action.setCheckable(True)
-        self._explore_action.setChecked(True)
-        self._explore_action.triggered.connect(self._toggle_explore_mode)
-        toolbar.addAction(self._explore_action)
-
-        # Zoom actions
-        zoom_in_action = QAction("Zoom +", self)
-        zoom_in_action.setShortcut("Ctrl++")
-        zoom_in_action.triggered.connect(self._model.zoom_in)
-        toolbar.addAction(zoom_in_action)
-
-        zoom_out_action = QAction("Zoom -", self)
-        zoom_out_action.setShortcut("Ctrl+-")
-        zoom_out_action.triggered.connect(self._model.zoom_out)
-        toolbar.addAction(zoom_out_action)
-
-        toolbar.addSeparator()
-
-        # ========== Camera Mode ==========
-        toolbar.addSeparator()
-        self._camera_mode_checkbox = QCheckBox("Camera")
-        self._camera_mode_checkbox.setToolTip(
-            "Camera mode: auto-detect and rectify screen region\n"
-            "from photos taken of a monitor/display"
-        )
-        toolbar.addWidget(self._camera_mode_checkbox)
-
-        # ========== Capture Source Section (ADR-018) ==========
-        toolbar.addSeparator()
-        src_label = QLabel("Src:")
-        toolbar.addWidget(src_label)
-
+        They keep their original member names because ~57 call sites read them
+        directly (`self._detector_combo.currentText()` and friends); only their
+        placement changes. Labels are now full sentences rather than the
+        toolbar's cryptic abbreviations ("Det:", "Text+"), which a form has room
+        for.
+        """
+        # ---- capture source (ADR-018) ----------------------------------
         self._capture_source_combo = QComboBox()
-        # "window (handler)" = existing platform-handler path (needs Connect).
-        # Everything else is a pluggable CaptureStrategy (ADR-018): grab directly,
-        # no connection needed.
+        # "window (handler)" = the existing platform-handler path (needs Connect).
+        # Everything else is a pluggable CaptureStrategy: grab directly.
         self._capture_source_combo.addItem("window (handler)")
         try:
             from visual_dom.adapters.outbound.capture import list_captures
@@ -850,25 +795,22 @@ class VisualDOMViewerWindow(QMainWindow):
             "grpc = remote capture service (set arg = host:port)\n"
             "<plugin> = your custom strategy from plugins/capture/"
         )
-        self._capture_source_combo.setMaximumWidth(150)
         self._capture_source_combo.currentIndexChanged.connect(self._on_capture_source_changed)
-        toolbar.addWidget(self._capture_source_combo)
 
-        # Optional arg for the selected strategy (target host:port / device / serial)
         self._capture_arg_edit = QLineEdit("")
         self._capture_arg_edit.setToolTip(
             "Argument for the capture source:\n"
             "grpc -> host:port   camera -> device index or URL   android -> serial"
         )
-        self._capture_arg_edit.setMaximumWidth(140)
-        self._capture_arg_edit.setPlaceholderText("host:port / device")
-        toolbar.addWidget(self._capture_arg_edit)
+        self._capture_arg_edit.setPlaceholderText("host:port / device / serial")
 
-        # ========== Detector Section ==========
-        toolbar.addSeparator()
-        det_label = QLabel("Det:")
-        toolbar.addWidget(det_label)
+        self._camera_mode_checkbox = QCheckBox("Camera mode (rectify a photographed screen)")
+        self._camera_mode_checkbox.setToolTip(
+            "Camera mode: auto-detect and rectify the screen region\n"
+            "in photos taken of a monitor/display"
+        )
 
+        # ---- detection (ADR-015 / ADR-017) -----------------------------
         self._detector_combo = QComboBox()
         self._detector_combo.addItems(["uied", "yolo", "hybrid", "omniparser", "grpc"])
         self._detector_combo.setToolTip(
@@ -879,57 +821,46 @@ class VisualDOMViewerWindow(QMainWindow):
             "omniparser = Microsoft OmniParser (needs repo+weights; set OMNIPARSER_* env vars)\n"
             "grpc = remote detector service (set the target host:port field)"
         )
-        self._detector_combo.setMaximumWidth(110)
-        toolbar.addWidget(self._detector_combo)
 
-        # Remote detector target (only used when detector = grpc)
         self._grpc_target_edit = QLineEdit("localhost:50051")
-        self._grpc_target_edit.setToolTip("Remote detector service host:port (for detector = grpc)")
-        self._grpc_target_edit.setMaximumWidth(140)
-        self._grpc_target_edit.setPlaceholderText("host:port")
-        toolbar.addWidget(self._grpc_target_edit)
-
-        # ========== OCR Engine Section ==========
-        toolbar.addSeparator()
-        ocr_label = QLabel("OCR:")
-        toolbar.addWidget(ocr_label)
-
-        self._ocr_combo = QComboBox()
-        self._ocr_combo.addItems([
-            "easyocr",      # Best text region detection, weaker on custom fonts
-            "tesseract",    # Better for system/custom fonts, needs install
-            "paddleocr",    # Fast, good for multi-language
-        ])
-        self._ocr_combo.setToolTip("OCR engine for text detection")
-        self._ocr_combo.setMaximumWidth(100)
-        toolbar.addWidget(self._ocr_combo)
-
-        # ========== Text Ensemble Section (OmniParser only) ==========
-        toolbar.addSeparator()
-        self._text_ensemble_checkbox = QCheckBox("Text+")
-        self._text_ensemble_checkbox.setChecked(True)
-        self._text_ensemble_checkbox.setToolTip(
-            "Text ensemble (OmniParser only):\n"
-            "ON  = feed our upscaling OCR into OmniParser (recovers missed text)\n"
-            "OFF = OmniParser's original OCR only"
+        self._grpc_target_edit.setToolTip(
+            "Remote detector service host:port (for detector = grpc).\n"
+            "Start one from Tools > Services."
         )
-        toolbar.addWidget(self._text_ensemble_checkbox)
+        self._grpc_target_edit.setPlaceholderText("host:port")
 
-        # ========== Smart-merge Section ==========
-        self._merge_checkbox = QCheckBox("Merge")
+        self._merge_checkbox = QCheckBox("Smart-merge over-segmented elements")
         self._merge_checkbox.setChecked(True)
         self._merge_checkbox.setToolTip(
             "Smart-merge over-segmented elements:\n"
             "ON  = merge fragment boxes that form one element (multi-line button, split text line)\n"
             "OFF = keep raw detections"
         )
-        toolbar.addWidget(self._merge_checkbox)
 
-        # ========== SLM Section ==========
-        toolbar.addSeparator()
-        self._slm_checkbox = QCheckBox("SLM")
-        self._slm_checkbox.setToolTip("Use language model to improve detection (requires Ollama)")
-        toolbar.addWidget(self._slm_checkbox)
+        # ---- text (ADR-012 / ADR-016) ----------------------------------
+        self._ocr_combo = QComboBox()
+        self._ocr_combo.addItems([
+            "easyocr",      # Best text region detection, weaker on custom fonts
+            "tesseract",    # Better for system/custom fonts, needs install
+            "paddleocr",    # Fast, good for multi-language
+        ])
+        self._ocr_combo.setToolTip(
+            "OCR engine for text detection:\n"
+            "easyocr = best text regions; tesseract = better on system fonts;\n"
+            "paddleocr = fast, multi-language"
+        )
+
+        self._text_ensemble_checkbox = QCheckBox("Text ensemble (OmniParser only)")
+        self._text_ensemble_checkbox.setChecked(True)
+        self._text_ensemble_checkbox.setToolTip(
+            "Text ensemble (OmniParser only):\n"
+            "ON  = feed our upscaling OCR into OmniParser (recovers missed text)\n"
+            "OFF = OmniParser's original OCR only"
+        )
+
+        # ---- refinement (ADR-009) --------------------------------------
+        self._slm_checkbox = QCheckBox("Enable small-model review (requires Ollama)")
+        self._slm_checkbox.setToolTip("Use a language model to improve detection (requires Ollama)")
 
         self._slm_model_combo = QComboBox()
         self._slm_model_combo.addItems([
@@ -939,16 +870,304 @@ class VisualDOMViewerWindow(QMainWindow):
             "llava:7b",         # VLM (general purpose)
         ])
         self._slm_model_combo.setToolTip("SLM model (vision models can see the screenshot)")
-        self._slm_model_combo.setMaximumWidth(130)
-        toolbar.addWidget(self._slm_model_combo)
 
-        # ========== Export Section ==========
-        toolbar.addSeparator()
-        # Export action
-        export_action = QAction("Export to Robot", self)
+    def _icon(self, standard_name: str) -> QIcon:
+        """A themed icon from Qt's standard set - no asset files to ship."""
+        return self.style().standardIcon(getattr(QStyle, standard_name))
+
+    def _setup_toolbar(self):
+        """Build the menu bar (discoverability) and a slim toolbar of verbs."""
+        self._create_pipeline_controls()
+
+        # ---------- actions, shared between the menus and the toolbar ----
+        self._connect_action = QAction(self._icon("SP_ComputerIcon"), "&Connect...", self)
+        self._connect_action.setShortcut("Ctrl+N")
+        self._connect_action.setStatusTip("Choose a target window or device to inspect")
+        self._connect_action.triggered.connect(self._show_connect_dialog)
+
+        self._disconnect_action = QAction("&Disconnect", self)
+        self._disconnect_action.setEnabled(False)
+        self._disconnect_action.setStatusTip("Release the current target")
+        self._disconnect_action.triggered.connect(self._disconnect)
+
+        self._capture_action = QAction(self._icon("SP_MediaPlay"), "&Capture && Analyze", self)
+        self._capture_action.setShortcut("F5")
+        self._capture_action.setEnabled(False)
+        self._capture_action.setStatusTip(
+            "Grab the screen and build the Visual DOM with the current pipeline settings")
+        self._capture_action.triggered.connect(self._capture_and_analyze)
+
+        self._refresh_action = QAction(self._icon("SP_BrowserReload"), "Re-&Analyze", self)
+        self._refresh_action.setShortcut("F6")
+        self._refresh_action.setEnabled(False)
+        self._refresh_action.setStatusTip(
+            "Re-run the pipeline on the current screenshot (after changing settings)")
+        self._refresh_action.triggered.connect(self._analyze_current_screenshot)
+
+        open_action = QAction(self._icon("SP_DialogOpenButton"), "&Open Image...", self)
+        open_action.setShortcut("Ctrl+O")
+        open_action.setStatusTip("Load an image onto the canvas without analysing it")
+        open_action.triggered.connect(self._open_screenshot)
+
+        analyze_image_action = QAction("Analyze &Image...", self)
+        analyze_image_action.setShortcut("Ctrl+Shift+O")
+        analyze_image_action.setStatusTip(
+            "Open an image file and analyze it with the current pipeline settings "
+            "(detector / OCR / SLM), no device connection needed")
+        analyze_image_action.triggered.connect(self._open_and_analyze_image)
+
+        open_dom_action = QAction(self._icon("SP_FileDialogContentsView"),
+                                  "Open &DOM JSON...", self)
+        open_dom_action.setShortcut("Ctrl+D")
+        open_dom_action.setStatusTip(
+            "Re-open a Visual DOM saved earlier (output/sessions/<id>/dom.json) "
+            "to re-check an analysed result without capturing again")
+        open_dom_action.triggered.connect(self._open_dom_json)
+
+        export_action = QAction(self._icon("SP_DialogSaveButton"), "&Export to Robot...", self)
         export_action.setShortcut("Ctrl+E")
+        export_action.setStatusTip("Write the defined elements as a Robot Framework resource")
         export_action.triggered.connect(self._export_to_robot)
+
+        quit_action = QAction("E&xit", self)
+        quit_action.setShortcut("Ctrl+Q")
+        quit_action.triggered.connect(self.close)
+
+        self._explore_action = QAction("&Explore Mode", self)
+        self._explore_action.setCheckable(True)
+        self._explore_action.setChecked(True)
+        self._explore_action.setStatusTip("Hover the canvas to highlight elements")
+        self._explore_action.triggered.connect(self._toggle_explore_mode)
+
+        zoom_in_action = QAction(self._icon("SP_ArrowUp"), "Zoom &In", self)
+        zoom_in_action.setShortcut("Ctrl++")
+        zoom_in_action.triggered.connect(self._model.zoom_in)
+
+        zoom_out_action = QAction(self._icon("SP_ArrowDown"), "Zoom &Out", self)
+        zoom_out_action.setShortcut("Ctrl+-")
+        zoom_out_action.triggered.connect(self._model.zoom_out)
+
+        settings_action = QAction(self._icon("SP_FileDialogDetailedView"),
+                                  "&Pipeline Settings...", self)
+        settings_action.setShortcut("Ctrl+,")
+        settings_action.setStatusTip("Capture source, detector, OCR engine, refinement")
+        settings_action.triggered.connect(self._show_pipeline_settings)
+
+        config_action = QAction("Session &Configuration...", self)
+        config_action.setStatusTip(
+            "Edit the vizdom.config.json shared with the CLI and Robot Framework")
+        config_action.triggered.connect(self._show_config_dialog)
+
+        services_action = QAction("&Services...", self)
+        services_action.setStatusTip(
+            "Start, stop and monitor the detector / capture / actuator services")
+        services_action.triggered.connect(self._show_services_dialog)
+
+        about_action = QAction("&About VizDOM", self)
+        about_action.triggered.connect(self._show_about)
+
+        # ---------- menu bar --------------------------------------------
+        bar = self.menuBar()
+
+        file_menu = bar.addMenu("&File")
+        file_menu.addAction(open_action)
+        file_menu.addAction(analyze_image_action)
+        file_menu.addAction(open_dom_action)
+        file_menu.addSeparator()
+        file_menu.addAction(export_action)
+        file_menu.addSeparator()
+        file_menu.addAction(quit_action)
+
+        capture_menu = bar.addMenu("&Capture")
+        capture_menu.addAction(self._connect_action)
+        capture_menu.addAction(self._disconnect_action)
+        capture_menu.addSeparator()
+        capture_menu.addAction(self._capture_action)
+        capture_menu.addAction(self._refresh_action)
+
+        view_menu = bar.addMenu("&View")
+        view_menu.addAction(self._explore_action)
+        view_menu.addSeparator()
+        view_menu.addAction(zoom_in_action)
+        view_menu.addAction(zoom_out_action)
+
+        tools_menu = bar.addMenu("&Tools")
+        tools_menu.addAction(settings_action)
+        tools_menu.addAction(config_action)
+        tools_menu.addSeparator()
+        tools_menu.addAction(services_action)
+
+        help_menu = bar.addMenu("&Help")
+        help_menu.addAction(about_action)
+
+        # ---------- toolbar: verbs only ---------------------------------
+        toolbar = QToolBar("Main Toolbar")
+        toolbar.setMovable(False)
+        toolbar.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        toolbar.setIconSize(QSize(18, 18))
+        self.addToolBar(toolbar)
+
+        toolbar.addAction(self._connect_action)
+        toolbar.addAction(self._capture_action)
+        toolbar.addAction(self._refresh_action)
+        toolbar.addSeparator()
+
+        # Re-checking an earlier result is a first-class workflow - open a saved
+        # image or a saved DOM instead of capturing again - so all three openers
+        # stay one click away. They share a split button rather than three
+        # buttons: same reachability, one toolbar slot.
+        open_button = QToolButton()
+        open_button.setPopupMode(QToolButton.MenuButtonPopup)
+        open_button.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+        open_menu = QMenu(open_button)
+        open_menu.addAction(open_action)
+        open_menu.addAction(analyze_image_action)
+        open_menu.addAction(open_dom_action)
+        open_button.setMenu(open_menu)
+        open_button.setDefaultAction(open_action)   # click = Open Image, arrow = the rest
+        toolbar.addWidget(open_button)
+        self._open_button = open_button
+
         toolbar.addAction(export_action)
+        toolbar.addSeparator()
+        toolbar.addAction(settings_action)
+
+        # Right-hand side: what the pipeline is set to right now. The toolbar
+        # no longer shows the controls, so it has to show their effect -
+        # otherwise a mis-set detector is invisible until the results look wrong.
+        spacer = QWidget()
+        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        toolbar.addWidget(spacer)
+
+        self._pipeline_summary = QPushButton()
+        self._pipeline_summary.setFlat(True)
+        self._pipeline_summary.setCursor(Qt.PointingHandCursor)
+        self._pipeline_summary.setToolTip("Active pipeline - click to change (Ctrl+,)")
+        self._pipeline_summary.clicked.connect(self._show_pipeline_settings)
+        toolbar.addWidget(self._pipeline_summary)
+
+        for widget, signal in (
+            (self._capture_source_combo, "currentIndexChanged"),
+            (self._detector_combo, "currentIndexChanged"),
+            (self._ocr_combo, "currentIndexChanged"),
+            (self._slm_checkbox, "toggled"),
+            (self._camera_mode_checkbox, "toggled"),
+        ):
+            getattr(widget, signal).connect(self._update_pipeline_summary)
+        self._update_pipeline_summary()
+
+    def _update_pipeline_summary(self, *_):
+        """One line describing the active pipeline, shown at the toolbar's right."""
+        source = (self._capture_source_combo.currentData()
+                  or self._capture_source_combo.currentText())
+        parts = [str(source), self._detector_combo.currentText(), self._ocr_combo.currentText()]
+        if self._slm_checkbox.isChecked():
+            parts.append("SLM")
+        if self._camera_mode_checkbox.isChecked():
+            parts.append("camera")
+        self._pipeline_summary.setText("  |  ".join(parts) + "   [settings]")
+
+    # ---------------- child windows ------------------------------------
+
+    def _show_pipeline_settings(self):
+        """Tools > Pipeline Settings: the controls that used to crowd the toolbar."""
+        if getattr(self, "_settings_dialog", None) is None:
+            from .settings_dialog import PipelineSettingsDialog
+            self._settings_dialog = PipelineSettingsDialog(self, self._pipeline_widgets())
+        self._raise(self._settings_dialog)
+
+    def _show_config_dialog(self):
+        """Tools > Session Configuration: edit vizdom.config.json (ADR-020)."""
+        if getattr(self, "_config_dialog", None) is None:
+            from .config_dialog import ConfigDialog
+            default = Path.cwd() / "vizdom.config.json"
+            self._config_dialog = ConfigDialog(
+                self, path=str(default) if default.exists() else None)
+            self._config_dialog.on_apply(self._apply_config_dict)
+        self._raise(self._config_dialog)
+
+    def _show_services_dialog(self):
+        """Tools > Services: run the detector / capture / actuator servers."""
+        if getattr(self, "_services_dialog", None) is None:
+            from .services_dialog import ServicesDialog
+            self._services_dialog = ServicesDialog(self, repo_root=self._repo_root())
+        self._raise(self._services_dialog)
+
+    @staticmethod
+    def _raise(dialog):
+        dialog.show()
+        dialog.raise_()
+        dialog.activateWindow()
+
+    @staticmethod
+    def _repo_root() -> Path:
+        """
+        Repository root, so the services dialog can set PYTHONPATH=<root>/src.
+
+        Derived from this file's location (tools/visual_dom_viewer/ui/) rather
+        than the working directory, which is wherever the user launched from.
+        """
+        return Path(__file__).resolve().parents[3]
+
+    def _apply_config_dict(self, data: dict):
+        """
+        Push a session config onto the pipeline controls.
+
+        Only the fields the Viewer itself drives are mapped; the rest of the
+        file still takes effect when that config is handed to the CLI or a test
+        suite, which is the point of editing it here.
+        """
+        detector = data.get("detector") or {}
+        ocr = data.get("ocr") or {}
+        capture = data.get("capture") or {}
+        refiner = data.get("refiner") or {}
+
+        if detector.get("backend"):
+            self._detector_combo.setCurrentText(detector["backend"])
+        if detector.get("grpc_target"):
+            self._grpc_target_edit.setText(detector["grpc_target"])
+        if "omniparser_text_ensemble" in detector:
+            self._text_ensemble_checkbox.setChecked(bool(detector["omniparser_text_ensemble"]))
+        if ocr.get("engine"):
+            self._ocr_combo.setCurrentText(ocr["engine"])
+        if "camera_mode" in capture:
+            self._camera_mode_checkbox.setChecked(bool(capture["camera_mode"]))
+        if "enabled" in refiner:
+            self._slm_checkbox.setChecked(bool(refiner["enabled"]))
+        if refiner.get("model"):
+            self._slm_model_combo.setCurrentText(refiner["model"])
+
+        if capture.get("strategy"):
+            index = self._capture_source_combo.findData(capture["strategy"])
+            if index >= 0:
+                self._capture_source_combo.setCurrentIndex(index)
+            if capture.get("target"):
+                self._capture_arg_edit.setText(str(capture["target"]))
+
+        self._update_pipeline_summary()
+        self._statusbar.showMessage("Session configuration applied", 5000)
+
+    def _show_about(self):
+        QMessageBox.about(
+            self, "About VizDOM Viewer",
+            "<b>VizDOM Viewer</b><br>"
+            "Inspect a screenshot as a Visual DOM, define elements and export "
+            "them as a Robot Framework resource.<br><br>"
+            "Pipeline knobs live in <b>Tools &gt; Pipeline Settings</b>; the "
+            "shared session config in <b>Tools &gt; Session Configuration</b>; "
+            "the gRPC services in <b>Tools &gt; Services</b>."
+        )
+
+    def closeEvent(self, event):
+        """Never leave services the Viewer started running after it exits."""
+        dialog = getattr(self, "_services_dialog", None)
+        if dialog is not None:
+            try:
+                dialog.shutdown()
+            except Exception as exc:        # shutdown must not block the exit
+                print(f"[Viewer] service shutdown: {exc}")
+        super().closeEvent(event)
+
 
     def _setup_statusbar(self):
         """Setup the status bar with progress indicator."""
@@ -1164,13 +1383,45 @@ class VisualDOMViewerWindow(QMainWindow):
         self._do_analyze_screenshot(screenshot)
 
     def _open_dom_json(self):
-        """Open DOM JSON file dialog."""
+        """
+        Re-open a saved Visual DOM, together with the screenshot it describes.
+
+        A session directory holds `dom_result.json` next to `screenshot.png`, so
+        picking the DOM alone used to draw last session's boxes over whatever
+        image happened to be on the canvas. Pair them here: re-checking a result
+        is one file dialog, not two, and the boxes are always over their own
+        screenshot.
+        """
+        sessions = self._repo_root() / "output" / "sessions"
+        start_dir = str(sessions if sessions.is_dir() else Path.cwd())
         filepath, _ = QFileDialog.getOpenFileName(
-            self, "Open DOM JSON",
-            "", "JSON Files (*.json);;All Files (*)"
+            self, "Open DOM JSON", start_dir, "JSON Files (*.json);;All Files (*)"
         )
-        if filepath:
-            self._model.load_dom_from_file(filepath)
+        if not filepath:
+            return
+        if not self._model.load_dom_from_file(filepath):
+            return
+
+        shot = self._sibling_screenshot(Path(filepath))
+        if shot is not None and self._model.load_screenshot(str(shot)):
+            self._canvas.load_image(str(shot))       # same path as Open Image
+            self._statusbar.showMessage(
+                f"Loaded {Path(filepath).name} with {shot.name}", 6000)
+            return
+        self._statusbar.showMessage(
+            f"Loaded {Path(filepath).name} - no screenshot beside it; "
+            f"open one with Ctrl+O to see the boxes in place", 8000)
+
+    @staticmethod
+    def _sibling_screenshot(dom_path: Path):
+        """The screenshot in the DOM's own directory, if there is exactly one."""
+        folder = dom_path.parent
+        preferred = folder / "screenshot.png"
+        if preferred.is_file():
+            return preferred
+        images = sorted(p for p in folder.glob("*")
+                        if p.suffix.lower() in (".png", ".jpg", ".jpeg", ".bmp"))
+        return images[0] if len(images) == 1 else None
 
     def _show_connect_dialog(self):
         """Show the connect dialog to select platform and target."""
@@ -1826,8 +2077,17 @@ def run_viewer():
         print("PyQt5 is required. Install with: pip install PyQt5")
         return 1
 
+    from .branding import app_icon, set_windows_app_id
+
+    # Before the first window exists, or Windows has already filed the process
+    # under the interpreter and the taskbar keeps python.exe's icon.
+    set_windows_app_id()
+
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
+    app.setApplicationName("VizDOM Viewer")
+    app.setApplicationDisplayName("VizDOM Viewer")
+    app.setWindowIcon(app_icon())
 
     window = VisualDOMViewerWindow()
     window.show()

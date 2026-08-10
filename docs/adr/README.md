@@ -40,6 +40,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [023](023-post-action-recap.md) | Post-Action Recap for Property Verification | Accepted | 2026-07-31 |
 | [024](024-multi-locator-fallback-chains.md) | Multi-Locator Fallback Chains (<code>&#124;&#124;</code>) | Accepted | 2026-08-06 |
 | [025](025-session-orchestrator-service.md) | Session Orchestrator Service (forwarding gateway rejected; orchestrator deferred against trigger conditions) | **Proposed** | 2026-08-09 |
+| [026](026-viewer-ui-restructure.md) | Viewer UI — Verb Toolbar, Menu Bar, and Three Tool Windows | Accepted | 2026-08-10 |
 
 ## Summary
 
