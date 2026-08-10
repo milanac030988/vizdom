@@ -151,8 +151,10 @@ Library    VisualGuiLibrary    capture=grpc  capture_target=sut:50053
 ...                            actuator=grpc  actuator_target=sut:50054
 ```
 
-**Other launchers:** `start_viewer.bat` (interactive PyQt DOM viewer for manual
-checks) · `start_dashboard.bat` (Streamlit dashboard at `http://localhost:8501`).
+**Other launchers:** `start_viewer.bat` / `start_viewer.sh` (interactive PyQt DOM
+viewer for manual checks — its **Tools** menu also edits `vizdom.config.json` and
+starts/stops the three services, ADR-026) · `start_dashboard.bat` (Streamlit
+dashboard at `http://localhost:8501`).
 Full walkthrough in the [Using as a Client](https://milanac030988.github.io/vizdom/USAGE/) guide.
 
 ### Run CV Pipeline Test

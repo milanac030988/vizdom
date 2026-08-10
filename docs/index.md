@@ -67,7 +67,8 @@ run it in the real world.
 - **Pluggable capture service** (ADR-018): a `CaptureStrategy` for
   Windows / Linux / Android / camera, **auto-discovered** user plugins, and a gRPC
   `Capture` service so screenshots come from **where the app-under-test runs** —
-  wired into both the CLI (`--capture`) and the Viewer (`Src:`).
+  wired into both the CLI (`--capture`) and the Viewer
+  (*Tools → Pipeline Settings → Capture source*).
 - **`uv`**-managed environment and this **ProperDocs** site with diagrams rendered
   offline (behind a corporate proxy, no PlantUML server, no Graphviz).
 

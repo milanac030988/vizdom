@@ -7,6 +7,9 @@ docs_dir: docs
 
 theme:
   name: readthedocs   # left sidebar navigation
+  # Generated from the same code that draws the app icon:
+  #     python tools/assets/make_app_icon.py
+  favicon: img/favicon.png
 
 extra_css:
   - css/extra.css
@@ -88,3 +91,4 @@ nav:
       - 023 Post-Action Recap: adr/023-post-action-recap.md
       - 024 Multi-Locator Fallback Chains: adr/024-multi-locator-fallback-chains.md
       - 025 Session Orchestrator Service: adr/025-session-orchestrator-service.md
+      - 026 Viewer UI Restructure: adr/026-viewer-ui-restructure.md
