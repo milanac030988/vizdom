@@ -432,12 +432,18 @@ class VisualDOMPipeline:
 
         # Step 1: Text Detection
         text_elements = []
+        text_error = None
         if detect_text:
             try:
                 text_results = self.text_detector.detect(image)
                 text_elements = self._convert_text_elements(text_results)
                 all_elements.extend(text_elements)
             except Exception as e:
+                # Degrading to a text-free run keeps headless batch jobs alive,
+                # but the failure must reach the caller: a DOM with 0 text looks
+                # identical to a text-free screen, and a dead OCR engine once
+                # went unnoticed for a whole session that way (20260806_195229).
+                text_error = str(e)
                 log.warning(f"Text detection failed: {e}")
 
         # Step 2: Element Detection (UIED, YOLO, or Hybrid)
@@ -531,16 +537,19 @@ class VisualDOMPipeline:
         all_elements = self._reassign_ids(all_elements)
 
         # Prepare output
+        stats = {
+            "text_detected": len(text_elements),
+            "uied_detected": len(uied_elements),
+            "yolo_detected": len(yolo_elements),
+            "detector": self.detector_mode,
+            "final_count": len(all_elements),
+        }
+        if text_error:
+            stats["text_error"] = text_error
         return {
             "elements": [e.to_dict() for e in all_elements],
             "image_size": {"width": width, "height": height},
-            "stats": {
-                "text_detected": len(text_elements),
-                "uied_detected": len(uied_elements),
-                "yolo_detected": len(yolo_elements),
-                "detector": self.detector_mode,
-                "final_count": len(all_elements),
-            }
+            "stats": stats,
         }
 
     def _merge_yolo_uied(

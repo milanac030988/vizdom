@@ -1708,6 +1708,24 @@ class VisualDOMViewerWindow(QMainWindow):
             import json as _json
             from datetime import datetime
 
+            # Fail fast on a missing OCR engine - the same ADR-020 probe that
+            # guards connect(). Without it the Viewer once ran a whole session
+            # with paddleocr configured but absent: the pipeline degraded to
+            # 0 text boxes and nothing said why (session 20260806_195229).
+            # Probed here, before a session directory exists and before the
+            # heavy models load.
+            try:
+                from visual_dom.context import Session
+                Session._probe_ocr_engine(self._ocr_combo.currentText())
+            except ValueError as e:
+                self._hide_progress()
+                QMessageBox.warning(self, "OCR Engine Not Available", str(e))
+                self._statusbar.showMessage(
+                    "Analysis aborted - configured OCR engine is not installed")
+                return
+            except ImportError:
+                pass    # visual_dom itself missing is reported by the code below
+
             # Generate session ID and create output folder
             session_id = datetime.now().strftime("%Y%m%d_%H%M%S")
             project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
@@ -1863,6 +1881,20 @@ class VisualDOMViewerWindow(QMainWindow):
 
                 result = pipeline.process(temp_path)
                 print(f"[Viewer] Pipeline complete. Found {len(result.get('elements', []))} elements")
+
+                # A runtime OCR death (engine present but failing) degrades the
+                # run to 0 text, which looks exactly like a text-free screen.
+                # The pipeline records it in stats; say it out loud here.
+                text_error = (result.get("stats") or {}).get("text_error")
+                if text_error:
+                    print(f"[Viewer] WARNING: text detection failed: {text_error}")
+                    QMessageBox.warning(
+                        self, "Text Detection Failed",
+                        "The OCR engine failed during this run, so the DOM "
+                        f"contains no text elements:\n\n{text_error}\n\n"
+                        "Element boxes are still available, but text= locators "
+                        "will not resolve."
+                    )
 
                 # Save CV pipeline result (before hierarchy/SLM)
                 try:
