@@ -713,6 +713,13 @@ class VisualDOMPipeline:
         result = []
         split_count = 0
 
+        # Boxes the detector itself marked as ONE interactable. Other stages
+        # (rescan, merge) produce coincident copies of these boxes that carry
+        # interactable=None, so the guard below must compare against the
+        # detector's boxes, not just each element's own flag.
+        detector_interactables = [e.bounds for e in elements
+                                  if e.interactable is True]
+
         for elem in elements:
             # Only split non-text, non-block elements
             if elem.visual_type in ("text", "block"):
@@ -726,6 +733,17 @@ class VisualDOMPipeline:
             # better authority here. Splitting exists for UIED's merged blobs,
             # which carry interactable=None.
             if elem.interactable is True:
+                result.append(elem)
+                continue
+
+            # The same authority extends to coincident copies: a rescan or merge
+            # box occupying (IoU >= 0.8) a detector-marked interactable IS that
+            # control seen by another stage. Splitting such a copy cut the
+            # "Send Logfiles" tile (icon glyph reading as 'LoG' above the
+            # caption) into an icon half and a caption half - session
+            # 20260810_160751, E13.
+            if any(calculate_iou(elem.bounds, b) >= 0.8
+                   for b in detector_interactables):
                 result.append(elem)
                 continue
 
