@@ -255,6 +255,50 @@ in `_split_by_text_positions` (`src/visual_dom/core/domain/pipeline.py`);
 thresholds are method parameters (class defaults `GAP_HEIGHT_RATIO = 0.45`,
 `MIN_GAP_PX = 3`, `LINE_OVERLAP_MIN = 0.5`), not yet config-file knobs.
 
+## 3d. Real confidence scores (1.0 was a default, not a measurement)
+
+**Problem.** Every OmniParser element reported `confidence: 1.0` (69 of 86 in a
+typical session), and the rest were round constants (0.5–0.8). The Confidence
+column was provenance masquerading as certainty: 1.0 meant "came from
+OmniParser", 0.6 meant "the UIED checkbox heuristic fired".
+
+**Diagnosis.** OmniParser computes real YOLO confidences (`predict_yolo`
+returns logits) but drops them before building its box dicts, so our backend's
+`item.get("confidence", 1.0)` always took the fallback. Genuine OCR confidences
+were *also* lost: ensemble text boxes round-trip through OmniParser's
+`ocr_bbox`/`ocr_text` lists, which have no confidence channel. Only Step-1 text
+elements that bypassed the ensemble kept a real score.
+
+**Fix — recover at the boundaries, entirely in our code** (the OmniParser repo
+is vendored outside git, so patching it would not survive a re-clone):
+
+- `predict_yolo` is wrapped at import (`_install_yolo_recorder`) to record
+  (boxes, logits) into a per-thread slot; the ensemble provider now passes
+  `(bbox, text, confidence)` 3-tuples (2-tuples still accepted). After
+  `get_som_labeled_img` returns, `_parse_content_list` matches each parsed item
+  back to its source box by IoU (≥ 0.5) and restores the real score. An
+  unmatched item keeps 1.0, which now means "score unknown".
+- **Behaviour is deliberately unchanged.** Raw logits (0.05–0.5 for icons) are
+  not on the same scale as the heuristic constants, so: (a) the pipeline's
+  generic confidence gate (default 0.3) exempts detector-backend elements — the
+  backend already applied its own `box_threshold`, deliberately as low as 0.03
+  to keep faint controls; (b) ranking in NMS / dedup / top-N uses
+  `_ranking_confidence`, which still treats OmniParser elements as 1.0, so
+  which box survives a conflict is decided exactly as before; (c) merging OCR
+  text into a detector element no longer rewrites its `source` — that rewrite
+  cost the exemption and deleted the calculator's DEG/MR buttons (logits ~0.29)
+  during verification.
+
+**Result.** IWT screen: 6 distinct confidence values → 61, with 9 (not 69)
+elements at 1.0. Calculator: 1 distinct value → 48, and the element set
+(bounds + type + text) **byte-identical** to before. UIED's constants remain
+constants — they encode which rule fired and would need real calibration to
+mean more.
+
+**Code.** `omniparser_backend.py` (`_install_yolo_recorder`,
+`_apply_ocr_provider`, `_parse_content_list`), `pipeline.py`
+(`_ranking_confidence`, filter exemption); `tests/unit/test_confidence.py`.
+
 ## 4. Detection-threshold sensitivity (faint small controls)
 
 **Problem.** A minimize "–" button detected in one capture vanished in another of

@@ -63,6 +63,25 @@ log = get_logger(__name__)
 # cached by Python's sys.modules, so it only runs once per process regardless.
 _MODEL_CACHE: Dict[tuple, Dict[str, Any]] = {}
 
+# Per-thread capture slot for YOLO confidences (see _install_yolo_recorder).
+# Thread-local because the detector service runs detect() on a gRPC thread pool.
+import threading
+
+_YOLO_TRACE = threading.local()
+
+
+def _iou(a, b) -> float:
+    """Intersection over union of two (x1, y1, x2, y2) boxes."""
+    ix1, iy1 = max(a[0], b[0]), max(a[1], b[1])
+    ix2, iy2 = min(a[2], b[2]), min(a[3], b[3])
+    inter = max(0.0, ix2 - ix1) * max(0.0, iy2 - iy1)
+    if inter <= 0:
+        return 0.0
+    area_a = max(0.0, a[2] - a[0]) * max(0.0, a[3] - a[1])
+    area_b = max(0.0, b[2] - b[0]) * max(0.0, b[3] - b[1])
+    union = area_a + area_b - inter
+    return inter / union if union > 0 else 0.0
+
 
 class OmniParserBackend(DetectorBackend):
     name = "omniparser"
@@ -78,7 +97,7 @@ class OmniParserBackend(DetectorBackend):
         box_threshold: float = 0.05,
         use_gpu: bool = True,
         caption_model_name: str = "florence2",
-        ocr_provider: Optional[Callable[[np.ndarray], List[Tuple[Tuple[int, int, int, int], str]]]] = None,
+        ocr_provider: Optional[Callable[[np.ndarray], List[tuple]]] = None,
         ocr_ensemble: bool = True,
         ocr_dedup_iou: float = 0.5,
     ):
@@ -134,19 +153,54 @@ class OmniParserBackend(DetectorBackend):
         if self._root and self._root not in sys.path:
             sys.path.insert(0, self._root)
 
-        from util.utils import (  # type: ignore
-            get_som_labeled_img,
-            check_ocr_box,
-            get_caption_model_processor,
-            get_yolo_model,
-        )
+        import util.utils as omni_utils  # type: ignore
+
+        self._install_yolo_recorder(omni_utils)
 
         return {
-            "get_som_labeled_img": get_som_labeled_img,
-            "check_ocr_box": check_ocr_box,
-            "get_caption_model_processor": get_caption_model_processor,
-            "get_yolo_model": get_yolo_model,
+            "get_som_labeled_img": omni_utils.get_som_labeled_img,
+            "check_ocr_box": omni_utils.check_ocr_box,
+            "get_caption_model_processor": omni_utils.get_caption_model_processor,
+            "get_yolo_model": omni_utils.get_yolo_model,
         }
+
+    @staticmethod
+    def _install_yolo_recorder(omni_utils) -> None:
+        """
+        Wrap OmniParser's `predict_yolo` to record (boxes, confidences).
+
+        OmniParser computes real YOLO confidence scores but drops them on the
+        floor: `get_som_labeled_img` receives (xyxy, logits, phrases) from
+        predict_yolo and builds its box dicts without the logits, so every
+        parsed item reaches us without a confidence and our fallback (1.0) made
+        the DOM claim certainty it never had. The repo is vendored outside git
+        (third_party/, ignored), so patching it in place would not survive a
+        re-clone - instead the scores are captured here at the call boundary
+        and matched back to the parsed boxes by IoU in `_parse_content_list`.
+
+        Recording is per-thread (`_YOLO_TRACE.boxes`): detect() arms the slot,
+        so concurrent service calls cannot see each other's scores. Wrapping is
+        idempotent across backend instances.
+        """
+        if getattr(omni_utils.predict_yolo, "_vizdom_records_confidence", False):
+            return
+        original = omni_utils.predict_yolo
+
+        def predict_yolo_recording(*args, **kwargs):
+            boxes, conf, phrases = original(*args, **kwargs)
+            if getattr(_YOLO_TRACE, "armed", False):
+                try:
+                    _YOLO_TRACE.boxes = [
+                        (tuple(float(v) for v in box), float(c))
+                        for box, c in zip(boxes.tolist(), conf.tolist())
+                    ]
+                except Exception as e:      # recording must never break detection
+                    log.warning("YOLO confidence recording failed: %s", e)
+                    _YOLO_TRACE.boxes = []
+            return boxes, conf, phrases
+
+        predict_yolo_recording._vizdom_records_confidence = True
+        omni_utils.predict_yolo = predict_yolo_recording
 
     @classmethod
     def is_available(cls) -> bool:
@@ -195,25 +249,36 @@ class OmniParserBackend(DetectorBackend):
 
             # Text ensemble: fold in an external OCR source (e.g. our upscaled
             # dual-engine detector) to recover text OmniParser's single pass misses.
+            ocr_scores = None
             if self._ocr_provider is not None:
-                ocr_text, ocr_bbox = self._apply_ocr_provider(image, ocr_text, ocr_bbox)
+                ocr_text, ocr_bbox, ocr_scores = self._apply_ocr_provider(
+                    image, ocr_text, ocr_bbox)
 
-            with log_timing(log, "OmniParser: detect + caption (get_som_labeled_img)"):
-                _, _, parsed_content_list = self._util["get_som_labeled_img"](
-                    tmp_path,
-                    self._som_model,
-                    BOX_TRESHOLD=self._box_threshold,
-                    output_coord_in_ratio=True,
-                    ocr_bbox=ocr_bbox,
-                    caption_model_processor=self._caption,
-                    ocr_text=ocr_text,
-                    use_local_semantics=True,
-                )
+            _YOLO_TRACE.armed = True
+            _YOLO_TRACE.boxes = []
+            try:
+                with log_timing(log, "OmniParser: detect + caption (get_som_labeled_img)"):
+                    _, _, parsed_content_list = self._util["get_som_labeled_img"](
+                        tmp_path,
+                        self._som_model,
+                        BOX_TRESHOLD=self._box_threshold,
+                        output_coord_in_ratio=True,
+                        ocr_bbox=ocr_bbox,
+                        caption_model_processor=self._caption,
+                        ocr_text=ocr_text,
+                        use_local_semantics=True,
+                    )
+                yolo_scores = list(getattr(_YOLO_TRACE, "boxes", []) or [])
+            finally:
+                _YOLO_TRACE.armed = False
         finally:
             if tmp_path and os.path.exists(tmp_path):
                 os.remove(tmp_path)
 
-        detections = self._parse_content_list(parsed_content_list, width, height)
+        detections = self._parse_content_list(
+            parsed_content_list, width, height,
+            yolo_scores=yolo_scores, ocr_scores=ocr_scores,
+        )
         log.info("OmniParser: %d detections from %dx%d image", len(detections), width, height)
         return detections
 
@@ -222,7 +287,7 @@ class OmniParserBackend(DetectorBackend):
         image: np.ndarray,
         ocr_text: List[str],
         ocr_bbox: List[List[float]],
-    ) -> Tuple[List[str], List[List[float]]]:
+    ) -> Tuple[List[str], List[List[float]], Optional[List[Tuple[List[float], float]]]]:
         """
         Merge the external OCR provider's results with OmniParser's own.
 
@@ -230,22 +295,39 @@ class OmniParserBackend(DetectorBackend):
         existing box (IoU >= threshold), maximising text recall without
         double-labelling. In replace mode, the provider's results are used alone.
         A provider failure is non-fatal — we fall back to OmniParser's OCR.
+
+        Also returns `[(bbox, confidence), ...]` for the provider's boxes. The
+        boxes round-trip through OmniParser's `get_som_labeled_img`, whose
+        ocr_bbox/ocr_text lists have no confidence channel - the genuine OCR
+        scores would otherwise be lost and replaced by the 1.0 fallback.
+        `_parse_content_list` matches them back onto the returned text items.
+        Provider entries may be `(bbox, text)` or `(bbox, text, confidence)`;
+        2-tuples (older providers, plugins) simply contribute no score.
         """
+        def unpack(entry):
+            bounds, text = entry[0], entry[1]
+            conf = float(entry[2]) if len(entry) > 2 and entry[2] is not None else None
+            return list(bounds), str(text), conf
+
         try:
             with log_timing(log, "OmniParser: external OCR provider"):
                 extra = self._ocr_provider(image) or []
         except Exception as e:
             log.warning("OCR provider failed (%s); using OmniParser OCR only", e)
-            return ocr_text, ocr_bbox
+            return ocr_text, ocr_bbox, None
+
+        entries = [unpack(e) for e in extra]
+        entries = [(b, t, c) for (b, t, c) in entries if t and t.strip()]
+        scores = [(b, c) for (b, t, c) in entries if c is not None]
 
         if not self._ocr_ensemble:
-            texts = [str(t) for (_b, t) in extra if t and str(t).strip()]
-            boxes = [list(b) for (b, t) in extra if t and str(t).strip()]
+            texts = [t for (_b, t, _c) in entries]
+            boxes = [b for (b, _t, _c) in entries]
             log.info("OCR (replace): %d boxes from external provider", len(texts))
-            return texts, boxes
+            return texts, boxes, scores
 
         base_n = len(ocr_text)
-        clean_extra = [(list(b), str(t)) for (b, t) in extra if t and str(t).strip()]
+        clean_extra = [(b, t) for (b, t, _c) in entries]
 
         # Prefer-external union. The external provider runs our upscaling OCR, so
         # where its box overlaps OmniParser's own OCR the external read is the
@@ -270,7 +352,7 @@ class OmniParserBackend(DetectorBackend):
                  "+ %d external = %d text boxes",
                  base_n, len(kept_text) - len(clean_extra), replaced,
                  len(clean_extra), len(kept_text))
-        return kept_text, kept_bbox
+        return kept_text, kept_bbox, scores
 
     @staticmethod
     def _overlap_min(a, b) -> float:
@@ -299,6 +381,8 @@ class OmniParserBackend(DetectorBackend):
         parsed_content_list: List[Dict[str, Any]],
         width: int,
         height: int,
+        yolo_scores: Optional[List[Tuple[Tuple[float, ...], float]]] = None,
+        ocr_scores: Optional[List[Tuple[List[float], float]]] = None,
     ) -> List[Detection]:
         """
         Convert OmniParser's parsed content into Detections.
@@ -307,7 +391,25 @@ class OmniParserBackend(DetectorBackend):
             {"type": "text"|"icon", "bbox": [x1,y1,x2,y2] in [0,1],
              "content": str, "interactivity": bool}
         Isolated here so version drift only touches this method.
+
+        `yolo_scores` / `ocr_scores` are `[(pixel_bbox, confidence), ...]`
+        captured at the model boundaries (see `_install_yolo_recorder` and
+        `_apply_ocr_provider`): OmniParser's own output carries no confidence,
+        so each item is matched back to its source box by IoU to recover the
+        real score. An unmatched item keeps the historical fallback of 1.0 -
+        which from here on means "score unknown", not "certain". Matching is
+        best-IoU with a floor of 0.5; OmniParser can shift a box slightly when
+        it absorbs an overlapping OCR box, which IoU tolerates and exact
+        coordinate lookup would not.
         """
+        def matched_score(px_bounds, scored_boxes) -> Optional[float]:
+            best, best_iou = None, 0.5
+            for sbox, sconf in scored_boxes or []:
+                iou = _iou(px_bounds, sbox)
+                if iou >= best_iou:
+                    best, best_iou = sconf, iou
+            return best
+
         detections: List[Detection] = []
         for item in parsed_content_list or []:
             bbox = item.get("bbox")
@@ -340,14 +442,18 @@ class OmniParserBackend(DetectorBackend):
             content = content or None
             if raw_type == "text":
                 det_text, det_label = content, None
+                score = matched_score(px, ocr_scores)
             else:
                 det_text, det_label = None, content
+                score = matched_score(px, yolo_scores)
+            if score is None:
+                score = float(item.get("confidence", 1.0))
 
             detections.append(
                 Detection(
                     bounds=px,
                     visual_type=visual_type,
-                    confidence=float(item.get("confidence", 1.0)),
+                    confidence=score,
                     text=det_text,
                     label=det_label,
                     interactable=bool(interactable) if interactable is not None else None,
