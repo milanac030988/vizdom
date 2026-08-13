@@ -20,10 +20,11 @@ The services are launched with the *Viewer's own interpreter* (`sys.executable`)
 which by construction has the project's dependencies.
 """
 
+import socket
 import sys
 from pathlib import Path
 
-from PyQt5.QtCore import Qt, QProcess, QTimer
+from PyQt5.QtCore import Qt, QProcess, QThread, QTimer, pyqtSignal
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (
     QCheckBox, QComboBox, QDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
@@ -36,6 +37,77 @@ _DOT = {
     "stopped": ("●", "#9e9e9e", "not reachable"),
     "error": ("●", "#c62828", "failed"),
 }
+
+
+class _HealthWorker(QThread):
+    """
+    Poll every service's health OFF the UI thread.
+
+    Each `HealthCheck` is a gRPC call with a 1 s deadline, and when a service is
+    not running the call blocks for most of that second. Three of them, run
+    synchronously on the UI thread (including once from the dialog's
+    constructor), froze the window for ~3 s on open and every poll after. Here
+    they run on a worker thread and report back one row at a time via a signal.
+
+    A cheap socket pre-check comes first: connecting to a closed localhost port
+    is refused near-instantly, so the expensive gRPC path (and the heavy
+    `import grpc`) only happens when something is actually listening.
+
+    Ports are passed in from the UI thread — the worker never touches a widget.
+    """
+
+    result = pyqtSignal(str, bool, str)   # key, ready, detail
+
+    def __init__(self, targets):
+        super().__init__()
+        self._targets = targets           # [(key, port_str), ...]
+
+    def run(self):
+        for key, port in self._targets:
+            try:
+                ready, detail = self._check(key, port)
+            except Exception:
+                ready, detail = False, "not reachable"
+            self.result.emit(key, ready, detail)
+
+    @staticmethod
+    def _port_open(port: str) -> bool:
+        try:
+            with socket.create_connection(("127.0.0.1", int(port)), timeout=0.25):
+                return True
+        except (OSError, ValueError):
+            return False
+
+    def _check(self, key: str, port: str):
+        """(ready, detail) via the service's own HealthCheck RPC."""
+        if not self._port_open(port):
+            return False, "not reachable"
+        try:
+            import grpc
+            if key == "detector":
+                from visual_dom.generated import detector_pb2 as pb, detector_pb2_grpc as pbg
+                stub_cls, request = pbg.DetectorStub, pb.HealthRequest()
+            elif key == "capture":
+                from visual_dom.generated import capture_pb2 as pb, capture_pb2_grpc as pbg
+                stub_cls, request = pbg.CaptureStub, pb.HealthRequest()
+            else:
+                from visual_dom.generated import actuator_pb2 as pb, actuator_pb2_grpc as pbg
+                stub_cls, request = pbg.ActuatorStub, pb.HealthRequest()
+            channel = grpc.insecure_channel(f"localhost:{port}")
+            try:
+                response = stub_cls(channel).HealthCheck(request, timeout=1.0)
+            finally:
+                channel.close()
+            if not getattr(response, "ready", False):
+                return False, "not ready"
+            label = (getattr(response, "backend", "")
+                     or getattr(response, "strategy", "")
+                     or getattr(response, "actuator", "") or "ready")
+            return True, label
+        except ImportError:
+            return False, "grpc not installed"
+        except Exception:
+            return False, "not reachable"
 
 
 class ServiceRow:
@@ -111,10 +183,13 @@ class ServicesDialog(QDialog):
         buttons.addWidget(close)
         root.addLayout(buttons)
 
+        self._worker = None
         self._timer = QTimer(self)
         self._timer.timeout.connect(self._poll_health)
         self._timer.start(self.POLL_MS)
-        self._poll_health()
+        # Kick the first poll off the event loop so opening the window is
+        # instant even before the worker thread has reported anything.
+        QTimer.singleShot(0, self._poll_health)
 
     # -- per-service UI --------------------------------------------------
 
@@ -259,52 +334,36 @@ class ServicesDialog(QDialog):
     # -- health ----------------------------------------------------------
 
     def _poll_health(self):
-        for row in self._rows.values():
-            port = row.port_edit.text().strip() or str(row.default_port)
-            ready, detail = self._health(row.key, port)
-            if ready:
-                row.external = row.process is None
-                row.state = "running"
-                row.status.setText(
-                    f"{detail} · port {port}" + ("  (external)" if row.external else ""))
-            else:
-                row.external = False
-                if row.process is not None:
-                    row.state = "starting"
-                    row.status.setText(f"starting… · port {port}")
-                elif row.state != "error":
-                    row.state = "stopped"
-                    row.status.setText(f"not reachable · port {port}")
-            self._paint(row)
+        """Start one background health sweep; skip if the last is still running."""
+        if self._worker is not None and self._worker.isRunning():
+            return
+        # Read the ports here, on the UI thread; the worker must not touch widgets.
+        targets = [(row.key, row.port_edit.text().strip() or str(row.default_port))
+                   for row in self._rows.values()]
+        self._worker = _HealthWorker(targets)
+        self._worker.result.connect(self._apply_health)
+        self._worker.start()
 
-    def _health(self, key: str, port: str):
-        """(ready, detail) via the service's own HealthCheck RPC."""
-        try:
-            import grpc
-            if key == "detector":
-                from visual_dom.generated import detector_pb2 as pb, detector_pb2_grpc as pbg
-                stub_cls, request = pbg.DetectorStub, pb.HealthRequest()
-            elif key == "capture":
-                from visual_dom.generated import capture_pb2 as pb, capture_pb2_grpc as pbg
-                stub_cls, request = pbg.CaptureStub, pb.HealthRequest()
-            else:
-                from visual_dom.generated import actuator_pb2 as pb, actuator_pb2_grpc as pbg
-                stub_cls, request = pbg.ActuatorStub, pb.HealthRequest()
-            channel = grpc.insecure_channel(f"localhost:{port}")
-            try:
-                response = stub_cls(channel).HealthCheck(request, timeout=1.0)
-            finally:
-                channel.close()
-            if not getattr(response, "ready", False):
-                return False, "not ready"
-            label = (getattr(response, "backend", "")
-                     or getattr(response, "strategy", "")
-                     or getattr(response, "actuator", "") or "ready")
-            return True, label
-        except ImportError:
-            return False, "grpc not installed"
-        except Exception:
-            return False, "not reachable"
+    def _apply_health(self, key: str, ready: bool, detail: str):
+        """Apply one row's health result (runs on the UI thread via the signal)."""
+        row = self._rows.get(key)
+        if row is None:
+            return
+        port = row.port_edit.text().strip() or str(row.default_port)
+        if ready:
+            row.external = row.process is None
+            row.state = "running"
+            row.status.setText(
+                f"{detail} · port {port}" + ("  (external)" if row.external else ""))
+        else:
+            row.external = False
+            if row.process is not None:
+                row.state = "starting"
+                row.status.setText(f"starting… · port {port}")
+            elif row.state != "error":
+                row.state = "stopped"
+                row.status.setText(f"not reachable · port {port}")
+        self._paint(row)
 
     def _paint(self, row: ServiceRow):
         glyph, colour, _ = _DOT[row.state]
@@ -329,4 +388,6 @@ class ServicesDialog(QDialog):
     def shutdown(self):
         """Called by the main window on exit: never leave orphaned services."""
         self._timer.stop()
+        if self._worker is not None and self._worker.isRunning():
+            self._worker.wait(2000)   # let the in-flight poll finish before teardown
         self._stop_all()
