@@ -456,19 +456,55 @@ class TextDetector:
 
         return text_elements
 
+    # Horizontal gap that may still be one phrase, as a fraction of the text
+    # height. Inter-word spaces run about a quarter to a third of the cap height;
+    # 0.45 leaves headroom for wide tracking without reaching the gap that
+    # separates two independent labels.
+    GAP_HEIGHT_RATIO = 0.45
+    # Floor for tiny text, where the ratio would fall below one pixel.
+    MIN_GAP_PX = 3
+    # Two boxes are on the same line when they overlap this much vertically,
+    # measured against the shorter box.
+    LINE_OVERLAP_MIN = 0.5
+
+    @staticmethod
+    def _vertical_overlap_ratio(a: Tuple[int, int, int, int],
+                                b: Tuple[int, int, int, int]) -> float:
+        """Vertical intersection of two boxes over the shorter box's height."""
+        overlap = min(a[3], b[3]) - max(a[1], b[1])
+        if overlap <= 0:
+            return 0.0
+        shorter = min(a[3] - a[1], b[3] - b[1])
+        return overlap / shorter if shorter > 0 else 0.0
+
     def _merge_text_boxes(
         self,
         elements: List[TextElement],
-        x_threshold: int = 20,
-        y_threshold: int = 10
+        gap_height_ratio: float = None,
+        min_gap_px: int = None,
+        line_overlap_min: float = None,
     ) -> List[TextElement]:
         """
-        Merge nearby text boxes that likely belong to the same line.
+        Merge OCR fragments that belong to the same word or phrase.
+
+        The gap that separates two fragments of one phrase scales with the text:
+        a space is roughly a quarter to a third of the cap height. This used to
+        be a fixed 20 px, which at 14 px text also swallowed the 13 px gaps
+        between three *distinct* links — "Printer Management >", "Docupedia >",
+        "My IT Profile >" came back as one 295 px element (session
+        20260807_094630, E71), which no test can click and no locator can
+        address. Scaling the threshold with the line height keeps character-level
+        splits merging while leaving separate labels alone.
+
+        Same-line membership is decided by real vertical overlap rather than by
+        similar top edges: a taller neighbour (a heading, a boxed label) can sit
+        within 10 px of a line's top without being on it.
 
         Args:
-            elements: List of text elements
-            x_threshold: Max horizontal gap to merge
-            y_threshold: Max vertical difference to merge
+            elements: detected text elements
+            gap_height_ratio: max gap as a fraction of text height
+            min_gap_px: absolute floor for the gap, for very small text
+            line_overlap_min: min vertical overlap to count as the same line
 
         Returns:
             Merged text elements
@@ -476,30 +512,59 @@ class TextDetector:
         if not elements:
             return []
 
-        # Sort by y, then x
-        sorted_elements = sorted(elements, key=lambda e: (e.bounds[1], e.bounds[0]))
+        gap_ratio = (self.GAP_HEIGHT_RATIO if gap_height_ratio is None
+                     else gap_height_ratio)
+        gap_floor = self.MIN_GAP_PX if min_gap_px is None else min_gap_px
+        overlap_min = (self.LINE_OVERLAP_MIN if line_overlap_min is None
+                       else line_overlap_min)
+
+        # Two passes: rows first, then left-to-right within each row. A single
+        # y-then-x sort visits boxes with jittered tops ("Remove" at y=466,
+        # "Add" at y=468) in the wrong x order, the gap goes negative, and a
+        # genuine split is missed.
+        #
+        # Membership is judged against the ROW'S BAND (mean y1..y2 of members),
+        # not the last member appended: chaining member-to-member lets a tall
+        # box drag the row downward until it swallows the next line - on the
+        # IWT screen, 'Application Control' (h=17) bridged to '(BlackList)' one
+        # line below, which then sat between 'Low' and 'Protection' in x-order
+        # and broke their merge.
+        ordered = sorted(elements,
+                         key=lambda e: ((e.bounds[1] + e.bounds[3]) / 2, e.bounds[0]))
+        rows: List[List[TextElement]] = []
+        bands: List[Tuple[float, float]] = []      # running mean (y1, y2) per row
+        for elem in ordered:
+            y1, y2 = elem.bounds[1], elem.bounds[3]
+            if rows:
+                by1, by2 = bands[-1]
+                band = (0, int(by1), 0, int(by2))
+                if self._vertical_overlap_ratio(band, elem.bounds) >= overlap_min:
+                    row = rows[-1]
+                    row.append(elem)
+                    n = len(row)
+                    bands[-1] = (by1 + (y1 - by1) / n, by2 + (y2 - by2) / n)
+                    continue
+            rows.append([elem])
+            bands.append((float(y1), float(y2)))
 
         merged = []
-        current_group = [sorted_elements[0]]
-
-        for elem in sorted_elements[1:]:
-            last = current_group[-1]
-
-            # Check if on same line (similar y) and close horizontally
-            y_diff = abs(elem.bounds[1] - last.bounds[1])
-            x_gap = elem.bounds[0] - last.bounds[2]
-
-            if y_diff < y_threshold and 0 <= x_gap < x_threshold:
-                # Same line, add to group
-                current_group.append(elem)
-            else:
-                # New line, merge current group and start new
-                merged.append(self._merge_text_group(current_group))
-                current_group = [elem]
-
-        # Don't forget last group
-        if current_group:
-            merged.append(self._merge_text_group(current_group))
+        for row in rows:
+            row.sort(key=lambda e: e.bounds[0])
+            group = [row[0]]
+            for elem in row[1:]:
+                last = group[-1]
+                # Scale by the shorter box: merging small text into a tall
+                # heading should be judged by the small text's own spacing.
+                limit = max(gap_floor, gap_ratio * min(last.height, elem.height))
+                x_gap = elem.bounds[0] - last.bounds[2]
+                if 0 <= x_gap <= limit:
+                    group.append(elem)
+                else:
+                    # A gap too wide - or negative, meaning overlapping boxes,
+                    # which are dedup's concern, not line assembly's.
+                    merged.append(self._merge_text_group(group))
+                    group = [elem]
+            merged.append(self._merge_text_group(group))
 
         return merged
 

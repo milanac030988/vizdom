@@ -369,25 +369,27 @@ class DOMViewerModel:
     # View Operations
     # =========================================================================
 
-    def zoom_in(self) -> None:
-        """Zoom in the view."""
-        view = ViewState(
-            scale=self.state.view.scale * 1.2,
-            offset_x=self.state.view.offset_x,
-            offset_y=self.state.view.offset_y
-        )
+    # The canvas is sized to the scaled content so the view can scroll, which
+    # makes the scale a real memory cost: a 4K screenshot at 8x is a 130-megapixel
+    # widget. Zoom is therefore clamped at both ends (the lower bound also keeps
+    # a big screenshot from collapsing into an unusable speck).
+    MIN_SCALE = 0.05
+    MAX_SCALE = 8.0
+
+    def set_scale(self, scale: float) -> None:
+        """Set the view scale directly (clamped)."""
+        clamped = max(self.MIN_SCALE, min(self.MAX_SCALE, float(scale)))
+        view = ViewState(scale=clamped, offset_x=0.0, offset_y=0.0)
         self._update_state(view=view)
         self._notify('view_changed', view)
 
+    def zoom_in(self) -> None:
+        """Zoom in the view."""
+        self.set_scale(self.state.view.scale * 1.2)
+
     def zoom_out(self) -> None:
         """Zoom out the view."""
-        view = ViewState(
-            scale=self.state.view.scale / 1.2,
-            offset_x=self.state.view.offset_x,
-            offset_y=self.state.view.offset_y
-        )
-        self._update_state(view=view)
-        self._notify('view_changed', view)
+        self.set_scale(self.state.view.scale / 1.2)
 
     def reset_view(self) -> None:
         """Reset view to default."""

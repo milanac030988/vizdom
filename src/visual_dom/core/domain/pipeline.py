@@ -272,8 +272,11 @@ class VisualDOMPipeline:
                     log.info("OmniParser text ensemble: ON (dedicated easyocr)")
                 else:
                     log.info("OmniParser text ensemble: ON (engine=%s)", _td.ocr_engine)
+                # 3-tuples: the confidence rides along so the backend can
+                # restore the real OCR score after the boxes round-trip through
+                # OmniParser (whose ocr_bbox/ocr_text lists carry no confidence).
                 kwargs["ocr_provider"] = lambda img, _td=_td: [
-                    (te.bounds, te.text) for te in _td.detect(img)
+                    (te.bounds, te.text, te.confidence) for te in _td.detect(img)
                 ]
             else:
                 log.info("OmniParser text ensemble: OFF (original OCR)")
@@ -432,12 +435,18 @@ class VisualDOMPipeline:
 
         # Step 1: Text Detection
         text_elements = []
+        text_error = None
         if detect_text:
             try:
                 text_results = self.text_detector.detect(image)
                 text_elements = self._convert_text_elements(text_results)
                 all_elements.extend(text_elements)
             except Exception as e:
+                # Degrading to a text-free run keeps headless batch jobs alive,
+                # but the failure must reach the caller: a DOM with 0 text looks
+                # identical to a text-free screen, and a dead OCR engine once
+                # went unnoticed for a whole session that way (20260806_195229).
+                text_error = str(e)
                 log.warning(f"Text detection failed: {e}")
 
         # Step 2: Element Detection (UIED, YOLO, or Hybrid)
@@ -531,16 +540,19 @@ class VisualDOMPipeline:
         all_elements = self._reassign_ids(all_elements)
 
         # Prepare output
+        stats = {
+            "text_detected": len(text_elements),
+            "uied_detected": len(uied_elements),
+            "yolo_detected": len(yolo_elements),
+            "detector": self.detector_mode,
+            "final_count": len(all_elements),
+        }
+        if text_error:
+            stats["text_error"] = text_error
         return {
             "elements": [e.to_dict() for e in all_elements],
             "image_size": {"width": width, "height": height},
-            "stats": {
-                "text_detected": len(text_elements),
-                "uied_detected": len(uied_elements),
-                "yolo_detected": len(yolo_elements),
-                "detector": self.detector_mode,
-                "final_count": len(all_elements),
-            }
+            "stats": stats,
         }
 
     def _merge_yolo_uied(
@@ -713,6 +725,13 @@ class VisualDOMPipeline:
         result = []
         split_count = 0
 
+        # Boxes the detector itself marked as ONE interactable. Other stages
+        # (rescan, merge) produce coincident copies of these boxes that carry
+        # interactable=None, so the guard below must compare against the
+        # detector's boxes, not just each element's own flag.
+        detector_interactables = [e.bounds for e in elements
+                                  if e.interactable is True]
+
         for elem in elements:
             # Only split non-text, non-block elements
             if elem.visual_type in ("text", "block"):
@@ -726,6 +745,17 @@ class VisualDOMPipeline:
             # better authority here. Splitting exists for UIED's merged blobs,
             # which carry interactable=None.
             if elem.interactable is True:
+                result.append(elem)
+                continue
+
+            # The same authority extends to coincident copies: a rescan or merge
+            # box occupying (IoU >= 0.8) a detector-marked interactable IS that
+            # control seen by another stage. Splitting such a copy cut the
+            # "Send Logfiles" tile (icon glyph reading as 'LoG' above the
+            # caption) into an icon half and a caption half - session
+            # 20260810_160751, E13.
+            if any(calculate_iou(elem.bounds, b) >= 0.8
+                   for b in detector_interactables):
                 result.append(elem)
                 continue
 
@@ -939,13 +969,18 @@ class VisualDOMPipeline:
                     overlapping_text.append(text_elem)
                     used_text_ids.add(text_elem.id)
 
-            # Merge text into the element
+            # Merge text into the element. The source is deliberately KEPT:
+            # absorbing OCR text does not change where the box came from, and
+            # a detector-backend element must keep its provenance - the
+            # confidence gate exemption and ranking treatment key off
+            # source == "omniparser", and rewriting it to "merged" made the
+            # filter delete backend detections whose real score is below the
+            # generic threshold (calculator 'DEG'/'MR', logits ~0.29).
             if overlapping_text:
                 combined_text = " ".join(
                     t.ocr_text for t in overlapping_text if t.ocr_text
                 )
                 uied_elem.ocr_text = combined_text
-                uied_elem.source = "merged"
 
                 # Boost confidence if text confirms element
                 if uied_elem.visual_type in ["button", "input_field"]:
@@ -967,8 +1002,15 @@ class VisualDOMPipeline:
         scaled_min_size = self._scaled(self.min_element_size)
 
         for elem in elements:
-            # Skip elements below confidence threshold
-            if elem.confidence < self.confidence_threshold:
+            # Skip elements below confidence threshold. Detector-backend
+            # elements are exempt: the backend applied its own operating
+            # threshold (OmniParser's box_threshold, deliberately as low as
+            # 0.03-0.05 to keep faint controls), and its scores live on a
+            # different scale than the OCR/UIED values this gate was tuned
+            # for. Re-gating them at 0.3 would silently delete detections
+            # the backend was configured to keep.
+            if elem.confidence < self.confidence_threshold and \
+                    elem.source != "omniparser":
                 continue
 
             # Skip elements below minimum area
@@ -1012,7 +1054,7 @@ class VisualDOMPipeline:
                 "block": 1, "unknown": 0,
             }
             rank = type_rank.get(e.visual_type, 0)
-            return (has_text, rank, e.confidence)
+            return (has_text, rank, self._ranking_confidence(e))
 
         # Sort by priority (best first)
         sorted_elements = sorted(elements, key=_element_priority, reverse=True)
@@ -1064,6 +1106,22 @@ class VisualDOMPipeline:
 
         return keep
 
+    @staticmethod
+    def _ranking_confidence(e: UIElement) -> float:
+        """
+        Confidence as used for ORDERING (NMS, dedup, top-N) - not the stored value.
+
+        Detector-backend scores (OmniParser YOLO logits, often 0.05-0.5) and the
+        heuristic constants elsewhere (UIED 0.5-0.8, OCR softmax) are not on a
+        comparable scale. Historically OmniParser elements carried a fake 1.0,
+        which made them win every ranking tie - behaviour the merge/dedup stages
+        were tuned around. Now that the stored confidence is the real score,
+        ranking still treats detector-backend elements as 1.0, so which box
+        survives a conflict is decided exactly as before; only the *reported*
+        number changed.
+        """
+        return 1.0 if e.source == "omniparser" else e.confidence
+
     def _remove_duplicates(self, elements: List[UIElement]) -> List[UIElement]:
         """
         Remove near-duplicate elements that have similar bounds and same text.
@@ -1078,7 +1136,7 @@ class VisualDOMPipeline:
         # Sort: prefer elements with text, then by confidence
         sorted_elems = sorted(
             elements,
-            key=lambda e: (1 if e.ocr_text else 0, e.confidence),
+            key=lambda e: (1 if e.ocr_text else 0, self._ranking_confidence(e)),
             reverse=True,
         )
 
@@ -1126,7 +1184,7 @@ class VisualDOMPipeline:
             return elements
 
         # Sort by confidence and take top N
-        sorted_elements = sorted(elements, key=lambda e: e.confidence, reverse=True)
+        sorted_elements = sorted(elements, key=self._ranking_confidence, reverse=True)
 
         # But always keep text elements with OCR
         text_with_content = [e for e in sorted_elements if e.visual_type == "text" and e.ocr_text]

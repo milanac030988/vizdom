@@ -25,7 +25,7 @@ try:
     from PyQt5.QtCore import Qt, QAbstractItemModel, QModelIndex, pyqtSignal, QPoint, QSize
     from PyQt5.QtGui import (
         QPixmap, QPainter, QPen, QColor, QBrush, QImage,
-        QStandardItemModel, QStandardItem, QIcon, QFont
+        QStandardItemModel, QStandardItem, QIcon, QFont, QPalette
     )
     HAS_PYQT5 = True
 except ImportError:
@@ -54,6 +54,11 @@ class ScreenshotCanvas(QWidget):
     element_clicked = pyqtSignal(str)  # element_id
     element_hovered = pyqtSignal(str)  # element_id
     point_clicked = pyqtSignal(int, int)  # x, y
+    # Emitted whenever a new screenshot becomes the canvas content, with its
+    # pixel size. The model's 'screenshot_loaded' event is not a substitute: the
+    # capture path fires it BEFORE handing over the image data, so a listener
+    # there measures the previous (or a null) pixmap.
+    image_loaded = pyqtSignal(int, int)
 
     # Colors for different states
     HOVER_COLOR = QColor(255, 0, 0, 180)      # Red, semi-transparent
@@ -94,13 +99,62 @@ class ScreenshotCanvas(QWidget):
         self._scale = view_state.scale
         self._offset_x = view_state.offset_x
         self._offset_y = view_state.offset_y
+        self._resize_to_content()
         self.update()
+
+    def _resize_to_content(self):
+        """
+        Size the widget to the scaled screenshot.
+
+        This is what makes scrolling work: the canvas lives in a QScrollArea,
+        which shows scrollbars when its child is larger than the viewport. The
+        canvas used to be a plain panel that painted the screenshot at 1:1 into
+        whatever space the splitter gave it - so a screenshot of an app bigger
+        than the panel was simply clipped, with no way to reach the rest.
+        """
+        if self._pixmap is None or self._pixmap.isNull():
+            self.setMinimumSize(1, 1)
+            self.resize(1, 1)
+            return
+        width = max(1, int(self._pixmap.width() * self._scale))
+        height = max(1, int(self._pixmap.height() * self._scale))
+        self.setFixedSize(width, height)
+
+    def sizeHint(self):
+        if self._pixmap is None or self._pixmap.isNull():
+            return super().sizeHint()
+        return QSize(int(self._pixmap.width() * self._scale),
+                     int(self._pixmap.height() * self._scale))
+
+    def fit_scale(self, viewport_width: int, viewport_height: int) -> float:
+        """
+        The scale at which the whole screenshot fits the given viewport.
+
+        Never upscales (capped at 1.0): blowing a small dialog up to fill the
+        panel would only add interpolation blur.
+        """
+        if self._pixmap is None or self._pixmap.isNull():
+            return 1.0
+        pw, ph = self._pixmap.width(), self._pixmap.height()
+        if pw <= 0 or ph <= 0:
+            return 1.0
+        return min(viewport_width / pw, viewport_height / ph, 1.0)
+
+    def has_image(self) -> bool:
+        return self._pixmap is not None and not self._pixmap.isNull()
 
     def load_image(self, path: str) -> bool:
         """Load image from file."""
         try:
-            self._pixmap = QPixmap(path)
-            self.update()
+            pixmap = QPixmap(path)
+            if pixmap.isNull():
+                # The model's screenshot_loaded event carries a nominal filename
+                # for in-memory captures ("screenshot.png"), which does not
+                # resolve to a file. Keep the image we already have rather than
+                # blanking the canvas.
+                return False
+            self._pixmap = pixmap
+            self._announce_new_image()
             return True
         except Exception as e:
             print(f"Error loading image: {e}")
@@ -112,16 +166,28 @@ class ScreenshotCanvas(QWidget):
             image = QImage()
             image.loadFromData(data)
             self._pixmap = QPixmap.fromImage(image)
-            self.update()
+            self._announce_new_image()
             return True
         except Exception as e:
             print(f"Error loading image data: {e}")
             return False
 
+    def _announce_new_image(self):
+        self._resize_to_content()
+        self.update()
+        if self.has_image():
+            self.image_loaded.emit(self._pixmap.width(), self._pixmap.height())
+
     def paintEvent(self, event):
         """Paint the canvas with screenshot and highlights."""
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
+        # Smooth scaling for the screenshot. Without it drawPixmap uses
+        # nearest-neighbour, which aliases badly when the image is scaled down
+        # to fit (dropped pixels, jagged text) and looks blocky when zoomed in.
+        # Qt clips drawPixmap to the exposed region, so this stays cheap even on
+        # a huge zoomed canvas - no pre-scaled copy is held in memory.
+        painter.setRenderHint(QPainter.SmoothPixmapTransform)
 
         # Fill background
         painter.fillRect(self.rect(), QColor(50, 50, 50))
@@ -194,41 +260,54 @@ class ScreenshotCanvas(QWidget):
         painter.setPen(Qt.white)
         painter.drawText(label_rect, Qt.AlignLeft, label)
 
+    # Mouse coordinates are passed to the model RAW (widget pixels). The model's
+    # hover_element_at_point / select_element_at_point already apply
+    # screen_to_content (divide by scale, subtract offset). Dividing here as well
+    # was a double transform: harmless at the initial scale=1 (a no-op second
+    # divide) but drifting further from the cursor the more you zoomed - the
+    # reported "highlight box doesn't line up after zooming" bug.
+
     def mouseMoveEvent(self, event):
         """Handle mouse move for hover highlighting."""
         if self._model.is_explore_mode:
-            # Convert screen to content coordinates
-            content_x = int((event.x() - self._offset_x) / self._scale)
-            content_y = int((event.y() - self._offset_y) / self._scale)
-
-            element = self._model.hover_element_at_point(content_x, content_y)
+            element = self._model.hover_element_at_point(event.x(), event.y())
             if element:
                 self.element_hovered.emit(element.id)
 
     def mousePressEvent(self, event):
         """Handle mouse click for selection."""
         if event.button() == Qt.LeftButton:
-            # Convert screen to content coordinates
+            # The signal reports the image pixel under the cursor (single
+            # transform), independent of the model hit-test below.
             content_x = int((event.x() - self._offset_x) / self._scale)
             content_y = int((event.y() - self._offset_y) / self._scale)
-
             self.point_clicked.emit(content_x, content_y)
 
             # Toggle explore mode or select element
             if self._model.is_explore_mode:
-                element = self._model.select_element_at_point(content_x, content_y)
+                element = self._model.select_element_at_point(event.x(), event.y())
                 if element:
                     self.element_clicked.emit(element.id)
             else:
                 self._model.set_explore_mode(True)
 
     def wheelEvent(self, event):
-        """Handle mouse wheel for zoom."""
-        delta = event.angleDelta().y()
-        if delta > 0:
-            self._model.zoom_in()
+        """
+        Ctrl+wheel zooms; a plain wheel scrolls.
+
+        The canvas used to zoom on every wheel tick, which was the only way to
+        see a clipped screenshot but moved the whole image at once. Now that the
+        view scrolls, a plain wheel must reach the scroll area - ignoring the
+        event lets it propagate there, which is what every image viewer does.
+        """
+        if event.modifiers() & Qt.ControlModifier:
+            if event.angleDelta().y() > 0:
+                self._model.zoom_in()
+            else:
+                self._model.zoom_out()
+            event.accept()
         else:
-            self._model.zoom_out()
+            event.ignore()
 
 
 class ElementTreeModel(QStandardItemModel):
@@ -706,9 +785,17 @@ class VisualDOMViewerWindow(QMainWindow):
         # Create splitter for resizable panels
         splitter = QSplitter(Qt.Horizontal)
 
-        # Left panel: Screenshot canvas
+        # Left panel: Screenshot canvas inside a scroll area. The canvas sizes
+        # itself to the scaled screenshot, so the scroll area supplies both
+        # scrollbars as soon as the image is larger than the panel - previously
+        # a large app's screenshot was just clipped at the panel edge.
         self._canvas = ScreenshotCanvas()
-        splitter.addWidget(self._canvas)
+        self._canvas_scroll = QScrollArea()
+        self._canvas_scroll.setWidget(self._canvas)
+        self._canvas_scroll.setWidgetResizable(False)   # the canvas owns its size
+        self._canvas_scroll.setAlignment(Qt.AlignCenter)  # centre when it fits
+        self._canvas_scroll.setBackgroundRole(QPalette.Dark)
+        splitter.addWidget(self._canvas_scroll)
 
         # Middle panel: Tree view
         self._tree_view = QTreeView()
@@ -947,6 +1034,17 @@ class VisualDOMViewerWindow(QMainWindow):
         zoom_out_action.setShortcut("Ctrl+-")
         zoom_out_action.triggered.connect(self._model.zoom_out)
 
+        fit_action = QAction("&Fit to Window", self)
+        fit_action.setShortcut("Ctrl+0")
+        fit_action.setStatusTip("Scale the screenshot so the whole app is visible")
+        fit_action.triggered.connect(self._fit_to_window)
+
+        actual_size_action = QAction("&Actual Size (100%)", self)
+        actual_size_action.setShortcut("Ctrl+1")
+        actual_size_action.setStatusTip(
+            "Show the screenshot pixel-for-pixel; scroll to reach the rest")
+        actual_size_action.triggered.connect(lambda: self._model.set_scale(1.0))
+
         settings_action = QAction(self._icon("SP_FileDialogDetailedView"),
                                   "&Pipeline Settings...", self)
         settings_action.setShortcut("Ctrl+,")
@@ -990,6 +1088,8 @@ class VisualDOMViewerWindow(QMainWindow):
         view_menu.addSeparator()
         view_menu.addAction(zoom_in_action)
         view_menu.addAction(zoom_out_action)
+        view_menu.addAction(fit_action)
+        view_menu.addAction(actual_size_action)
 
         tools_menu = bar.addMenu("&Tools")
         tools_menu.addAction(settings_action)
@@ -1030,6 +1130,7 @@ class VisualDOMViewerWindow(QMainWindow):
 
         toolbar.addAction(export_action)
         toolbar.addSeparator()
+        toolbar.addAction(fit_action)
         toolbar.addAction(settings_action)
 
         # Right-hand side: what the pipeline is set to right now. The toolbar
@@ -1055,6 +1156,45 @@ class VisualDOMViewerWindow(QMainWindow):
         ):
             getattr(widget, signal).connect(self._update_pipeline_summary)
         self._update_pipeline_summary()
+
+    # ---------------- zoom / fit ------------------------------------------
+
+    def _fit_to_window(self):
+        """Scale the screenshot so the whole app is visible in the panel."""
+        if not self._canvas.has_image():
+            return
+        viewport = self._canvas_scroll.viewport().size()
+        # Leave room for the scrollbars that would otherwise appear at exactly
+        # the fitting scale and re-shrink the viewport.
+        scale = self._canvas.fit_scale(max(1, viewport.width() - 2),
+                                       max(1, viewport.height() - 2))
+        self._model.set_scale(scale)
+
+    def _on_canvas_image_loaded(self, width: int, height: int):
+        """
+        A new screenshot arrived: fit it if it would not otherwise fit.
+
+        A capture of a large app used to appear cropped with no indication that
+        anything was missing. Fitting never upscales, so a small dialog is still
+        shown 1:1 and only oversized captures are scaled down; `Ctrl+1` returns
+        to actual size and the view scrolls from there.
+        """
+        viewport = self._canvas_scroll.viewport().size()
+        fit = self._canvas.fit_scale(viewport.width(), viewport.height())
+        if fit < 1.0:
+            self._fit_to_window()
+            self._statusbar.showMessage(
+                f"Screenshot is {width}x{height} - scaled to "
+                f"{self._model.state.view.scale * 100:.0f}% to fit "
+                f"(Ctrl+1 for actual size, scroll to pan)", 8000)
+        else:
+            self._model.set_scale(1.0)
+
+    def _on_scale_changed(self, view_state):
+        """Keep the zoom indicator in step with the view."""
+        if getattr(self, "_zoom_label", None) is None:
+            return
+        self._zoom_label.setText(f"{view_state.scale * 100:.0f}%")
 
     def _update_pipeline_summary(self, *_):
         """One line describing the active pipeline, shown at the toolbar's right."""
@@ -1174,6 +1314,15 @@ class VisualDOMViewerWindow(QMainWindow):
         self._statusbar = QStatusBar()
         self.setStatusBar(self._statusbar)
 
+        # Zoom level. Worth its own indicator now that the view scrolls: at
+        # anything but 100% the canvas no longer shows screenshot pixels 1:1,
+        # and that must be visible when reading coordinates off the image.
+        self._zoom_label = QLabel("100%")
+        self._zoom_label.setToolTip(
+            "Zoom (Ctrl+wheel, Ctrl+0 fit, Ctrl+1 actual size)")
+        self._zoom_label.setStyleSheet("color: gray; padding: 0 10px;")
+        self._statusbar.addPermanentWidget(self._zoom_label)
+
         # Connection status label
         self._connection_label = QLabel("Not Connected")
         self._connection_label.setStyleSheet("color: gray; padding: 0 10px;")
@@ -1209,6 +1358,8 @@ class VisualDOMViewerWindow(QMainWindow):
         self._model.add_listener('dom_loaded', self._on_dom_loaded)
         self._model.add_listener('selection_changed', self._on_selection_changed)
         self._model.add_listener('state_changed', self._on_state_changed)
+        self._model.add_listener('view_changed', self._on_scale_changed)
+        self._canvas.image_loaded.connect(self._on_canvas_image_loaded)
 
     def _on_dom_loaded(self, dom_tree: DOMTree):
         """Handle DOM tree loaded."""
@@ -1708,6 +1859,24 @@ class VisualDOMViewerWindow(QMainWindow):
             import json as _json
             from datetime import datetime
 
+            # Fail fast on a missing OCR engine - the same ADR-020 probe that
+            # guards connect(). Without it the Viewer once ran a whole session
+            # with paddleocr configured but absent: the pipeline degraded to
+            # 0 text boxes and nothing said why (session 20260806_195229).
+            # Probed here, before a session directory exists and before the
+            # heavy models load.
+            try:
+                from visual_dom.context import Session
+                Session._probe_ocr_engine(self._ocr_combo.currentText())
+            except ValueError as e:
+                self._hide_progress()
+                QMessageBox.warning(self, "OCR Engine Not Available", str(e))
+                self._statusbar.showMessage(
+                    "Analysis aborted - configured OCR engine is not installed")
+                return
+            except ImportError:
+                pass    # visual_dom itself missing is reported by the code below
+
             # Generate session ID and create output folder
             session_id = datetime.now().strftime("%Y%m%d_%H%M%S")
             project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
@@ -1863,6 +2032,20 @@ class VisualDOMViewerWindow(QMainWindow):
 
                 result = pipeline.process(temp_path)
                 print(f"[Viewer] Pipeline complete. Found {len(result.get('elements', []))} elements")
+
+                # A runtime OCR death (engine present but failing) degrades the
+                # run to 0 text, which looks exactly like a text-free screen.
+                # The pipeline records it in stats; say it out loud here.
+                text_error = (result.get("stats") or {}).get("text_error")
+                if text_error:
+                    print(f"[Viewer] WARNING: text detection failed: {text_error}")
+                    QMessageBox.warning(
+                        self, "Text Detection Failed",
+                        "The OCR engine failed during this run, so the DOM "
+                        f"contains no text elements:\n\n{text_error}\n\n"
+                        "Element boxes are still available, but text= locators "
+                        "will not resolve."
+                    )
 
                 # Save CV pipeline result (before hierarchy/SLM)
                 try:

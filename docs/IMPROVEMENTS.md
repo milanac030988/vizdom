@@ -174,11 +174,130 @@ being skipped — the external read is the higher-quality one by construction.
 a clear gap between texts (≥ 1.5× median text height) before splitting.
 Additionally, a configured-but-missing OCR engine now **fails fast** with an
 install hint instead of silently degrading the run (observed with `paddleocr`
-absent).
+absent). The probe originally guarded only `connect()` (ADR-020); the **Viewer's
+analyze path now runs it too** — before a session directory is created — and a
+*runtime* OCR death (engine present but failing mid-run) is recorded by the
+pipeline in `stats["text_error"]` and surfaced by the Viewer as a warning
+dialog, so a dead engine can no longer masquerade as a text-free screen
+(`tests/unit/test_ocr_failfast.py`).
 
 **Result** on the comparison screenshot: every previously missing status text
 recovered with correct content; all tile buttons whole; bottom hyperlinks still
 separate; calculator and synthetic benchmarks unchanged.
+
+## 3c. OCR line assembly: height-scaled gaps (adjacent links no longer fuse)
+
+**Problem.** In the IWT quick-links row, three distinct links — *Printer
+Management >*, *Docupedia >*, *My IT Profile >* — came back as **one** 295 px
+text element (session `20260807_094630`, E71). A fused element is unclickable by
+construction: no locator can address one link inside it, and nothing downstream
+can undo the fusion because the fragments no longer exist.
+
+**Diagnosis.** Initially parked as a smart-merge (Step 6c) defect; measurement
+showed otherwise — the session contains **no** `source: "merge"` elements. The
+fusion happens earlier, in the OCR adapter's own line assembly
+(`TextDetector._merge_text_boxes`): raw EasyOCR returns the three links as
+separate boxes, but the assembler chained any same-line boxes closer than a
+**fixed 20 px**, and the gaps between these links are 13 px at 15 px text height.
+The same rule also fused *IT Incidents > NG Portal >* and *IT Service Portal >
+Add/Remove Software* in the same row. Because the ADR-016 ensemble feeds these
+pre-merged boxes into OmniParser, the fused box then poisons the detector path
+too.
+
+**Fix.** The merge gap now **scales with the text height** (`0.45 ×` the shorter
+box's height, floor 3 px) — an inter-word space is a fraction of the cap height,
+so what counts as "one phrase" at 40 px headline size is two labels at 15 px body
+size. Same-line membership requires **real vertical overlap** (≥ 0.5 of the
+shorter box) instead of similar top edges. Assembly is two-pass — rows first,
+then left-to-right within each row — which also fixed a latent ordering bug where
+2 px of top-edge jitter made the single y-sort visit boxes out of x-order and
+miss a genuine merge.
+
+**Result** (all 125 saved sessions, OCR run once, both policies applied to the
+same raw boxes): separator-spanning over-merges **104 → 8**, and each remaining 8
+is a *correct* merge (browser tab bars, terminal paths whose `\` OCR reads as
+`|`). The fix cuts false merges while *repairing more* true splits: on the dense
+terminal screen `20260807_004113` the new policy assembles 233 raw boxes into 124
+lines vs the old 162 — long paths now form one box, as they should. Covered by
+`tests/unit/test_text_merge.py` (13 cases, pure geometry, engine-free).
+
+**Follow-up (same investigation, next day).** Verifying on a fresh IWT capture
+(session `20260810_160751`) surfaced two more defects, one of them exposed *by*
+the fix:
+
+- **Half-height tile.** The "Send Logfiles" tile came back cut at the
+  icon/caption boundary (E13, h=64 of 119). With correct OCR (icon glyph `LoG`
+  above, caption below), Step 4b's text-split saw a vertical text arrangement in
+  the tile and cut it — the §3b guard ("never split what the detector marked as
+  ONE interactable") checked only the element's *own* flag, but the box being
+  split was a `rescan` copy (`interactable=None`) of OmniParser's
+  `interactable=True` tile at near-identical bounds. Under the old OCR the same
+  splitter *also* fired (horizontally, into three full-height slivers) and
+  smart-merge glued the slivers back — the old "correct" tile was two bugs
+  cancelling out, with the reversed label `Logfiles Send` as the tell. Fixed by
+  extending the guard to **coincident copies**: an element whose box matches a
+  detector-marked interactable (IoU ≥ 0.8) is never split
+  (`tests/unit/test_text_split.py`).
+- **Row drift.** Row membership was judged against the *last member appended*,
+  so a tall box dragged the row downward until it swallowed the next line: on
+  the same screen, `Application Control` (h=17) bridged to `(BlackList)` one
+  line below, which then sat between `Low` and `Protection` in x-order and broke
+  the status text into two labels. Membership is now judged against the **row's
+  running band** (mean y1..y2 of members).
+
+After both: the tile is whole (h=119, correctly labelled `Send Logfiles`),
+`Low Protection` is one element again, the corpus numbers above are unchanged,
+and the calculator demo screen is byte-identical.
+
+**Code / config.** `_merge_text_boxes` in
+`src/visual_dom/adapters/outbound/ocr/text_detector.py`; the coincidence guard
+in `_split_by_text_positions` (`src/visual_dom/core/domain/pipeline.py`);
+thresholds are method parameters (class defaults `GAP_HEIGHT_RATIO = 0.45`,
+`MIN_GAP_PX = 3`, `LINE_OVERLAP_MIN = 0.5`), not yet config-file knobs.
+
+## 3d. Real confidence scores (1.0 was a default, not a measurement)
+
+**Problem.** Every OmniParser element reported `confidence: 1.0` (69 of 86 in a
+typical session), and the rest were round constants (0.5–0.8). The Confidence
+column was provenance masquerading as certainty: 1.0 meant "came from
+OmniParser", 0.6 meant "the UIED checkbox heuristic fired".
+
+**Diagnosis.** OmniParser computes real YOLO confidences (`predict_yolo`
+returns logits) but drops them before building its box dicts, so our backend's
+`item.get("confidence", 1.0)` always took the fallback. Genuine OCR confidences
+were *also* lost: ensemble text boxes round-trip through OmniParser's
+`ocr_bbox`/`ocr_text` lists, which have no confidence channel. Only Step-1 text
+elements that bypassed the ensemble kept a real score.
+
+**Fix — recover at the boundaries, entirely in our code** (the OmniParser repo
+is vendored outside git, so patching it would not survive a re-clone):
+
+- `predict_yolo` is wrapped at import (`_install_yolo_recorder`) to record
+  (boxes, logits) into a per-thread slot; the ensemble provider now passes
+  `(bbox, text, confidence)` 3-tuples (2-tuples still accepted). After
+  `get_som_labeled_img` returns, `_parse_content_list` matches each parsed item
+  back to its source box by IoU (≥ 0.5) and restores the real score. An
+  unmatched item keeps 1.0, which now means "score unknown".
+- **Behaviour is deliberately unchanged.** Raw logits (0.05–0.5 for icons) are
+  not on the same scale as the heuristic constants, so: (a) the pipeline's
+  generic confidence gate (default 0.3) exempts detector-backend elements — the
+  backend already applied its own `box_threshold`, deliberately as low as 0.03
+  to keep faint controls; (b) ranking in NMS / dedup / top-N uses
+  `_ranking_confidence`, which still treats OmniParser elements as 1.0, so
+  which box survives a conflict is decided exactly as before; (c) merging OCR
+  text into a detector element no longer rewrites its `source` — that rewrite
+  cost the exemption and deleted the calculator's DEG/MR buttons (logits ~0.29)
+  during verification.
+
+**Result.** IWT screen: 6 distinct confidence values → 61, with 9 (not 69)
+elements at 1.0. Calculator: 1 distinct value → 48, and the element set
+(bounds + type + text) **byte-identical** to before. UIED's constants remain
+constants — they encode which rule fired and would need real calibration to
+mean more.
+
+**Code.** `omniparser_backend.py` (`_install_yolo_recorder`,
+`_apply_ocr_provider`, `_parse_content_list`), `pipeline.py`
+(`_ranking_confidence`, filter exemption); `tests/unit/test_confidence.py`.
 
 ## 4. Detection-threshold sensitivity (faint small controls)
 
