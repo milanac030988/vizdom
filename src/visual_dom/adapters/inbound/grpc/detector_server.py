@@ -86,6 +86,8 @@ class DetectorServicer:
 
 
 def serve(backend_name, port, detector_kwargs, max_workers=4):
+    from ._shutdown import run_until_signal
+
     grpc, pb2, pb2_grpc = _load_stubs()
     log.info("Loading detector backend '%s' (warm model)...", backend_name)
     backend = create_detector(backend_name, **detector_kwargs)
@@ -94,7 +96,13 @@ def serve(backend_name, port, detector_kwargs, max_workers=4):
     server.add_insecure_port(f"[::]:{port}")
     server.start()
     log.info("VizDOM detector service '%s' listening on :%d", backend_name, port)
-    server.wait_for_termination()
+
+    def _cleanup():
+        close = getattr(backend, "close", None)
+        if callable(close):
+            close()
+
+    run_until_signal(server, f"detector '{backend_name}'", port, on_shutdown=_cleanup)
 
 
 def _resolve_omniparser_paths(args) -> dict:
