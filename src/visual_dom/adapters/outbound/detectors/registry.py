@@ -46,6 +46,11 @@ def _make_grpc(**kwargs: Any) -> DetectorBackend:
     return GrpcDetectorBackend(**kwargs)
 
 
+def _make_modular(**kwargs: Any) -> DetectorBackend:
+    from visual_dom.adapters.outbound.detectors.modular_backend import ModularDetectorBackend
+    return ModularDetectorBackend(**kwargs)
+
+
 register("uied", _make_uied, license="project", requires_gpu=False,
          description="Traditional CV coarse-to-fine (default).")
 register("yolo", _make_yolo, license="AGPL-3.0", requires_gpu=True,
@@ -54,6 +59,8 @@ register("omniparser", _make_omniparser, license="AGPL-3.0 (icon_detect)/MIT (ic
          requires_gpu=True, description="Microsoft OmniParser; needs repo + weights.")
 register("grpc", _make_grpc, license="n/a (remote)", requires_gpu=False,
          description="Remote detector over gRPC (ADR-017); heavy model runs on another host.")
+register("modular", _make_modular, license="composite (per stage)", requires_gpu=False,
+         description="Three pluggable stages: region proposer + OCR + optional captioner (ADR-027).")
 
 
 def create_detector(name: str, **kwargs: Any) -> DetectorBackend:

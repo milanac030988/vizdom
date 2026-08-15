@@ -92,3 +92,4 @@ nav:
       - 024 Multi-Locator Fallback Chains: adr/024-multi-locator-fallback-chains.md
       - 025 Session Orchestrator Service: adr/025-session-orchestrator-service.md
       - 026 Viewer UI Restructure: adr/026-viewer-ui-restructure.md
+      - 027 Modular Three-Stage Detector: adr/027-modular-three-stage-detector.md
