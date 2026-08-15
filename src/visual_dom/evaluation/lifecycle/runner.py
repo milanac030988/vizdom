@@ -252,6 +252,9 @@ def main():
                              "elam-7b, ui-tars-1.5-7b, aria-ui")
     parser.add_argument("--limit-states", type=int, default=None)
     parser.add_argument("--no-quantize", action="store_true")
+    parser.add_argument("--out-dir", default="benchmarks/results",
+                        help="directory for the timestamped result json/md "
+                             "(deploy/gpu sweep points each column at one run dir)")
     args = parser.parse_args()
 
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
@@ -272,7 +275,8 @@ def main():
         print(f"{name}: {reason}")
         executors.append(GrounderExecutor(grounder))
 
-    run_benchmark(manifest, executors, limit_states=args.limit_states)
+    run_benchmark(manifest, executors, limit_states=args.limit_states,
+                  out_dir=args.out_dir)
 
 
 if __name__ == "__main__":
