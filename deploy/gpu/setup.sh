@@ -33,9 +33,18 @@ uv venv --python 3.12
 . .venv/bin/activate
 
 echo "=== [4/5] dependencies (CUDA torch first, then the project) ==="
-# Explicit CUDA wheel index: the PyPI default torch on Linux is CUDA-enabled,
-# but pin the index anyway so a resolver change cannot hand us a CPU wheel.
-uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+# Pick the torch wheel index from the GPU's actual compute capability:
+# Blackwell cards (RTX 50xx, sm_120) need the cu128 wheels - the cu121 build
+# installs fine and then dies at runtime with "no kernel image available",
+# which on a rented box means paid time lost. Ampere/Ada (3090/4090/A-series)
+# are happy on cu121.
+COMPUTE_CAP=$(nvidia-smi --query-gpu=compute_cap --format=csv,noheader | head -1)
+CUDA_INDEX="https://download.pytorch.org/whl/cu121"
+case "$COMPUTE_CAP" in
+    12.*|10.*) CUDA_INDEX="https://download.pytorch.org/whl/cu128" ;;
+esac
+echo "GPU compute capability $COMPUTE_CAP -> $CUDA_INDEX"
+uv pip install torch torchvision --index-url "$CUDA_INDEX"
 uv pip install -r requirements.txt -r requirements-training.txt
 uv pip install grpcio grpcio-tools easyocr huggingface_hub[cli]
 # grounders: UI-TARS needs qwen-vl-utils; 4-bit needs bitsandbytes (in training reqs)
