@@ -90,8 +90,12 @@ class OmniParserRegionProposer(RegionProposer):
         boxes, conf, _phrases = self._predict(
             model=self._model, image=pil, box_threshold=self._box_threshold,
             imgsz=None, scale_img=False, iou_threshold=0.1)
+        # round(), not int(): the monolith converts ratio->px with round(), and
+        # truncation's off-by-one flipped borderline type classifications
+        # (h=22 button vs h=21 input_field) in the parity comparison.
         return [
-            RegionProposal(bounds=tuple(int(v) for v in box), confidence=float(c))
+            RegionProposal(bounds=tuple(int(round(v)) for v in box),
+                           confidence=float(c))
             for box, c in zip(boxes.tolist(), conf.tolist())
         ]
 

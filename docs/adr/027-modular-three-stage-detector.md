@@ -22,6 +22,7 @@ Nguyen Huynh Tri Cuong
 |------|---------|-------------|
 | 2026-08-13 | 1.0 | Initial evaluation (three boundaries, contracts, candidate models, benchmark plan) |
 | 2026-08-15 | 1.1 | Skeleton implemented: ports, fusion port, `modular` backend registered, pipeline integration; no-weights combo verified end-to-end |
+| 2026-08-15 | 1.2 | Parity benchmark run: trigger condition 1 met (results below) |
 
 ## Context
 
@@ -237,8 +238,38 @@ Known inefficiency, accepted for parity: OCR *runs* twice per frame (pipeline
 Step 1 + backend stage 2), the same cost shape as the omniparser ensemble.
 Folding them into one pass is a part-2 optimization.
 
-Not yet: the parity benchmark run, Ollama captioner, non-AGPL region model
-(gated on the hardware decision).
+Not yet: Ollama captioner, non-AGPL region model (gated on the hardware
+decision).
+
+## Parity results (v1.2) — trigger condition 1 met
+
+Backend-level comparison, monolith (with ensemble, as production runs it) vs
+`modular(omniparser + shared easyocr + florence)`, three reference screens
+(2 IWT captures + calculator). Monolith as reference; match = IoU ≥ 0.5.
+
+| Screen | Detections | Region recall | Extra regions | Type agreement | Label coverage | Latency |
+|---|---|---|---|---|---|---|
+| IWT `160751` | 75 / 75 | 1.00 | 0 | 1.00 | 1.00 / 1.00 | 10.1 s → **4.7 s** |
+| Calculator `103844` | 53 / 53 | 1.00 | 0 | 1.00 | 1.00 / 1.00 | 2.9 s → **2.3 s** |
+| IWT `094630` | 73 / 73 | 1.00 | 0 | 1.00 | 1.00 / 1.00 | 5.8 s → **4.2 s** |
+
+Content agreement (text ∪ label, normalized): jaccard 0.88–0.95, and every
+difference is a **Florence-2 caption variation** on a ±1 px crop ("share" vs
+another phrasing for the same glyph) — generative noise, not OCR: no literal
+OCR string differs on any screen. Note the metric subtlety found on the way:
+the monolith stores absorbed OCR under `label` (raw_type='icon' → caption
+slot) while the modular backend stores it under `text` (a literal read, the
+ADR-016 semantics); a text-only comparison misreads that placement difference
+as missing content. Also fixed during the run: the proposer now rounds
+ratio→pixel coordinates like the monolith (truncation's off-by-one flipped
+five borderline `input_field`/`button` classifications).
+
+The latency win is structural, not tuning: the modular path runs one OCR pass
+where the monolith runs its internal OCR *plus* the ensemble.
+
+Two combos are byte-count-identical to the baseline with type agreement 1.00 —
+the fusion port is validated. Remaining triggers: an alternative-model win
+(condition 2) and the hardware decision (condition 3).
 
 ## Trigger conditions (Proposed → Accepted)
 
