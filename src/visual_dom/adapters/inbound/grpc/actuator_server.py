@@ -118,6 +118,8 @@ class ActuatorServicer:
 
 
 def serve(strategy_name, port, strategy_kwargs, max_workers=4):
+    from ._shutdown import run_until_signal
+
     grpc, pb2, pb2_grpc = _load_stubs()
     log.info("Instantiating actuator strategy '%s'...", strategy_name)
     strategy = create_actuator(strategy_name, **strategy_kwargs)
@@ -126,13 +128,8 @@ def serve(strategy_name, port, strategy_kwargs, max_workers=4):
     server.add_insecure_port(f"[::]:{port}")
     server.start()
     log.info("VizDOM actuator service '%s' listening on :%d", strategy_name, port)
-    try:
-        server.wait_for_termination()
-    finally:
-        try:
-            strategy.close()
-        except Exception:
-            pass
+    run_until_signal(server, f"actuator '{strategy_name}'", port,
+                     on_shutdown=strategy.close)
 
 
 def _parse_kw(pairs):

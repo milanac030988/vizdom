@@ -1851,7 +1851,41 @@ class VisualDOMViewerWindow(QMainWindow):
         self._do_analyze_screenshot(screenshot)
 
     def _do_analyze_screenshot(self, screenshot: bytes):
-        """Internal method to analyze screenshot."""
+        """
+        Analyze a screenshot - guarded against re-entry.
+
+        The body pumps QApplication.processEvents() at every stage so the UI
+        stays alive during a slow analysis, but that pump also DISPATCHES any
+        queued F5/F6 press - which used to start another full analysis inside
+        this one. Each nesting stacked a whole pipeline (gRPC client, cv2, ...)
+        on the interpreter stack; enough impatient presses during a slow remote
+        detect (11.8s observed) exhausted the 1000-frame limit and surfaced as
+        'Error in listener: maximum recursion depth exceeded' spam (session
+        20260807_004037; reproduced at 7 nested analyses from 6 queued
+        presses). One analysis at a time: re-entrant requests are refused with
+        a status message, and the trigger actions are disabled for the
+        duration as the visible cue.
+        """
+        if getattr(self, "_analysis_running", False):
+            print("[Viewer] analyze request ignored: an analysis is already running")
+            self._statusbar.showMessage(
+                "Analysis already running — please wait for it to finish", 4000)
+            return
+
+        self._analysis_running = True
+        could_capture = self._capture_action.isEnabled()
+        could_refresh = self._refresh_action.isEnabled()
+        self._capture_action.setEnabled(False)
+        self._refresh_action.setEnabled(False)
+        try:
+            self._do_analyze_screenshot_inner(screenshot)
+        finally:
+            self._analysis_running = False
+            self._capture_action.setEnabled(could_capture)
+            self._refresh_action.setEnabled(could_refresh)
+
+    def _do_analyze_screenshot_inner(self, screenshot: bytes):
+        """The actual analysis pipeline (only ever one in flight)."""
         try:
             import tempfile
             import os

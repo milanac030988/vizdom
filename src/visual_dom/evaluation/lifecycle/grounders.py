@@ -243,27 +243,99 @@ class UiTarsGrounder(Grounder):
 
 class AriaUiGrounder(Grounder):
     """
-    Aria-UI (rhymes-ai, Apache-2.0) - 25.3 B-parameter MoE (3.9 B active).
+    Aria-UI (Aria-UI/Aria-UI-base, Apache-2.0) - 25.3 B MoE (3.9 B active).
 
-    Not runnable on single-GPU workstation hardware: bf16 weights alone are
-    ~50 GB and even 4-bit quantization exceeds a 6-16 GB card. The adapter
-    exists so the comparison table can carry the column with an explicit
-    "requires multi-GPU server" status instead of silently omitting it;
-    reported paper numbers are cited in the evaluation docs instead.
+    Upstream usage contract (github.com/AriaUI/Aria-UI): AutoModelForCausalLM +
+    AutoProcessor with trust_remote_code, chat messages of [image, text], the
+    grounding prompt asks for "relative (0-1000) pixel point coordinates", and
+    the reply is a Python-literal ``[x, y]`` in that 0-1000 space - mapped here
+    back to source pixels.
+
+    Hardware: bf16 weights are ~50 GB (multi-GPU); 4-bit quantization is
+    ~13-16 GB and fits a rented 24 GB+ card - the intended way to run this
+    column (deploy/gpu runbook). Not runnable on the 6 GB laptop; available()
+    says so instead of pretending. No native verdict mode - judge() grounds
+    the statement's quoted subject, the same documented proxy as UI-TARS.
     """
 
     name = "aria-ui"
+    DEFAULT_MODEL = "Aria-UI/Aria-UI-base"
+
+    GROUNDING_PROMPT = (
+        "Given a GUI image, what are the relative (0-1000) pixel point "
+        "coordinates for the element corresponding to the following "
+        "instruction or description: {instruction}")
+
+    _PAIR = re.compile(r"\[?\s*(\d{1,4})\s*,\s*(\d{1,4})\s*\]?")
+    _QUOTED = re.compile(r"'([^']+)'")
 
     def available(self):
-        return False, ("Aria-UI is a 25.3B MoE (~50 GB bf16); it requires a "
-                       "multi-GPU server. Column reported from published "
-                       "benchmarks; see docs/EVALUATION.md.")
+        try:
+            import torch
+            import transformers  # noqa: F401
+        except ImportError as exc:
+            return False, f"missing package: {exc.name} (pip install torch transformers accelerate)"
+        if not torch.cuda.is_available():
+            return False, "Aria-UI needs a CUDA GPU (~13-16 GB in 4-bit)"
+        vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
+        if vram_gb < 20:
+            return False, (f"GPU has {vram_gb:.0f} GB; Aria-UI needs ~13-16 GB "
+                           f"in 4-bit plus activations (>=20 GB card). Rent per "
+                           f"the deploy/gpu runbook.")
+        return True, f"deps + {vram_gb:.0f} GB GPU present (weights ~50 GB download, 4-bit load)"
+
+    def _ensure(self):
+        if self._model is not None:
+            return
+        from transformers import AutoModelForCausalLM, AutoProcessor
+        path = self.model_path or self.DEFAULT_MODEL
+        kwargs = {"device_map": "auto", "trust_remote_code": True}
+        if self.quantize:
+            try:
+                from transformers import BitsAndBytesConfig
+                import torch
+                kwargs["quantization_config"] = BitsAndBytesConfig(
+                    load_in_4bit=True, bnb_4bit_compute_dtype=torch.bfloat16)
+            except ImportError:
+                log.warning("bitsandbytes not installed - Aria-UI bf16 needs "
+                            "~50 GB; expect failure below a multi-GPU server")
+        else:
+            import torch
+            kwargs["torch_dtype"] = torch.bfloat16
+        log.info("Loading Aria-UI from %s ...", path)
+        self._processor = AutoProcessor.from_pretrained(path, trust_remote_code=True)
+        self._model = AutoModelForCausalLM.from_pretrained(path, **kwargs)
 
     def ground(self, image_bgr, instruction):
-        raise GrounderUnavailable(self.available()[1])
+        def run():
+            self._ensure()
+            pil = self._to_pil(image_bgr)
+            messages = [{"role": "user", "content": [
+                {"type": "image"},
+                {"type": "text",
+                 "text": self.GROUNDING_PROMPT.format(instruction=instruction)},
+            ]}]
+            text = self._processor.apply_chat_template(messages, add_generation_prompt=True)
+            inputs = self._processor(text=text, images=pil, return_tensors="pt")
+            inputs = {k: (v.to(self._model.device) if hasattr(v, "to") else v)
+                      for k, v in inputs.items()}
+            out = self._model.generate(**inputs, max_new_tokens=32)
+            return self._processor.batch_decode(
+                out[:, inputs["input_ids"].shape[1]:], skip_special_tokens=True)[0]
+        reply = self._timed(run)
+        m = self._PAIR.search(reply)
+        if not m:
+            log.info("Aria-UI produced no point for %r: %s", instruction, reply[:120])
+            return None
+        # 0-1000 relative space -> source pixels.
+        h, w = image_bgr.shape[:2]
+        return int(int(m.group(1)) * w / 1000), int(int(m.group(2)) * h / 1000)
 
     def judge(self, image_bgr, statement):
-        raise GrounderUnavailable(self.available()[1])
+        m = self._QUOTED.search(statement)
+        subject = m.group(1) if m else statement
+        point = self.ground(image_bgr, f"the '{subject}' element")
+        return "PASSED" if point is not None else "FAILED"
 
 
 GROUNDERS = {cls.name: cls for cls in (ElamGrounder, UiTarsGrounder, AriaUiGrounder)}

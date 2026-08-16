@@ -27,6 +27,15 @@ from visual_dom.core.domain.reading_order import sort_reading_order
 log = get_logger(__name__)
 
 
+# Sources whose elements come from a detector backend that already applied its
+# own operating threshold (OmniParser's box_threshold; the modular backend's
+# per-stage models, ADR-027). Their confidence values are real model scores on
+# a different scale than the OCR/UIED heuristics, so the generic confidence
+# gate must not re-filter them and ranking must not compare them numerically
+# against heuristic constants (see _filter_elements / _ranking_confidence).
+_BACKEND_THRESHOLDED_SOURCES = ("omniparser", "modular")
+
+
 @dataclass
 class UIElement:
     """Unified UI element from CV pipeline."""
@@ -280,6 +289,14 @@ class VisualDOMPipeline:
                 ]
             else:
                 log.info("OmniParser text ensemble: OFF (original OCR)")
+        elif detector == "modular":
+            # Share the pipeline's TextDetector as the backend's stage 2, so
+            # the OCR model loads once per process instead of once per stage
+            # owner (same reuse the omniparser ensemble does above). The OCR
+            # still RUNS twice per frame - pipeline Step 1 and backend stage 2
+            # - which matches the omniparser+ensemble cost model; folding the
+            # two passes into one is a part-2 optimization noted in ADR-027.
+            kwargs = {"text_detector": self.text_detector, "use_gpu": use_gpu}
         else:
             kwargs = {}
         kwargs.update(detector_kwargs)
@@ -1010,7 +1027,7 @@ class VisualDOMPipeline:
             # for. Re-gating them at 0.3 would silently delete detections
             # the backend was configured to keep.
             if elem.confidence < self.confidence_threshold and \
-                    elem.source != "omniparser":
+                    elem.source not in _BACKEND_THRESHOLDED_SOURCES:
                 continue
 
             # Skip elements below minimum area
@@ -1120,7 +1137,7 @@ class VisualDOMPipeline:
         survives a conflict is decided exactly as before; only the *reported*
         number changed.
         """
-        return 1.0 if e.source == "omniparser" else e.confidence
+        return 1.0 if e.source in _BACKEND_THRESHOLDED_SOURCES else e.confidence
 
     def _remove_duplicates(self, elements: List[UIElement]) -> List[UIElement]:
         """

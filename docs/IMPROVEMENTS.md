@@ -435,6 +435,37 @@ computed the project root with one `../` too few after the ADR-014 restructure, 
 OCR-text-only** — the exact trap its own comment warned about. The service had its own
 correct copy, which is why only in-process runs were affected.
 
+## 7. Viewer stability: one analysis at a time (the "maximum recursion depth" bug)
+
+**Problem.** The Viewer intermittently spammed `Error in listener: maximum
+recursion depth exceeded` to the console. Long unreproduced — no traceback was
+ever saved.
+
+**Diagnosis (forensic).** The evidence turned out to be *inside a screenshot*:
+session `20260807_004113` is a capture of the terminal that was showing the
+failing session's console, so the pixels contained the context — DOM built
+fine, 132 elements, then the error spam. The failing session (`20260807_004037`)
+used the **remote gRPC detector taking 11.8 s per detect**. Replaying its saved
+DOM through the current Viewer produced nothing (2,026 simulated hover/click/
+zoom events, notify nesting never exceeded 1), which ruled out listener loops
+and tree recursion. The real mechanism: `_do_analyze_screenshot` pumps
+`QApplication.processEvents()` at every stage so the UI stays alive — but the
+pump also **dispatches queued F5/F6 presses**, each starting another full
+analysis *inside* the running one. Every nesting stacks a whole pipeline
+(gRPC client, cv2, …) on the interpreter stack; enough impatient presses
+during an 11.8 s detect exhausts Python's 1000-frame limit, and the
+`RecursionError` surfaces inside whatever model listener happens to be running
+— hence the misleading "Error in listener" spam on every subsequent event.
+Reproduced deterministically: 6 queued presses → 7 nested analyses.
+
+**Fix.** A re-entrancy guard: one analysis at a time. A request arriving
+mid-analysis is refused with a status-bar message, and the Capture/Re-Analyze
+actions are disabled for the duration (restored in a `finally`, so a crashing
+pipeline cannot leave the Viewer permanently refusing). Covered by
+`tests/unit/test_analyze_reentrancy.py` — run as a subprocess harness, because
+constructing the full main window inside the pytest process aborts natively
+under Qt's offscreen platform.
+
 ## Which knobs are configurable — and why not all of them
 
 The [session config](CONFIGURATION.md) deliberately exposes the tunables a user
