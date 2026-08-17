@@ -25,6 +25,7 @@ package "CV Pipeline (core.domain.pipeline + adapters.outbound.{ocr,detectors})"
         [UIED\n(CPU, contours)] as uied
         [YOLO\n(Ultralytics, AGPL)] as yolo
         [OmniParser\n(YOLO + OCR + Florence-2)] as omni
+        [Modular (ADR-027)\n(region + OCR + captioner,\nstages replaceable)] as modular
     }
 
     [Symbol Detector\n(+ - = x)] as symbol
@@ -64,11 +65,14 @@ screenshot --> ocr
 screenshot --> uied
 screenshot --> yolo
 screenshot --> omni
+screenshot --> modular
 ocr ..> omni : ensemble OCR
+ocr ..> modular : stage 2 (shared)
 
 uied --> merge
 yolo --> merge
 omni --> merge
+modular --> merge
 ocr --> merge
 symbol --> merge
 merge --> smerge

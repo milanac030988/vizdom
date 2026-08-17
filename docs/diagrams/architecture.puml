@@ -37,6 +37,7 @@ package "Driven adapters - local (in-process)" #E8F5E9 {
     [UIEDBackend] as uied
     [YOLOBackend] as yolo
     [OmniParserBackend] as omni
+    [ModularDetectorBackend\n(ADR-027)] as modular
     [TextDetector] as ocr
     [SLMAdvisor] as slm
     [WindowsCapture] as wcap
@@ -83,6 +84,7 @@ pipe --> aport
 dport --> uied
 dport --> yolo
 dport --> omni
+dport --> modular
 dport --> gclient
 oport --> ocr
 rport --> slm

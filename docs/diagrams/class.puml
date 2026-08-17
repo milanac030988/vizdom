@@ -25,6 +25,9 @@ package "core.ports.outbound" #FFECB3 {
         +name / license / requires_gpu
         +{abstract} detect(img): List<Detection>
     }
+    abstract class "RegionProposer / Captioner\n(ADR-027 detector stages)" as StagePorts {
+        +{abstract} propose(img) / caption(img, boxes)
+    }
     abstract class CaptureStrategy {
         +name / platform
         +{abstract} capture(): ndarray
@@ -40,7 +43,7 @@ package "core.ports.outbound" #FFECB3 {
 ' DRIVEN ADAPTERS (adapters.outbound) — one collapsed box per port, stacked
 ' ============================================================
 package "adapters.outbound" #E8F5E9 {
-    class "detectors\nUIED · YOLO · OmniParser · Grpc\n+ registry create_detector()\n+ UIEDDetector (classical)\n+ ocr.TextDetector · refiner.SLMAdvisor" as DetImpls
+    class "detectors\nUIED · YOLO · OmniParser · Grpc · Modular (ADR-027)\n+ registry create_detector()\n+ UIEDDetector (classical)\n+ ocr.TextDetector · refiner.SLMAdvisor" as DetImpls
     class "capture (ADR-018)\nWindows/Linux/Android/Camera/Grpc\n+ registry create_capture()" as CapImpls
     class "actuator (ADR-019)\nDesktop/Android/Grpc\n+ registry create_actuator()" as ActImpls
 }
@@ -119,6 +122,7 @@ package "shared (crosscutting)" #ECEFF1 {
 ' Relationships — adapters implement ports (inward); domain spine flows down
 ' ============================================================
 DetImpls ..|> DetectorBackend
+DetImpls ..|> StagePorts : modular backend\ncomposes stages
 CapImpls ..|> CaptureStrategy
 ActImpls ..|> ActuatorStrategy
 
