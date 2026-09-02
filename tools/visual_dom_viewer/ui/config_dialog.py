@@ -32,7 +32,7 @@ from PyQt5.QtWidgets import (
 # Fields whose value is one of a known set - rendered as a combo box. Anything
 # not listed falls back to a free-text line edit, so a new field still works.
 _CHOICES = {
-    "detector.backend": ["uied", "yolo", "omniparser", "hybrid", "grpc"],
+    "detector.backend": ["uied", "yolo", "omniparser", "modular", "hybrid", "grpc"],
     "ocr.engine": ["easyocr", "paddleocr", "tesseract", "none"],
     "refiner.backend": ["ollama", "openai"],
     "grounding.backend": ["ollama", "openai"],

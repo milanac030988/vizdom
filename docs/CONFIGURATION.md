@@ -211,7 +211,7 @@ described here".
 
 | Parameter | Type | Default | Meaning |
 |---|---|---|---|
-| `backend` | str | `"uied"` | uied (CPU baseline) \| yolo \| omniparser (best actionable) \| hybrid |
+| `backend` | str | `"uied"` | uied (CPU baseline) \| yolo \| omniparser (best actionable) \| modular (ADR-027 three-stage composite) \| hybrid \| grpc |
 | `use_gpu` | bool | `true` | run the detector on CUDA when available (OmniParser/YOLO); UIED is CPU-only |
 | `confidence_threshold` | float | `0.3` | 0..1; lower = more detections (higher recall) |
 | `yolo_model_path` | str | `null` | path to trained YOLO weights (required for backend=yolo/hybrid) |

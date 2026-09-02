@@ -46,7 +46,7 @@ log = get_logger(__name__)
 @dataclass
 class DetectorConfig:
     """Which detection backend runs, and how (Stage 2 - element detection)."""
-    backend: str = "uied"                 # uied | yolo | omniparser | hybrid
+    backend: str = "uied"                 # uied | yolo | omniparser | modular | hybrid | grpc
     use_gpu: bool = True
     confidence_threshold: float = 0.3     # min detection confidence to keep
     yolo_model_path: Optional[str] = None  # required for backend=yolo/hybrid
@@ -286,7 +286,7 @@ def _build_section(section_cls: type, name: str, values: Any):
 # the template (JSON has no comments, so we inline guidance the user can delete).
 _FIELD_HELP: Dict[str, str] = {
     "detector": "Stage 2 - element detection backend and its parameters",
-    "detector.backend": "uied (CPU baseline) | yolo | omniparser (best actionable) | hybrid",
+    "detector.backend": "uied (CPU baseline) | yolo | omniparser (best actionable) | modular (ADR-027 three-stage composite) | hybrid | grpc",
     "detector.confidence_threshold": "0..1; lower = more detections (higher recall)",
     "detector.omniparser_icon_detect_path": "null = auto-resolve from models/omniparser/",
     "detector.omniparser_text_ensemble": "feed VizDOM OCR into OmniParser to recover text (ADR-016)",
