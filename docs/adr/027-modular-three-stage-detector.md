@@ -281,6 +281,9 @@ the fusion port is validated. Remaining triggers: an alternative-model win
 
 ## References
 
+- Diagrams: `docs/diagrams/modular_sequence.puml` (the three stages + fusion,
+  one detect() call) and `docs/diagrams/class_detectors.puml` (ports &
+  adapters detail) — both rendered on the Architecture page
 - Task: Notion "Evaluate splitting OmniParser into 3 modular components"
 - Boundaries: `third_party/OmniParser/util/utils.py` (`predict_yolo`,
   `check_ocr_box`, `get_parsed_content_icon`, `remove_overlap_new`)

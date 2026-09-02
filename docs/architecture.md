@@ -37,6 +37,17 @@ domain data-model spine. Detailed per-component diagrams follow below.
 !include diagrams/class_detectors.puml
 ```
 
+### Sequence — the modular detector's three stages (ADR-027)
+
+One `detect()` call through the composite backend: region proposal, shared-OCR
+text reading, the fusion port of OmniParser's `remove_overlap_new`, then
+optional captioning of whatever fusion left unlabelled. Confidences are the
+stage models' own scores end to end.
+
+```plantuml
+!include diagrams/modular_sequence.puml
+```
+
 ### Detail — capture port & adapters (ADR-018)
 
 ```plantuml
