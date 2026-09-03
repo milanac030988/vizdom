@@ -215,16 +215,18 @@ class ServicesDialog(QDialog):
         if row.key == "detector":
             grid.addWidget(QLabel("Backend:"), 0, col); col += 1
             row.backend = QComboBox()
-            row.backend.addItems(["uied", "omniparser", "yolo"])
+            row.backend.addItems(["uied", "omniparser", "modular", "yolo"])
             grid.addWidget(row.backend, 0, col); col += 1
             grid.addWidget(QLabel("OCR:"), 0, col); col += 1
             row.ocr = QComboBox()
             row.ocr.addItems(["(none)", "easyocr", "paddleocr", "tesseract"])
             row.ocr.setCurrentText("easyocr")
             row.ocr.setToolTip(
-                "Runs the OCR text ensemble ON THE SERVICE (ADR-016). The client's "
-                "OCR callable cannot cross gRPC, so without this a remote OmniParser "
-                "silently falls back to its own weaker OCR."
+                "OCR run ON THE SERVICE (the client's OCR callable cannot cross "
+                "gRPC):\n"
+                "omniparser = the ADR-016 text ensemble; without it a remote "
+                "OmniParser silently falls back to its own weaker OCR\n"
+                "modular = the backend's stage-2 engine (ADR-027)"
             )
             grid.addWidget(row.ocr, 0, col); col += 1
         else:
