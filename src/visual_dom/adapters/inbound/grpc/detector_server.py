@@ -155,6 +155,11 @@ def main():
                     help="modular only: stage-3 captioner. 'florence' loads the "
                          "OmniParser caption model (~1 GB VRAM); 'none' leaves "
                          "icons unlabelled and desc= falls back to ADR-022 tier-2.")
+    ap.add_argument("--regions", default="auto",
+                    choices=["auto", "omniparser", "uied"],
+                    help="modular only: stage-1 region proposer. 'auto' picks "
+                         "omniparser when its weights are found, else uied (CPU); "
+                         "an explicit 'omniparser' fails fast if they are absent.")
     ap.add_argument("--port", type=int, default=50051)
     ap.add_argument("--no-gpu", action="store_true")
     ap.add_argument("--icon-detect", default=None, help="OmniParser icon_detect .pt")
@@ -212,7 +217,14 @@ def main():
                 os.environ[var] = resolved[key]
 
         kwargs["use_gpu"] = use_gpu
-        if os.environ.get("OMNIPARSER_ICON_DETECT"):
+        if args.regions == "uied":
+            kwargs["region_proposer"] = "uied"
+        elif args.regions == "omniparser":
+            if not os.environ.get("OMNIPARSER_ICON_DETECT"):
+                raise SystemExit("--regions omniparser needs the icon_detect "
+                                 "weights (--icon-detect or OMNIPARSER_ICON_DETECT)")
+            kwargs["region_proposer"] = "omniparser"
+        elif os.environ.get("OMNIPARSER_ICON_DETECT"):
             kwargs["region_proposer"] = "omniparser"
         else:
             log.warning("modular: OmniParser weights not found - "
