@@ -1,0 +1,76 @@
+@startuml Modular_Detector_Sequence
+
+skinparam backgroundColor #FEFEFE
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam ParticipantPadding 12
+skinparam BoxPadding 10
+
+title Modular detector (ADR-027) - one detect() call\nThree replaceable stages + faithful fusion, emitting the standard Detection IR
+
+participant "VisualDOMPipeline" as pipe #FFF3E0
+participant "ModularDetectorBackend" as backend #E8F5E9
+participant "RegionProposer\n(omniparser YOLO | uied)" as regions #E1F5FE
+participant "TextDetector\n(shared with the pipeline,\nADR-012 engines)" as ocr #E1F5FE
+participant "modular_fusion.fuse()" as fuse #ECEFF1
+participant "Captioner\n(florence | none)" as captioner #F3E5F5
+
+pipe -> backend : detect(image)
+activate backend
+
+== Stage 1 - interactable-region proposal ==
+backend -> regions : propose(image)
+regions --> backend : [RegionProposal(bounds, confidence)]
+note right of regions
+  the model's OWN logits -
+  no 1.0 defaults on this path
+end note
+
+== Stage 2 - text reading ==
+backend -> ocr : detect(image)
+ocr --> backend : [TextElement(bounds, text, confidence)]
+note right of ocr
+  ONE easyocr model per process:
+  the pipeline shares its instance
+end note
+
+== Fusion - port of OmniParser's remove_overlap_new ==
+backend -> fuse : fuse(regions, texts)
+note right of fuse
+  1. drop the LARGER of a high-overlap
+     region pair ("keep the smaller box")
+  2. OCR box inside a region (>0.80):
+     text absorbed as the region's
+     literal content, OCR box removed
+  3. region inside an OCR box: dropped
+end note
+fuse --> backend : [FusedBox(kind, content, confidence, source)]
+
+== Stage 3 - semantic captioning (OPTIONAL) ==
+alt captioner configured and unlabelled icons remain
+  backend -> captioner : caption(image, unlabelled boxes)
+  captioner --> backend : [caption | None]  (batched)
+else captioner = "none"
+  note over backend, captioner
+    icons stay unlabelled; desc= locators
+    fall back to tier-2 VLM grounding (ADR-022)
+  end note
+end
+
+== Emit the standard IR ==
+note over backend
+  per FusedBox: visual_type via the monolith's
+  _infer_visual_type (parity by construction);
+  absorbed OCR -> text (literal read),
+  caption -> label (prediction)  [ADR-016]
+end note
+backend --> pipe : List<Detection>\n(source="modular", real per-stage confidences)
+deactivate backend
+
+note over pipe
+  downstream is unchanged: merge/NMS/hierarchy
+  treat "modular" as backend-thresholded
+  (confidence gate exempt, ranking as 1.0)
+end note
+@enduml

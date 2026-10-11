@@ -899,13 +899,17 @@ class VisualDOMViewerWindow(QMainWindow):
 
         # ---- detection (ADR-015 / ADR-017) -----------------------------
         self._detector_combo = QComboBox()
-        self._detector_combo.addItems(["uied", "yolo", "hybrid", "omniparser", "grpc"])
+        self._detector_combo.addItems(
+            ["uied", "yolo", "hybrid", "omniparser", "modular", "grpc"])
         self._detector_combo.setToolTip(
             "Element detector:\n"
             "uied = traditional CV (no model needed)\n"
             "yolo = YOLOv8 model (needs .pt file)\n"
             "hybrid = YOLO + UIED merged\n"
             "omniparser = Microsoft OmniParser (needs repo+weights; set OMNIPARSER_* env vars)\n"
+            "modular = ADR-027 three-stage composite (region proposer + OCR + optional\n"
+            "          captioner, stages replaceable; uses OmniParser weights if present,\n"
+            "          else the CPU uied proposer)\n"
             "grpc = remote detector service (set the target host:port field)"
         )
 
@@ -2040,6 +2044,36 @@ class VisualDOMViewerWindow(QMainWindow):
                               "(set OMNIPARSER_ICON_DETECT / OMNIPARSER_ICON_CAPTION), "
                               "falling back to UIED")
                         detector_mode = "uied"
+                elif detector_mode == "modular":
+                    # ADR-027 composite. The default stage 1 (omniparser region
+                    # proposer) reads the OMNIPARSER_* env vars, so resolve them
+                    # from the standard locations the same way the omniparser
+                    # branch does - but a missing weight degrades the STAGE
+                    # (uied proposer), not the whole backend.
+                    for var, rel, is_dir in (
+                        ("OMNIPARSER_ICON_DETECT",
+                         os.path.join("models", "omniparser", "icon_detect", "model.pt"), False),
+                        ("OMNIPARSER_ICON_CAPTION",
+                         os.path.join("models", "omniparser", "icon_caption_florence"), True),
+                        ("OMNIPARSER_ROOT",
+                         os.path.join("third_party", "OmniParser"), True),
+                    ):
+                        if not os.environ.get(var):
+                            cand = os.path.join(project_root, rel)
+                            if (os.path.isdir(cand) if is_dir else os.path.exists(cand)):
+                                os.environ[var] = cand
+                    if os.environ.get("OMNIPARSER_ICON_DETECT"):
+                        detector_kwargs["region_proposer"] = "omniparser"
+                    else:
+                        print("[Viewer] modular: OmniParser weights not found - "
+                              "using the uied region proposer (CPU)")
+                        detector_kwargs["region_proposer"] = "uied"
+                    # No captioner by default: florence costs ~1 GB VRAM and
+                    # ~10 s load; desc= locators fall back to ADR-022 tier-2.
+                    detector_kwargs["captioner"] = "none"
+                    print(f"[Viewer] modular stages: "
+                          f"regions={detector_kwargs['region_proposer']}, "
+                          f"ocr={ocr_engine}, captioner=none")
                 elif detector_mode == "grpc":
                     target = self._grpc_target_edit.text().strip() or "localhost:50051"
                     detector_kwargs["target"] = target

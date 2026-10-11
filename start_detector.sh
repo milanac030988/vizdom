@@ -7,6 +7,7 @@
 #   ./start_detector.sh                                  (uied, port 50051)
 #   ./start_detector.sh --backend omniparser --ocr easyocr
 #   ./start_detector.sh --backend yolo --yolo-model models/pretrained/best.pt
+#   ./start_detector.sh --backend modular --ocr easyocr --captioner none
 #
 #   Pass --ocr <engine> so the OCR text ensemble runs ON THIS SERVICE: the
 #   client's OCR callable cannot cross gRPC, and without it a remote OmniParser

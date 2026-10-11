@@ -149,7 +149,17 @@ def _build_ocr_provider(engine: str, use_gpu: bool):
 
 def main():
     ap = argparse.ArgumentParser(description="VizDOM detector gRPC server (ADR-017)")
-    ap.add_argument("--backend", default="omniparser", choices=["uied", "yolo", "omniparser"])
+    ap.add_argument("--backend", default="omniparser",
+                    choices=["uied", "yolo", "omniparser", "modular"])
+    ap.add_argument("--captioner", default="none", choices=["none", "florence"],
+                    help="modular only: stage-3 captioner. 'florence' loads the "
+                         "OmniParser caption model (~1 GB VRAM); 'none' leaves "
+                         "icons unlabelled and desc= falls back to ADR-022 tier-2.")
+    ap.add_argument("--regions", default="auto",
+                    choices=["auto", "omniparser", "uied"],
+                    help="modular only: stage-1 region proposer. 'auto' picks "
+                         "omniparser when its weights are found, else uied (CPU); "
+                         "an explicit 'omniparser' fails fast if they are absent.")
     ap.add_argument("--port", type=int, default=50051)
     ap.add_argument("--no-gpu", action="store_true")
     ap.add_argument("--icon-detect", default=None, help="OmniParser icon_detect .pt")
@@ -186,6 +196,49 @@ def main():
             kwargs["ocr_ensemble"] = True
     elif args.backend == "yolo" and args.yolo_model:
         kwargs["model_path"] = args.yolo_model
+    elif args.backend == "modular":
+        # ADR-027 composite. The omniparser region proposer and florence
+        # captioner read the OMNIPARSER_* env vars, so publish the resolved
+        # standard-location paths there; a missing icon_detect degrades the
+        # STAGE (uied proposer, CPU), not the whole service.
+        import os
+        resolved = _resolve_omniparser_paths(args)
+        env_map = {"icon_detect_path": "OMNIPARSER_ICON_DETECT",
+                   "icon_caption_path": "OMNIPARSER_ICON_CAPTION",
+                   "omniparser_root": "OMNIPARSER_ROOT"}
+        if args.icon_detect:
+            os.environ["OMNIPARSER_ICON_DETECT"] = args.icon_detect
+        if args.icon_caption:
+            os.environ["OMNIPARSER_ICON_CAPTION"] = args.icon_caption
+        if args.omniparser_root:
+            os.environ["OMNIPARSER_ROOT"] = args.omniparser_root
+        for key, var in env_map.items():
+            if key in resolved and not os.environ.get(var):
+                os.environ[var] = resolved[key]
+
+        kwargs["use_gpu"] = use_gpu
+        if args.regions == "uied":
+            kwargs["region_proposer"] = "uied"
+        elif args.regions == "omniparser":
+            if not os.environ.get("OMNIPARSER_ICON_DETECT"):
+                raise SystemExit("--regions omniparser needs the icon_detect "
+                                 "weights (--icon-detect or OMNIPARSER_ICON_DETECT)")
+            kwargs["region_proposer"] = "omniparser"
+        elif os.environ.get("OMNIPARSER_ICON_DETECT"):
+            kwargs["region_proposer"] = "omniparser"
+        else:
+            log.warning("modular: OmniParser weights not found - "
+                        "using the uied region proposer (CPU)")
+            kwargs["region_proposer"] = "uied"
+        # --ocr names the stage-2 engine here (the backend runs OCR itself),
+        # unlike the omniparser backend where it builds the ensemble provider.
+        kwargs["ocr_engine"] = args.ocr or "easyocr"
+        kwargs["captioner"] = args.captioner
+        if args.captioner == "florence" and not os.environ.get("OMNIPARSER_ICON_CAPTION"):
+            raise SystemExit("--captioner florence needs the OmniParser caption "
+                             "weights (--icon-caption or OMNIPARSER_ICON_CAPTION)")
+        log.info("modular stages: regions=%s, ocr=%s, captioner=%s",
+                 kwargs["region_proposer"], kwargs["ocr_engine"], args.captioner)
 
     serve(args.backend, args.port, kwargs)
 

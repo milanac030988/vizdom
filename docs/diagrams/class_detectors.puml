@@ -37,6 +37,21 @@ package "core.ports.outbound.detector_port" #FFECB3 {
     }
 }
 
+package "core.ports.outbound.stage_ports (ADR-027)" #FFECB3 {
+    abstract class RegionProposer {
+        +name / license / requires_gpu
+        +{abstract} propose(image): List<RegionProposal>
+    }
+    class RegionProposal <<dataclass>> {
+        +bounds: (x1,y1,x2,y2)
+        +confidence: float
+    }
+    abstract class Captioner {
+        +name / license / requires_gpu
+        +{abstract} caption(image, boxes): List<Optional<str>>
+    }
+}
+
 package "adapters.outbound.detectors" #E8F5E9 {
     class Registry <<module>> {
         +create_detector(name, kwargs)
@@ -61,15 +76,45 @@ package "adapters.outbound.detectors" #E8F5E9 {
     class DetectedElement <<dataclass>> {
         +bounds / element_type / confidence
     }
+    class ModularDetectorBackend {
+        +region_proposer / captioner: name|instance
+        +ocr_engine: str
+        +detect(image): List<Detection>
+    }
+    class "modular_fusion.fuse()" as Fusion <<module>> {
+        keep-smaller region pairs
+        absorb OCR inside region (>0.80)
+        drop region inside OCR
+    }
+    class "OmniParserRegionProposer\nUIEDRegionProposer" as RegionImpls
+    class "FlorenceCaptioner\nNoneCaptioner" as CaptionerImpls
 }
 
 UIEDBackend --|> DetectorBackend
 YOLOBackend --|> DetectorBackend
 OmniParserBackend --|> DetectorBackend
 GrpcDetectorBackend --|> DetectorBackend
+ModularDetectorBackend --|> DetectorBackend
 DetectorBackend ..> Detection : returns
 Registry ..> DetectorBackend : creates
 UIEDBackend --> UIEDDetector : wraps
 UIEDDetector ..> DetectedElement : returns
 GrpcDetectorBackend ..> Detection : (remote server\nreturns Detections)
+
+' ADR-027: the modular backend composes three replaceable stages + fusion.
+' Stage 2 (text) reuses ocr.TextDetector - shared with the pipeline instance.
+RegionImpls --|> RegionProposer
+CaptionerImpls --|> Captioner
+ModularDetectorBackend --> RegionProposer : stage 1
+ModularDetectorBackend --> Captioner : stage 3 (optional)
+ModularDetectorBackend --> Fusion : stages 1+2 -> fused boxes
+RegionProposer ..> RegionProposal : returns
+
+' ---- layout only: break the backend sprawl into two rows and put the ADR-027
+' ---- stage ports below the detector port instead of beside it
+UIEDBackend -[hidden]down-> ModularDetectorBackend
+YOLOBackend -[hidden]down-> Fusion
+OmniParserBackend -[hidden]down-> RegionImpls
+GrpcDetectorBackend -[hidden]down-> CaptionerImpls
+Detection -[hidden]down-> RegionProposer
 @enduml

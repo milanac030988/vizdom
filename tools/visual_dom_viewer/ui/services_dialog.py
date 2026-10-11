@@ -193,42 +193,78 @@ class ServicesDialog(QDialog):
 
     # -- per-service UI --------------------------------------------------
 
+    # Fixed widths for the columns every row shares. Each row is its own
+    # layout, so without fixed sizes the three rows compute different column
+    # widths and nothing lines up vertically across the group boxes.
+    _STATUS_W = 190
+    _PORT_LABEL_W = 34
+    _PORT_W = 70
+
     def _build_row(self, row: ServiceRow) -> QWidget:
         box = QGroupBox(f"{row.title} — {row.hint}")
-        grid = QGridLayout(box)
+        lay = QHBoxLayout(box)
+        lay.setSpacing(8)
 
         row.light = QLabel(_DOT["stopped"][0])
         row.light.setStyleSheet(f"color: {_DOT['stopped'][1]}; font-size: 18px;")
-        grid.addWidget(row.light, 0, 0)
+        row.light.setFixedWidth(16)
+        lay.addWidget(row.light)
 
         row.status = QLabel("not reachable")
-        row.status.setMinimumWidth(190)
-        grid.addWidget(row.status, 0, 1)
+        row.status.setFixedWidth(self._STATUS_W)
+        lay.addWidget(row.status)
 
-        grid.addWidget(QLabel("Port:"), 0, 2)
+        port_label = QLabel("Port:")
+        port_label.setFixedWidth(self._PORT_LABEL_W)
+        lay.addWidget(port_label)
         row.port_edit = QLineEdit(str(row.default_port))
-        row.port_edit.setMaximumWidth(70)
-        grid.addWidget(row.port_edit, 0, 3)
+        row.port_edit.setFixedWidth(self._PORT_W)
+        lay.addWidget(row.port_edit)
 
         # per-service options: only the flags that change behaviour meaningfully
-        col = 4
         if row.key == "detector":
-            grid.addWidget(QLabel("Backend:"), 0, col); col += 1
+            lay.addWidget(QLabel("Backend:"))
             row.backend = QComboBox()
-            row.backend.addItems(["uied", "omniparser", "yolo"])
-            grid.addWidget(row.backend, 0, col); col += 1
-            grid.addWidget(QLabel("OCR:"), 0, col); col += 1
+            row.backend.addItems(["uied", "omniparser", "modular", "yolo"])
+            lay.addWidget(row.backend)
+            lay.addWidget(QLabel("OCR:"))
             row.ocr = QComboBox()
             row.ocr.addItems(["(none)", "easyocr", "paddleocr", "tesseract"])
             row.ocr.setCurrentText("easyocr")
             row.ocr.setToolTip(
-                "Runs the OCR text ensemble ON THE SERVICE (ADR-016). The client's "
-                "OCR callable cannot cross gRPC, so without this a remote OmniParser "
-                "silently falls back to its own weaker OCR."
+                "OCR run ON THE SERVICE (the client's OCR callable cannot cross "
+                "gRPC):\n"
+                "omniparser = the ADR-016 text ensemble; without it a remote "
+                "OmniParser silently falls back to its own weaker OCR\n"
+                "modular = the backend's stage-2 engine (ADR-027)"
             )
-            grid.addWidget(row.ocr, 0, col); col += 1
+            lay.addWidget(row.ocr)
+
+            # ADR-027 stage options - only meaningful for backend=modular, so
+            # they appear only then (visibility toggled below).
+            row.regions_label = QLabel("Regions:")
+            row.regions = QComboBox()
+            row.regions.addItems(["auto", "omniparser", "uied"])
+            row.regions.setToolTip(
+                "Stage-1 region proposer (ADR-027):\n"
+                "auto = omniparser if its weights are found, else uied (CPU)\n"
+                "omniparser = require the icon_detect YOLO (fails fast if absent)\n"
+                "uied = classical CV, no weights, no AGPL")
+            row.captioner_label = QLabel("Captioner:")
+            row.captioner = QComboBox()
+            row.captioner.addItems(["none", "florence"])
+            row.captioner.setToolTip(
+                "Stage-3 captioner (ADR-027):\n"
+                "none = icons unlabelled; desc= falls back to tier-2 grounding (ADR-022)\n"
+                "florence = OmniParser's caption model (~1 GB VRAM, ~10 s load)")
+            for widget in (row.regions_label, row.regions,
+                           row.captioner_label, row.captioner):
+                lay.addWidget(widget)
+            row.backend.currentTextChanged.connect(
+                lambda _t, r=row: self._update_detector_options(r))
+            self._update_detector_options(row)
         else:
-            grid.addWidget(QLabel("Strategy:"), 0, col); col += 1
+            lay.addWidget(QLabel("Strategy:"))
             row.strategy = QComboBox()
             row.strategy.setEditable(True)
             if row.key == "capture":
@@ -236,31 +272,46 @@ class ServicesDialog(QDialog):
             else:
                 row.strategy.addItems(["", "desktop", "android"])
             row.strategy.setToolTip("Blank = let the service auto-select for its OS")
-            grid.addWidget(row.strategy, 0, col); col += 1
-            grid.addWidget(QLabel("Window title:"), 0, col); col += 1
+            lay.addWidget(row.strategy)
+            lay.addWidget(QLabel("Window title:"))
             row.window_title = QLineEdit()
             row.window_title.setPlaceholderText("app to raise on Focus (ADR-021)")
-            grid.addWidget(row.window_title, 0, col); col += 1
+            lay.addWidget(row.window_title)
+
+        lay.addStretch(1)
 
         row.start_btn = QPushButton("Start")
         row.start_btn.clicked.connect(lambda _, r=row: self._start(r))
-        grid.addWidget(row.start_btn, 0, col); col += 1
+        lay.addWidget(row.start_btn)
 
         row.stop_btn = QPushButton("Stop")
         row.stop_btn.setEnabled(False)
         row.stop_btn.clicked.connect(lambda _, r=row: self._stop(r))
-        grid.addWidget(row.stop_btn, 0, col)
+        lay.addWidget(row.stop_btn)
 
         return box
+
+    @staticmethod
+    def _update_detector_options(row: ServiceRow):
+        """Show the ADR-027 stage options only when they mean something."""
+        modular = row.backend.currentText() == "modular"
+        for widget in (row.regions_label, row.regions,
+                       row.captioner_label, row.captioner):
+            widget.setVisible(modular)
 
     # -- start / stop ----------------------------------------------------
 
     def _args_for(self, row: ServiceRow):
         args = ["-m", row.module, "--port", row.port_edit.text().strip() or str(row.default_port)]
         if row.key == "detector":
-            args += ["--backend", row.backend.currentText()]
+            backend = row.backend.currentText()
+            args += ["--backend", backend]
             if row.ocr.currentText() != "(none)":
                 args += ["--ocr", row.ocr.currentText()]
+            if backend == "modular":
+                if row.regions.currentText() != "auto":
+                    args += ["--regions", row.regions.currentText()]
+                args += ["--captioner", row.captioner.currentText()]
         else:
             strategy = row.strategy.currentText().strip()
             if strategy:
