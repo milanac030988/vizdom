@@ -251,6 +251,7 @@ class TryLocatorMixin:
                     locator, tree.compiled_dom, getattr(self, "_capture_context", None) or {},
                     (tree.screen_width, tree.screen_height) if tree.screen_width else None,
                     title, click_type=click_type,
+                    screenshot=self._screenshot_for_grounding(),
                     grounding=getattr(self, "_grounding_config", None))
             except ActuationError as e:
                 self._hide_progress()
@@ -283,6 +284,15 @@ class TryLocatorMixin:
                 self._recapture_for_try(title)
                 self._statusbar.showMessage(
                     f"Clicked {outcome.element_id} via {actuator.name}; screen re-captured", 10000)
+        except Exception as e:
+            # A slot must not let an exception escape: PyQt5 aborts the whole
+            # Viewer on one (e.g. a gRPC actuator whose service is down, or
+            # pyautogui's fail-safe corner).
+            import traceback
+            traceback.print_exc()
+            self._hide_progress()
+            QMessageBox.warning(self, "Click via Actuator",
+                                f"The trial failed: {type(e).__name__}: {e}")
         finally:
             self._trial_running = False
             self._hide_progress()
@@ -291,11 +301,30 @@ class TryLocatorMixin:
             except Exception:
                 pass
 
+    def _screenshot_for_grounding(self):
+        """
+        The analyzed screenshot as a BGR array, so `desc=` can use the VLM tier
+        exactly as the suite does (it passes its current screenshot), or None.
+        """
+        data = self._model.get_screenshot_data()
+        if not data:
+            return None
+        try:
+            import cv2
+            import numpy as np
+            return cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR)
+        except Exception:
+            return None
+
     def _capture_focus_callable(self):
         """
         ``title -> bool`` raising the window through the capture side, for
         actuators that cannot focus (ADR-021: either port may be the capable
         one). Exposes ``close()`` to release the strategy afterwards.
+
+        The strategy is created on first use only: most actuators focus the
+        window themselves, and a remote capture source would otherwise open a
+        second channel (or adb session) on every trial for nothing.
         """
         name, kwargs = self._selected_capture_strategy()
         if name is None:
@@ -303,19 +332,25 @@ class TryLocatorMixin:
             name, kwargs = auto_select(), {}
         if not name:
             return None
-        try:
-            from visual_dom.adapters.outbound.capture import create_capture
-            cap = create_capture(name, **kwargs)
-        except Exception:
-            return None
 
         class _Focus:
+            def __init__(self):
+                self._cap = None
+
             def __call__(self, title):
-                return cap.focus_target(title)
+                if self._cap is None:
+                    try:
+                        from visual_dom.adapters.outbound.capture import create_capture
+                        self._cap = create_capture(name, **kwargs)
+                    except Exception:
+                        return False
+                return self._cap.focus_target(title)
 
             def close(self):
+                if self._cap is None:
+                    return
                 try:
-                    cap.close()
+                    self._cap.close()
                 except Exception:
                     pass
 

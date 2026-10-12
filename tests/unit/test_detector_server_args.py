@@ -50,8 +50,9 @@ def test_modular_ocr_none_is_kept(run_main):
     assert run_main("--backend", "modular", "--ocr", "none")["ocr_engine"] == "none"
 
 
-def test_modular_without_ocr_leaves_the_backend_default(run_main):
-    assert "ocr_engine" not in run_main("--backend", "modular")
+def test_omitted_ocr_takes_the_per_backend_default(run_main):
+    assert run_main("--backend", "modular")["ocr_engine"] == "easyocr"
+    assert "ocr_provider" not in run_main("--backend", "omniparser")
 
 
 def test_modular_explicit_omniparser_needs_weights(run_main):

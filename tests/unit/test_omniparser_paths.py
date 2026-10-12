@@ -105,13 +105,23 @@ def test_missing_weights_is_a_reason():
 def test_weights_without_repo_is_a_reason(tmp_path, monkeypatch):
     weights = tmp_path / "model.pt"
     weights.write_bytes(b"")
-    monkeypatch.setattr(omniparser_paths, "_module_missing",
-                        lambda name: name == "util.utils")
-    path_before = list(sys.path)
+    monkeypatch.setattr(omniparser_paths, "_module_missing", lambda name: False)
+    modules_before = set(sys.modules)
     reason = omniparser_unavailable_reason(str(tmp_path / "no-repo"),
                                            {"icon_detect weights": str(weights)})
     assert "OMNIPARSER_ROOT" in reason
-    assert sys.path == path_before, "the repo root must not stay on sys.path"
+    # Probed on disk: no stray top-level `util` gets imported and cached.
+    assert "util" not in set(sys.modules) - modules_before
+
+
+def test_repo_found_on_disk_under_its_root(tmp_path, monkeypatch):
+    weights = tmp_path / "model.pt"
+    weights.write_bytes(b"")
+    (tmp_path / "repo" / "util").mkdir(parents=True)
+    (tmp_path / "repo" / "util" / "utils.py").write_text("")
+    monkeypatch.setattr(omniparser_paths, "_module_missing", lambda name: False)
+    assert omniparser_unavailable_reason(str(tmp_path / "repo"),
+                                         {"icon_detect weights": str(weights)}) is None
 
 
 def test_weights_without_ultralytics_is_a_reason(tmp_path, monkeypatch):

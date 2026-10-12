@@ -82,11 +82,11 @@ def omniparser_unavailable_reason(
     Why OmniParser's ``util.utils`` cannot be used here, or None when it can.
 
     Checks every ``required`` path exists ({label: path}), that ultralytics is
-    installed and that the repo is importable from ``omniparser_root``
-    (without leaving it on sys.path).
+    installed and that the repo's ``util/utils.py`` is under ``omniparser_root``
+    (or, with no root, on sys.path). The repo is probed on disk, not imported:
+    `find_spec("util.utils")` would import and cache whichever top-level
+    ``util`` package comes first, breaking a later import from the right root.
     """
-    import sys
-
     for label, value in (required or {}).items():
         if not value:
             return f"{label} not found"
@@ -94,17 +94,17 @@ def omniparser_unavailable_reason(
             return f"{label} not found at {value}"
     if _module_missing("ultralytics"):
         return "ultralytics is not installed"
-    added = bool(omniparser_root) and omniparser_root not in sys.path
-    if added:
-        sys.path.insert(0, omniparser_root)
-    try:
-        if _module_missing("util.utils"):
-            return ("the OmniParser repo (util.utils) is not importable - "
-                    "set OMNIPARSER_ROOT")
-    finally:
-        if added:
-            sys.path.remove(omniparser_root)
+    if not _omniparser_repo_found(omniparser_root):
+        return ("the OmniParser repo (util/utils.py) was not found - "
+                "set OMNIPARSER_ROOT")
     return None
+
+
+def _omniparser_repo_found(omniparser_root: Optional[str]) -> bool:
+    import sys
+
+    roots = [omniparser_root] if omniparser_root else [p for p in sys.path if p]
+    return any(os.path.isfile(os.path.join(root, "util", "utils.py")) for root in roots)
 
 
 def _module_missing(name: str) -> bool:
