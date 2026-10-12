@@ -115,6 +115,36 @@ def main() -> int:
         assert not [e for e in actuator.events if e[0] == "tap"], actuator.events
         assert any("would fail in the test suite" in w for w in warnings), warnings
         print("PASS phase3")
+
+        # ---- phase 4: the actuator raises something unexpected ------------
+        # (a gRPC actuator whose service is down, pyautogui's fail-safe...)
+        # PyQt5 aborts the process on an exception escaping a slot, so the
+        # trial must report it and keep the Viewer alive.
+        window._recapture_before_try_checkbox.setChecked(False)
+        window._model.load_dom_from_dict(dom_data(FIRST))
+        warnings.clear()
+        with mock.patch.object(actuator, "tap", side_effect=RuntimeError("service down")):
+            window._try_click_via_actuator("E1")
+        assert any("The trial failed" in w and "service down" in w for w in warnings), warnings
+        assert window._trial_running is False
+        print("PASS phase4")
+
+        # ---- phase 5: desc= gets the screenshot, as in the suite ----------
+        import cv2
+        import numpy as np
+        ok, png = cv2.imencode(".png", np.full((40, 60, 3), 255, np.uint8))
+        window._model.set_screenshot_data(png.tobytes())
+        seen = {}
+        real_resolve = actuation.LocatorTrial.resolve
+
+        def recording_resolve(self, locator, compiled_dom, screenshot=None, grounding=None):
+            seen["shape"] = None if screenshot is None else screenshot.shape
+            return real_resolve(self, locator, compiled_dom, screenshot, grounding)
+
+        with mock.patch.object(actuation.LocatorTrial, "resolve", recording_resolve):
+            window._try_click_via_actuator("E1")
+        assert seen["shape"] == (40, 60, 3), seen
+        print("PASS phase5")
     return 0
 
 

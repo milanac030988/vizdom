@@ -310,12 +310,7 @@ class ServicesDialog(QDialog):
             backend = row.backend.currentText()
             args += ["--backend", backend]
             ocr = row.ocr.currentText()
-            if ocr != "(none)":
-                args += ["--ocr", ocr]
-            elif backend == "modular":
-                # modular always runs a stage-2 OCR (easyocr unless told
-                # otherwise), so "(none)" has to be said explicitly.
-                args += ["--ocr", "none"]
+            args += ["--ocr", "none" if ocr == "(none)" else ocr]
             if backend == "modular":
                 if row.regions.currentText() != "auto":
                     args += ["--regions", row.regions.currentText()]

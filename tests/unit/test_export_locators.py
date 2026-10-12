@@ -79,6 +79,16 @@ def test_chain_separator_in_text_is_quoted():
     assert len(LocatorParser.split_alternatives(loc)) == 2
 
 
+def test_text_with_a_double_quote_is_skipped_not_altered():
+    """The parser has no escape for '"'. Stripping it wrote text="Say Hi",
+    which can never match 'Say "Hi"'; the property is reported instead."""
+    loc, skipped = definition_locator(_definition(["text", "type"], text='Say "Hi"'))
+    assert loc == "role=button"
+    assert skipped == ["text"]
+
+    assert element_locator(_element(text='"')) == "role=button || id=E7"
+
+
 def test_exported_locator_resolves_after_ids_shift():
     """The point of the semantic primary: a re-analysis that renumbers elements."""
     loc = element_locator(_element())

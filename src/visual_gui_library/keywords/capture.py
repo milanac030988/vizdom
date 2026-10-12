@@ -537,17 +537,11 @@ class CaptureKeywords:
     def _get_desc_resolver(self):
         """DescriptionResolver for the current DOM (ADR-022), built lazily."""
         if getattr(self, "_desc_resolver", None) is None:
-            from ..locators.desc_resolver import DescriptionResolver
+            # The same builder the Viewer's trial uses (ADR-028: one resolver).
+            from ..locators.resolver import default_desc_resolver_factory
             g = getattr(self._session_config, "grounding", None) if self._session_config else None
-            self._desc_resolver = DescriptionResolver(
-                self._current_dom,
-                screenshot=self._current_screenshot,
-                tiers=(list(g.tiers) if g else None),
-                backend=(g.backend if g else "ollama"),
-                model=(g.model if g else "qwen2.5:3b"),
-                vision_model=(g.vision_model if g else "qwen2.5-vl:3b"),
-                host=(g.host if g else "http://localhost:11434"),
-            )
+            self._desc_resolver = default_desc_resolver_factory(
+                self._current_dom, self._current_screenshot, g)()
         return self._desc_resolver
 
     @keyword("Load Visual DOM")

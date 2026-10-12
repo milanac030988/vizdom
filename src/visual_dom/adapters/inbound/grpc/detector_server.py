@@ -107,6 +107,11 @@ def serve(backend_name, port, detector_kwargs, max_workers=4):
     run_until_signal(server, f"detector '{backend_name}'", port, on_shutdown=_cleanup)
 
 
+# --ocr when omitted. omniparser has its own OCR, so the ensemble is opt-in;
+# modular's stage 2 IS the OCR, so it defaults to an engine.
+_DEFAULT_OCR = {"omniparser": "none", "modular": "easyocr"}
+
+
 def _build_ocr_provider(engine: str, use_gpu: bool):
     """
     Build the OCR-ensemble provider for a server-side OmniParser (ADR-016).
@@ -144,11 +149,11 @@ def main():
     ap.add_argument("--yolo-model", default=None)
     ap.add_argument("--ocr", default=None, metavar="ENGINE",
                     help="OCR engine run ON THIS SERVICE (easyocr|paddleocr|"
-                         "tesseract|none). omniparser: feeds the text ensemble; "
-                         "without it a remote OmniParser uses only its own OCR, "
-                         "since the client's OCR callable cannot cross gRPC. "
-                         "modular: the stage-2 engine (default easyocr; 'none' "
-                         "skips OCR).")
+                         "tesseract|none); 'none' means no OCR for every backend. "
+                         "omniparser: feeds the text ensemble (default none - "
+                         "OmniParser's own OCR only, since the client's OCR "
+                         "callable cannot cross gRPC). modular: the stage-2 "
+                         "engine (default easyocr). Unused by uied/yolo.")
     ap.add_argument("--box-threshold", type=float, default=None,
                     help="OmniParser YOLO confidence cutoff (default 0.05); lower "
                          "to ~0.03 to recover faint glyphs. Applies to omniparser "
@@ -165,6 +170,8 @@ def main():
                                      ("--captioner", args.captioner, "none")):
             if value != default:
                 log.warning("%s applies to --backend modular only; ignored", flag)
+    # One meaning for --ocr: an engine name or "none"; omitted -> per-backend default.
+    ocr = args.ocr or _DEFAULT_OCR.get(args.backend, "none")
     # Explicit flags, then OMNIPARSER_* env vars, then the standard locations.
     paths = resolve_omniparser_paths(omniparser_root=args.omniparser_root,
                                      icon_detect_path=args.icon_detect,
@@ -173,8 +180,8 @@ def main():
         kwargs.update(paths)
         if args.box_threshold is not None:
             kwargs["box_threshold"] = args.box_threshold
-        if args.ocr and args.ocr != "none":
-            kwargs["ocr_provider"] = _build_ocr_provider(args.ocr, use_gpu)
+        if ocr != "none":
+            kwargs["ocr_provider"] = _build_ocr_provider(ocr, use_gpu)
             kwargs["ocr_ensemble"] = True
     elif args.backend == "yolo" and args.yolo_model:
         kwargs["model_path"] = args.yolo_model
@@ -192,14 +199,13 @@ def main():
             kwargs["box_threshold"] = args.box_threshold
         # --ocr names the stage-2 engine here (the backend runs OCR itself),
         # unlike the omniparser backend where it builds the ensemble provider.
-        if args.ocr:
-            kwargs["ocr_engine"] = args.ocr
+        kwargs["ocr_engine"] = ocr
         kwargs["captioner"] = args.captioner
         if args.captioner == "florence" and "icon_caption_path" not in paths:
             raise SystemExit("--captioner florence needs the OmniParser caption "
                              "weights (--icon-caption or OMNIPARSER_ICON_CAPTION)")
         log.info("modular stages: regions=%s, ocr=%s, captioner=%s",
-                 args.regions, args.ocr or "easyocr", args.captioner)
+                 args.regions, ocr, args.captioner)
 
     serve(args.backend, args.port, kwargs)
 

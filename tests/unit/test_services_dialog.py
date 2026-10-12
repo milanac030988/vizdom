@@ -95,14 +95,12 @@ def test_external_status_is_not_clipped(dialog):
     assert status.fontMetrics().horizontalAdvance(status.text()) <= status.maximumWidth()
 
 
-def test_modular_with_no_ocr_says_so(dialog):
-    """modular always runs a stage-2 OCR, so "(none)" must reach the service
-    as --ocr none instead of leaving it on its easyocr default."""
+def test_no_ocr_is_said_explicitly_for_every_backend(dialog):
+    """ "(none)" reaches the service as --ocr none whatever the backend, rather
+    than leaving each backend to its own default for an omitted flag."""
     row = dialog._rows["detector"]
-    row.backend.setCurrentText("modular")
     row.ocr.setCurrentText("(none)")
-    args = dialog._args_for(row)
-    assert args[args.index("--ocr") + 1] == "none"
-
-    row.backend.setCurrentText("omniparser")
-    assert "--ocr" not in dialog._args_for(row)
+    for backend in ("modular", "omniparser", "uied"):
+        row.backend.setCurrentText(backend)
+        args = dialog._args_for(row)
+        assert args[args.index("--ocr") + 1] == "none", backend

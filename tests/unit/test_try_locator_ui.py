@@ -32,5 +32,5 @@ def test_click_via_actuator_flow():
     )
     output = result.stdout + result.stderr
     assert result.returncode == 0, f"harness failed:\n{output[-2500:]}"
-    for phase in ("phase1", "phase2", "phase3"):
+    for phase in ("phase1", "phase2", "phase3", "phase4", "phase5"):
         assert f"PASS {phase}" in output, output[-2500:]

@@ -52,7 +52,6 @@ Library          VisualGuiLibrary
 
     def __init__(self):
         self._naming_strategy = 'text_first'  # 'text_first', 'type_first', 'id_only'
-        self._include_coordinates = True
         self._include_comments = True
         # NOTE: flag must NOT be named _generate_keywords — that would shadow
         # the _generate_keywords() method and make it uncallable ('bool' object
@@ -134,7 +133,7 @@ Library          VisualGuiLibrary
             var_name = self._generate_unique_name(elem, used_names)
             used_names.add(var_name)
 
-            locator = self._generate_locator(elem)
+            locator = element_locator(elem)
 
             if self._include_comments:
                 comment = self._generate_variable_comment(elem)
@@ -205,10 +204,6 @@ Library          VisualGuiLibrary
         if clean and not clean[0].isalpha():
             clean = 'E_' + clean
         return clean.upper() or 'ELEMENT'
-
-    def _generate_locator(self, elem: DOMElement) -> str:
-        """Locator string for an element (ADR-028: the same one the Viewer tries)."""
-        return element_locator(elem)
 
     def _generate_variable_comment(self, elem: DOMElement) -> str:
         """Generate comment for variable."""
@@ -427,11 +422,12 @@ Library          VisualGuiLibrary
             # Use user-defined name
             var_name = self._clean_name(defn.name)
 
-            # Generate locator from selected properties only
-            locator = self._generate_definition_locator(defn)
+            # Locator from the selected properties only (ADR-028); computed once,
+            # the skipped list feeds the comment.
+            locator, skipped = definition_locator(defn)
 
             if self._include_comments:
-                comment = self._generate_definition_comment(defn)
+                comment = self._generate_definition_comment(defn, skipped)
                 lines.append(comment)
 
             lines.append(f"${{{var_name}}}    {locator}")
@@ -439,11 +435,8 @@ Library          VisualGuiLibrary
 
         return '\n'.join(lines)
 
-    def _generate_definition_locator(self, defn: 'ElementDefinition') -> str:
-        """Locator string from the user's selected properties (ADR-028)."""
-        return definition_locator(defn)[0]
-
-    def _generate_definition_comment(self, defn: 'ElementDefinition') -> str:
+    def _generate_definition_comment(self, defn: 'ElementDefinition',
+                                     skipped: List[str]) -> str:
         """Generate comment for a definition."""
         parts = [f"# {defn.name}"]
 
@@ -452,7 +445,6 @@ Library          VisualGuiLibrary
 
         props = ', '.join(sorted(defn.selected_properties))
         parts.append(f"| Defined by: {props}")
-        skipped = definition_locator(defn)[1]
         if skipped:
             parts.append(f"| Not locator properties, left out: {', '.join(skipped)}")
 

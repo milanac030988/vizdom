@@ -32,28 +32,37 @@ _PROPERTY_STRATEGY = {
 }
 
 
-def quote_value(value: Any) -> str:
+def quote_value(value: Any) -> Optional[str]:
     """
     A locator value, quoted when it contains whitespace or the ``||`` chain
     separator (both would otherwise split it). The parser has no escape for a
-    literal double quote, so one cannot be expressed and is dropped.
+    literal double quote, so a value containing one cannot be expressed:
+    returns None rather than an altered value that would never match.
     """
-    text = str(value).replace('"', "")
+    text = str(value)
+    if '"' in text:
+        return None
     needs_quotes = any(ch.isspace() for ch in text) or "||" in text
     return f'"{text}"' if needs_quotes else text
+
+
+def expressible(value: Any) -> bool:
+    """True when ``value`` can be written as a locator value (see quote_value)."""
+    return value is not None and str(value).strip() != "" and quote_value(value) is not None
 
 
 def build_locator(parts: Iterable[Tuple[str, Any]],
                   element_id: Optional[str] = None) -> str:
     """
     ``[("text", "Save"), ("role", "button")], "E7"`` ->
-    ``text=Save role=button || id=E7``. Empty values are dropped (the parser
-    cannot express them); the id alone is used when no semantic part remains.
+    ``text=Save role=button || id=E7``. Values the parser cannot express (empty,
+    or containing a double quote) are dropped; the id alone is used when no
+    semantic part remains.
     """
     seen = set()
     rendered = []
     for strategy, value in parts:
-        if value is None or str(value).strip() == "" or strategy in seen:
+        if not expressible(value) or strategy in seen:
             continue
         seen.add(strategy)
         rendered.append(f"{strategy}={quote_value(value)}")
@@ -68,9 +77,9 @@ def element_locator(element: "DOMElement") -> str:
     """Default locator for an element: its text (or hint) and role, then its id."""
     props = element.properties or {}
     parts: List[Tuple[str, Any]] = []
-    if element.text:
+    if expressible(element.text):
         parts.append(("text", element.text))
-    elif props.get("hint"):
+    elif expressible(props.get("hint")):
         parts.append(("hint", props["hint"]))
     role = props.get("role")
     if role and role != "unknown":
@@ -104,7 +113,7 @@ def definition_locator(defn: "ElementDefinition") -> Tuple[str, List[str]]:
         value = values.get("role") if strategy == "role" else values.get(prop)
         if strategy == "role" and not value:
             value = values.get("type")
-        if value in (None, "", "unknown"):
+        if value == "unknown" or not expressible(value):
             skipped.append(prop)
             continue
         parts.append((strategy, value))
@@ -112,4 +121,5 @@ def definition_locator(defn: "ElementDefinition") -> Tuple[str, List[str]]:
     return locator, skipped
 
 
-__all__ = ["build_locator", "element_locator", "definition_locator", "quote_value"]
+__all__ = ["build_locator", "element_locator", "definition_locator", "expressible",
+           "quote_value"]
