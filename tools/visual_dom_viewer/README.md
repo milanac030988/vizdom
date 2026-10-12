@@ -123,19 +123,47 @@ python -m tools.visual_dom_viewer --plugin-path /path/to/my/plugins
 | `Ctrl+-` | Zoom Out |
 | `Ctrl+0` | Reset View |
 | `Ctrl+E` | Export to Robot |
+| `Ctrl+T` | Click Selected via Actuator |
+
+## Trying a Locator (Click via Actuator)
+
+Right-click an element on the canvas or in the tree and choose **Click via Actuator**
+(or select it and press `Ctrl+T`). The Viewer then does what a Robot test does:
+
+1. captures and analyzes the screen again (Pipeline Settings > Actuation >
+   *Capture again before resolving*, on by default);
+2. resolves the element's locator, exactly as it will be exported, with the same
+   resolver as `Get Visual Element`. If it does not resolve to exactly one element
+   you get the reason, and no click is sent;
+3. raises the target window and clicks through the configured actuator
+   (desktop, android, the gRPC actuator service, or a plugin);
+4. captures again so you see the result.
+
+The target window is *Actuation > Window title*, else the connected window, else the
+window the last capture was scoped to. The first click of a session asks for
+confirmation. **Copy Locator** on the same menu copies the locator string. See
+[ADR-028](../../docs/adr/028-viewer-try-locator-via-actuator.md).
 
 ## Exported Robot Framework Format
 
 ```robotframework
+*** Settings ***
+Library          VisualGuiLibrary
+
 *** Variables ***
 # Element: button | Text: "Submit" | Position: (100, 200)
-${BUTTON_SUBMIT}    text="Submit"    type=button    id=elem_001
+${BUTTON_SUBMIT}    text=Submit role=button || id=E12
 
 *** Keywords ***
 Click Submit
     [Documentation]    Click the Submit button
-    Click Element    ${BUTTON_SUBMIT}
+    Click Visual    ${BUTTON_SUBMIT}
 ```
+
+Locators contain only properties the locator language understands (text, hint,
+role); the element id is a fallback after `||` because ids are renumbered when a
+re-analysis finds a new element. Selected properties with no locator equivalent
+(position, size, confidence) are named in the comment and left out.
 
 ## Platform Support
 

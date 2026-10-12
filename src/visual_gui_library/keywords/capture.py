@@ -573,67 +573,14 @@ class CaptureKeywords:
 
         return dom
 
-    def _resolve_alternative(self, locators) -> tuple:
+    def _locator_resolver(self):
         """
-        Resolve ONE alternative (an AND-group of locators) to a single element.
-
-        Returns (element_or_None, reason). `reason` explains a miss so a failed
-        chain can report why each alternative did not resolve.
+        The shared `LocatorResolver` (ADR-028) over the current finder. Built per
+        call because `_finder` is swapped whenever the DOM changes; desc=
+        grounding goes through this library's per-screen `_get_desc_resolver`.
         """
-        from ..locators.locator import LocatorStrategy
-        try:
-            element = self._finder.find_one(locators)
-        except ValueError as exc:              # find_one raises on ambiguity
-            return None, str(exc)
-        if element is not None:
-            return element, "ok"
-
-        # desc= escalation (ADR-022): the finder only runs the deterministic
-        # lexical tier. If that missed and this alternative is a lone
-        # description, escalate through the configured chain (SLM over DOM,
-        # optionally VLM Set-of-Mark over the screenshot).
-        if len(locators) == 1 and locators[0].strategy == LocatorStrategy.DESC:
-            resolver = self._get_desc_resolver()
-            element, info = resolver.resolve(locators[0].value)
-            if element is not None:
-                log.info(f"desc= resolved by tier '{info['tier']}' "
-                         f"({info['reason']}) -> {element.get('id')}")
-                return element, "ok"
-            cands = ", ".join(str(c) for c in info.get("candidates", [])) or "none"
-            return None, f"no grounding tier confident (nearest: {cands})"
-
-        return None, "not found"
-
-    def _disambiguate_with_desc(self, group, rendered: str, desc_values) -> Optional[dict]:
-        """
-        Ambiguity arbitration (ADR-024): a property locator matched SEVERAL
-        elements — let a desc= from the same chain judge which one was meant,
-        by grounding the description over just those candidates.
-
-        This runs *before* falling through to the next alternative, because the
-        ambiguous matches carry real information: the wanted element is almost
-        certainly among them, and a 2-3 element pool is exactly where grounding
-        is at its most reliable (even the model-free lexical tier usually
-        separates "Plus" from "±"; configured SLM/VLM tiers judge a short,
-        focused list). Not confident -> return None and the chain continues
-        unchanged, so this can rescue a resolution but never corrupt one.
-        """
-        try:
-            candidates = self._finder.find(group)
-        except Exception:
-            return None
-        if len(candidates) < 2:
-            return None
-        resolver = self._get_desc_resolver()
-        for desc in desc_values:
-            element, info = resolver.resolve(desc, within=candidates)
-            if element is not None:
-                ids = ", ".join(str(c.get("id")) for c in candidates)
-                log.info(f"'{rendered}' matched {len(candidates)} elements "
-                         f"({ids}); desc={desc!r} disambiguated to "
-                         f"{element.get('id')} (tier '{info['tier']}', {info['reason']})")
-                return element
-        return None
+        from ..locators.resolver import LocatorResolver
+        return LocatorResolver(self._finder, self._get_desc_resolver)
 
     @keyword("Get Visual Element")
     def get_visual_element(self, locator: str) -> dict:
@@ -664,47 +611,7 @@ class CaptureKeywords:
         """
         if not self._finder:
             raise RuntimeError("No DOM loaded. Call 'Dump Visual DOM' first.")
-
-        from ..locators import LocatorParser
-        from ..locators.locator import LocatorStrategy
-        alternatives = LocatorParser.parse_alternatives(locator)
-        if not alternatives:
-            raise ValueError(f"Could not parse locator: {locator!r}")
-
-        # Descriptions available for AMBIGUITY ARBITRATION: when a property
-        # locator matches several elements, a desc= elsewhere in the chain can
-        # judge WHICH of those candidates was meant — grounding over 2-3
-        # candidates is far more reliable than over the whole DOM, so this
-        # rescues chains like `text=+ || desc="plus button"` where the ± key's
-        # composite glyph also OCRs as "+".
-        desc_values = [g[0].value for g in alternatives
-                       if len(g) == 1 and g[0].strategy == LocatorStrategy.DESC]
-
-        attempts = []
-        for index, group in enumerate(alternatives):
-            element, reason = self._resolve_alternative(group)
-            rendered = LocatorParser.render(group)
-            if element is None and desc_values and "Multiple elements match" in reason:
-                element = self._disambiguate_with_desc(group, rendered, desc_values)
-            if element is not None:
-                if index > 0:
-                    failed = "; ".join(f"{r} ({why})" for r, why in attempts)
-                    log.warning(f"locator fallback — used alternative #{index + 1} "
-                                f"'{rendered}' -> {element.get('id')}; earlier alternative(s) "
-                                f"failed: {failed}. The primary locator may be stale.")
-                return element
-            attempts.append((rendered, reason))
-
-        detail = "; ".join(f"#{i + 1} '{r}' -> {why}"
-                           for i, (r, why) in enumerate(attempts))
-        # "not found" would be wrong when the cause was ambiguity, so state the
-        # actual contract that failed: exactly one element.
-        if len(attempts) == 1 and attempts[0][1] == "not found":
-            raise ValueError(f"Element not found: {locator}")
-        raise ValueError(
-            f"Locator did not resolve to exactly one element: {locator} "
-            f"[tried {detail}]"
-        )
+        return self._locator_resolver().resolve(locator)
 
     @keyword("Get Visual Elements")
     def get_visual_elements(self, locator: str) -> list:
@@ -725,12 +632,7 @@ class CaptureKeywords:
 
         # Honours ``||`` fallback chains (ADR-024): the first alternative that
         # matches anything wins; many matches are expected here by design.
-        from ..locators import LocatorParser
-        for group in LocatorParser.parse_alternatives(locator):
-            found = self._finder.find(group)
-            if found:
-                return found
-        return []
+        return self._locator_resolver().resolve_all(locator)
 
     @keyword("Get Element Center")
     def get_element_center(self, locator: str) -> Tuple[int, int]:
