@@ -1,0 +1,81 @@
+name: Acceptance tests
+
+# Runs the Robot Framework acceptance suite (tests/acceptance) on every push:
+# a small PyQt calculator is started on a virtual display (Xvfb + openbox),
+# VizDOM reads it from pixels (UIED + EasyOCR on CPU), clicks it through the
+# desktop actuator and checks the result it reads back. Robot logs and the
+# failure screenshots are uploaded as the "acceptance-results" artifact.
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: acceptance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      DISPLAY: ":99"
+      PYTHONPATH: src
+      QT_QPA_PLATFORM: xcb
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install system packages
+        run: |
+          sudo apt-get update
+          # Xvfb + a window manager (focus needs _NET_ACTIVE_WINDOW), the tools
+          # x11_window uses to raise windows, and the libs Qt's xcb plugin loads.
+          sudo apt-get install -y --no-install-recommends \
+            xvfb openbox xdotool wmctrl x11-utils \
+            libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
+            libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxcb-randr0 \
+            libxcb-shape0 libxcb-cursor0 libgl1 libegl1 fonts-dejavu-core
+
+      - name: Install Python packages
+        run: |
+          python -m pip install --upgrade pip
+          # CPU-only torch keeps the download small; EasyOCR pulls
+          # opencv-python-headless, which (unlike opencv-python) does not
+          # override Qt's plugin path for the PyQt app under test.
+          python -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy opencv-python-headless Pillow requests \
+            robotframework easyocr mss pyautogui python-xlib PyQt5
+
+      - name: Cache EasyOCR models
+        uses: actions/cache@v4
+        with:
+          path: ~/.EasyOCR
+          key: easyocr-models-en-v1
+
+      - name: Start virtual display
+        run: |
+          Xvfb :99 -screen 0 1280x800x24 -nolisten tcp &
+          for i in $(seq 1 20); do xdpyinfo >/dev/null 2>&1 && break; sleep 0.5; done
+          openbox &
+          sleep 1
+          touch ~/.Xauthority
+
+      - name: Run acceptance suite
+        run: python -m robot --outputdir results tests/acceptance
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: acceptance-results
+          path: results
+          if-no-files-found: ignore
