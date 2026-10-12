@@ -51,28 +51,32 @@ class OmniParserRegionProposer(RegionProposer):
     """
     OmniParser's icon_detect YOLO as a standalone stage-1 model.
 
-    Reuses the vendored repo + weights (and the OMNIPARSER_* env vars) but
-    loads ONLY the YOLO - no Florence-2, which is the monolith's heavyweight.
+    Reuses the vendored repo + weights but loads ONLY the YOLO - no Florence-2,
+    which is the monolith's heavyweight. Paths come from the arguments, then the
+    OMNIPARSER_* env vars, then the standard project locations.
     """
 
     name = "omniparser"
     license = "AGPL-3.0 (icon_detect)"
     requires_gpu = True
 
-    def __init__(self, box_threshold: float = 0.05, **_ignored: Any):
+    def __init__(self, box_threshold: float = 0.05,
+                 icon_detect_path: Optional[str] = None,
+                 omniparser_root: Optional[str] = None, **_ignored: Any):
         # Reuse the monolith backend's path resolution and its predict_yolo
         # wrapper - but only the YOLO half of its initialisation.
-        import os
-
         from .omniparser_backend import OmniParserBackend
+        from .omniparser_paths import resolve_omniparser_paths
 
         self._box_threshold = box_threshold
-        root = os.environ.get("OMNIPARSER_ROOT")
-        icon_detect = os.environ.get("OMNIPARSER_ICON_DETECT")
+        paths = resolve_omniparser_paths(omniparser_root=omniparser_root,
+                                         icon_detect_path=icon_detect_path)
+        root = paths.get("omniparser_root")
+        icon_detect = paths.get("icon_detect_path")
         if not icon_detect:
             raise ValueError(
-                "OmniParserRegionProposer needs OMNIPARSER_ICON_DETECT "
-                "(the icon_detect .pt path).")
+                "OmniParserRegionProposer needs the icon_detect .pt path "
+                "(icon_detect_path or OMNIPARSER_ICON_DETECT).")
         import sys
         if root and root not in sys.path:
             sys.path.insert(0, root)
@@ -150,16 +154,21 @@ class FlorenceCaptioner(Captioner):
     license = "MIT"
     requires_gpu = True
 
-    def __init__(self, batch_size: int = 128, **_ignored: Any):
-        import os
+    def __init__(self, batch_size: int = 128,
+                 icon_caption_path: Optional[str] = None,
+                 omniparser_root: Optional[str] = None, **_ignored: Any):
         import sys
 
-        root = os.environ.get("OMNIPARSER_ROOT")
-        icon_caption = os.environ.get("OMNIPARSER_ICON_CAPTION")
+        from .omniparser_paths import resolve_omniparser_paths
+
+        paths = resolve_omniparser_paths(omniparser_root=omniparser_root,
+                                         icon_caption_path=icon_caption_path)
+        root = paths.get("omniparser_root")
+        icon_caption = paths.get("icon_caption_path")
         if not icon_caption:
             raise ValueError(
-                "FlorenceCaptioner needs OMNIPARSER_ICON_CAPTION "
-                "(the icon_caption model directory).")
+                "FlorenceCaptioner needs the icon_caption model directory "
+                "(icon_caption_path or OMNIPARSER_ICON_CAPTION).")
         if root and root not in sys.path:
             sys.path.insert(0, root)
         import util.utils as omni_utils  # type: ignore
@@ -206,12 +215,40 @@ _CAPTIONERS = {
 
 
 def create_region_proposer(name: str, **kwargs: Any) -> RegionProposer:
+    """
+    Build a stage-1 proposer by name. ``auto`` picks omniparser when its
+    weights, repo and ultralytics are all usable, and otherwise degrades the
+    STAGE to uied (CPU) with a warning - never the whole backend.
+    """
+    if name == "auto":
+        return _auto_region_proposer(**kwargs)
     try:
         cls = _REGION_PROPOSERS[name]
     except KeyError:
         raise ValueError(f"Unknown region proposer {name!r}; "
                          f"known: {sorted(_REGION_PROPOSERS)}") from None
     return cls(**kwargs)
+
+
+def _auto_region_proposer(**kwargs: Any) -> RegionProposer:
+    from .omniparser_paths import (
+        omniparser_unavailable_reason, resolve_omniparser_paths,
+    )
+
+    paths = resolve_omniparser_paths(
+        omniparser_root=kwargs.get("omniparser_root"),
+        icon_detect_path=kwargs.get("icon_detect_path"))
+    reason = omniparser_unavailable_reason(
+        paths.get("omniparser_root"),
+        required={"icon_detect weights": paths.get("icon_detect_path")})
+    if reason is None:
+        try:
+            return OmniParserRegionProposer(**{**kwargs, **paths})
+        except Exception as exc:     # weights present but unloadable
+            reason = f"loading it failed: {exc}"
+    log.warning("modular: omniparser region proposer unavailable (%s) - "
+                "using the uied region proposer (CPU)", reason)
+    return UIEDRegionProposer(**kwargs)
 
 
 def create_captioner(name: str, **kwargs: Any) -> Captioner:
@@ -238,7 +275,7 @@ class ModularDetectorBackend(DetectorBackend):
 
     def __init__(
         self,
-        region_proposer: Any = "omniparser",
+        region_proposer: Any = "auto",
         ocr_engine: str = "easyocr",
         captioner: Any = "none",
         use_gpu: bool = True,
@@ -246,19 +283,39 @@ class ModularDetectorBackend(DetectorBackend):
         region_kwargs: Optional[Dict[str, Any]] = None,
         captioner_kwargs: Optional[Dict[str, Any]] = None,
         text_detector: Any = None,
+        omniparser_root: Optional[str] = None,
+        icon_detect_path: Optional[str] = None,
+        icon_caption_path: Optional[str] = None,
+        box_threshold: Optional[float] = None,
         **_ignored: Any,
     ):
         """
         Stage arguments accept either a registry name (str) or a ready
         instance - instances make the backend testable without any model and
         let callers share an already-loaded stage.
+
+        The OmniParser path arguments and ``box_threshold`` are conveniences
+        forwarded to the stages that use them (explicit ``region_kwargs`` /
+        ``captioner_kwargs`` entries win), so a flat config or CLI can reach
+        them without building the per-stage dicts.
         """
+        region_kwargs = dict(region_kwargs or {})
+        captioner_kwargs = dict(captioner_kwargs or {})
+        for key, value in (("omniparser_root", omniparser_root),
+                           ("icon_detect_path", icon_detect_path),
+                           ("box_threshold", box_threshold)):
+            if value is not None:
+                region_kwargs.setdefault(key, value)
+        for key, value in (("omniparser_root", omniparser_root),
+                           ("icon_caption_path", icon_caption_path)):
+            if value is not None:
+                captioner_kwargs.setdefault(key, value)
         self._proposer = (region_proposer if isinstance(region_proposer, RegionProposer)
                           else create_region_proposer(str(region_proposer),
-                                                      **(region_kwargs or {})))
+                                                      **region_kwargs))
         self._captioner = (captioner if isinstance(captioner, Captioner)
                            else create_captioner(str(captioner),
-                                                 **(captioner_kwargs or {})))
+                                                 **captioner_kwargs))
         if text_detector is not None:
             self._text = text_detector
         else:

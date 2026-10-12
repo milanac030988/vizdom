@@ -27,7 +27,7 @@ from pathlib import Path
 from PyQt5.QtCore import Qt, QProcess, QThread, QTimer, pyqtSignal
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import (
-    QCheckBox, QComboBox, QDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
+    QComboBox, QDialog, QGroupBox, QHBoxLayout, QLabel,
     QLineEdit, QPlainTextEdit, QPushButton, QVBoxLayout, QWidget,
 )
 
@@ -196,7 +196,9 @@ class ServicesDialog(QDialog):
     # Fixed widths for the columns every row shares. Each row is its own
     # layout, so without fixed sizes the three rows compute different column
     # widths and nothing lines up vertically across the group boxes.
-    _STATUS_W = 190
+    # The status column is sized to its longest text (a reachable service
+    # started elsewhere) so the "(external)" marker is never clipped.
+    _STATUS_LONGEST = "omniparser · port 65535  (external)"
     _PORT_LABEL_W = 34
     _PORT_W = 70
 
@@ -211,7 +213,8 @@ class ServicesDialog(QDialog):
         lay.addWidget(row.light)
 
         row.status = QLabel("not reachable")
-        row.status.setFixedWidth(self._STATUS_W)
+        row.status.setFixedWidth(
+            row.status.fontMetrics().horizontalAdvance(self._STATUS_LONGEST) + 8)
         lay.addWidget(row.status)
 
         port_label = QLabel("Port:")
@@ -306,8 +309,13 @@ class ServicesDialog(QDialog):
         if row.key == "detector":
             backend = row.backend.currentText()
             args += ["--backend", backend]
-            if row.ocr.currentText() != "(none)":
-                args += ["--ocr", row.ocr.currentText()]
+            ocr = row.ocr.currentText()
+            if ocr != "(none)":
+                args += ["--ocr", ocr]
+            elif backend == "modular":
+                # modular always runs a stage-2 OCR (easyocr unless told
+                # otherwise), so "(none)" has to be said explicitly.
+                args += ["--ocr", "none"]
             if backend == "modular":
                 if row.regions.currentText() != "auto":
                     args += ["--regions", row.regions.currentText()]

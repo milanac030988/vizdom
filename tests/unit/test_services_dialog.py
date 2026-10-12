@@ -84,3 +84,25 @@ def test_apply_health_updates_row_state(dialog):
 
 def test_apply_health_ignores_unknown_key(dialog):
     dialog._apply_health("nonesuch", True, "x")   # must not raise
+
+
+def test_external_status_is_not_clipped(dialog):
+    """The fixed status width (it keeps the rows aligned) must still fit the
+    longest text, whose "(external)" marker explains why Stop is disabled."""
+    dialog._apply_health("detector", True, "omniparser")
+    status = dialog._rows["detector"].status
+    assert "(external)" in status.text()
+    assert status.fontMetrics().horizontalAdvance(status.text()) <= status.maximumWidth()
+
+
+def test_modular_with_no_ocr_says_so(dialog):
+    """modular always runs a stage-2 OCR, so "(none)" must reach the service
+    as --ocr none instead of leaving it on its easyocr default."""
+    row = dialog._rows["detector"]
+    row.backend.setCurrentText("modular")
+    row.ocr.setCurrentText("(none)")
+    args = dialog._args_for(row)
+    assert args[args.index("--ocr") + 1] == "none"
+
+    row.backend.setCurrentText("omniparser")
+    assert "--ocr" not in dialog._args_for(row)

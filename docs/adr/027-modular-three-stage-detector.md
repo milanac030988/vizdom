@@ -225,6 +225,14 @@ Skeleton in place, all combos behind `detector.backend=modular`:
 - Backend: `modular_backend.py` — stage factories (`omniparser`/`uied`
   proposers; `florence`/`none` captioners), instances injectable for tests.
   Registered additively in the detector registry; existing backends untouched.
+- Stage 1 defaults to `auto`: omniparser when its weights, repo and
+  ultralytics are all usable, otherwise `uied` with a warning, so a missing
+  weight degrades the stage, never the backend (before, `detector.backend:
+  modular` from a config file without weights silently produced OCR-only
+  DOMs). The stages take OmniParser paths as arguments, resolved by
+  `omniparser_paths.resolve_omniparser_paths` (argument, `OMNIPARSER_*` env
+  var, standard location) — the one resolver the pipeline, Viewer and detector
+  service share; none of them writes `os.environ`.
 - Pipeline integration: `modular` joins `omniparser` in
   `_BACKEND_THRESHOLDED_SOURCES` (confidence-gate exemption + ranking-as-1.0),
   and the pipeline shares its `TextDetector` instance with the backend's

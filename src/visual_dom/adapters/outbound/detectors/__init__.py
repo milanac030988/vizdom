@@ -11,6 +11,7 @@ See docs/discussion/landscape-comparison-*.html for the rationale.
 
 from visual_dom.core.ports.outbound.detector_port import Detection, DetectorBackend
 from visual_dom.adapters.outbound.detectors.registry import create_detector, list_detectors, register
+from visual_dom.adapters.outbound.detectors.omniparser_paths import resolve_omniparser_paths
 
 __all__ = [
     "Detection",
@@ -18,4 +19,5 @@ __all__ = [
     "create_detector",
     "list_detectors",
     "register",
+    "resolve_omniparser_paths",
 ]
