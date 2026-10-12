@@ -42,6 +42,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [025](025-session-orchestrator-service.md) | Session Orchestrator Service (forwarding gateway rejected; orchestrator deferred against trigger conditions) | **Proposed** | 2026-08-09 |
 | [026](026-viewer-ui-restructure.md) | Viewer UI — Verb Toolbar, Menu Bar, and Three Tool Windows | Accepted | 2026-08-10 |
 | [027](027-modular-three-stage-detector.md) | Modular Three-Stage Detector (new `modular` strategy beside OmniParser) | **Proposed** | 2026-08-13 |
+| [028](028-viewer-try-locator-via-actuator.md) | Viewer "Click via Actuator" on a Shared Locator Resolver | Accepted | 2026-10-12 |
 
 ## Summary
 

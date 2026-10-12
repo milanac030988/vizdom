@@ -93,3 +93,4 @@ nav:
       - 025 Session Orchestrator Service: adr/025-session-orchestrator-service.md
       - 026 Viewer UI Restructure: adr/026-viewer-ui-restructure.md
       - 027 Modular Three-Stage Detector: adr/027-modular-three-stage-detector.md
+      - 028 Viewer Click via Actuator: adr/028-viewer-try-locator-via-actuator.md
