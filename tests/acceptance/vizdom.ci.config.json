@@ -1,0 +1,14 @@
+{
+  "_about": "Acceptance-suite session config: CPU-only pipeline on a headless Linux runner (Xvfb).",
+  "detector": {"backend": "uied", "use_gpu": false},
+  "ocr": {"engine": "easyocr"},
+  "refiner": {"enabled": false},
+  "capture": {
+    "strategy": "linux",
+    "window_title": "VizDOM Demo Calculator",
+    "focus_before_capture": true,
+    "window_scope": false
+  },
+  "actuator": {"strategy": "desktop"},
+  "grounding": {"tiers": ["lexical"]}
+}
