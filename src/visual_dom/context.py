@@ -72,7 +72,8 @@ class Session:
 
         det = cfg.detector
         detector_kwargs: Dict[str, Any] = {}
-        if det.backend == "omniparser":
+        if det.backend in ("omniparser", "modular"):
+            # modular forwards these to its omniparser/florence stages (ADR-027).
             if det.omniparser_icon_detect_path:
                 detector_kwargs["icon_detect_path"] = det.omniparser_icon_detect_path
             if det.omniparser_icon_caption_path:

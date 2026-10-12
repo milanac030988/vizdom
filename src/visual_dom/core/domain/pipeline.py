@@ -247,25 +247,11 @@ class VisualDOMPipeline:
             # given via detector_kwargs or OMNIPARSER_* env vars. Without this the
             # backend fails to construct and the pipeline silently degrades to
             # OCR-text-only -- a trap that quietly invalidates "omniparser" runs.
-            import os as _os
-            # core/domain/ -> core -> visual_dom -> src -> project root (4 levels).
-            # This module lives two packages deeper since the ADR-014 restructure;
-            # with one ".." too few the candidates below never exist and every
-            # in-process "omniparser" run silently degrades to OCR-text-only.
-            _root = _os.path.abspath(_os.path.join(_os.path.dirname(__file__),
-                                                   "..", "..", "..", ".."))
-            if "icon_detect_path" not in detector_kwargs and not _os.environ.get("OMNIPARSER_ICON_DETECT"):
-                _cand = _os.path.join(_root, "models", "omniparser", "icon_detect", "model.pt")
-                if _os.path.exists(_cand):
-                    kwargs["icon_detect_path"] = _cand
-            if "icon_caption_path" not in detector_kwargs and not _os.environ.get("OMNIPARSER_ICON_CAPTION"):
-                _cand = _os.path.join(_root, "models", "omniparser", "icon_caption_florence")
-                if _os.path.isdir(_cand):
-                    kwargs["icon_caption_path"] = _cand
-            if "omniparser_root" not in detector_kwargs and not _os.environ.get("OMNIPARSER_ROOT"):
-                _cand = _os.path.join(_root, "third_party", "OmniParser")
-                if _os.path.isdir(_cand):
-                    kwargs["omniparser_root"] = _cand
+            from visual_dom.adapters.outbound.detectors import resolve_omniparser_paths
+            kwargs.update(resolve_omniparser_paths(
+                omniparser_root=detector_kwargs.get("omniparser_root"),
+                icon_detect_path=detector_kwargs.get("icon_detect_path"),
+                icon_caption_path=detector_kwargs.get("icon_caption_path")))
             # Text ensemble (ADR-016): feed our upscaling OCR into OmniParser so
             # its text/icon linking uses better OCR and misses less text. Reuses
             # the pipeline's TextDetector. Disable via text_ensemble=False to get

@@ -2056,75 +2056,42 @@ class VisualDOMViewerWindow(TryLocatorMixin, QMainWindow):
                         print("[Viewer] Warning: No YOLO model found, falling back to UIED")
                         detector_mode = "uied"
                 elif detector_mode == "omniparser":
-                    # Resolve OmniParser weights from env vars, then standard locations.
-                    icon_detect = os.environ.get("OMNIPARSER_ICON_DETECT")
-                    icon_caption = os.environ.get("OMNIPARSER_ICON_CAPTION")
-                    op_root = os.environ.get("OMNIPARSER_ROOT")
-                    if not icon_detect:
-                        cand = os.path.join(project_root, "models", "omniparser",
-                                            "icon_detect", "model.pt")
-                        if os.path.exists(cand):
-                            icon_detect = cand
-                    if not icon_caption:
-                        cand = os.path.join(project_root, "models", "omniparser",
-                                            "icon_caption_florence")
-                        if os.path.isdir(cand):
-                            icon_caption = cand
-                    if not op_root:
-                        cand = os.path.join(project_root, "third_party", "OmniParser")
-                        if os.path.isdir(cand):
-                            op_root = cand
-                    if icon_detect and icon_caption:
-                        if op_root:
-                            detector_kwargs["omniparser_root"] = op_root
-                        detector_kwargs["icon_detect_path"] = icon_detect
-                        detector_kwargs["icon_caption_path"] = icon_caption
+                    # Env vars first, then the standard locations (shared with
+                    # the pipeline, the modular stages and the service).
+                    from visual_dom.adapters.outbound.detectors.omniparser_paths import (
+                        box_threshold_from_env, resolve_omniparser_paths,
+                    )
+                    paths = resolve_omniparser_paths()
+                    if "icon_detect_path" in paths and "icon_caption_path" in paths:
+                        detector_kwargs.update(paths)
                         # Optional YOLO confidence cutoff override. Default 0.05
                         # misses faint glyphs (e.g. a minimize "-" button) on some
                         # captures; set OMNIPARSER_BOX_THRESHOLD=0.03 to recover them
                         # (at a small false-positive cost).
-                        bt = os.environ.get("OMNIPARSER_BOX_THRESHOLD")
-                        if bt:
-                            try:
-                                detector_kwargs["box_threshold"] = float(bt)
-                                print(f"[Viewer] OmniParser box_threshold: {float(bt)}")
-                            except ValueError:
-                                print(f"[Viewer] Ignoring invalid OMNIPARSER_BOX_THRESHOLD={bt!r}")
-                        print(f"[Viewer] OmniParser weights: {icon_detect}")
+                        bt = box_threshold_from_env()
+                        if bt is not None:
+                            detector_kwargs["box_threshold"] = bt
+                            print(f"[Viewer] OmniParser box_threshold: {bt}")
+                        print(f"[Viewer] OmniParser weights: {paths['icon_detect_path']}")
                     else:
                         print("[Viewer] Warning: OmniParser weights not found "
                               "(set OMNIPARSER_ICON_DETECT / OMNIPARSER_ICON_CAPTION), "
                               "falling back to UIED")
                         detector_mode = "uied"
                 elif detector_mode == "modular":
-                    # ADR-027 composite. The default stage 1 (omniparser region
-                    # proposer) reads the OMNIPARSER_* env vars, so resolve them
-                    # from the standard locations the same way the omniparser
-                    # branch does - but a missing weight degrades the STAGE
-                    # (uied proposer), not the whole backend.
-                    for var, rel, is_dir in (
-                        ("OMNIPARSER_ICON_DETECT",
-                         os.path.join("models", "omniparser", "icon_detect", "model.pt"), False),
-                        ("OMNIPARSER_ICON_CAPTION",
-                         os.path.join("models", "omniparser", "icon_caption_florence"), True),
-                        ("OMNIPARSER_ROOT",
-                         os.path.join("third_party", "OmniParser"), True),
-                    ):
-                        if not os.environ.get(var):
-                            cand = os.path.join(project_root, rel)
-                            if (os.path.isdir(cand) if is_dir else os.path.exists(cand)):
-                                os.environ[var] = cand
-                    if os.environ.get("OMNIPARSER_ICON_DETECT"):
-                        detector_kwargs["region_proposer"] = "omniparser"
-                    else:
-                        print("[Viewer] modular: OmniParser weights not found - "
-                              "using the uied region proposer (CPU)")
-                        detector_kwargs["region_proposer"] = "uied"
+                    # ADR-027 composite. The backend resolves the OmniParser
+                    # paths itself and its 'auto' region proposer degrades the
+                    # STAGE to uied (CPU) when OmniParser cannot run here.
+                    from visual_dom.adapters.outbound.detectors.omniparser_paths import (
+                        box_threshold_from_env,
+                    )
+                    bt = box_threshold_from_env()
+                    if bt is not None:
+                        detector_kwargs["box_threshold"] = bt
                     # No captioner by default: florence costs ~1 GB VRAM and
                     # ~10 s load; desc= locators fall back to ADR-022 tier-2.
                     detector_kwargs["captioner"] = "none"
-                    print(f"[Viewer] modular stages: "
-                          f"regions={detector_kwargs['region_proposer']}, "
+                    print(f"[Viewer] modular stages: regions=auto, "
                           f"ocr={ocr_engine}, captioner=none")
                 elif detector_mode == "grpc":
                     target = self._grpc_target_edit.text().strip() or "localhost:50051"

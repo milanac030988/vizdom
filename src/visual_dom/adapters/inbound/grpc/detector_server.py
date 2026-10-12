@@ -11,8 +11,10 @@ Usage:
         --icon-detect models/omniparser/icon_detect/model.pt \\
         --icon-caption models/omniparser/icon_caption_florence
 
-Any registered backend works (--backend uied|yolo|omniparser). The heavy one
-(omniparser) is the intended use.
+Any registered backend works (--backend uied|yolo|omniparser|modular). The
+heavy ones (omniparser, or modular with its omniparser/florence stages) are the
+intended use. OmniParser paths default to the OMNIPARSER_* env vars, then the
+standard project locations, so the flags above are usually unnecessary.
 """
 
 import argparse
@@ -23,7 +25,7 @@ import cv2
 import numpy as np
 
 from visual_dom.logging_utils import get_logger
-from visual_dom.adapters.outbound.detectors import create_detector
+from visual_dom.adapters.outbound.detectors import create_detector, resolve_omniparser_paths
 
 log = get_logger(__name__)
 
@@ -105,32 +107,6 @@ def serve(backend_name, port, detector_kwargs, max_workers=4):
     run_until_signal(server, f"detector '{backend_name}'", port, on_shutdown=_cleanup)
 
 
-def _resolve_omniparser_paths(args) -> dict:
-    """
-    Fill in OmniParser weight/repo paths the caller didn't give, from the
-    standard project locations — the same auto-resolution the in-process
-    pipeline does, so the service does not need three long flags to start.
-    Explicit flags and OMNIPARSER_* env vars still win.
-    """
-    import os
-    root = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                        "..", "..", "..", "..", ".."))
-    out = {}
-    if not args.icon_detect and not os.environ.get("OMNIPARSER_ICON_DETECT"):
-        cand = os.path.join(root, "models", "omniparser", "icon_detect", "model.pt")
-        if os.path.exists(cand):
-            out["icon_detect_path"] = cand
-    if not args.icon_caption and not os.environ.get("OMNIPARSER_ICON_CAPTION"):
-        cand = os.path.join(root, "models", "omniparser", "icon_caption_florence")
-        if os.path.isdir(cand):
-            out["icon_caption_path"] = cand
-    if not args.omniparser_root and not os.environ.get("OMNIPARSER_ROOT"):
-        cand = os.path.join(root, "third_party", "OmniParser")
-        if os.path.isdir(cand):
-            out["omniparser_root"] = cand
-    return out
-
-
 def _build_ocr_provider(engine: str, use_gpu: bool):
     """
     Build the OCR-ensemble provider for a server-side OmniParser (ADR-016).
@@ -167,13 +143,16 @@ def main():
     ap.add_argument("--omniparser-root", default=None)
     ap.add_argument("--yolo-model", default=None)
     ap.add_argument("--ocr", default=None, metavar="ENGINE",
-                    help="OCR engine for the OmniParser text ensemble, run ON THIS "
-                         "SERVICE (easyocr|paddleocr|tesseract). Without it a remote "
-                         "OmniParser uses only its own OCR, since the client's OCR "
-                         "callable cannot cross gRPC.")
+                    help="OCR engine run ON THIS SERVICE (easyocr|paddleocr|"
+                         "tesseract|none). omniparser: feeds the text ensemble; "
+                         "without it a remote OmniParser uses only its own OCR, "
+                         "since the client's OCR callable cannot cross gRPC. "
+                         "modular: the stage-2 engine (default easyocr; 'none' "
+                         "skips OCR).")
     ap.add_argument("--box-threshold", type=float, default=None,
                     help="OmniParser YOLO confidence cutoff (default 0.05); lower "
-                         "to ~0.03 to recover faint glyphs.")
+                         "to ~0.03 to recover faint glyphs. Applies to omniparser "
+                         "and to modular's omniparser region proposer.")
     args = ap.parse_args()
 
     # Only backends that accept use_gpu get it (UIED is CPU-only, no such arg).
@@ -181,64 +160,46 @@ def main():
     use_gpu = not args.no_gpu
     if args.backend in ("yolo", "omniparser"):
         kwargs["use_gpu"] = use_gpu
+    if args.backend != "modular":
+        for flag, value, default in (("--regions", args.regions, "auto"),
+                                     ("--captioner", args.captioner, "none")):
+            if value != default:
+                log.warning("%s applies to --backend modular only; ignored", flag)
+    # Explicit flags, then OMNIPARSER_* env vars, then the standard locations.
+    paths = resolve_omniparser_paths(omniparser_root=args.omniparser_root,
+                                     icon_detect_path=args.icon_detect,
+                                     icon_caption_path=args.icon_caption)
     if args.backend == "omniparser":
-        if args.icon_detect:
-            kwargs["icon_detect_path"] = args.icon_detect
-        if args.icon_caption:
-            kwargs["icon_caption_path"] = args.icon_caption
-        if args.omniparser_root:
-            kwargs["omniparser_root"] = args.omniparser_root
-        kwargs.update(_resolve_omniparser_paths(args))
+        kwargs.update(paths)
         if args.box_threshold is not None:
             kwargs["box_threshold"] = args.box_threshold
-        if args.ocr:
+        if args.ocr and args.ocr != "none":
             kwargs["ocr_provider"] = _build_ocr_provider(args.ocr, use_gpu)
             kwargs["ocr_ensemble"] = True
     elif args.backend == "yolo" and args.yolo_model:
         kwargs["model_path"] = args.yolo_model
     elif args.backend == "modular":
-        # ADR-027 composite. The omniparser region proposer and florence
-        # captioner read the OMNIPARSER_* env vars, so publish the resolved
-        # standard-location paths there; a missing icon_detect degrades the
-        # STAGE (uied proposer, CPU), not the whole service.
-        import os
-        resolved = _resolve_omniparser_paths(args)
-        env_map = {"icon_detect_path": "OMNIPARSER_ICON_DETECT",
-                   "icon_caption_path": "OMNIPARSER_ICON_CAPTION",
-                   "omniparser_root": "OMNIPARSER_ROOT"}
-        if args.icon_detect:
-            os.environ["OMNIPARSER_ICON_DETECT"] = args.icon_detect
-        if args.icon_caption:
-            os.environ["OMNIPARSER_ICON_CAPTION"] = args.icon_caption
-        if args.omniparser_root:
-            os.environ["OMNIPARSER_ROOT"] = args.omniparser_root
-        for key, var in env_map.items():
-            if key in resolved and not os.environ.get(var):
-                os.environ[var] = resolved[key]
-
+        # ADR-027 composite. The stages take the paths explicitly; region
+        # proposer 'auto' degrades the STAGE to uied (CPU) when OmniParser
+        # cannot run here, never the whole service.
+        kwargs.update(paths)
         kwargs["use_gpu"] = use_gpu
-        if args.regions == "uied":
-            kwargs["region_proposer"] = "uied"
-        elif args.regions == "omniparser":
-            if not os.environ.get("OMNIPARSER_ICON_DETECT"):
-                raise SystemExit("--regions omniparser needs the icon_detect "
-                                 "weights (--icon-detect or OMNIPARSER_ICON_DETECT)")
-            kwargs["region_proposer"] = "omniparser"
-        elif os.environ.get("OMNIPARSER_ICON_DETECT"):
-            kwargs["region_proposer"] = "omniparser"
-        else:
-            log.warning("modular: OmniParser weights not found - "
-                        "using the uied region proposer (CPU)")
-            kwargs["region_proposer"] = "uied"
+        kwargs["region_proposer"] = args.regions
+        if args.regions == "omniparser" and "icon_detect_path" not in paths:
+            raise SystemExit("--regions omniparser needs the icon_detect "
+                             "weights (--icon-detect or OMNIPARSER_ICON_DETECT)")
+        if args.box_threshold is not None:
+            kwargs["box_threshold"] = args.box_threshold
         # --ocr names the stage-2 engine here (the backend runs OCR itself),
         # unlike the omniparser backend where it builds the ensemble provider.
-        kwargs["ocr_engine"] = args.ocr or "easyocr"
+        if args.ocr:
+            kwargs["ocr_engine"] = args.ocr
         kwargs["captioner"] = args.captioner
-        if args.captioner == "florence" and not os.environ.get("OMNIPARSER_ICON_CAPTION"):
+        if args.captioner == "florence" and "icon_caption_path" not in paths:
             raise SystemExit("--captioner florence needs the OmniParser caption "
                              "weights (--icon-caption or OMNIPARSER_ICON_CAPTION)")
         log.info("modular stages: regions=%s, ocr=%s, captioner=%s",
-                 kwargs["region_proposer"], kwargs["ocr_engine"], args.captioner)
+                 args.regions, args.ocr or "easyocr", args.captioner)
 
     serve(args.backend, args.port, kwargs)
 
