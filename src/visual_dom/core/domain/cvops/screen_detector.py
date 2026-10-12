@@ -143,19 +143,20 @@ def _detect_by_edges(image: np.ndarray) -> Optional[ScreenRegion]:
 
     if lines is None or len(lines) < 4:
         return None
+    lines = lines.reshape(-1, 4)  # OpenCV 4 gives (N, 1, 4), OpenCV 5 gives (N, 4)
 
     # Separate horizontal and vertical lines
     h_lines = []
     v_lines = []
 
     for line in lines:
-        x1, y1, x2, y2 = line[0]
+        x1, y1, x2, y2 = line
         angle = abs(np.degrees(np.arctan2(y2 - y1, x2 - x1)))
 
         if angle < 20 or angle > 160:
-            h_lines.append(line[0])
+            h_lines.append(line)
         elif 70 < angle < 110:
-            v_lines.append(line[0])
+            v_lines.append(line)
 
     if len(h_lines) < 2 or len(v_lines) < 2:
         return None
