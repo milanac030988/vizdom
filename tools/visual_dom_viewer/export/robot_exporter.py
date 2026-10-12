@@ -11,6 +11,7 @@ from datetime import datetime
 import re
 
 from ..core.tree import DOMTree, DOMElement, ElementType
+from .locators import definition_locator, element_locator
 
 if TYPE_CHECKING:
     from ..core.element_definition import ElementDefinition
@@ -40,7 +41,7 @@ class RobotResourceExporter:
 
 *** Settings ***
 Documentation    {documentation}
-Library          VisualLibrary
+Library          VisualGuiLibrary
 
 *** Variables ***
 {variables}
@@ -206,25 +207,8 @@ Library          VisualLibrary
         return clean.upper() or 'ELEMENT'
 
     def _generate_locator(self, elem: DOMElement) -> str:
-        """Generate locator string for element."""
-        parts = []
-
-        # Primary locator: text or type
-        if elem.text:
-            # Escape special characters
-            escaped_text = elem.text.replace('\\', '\\\\').replace('"', '\\"')
-            parts.append(f'text="{escaped_text}"')
-
-        parts.append(f'type={elem.type.value}')
-
-        # Add coordinates if enabled
-        if self._include_coordinates and elem.bbox:
-            parts.append(f'bbox=[{elem.bbox.x},{elem.bbox.y},{elem.bbox.width},{elem.bbox.height}]')
-
-        # Add ID
-        parts.append(f'id={elem.id}')
-
-        return '    '.join(parts)
+        """Locator string for an element (ADR-028: the same one the Viewer tries)."""
+        return element_locator(elem)
 
     def _generate_variable_comment(self, elem: DOMElement) -> str:
         """Generate comment for variable."""
@@ -289,7 +273,7 @@ Library          VisualLibrary
             lines.extend([
                 keyword_name,
                 f"    [Documentation]    Click the {elem.text or elem.type.value} button",
-                f"    Click Element    ${{{var_name}}}",
+                f"    Click Visual    ${{{var_name}}}",
             ])
 
         elif elem.type == ElementType.INPUT_FIELD:
@@ -297,14 +281,14 @@ Library          VisualLibrary
                 keyword_name,
                 f"    [Documentation]    Enter text in {elem.text or 'input field'}",
                 "    [Arguments]    ${text}",
-                f"    Input Text    ${{{var_name}}}    ${{text}}",
+                f"    Type Text Visual    ${{{var_name}}}    ${{text}}",
             ])
 
         elif elem.type == ElementType.CHECKBOX:
             lines.extend([
                 keyword_name,
                 f"    [Documentation]    Toggle {elem.text or 'checkbox'}",
-                f"    Click Element    ${{{var_name}}}",
+                f"    Click Visual    ${{{var_name}}}",
             ])
 
         elif elem.type == ElementType.DROPDOWN:
@@ -312,22 +296,22 @@ Library          VisualLibrary
                 keyword_name,
                 f"    [Documentation]    Select option from {elem.text or 'dropdown'}",
                 "    [Arguments]    ${option}",
-                f"    Click Element    ${{{var_name}}}",
-                f"    Click Element    text=${{option}}",
+                f"    Click Visual    ${{{var_name}}}",
+                f"    Click Visual    text=\"${{option}}\"",
             ])
 
         elif elem.type == ElementType.TEXT or elem.type == ElementType.LABEL:
             lines.extend([
                 f"Verify {keyword_name.replace('Interact With ', '')} Is Visible",
                 f"    [Documentation]    Verify {elem.text or 'text'} is visible",
-                f"    Element Should Be Visible    ${{{var_name}}}",
+                f"    Visual Should Exist    ${{{var_name}}}",
             ])
 
         else:
             lines.extend([
                 keyword_name,
                 f"    [Documentation]    Interact with {elem.text or elem.type.value}",
-                f"    Click Element    ${{{var_name}}}",
+                f"    Click Visual    ${{{var_name}}}",
             ])
 
         return lines
@@ -456,39 +440,8 @@ Library          VisualLibrary
         return '\n'.join(lines)
 
     def _generate_definition_locator(self, defn: 'ElementDefinition') -> str:
-        """Generate locator string from user-selected properties."""
-        parts = []
-
-        # Only include properties that user selected
-        for prop in defn.selected_properties:
-            value = defn.property_values.get(prop)
-            if value is None:
-                continue
-
-            if prop == 'text':
-                escaped_text = str(value).replace('\\', '\\\\').replace('"', '\\"')
-                parts.append(f'text="{escaped_text}"')
-            elif prop == 'type':
-                parts.append(f'type={value}')
-            elif prop == 'bbox':
-                if isinstance(value, list):
-                    parts.append(f'bbox=[{",".join(map(str, value))}]')
-                else:
-                    parts.append(f'bbox={value}')
-            elif prop == 'center':
-                if isinstance(value, (list, tuple)):
-                    parts.append(f'center=[{value[0]},{value[1]}]')
-                else:
-                    parts.append(f'center={value}')
-            elif prop in ('x', 'y', 'width', 'height', 'confidence'):
-                parts.append(f'{prop}={value}')
-            elif prop == 'id':
-                parts.append(f'id={value}')
-            else:
-                # Custom properties
-                parts.append(f'{prop}="{value}"')
-
-        return '    '.join(parts) if parts else 'id=' + defn.element_id
+        """Locator string from the user's selected properties (ADR-028)."""
+        return definition_locator(defn)[0]
 
     def _generate_definition_comment(self, defn: 'ElementDefinition') -> str:
         """Generate comment for a definition."""
@@ -497,8 +450,11 @@ Library          VisualLibrary
         if defn.description:
             parts.append(f"({defn.description})")
 
-        props = ', '.join(defn.selected_properties)
+        props = ', '.join(sorted(defn.selected_properties))
         parts.append(f"| Defined by: {props}")
+        skipped = definition_locator(defn)[1]
+        if skipped:
+            parts.append(f"| Not locator properties, left out: {', '.join(skipped)}")
 
         return ' '.join(parts)
 
@@ -535,7 +491,7 @@ Library          VisualLibrary
             lines.extend([
                 f"Click {keyword_name}",
                 f"    [Documentation]    Click the {text or defn.name} button",
-                f"    Click Element    ${{{var_name}}}",
+                f"    Click Visual    ${{{var_name}}}",
             ])
 
         elif elem_type in ('input', 'input_field', 'text_field'):
@@ -543,14 +499,14 @@ Library          VisualLibrary
                 f"Enter Text In {keyword_name}",
                 f"    [Documentation]    Enter text in {text or defn.name}",
                 "    [Arguments]    ${text}",
-                f"    Input Text    ${{{var_name}}}    ${{text}}",
+                f"    Type Text Visual    ${{{var_name}}}    ${{text}}",
             ])
 
         elif elem_type == 'checkbox':
             lines.extend([
                 f"Toggle {keyword_name}",
                 f"    [Documentation]    Toggle {text or defn.name}",
-                f"    Click Element    ${{{var_name}}}",
+                f"    Click Visual    ${{{var_name}}}",
             ])
 
         elif elem_type in ('dropdown', 'select', 'combobox'):
@@ -558,22 +514,22 @@ Library          VisualLibrary
                 f"Select From {keyword_name}",
                 f"    [Documentation]    Select option from {text or defn.name}",
                 "    [Arguments]    ${option}",
-                f"    Click Element    ${{{var_name}}}",
-                f"    Click Element    text=${{option}}",
+                f"    Click Visual    ${{{var_name}}}",
+                f"    Click Visual    text=\"${{option}}\"",
             ])
 
         elif elem_type in ('text', 'label'):
             lines.extend([
                 f"Verify {keyword_name} Is Visible",
                 f"    [Documentation]    Verify {text or defn.name} is visible",
-                f"    Element Should Be Visible    ${{{var_name}}}",
+                f"    Visual Should Exist    ${{{var_name}}}",
             ])
 
         else:
             lines.extend([
                 f"Click {keyword_name}",
                 f"    [Documentation]    Click {text or defn.name}",
-                f"    Click Element    ${{{var_name}}}",
+                f"    Click Visual    ${{{var_name}}}",
             ])
 
         return lines

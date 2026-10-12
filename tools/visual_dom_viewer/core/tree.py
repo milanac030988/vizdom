@@ -258,21 +258,9 @@ class DOMElement:
         return element
 
     def to_robot_locator(self) -> str:
-        """Generate Robot Framework locator string."""
-        locators = []
-
-        # Prefer text-based locator
-        if self.text:
-            locators.append(f"text={self.text}")
-
-        # Add type-based locator
-        locators.append(f"type={self.type.value}")
-
-        # Add ID if available
-        if self.id:
-            locators.append(f"id={self.id}")
-
-        return " | ".join(locators)
+        """Robot Framework locator string (the exporter's, ADR-028)."""
+        from ..export.locators import element_locator
+        return element_locator(self)
 
     def __repr__(self) -> str:
         return f"DOMElement(id='{self.id}', type={self.type.value}, text='{self.text[:20]}...')"
@@ -304,6 +292,9 @@ class DOMTree:
         self.title = title
         self.source = source
         self.metadata: Dict[str, Any] = {}
+        #: compiled pipeline DOM (``{"elements": [...], ...}``) when loaded from
+        #: one — the locator resolver's input (ADR-028); None otherwise
+        self.compiled_dom: Optional[Dict[str, Any]] = None
         self._element_index: Dict[str, DOMElement] = {}
 
     def set_root(self, element: DOMElement) -> None:
@@ -428,6 +419,11 @@ class DOMTree:
             'cv_stats': data.get('cv_stats', {}),
         }
 
+        # The compiled DOM as the pipeline emitted it (flat `elements` list):
+        # what the RF library resolves locators against, so the Viewer's
+        # "Click via actuator" resolves against the same thing (ADR-028).
+        tree.compiled_dom = data.get('dom')
+
         # Parse hierarchy
         dom_data = data.get('dom', {})
         hierarchy = dom_data.get('hierarchy')
@@ -480,6 +476,8 @@ class DOMTree:
             'scrollable': elem_data.get('scrollable', False),
             'center': elem_data.get('center', []),
         }
+        if elem_data.get('hint'):
+            properties['hint'] = elem_data['hint']
         # Semantic label + interactability (ADR-016)
         if elem_data.get('label'):
             properties['label'] = elem_data['label']
