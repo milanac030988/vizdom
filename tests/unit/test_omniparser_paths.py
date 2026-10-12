@@ -219,3 +219,16 @@ def test_config_file_modular_builds_a_backend_and_forwards_paths(monkeypatch):
     pipeline = Session._build_pipeline(cfg)
     assert pipeline._primary_backend._proposer.name == "uied"
     assert seen["box_threshold"] == 0.03
+
+
+def test_default_captioner_accepts_forwarded_paths(tmp_path):
+    """Regression: with OmniParser paths known, `captioner="none"` (the
+    default) raised TypeError, crashing `--backend modular` at startup and
+    silently degrading the config path to OCR-only DOMs."""
+    from visual_dom.adapters.outbound.detectors import create_detector
+
+    make_standard_layout(tmp_path)
+    paths = resolve_omniparser_paths(project_root=str(tmp_path))
+    backend = create_detector("modular", captioner="none", region_proposer="uied",
+                              text_detector=FakeText(), **paths)
+    assert backend._captioner.name == "none"

@@ -138,6 +138,12 @@ class NoneCaptioner(Captioner):
     name = "none"
     license = "n/a"
 
+    def __init__(self, **_ignored: Any):
+        # Like every stage, accept (and ignore) the OmniParser paths the
+        # backend forwards: a bare class broke the default captioner whenever
+        # those paths were known.
+        pass
+
     def caption(self, image, boxes):
         return [None] * len(boxes)
 
