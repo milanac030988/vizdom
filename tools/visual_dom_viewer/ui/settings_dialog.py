@@ -84,10 +84,23 @@ class PipelineSettingsDialog(QDialog):
         rf.addRow("Model:", widgets["slm_model"])
         root.addWidget(refine)
 
+        # ---- Actuation (ADR-019 / ADR-028) -----------------------------
+        if "actuator" in widgets:
+            act = QGroupBox("Actuation (Click via Actuator)")
+            af = QFormLayout(act)
+            af.setLabelAlignment(Qt.AlignRight)
+            af.addRow("Strategy:", widgets["actuator"])
+            af.addRow("Service target:", widgets["actuator_target"])
+            af.addRow("Window title:", widgets["actuator_window"])
+            af.addRow("", widgets["recapture_before_try"])
+            af.addRow("", widgets["recapture_after_try"])
+            root.addWidget(act)
+
         # widgets came from a toolbar, where narrow was a virtue; in a form they
         # should fill the row
         for key in ("capture_source", "capture_arg", "detector", "grpc_target",
-                    "ocr", "slm_model"):
+                    "ocr", "slm_model", "actuator", "actuator_target",
+                    "actuator_window"):
             w = widgets.get(key)
             if w is not None:
                 w.setMaximumWidth(16777215)

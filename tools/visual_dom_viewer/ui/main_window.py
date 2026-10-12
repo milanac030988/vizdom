@@ -38,6 +38,7 @@ from ..core.state import ViewerMode, ViewerState
 from ..core.element_definition import ElementDefinition
 from ..export.robot_exporter import RobotResourceExporter
 from ..plugins.platform_manager import PlatformManager, PlatformConfig
+from .try_locator import TryLocatorMixin
 
 
 class ScreenshotCanvas(QWidget):
@@ -53,6 +54,9 @@ class ScreenshotCanvas(QWidget):
 
     element_clicked = pyqtSignal(str)  # element_id
     element_hovered = pyqtSignal(str)  # element_id
+    # Right-click on an element: (element_id, global position) for the
+    # window's element menu ("Click via Actuator", ADR-028).
+    element_context_menu = pyqtSignal(str, QPoint)
     point_clicked = pyqtSignal(int, int)  # x, y
     # Emitted whenever a new screenshot becomes the canvas content, with its
     # pixel size. The model's 'screenshot_loaded' event is not a substitute: the
@@ -290,6 +294,13 @@ class ScreenshotCanvas(QWidget):
                     self.element_clicked.emit(element.id)
             else:
                 self._model.set_explore_mode(True)
+
+    def contextMenuEvent(self, event):
+        """Right-click: select the element under the cursor and ask for its menu."""
+        element = self._model.select_element_at_point(event.x(), event.y())
+        if element:
+            self.element_clicked.emit(element.id)
+            self.element_context_menu.emit(element.id, event.globalPos())
 
     def wheelEvent(self, event):
         """
@@ -744,7 +755,7 @@ class DefinedElementsList(QWidget):
                 QMessageBox.warning(self, "Load", "Failed to load definitions")
 
 
-class VisualDOMViewerWindow(QMainWindow):
+class VisualDOMViewerWindow(TryLocatorMixin, QMainWindow):
     """
     Main application window for Visual DOM Viewer.
     """
@@ -803,6 +814,7 @@ class VisualDOMViewerWindow(QMainWindow):
         self._tree_view.setModel(self._tree_model)
         self._tree_view.setHeaderHidden(False)
         self._tree_view.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self._tree_view.setContextMenuPolicy(Qt.CustomContextMenu)
         splitter.addWidget(self._tree_view)
 
         # Right panel: Properties and Definition
@@ -849,6 +861,7 @@ class VisualDOMViewerWindow(QMainWindow):
             "text_ensemble": self._text_ensemble_checkbox,
             "slm": self._slm_checkbox,
             "slm_model": self._slm_model_combo,
+            **self._actuation_widgets(),
         }
 
     def _create_pipeline_controls(self):
@@ -962,6 +975,9 @@ class VisualDOMViewerWindow(QMainWindow):
         ])
         self._slm_model_combo.setToolTip("SLM model (vision models can see the screenshot)")
 
+        # ---- actuation (ADR-019 / ADR-028) -----------------------------
+        self._create_actuation_controls()
+
     def _icon(self, standard_name: str) -> QIcon:
         """A themed icon from Qt's standard set - no asset files to ship."""
         return self.style().standardIcon(getattr(QStyle, standard_name))
@@ -994,6 +1010,13 @@ class VisualDOMViewerWindow(QMainWindow):
         self._refresh_action.setStatusTip(
             "Re-run the pipeline on the current screenshot (after changing settings)")
         self._refresh_action.triggered.connect(self._analyze_current_screenshot)
+
+        self._try_click_action = QAction("Click Selected via &Actuator", self)
+        self._try_click_action.setShortcut("Ctrl+T")
+        self._try_click_action.setStatusTip(
+            "Re-capture, resolve the selected element's locator as a test would, "
+            "and click it through the actuator (also on the right-click menu)")
+        self._try_click_action.triggered.connect(self._try_click_selected)
 
         open_action = QAction(self._icon("SP_DialogOpenButton"), "&Open Image...", self)
         open_action.setShortcut("Ctrl+O")
@@ -1086,6 +1109,8 @@ class VisualDOMViewerWindow(QMainWindow):
         capture_menu.addSeparator()
         capture_menu.addAction(self._capture_action)
         capture_menu.addAction(self._refresh_action)
+        capture_menu.addSeparator()
+        capture_menu.addAction(self._try_click_action)
 
         view_menu = bar.addMenu("&View")
         view_menu.addAction(self._explore_action)
@@ -1288,6 +1313,8 @@ class VisualDOMViewerWindow(QMainWindow):
             if capture.get("target"):
                 self._capture_arg_edit.setText(str(capture["target"]))
 
+        self._apply_actuator_config(data)
+
         self._update_pipeline_summary()
         self._statusbar.showMessage("Session configuration applied", 5000)
 
@@ -1346,6 +1373,8 @@ class VisualDOMViewerWindow(QMainWindow):
         # Canvas signals
         self._canvas.element_clicked.connect(self._on_element_clicked)
         self._canvas.element_hovered.connect(self._on_element_hovered)
+        self._canvas.element_context_menu.connect(self._element_context_menu)
+        self._tree_view.customContextMenuRequested.connect(self._on_tree_context_menu)
 
         # Tree view signals
         self._tree_view.selectionModel().selectionChanged.connect(
@@ -1556,6 +1585,10 @@ class VisualDOMViewerWindow(QMainWindow):
             return
         if not self._model.load_dom_from_file(filepath):
             return
+        # A saved result has no live position on today's screen: drop the last
+        # capture's geometry so nothing maps a click through it (ADR-028).
+        self._capture_context = {"capture_source": f"file:{Path(filepath).name}",
+                                 "source_path": filepath}
 
         shot = self._sibling_screenshot(Path(filepath))
         if shot is not None and self._model.load_screenshot(str(shot)):
@@ -1673,7 +1706,7 @@ class VisualDOMViewerWindow(QMainWindow):
         except Exception:
             return None
 
-    def _capture_via_strategy(self, name, kwargs):
+    def _capture_via_strategy(self, name, kwargs, title=None):
         """
         Grab one frame via a CaptureStrategy and return PNG bytes.
 
@@ -1692,7 +1725,7 @@ class VisualDOMViewerWindow(QMainWindow):
         import cv2
         from visual_dom.adapters.outbound.capture import create_capture
         cap = create_capture(name, **kwargs)
-        title = self._connected_target_title()
+        title = title or self._connected_target_title()
         try:
             try:
                 target = cap.describe_target() or {}
@@ -1732,6 +1765,19 @@ class VisualDOMViewerWindow(QMainWindow):
             else:
                 frame = cap.capture()
                 self._capture_context["capture_scope"] = "screen"
+                # Where the full-screen grab sits in the device space (a monitor
+                # may not start at (0, 0)): what maps a click back (ADR-028).
+                try:
+                    geometry = cap.frame_geometry()
+                except Exception:
+                    geometry = None
+                if geometry:
+                    origin, device_origin, device_size = geometry
+                    self._capture_context.update({
+                        "capture_origin": list(origin),
+                        "device_origin": list(device_origin),
+                        "device_size": list(device_size),
+                    })
         finally:
             try:
                 cap.close()
@@ -1742,27 +1788,33 @@ class VisualDOMViewerWindow(QMainWindow):
             raise RuntimeError("could not encode captured frame")
         return buf.tobytes()
 
+    def _capture_strategy_and_analyze(self, strategy_name, strategy_kwargs, title=None) -> bool:
+        """Grab via a capture strategy and analyze; False if the capture failed."""
+        try:
+            self._show_progress(f"Capturing via '{strategy_name}'...", 30)
+            QApplication.processEvents()
+            screenshot = self._capture_via_strategy(strategy_name, strategy_kwargs,
+                                                    title=title)
+        except Exception as e:
+            self._hide_progress()
+            QMessageBox.warning(self, "Capture Failed",
+                                f"Capture via '{strategy_name}' failed: {e}")
+            return False
+        self._show_progress("Loading screenshot...", 50)
+        self._model.set_screenshot_data(screenshot)
+        self._canvas.load_image_data(screenshot)
+        self._refresh_action.setEnabled(True)
+        self._show_progress("Analyzing with Visual DOM...", 70)
+        self._do_analyze_screenshot(screenshot)
+        return True
+
     def _capture_and_analyze(self):
         """Capture screenshot and analyze with Visual DOM pipeline."""
         strategy_name, strategy_kwargs = self._selected_capture_strategy()
 
         # Pluggable capture strategy (ADR-018): grab directly, no window handler.
         if strategy_name is not None:
-            try:
-                self._show_progress(f"Capturing via '{strategy_name}'...", 30)
-                QApplication.processEvents()
-                screenshot = self._capture_via_strategy(strategy_name, strategy_kwargs)
-            except Exception as e:
-                self._hide_progress()
-                QMessageBox.warning(self, "Capture Failed",
-                                    f"Capture via '{strategy_name}' failed: {e}")
-                return
-            self._show_progress("Loading screenshot...", 50)
-            self._model.set_screenshot_data(screenshot)
-            self._canvas.load_image_data(screenshot)
-            self._refresh_action.setEnabled(True)
-            self._show_progress("Analyzing with Visual DOM...", 70)
-            self._do_analyze_screenshot(screenshot)
+            self._capture_strategy_and_analyze(strategy_name, strategy_kwargs)
             return
 
         # Default path: capture the connected target window via the platform handler.
