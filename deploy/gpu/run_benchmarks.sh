@@ -92,7 +92,9 @@ run_column parity             python "deploy/gpu/parity_on_box.py" "$OUT/parity.
     echo "| executor | action-hit | verify acc | false-pass | median step (s) | cost |"
     echo "|---|---|---|---|---|---|"
     for md in "$OUT"/*_*.md; do
-        [ -f "$md" ] && tail -n +3 "$md"
+        # awk, not tail: the runner's .md has no trailing newline, so tail
+        # glued the rows onto one line (2026-10-26 summary.md)
+        [ -f "$md" ] && awk 'NR > 2' "$md"
     done
 } > "$OUT/summary.md"
 echo; cat "$OUT/summary.md"

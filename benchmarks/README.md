@@ -163,26 +163,59 @@ screens constantly, which is the regime the comparison is about.
 
 ## 6. Test plan
 
-### Measured today
+### Measured: the full comparison (rented RTX 4090, 2026-10-26)
 
-| Column | Status | Result (lifecycle-synthetic-v1, commit-stamped) |
-|---|---|---|
-| `vizdom-uied` | ✅ runs on CPU | action-hit **0.803**, verify 0.957, false-pass **0.000**, load 7.2 s, parse 2.11 s/state |
-| `vizdom-omniparser` | ✅ runs on 6 GB GPU | action-hit **0.916**, verify 0.957, false-pass **0.000**, load 26.9 s, parse 4.81 s/state |
+One machine, one commit (`a4cb85e`), 514 steps over 44 states. Raw files:
+`benchmarks/results/gpu-20261026_040622/` (gitignored; keep the tarball).
+The run kit is `deploy/gpu/`.
 
-Interpretation: OmniParser converts its detection edge into an 11-point
-action-hit lead at ~2.3× the parse cost. Both share identical verify accuracy
-(the same 13 captions are misread by OCR upstream of both), and both hold zero
-false passes — the exactly-one resolution contract guarantees that by
-construction. The grounder columns will have to answer that row.
+| Column | Weights | Action-hit | Verify acc | False-pass (of 301 verifies) | Cost |
+|---|---|---|---|---|---|
+| `vizdom-uied` | CV, no LLM | 0.779 | 0.934 | **0.000** | load 6.4 s + parse **0.85 s/state** |
+| `vizdom-omniparser` | CV + Florence-2 | 0.883 | 0.934 | **0.000** | load 12.7 s + parse **2.21 s/state** |
+| `vizdom-modular` | CV + Florence-2 | 0.732 | 0.934 | **0.000** | load 10.0 s + parse 1.29 s/state |
+| `elam-7b` | bf16 | **0.939** | 0.701 | 0.289 (87 of 88 negatives passed) | **5.15 s/step** |
+| `ui-tars-1.5-7b` | bf16 | **0.934** | 0.807 | 0.193 (58 of 88 negatives passed) | **1.68 s/step** |
+| `ui-tars-1.5-7b` | 4-bit (2026-10-25) | 0.845 | 0.797 | 0.199 | 1.76 s/step |
+| `aria-ui` | — | not run | | | 25 B MoE: bnb 4-bit leaves the experts unquantized, OOM on 24 GB; needs ≥ 40 GB |
 
-### Pending a decision on hardware
+Interpretation, column by column:
 
-| Column | Model | Needs | Note |
-|---|---|---|---|
-| `elam-7b` | ELAM-7B (Apache-2.0, Molmo-7B-D) | ~15 GB weights; ≥16 GB VRAM for fp16, else 4-bit + offload (slow) | **native PASSED/FAILED verdict mode** — competes on the oracle metric directly |
-| `ui-tars-1.5-7b` | UI-TARS-1.5 (Apache-2.0, Qwen2.5-VL) | same class | verdicts proxied via grounding success (documented as such) |
-| `aria-ui` | Aria-UI (25.3 B MoE) | multi-GPU server | **not runnable on workstation hardware**; column cited from published numbers |
+- **Action-hit.** The end-to-end grounders win by 5–6 points over
+  OmniParser-VizDOM (0.939 / 0.934 vs 0.883) and by 16 over UIED-VizDOM.
+  Our misses are resolution misses: the locator finds 0 or 2+ matches on a
+  fragmented or merged element; the grounders have no such failure mode.
+  Quantization matters for UI-TARS (+9 points from 4-bit to bf16).
+- **Verify / false-pass — the testing row.** Both grounders say `PASSED` to
+  statements about elements that are *not on the screen*: ELAM accepts 87 of
+  the 88 negative statements (its native verdict mode rationalises the
+  nonsense label into a nearby element), UI-TARS 58 of 88 (it grounds
+  whatever it is asked to ground). VizDOM's 20 verify errors are all the
+  other direction — a present caption the OCR cannot read, so the oracle
+  says `FAILED` on a true statement — and it never passes an absent target,
+  by construction of the exactly-one resolution contract. For a test oracle
+  the false-pass column is the one that matters, and it is 0 vs 0.19–0.29.
+- **Cost.** Per step, amortised over this suite: VizDOM-OmniParser spends
+  110 s in total (load + 44 parses) for 514 steps, i.e. ~0.2 s/step; UI-TARS
+  spends 1.68 s on every step (863 s), ELAM 5.15 s (2 650 s). The DOM systems
+  pay once per screen state; the grounders pay once per step, and a test
+  suite revisits the same states constantly.
+- **Modular vs monolith.** The modular backend is 15 points behind OmniParser
+  on action-hit at 60 % of its parse time; the parity check on the same box
+  shows identical regions (41/39/32 per screen) but far fewer labelled
+  interactables (2 vs 13 on `dashboard_0009`) — the gap is the captioner,
+  not the detector (ADR-027).
+
+Numbers drift slightly with the environment (easyocr, torch and OpenCV
+versions): the same VizDOM columns on the laptop gave uied 0.803 / omniparser
+0.916, verify 0.957 — always quote the commit and the machine.
+
+### Not run: Aria-UI
+
+Aria-UI (25.3 B MoE) does not fit a 24 GB card even in 4-bit (OOM at shard
+5/12, measured 2026-10-26). It needs an A6000/L40S-class rental (48 GB). The
+adapter is implemented and preflight-tested up to the load step; the column
+is cited from published numbers until that run is paid for.
 
 ### Planned extensions (in priority order)
 
