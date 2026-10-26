@@ -153,7 +153,9 @@ class _BrokenExecutor:
     name = "boom"
 
     def run_step(self, state, step):
-        raise RuntimeError("no module named nothing")
+        # Shaped like a transformers import error: two lines and a '|'.
+        raise RuntimeError("no module named nothing\n"
+                           "requires: torch>=2.6 | got 2.5.1")
 
     def cost_summary(self):
         return {}
@@ -177,8 +179,12 @@ def test_runner_marks_all_errored_column_failed_not_zero(tmp_path):
     assert info.value.code == 1
 
     md = next(tmp_path.glob("*.md")).read_text(encoding="utf-8")
-    row = [ln for ln in md.splitlines() if ln.startswith("| boom |")][0]
+    body = md.splitlines()[2:]
+    assert len(body) == 1, f"error text must not spill into extra rows: {body}"
+    row = body[0]
+    assert row.startswith("| boom |")
     assert "FAILED" in row and "0.0" not in row
-    assert "no module named nothing" in row
+    assert "no module named nothing" in row and "got 2.5.1" in row
+    assert row.count("|") == 7, "a '|' in the error text must not add a cell"
     payload = json.loads(next(tmp_path.glob("*.json")).read_text(encoding="utf-8"))
     assert payload["results"]["boom"]["summary"]["all_steps_errored"] is True

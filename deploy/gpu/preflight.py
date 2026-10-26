@@ -61,7 +61,7 @@ def main():
             # below the adapter's own VRAM floor (Aria-UI on 24 GB). Anything
             # else - a missing package, no CUDA - is a FAIL: the sweep would
             # otherwise exit "not runnable here" after the time is paid for.
-            if vram_gb < getattr(cls, "MIN_VRAM_GB", 0):
+            if torch.cuda.is_available() and vram_gb < getattr(cls, "MIN_VRAM_GB", 0):
                 print(f"  {name:16} SKIP  {why}")
             else:
                 failures.append(name)

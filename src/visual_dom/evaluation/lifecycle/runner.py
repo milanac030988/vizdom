@@ -246,7 +246,10 @@ def run_benchmark(manifest, executors, limit_states=None, out_dir="benchmarks/re
         if s.get("all_steps_errored"):
             # Not a measurement: say so in the row itself, so a sweep summary
             # built from these files cannot show the column as 0.0.
-            first = str(res["steps"][0]["detail"])[:120]
+            # One markdown cell: a traceback spans lines and transformers'
+            # import errors carry '|', either of which would split the row.
+            first = " ".join(str(res["steps"][0]["detail"]).split()) \
+                .replace("|", "/")[:120]
             lines.append(f"| {name} | FAILED | FAILED | FAILED | - "
                          f"| all {len(res['steps'])} steps errored: {first} |")
             continue
