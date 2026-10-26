@@ -6,7 +6,7 @@
 # template or a wrong coordinate scale fails here, in minute two - not two
 # hours into paid GPU time with a column of zeros that looks like a result.
 #
-# Main env (.venv, transformers 4.49):    UI-TARS-1.5, VizDOM + OmniParser
+# Main env (.venv, transformers 4.49):    UI-TARS-1.5, VizDOM + OmniParser (monolith and modular)
 # Legacy env (.venv-legacy, 4.47):        ELAM-7B (Molmo code), Aria-UI
 # ---------------------------------------------------------------------------
 set -uo pipefail
@@ -25,7 +25,8 @@ echo "=== main env ==="
 if [ -x .venv-legacy/bin/python ]; then
     echo "=== legacy env ==="
     .venv-legacy/bin/python deploy/gpu/preflight.py --grounders elam-7b || fail=1
-    # aria-ui prints SKIP (not FAIL) below 40 GB: its available() knows why.
+    # aria-ui prints SKIP (not FAIL) below 46 GB VRAM; any other reason for
+    # "not available" (a missing package) is a FAIL.
     .venv-legacy/bin/python deploy/gpu/preflight.py --grounders aria-ui || fail=1
 else
     echo "!! .venv-legacy missing (setup.sh builds it): elam-7b and aria-ui will FAIL in the sweep"

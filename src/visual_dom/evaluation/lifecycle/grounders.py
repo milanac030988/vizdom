@@ -288,13 +288,15 @@ class AriaUiGrounder(Grounder):
     Hardware: bf16 weights are ~50 GB. bitsandbytes 4-bit does NOT shrink it
     to the expected ~14 GB: Aria's custom MoE code stores the expert weights
     in a layout the quantizer skips, so a 24 GB card OOMs at shard 5/12 while
-    loading (measured 2026-10-26, RTX 4090: 22.4 GB allocated at 42 %). It
-    needs a 48 GB card (A6000 / L40S); available() says so instead of letting
-    a rented hour discover it. No native verdict mode - judge() grounds the
+    loading (measured 2026-10-26, RTX 4090: 22.4 GB allocated at 42 %, which
+    extrapolates to ~50 GB for the full load). It needs a 48 GB card (A6000 /
+    L40S, which report 48-51 GB); an A100 40 GB reports ~42 GB and would OOM
+    too, so the gate sits at 46. available() says so instead of letting a
+    rented hour discover it. No native verdict mode - judge() grounds the
     statement's quoted subject, the same documented proxy as UI-TARS.
     """
 
-    MIN_VRAM_GB = 40
+    MIN_VRAM_GB = 46
 
     name = "aria-ui"
     DEFAULT_MODEL = "Aria-UI/Aria-UI-base"
@@ -314,7 +316,7 @@ class AriaUiGrounder(Grounder):
         except ImportError as exc:
             return False, f"missing package: {exc.name} (pip install torch transformers accelerate)"
         if not torch.cuda.is_available():
-            return False, "Aria-UI needs a CUDA GPU with >= 40 GB"
+            return False, f"Aria-UI needs a CUDA GPU with >= {self.MIN_VRAM_GB} GB"
         vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
         if vram_gb < self.MIN_VRAM_GB:
             return False, (f"GPU has {vram_gb:.0f} GB; Aria-UI's MoE experts are not "

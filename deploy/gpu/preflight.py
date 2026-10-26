@@ -1,7 +1,8 @@
 """
 Preflight one environment: load the named grounders, ground ONE instruction and
 (where the adapter has it) judge ONE statement on one benchmark image; then,
-with --pipeline, run one VizDOM OmniParser pass.
+with --pipeline, run one VizDOM pass with the omniparser and the modular
+backend.
 
 Called by preflight.sh once per venv (the grounders' Hub code disagrees on the
 transformers version, so the sweep uses two envs - see setup.sh). Exit 1 on any
@@ -27,7 +28,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--grounders", default="", help="comma list; empty = none")
     ap.add_argument("--pipeline", action="store_true",
-                    help="also run one VizDOM pass with the omniparser backend")
+                    help="also run one VizDOM pass with the omniparser and modular backends")
     args = ap.parse_args()
 
     # The manifest's screens are tracked under data/synthetic (tests/samples/*.png
@@ -56,7 +57,15 @@ def main():
         grounder = cls(quantize=quantize)
         ok, why = grounder.available()
         if not ok:
-            print(f"  {name:16} SKIP: {why}")
+            # SKIP only for the one reason the sweep also skips on: the card is
+            # below the adapter's own VRAM floor (Aria-UI on 24 GB). Anything
+            # else - a missing package, no CUDA - is a FAIL: the sweep would
+            # otherwise exit "not runnable here" after the time is paid for.
+            if vram_gb < getattr(cls, "MIN_VRAM_GB", 0):
+                print(f"  {name:16} SKIP  {why}")
+            else:
+                failures.append(name)
+                print(f"  {name:16} FAIL  not available: {why}")
             continue
         try:
             t0 = time.perf_counter()
@@ -93,24 +102,34 @@ def main():
                 torch.cuda.empty_cache()
 
     if args.pipeline:
-        try:
-            from visual_dom.core.domain.pipeline import VisualDOMPipeline
-            os.environ.setdefault("OMNIPARSER_ROOT", "third_party/OmniParser")
-            os.environ.setdefault("OMNIPARSER_ICON_DETECT",
-                                  "models/omniparser/icon_detect/model.pt")
-            os.environ.setdefault("OMNIPARSER_ICON_CAPTION",
-                                  "models/omniparser/icon_caption_florence")
-            pipe = VisualDOMPipeline(ocr_engine="easyocr", detector="omniparser",
-                                     use_gpu=True)
-            # The pipeline degrades to UIED when the backend fails to construct;
-            # for a preflight that is a failure, not a pass (see the WARNING).
-            assert pipe._primary_backend is not None, \
-                "omniparser backend did not initialize - pipeline fell back to uied"
-            result = pipe.process(image)
-            print(f"  vizdom-omniparser OK    {result['stats']['final_count']} elements")
-        except Exception as exc:
-            failures.append("vizdom-omniparser")
-            print(f"  vizdom-omniparser FAIL  {type(exc).__name__}: {exc}")
+        from visual_dom.core.domain.pipeline import VisualDOMPipeline
+        os.environ.setdefault("OMNIPARSER_ROOT", "third_party/OmniParser")
+        os.environ.setdefault("OMNIPARSER_ICON_DETECT",
+                              "models/omniparser/icon_detect/model.pt")
+        os.environ.setdefault("OMNIPARSER_ICON_CAPTION",
+                              "models/omniparser/icon_caption_florence")
+        # Both OmniParser-backed columns of the sweep: the monolith and the
+        # modular backend (same YOLO as stage 1). Each can silently degrade -
+        # the pipeline to UIED when the backend fails to construct, the
+        # modular backend's stage 1 to UIED when the YOLO is unusable - and
+        # for a preflight that is a failure, not a pass (see the WARNING).
+        for detector in ("omniparser", "modular"):
+            column = f"vizdom-{detector}"
+            try:
+                pipe = VisualDOMPipeline(ocr_engine="easyocr", detector=detector,
+                                         use_gpu=True)
+                backend = pipe._primary_backend
+                assert backend is not None, \
+                    f"{detector} backend did not initialize - pipeline fell back to uied"
+                if detector == "modular":
+                    stage1 = getattr(getattr(backend, "_proposer", None), "name", None)
+                    assert stage1 == "omniparser", \
+                        f"modular stage 1 is {stage1!r}, not the omniparser YOLO"
+                result = pipe.process(image)
+                print(f"  {column:16} OK    {result['stats']['final_count']} elements")
+            except Exception as exc:
+                failures.append(column)
+                print(f"  {column:16} FAIL  {type(exc).__name__}: {exc}")
 
     sys.exit(1 if failures else 0)
 

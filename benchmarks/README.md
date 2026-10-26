@@ -177,7 +177,7 @@ The run kit is `deploy/gpu/`.
 | `elam-7b` | bf16 | **0.939** | 0.701 | 0.289 (87 of 88 negatives passed) | **5.15 s/step** |
 | `ui-tars-1.5-7b` | bf16 | **0.934** | 0.807 | 0.193 (58 of 88 negatives passed) | **1.68 s/step** |
 | `ui-tars-1.5-7b` | 4-bit (2026-10-25) | 0.845 | 0.797 | 0.199 | 1.76 s/step |
-| `aria-ui` | — | not run | | | 25 B MoE: bnb 4-bit leaves the experts unquantized, OOM on 24 GB; needs ≥ 40 GB |
+| `aria-ui` | — | not run | | | 25 B MoE: bnb 4-bit leaves the experts unquantized, OOM on 24 GB; needs a 48 GB card |
 
 Interpretation, column by column:
 

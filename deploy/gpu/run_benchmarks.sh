@@ -69,10 +69,12 @@ VRAM_GB=$(python -c "import torch;print(int(torch.cuda.get_device_properties(0).
 QUANT=""; [ "$VRAM_GB" -ge 20 ] && QUANT="--no-quantize"
 # ELAM (Molmo code) and Aria-UI (old Llama attention) need transformers
 # <= 4.47/4.48, which UI-TARS (Qwen2.5-VL, >= 4.49) cannot share: setup.sh
-# builds .venv-legacy for them. Aria-UI needs a >= 40 GB card (its MoE
-# experts are not quantized by bnb; 24 GB OOMs at load) - on a smaller card
-# the column is skipped here rather than paid for and then marked FAILED.
-[ "$VRAM_GB" -ge 40 ] || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular elam-7b ui-tars-1.5-7b parity}"
+# builds .venv-legacy for them. Aria-UI needs a 48 GB card (its MoE experts
+# are not quantized by bnb; 24 GB OOMs at shard 5/12, ~50 GB extrapolated,
+# so an A100 40 GB - which reports 42 - is out too; gate 46, same as
+# AriaUiGrounder.MIN_VRAM_GB) - on a smaller card the column is skipped
+# here rather than paid for and then marked FAILED.
+[ "$VRAM_GB" -ge 46 ] || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular elam-7b ui-tars-1.5-7b parity}"
 if [ -x .venv-legacy/bin/python ]; then
     LEGACY=".venv-legacy/bin/python -m visual_dom.evaluation.lifecycle.runner"
 else
@@ -91,11 +93,17 @@ run_column parity             python "deploy/gpu/parity_on_box.py" "$OUT/parity.
     echo "# $(basename "$OUT")"; echo; cat "$OUT/gpu.txt"; echo
     echo "| executor | action-hit | verify acc | false-pass | median step (s) | cost |"
     echo "|---|---|---|---|---|---|"
-    for md in "$OUT"/*_*.md; do
-        # awk, not tail: the runner's .md has no trailing newline, so tail
-        # glued the rows onto one line (2026-10-26 summary.md)
-        [ -f "$md" ] && awk 'NR > 2' "$md"
-    done
+    # One row per executor, the LATEST one: an ONLY= rerun into the same dir
+    # writes a second <stamp>.md for that column and the old row (possibly a
+    # FAILED one) must not stay in the table. awk, not tail: the runner's .md
+    # has no trailing newline, so tail glued the rows onto one line.
+    for md in $(ls "$OUT"/*_*.md 2>/dev/null | sort); do
+        awk 'NR > 2' "$md"
+    done | awk -F'|' '{
+        k = $2
+        if (!(k in row)) order[++n] = k
+        row[k] = $0
+    } END { for (i = 1; i <= n; i++) print row[order[i]] }'
 } > "$OUT/summary.md"
 echo; cat "$OUT/summary.md"
 

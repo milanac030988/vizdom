@@ -243,6 +243,13 @@ def run_benchmark(manifest, executors, limit_states=None, out_dir="benchmarks/re
              "|---|---|---|---|---|---|"]
     for name, res in all_results.items():
         s = res["summary"]
+        if s.get("all_steps_errored"):
+            # Not a measurement: say so in the row itself, so a sweep summary
+            # built from these files cannot show the column as 0.0.
+            first = str(res["steps"][0]["detail"])[:120]
+            lines.append(f"| {name} | FAILED | FAILED | FAILED | - "
+                         f"| all {len(res['steps'])} steps errored: {first} |")
+            continue
         lines.append(f"| {name} | {s['action_hit_rate']} ({s['actions']}) "
                      f"| {s['verify_accuracy']} ({s['verifies']}) "
                      f"| {s['false_pass_rate']} | {s['median_step_latency_s']} "

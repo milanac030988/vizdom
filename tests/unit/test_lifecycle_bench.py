@@ -9,6 +9,8 @@ using a synthetic manifest and a scripted executor — no models, no images.
 
 import json
 
+import pytest
+
 from visual_dom.evaluation.lifecycle.generate import generate_steps
 from visual_dom.evaluation.lifecycle.runner import _inside, _score, run_benchmark
 
@@ -143,3 +145,40 @@ def test_runner_aggregates_and_writes_results(tmp_path):
     assert s["verify_accuracy"] == 0.5          # v2 judged PASSED, expected FAILED
     assert s["false_pass_rate"] == 0.5
     assert list(tmp_path.glob("*.json")) and list(tmp_path.glob("*.md"))
+
+
+class _BrokenExecutor:
+    """Every step raises - a broken environment, not a measured zero."""
+
+    name = "boom"
+
+    def run_step(self, state, step):
+        raise RuntimeError("no module named nothing")
+
+    def cost_summary(self):
+        return {}
+
+
+def test_runner_marks_all_errored_column_failed_not_zero(tmp_path):
+    """A column whose every step errored exits 1 AND writes a FAILED row:
+    the sweep's summary.md is built from these .md files, and a 0.0 row
+    there would look like a measurement (GPU kit review, 2026-10-26)."""
+    manifest = {
+        "benchmark": "unit",
+        "states": [{"id": "s", "image": "none.png", "gt": "none.json"}],
+        "steps": [
+            {"id": "a1", "state": "s", "kind": "action", "locator": "text=x",
+             "instruction": "click x", "target_id": "E1",
+             "target_bounds": [0, 0, 10, 10]},
+        ],
+    }
+    with pytest.raises(SystemExit) as info:
+        run_benchmark(manifest, [_BrokenExecutor()], out_dir=str(tmp_path))
+    assert info.value.code == 1
+
+    md = next(tmp_path.glob("*.md")).read_text(encoding="utf-8")
+    row = [ln for ln in md.splitlines() if ln.startswith("| boom |")][0]
+    assert "FAILED" in row and "0.0" not in row
+    assert "no module named nothing" in row
+    payload = json.loads(next(tmp_path.glob("*.json")).read_text(encoding="utf-8"))
+    assert payload["results"]["boom"]["summary"]["all_steps_errored"] is True

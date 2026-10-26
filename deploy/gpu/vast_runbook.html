@@ -192,7 +192,8 @@ git clone https://github.com/milanac030988/vizdom.git &amp;&amp; cd vizdom</code
       <code>ui-tars-1.5-7b   OK  ground -&gt; (x, y) (bf16, ...)</code><br>
       <code>vizdom-omniparser OK  N elements</code> with no "Could not initialize 'omniparser' backend" warning above it<br>
       <code>elam-7b          OK  ground -&gt; (x, y) ..., judge -&gt; PASSED</code> (or FAILED)<br>
-      <code>aria-ui          SKIP: GPU has 25 GB; ... needs a &gt;= 40 GB card</code> on a 24 GB card (OK only on 48 GB)<br>
+      <code>vizdom-modular   OK  N elements</code> (the modular backend with the OmniParser YOLO as stage 1)<br>
+      <code>aria-ui          SKIP  GPU has 25 GB; ... needs a &gt;= 46 GB card</code> on a 24 GB card (OK only on 48 GB). Any other <code>FAIL  not available: missing package</code> line is real and must be fixed.<br>
       then <code>preflight passed</code>.</div>
     <p>Any line marked FAIL: fix it before the sweep, do not start the sweep hoping. Paste the FAIL line into the chat; the Troubleshooting table below covers everything seen so far.</p>
     <label class="check"><input type="checkbox" data-key="run-preflight"> preflight passed</label>
@@ -253,7 +254,7 @@ type gpu-&lt;stamp&gt;\summary.md</code></pre>
     <tr><td><code>'Florence2ForConditionalGeneration' object has no attribute '_supports_sdpa'</code></td><td>transformers ≥ 4.50</td><td>main env pinned to 4.49.0</td></tr>
     <tr><td><code>cannot import name 'LLAMA_ATTENTION_CLASSES'</code> (Aria-UI)</td><td>transformers ≥ 4.48</td><td>Aria-UI runs from .venv-legacy (4.47.1) with sentencepiece</td></tr>
     <tr><td><code>'super' object has no attribute '_extract_past_from_model_output'</code> (ELAM)</td><td>transformers ≥ 4.49</td><td>ELAM runs from .venv-legacy</td></tr>
-    <tr><td><code>CUDA out of memory</code> at shard 5/12 (Aria-UI)</td><td>bitsandbytes does not quantize Aria's MoE experts; 24 GB is not enough</td><td>column needs a 48 GB card; prefetch and sweep skip it below 40 GB</td></tr>
+    <tr><td><code>CUDA out of memory</code> at shard 5/12 (Aria-UI)</td><td>bitsandbytes does not quantize Aria's MoE experts; 24 GB is not enough</td><td>column needs a 48 GB card (A6000/L40S; an A100 40 GB is not enough); prefetch and sweep skip it below 46 GB</td></tr>
     <tr><td><code>expected scalar type Float but found Half</code> (ELAM 4-bit)</td><td>Molmo under bitsandbytes</td><td>7B grounders run bf16 on ≥ 20 GB cards (--no-quantize)</td></tr>
     <tr><td><code>mat1 and mat2 ... float != c10::BFloat16</code> (ELAM bf16)</td><td>Processor emits float32 image tensors</td><td>grounder casts inputs and generates under autocast</td></tr>
     <tr><td>ELAM column 0.0 with prose answers, no point or verdict</td><td>Bare instruction instead of the model-card prompt templates; point is percent not fraction; verdict cut off at 96 tokens</td><td>grounder fixed; preflight checks point-in-image and a verdict</td></tr>

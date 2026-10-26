@@ -18,9 +18,11 @@ went wrong that day is now caught by `setup.sh` or `preflight.sh` — see
 | 16 GB cards | 16 GB | 7B columns in 4-bit only | acceptable fallback |
 
 Aria-UI (25 B MoE) does **not** fit 24 GB: bitsandbytes 4-bit skips its
-expert weights, so loading OOMs at shard 5/12 (measured 2026-10-26). Its
-`available()` reports this below 40 GB, prefetch skips the 50 GB download,
-and the sweep skips the column.
+expert weights, so loading OOMs at shard 5/12 (measured 2026-10-26; ~50 GB
+extrapolated for the full load). An A100 40 GB (reports ~42 GB) is out too.
+The gate is 46 GB in `AriaUiGrounder.MIN_VRAM_GB`, prefetch and the sweep:
+below it `available()` says why, prefetch skips the 50 GB download, and
+the sweep skips the column.
 
 - Image: any **PyTorch / CUDA 12.x** template (CUDA driver preinstalled).
   Launch mode **SSH**, not Jupyter.
@@ -53,10 +55,12 @@ bash deploy/gpu/run_benchmarks.sh # the unattended sweep (prints a summary table
 
 **Do not skip preflight.** It loads every model from the env the sweep will
 use it in, grounds one instruction, checks the point is inside the image, and
-for ELAM also checks that a verdict comes back. Every failure class seen so
+for ELAM also checks that a verdict comes back; it also runs one VizDOM pass
+with the omniparser *and* the modular backend. Every failure class seen so
 far (missing package, wrong transformers, wrong prompt template, wrong
-coordinate scale, OmniParser silently degrading to UIED) fails there in minute
-two, not two hours into the sweep as a column of zeros.
+coordinate scale, OmniParser or the modular stage 1 silently degrading to
+UIED) fails there in minute two, not two hours into the sweep as a column of
+zeros.
 
 Then from your own machine (or the MobaXterm SFTP panel):
 
@@ -123,15 +127,19 @@ Learned on the first paid run (2026-10-25, RTX 4090 on Vast):
   checks the point lands inside the image and that `judge()` returns a verdict.
 - `tests/samples/*.png` is gitignored: preflight and parity use the tracked
   `data/synthetic/test/images/` screens on a fresh clone.
-- The runner exits non-zero when **every** step of a column errored, so the
-  sweep reports FAILED instead of a 0.0 row that looks like a measurement.
+- The runner exits non-zero when **every** step of a column errored and
+  writes a `FAILED` row instead of numbers, so the sweep reports FAILED and
+  `summary.md` cannot show a 0.0 that looks like a measurement. `summary.md`
+  keeps one row per column, the latest, so an `ONLY=` rerun replaces it.
 
 ## Notes & failure modes
 
 - **Every download is resumable** — rerun `prefetch.sh` after an interruption.
 - **One column failing does not kill the sweep** (`run_benchmarks.sh` runs each
   in its own process and keeps going); check its `.log` in the results dir.
-- Aria-UI is auto-skipped below 40 GB VRAM (`available()` says why in the log).
+- Aria-UI is auto-skipped below 46 GB VRAM (`available()` says why in the log).
+  Preflight prints SKIP for that one reason only; a grounder that is
+  unavailable for any other reason (missing package) is a FAIL.
 - The Qwen2-VL captioner combo is picked up automatically once an
   ollama-backed Captioner lands in `modular_backend._CAPTIONERS`; until then
   `parity_on_box.py` notes it as unavailable, and the Ollama pull in
