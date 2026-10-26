@@ -216,6 +216,16 @@ def run_benchmark(manifest, executors, limit_states=None, out_dir="benchmarks/re
         }
         all_results[ex.name] = {"summary": summary, "steps": rows}
         log.info("%s: %s", ex.name, summary)
+        errors = sum(1 for r in rows if str(r["detail"]).startswith("error:"))
+        if rows and errors == len(rows):
+            # Every step raised: that is a broken environment, not a measured
+            # zero. Say so loudly and exit non-zero so an unattended sweep marks
+            # the column FAILED instead of filing a table of 0.0s.
+            log.error("%s: ALL %d steps errored - first: %s",
+                      ex.name, errors, rows[0]["detail"])
+            all_results[ex.name]["summary"]["all_steps_errored"] = True
+        elif errors:
+            log.warning("%s: %d of %d steps errored", ex.name, errors, len(rows))
 
     payload = {
         "benchmark": manifest["benchmark"],
@@ -240,6 +250,8 @@ def run_benchmark(manifest, executors, limit_states=None, out_dir="benchmarks/re
     table = "\n".join(lines)
     (out / f"{stamp}.md").write_text(table, encoding="utf-8")
     print(table)
+    if any(r["summary"].get("all_steps_errored") for r in all_results.values()):
+        raise SystemExit(1)
     return payload
 
 

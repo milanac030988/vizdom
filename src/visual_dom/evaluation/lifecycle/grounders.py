@@ -112,41 +112,72 @@ class ElamGrounder(Grounder):
             except ImportError:
                 log.warning("bitsandbytes not installed - loading unquantized "
                             "(needs ~15 GB; expect CPU offload)")
+        else:
+            # bf16, not the fp32 default: 7B fp32 is ~28 GB and spills to CPU
+            # even on a 24 GB card. (Molmo under bnb 4-bit also trips
+            # "expected scalar type Float but found Half"; bf16 is the way to
+            # run it on a real GPU.)
+            import torch
+            kwargs["torch_dtype"] = torch.bfloat16
         log.info("Loading ELAM-7B from %s ...", path)
         self._processor = AutoProcessor.from_pretrained(path, trust_remote_code=True)
         self._model = AutoModelForCausalLM.from_pretrained(path, **kwargs)
 
-    def _run(self, image_bgr, prompt: str) -> str:
+    # Prompt templates from the model card (preprocess_elam_prompt). Sending the
+    # bare instruction instead makes ELAM describe the element in prose, with
+    # neither a point nor a verdict (first GPU run, 2026-10-25).
+    _ACTION_TMPL = ("Identify and point to the UI element that corresponds to "
+                    "this test action:\n{request}")
+    _VERIFY_TMPL = ("Evaluate this statement about the image:\n'{request}'\n"
+                    "Think step by step, conclude whether the evaluation is "
+                    "'PASSED' or 'FAILED' and point to the UI element that "
+                    "corresponds to this evaluation.")
+
+    def _run(self, image_bgr, prompt: str, max_new_tokens: int) -> str:
         self._ensure()
         pil = self._to_pil(image_bgr)
+        import torch
+        model_dtype = next(self._model.parameters()).dtype
         inputs = self._processor.process(images=[pil], text=prompt)
-        inputs = {k: v.to(self._model.device).unsqueeze(0) for k, v in inputs.items()}
+        # The processor emits float32 image tensors regardless of the model
+        # dtype; cast them like the model card does (and autocast below for
+        # whatever the remote code computes in between).
+        inputs = {k: (v.to(model_dtype) if v.is_floating_point() and not self.quantize else v)
+                     .to(self._model.device).unsqueeze(0)
+                  for k, v in inputs.items()}
         from transformers import GenerationConfig
-        output = self._model.generate_from_batch(
-            inputs, GenerationConfig(max_new_tokens=96, stop_strings="<|endoftext|>"),
-            tokenizer=self._processor.tokenizer)
+        amp_dtype = torch.float16 if self.quantize else torch.bfloat16
+        with torch.autocast(device_type="cuda", enabled=torch.cuda.is_available(),
+                            dtype=amp_dtype):
+            output = self._model.generate_from_batch(
+                inputs, GenerationConfig(max_new_tokens=max_new_tokens,
+                                         stop_strings="<|endoftext|>"),
+                tokenizer=self._processor.tokenizer)
         tokens = output[0, inputs["input_ids"].size(1):]
         return self._processor.tokenizer.decode(tokens, skip_special_tokens=True)
 
     def ground(self, image_bgr, instruction):
-        text = self._timed(lambda: self._run(image_bgr, instruction))
+        prompt = self._ACTION_TMPL.format(request=instruction)
+        text = self._timed(lambda: self._run(image_bgr, prompt, max_new_tokens=96))
         m = self._POINT.search(text)
         if not m:
             log.info("ELAM produced no point for %r: %s", instruction, text[:120])
             return None
+        # Molmo <point> coordinates are percentages (0-100), not fractions.
         h, w = image_bgr.shape[:2]
-        return int(float(m.group(1)) * w), int(float(m.group(2)) * h)
+        return int(float(m.group(1)) / 100 * w), int(float(m.group(2)) / 100 * h)
 
     def judge(self, image_bgr, statement):
-        text = self._timed(
-            lambda: self._run(image_bgr, f"Evaluation of expected result: {statement}"))
+        prompt = self._VERIFY_TMPL.format(request=statement)
+        # "Think step by step" precedes the verdict: leave room for it.
+        text = self._timed(lambda: self._run(image_bgr, prompt, max_new_tokens=512))
         upper = text.upper()
-        if "PASSED" in upper:
-            return "PASSED"
-        if "FAILED" in upper:
-            return "FAILED"
-        log.info("ELAM produced no verdict for %r: %s", statement, text[:120])
-        return None
+        # The reasoning may mention both words; the conclusion is the last one.
+        p, f = upper.rfind("PASSED"), upper.rfind("FAILED")
+        if p < 0 and f < 0:
+            log.info("ELAM produced no verdict for %r: %s", statement, text[:120])
+            return None
+        return "PASSED" if p > f else "FAILED"
 
 
 class UiTarsGrounder(Grounder):
@@ -193,6 +224,9 @@ class UiTarsGrounder(Grounder):
             except ImportError:
                 log.warning("bitsandbytes not installed - loading unquantized "
                             "(needs ~16 GB; expect CPU offload)")
+        else:
+            import torch
+            kwargs["torch_dtype"] = torch.bfloat16   # see ElamGrounder
         log.info("Loading UI-TARS from %s ...", path)
         self._processor = AutoProcessor.from_pretrained(path)
         self._model = Qwen2_5_VLForConditionalGeneration.from_pretrained(path, **kwargs)

@@ -38,7 +38,8 @@ def say(line=""):
 
 
 screens = sorted(glob.glob("output/sessions/*/screenshot.png"))[:3] \
-    or sorted(glob.glob("tests/samples/*_screen.png"))
+    or sorted(glob.glob("tests/samples/*_screen.png")) \
+    or sorted(glob.glob("data/synthetic/test/images/*.png"))[:3]   # fresh clone
 say(f"screens: {screens}")
 
 shared = TextDetector(ocr_engine="easyocr", gpu=True)

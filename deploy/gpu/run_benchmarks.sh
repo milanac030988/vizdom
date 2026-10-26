@@ -5,35 +5,52 @@
 # Runs each executor column as a SEPARATE process so one model's failure (or
 # OOM) cannot take down the columns already finished - partial results are
 # still results. Everything lands in benchmarks/results/gpu-<timestamp>/ and
-# is tarred at the end for scp.
+# is tarred at the end for scp. Run it inside tmux: the box keeps going when
+# the laptop's SSH session drops.
 #
 #   bash deploy/gpu/run_benchmarks.sh
-#   # ...later, from your machine:
-#   scp rented-box:~/vizdom/benchmarks/results/gpu-*.tar.gz .
+#
+# Re-run only some columns into an EXISTING run dir (after fixing something):
+#
+#   ONLY="elam-7b aria-ui" OUT_DIR=benchmarks/results/gpu-20261025_221752 \
+#       bash deploy/gpu/run_benchmarks.sh
+#
+# Later, from your machine:
+#   scp -P <port> root@<box>:~/vizdom/benchmarks/results/gpu-*.tar.gz .
 # ---------------------------------------------------------------------------
 set -uo pipefail   # NOT -e: one failed column must not kill the sweep
 cd "$(dirname "$0")/../.."
 # shellcheck disable=SC1091
 . .venv/bin/activate
 export PYTHONPATH=src
+export USE_TF=0
 export OMNIPARSER_ROOT="${OMNIPARSER_ROOT:-$(pwd)/third_party/OmniParser}"
 export OMNIPARSER_ICON_DETECT="${OMNIPARSER_ICON_DETECT:-$(pwd)/models/omniparser/icon_detect/model.pt}"
 export OMNIPARSER_ICON_CAPTION="${OMNIPARSER_ICON_CAPTION:-$(pwd)/models/omniparser/icon_caption_florence}"
 
-STAMP=$(date +%Y%m%d_%H%M%S)
-OUT="benchmarks/results/gpu-${STAMP}"
+OUT="${OUT_DIR:-benchmarks/results/gpu-$(date +%Y%m%d_%H%M%S)}"
+OUT="${OUT%/}"
+ONLY="${ONLY:-}"
 mkdir -p "$OUT"
-echo "results -> $OUT"
-nvidia-smi --query-gpu=name,memory.total --format=csv > "$OUT/gpu.txt"
+# everything this script prints also goes into the run dir
+exec > >(tee -a "$OUT/sweep.log") 2>&1
+echo "results -> $OUT   (columns: ${ONLY:-all})"
+nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv > "$OUT/gpu.txt"
+{ echo "commit: $(git rev-parse --short HEAD 2>/dev/null)"; date -u; } >> "$OUT/gpu.txt"
+
+wanted() { [ -z "$ONLY" ] || [[ " $ONLY " == *" $1 "* ]]; }
 
 run_column() {
     local name="$1"; shift
+    wanted "$name" || { echo "$name: skipped (ONLY=$ONLY)"; return; }
     echo; echo "=============== $name ==============="
     local t0=$SECONDS
     if "$@" > "$OUT/$name.log" 2>&1; then
         echo "$name: OK ($((SECONDS - t0))s)"
+        tail -1 "$OUT/$name.log"           # the result row
     else
         echo "$name: FAILED ($((SECONDS - t0))s) - see $OUT/$name.log"
+        grep -m1 -E "Error|error:|FATAL" "$OUT/$name.log" || true
     fi
 }
 
@@ -46,13 +63,37 @@ run_column vizdom-omniparser  $RUN --manifest "$MANIFEST" --executors vizdom-omn
 run_column vizdom-modular     $RUN --manifest "$MANIFEST" --executors vizdom-modular     --out-dir "$OUT"
 
 # --- the grounder columns (the competing end-to-end paradigm) --------------
-run_column elam-7b            $RUN --manifest "$MANIFEST" --executors elam-7b            --out-dir "$OUT"
-run_column ui-tars-1.5-7b     $RUN --manifest "$MANIFEST" --executors ui-tars-1.5-7b     --out-dir "$OUT"
-run_column aria-ui            $RUN --manifest "$MANIFEST" --executors aria-ui            --out-dir "$OUT"
+# 7B grounders run in bf16 on a >= 20 GB card (the 4-bit path exists for the
+# laptop; Molmo/ELAM under bnb 4-bit fails with a Float/Half dtype error).
+VRAM_GB=$(python -c "import torch;print(int(torch.cuda.get_device_properties(0).total_memory/1e9))")
+QUANT=""; [ "$VRAM_GB" -ge 20 ] && QUANT="--no-quantize"
+# ELAM (Molmo code) and Aria-UI (old Llama attention) need transformers
+# <= 4.47/4.48, which UI-TARS (Qwen2.5-VL, >= 4.49) cannot share: setup.sh
+# builds .venv-legacy for them. Aria stays 4-bit: 25B MoE, ~50 GB in bf16.
+if [ -x .venv-legacy/bin/python ]; then
+    LEGACY=".venv-legacy/bin/python -m visual_dom.evaluation.lifecycle.runner"
+else
+    echo "!! .venv-legacy missing - elam-7b / aria-ui will fail (run setup.sh)"
+    LEGACY="$RUN"
+fi
+run_column elam-7b            $LEGACY --manifest "$MANIFEST" --executors elam-7b        $QUANT --out-dir "$OUT"
+run_column ui-tars-1.5-7b     $RUN    --manifest "$MANIFEST" --executors ui-tars-1.5-7b $QUANT --out-dir "$OUT"
+run_column aria-ui            $LEGACY --manifest "$MANIFEST" --executors aria-ui                --out-dir "$OUT"
 
 # --- ADR-027: parity + captioner combos on this GPU ------------------------
 run_column parity             python "deploy/gpu/parity_on_box.py" "$OUT/parity.txt"
 
-tar czf "benchmarks/results/gpu-${STAMP}.tar.gz" -C benchmarks/results "gpu-${STAMP}"
-echo; echo "sweep complete: benchmarks/results/gpu-${STAMP}.tar.gz"
-echo "copy it back, then STOP THE RENTAL."
+# --- one table with every column that produced a result --------------------
+{
+    echo "# $(basename "$OUT")"; echo; cat "$OUT/gpu.txt"; echo
+    echo "| executor | action-hit | verify acc | false-pass | median step (s) | cost |"
+    echo "|---|---|---|---|---|---|"
+    for md in "$OUT"/*_*.md; do
+        [ -f "$md" ] && tail -n +3 "$md"
+    done
+} > "$OUT/summary.md"
+echo; cat "$OUT/summary.md"
+
+tar czf "$OUT.tar.gz" -C "$(dirname "$OUT")" "$(basename "$OUT")"
+echo; echo "sweep complete: $OUT.tar.gz"
+echo "copy it back, verify it opens, then DESTROY THE RENTAL."
