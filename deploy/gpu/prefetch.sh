@@ -9,7 +9,7 @@
 # Sizes (approx):
 #   ELAM-7B                 ~15 GB
 #   UI-TARS-1.5-7B          ~16 GB
-#   Aria-UI-base            ~50 GB   (skipped automatically on < 20 GB GPUs)
+#   Aria-UI-base            ~50 GB   (skipped automatically on < 40 GB GPUs)
 #   OmniParser v2 weights   ~1.2 GB  (icon_detect + icon_caption_florence)
 # ---------------------------------------------------------------------------
 set -euo pipefail
@@ -29,10 +29,12 @@ command -v "$HF" >/dev/null 2>&1 || { echo "FATAL: no HF CLI in the venv"; exit 
 
 run_bg "$HF" download sparks-solutions/ELAM-7B
 run_bg "$HF" download ByteDance-Seed/UI-TARS-1.5-7B
-if [ "$VRAM_GB" -ge 20 ]; then
+# Aria-UI: bnb 4-bit does not quantize its MoE experts, so a 24 GB card OOMs
+# at shard 5/12 (measured 2026-10-26). Only worth 50 GB of bandwidth on 40 GB+.
+if [ "$VRAM_GB" -ge 40 ]; then
     run_bg "$HF" download Aria-UI/Aria-UI-base
 else
-    echo "!! skipping Aria-UI (~50 GB): needs a >=20 GB card, this one has ${VRAM_GB} GB"
+    echo "!! skipping Aria-UI (~50 GB): needs a >=40 GB card (A6000/L40S), this one has ${VRAM_GB} GB"
 fi
 
 # OmniParser weights, laid out where the pipeline's standard resolution finds them

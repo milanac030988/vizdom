@@ -13,9 +13,14 @@ went wrong that day is now caught by `setup.sh` or `preflight.sh` — see
 
 | Card | VRAM | Runs | Note |
 |---|---|---|---|
-| RTX 4090 / A5000 / L4 | 24 GB | everything, Aria-UI in 4-bit | **recommended** — best price/coverage |
-| A6000 / L40S | 48 GB | everything, Aria-UI comfortable | pay more only if 24 GB is unavailable |
-| 16 GB cards | 16 GB | 7B columns only, **no Aria-UI** | acceptable fallback |
+| RTX 4090 / A5000 / L4 | 24 GB | VizDOM columns, ELAM-7B, UI-TARS-1.5 (bf16), parity | **recommended** — best price/coverage |
+| A6000 / L40S | 48 GB | the above **plus Aria-UI** | only if the Aria-UI column is wanted |
+| 16 GB cards | 16 GB | 7B columns in 4-bit only | acceptable fallback |
+
+Aria-UI (25 B MoE) does **not** fit 24 GB: bitsandbytes 4-bit skips its
+expert weights, so loading OOMs at shard 5/12 (measured 2026-10-26). Its
+`available()` reports this below 40 GB, prefetch skips the 50 GB download,
+and the sweep skips the column.
 
 - Image: any **PyTorch / CUDA 12.x** template (CUDA driver preinstalled).
   Launch mode **SSH**, not Jupyter.
@@ -126,7 +131,7 @@ Learned on the first paid run (2026-10-25, RTX 4090 on Vast):
 - **Every download is resumable** — rerun `prefetch.sh` after an interruption.
 - **One column failing does not kill the sweep** (`run_benchmarks.sh` runs each
   in its own process and keeps going); check its `.log` in the results dir.
-- Aria-UI is auto-skipped below 20 GB VRAM (`available()` says why in the log).
+- Aria-UI is auto-skipped below 40 GB VRAM (`available()` says why in the log).
 - The Qwen2-VL captioner combo is picked up automatically once an
   ollama-backed Captioner lands in `modular_backend._CAPTIONERS`; until then
   `parity_on_box.py` notes it as unavailable, and the Ollama pull in

@@ -285,12 +285,16 @@ class AriaUiGrounder(Grounder):
     the reply is a Python-literal ``[x, y]`` in that 0-1000 space - mapped here
     back to source pixels.
 
-    Hardware: bf16 weights are ~50 GB (multi-GPU); 4-bit quantization is
-    ~13-16 GB and fits a rented 24 GB+ card - the intended way to run this
-    column (deploy/gpu runbook). Not runnable on the 6 GB laptop; available()
-    says so instead of pretending. No native verdict mode - judge() grounds
-    the statement's quoted subject, the same documented proxy as UI-TARS.
+    Hardware: bf16 weights are ~50 GB. bitsandbytes 4-bit does NOT shrink it
+    to the expected ~14 GB: Aria's custom MoE code stores the expert weights
+    in a layout the quantizer skips, so a 24 GB card OOMs at shard 5/12 while
+    loading (measured 2026-10-26, RTX 4090: 22.4 GB allocated at 42 %). It
+    needs a 48 GB card (A6000 / L40S); available() says so instead of letting
+    a rented hour discover it. No native verdict mode - judge() grounds the
+    statement's quoted subject, the same documented proxy as UI-TARS.
     """
+
+    MIN_VRAM_GB = 40
 
     name = "aria-ui"
     DEFAULT_MODEL = "Aria-UI/Aria-UI-base"
@@ -310,13 +314,13 @@ class AriaUiGrounder(Grounder):
         except ImportError as exc:
             return False, f"missing package: {exc.name} (pip install torch transformers accelerate)"
         if not torch.cuda.is_available():
-            return False, "Aria-UI needs a CUDA GPU (~13-16 GB in 4-bit)"
+            return False, "Aria-UI needs a CUDA GPU with >= 40 GB"
         vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
-        if vram_gb < 20:
-            return False, (f"GPU has {vram_gb:.0f} GB; Aria-UI needs ~13-16 GB "
-                           f"in 4-bit plus activations (>=20 GB card). Rent per "
-                           f"the deploy/gpu runbook.")
-        return True, f"deps + {vram_gb:.0f} GB GPU present (weights ~50 GB download, 4-bit load)"
+        if vram_gb < self.MIN_VRAM_GB:
+            return False, (f"GPU has {vram_gb:.0f} GB; Aria-UI's MoE experts are not "
+                           f"quantized by bitsandbytes and a 24 GB card OOMs while "
+                           f"loading - needs a >= {self.MIN_VRAM_GB} GB card (A6000/L40S).")
+        return True, f"deps + {vram_gb:.0f} GB GPU present (weights ~50 GB download)"
 
     def _ensure(self):
         if self._model is not None:

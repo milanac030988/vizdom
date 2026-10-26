@@ -69,7 +69,10 @@ VRAM_GB=$(python -c "import torch;print(int(torch.cuda.get_device_properties(0).
 QUANT=""; [ "$VRAM_GB" -ge 20 ] && QUANT="--no-quantize"
 # ELAM (Molmo code) and Aria-UI (old Llama attention) need transformers
 # <= 4.47/4.48, which UI-TARS (Qwen2.5-VL, >= 4.49) cannot share: setup.sh
-# builds .venv-legacy for them. Aria stays 4-bit: 25B MoE, ~50 GB in bf16.
+# builds .venv-legacy for them. Aria-UI needs a >= 40 GB card (its MoE
+# experts are not quantized by bnb; 24 GB OOMs at load) - on a smaller card
+# the column is skipped here rather than paid for and then marked FAILED.
+[ "$VRAM_GB" -ge 40 ] || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular elam-7b ui-tars-1.5-7b parity}"
 if [ -x .venv-legacy/bin/python ]; then
     LEGACY=".venv-legacy/bin/python -m visual_dom.evaluation.lifecycle.runner"
 else

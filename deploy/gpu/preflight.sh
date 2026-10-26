@@ -15,12 +15,18 @@ export PYTHONPATH=src
 export USE_TF=0   # tensorflow-cpu is installed only to satisfy ELAM's import check
 
 fail=0
+# One process per model, like the sweep: remote-code models do not reliably
+# release the card when dropped in-process (ELAM's 15 GB stayed resident and
+# Aria-UI then OOMed at shard 5/12 on a 24 GB card, 2026-10-26).
 echo "=== main env ==="
-.venv/bin/python deploy/gpu/preflight.py --grounders ui-tars-1.5-7b --pipeline || fail=1
+.venv/bin/python deploy/gpu/preflight.py --grounders ui-tars-1.5-7b || fail=1
+.venv/bin/python deploy/gpu/preflight.py --pipeline || fail=1
 
 if [ -x .venv-legacy/bin/python ]; then
     echo "=== legacy env ==="
-    .venv-legacy/bin/python deploy/gpu/preflight.py --grounders elam-7b,aria-ui || fail=1
+    .venv-legacy/bin/python deploy/gpu/preflight.py --grounders elam-7b || fail=1
+    # aria-ui prints SKIP (not FAIL) below 40 GB: its available() knows why.
+    .venv-legacy/bin/python deploy/gpu/preflight.py --grounders aria-ui || fail=1
 else
     echo "!! .venv-legacy missing (setup.sh builds it): elam-7b and aria-ui will FAIL in the sweep"
     fail=1
