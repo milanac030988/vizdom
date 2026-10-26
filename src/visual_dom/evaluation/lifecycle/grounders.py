@@ -294,12 +294,24 @@ class AriaUiGrounder(Grounder):
     allocated at 42 %, which extrapolates to ~53 GB - more than a 48 GB card
     holds either). So the column runs bf16 on an 80 GB card (A100 80 / H100,
     which report ~85 GB); the gate is 70 and available() says so instead of
-    letting a rented hour discover it. No native verdict mode - judge()
-    grounds the statement's quoted subject, the same documented proxy as
-    UI-TARS.
+    letting a rented hour discover it.
+
+    Offload mode (experimental, opt-in with VIZDOM_ARIA_OFFLOAD=1): on a
+    40-70 GB card the weights are loaded with an accelerate max_memory budget
+    that keeps ~5 GiB of the card free for activations and spills the last
+    decoder layers to host RAM. Every generated token then streams those
+    layers over PCIe, so expect several seconds per step instead of ~1 s. It
+    is untested with Aria's custom MoE code; preflight is the load test.
+
+    No native verdict mode - judge() grounds the statement's quoted subject,
+    the same documented proxy as UI-TARS.
     """
 
     MIN_VRAM_GB = 70
+    #: with VIZDOM_ARIA_OFFLOAD=1, the smallest card worth trying (spill ~5 GiB)
+    OFFLOAD_MIN_VRAM_GB = 40
+    #: GiB of the card kept free for the vision tower, KV cache and workspace
+    OFFLOAD_GPU_HEADROOM_GIB = 5
 
     name = "aria-ui"
     DEFAULT_MODEL = "Aria-UI/Aria-UI-base"
@@ -322,11 +334,41 @@ class AriaUiGrounder(Grounder):
             return False, f"Aria-UI needs a CUDA GPU with >= {self.MIN_VRAM_GB} GB"
         vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
         if vram_gb < self.MIN_VRAM_GB:
+            if self._offload_requested():
+                if vram_gb >= self.OFFLOAD_MIN_VRAM_GB:
+                    return True, (f"deps + {vram_gb:.0f} GB GPU; OFFLOAD MODE "
+                                  f"(VIZDOM_ARIA_OFFLOAD=1): ~50 GB bf16 weights, the "
+                                  f"part beyond {vram_gb:.0f} GB minus "
+                                  f"{self.OFFLOAD_GPU_HEADROOM_GIB} GiB headroom runs "
+                                  f"from host RAM - slow, experimental")
+                return False, (f"GPU has {vram_gb:.0f} GB; offload mode needs at least "
+                               f"{self.OFFLOAD_MIN_VRAM_GB} GB on the card (the spill "
+                               f"must stay a few GiB)")
             return False, (f"GPU has {vram_gb:.0f} GB; Aria-UI runs bf16 only (~50 GB "
                            f"weights; bitsandbytes skips its MoE experts, so 4-bit "
                            f"OOMs too) - needs a >= {self.MIN_VRAM_GB} GB card "
-                           f"(A100 80 GB / H100).")
+                           f"(A100 80 GB / H100), or VIZDOM_ARIA_OFFLOAD=1 on a "
+                           f">= {self.OFFLOAD_MIN_VRAM_GB} GB card to spill to host RAM.")
         return True, f"deps + {vram_gb:.0f} GB GPU present (weights ~50 GB download)"
+
+    @staticmethod
+    def _offload_requested() -> bool:
+        import os
+        return os.environ.get("VIZDOM_ARIA_OFFLOAD", "").strip() not in ("", "0")
+
+    def _offload_budget(self):
+        """accelerate ``max_memory`` for offload mode: card minus headroom on
+        the GPU, host RAM minus a margin on the CPU."""
+        import os
+        import torch
+        gpu_gib = torch.cuda.get_device_properties(0).total_memory / 2 ** 30
+        gpu_budget = max(int(gpu_gib - self.OFFLOAD_GPU_HEADROOM_GIB), 1)
+        try:
+            ram_gib = os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES") / 2 ** 30
+        except (AttributeError, ValueError, OSError):
+            ram_gib = 64.0
+        cpu_budget = max(int(ram_gib - 6), 8)
+        return {0: f"{gpu_budget}GiB", "cpu": f"{cpu_budget}GiB"}
 
     def _ensure(self):
         if self._model is not None:
@@ -350,9 +392,27 @@ class AriaUiGrounder(Grounder):
                 kwargs["torch_dtype"] = torch.bfloat16
         else:
             kwargs["torch_dtype"] = torch.bfloat16
+        offload = (self._offload_requested() and torch.cuda.is_available()
+                   and torch.cuda.get_device_properties(0).total_memory / 1e9
+                   < self.MIN_VRAM_GB)
+        if offload:
+            kwargs["max_memory"] = self._offload_budget()
+            log.warning("Aria-UI OFFLOAD MODE: max_memory=%s - layers beyond the GPU "
+                        "budget run from host RAM; expect seconds per step",
+                        kwargs["max_memory"])
         log.info("Loading Aria-UI from %s ...", path)
         self._processor = AutoProcessor.from_pretrained(path, trust_remote_code=True)
         self._model = AutoModelForCausalLM.from_pretrained(path, **kwargs)
+        dmap = getattr(self._model, "hf_device_map", None) or {}
+        if dmap:
+            on_cpu = [k for k, v in dmap.items() if str(v) in ("cpu", "disk")]
+            log.info("Aria-UI device map: %d modules, %d on cpu/disk%s",
+                     len(dmap), len(on_cpu),
+                     f" ({', '.join(on_cpu[:6])}{'...' if len(on_cpu) > 6 else ''})"
+                     if on_cpu else "")
+            if any(str(v) == "disk" for v in dmap.values()):
+                log.warning("Aria-UI: some modules were placed on DISK - host RAM "
+                            "budget too small; this will be very slow")
 
     def ground(self, image_bgr, instruction):
         def run():

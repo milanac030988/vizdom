@@ -75,7 +75,9 @@ QUANT=""; [ "$VRAM_GB" -ge 20 ] && QUANT="--no-quantize"
 # 48 GB card either). It needs an 80 GB card (A100 80 / H100, which report
 # ~85); gate 70, same as AriaUiGrounder.MIN_VRAM_GB - on a smaller card the
 # column is skipped here rather than paid for and then marked FAILED.
-[ "$VRAM_GB" -ge 70 ] || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular elam-7b ui-tars-1.5-7b parity}"
+# VIZDOM_ARIA_OFFLOAD=1 (>= 40 GB card) opts into the experimental offload
+# mode instead: the adapter spills the last layers to host RAM.
+[ "$VRAM_GB" -ge 70 ] || [ -n "${VIZDOM_ARIA_OFFLOAD:-}" ] || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular elam-7b ui-tars-1.5-7b parity}"
 if [ -x .venv-legacy/bin/python ]; then
     LEGACY=".venv-legacy/bin/python -m visual_dom.evaluation.lifecycle.runner"
 else

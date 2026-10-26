@@ -5,9 +5,11 @@ UI-TARS-1.5-7B, Aria-UI) for the lifecycle comparison, and the **ADR-027
 combos** — on a rented GPU box, spending as little paid time as possible.
 Everything is scripted; the human steps are clone, four commands, one download.
 
-Status: first paid run done 2026-10-25 (RTX 4090, Vast.ai). Everything that
-went wrong that day is now caught by `setup.sh` or `preflight.sh` — see
-"Version pins" below before changing any dependency.
+Status: three paid runs so far (2026-10-25 and 2026-10-26 on RTX 4090,
+2026-10-26 on RTX 6000 Ada 48 GB, all Vast.ai); the third ran the kit as
+committed in `82f0b45` end to end without intervention. Everything that
+went wrong on the first day is now caught by `setup.sh` or `preflight.sh` —
+see "Version pins" below before changing any dependency.
 
 ## Renting: what to pick
 
@@ -85,7 +87,39 @@ ONLY="elam-7b aria-ui" OUT_DIR=benchmarks/results/gpu-<stamp> bash deploy/gpu/ru
 
 Column names: `vizdom-uied vizdom-omniparser vizdom-modular elam-7b
 ui-tars-1.5-7b aria-ui parity`. Each run writes a new timestamped json+md, so
-nothing is overwritten; `summary.md` lists every row found.
+nothing is overwritten; `summary.md` lists every row found. `prefetch.sh`
+honours the same `ONLY=` so a single-column rental downloads only that
+column's weights.
+
+### Aria-UI on a 48 GB card: offload mode (experimental)
+
+The clean path for Aria-UI is an 80 GB card. The opt-in alternative is
+`VIZDOM_ARIA_OFFLOAD=1`: the adapter loads bf16 with an accelerate
+`max_memory` budget of card-minus-5 GiB on the GPU and the rest in host RAM,
+so the last decoder layers stream over PCIe on every generated token. Expect
+several seconds per step (2026-10-26 run 3 host: PCIe 4.0 ×8, 13 GB/s) and
+budget 1–2 h for the 514 steps. It is untested with Aria's custom MoE code:
+**preflight is the load test**, and a FAIL there costs twenty minutes, not
+the sweep. Rent ≥ 40 GB VRAM and **≥ 24 GB host RAM** (the spill is ~5 GiB
+plus the loader's working set). Aria-UI-only rental, start to finish:
+
+```bash
+tmux new -s bench
+git clone https://github.com/milanac030988/vizdom.git && cd vizdom && git checkout develop
+bash deploy/gpu/setup.sh                                   # ~6 min, builds .venv-legacy too
+export VIZDOM_ARIA_OFFLOAD=1 ONLY="aria-ui"
+bash deploy/gpu/prefetch.sh                                # only the 50 GB Aria-UI download
+PYTHONPATH=src USE_TF=0 .venv-legacy/bin/python deploy/gpu/preflight.py --grounders aria-ui
+#   want:  aria-ui   OK    ground -> (x, y) (bf16, load+infer NNNs, infer N.Ns)
+#   and in the log above it: "Aria-UI device map: N modules, M on cpu/disk"
+#   FAIL / CUDA out of memory / "placed on DISK" -> stop here, destroy the box
+bash deploy/gpu/run_benchmarks.sh                          # the aria-ui column only
+```
+
+Then copy the tarball as usual. The result JSON carries the column like any
+other; quote it as "bf16, CPU-offloaded, 48 GB card" because the latency is
+not comparable with an all-on-GPU run (accuracy is: the weights and the
+decoding are the same).
 
 ## What the sweep produces
 
