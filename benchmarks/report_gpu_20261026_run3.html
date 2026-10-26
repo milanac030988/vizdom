@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lifecycle Benchmark Run 3</title>
+<meta name="description" content="Analysis of the third rented-GPU lifecycle benchmark run (2026-10-26, RTX 6000 Ada, commit 82f0b45): VizDOM columns versus ELAM-7B and UI-TARS-1.5-7B on lifecycle-synthetic-v1, with the full test configuration.">
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,0.10);
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+  --seq-100: #cde2fb; --seq-250: #86b6ef; --seq-400: #3987e5; --seq-550: #1c5cab; --seq-700: #0d366b;
+  --good-text: #006300; --crit: #d03b3b;
+  --accent-wash: rgba(42,120,214,0.08);
+  --heat-ink-top: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+    --seq-100: #0d366b; --seq-250: #184f95; --seq-400: #256abf; --seq-550: #5598e7; --seq-700: #9ec5f4;
+    --good-text: #0ca30c; --crit: #e66767;
+    --accent-wash: rgba(57,135,229,0.12);
+    --heat-ink-top: #0b0b0b;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+  --seq-100: #0d366b; --seq-250: #184f95; --seq-400: #256abf; --seq-550: #5598e7; --seq-700: #9ec5f4;
+  --good-text: #0ca30c; --crit: #e66767;
+  --accent-wash: rgba(57,135,229,0.12);
+  --heat-ink-top: #0b0b0b;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--page); color: var(--ink);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+  padding: 32px 16px 64px;
+}
+main { max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 6px; letter-spacing: -0.01em; }
+h2 { font-size: 1.3rem; margin: 44px 0 10px; letter-spacing: -0.005em; }
+h3 { font-size: 1.05rem; margin: 24px 0 6px; }
+p, li { color: var(--ink); }
+.howto { color: var(--ink-2); font-size: 0.88rem; margin: 8px 0 2px; }
+.howto b { color: var(--ink); font-weight: 600; }
+.up::after { content: " \25B2"; font-size: 0.7em; color: var(--muted); }
+.down::after { content: " \25BC"; font-size: 0.7em; color: var(--muted); }
+.lede { color: var(--ink-2); font-size: 1.05rem; margin: 0 0 18px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--ink-2); font-size: 0.92rem; margin-bottom: 8px; }
+.facts b { color: var(--ink); font-weight: 600; }
+code { font: 0.9em ui-monospace, "Cascadia Mono", Consolas, monospace; background: var(--accent-wash); padding: 1px 5px; border-radius: 4px; }
+pre { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; overflow-x: auto; font-size: 0.86rem; line-height: 1.45; }
+pre code { background: none; padding: 0; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 20px 0 8px; }
+.tile { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.tile .k { color: var(--ink-2); font-size: 0.85rem; }
+.tile .v { font-size: 1.9rem; font-weight: 600; line-height: 1.15; margin: 4px 0 2px; }
+.tile .s { color: var(--muted); font-size: 0.82rem; }
+.tile .v.good { color: var(--good-text); }
+.tile .v.bad { color: var(--crit); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px 12px; margin: 14px 0; }
+.card h3 { margin: 0 0 2px; font-size: 1rem; }
+.card .sub { color: var(--ink-2); font-size: 0.88rem; margin: 0 0 10px; }
+svg { display: block; width: 100%; height: auto; overflow: visible; }
+svg text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.85rem; color: var(--ink-2); margin: 6px 0 2px; }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; background: var(--c); }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; margin: 10px 0 6px; }
+th, td { text-align: left; padding: 7px 9px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+th { color: var(--ink-2); font-weight: 600; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.03em; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.ours td { background: var(--accent-wash); }
+.table-wrap { overflow-x: auto; }
+.kv th { width: 220px; text-transform: none; letter-spacing: 0; font-size: 0.9rem; color: var(--ink); }
+.heat td.cell { text-align: center; font-variant-numeric: tabular-nums; border-left: 2px solid var(--surface); border-right: 2px solid var(--surface); }
+.heat td.cell.lo { color: var(--ink); }
+.heat td.cell.mid { color: #fff; }
+.heat td.cell.top { color: var(--heat-ink-top); }
+.callout { border-left: 3px solid var(--s1); background: var(--accent-wash); padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+.callout p { margin: 4px 0; }
+ul { padding-left: 1.2em; }
+li { margin: 4px 0; }
+.tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--page); font-size: 0.8rem; line-height: 1.35; padding: 6px 9px; border-radius: 6px; opacity: 0; transition: opacity .08s; max-width: 260px; z-index: 10; }
+.tip.on { opacity: 1; }
+.src { color: var(--muted); font-size: 0.8rem; }
+footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 1px solid var(--grid); padding-top: 12px; }
+@media (max-width: 560px) { h1 { font-size: 1.5rem; } .tile .v { font-size: 1.6rem; } .kv th { width: 130px; } }
+</style>
+</head>
+<body>
+<main>
+<h1>Lifecycle benchmark, run 3: VizDOM vs end-to-end grounders</h1>
+<p class="lede">Analysis of the third rented-GPU run. Five executor columns on one machine, one commit and one step set; the first run that carries the Step 6b2 pipeline fix.</p>
+<div class="facts">
+  <span>Run <b>gpu-20261026_212923</b></span>
+  <span>GPU <b>RTX 6000 Ada, 48 GB</b> (Vast.ai)</span>
+  <span>Commit <b>82f0b45</b></span>
+  <span>Dataset <b>lifecycle-synthetic-v1</b></span>
+  <span><b>514</b> steps over <b>44</b> screen states</span>
+  <span>Date <b>2026-10-26</b>, 21:29 to 22:28 UTC</span>
+</div>
+
+<div class="tiles">
+  <div class="tile"><div class="k">False-pass rate, VizDOM (all three detectors)</div><div class="v good">0.000</div><div class="s">0 of 88 absent-target statements passed</div></div>
+  <div class="tile"><div class="k">False-pass rate, ELAM-7B</div><div class="v bad">0.286</div><div class="s">86 of 88 absent-target statements passed</div></div>
+  <div class="tile"><div class="k">False-pass rate, UI-TARS-1.5-7B</div><div class="v bad">0.199</div><div class="s">60 of 88 absent-target statements passed</div></div>
+  <div class="tile"><div class="k">Best action-hit</div><div class="v">0.944</div><div class="s">UI-TARS; ELAM 0.930; VizDOM-OmniParser and modular 0.883</div></div>
+</div>
+
+<h2>1. Summary</h2>
+<p>The two end-to-end grounders click the right element more often than VizDOM: by 5 to 6 points over the OmniParser and modular detectors and by 11 to 12 over UIED. On the test-oracle question the picture inverts. Asked whether a button that is not on the screen is visible, ELAM says <em>PASSED</em> in 86 of 88 cases and UI-TARS in 60 of 88. VizDOM never does, because its locator contract requires exactly one match before anything is reported present. VizDOM's own verify errors are all in the conservative direction: a present caption that OCR could not read, reported as <em>FAILED</em>.</p>
+<p>Two things are new in this run. The modular backend now ties the OmniParser monolith on every one of the 514 steps, at 61 % of its parse time, which closes the gap diagnosed in the run 2 report. And the same fix lifted UIED by 9 click steps. The OmniParser column itself is identical to run 2 on all 514 steps, on a different card, so every VizDOM change is accounted for by the code change.</p>
+<div class="callout">
+  <p><b>Reading for the thesis.</b> A GUI test oracle must not pass a check whose target is absent. That is the one failure class the lifecycle benchmark isolates with the <code>verify-neg</code> steps, and it is the one where the architecture difference shows: 0 for a resolved-DOM system against 0.20 to 0.29 for per-step vision-language grounding, at one twenty-sixth of the inference cost per step on this suite.</p>
+</div>
+
+<h2>2. Test configuration (PV)</h2>
+<p>The validation setup this run was measured under. Everything below is taken from the result tarball (<code>gpu.txt</code>, <code>sweep.log</code>, the result JSON files), the kit scripts at commit <code>82f0b45</code>, and the Vast.ai instance card.</p>
+
+<h3>2.1 Host</h3>
+<div class="table-wrap">
+<table class="kv">
+<tbody>
+<tr><th>Provider / instance</th><td>Vast.ai, on-demand rental, SSH launch mode, PyTorch CUDA 12 template</td></tr>
+<tr><th>GPU</th><td>1 × NVIDIA RTX 6000 Ada Generation, 49 140 MiB (reported to torch as 51 GB), driver 595.71.05</td></tr>
+<tr><th>CPU</th><td>AMD Ryzen 9 9950X, 16 cores; 16 of 32 threads allocated to the instance</td></tr>
+<tr><th>RAM</th><td>52 of 95.4 GB allocated to the instance</td></tr>
+<tr><th>Motherboard / bus</th><td>ASUS ProArt X670E-CREATOR WIFI; GPU on PCIe 4.0 ×8, 13 GB/s measured by the host</td></tr>
+<tr><th>Disk</th><td>Samsung SSD 9100 PRO; disk slider set to 150 to 200 GB (setup refuses below 120 GB free)</td></tr>
+<tr><th>Aria-UI</th><td>skipped by the 70 GB gate: this card is below the bf16 load (~50 GB of weights plus activations); see section 9</td></tr>
+</tbody>
+</table>
+</div>
+<p class="src">The run 2 host was an RTX 4090 (24 GB) on a different Vast.ai machine; CPU, RAM and bus of that host were not recorded. Where run 2 and run 3 differ in latency, the host is the likely cause (section 6).</p>
+
+<h3>2.2 Software</h3>
+<div class="table-wrap">
+<table class="kv">
+<tbody>
+<tr><th>Repository</th><td><code>vizdom</code> at commit <code>82f0b45</code> (develop), fresh clone; kit <code>deploy/gpu/</code> run end to end with no manual intervention</td></tr>
+<tr><th>Python</th><td>3.12 in two <code>uv</code> virtual environments created by <code>setup.sh</code></td></tr>
+<tr><th>torch</th><td>CUDA 12.6 wheel index (<code>cu126</code>), latest at install time; exact version is printed by setup but not kept in the tarball</td></tr>
+<tr><th>transformers</th><td><code>.venv</code>: 4.49.0 (VizDOM, OmniParser, Florence-2, UI-TARS). <code>.venv-legacy</code>: 4.47.1 with sentencepiece, einops, tensorflow-cpu (ELAM's Molmo code, Aria-UI)</td></tr>
+<tr><th>OCR</th><td>easyocr on GPU, upscale 1.4× for 1920×1080 screens (from the column logs)</td></tr>
+<tr><th>Detector weights</th><td>OmniParser v2 <code>icon_detect/model.pt</code> (YOLO) and <code>icon_caption_florence</code> (Florence-2), prefetched into <code>models/omniparser</code>; OmniParser source under <code>third_party/OmniParser</code> with the project's lazy-PaddleOCR patch</td></tr>
+<tr><th>Grounder weights</th><td><code>sparks-solutions/ELAM-7B</code> (4 shards), <code>ByteDance-Seed/UI-TARS-1.5-7B</code> (7 shards), from the Hugging Face Hub via <code>prefetch.sh</code></td></tr>
+<tr><th>Preflight</th><td>each grounder grounds one instruction (ELAM also judges one statement) and the pipeline runs once with the omniparser and the modular backend before the sweep starts</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>2.3 Benchmark design</h3>
+<div class="table-wrap">
+<table class="kv">
+<tbody>
+<tr><th>Dataset</th><td><code>lifecycle-synthetic-v1</code>: 44 screen states at 1920×1080 from the project's synthetic generator, tracked under <code>data/synthetic/test/</code>, with ground-truth element bounds per state</td></tr>
+<tr><th>Families</th><td>form_sidebar (136 steps), settings (134), info_panel (76), data_table (64), toolbar (42), login (32), dialog (18), dashboard (12, negative verifies only: no caption on those states is unique)</td></tr>
+<tr><th>Manifest</th><td><code>benchmarks/lifecycle-synthetic-v1/steps.json</code>, generated once with seed 42 and committed; every run uses the same 514 steps</td></tr>
+<tr><th>Step mix</th><td>213 <code>act</code> (click), 213 <code>verify</code> (true statement, expect PASSED), 88 <code>verify-neg</code> (two absent captions per state, expect FAILED)</td></tr>
+<tr><th>Target selection</th><td>only captions that appear exactly once on the state become steps, so a locator has one correct answer; the caption may come from the element or from its child text</td></tr>
+<tr><th>Dual representation</th><td>each step carries a locator for VizDOM (<code>text="Save"</code>) and a natural-language instruction for the grounders ("click the 'Save' button" / "the 'Save' button is visible")</td></tr>
+<tr><th>Negative captions</th><td>Frobnicate, Warp Cores, Zylophone, Moon Cheese, Purple Elephant, Antigravity, Bogus Panel, Quantum Sync: guaranteed absent from every state</td></tr>
+<tr><th>Scoring</th><td>action-hit: the produced point lies inside the ground-truth bounds (boundary counts). Verify accuracy: verdict equals expectation over all 301 verifies. False-pass: PASSED on a negative, divided by 301. Latency: median wall-clock per step; VizDOM reports parse time per state separately</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>2.4 Executors</h3>
+<p class="howto"><b>How to read:</b> one row per column of the results table; "env" is the virtual environment the column ran in, "verdict" says how a verify step is answered.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Column</th><th>Env</th><th>Model and precision</th><th>How a step is answered</th><th>Verdict</th><th>Settings</th></tr></thead>
+<tbody>
+<tr class="ours"><td>vizdom-uied</td><td>.venv</td><td>UIED (classic CV) + easyocr, no LLM</td><td rowspan="3">parse the state once into a Visual DOM, then resolve the locator with <code>ElementFinder</code>; an action needs exactly one match and clicks its centre</td><td rowspan="3">PASSED iff the locator matches at least one element; an absent caption has zero matches</td><td>refiner off, GPU on</td></tr>
+<tr class="ours"><td>vizdom-omniparser</td><td>.venv</td><td>OmniParser v2 monolith: YOLO regions + Florence-2 captions + easyocr</td><td>refiner off, GPU on; absorbed OCR lands in <code>label</code></td></tr>
+<tr class="ours"><td>vizdom-modular</td><td>.venv</td><td>modular backend: the same YOLO as stage 1, project OCR as stage 2, OmniParser's fusion ported; captioner off</td><td>refiner off, GPU on; absorbed OCR lands in <code>text</code>, Step 6b2 drops the duplicate value text</td></tr>
+<tr><td>elam-7b</td><td>.venv-legacy</td><td>ELAM-7B (Molmo-7B-D), bf16 unquantized, bf16 autocast, <code>device_map=auto</code></td><td>model-card "Test Action" template, 96 new tokens, <code>&lt;point&gt;</code> in percent mapped to pixels</td><td>native: model-card "Expected Result" template, think step by step, 512 new tokens, last PASSED/FAILED wins</td><td>greedy decoding, stop at end of text</td></tr>
+<tr><td>ui-tars-1.5-7b</td><td>.venv</td><td>UI-TARS-1.5-7B (Qwen2.5-VL), bf16 unquantized, <code>device_map=auto</code></td><td>grounding prompt "Output only the coordinate of one point", 64 new tokens, point in processed-image space rescaled by the processor grid</td><td>proxy: ground the quoted subject; PASSED iff a point came back</td><td>greedy decoding</td></tr>
+<tr><td>aria-ui</td><td>.venv-legacy</td><td colspan="4">not run: <code>available()</code> refused the 48 GB card (gate 70 GB), prefetch skipped the 50 GB download, the sweep skipped the column</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>2.5 Sweep timeline</h3>
+<p class="howto"><b>How to read:</b> wall-clock per column from <code>sweep.log</code>, in the order the sweep ran them; ▼ shorter is cheaper. The whole sweep took 59 minutes of paid time after setup, prefetch and preflight.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Order</th><th>Column</th><th class="num down">Wall-clock</th><th>Status</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>vizdom-uied</td><td class="num">21 s</td><td>OK</td><td>2.6 s load, 44 parses</td></tr>
+<tr><td>2</td><td>vizdom-omniparser</td><td class="num">54 s</td><td>OK</td><td>8.1 s load, 44 parses</td></tr>
+<tr><td>3</td><td>vizdom-modular</td><td class="num">32 s</td><td>OK</td><td>4.2 s load, 44 parses</td></tr>
+<tr><td>4</td><td>elam-7b</td><td class="num">2 007 s (33 min)</td><td>OK</td><td>514 inferences; first step 12.5 s including load</td></tr>
+<tr><td>5</td><td>ui-tars-1.5-7b</td><td class="num">1 405 s (23 min)</td><td>OK</td><td>514 inferences; first step 12.1 s including load</td></tr>
+<tr><td>6</td><td>aria-ui</td><td class="num">—</td><td>skipped</td><td>48 GB card below the 70 GB gate</td></tr>
+<tr><td>7</td><td>parity</td><td class="num">17 s</td><td>OK</td><td>ADR-027 monolith vs modular+Florence on three dashboard screens</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>3. Results table</h2>
+<p class="howto"><b>How to read:</b> ▲ higher is better for action-hit, verify accuracy and all-steps-correct (1.000 is perfect). ▼ lower is better for false-pass (0.000 means the oracle never passed an absent target) and for cost. Shaded rows are the VizDOM columns.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Executor</th><th>Weights</th><th class="num up">Action-hit (213)</th><th class="num up">Verify acc (301)</th><th class="num down">False-pass</th><th class="num up">All steps correct</th><th class="down">Cost</th></tr></thead>
+<tbody>
+<tr class="ours"><td>vizdom-uied</td><td>CV, no LLM</td><td class="num">0.822</td><td class="num">0.934</td><td class="num">0.000</td><td class="num">0.887</td><td>load 2.6 s, parse 0.39 s/state</td></tr>
+<tr class="ours"><td>vizdom-omniparser</td><td>CV + Florence-2</td><td class="num">0.883</td><td class="num">0.934</td><td class="num">0.000</td><td class="num">0.912</td><td>load 8.1 s, parse 1.02 s/state</td></tr>
+<tr class="ours"><td>vizdom-modular</td><td>CV, captioner off</td><td class="num">0.883</td><td class="num">0.934</td><td class="num">0.000</td><td class="num">0.912</td><td>load 4.2 s, parse 0.62 s/state</td></tr>
+<tr><td>elam-7b</td><td>bf16</td><td class="num">0.930</td><td class="num">0.704</td><td class="num">0.286</td><td class="num">0.798</td><td>4.00 s/step, 514 inferences</td></tr>
+<tr><td>ui-tars-1.5-7b</td><td>bf16</td><td class="num">0.944</td><td class="num">0.801</td><td class="num">0.199</td><td class="num">0.860</td><td>2.72 s/step, 514 inferences</td></tr>
+<tr><td>aria-ui</td><td>—</td><td colspan="5">not run: 25 B MoE, bf16 only (~50 GB of weights); below the 70 GB gate on this 48 GB card</td></tr>
+</tbody>
+</table>
+</div>
+<p class="src">Metric definitions: action-hit = produced click point inside the ground-truth element bounds. Verify accuracy = verdict equals expectation over all 301 verify steps (213 positive, 88 negative). False-pass = <em>PASSED</em> on a negative statement, divided by all 301 verifies (so 86 of 88 is 0.286). "All steps correct" is the plain fraction of the 514 steps with a hit or a correct verdict.</p>
+
+<h3>Run history on the same 514 steps</h3>
+<p class="howto"><b>How to read:</b> each cell is action-hit / verify accuracy / false-pass. Compare down a column to see what moved between runs; the commit and card explain why.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Run</th><th>Card, commit</th><th>vizdom-uied</th><th>vizdom-omniparser</th><th>vizdom-modular</th><th>elam-7b</th><th>ui-tars-1.5-7b</th></tr></thead>
+<tbody>
+<tr><td>1, 2026-10-25</td><td>RTX 4090, commit not recorded</td><td>0.779 / 0.934 / 0</td><td>0.883 / 0.934 / 0</td><td>—</td><td>0.0 (prompt bug; rescored offline 0.916)</td><td>4-bit: 0.845 / 0.797 / 0.199</td></tr>
+<tr><td>2, 2026-10-26</td><td>RTX 4090, a4cb85e</td><td>0.779 / 0.934 / 0</td><td>0.883 / 0.934 / 0</td><td>0.732 / 0.934 / 0</td><td>0.939 / 0.701 / 0.289</td><td>0.934 / 0.807 / 0.193</td></tr>
+<tr class="ours"><td>3, 2026-10-26</td><td>RTX 6000 Ada, 82f0b45</td><td><b>0.822</b> / 0.934 / 0</td><td>0.883 / 0.934 / 0</td><td><b>0.883</b> / 0.934 / 0</td><td>0.930 / 0.704 / 0.286</td><td>0.944 / 0.801 / 0.199</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>4. Action-hit: the grounders lead</h2>
+<div class="card">
+  <h3>Action-hit rate per executor</h3>
+  <p class="sub">Share of the 213 click steps whose produced point fell inside the target element. ▲ Longer bar is better; 1.00 means every click landed. Faded bars are superseded runs, kept for scale.</p>
+  <div id="chart-hit"></div>
+</div>
+<p>The grounders are within one and a half points of each other and swapped places since run 2 (UI-TARS 0.934 → 0.944, ELAM 0.939 → 0.930). Both moves are a handful of steps on a different GPU with greedy decoding, see section 8. VizDOM-OmniParser misses 25 steps; UI-TARS hits 22 of those 25 and ELAM 20, so the grounders are not merely trading errors, they resolve cases the DOM cannot.</p>
+<h3>Where VizDOM misses</h3>
+<p>Every VizDOM miss is a <em>resolution</em> miss. The text locator finds either no element or more than one, and the exactly-one contract refuses to click.</p>
+<p class="howto"><b>How to read:</b> counts of missed click steps out of 213, so ▼ lower is better in every column and 0 would be perfect. "0 matches" is an OCR failure, "2+ matches" a detection or merging failure, "resolved, wrong box" a mislocated element. The run 2 column shows what Step 6b2 removed.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Detector</th><th class="num down">0 matches</th><th class="num down">2+ matches</th><th class="num down">Resolved, wrong box</th><th class="num down">Total misses</th><th class="num down">Run 2 total</th></tr></thead>
+<tbody>
+<tr><td>vizdom-uied</td><td class="num">20</td><td class="num">16</td><td class="num">2</td><td class="num">38</td><td class="num">47</td></tr>
+<tr><td>vizdom-omniparser</td><td class="num">20</td><td class="num">4</td><td class="num">1</td><td class="num">25</td><td class="num">25</td></tr>
+<tr><td>vizdom-modular</td><td class="num">20</td><td class="num">4</td><td class="num">1</td><td class="num">25</td><td class="num">57</td></tr>
+</tbody>
+</table>
+</div>
+<ul>
+  <li><b>The 20 zero-match steps are identical across all three detectors</b> and identical to run 2. They are captions OCR does not read: the placeholder <code>Search...</code>, the path-like value <code>APAC\USER01</code>, and a few small buttons (<code>Save</code>, <code>Confirm</code>, <code>Cancel</code>, <code>Download</code>). The same 20 captions produce the 20 verify errors in section 5. OCR, upstream of every detector, is the fixed floor.</li>
+  <li><b>The 4 many-match steps are shared too.</b> They are data-table cells whose locator (a digit) matches 12 to 18 cells on the page: <code>data_table_0078/E101</code>, <code>0110/E79</code>, <code>0142/E130</code>, <code>0182/E101</code>. A text locator cannot single out one cell of a table; that is a locator-tier limit, not a detector one.</li>
+  <li><b>UIED's remaining 12 two-match steps</b> are its own fragmentation: table digits, login buttons and settings rows where UIED yields two boxes for one control. OmniParser merges those. The 9 UIED misses that Step 6b2 removed were the field-plus-value duplicate on <code>form_sidebar_0031</code>, <code>form_sidebar_0103</code> and <code>login_0137</code>.</li>
+</ul>
+<h3>Where the grounders miss</h3>
+<ul>
+  <li><b>ELAM</b> (15 misses) fails mostly in the data-table family: 8 of its 28 click steps there, the small numbered pagination and row controls (<code>data_table_0182/E100</code> to <code>E103</code>). The rest are four settings rows, two value fields on form_sidebar and one login control.</li>
+  <li><b>UI-TARS</b> (12 misses) fails on the login screens: 5 of 12 steps, including the three social-login buttons on <code>login_0137</code> (<code>E13</code> to <code>E15</code>) and one control each on <code>login_0017</code> and <code>login_0185</code>. Its login hit rate is 0.58 against ELAM's 0.92. The other seven are four form_sidebar value fields and three settings rows.</li>
+</ul>
+
+<h2>5. Verification: the oracle row</h2>
+<div class="card">
+  <h3>Outcome of the 301 verify steps per executor</h3>
+  <p class="sub">213 statements are true (the element is on screen), 88 are false (the label does not exist on that screen). Each bar sums to 301. ▲ A longer blue segment is better; the green "false pass" segment is the one to minimise, and 0 (no green at all) is the only acceptable value for a test oracle. Orange false fails are cheap: the test stops and a person looks.</p>
+  <div class="legend"><span style="--c:var(--s1)">correct verdict</span><span style="--c:var(--s2)">false fail (true statement, said FAILED)</span><span style="--c:var(--s3)">false pass (absent target, said PASSED)</span></div>
+  <div id="chart-verify"></div>
+</div>
+<p>The negative statements use labels that cannot exist on a business dashboard: <em>Frobnicate</em>, <em>Warp Cores</em>, <em>Zylophone</em>, <em>Moon Cheese</em>, <em>Purple Elephant</em>, <em>Antigravity</em>, <em>Bogus Panel</em>, <em>Quantum Sync</em>. The statement is of the form "the 'Frobnicate' button is visible", expected verdict <em>FAILED</em>.</p>
+<ul>
+  <li><b>ELAM</b> uses its native verdict mode, the model-card prompt that asks it to think step by step and conclude PASSED or FAILED. It concluded <em>PASSED</em> on 296 of 301 statements, including 86 of the 88 impossible ones. Reading its outputs, it rationalises the unknown label onto a nearby real element and then confirms visibility. The two negatives it rejected were <em>Warp Cores</em> and <em>Moon Cheese</em> on two login screens; in run 2 it rejected one. It also produced three false fails on true statements (<code>form_sidebar_0031/E28</code>, <code>settings_0002/E5</code>, <code>settings_0194/E15</code>).</li>
+  <li><b>UI-TARS</b> has no verdict mode; the benchmark proxies the verdict by whether the model grounds the target to a point. It grounded 60 of the 88 nonsense labels to some element and never refused a true statement. It did reject <em>Frobnicate</em> 13 times out of 17, so the behaviour is label-dependent rather than random; it also rejected every negative on the dashboard family except four.</li>
+  <li><b>VizDOM</b> resolves the locator against the parsed DOM. An absent label has zero matches, so the verdict is <em>FAILED</em> by construction. Its 20 errors are the OCR-unreadable captions above, and they are false fails: the test would stop and a human would look, which is the cheap failure. A false pass is the expensive one, because the suite stays green while the UI is broken.</li>
+</ul>
+<p class="howto"><b>How to read:</b> false passes per family, out of the negatives in that family. ▼ lower is better; the VizDOM columns are 0 everywhere and are left out. Every family has some, so no screen type is safe for either grounder.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Family (negatives)</th><th class="num down">ELAM false passes</th><th class="num down">UI-TARS false passes</th></tr></thead>
+<tbody>
+<tr><td>settings (20)</td><td class="num">20</td><td class="num">11</td></tr>
+<tr><td>dashboard (12)</td><td class="num">12</td><td class="num">4</td></tr>
+<tr><td>form_sidebar (12)</td><td class="num">12</td><td class="num">10</td></tr>
+<tr><td>info_panel (12)</td><td class="num">12</td><td class="num">6</td></tr>
+<tr><td>data_table (8)</td><td class="num">8</td><td class="num">6</td></tr>
+<tr><td>dialog (8)</td><td class="num">8</td><td class="num">8</td></tr>
+<tr><td>toolbar (8)</td><td class="num">8</td><td class="num">8</td></tr>
+<tr><td>login (8)</td><td class="num">6</td><td class="num">7</td></tr>
+</tbody>
+</table>
+</div>
+<div class="callout"><p><b>Why this is structural, not a tuning problem.</b> A per-step vision-language grounder answers "where would this be?" and is trained to always produce an answer. A resolved DOM answers "is there exactly one of these?" and can say no. The benchmark's false-pass column measures that difference on identical screens and steps, and it reproduced across two cards and two runs.</p></div>
+
+<h2>6. Cost: pay per screen vs pay per step</h2>
+<div class="card">
+  <h3>Amortised seconds per step on this suite</h3>
+  <p class="sub">VizDOM: (load + 44 parses) / 514 steps, with lookups in the cached DOM at effectively zero. Grounders: median inference per step. ▼ Shorter bar is better; this is time spent per test step.</p>
+  <div id="chart-cost"></div>
+</div>
+<p class="howto"><b>How to read:</b> all columns are seconds, so ▼ lower is better everywhere. "Load" is paid once per session, "parse per state" once per screen (VizDOM only), "total for suite" is what the 514 steps cost end to end, and "per step" is that total divided by 514 for VizDOM or the median inference for the grounders. Per step is the column to compare. For the grounders, load is the first step's latency minus the median.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Executor</th><th class="num down">Load (s)</th><th class="num down">Parse per state (s)</th><th class="num down">Total for suite (s)</th><th class="num down">Per step (s)</th><th class="num down">Run 2 per step (s)</th></tr></thead>
+<tbody>
+<tr class="ours"><td>vizdom-uied</td><td class="num">2.6</td><td class="num">0.39</td><td class="num">20</td><td class="num">0.04</td><td class="num">0.08</td></tr>
+<tr class="ours"><td>vizdom-omniparser</td><td class="num">8.1</td><td class="num">1.02</td><td class="num">53</td><td class="num">0.10</td><td class="num">0.21</td></tr>
+<tr class="ours"><td>vizdom-modular</td><td class="num">4.2</td><td class="num">0.62</td><td class="num">31</td><td class="num">0.06</td><td class="num">0.13</td></tr>
+<tr><td>elam-7b</td><td class="num">≈ 8.5</td><td class="num">—</td><td class="num">2 055</td><td class="num">4.00</td><td class="num">5.15</td></tr>
+<tr><td>ui-tars-1.5-7b</td><td class="num">≈ 9.4</td><td class="num">—</td><td class="num">1 400</td><td class="num">2.72</td><td class="num">1.68</td></tr>
+</tbody>
+</table>
+</div>
+<p>The ratio depends on how many steps a suite runs against each screen. Here it is 514 steps over 44 states, about 12 steps per state, and VizDOM-OmniParser is 26 times cheaper per step than UI-TARS and 39 times cheaper than ELAM; the modular backend is 44 and 65 times cheaper. A suite that visits each screen once would narrow the gap to parse time against inference time, 1.0 s against 2.7 s. Regression suites revisit the same screens constantly, which is the regime the comparison is about.</p>
+<p>Across the two hosts the VizDOM columns got about twice as fast (the 6000 Ada and a faster CPU for the CV stages), ELAM got faster per step (5.15 → 4.00 s) and UI-TARS slower (1.68 → 2.72 s). ELAM's verify steps take longer than its actions (median 4.3 s vs 3.3 s) because the verdict prompt reasons before concluding. Neither adapter changed between the runs, so the UI-TARS shift is a host effect; the grounders' per-step cost should be quoted as a range across cards, not as one number.</p>
+
+<h2>7. Action-hit by screen family</h2>
+<div class="card heat">
+  <h3>Hit rate per family (hits / steps)</h3>
+  <p class="sub">▲ Higher is better and darker cells mark higher values; 1.00 means every click in that family landed. The families come from the synthetic generator; n is the number of click steps in that family, so a small family (dialog, login) swings more per miss. The dashboard family has no click steps.</p>
+  <div class="table-wrap"><table id="heat"></table></div>
+</div>
+<ul>
+  <li><b>info_panel and toolbar</b> are solved by everything except the DOM columns on toolbars (14 of 17): three icon buttons without text, where only a caption could help.</li>
+  <li><b>form_sidebar</b> no longer separates the VizDOM columns: all three sit at 54 of 62, up from 25 (modular) and 46 (UIED) in run 2. The remaining 8 are the OCR floor.</li>
+  <li><b>data_table</b> is the hardest family for everything except UI-TARS, which is now perfect there: the pagination digits are small, repeated and close together, which defeats a text locator (many matches) and ELAM alike.</li>
+  <li><b>login</b> flips the grounder ranking: ELAM 0.92, UI-TARS 0.58. Small sample (12 steps), but all of UI-TARS's misses there are checkboxes and icon buttons.</li>
+</ul>
+
+<h2>8. What run 3 settles: the Step 6b2 fix and run-to-run stability</h2>
+<p>The run 2 report traced the modular backend's 15-point deficit to a schema mismatch: absorbed OCR text lands in <code>text</code> for the modular backend and in <code>label</code> for the monolith adapter, and the pipeline's own OCR pass adds the value a second time, so a value-bearing input field produced two elements carrying the same literal. The fix, pipeline Step 6b2 (ADR-010), drops a text element that sits inside a control carrying the same literal. Run 3 is the first GPU run with it.</p>
+<p class="howto"><b>How to read:</b> a per-step diff of run 3 against run 2, same 514 step ids. "Changed" counts steps whose outcome differs; the pattern column says what they have in common. 0 changed means the column is bit-identical across the two cards.</p>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Column</th><th class="num">Changed steps</th><th>Direction</th><th>Pattern</th></tr></thead>
+<tbody>
+<tr class="ours"><td>vizdom-modular</td><td class="num">32</td><td>all miss → hit</td><td>exactly the 32 steps diagnosed in run 2, every one from "2 matches" to "resolved"; 29 form_sidebar, 3 login</td></tr>
+<tr class="ours"><td>vizdom-uied</td><td class="num">9</td><td>all miss → hit</td><td>same "2 matches" → "resolved" signature on <code>form_sidebar_0031</code> (5), <code>form_sidebar_0103</code> (3), <code>login_0137</code> (1); UIED's own text-into-component merge made the same duplicate, and the column log shows the Step 6b2 drop messages</td></tr>
+<tr class="ours"><td>vizdom-omniparser</td><td class="num">0</td><td>—</td><td>bit-identical on a different GPU, host and torch build: the pipeline is deterministic on fixed versions</td></tr>
+<tr><td>elam-7b</td><td class="num">3</td><td>2 hit → miss, 1 false pass → correct</td><td>greedy decoding is not bit-stable across GPU generations (bf16 kernels differ); ±1 point of noise</td></tr>
+<tr><td>ui-tars-1.5-7b</td><td class="num">6</td><td>2 miss → hit, 3 correct → false pass, 1 false pass → correct</td><td>same cause; the net +1 action-hit and −0.6 verify are within that noise</td></tr>
+</tbody>
+</table>
+</div>
+<div class="callout"><p><b>Consequence.</b> Modular and OmniParser columns are identical on all 514 steps, and modular parses in 0.62 s per state against 1.02 s, so the ADR-027 claim holds on the rented card: the monolith's accuracy at 61 % of its parse time, with the captioner off. The 0.732 in the run 2 report was a representation bug, not a detection difference, and it is closed. The grounders' numbers move by a point between cards even with greedy decoding; VizDOM's do not.</p></div>
+
+<h2>9. Threats to validity</h2>
+<ul>
+  <li><b>Synthetic screens.</b> All 44 states come from the project's generator. Real applications have denser, noisier layouts; the headline caveat of the whole benchmark stands.</li>
+  <li><b>Negative statements are easy for exact text and hard for a VLM in different ways.</b> A nonsense label can never partially match a DOM, which favours VizDOM. A model that reads the screen might reasonably be expected to reject "Zylophone", yet mostly did not. A harder negative set (plausible-but-absent labels such as "Export" on a screen with "Import") is planned as defect injection and would test VizDOM's OCR as well.</li>
+  <li><b>UI-TARS's verify is a proxy.</b> It has no verdict mode, so "grounded a point" counts as PASSED. ELAM's native verdict is the fairer comparison, and it is the worse of the two on false passes.</li>
+  <li><b>Two runs, two cards, no seeds.</b> Greedy decoding still moved the grounders by 3 and 6 steps between cards, so their figures carry about one point of uncertainty; there is no estimate across sampling seeds. The VizDOM columns reproduced exactly.</li>
+  <li><b>Verify accuracy for VizDOM is capped by OCR</b>, not by the DOM logic. The 20 misses are the same 20 captions in all three detector columns and in both runs.</li>
+  <li><b>Latency is host-dependent.</b> UI-TARS was 60 % slower per step on this host than on the 4090 host with the same code; per-step cost should be quoted as a range.</li>
+  <li><b>Aria-UI is still unmeasured.</b> Its mixture-of-experts weights are not quantized by bitsandbytes (a 24 GB card OOMs at shard 5 of 12 in 4-bit, extrapolating to ~53 GB), so the column runs bf16 and needs an 80 GB card. The gate refused this 48 GB card as designed; until that run it is cited from published numbers.</li>
+</ul>
+
+<h2>10. Files and reproduction</h2>
+<pre><code>benchmarks/results/gpu-20261026_212923/      # raw run (gitignored; keep the tarball)
+  summary.md  gpu.txt  sweep.log  parity.txt
+  20261026_212943.{json,md}   vizdom-uied
+  20261026_213037.{json,md}   vizdom-omniparser
+  20261026_213110.{json,md}   vizdom-modular
+  20261026_220438.{json,md}   elam-7b
+  20261026_222802.{json,md}   ui-tars-1.5-7b
+  &lt;column&gt;.log                one log per column
+
+# rerun on a rented card (deploy/gpu/README.md, deploy/gpu/vast_runbook.html)
+bash deploy/gpu/setup.sh &amp;&amp; bash deploy/gpu/prefetch.sh &amp;&amp; bash deploy/gpu/preflight.sh
+bash deploy/gpu/run_benchmarks.sh
+# Aria-UI column: the same four commands on an A100 80 GB / H100</code></pre>
+<p>Every result JSON records the dataset id, the commit and the per-step outcome, so any number in this report can be traced to a step id such as <code>login_0137/act/E13</code>. The run 2 report (<code>report_gpu_20261026.html</code>) holds the root-cause analysis of the modular gap with the DOM diff on <code>form_sidebar_0007</code>.</p>
+
+<footer>VizDOM lifecycle benchmark, run gpu-20261026_212923, commit 82f0b45, RTX 6000 Ada. Numbers are from the result JSON files; charts are drawn from the same values inline in this page.</footer>
+</main>
+<div class="tip" id="tip"></div>
+
+<script>
+(function () {
+  const tip = document.getElementById('tip');
+  function showTip(e, html) { tip.innerHTML = html; tip.classList.add('on'); moveTip(e); }
+  function moveTip(e) {
+    const pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+    let x = e.clientX + pad, y = e.clientY + pad;
+    if (x + w > window.innerWidth - 8) x = e.clientX - w - pad;
+    if (y + h > window.innerHeight - 8) y = e.clientY - h - pad;
+    tip.style.left = x + 'px'; tip.style.top = y + 'px';
+  }
+  function hideTip() { tip.classList.remove('on'); }
+  function hover(el, html) {
+    el.addEventListener('mouseenter', e => showTip(e, html));
+    el.addEventListener('mousemove', moveTip);
+    el.addEventListener('mouseleave', hideTip);
+  }
+  const NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, parent) {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function text(parent, x, y, str, attrs) {
+    const t = el('text', Object.assign({ x, y, 'font-size': 12, fill: 'var(--ink-2)' }, attrs || {}), parent);
+    t.textContent = str; return t;
+  }
+  // horizontal bars with a single series, 4px rounded data end, direct labels
+  function hbars(id, rows, opts) {
+    const W = 900, labW = 190, rowH = 34, padT = 8, padR = 60;
+    const H = padT + rows.length * rowH + 26;
+    const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': opts.aria });
+    document.getElementById(id).appendChild(svg);
+    const plotW = W - labW - padR, max = opts.max;
+    const sx = v => labW + v / max * plotW;
+    for (const g of opts.grid) {
+      el('line', { x1: sx(g), x2: sx(g), y1: padT, y2: H - 26, stroke: 'var(--grid)', 'stroke-width': 1 }, svg);
+      text(svg, sx(g), H - 8, opts.fmt(g), { 'text-anchor': 'middle', fill: 'var(--muted)', 'font-size': 11 });
+    }
+    el('line', { x1: labW, x2: labW, y1: padT, y2: H - 26, stroke: 'var(--axis)', 'stroke-width': 1 }, svg);
+    rows.forEach((r, i) => {
+      const y = padT + i * rowH + 6, h = rowH - 12;
+      const g = el('g', {}, svg);
+      text(g, labW - 10, y + h / 2 + 4, r.label, { 'text-anchor': 'end', fill: 'var(--ink)', 'font-size': 13 });
+      const w = Math.max(0, sx(r.v) - labW);
+      const d = `M${labW},${y} H${labW + Math.max(w - 4, 0)} a4,4 0 0 1 4,4 V${y + h - 4} a4,4 0 0 1 -4,4 H${labW} Z`;
+      el('path', { d, fill: r.fill || 'var(--s1)', opacity: r.dim ? 0.55 : 1 }, g);
+      text(g, sx(r.v) + 8, y + h / 2 + 4, opts.fmt(r.v, true), { fill: 'var(--ink)', 'font-size': 12, 'font-weight': 600 });
+      el('rect', { x: 0, y: y - 6, width: W, height: rowH, fill: 'transparent' }, g);
+      hover(g, r.tip);
+    });
+  }
+  // stacked horizontal bars, counts, 2px surface gap between segments, labels inside when wide enough
+  function hstack(id, rows, series, total) {
+    const W = 900, labW = 190, rowH = 38, padT = 8, padR = 10;
+    const H = padT + rows.length * rowH + 26;
+    const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'Verify outcomes per executor, stacked counts of 301' });
+    document.getElementById(id).appendChild(svg);
+    const plotW = W - labW - padR;
+    const sx = v => labW + v / total * plotW;
+    for (const g of [0, 100, 200, 300]) {
+      el('line', { x1: sx(g), x2: sx(g), y1: padT, y2: H - 26, stroke: 'var(--grid)' }, svg);
+      text(svg, sx(g), H - 8, g, { 'text-anchor': 'middle', fill: 'var(--muted)', 'font-size': 11 });
+    }
+    el('line', { x1: labW, x2: labW, y1: padT, y2: H - 26, stroke: 'var(--axis)' }, svg);
+    rows.forEach((r, i) => {
+      const y = padT + i * rowH + 7, h = rowH - 14;
+      text(svg, labW - 10, y + h / 2 + 4, r.label, { 'text-anchor': 'end', fill: 'var(--ink)', 'font-size': 13 });
+      let acc = 0;
+      r.v.forEach((v, j) => {
+        if (!v) return;
+        const x0 = sx(acc), x1 = sx(acc + v), last = (acc + v === r.v.reduce((a, b) => a + b, 0));
+        const gap = j === 0 ? 0 : 2;
+        const w = Math.max(x1 - x0 - gap, 0);
+        const g = el('g', {}, svg);
+        const d = last
+          ? `M${x0 + gap},${y} H${x1 - 4} a4,4 0 0 1 4,4 V${y + h - 4} a4,4 0 0 1 -4,4 H${x0 + gap} Z`
+          : `M${x0 + gap},${y} H${x1} V${y + h} H${x0 + gap} Z`;
+        el('path', { d, fill: series[j].color }, g);
+        if (w > 28) text(g, (x0 + gap + x1) / 2, y + h / 2 + 4, v, { 'text-anchor': 'middle', fill: '#fff', 'font-size': 12, 'font-weight': 600 });
+        else if (w > 0) text(g, x1 + 4, y + h / 2 + 4, v, { fill: 'var(--ink)', 'font-size': 11 });
+        hover(g, `<b>${r.label}</b><br>${series[j].name}: ${v} of ${total} (${(v / total * 100).toFixed(1)} %)${series[j].of ? `<br>${series[j].of(v)}` : ''}`);
+        acc += v;
+      });
+    });
+  }
+
+  // --- data (from the result JSON files of gpu-20261026_212923) ---
+  const hit = [
+    { label: 'ui-tars-1.5-7b (bf16)', v: 0.944, tip: '<b>UI-TARS-1.5-7B bf16</b><br>201 of 213 hits<br>misses: login checkboxes and social buttons, 4 value fields, 3 settings rows' },
+    { label: 'elam-7b (bf16)', v: 0.930, tip: '<b>ELAM-7B</b><br>198 of 213 hits<br>misses: data-table pagination (8), settings rows (4), value fields (2), login (1)' },
+    { label: 'vizdom-omniparser', v: 0.883, tip: '<b>VizDOM + OmniParser</b><br>188 of 213 hits<br>20 zero-match (OCR), 4 many-match (table digits), 1 wrong box' },
+    { label: 'vizdom-modular', v: 0.883, tip: '<b>VizDOM modular backend</b> (captioner off)<br>188 of 213 hits, step-identical to OmniParser' },
+    { label: 'vizdom-uied', v: 0.822, tip: '<b>VizDOM + UIED</b><br>175 of 213 hits<br>20 zero-match (OCR), 16 multi-match, 2 wrong box' },
+    { label: 'vizdom-modular (run 2)', v: 0.732, tip: '<b>VizDOM modular, run 2</b> (commit a4cb85e, before Step 6b2)<br>156 of 213 hits', dim: true },
+    { label: 'ui-tars-1.5-7b (4-bit, run 1)', v: 0.845, tip: '<b>UI-TARS-1.5-7B 4-bit</b> (2026-10-25)<br>180 of 213 hits', dim: true },
+  ];
+  hbars('chart-hit', hit, { max: 1, grid: [0, 0.25, 0.5, 0.75, 1], fmt: (v, lbl) => lbl ? v.toFixed(3) : v.toFixed(2), aria: 'Action-hit rate per executor' });
+
+  const verifySeries = [
+    { name: 'correct verdict', color: 'var(--s1)' },
+    { name: 'false fail', color: 'var(--s2)', of: v => `${v} true statements rejected` },
+    { name: 'false pass', color: 'var(--s3)', of: v => `${v} of 88 absent-target statements accepted` },
+  ];
+  hstack('chart-verify', [
+    { label: 'vizdom (all three)', v: [281, 20, 0] },
+    { label: 'ui-tars-1.5-7b', v: [241, 0, 60] },
+    { label: 'elam-7b', v: [212, 3, 86] },
+  ], verifySeries, 301);
+
+  const cost = [
+    { label: 'vizdom-uied', v: 0.038, tip: '<b>VizDOM + UIED</b><br>(2.6 s load + 44 × 0.39 s) / 514 steps' },
+    { label: 'vizdom-modular', v: 0.061, tip: '<b>VizDOM modular</b><br>(4.2 s load + 44 × 0.62 s) / 514 steps' },
+    { label: 'vizdom-omniparser', v: 0.103, tip: '<b>VizDOM + OmniParser</b><br>(8.1 s load + 44 × 1.02 s) / 514 steps' },
+    { label: 'ui-tars-1.5-7b (bf16)', v: 2.72, tip: '<b>UI-TARS-1.5-7B</b><br>median inference per step; 514 inferences, ~1 400 s' },
+    { label: 'elam-7b (bf16)', v: 4.00, tip: '<b>ELAM-7B</b><br>median inference per step; 514 inferences, ~2 055 s<br>actions 3.3 s, verifies 4.3 s' },
+  ];
+  hbars('chart-cost', cost, { max: 5, grid: [0, 1, 2, 3, 4, 5], fmt: (v, lbl) => lbl ? v.toFixed(2) + ' s' : v + ' s', aria: 'Amortised seconds per step per executor' });
+
+  // --- heatmap table: hits / steps per family ---
+  const fams = ['data_table', 'dialog', 'form_sidebar', 'info_panel', 'login', 'settings', 'toolbar'];
+  const n = { data_table: 28, dialog: 5, form_sidebar: 62, info_panel: 32, login: 12, settings: 57, toolbar: 17 };
+  const heat = [
+    ['vizdom-uied',       [17, 3, 54, 32, 10, 45, 14]],
+    ['vizdom-omniparser', [20, 3, 54, 32, 11, 54, 14]],
+    ['vizdom-modular',    [20, 3, 54, 32, 11, 54, 14]],
+    ['elam-7b',           [20, 5, 60, 32, 11, 53, 17]],
+    ['ui-tars-1.5-7b',    [28, 5, 58, 32, 7, 54, 17]],
+  ];
+  const steps = ['--seq-100', '--seq-250', '--seq-400', '--seq-550', '--seq-700'];
+  const tbl = document.getElementById('heat');
+  tbl.innerHTML = '<thead><tr><th>Executor</th>' + fams.map(f => `<th class="num">${f}<br><span class="src">n=${n[f]}</span></th>`).join('') + '</tr></thead>';
+  const tb = document.createElement('tbody');
+  for (const [name, row] of heat) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${name}</td>`;
+    row.forEach((h, i) => {
+      const r = h / n[fams[i]];
+      // five ordinal steps from 0.40 to 1.00
+      const k = r >= 0.98 ? 4 : r >= 0.9 ? 3 : r >= 0.75 ? 2 : r >= 0.6 ? 1 : 0;
+      const td = document.createElement('td');
+      td.className = 'cell ' + (k >= 3 ? 'top' : k === 2 ? 'mid' : 'lo');
+      td.style.background = `var(${steps[k]})`;
+      td.textContent = r.toFixed(2);
+      hover(td, `<b>${name}</b> · ${fams[i]}<br>${h} of ${n[fams[i]]} click steps hit`);
+      tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  }
+  tbl.appendChild(tb);
+})();
+</script>
+</body>
+</html>

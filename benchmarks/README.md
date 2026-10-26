@@ -163,65 +163,82 @@ screens constantly, which is the regime the comparison is about.
 
 ## 6. Test plan
 
-### Measured: the full comparison (rented RTX 4090, 2026-10-26)
+### Measured: the full comparison (rented RTX 6000 Ada 48 GB, 2026-10-26)
 
-One machine, one commit (`a4cb85e`), 514 steps over 44 states. Raw files:
-`benchmarks/results/gpu-20261026_040622/` (gitignored; keep the tarball).
-The run kit is `deploy/gpu/`.
+One machine, one commit (`82f0b45`, which includes the Step 6b2 fix), 514
+steps over 44 states. Raw files: `benchmarks/results/gpu-20261026_212923/`
+(gitignored; keep the tarball). The run kit is `deploy/gpu/`. Full analysis
+with charts and the test configuration: `benchmarks/report_gpu_20261026_run3.html`
+(run 2, with the modular root cause: `benchmarks/report_gpu_20261026.html`).
 
 | Column | Weights | Action-hit | Verify acc | False-pass (of 301 verifies) | Cost |
 |---|---|---|---|---|---|
-| `vizdom-uied` | CV, no LLM | 0.779 | 0.934 | **0.000** | load 6.4 s + parse **0.85 s/state** |
-| `vizdom-omniparser` | CV + Florence-2 | 0.883 | 0.934 | **0.000** | load 12.7 s + parse **2.21 s/state** |
-| `vizdom-modular` | CV, captioner off | 0.732 | 0.934 | **0.000** | load 10.0 s + parse 1.29 s/state |
-| `elam-7b` | bf16 | **0.939** | 0.701 | 0.289 (87 of 88 negatives passed) | **5.15 s/step** |
-| `ui-tars-1.5-7b` | bf16 | **0.934** | 0.807 | 0.193 (58 of 88 negatives passed) | **1.68 s/step** |
-| `ui-tars-1.5-7b` | 4-bit (2026-10-25) | 0.845 | 0.797 | 0.199 | 1.76 s/step |
-| `aria-ui` | — | not run | | | 25 B MoE, bf16 only (~50 GB): bnb leaves the experts unquantized, OOM on 24 GB; needs an 80 GB card |
+| `vizdom-uied` | CV, no LLM | 0.822 | 0.934 | **0.000** | load 2.6 s + parse **0.39 s/state** |
+| `vizdom-omniparser` | CV + Florence-2 | 0.883 | 0.934 | **0.000** | load 8.1 s + parse **1.02 s/state** |
+| `vizdom-modular` | CV, captioner off | 0.883 | 0.934 | **0.000** | load 4.2 s + parse **0.62 s/state** |
+| `elam-7b` | bf16 | **0.930** | 0.704 | 0.286 (86 of 88 negatives passed) | **4.00 s/step** |
+| `ui-tars-1.5-7b` | bf16 | **0.944** | 0.801 | 0.199 (60 of 88 negatives passed) | **2.72 s/step** |
+| `aria-ui` | — | not run | | | 25 B MoE, bf16 only (~50 GB): skipped by the 70 GB gate on this 48 GB card; needs an 80 GB card |
+
+Run history, same 514 steps (action-hit / verify acc / false-pass):
+
+| Run | Card, commit | uied | omniparser | modular | elam-7b | ui-tars-1.5-7b |
+|---|---|---|---|---|---|---|
+| 1, 2026-10-25 | RTX 4090, commit not recorded | 0.779 / 0.934 / 0 | 0.883 / 0.934 / 0 | — | 0.0 (prompt bug, rescored 0.916) | 4-bit: 0.845 / 0.797 / 0.199 |
+| 2, 2026-10-26 | RTX 4090, `a4cb85e` | 0.779 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.732 / 0.934 / 0 | 0.939 / 0.701 / 0.289 | 0.934 / 0.807 / 0.193 |
+| 3, 2026-10-26 | RTX 6000 Ada, `82f0b45` | 0.822 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.930 / 0.704 / 0.286 | 0.944 / 0.801 / 0.199 |
 
 Interpretation, column by column:
 
 - **Action-hit.** The end-to-end grounders win by 5–6 points over
-  OmniParser-VizDOM (0.939 / 0.934 vs 0.883) and by 16 over UIED-VizDOM.
+  OmniParser-VizDOM (0.944 / 0.930 vs 0.883) and by 11–12 over UIED-VizDOM.
   Our misses are resolution misses: the locator finds 0 or 2+ matches on a
   fragmented or merged element; the grounders have no such failure mode.
-  Quantization matters for UI-TARS (+9 points from 4-bit to bf16).
+  Quantization matters for UI-TARS (+9 points from 4-bit to bf16, run 1 vs 2).
 - **Verify / false-pass — the testing row.** Both grounders say `PASSED` to
-  statements about elements that are *not on the screen*: ELAM accepts 87 of
+  statements about elements that are *not on the screen*: ELAM accepts 86 of
   the 88 negative statements (its native verdict mode rationalises the
-  nonsense label into a nearby element), UI-TARS 58 of 88 (it grounds
+  nonsense label into a nearby element), UI-TARS 60 of 88 (it grounds
   whatever it is asked to ground). VizDOM's 20 verify errors are all the
   other direction — a present caption the OCR cannot read, so the oracle
   says `FAILED` on a true statement — and it never passes an absent target,
   by construction of the exactly-one resolution contract. For a test oracle
-  the false-pass column is the one that matters, and it is 0 vs 0.19–0.29.
+  the false-pass column is the one that matters, and it is 0 vs 0.20–0.29.
 - **Cost.** Per step, amortised over this suite: VizDOM-OmniParser spends
-  110 s in total (load + 44 parses) for 514 steps, i.e. ~0.2 s/step; UI-TARS
-  spends 1.68 s on every step (863 s), ELAM 5.15 s (2 650 s). The DOM systems
-  pay once per screen state; the grounders pay once per step, and a test
-  suite revisits the same states constantly.
-- **Modular vs monolith.** The modular backend (same YOLO regions, same
-  OCR, same fusion port, captioner off) is 15 points behind OmniParser on
-  action-hit, and the gap is exactly 32 steps, all `2 matches`, all on
+  53 s in total (load + 44 parses) for 514 steps, i.e. ~0.1 s/step, the
+  modular backend 31 s; UI-TARS spends 2.72 s on every step (1 400 s), ELAM
+  4.00 s (2 055 s). The DOM systems pay once per screen state; the grounders
+  pay once per step, and a test suite revisits the same states constantly.
+- **Modular vs monolith.** In run 2 the modular backend (same YOLO regions,
+  same OCR, same fusion port, captioner off) was 15 points behind OmniParser
+  on action-hit, and the gap was exactly 32 steps, all `2 matches`, all on
   `form_sidebar`/`login` input fields with a value (`text="Online"`). Cause:
   `modular_backend` emits absorbed OCR as the field's `text`, while the
   monolith adapter emits it as `label` (`text=None`). The pipeline's own OCR
   then adds the value as a separate text element in both cases, so the
-  modular DOM has two elements with `text="Online"` (field + value) and the
-  exactly-one contract refuses to click; the monolith DOM has one. Verified
-  by diffing both DOMs on `form_sidebar_0007` locally. Not the captioner:
-  the toolbar family, where captions matter, scores the same for all three
-  VizDOM columns. **Fixed after this run** (pipeline Step 6b2, ADR-010): a
-  text element inside a control that carries the same literal is dropped.
-  Re-run on the laptop with the fix, `vizdom-modular` and
-  `vizdom-omniparser` are step-identical on all 514 steps (action-hit
-  0.916, verify 0.957, false-pass 0.000), with modular parsing at 62 % of
-  the monolith's time (3.1 vs 5.0 s/state). The 0.732 above is what commit
-  `a4cb85e` produced; the next GPU run will carry the corrected column.
+  modular DOM had two elements with `text="Online"` (field + value) and the
+  exactly-one contract refused to click; the monolith DOM had one. Verified
+  by diffing both DOMs on `form_sidebar_0007`. Not the captioner: the
+  toolbar family, where captions matter, scores the same for all three
+  VizDOM columns. **Fixed** (pipeline Step 6b2, ADR-010): a text element
+  inside a control that carries the same literal is dropped. Run 3 confirms
+  it on the GPU: exactly those 32 steps flipped `2 matches` → `resolved`,
+  `vizdom-modular` and `vizdom-omniparser` are step-identical on all 514
+  steps, and modular parses in 61 % of the monolith's time (0.62 vs
+  1.02 s/state). The same fix lifted UIED by 9 steps (0.779 → 0.822): UIED's
+  own text-into-component merge produced the same field+value duplicate on
+  `form_sidebar_0031/0103` and `login_0137`.
+- **Run-to-run stability.** Between runs 2 and 3 (different card, same
+  steps) the OmniParser column changed on 0 of 514 steps and every VizDOM
+  change is accounted for by the fix. The grounders moved on their own even
+  with greedy decoding: ELAM on 3 steps, UI-TARS on 6 (bf16 kernels differ
+  between GPU generations), i.e. ±1 point of noise on their numbers.
 
 Numbers drift slightly with the environment (easyocr, torch and OpenCV
 versions): the same VizDOM columns on the laptop gave uied 0.803 / omniparser
-0.916, verify 0.957 — always quote the commit and the machine.
+0.916, verify 0.957 — always quote the commit and the machine. Per-step
+latencies of the grounders also depend on the box (ELAM 5.15 → 4.00 s,
+UI-TARS 1.68 → 2.72 s from the 4090 to the 6000 Ada host).
 
 ### Not run: Aria-UI
 
@@ -231,8 +248,9 @@ and the allocation rate extrapolates to ~53 GB, beyond a 48 GB card too).
 The column runs bf16, the model card's recipe, and needs an 80 GB rental
 (A100 80 GB / H100). The adapter is implemented and preflight-tested up to
 the load step; the column is cited from published numbers until that run is
-paid for. Plan (2026-10-26): one 80 GB run of the full sweep once the
-pipeline is frozen, which also refreshes `vizdom-modular` after Step 6b2.
+paid for. Run 3 (2026-10-26, RTX 6000 Ada 48 GB) was skipped by the gate as
+designed; the plan stays one 80 GB run of the full sweep once the pipeline
+is frozen.
 
 ### Planned extensions (in priority order)
 
