@@ -25,7 +25,7 @@ echo "=== main env ==="
 if [ -x .venv-legacy/bin/python ]; then
     echo "=== legacy env ==="
     .venv-legacy/bin/python deploy/gpu/preflight.py --grounders elam-7b || fail=1
-    # aria-ui prints SKIP (not FAIL) below 46 GB VRAM; any other reason for
+    # aria-ui prints SKIP (not FAIL) below 70 GB VRAM; any other reason for
     # "not available" (a missing package) is a FAIL.
     .venv-legacy/bin/python deploy/gpu/preflight.py --grounders aria-ui || fail=1
 else

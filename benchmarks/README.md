@@ -177,7 +177,7 @@ The run kit is `deploy/gpu/`.
 | `elam-7b` | bf16 | **0.939** | 0.701 | 0.289 (87 of 88 negatives passed) | **5.15 s/step** |
 | `ui-tars-1.5-7b` | bf16 | **0.934** | 0.807 | 0.193 (58 of 88 negatives passed) | **1.68 s/step** |
 | `ui-tars-1.5-7b` | 4-bit (2026-10-25) | 0.845 | 0.797 | 0.199 | 1.76 s/step |
-| `aria-ui` | — | not run | | | 25 B MoE: bnb 4-bit leaves the experts unquantized, OOM on 24 GB; needs a 48 GB card |
+| `aria-ui` | — | not run | | | 25 B MoE, bf16 only (~50 GB): bnb leaves the experts unquantized, OOM on 24 GB; needs an 80 GB card |
 
 Interpretation, column by column:
 
@@ -226,9 +226,13 @@ versions): the same VizDOM columns on the laptop gave uied 0.803 / omniparser
 ### Not run: Aria-UI
 
 Aria-UI (25.3 B MoE) does not fit a 24 GB card even in 4-bit (OOM at shard
-5/12, measured 2026-10-26). It needs an A6000/L40S-class rental (48 GB). The
-adapter is implemented and preflight-tested up to the load step; the column
-is cited from published numbers until that run is paid for.
+5/12, measured 2026-10-26; bitsandbytes leaves the expert weights in bf16,
+and the allocation rate extrapolates to ~53 GB, beyond a 48 GB card too).
+The column runs bf16, the model card's recipe, and needs an 80 GB rental
+(A100 80 GB / H100). The adapter is implemented and preflight-tested up to
+the load step; the column is cited from published numbers until that run is
+paid for. Plan (2026-10-26): one 80 GB run of the full sweep once the
+pipeline is frozen, which also refreshes `vizdom-modular` after Step 6b2.
 
 ### Planned extensions (in priority order)
 

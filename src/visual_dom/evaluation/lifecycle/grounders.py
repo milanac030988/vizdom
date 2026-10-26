@@ -285,18 +285,21 @@ class AriaUiGrounder(Grounder):
     the reply is a Python-literal ``[x, y]`` in that 0-1000 space - mapped here
     back to source pixels.
 
-    Hardware: bf16 weights are ~50 GB. bitsandbytes 4-bit does NOT shrink it
-    to the expected ~14 GB: Aria's custom MoE code stores the expert weights
-    in a layout the quantizer skips, so a 24 GB card OOMs at shard 5/12 while
-    loading (measured 2026-10-26, RTX 4090: 22.4 GB allocated at 42 %, which
-    extrapolates to ~50 GB for the full load). It needs a 48 GB card (A6000 /
-    L40S, which report 48-51 GB); an A100 40 GB reports ~42 GB and would OOM
-    too, so the gate sits at 46. available() says so instead of letting a
-    rented hour discover it. No native verdict mode - judge() grounds the
-    statement's quoted subject, the same documented proxy as UI-TARS.
+    Hardware: bf16 weights are ~50 GB, and bf16 is the only path the model
+    card documents (device_map="auto", torch_dtype=bfloat16, pixel_values
+    cast to the model dtype, generate under inference_mode + bf16 autocast).
+    bitsandbytes 4-bit does NOT shrink it: Aria's custom MoE code stores the
+    expert weights in a layout the quantizer skips, so a 24 GB card OOMs at
+    shard 5/12 while loading (measured 2026-10-26, RTX 4090: 22.4 GB
+    allocated at 42 %, which extrapolates to ~53 GB - more than a 48 GB card
+    holds either). So the column runs bf16 on an 80 GB card (A100 80 / H100,
+    which report ~85 GB); the gate is 70 and available() says so instead of
+    letting a rented hour discover it. No native verdict mode - judge()
+    grounds the statement's quoted subject, the same documented proxy as
+    UI-TARS.
     """
 
-    MIN_VRAM_GB = 46
+    MIN_VRAM_GB = 70
 
     name = "aria-ui"
     DEFAULT_MODEL = "Aria-UI/Aria-UI-base"
@@ -319,9 +322,10 @@ class AriaUiGrounder(Grounder):
             return False, f"Aria-UI needs a CUDA GPU with >= {self.MIN_VRAM_GB} GB"
         vram_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
         if vram_gb < self.MIN_VRAM_GB:
-            return False, (f"GPU has {vram_gb:.0f} GB; Aria-UI's MoE experts are not "
-                           f"quantized by bitsandbytes and a 24 GB card OOMs while "
-                           f"loading - needs a >= {self.MIN_VRAM_GB} GB card (A6000/L40S).")
+            return False, (f"GPU has {vram_gb:.0f} GB; Aria-UI runs bf16 only (~50 GB "
+                           f"weights; bitsandbytes skips its MoE experts, so 4-bit "
+                           f"OOMs too) - needs a >= {self.MIN_VRAM_GB} GB card "
+                           f"(A100 80 GB / H100).")
         return True, f"deps + {vram_gb:.0f} GB GPU present (weights ~50 GB download)"
 
     def _ensure(self):
@@ -330,17 +334,21 @@ class AriaUiGrounder(Grounder):
         from transformers import AutoModelForCausalLM, AutoProcessor
         path = self.model_path or self.DEFAULT_MODEL
         kwargs = {"device_map": "auto", "trust_remote_code": True}
+        import torch
         if self.quantize:
+            # Kept for experiments only: bnb leaves the MoE experts in bf16,
+            # so this saves almost nothing (see class docstring). The sweep
+            # passes quantize=False.
             try:
                 from transformers import BitsAndBytesConfig
-                import torch
                 kwargs["quantization_config"] = BitsAndBytesConfig(
                     load_in_4bit=True, bnb_4bit_compute_dtype=torch.bfloat16)
+                log.warning("Aria-UI 4-bit: experts stay unquantized, ~50 GB "
+                            "either way - prefer quantize=False on an 80 GB card")
             except ImportError:
-                log.warning("bitsandbytes not installed - Aria-UI bf16 needs "
-                            "~50 GB; expect failure below a multi-GPU server")
+                log.warning("bitsandbytes not installed - loading Aria-UI in bf16")
+                kwargs["torch_dtype"] = torch.bfloat16
         else:
-            import torch
             kwargs["torch_dtype"] = torch.bfloat16
         log.info("Loading Aria-UI from %s ...", path)
         self._processor = AutoProcessor.from_pretrained(path, trust_remote_code=True)
@@ -355,11 +363,24 @@ class AriaUiGrounder(Grounder):
                 {"type": "text",
                  "text": self.GROUNDING_PROMPT.format(instruction=instruction)},
             ]}]
+            import torch
             text = self._processor.apply_chat_template(messages, add_generation_prompt=True)
             inputs = self._processor(text=text, images=pil, return_tensors="pt")
+            # Model-card recipe: the processor emits float32 pixel_values; cast
+            # them to the model dtype (bf16) and generate under bf16 autocast,
+            # or the remote code trips on a Float/BFloat16 mismatch (the same
+            # failure class ELAM showed in bf16). Greedy, stopped at <|im_end|>.
+            model_dtype = next(self._model.parameters()).dtype
+            if "pixel_values" in inputs and not self.quantize:
+                inputs["pixel_values"] = inputs["pixel_values"].to(model_dtype)
             inputs = {k: (v.to(self._model.device) if hasattr(v, "to") else v)
                       for k, v in inputs.items()}
-            out = self._model.generate(**inputs, max_new_tokens=32)
+            with torch.inference_mode(), torch.autocast(
+                    device_type="cuda", enabled=torch.cuda.is_available(),
+                    dtype=torch.bfloat16):
+                out = self._model.generate(
+                    **inputs, max_new_tokens=50, stop_strings=["<|im_end|>"],
+                    tokenizer=self._processor.tokenizer)
             return self._processor.batch_decode(
                 out[:, inputs["input_ids"].shape[1]:], skip_special_tokens=True)[0]
         reply = self._timed(run)

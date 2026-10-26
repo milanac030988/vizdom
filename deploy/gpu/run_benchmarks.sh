@@ -69,12 +69,13 @@ VRAM_GB=$(python -c "import torch;print(int(torch.cuda.get_device_properties(0).
 QUANT=""; [ "$VRAM_GB" -ge 20 ] && QUANT="--no-quantize"
 # ELAM (Molmo code) and Aria-UI (old Llama attention) need transformers
 # <= 4.47/4.48, which UI-TARS (Qwen2.5-VL, >= 4.49) cannot share: setup.sh
-# builds .venv-legacy for them. Aria-UI needs a 48 GB card (its MoE experts
-# are not quantized by bnb; 24 GB OOMs at shard 5/12, ~50 GB extrapolated,
-# so an A100 40 GB - which reports 42 - is out too; gate 46, same as
-# AriaUiGrounder.MIN_VRAM_GB) - on a smaller card the column is skipped
-# here rather than paid for and then marked FAILED.
-[ "$VRAM_GB" -ge 46 ] || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular elam-7b ui-tars-1.5-7b parity}"
+# builds .venv-legacy for them. Aria-UI runs bf16 only (the model card's
+# recipe; ~50 GB of weights - bnb leaves its MoE experts unquantized, so
+# 24 GB OOMs at shard 5/12 and the ~53 GB extrapolation does not fit a
+# 48 GB card either). It needs an 80 GB card (A100 80 / H100, which report
+# ~85); gate 70, same as AriaUiGrounder.MIN_VRAM_GB - on a smaller card the
+# column is skipped here rather than paid for and then marked FAILED.
+[ "$VRAM_GB" -ge 70 ] || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular elam-7b ui-tars-1.5-7b parity}"
 if [ -x .venv-legacy/bin/python ]; then
     LEGACY=".venv-legacy/bin/python -m visual_dom.evaluation.lifecycle.runner"
 else
@@ -83,7 +84,7 @@ else
 fi
 run_column elam-7b            $LEGACY --manifest "$MANIFEST" --executors elam-7b        $QUANT --out-dir "$OUT"
 run_column ui-tars-1.5-7b     $RUN    --manifest "$MANIFEST" --executors ui-tars-1.5-7b $QUANT --out-dir "$OUT"
-run_column aria-ui            $LEGACY --manifest "$MANIFEST" --executors aria-ui                --out-dir "$OUT"
+run_column aria-ui            $LEGACY --manifest "$MANIFEST" --executors aria-ui        $QUANT --out-dir "$OUT"
 
 # --- ADR-027: parity + captioner combos on this GPU ------------------------
 run_column parity             python "deploy/gpu/parity_on_box.py" "$OUT/parity.txt"

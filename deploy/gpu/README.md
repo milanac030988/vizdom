@@ -14,15 +14,17 @@ went wrong that day is now caught by `setup.sh` or `preflight.sh` — see
 | Card | VRAM | Runs | Note |
 |---|---|---|---|
 | RTX 4090 / A5000 / L4 | 24 GB | VizDOM columns, ELAM-7B, UI-TARS-1.5 (bf16), parity | **recommended** — best price/coverage |
-| A6000 / L40S | 48 GB | the above **plus Aria-UI** | only if the Aria-UI column is wanted |
+| A100 80 GB / H100 | 80 GB | the above **plus Aria-UI** (bf16) | only if the Aria-UI column is wanted |
+| A6000 / L40S | 48 GB | same as 24 GB | **not enough for Aria-UI** — see below |
 | 16 GB cards | 16 GB | 7B columns in 4-bit only | acceptable fallback |
 
-Aria-UI (25 B MoE) does **not** fit 24 GB: bitsandbytes 4-bit skips its
-expert weights, so loading OOMs at shard 5/12 (measured 2026-10-26; ~50 GB
-extrapolated for the full load). An A100 40 GB (reports ~42 GB) is out too.
-The gate is 46 GB in `AriaUiGrounder.MIN_VRAM_GB`, prefetch and the sweep:
-below it `available()` says why, prefetch skips the 50 GB download, and
-the sweep skips the column.
+Aria-UI (25 B MoE) runs **bf16 only**, the recipe its model card documents:
+~50 GB of weights. bitsandbytes 4-bit does not help — it skips the expert
+weights, so loading OOMs at shard 5/12 on 24 GB (measured 2026-10-26; the
+allocation rate extrapolates to ~53 GB for the full load, more than a
+48 GB card holds). The gate is 70 GB in `AriaUiGrounder.MIN_VRAM_GB`,
+prefetch and the sweep (an 80 GB card reports ~85): below it `available()`
+says why, prefetch skips the 50 GB download, and the sweep skips the column.
 
 - Image: any **PyTorch / CUDA 12.x** template (CUDA driver preinstalled).
   Launch mode **SSH**, not Jupyter.
@@ -39,8 +41,10 @@ the sweep skips the column.
 
 Downloads (~80 GB) dominate wall time on the box — typically 10–25 min on a
 datacenter pipe. Setup ~6 min (two venvs). The sweep itself: ~1 min per VizDOM
-column, ~15 min per 7B grounder column in bf16, Aria-UI 4-bit longer. Budget
-**2–3 hours total**; at typical 24 GB rates that is 3–5 $ including bandwidth.
+column, ~15 min per 7B grounder column in bf16, Aria-UI bf16 longer (3.9 B
+active parameters, but 50 GB to load). Budget **2–3 hours total**; at
+typical 24 GB rates that is 3–5 $ including bandwidth, an 80 GB card
+roughly double.
 
 ## The four commands
 
@@ -137,7 +141,7 @@ Learned on the first paid run (2026-10-25, RTX 4090 on Vast):
 - **Every download is resumable** — rerun `prefetch.sh` after an interruption.
 - **One column failing does not kill the sweep** (`run_benchmarks.sh` runs each
   in its own process and keeps going); check its `.log` in the results dir.
-- Aria-UI is auto-skipped below 46 GB VRAM (`available()` says why in the log).
+- Aria-UI is auto-skipped below 70 GB VRAM (`available()` says why in the log).
   Preflight prints SKIP for that one reason only; a grounder that is
   unavailable for any other reason (missing package) is a FAIL.
 - The Qwen2-VL captioner combo is picked up automatically once an

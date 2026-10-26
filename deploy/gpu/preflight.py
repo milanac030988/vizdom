@@ -52,13 +52,15 @@ def main():
             failures.append(name)
             print(f"  {name:16} FAIL  unknown grounder (known: {sorted(GROUNDERS)})")
             continue
-        # 7B models run bf16 on a big card (what the sweep does); Aria stays 4-bit.
-        quantize = not big_card or name == "aria-ui"
+        # Every grounder runs bf16 on a big card (what the sweep does). Aria-UI
+        # too: bnb leaves its MoE experts unquantized, so 4-bit buys nothing
+        # and the column needs an 80 GB card either way (its available() gates).
+        quantize = not big_card
         grounder = cls(quantize=quantize)
         ok, why = grounder.available()
         if not ok:
             # SKIP only for the one reason the sweep also skips on: the card is
-            # below the adapter's own VRAM floor (Aria-UI on 24 GB). Anything
+            # below the adapter's own VRAM floor (Aria-UI below 80 GB). Anything
             # else - a missing package, no CUDA - is a FAIL: the sweep would
             # otherwise exit "not runnable here" after the time is paid for.
             if torch.cuda.is_available() and vram_gb < getattr(cls, "MIN_VRAM_GB", 0):
