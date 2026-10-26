@@ -80,6 +80,32 @@ New `_remove_duplicates()` method:
 
 Catches duplicates from coarse+fine+rescan detection passes.
 
+### 5. Absorbed-Text Duplicate Removal (Step 6b2, added 2026-10-26)
+
+New `_drop_absorbed_text_duplicates()` method, run right after Step 6b:
+
+- A `text` element whose normalised text equals that of a non-text,
+  non-block element **containing** it (`is_contained` ≥ 0.7) is dropped;
+  the control is kept (it is the clickable thing, and its bounds contain
+  the text's).
+- Different text, text outside the control, `block` containers, and a
+  control with no `ocr_text` (the OmniParser adapter's `label`-only shape)
+  are all left alone.
+
+Why: backends that fuse OCR into their boxes (OmniParser's
+`remove_overlap`, and its port in the modular backend) hand the pipeline a
+control that already reads "Online"; Step 1 adds the same OCR box again as
+a standalone text element, and Step 4 leaves it standalone because a wide
+input field exceeds the 30000 px² merge area. The DOM then held two
+elements with `text="Online"` and the exactly-one locator contract refused
+to click either. The monolith adapter hid this by emitting absorbed OCR as
+`label` only; the modular backend reports it as `text` (a literal read),
+which is the schema we want. Measured in the lifecycle benchmark
+(2026-10-26, RTX 4090): 32 click steps, the entire 0.732 vs 0.883 gap
+between `vizdom-modular` and `vizdom-omniparser`; with the rule the two
+columns are step-identical on all 514 steps. Tests:
+`tests/unit/test_absorbed_text_dedup.py`.
+
 ## Consequences
 
 ### Positive
@@ -95,3 +121,4 @@ Catches duplicates from coarse+fine+rescan detection passes.
 ## Files Changed
 
 - `src/visual_dom/cv/pipeline.py` — Rewrote `_merge_text_and_elements()`, `_apply_cross_type_nms()`, added `_split_by_text_positions()`, `_remove_duplicates()`
+- `src/visual_dom/core/domain/pipeline.py` — added `_drop_absorbed_text_duplicates()` (Step 6b2, 2026-10-26)

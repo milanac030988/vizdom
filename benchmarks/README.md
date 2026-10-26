@@ -173,7 +173,7 @@ The run kit is `deploy/gpu/`.
 |---|---|---|---|---|---|
 | `vizdom-uied` | CV, no LLM | 0.779 | 0.934 | **0.000** | load 6.4 s + parse **0.85 s/state** |
 | `vizdom-omniparser` | CV + Florence-2 | 0.883 | 0.934 | **0.000** | load 12.7 s + parse **2.21 s/state** |
-| `vizdom-modular` | CV + Florence-2 | 0.732 | 0.934 | **0.000** | load 10.0 s + parse 1.29 s/state |
+| `vizdom-modular` | CV, captioner off | 0.732 | 0.934 | **0.000** | load 10.0 s + parse 1.29 s/state |
 | `elam-7b` | bf16 | **0.939** | 0.701 | 0.289 (87 of 88 negatives passed) | **5.15 s/step** |
 | `ui-tars-1.5-7b` | bf16 | **0.934** | 0.807 | 0.193 (58 of 88 negatives passed) | **1.68 s/step** |
 | `ui-tars-1.5-7b` | 4-bit (2026-10-25) | 0.845 | 0.797 | 0.199 | 1.76 s/step |
@@ -200,11 +200,24 @@ Interpretation, column by column:
   spends 1.68 s on every step (863 s), ELAM 5.15 s (2 650 s). The DOM systems
   pay once per screen state; the grounders pay once per step, and a test
   suite revisits the same states constantly.
-- **Modular vs monolith.** The modular backend is 15 points behind OmniParser
-  on action-hit at 60 % of its parse time; the parity check on the same box
-  shows identical regions (41/39/32 per screen) but far fewer labelled
-  interactables (2 vs 13 on `dashboard_0009`) — the gap is the captioner,
-  not the detector (ADR-027).
+- **Modular vs monolith.** The modular backend (same YOLO regions, same
+  OCR, same fusion port, captioner off) is 15 points behind OmniParser on
+  action-hit, and the gap is exactly 32 steps, all `2 matches`, all on
+  `form_sidebar`/`login` input fields with a value (`text="Online"`). Cause:
+  `modular_backend` emits absorbed OCR as the field's `text`, while the
+  monolith adapter emits it as `label` (`text=None`). The pipeline's own OCR
+  then adds the value as a separate text element in both cases, so the
+  modular DOM has two elements with `text="Online"` (field + value) and the
+  exactly-one contract refuses to click; the monolith DOM has one. Verified
+  by diffing both DOMs on `form_sidebar_0007` locally. Not the captioner:
+  the toolbar family, where captions matter, scores the same for all three
+  VizDOM columns. **Fixed after this run** (pipeline Step 6b2, ADR-010): a
+  text element inside a control that carries the same literal is dropped.
+  Re-run on the laptop with the fix, `vizdom-modular` and
+  `vizdom-omniparser` are step-identical on all 514 steps (action-hit
+  0.916, verify 0.957, false-pass 0.000), with modular parsing at 62 % of
+  the monolith's time (3.1 vs 5.0 s/state). The 0.732 above is what commit
+  `a4cb85e` produced; the next GPU run will carry the corrected column.
 
 Numbers drift slightly with the environment (easyocr, torch and OpenCV
 versions): the same VizDOM columns on the laptop gave uied 0.803 / omniparser

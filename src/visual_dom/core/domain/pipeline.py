@@ -514,6 +514,10 @@ class VisualDOMPipeline:
         # Step 6b: Remove near-duplicate detections
         all_elements = self._remove_duplicates(all_elements)
 
+        # Step 6b2: a standalone OCR text box sitting inside a control that
+        # already carries the same literal is the same reading twice.
+        all_elements = self._drop_absorbed_text_duplicates(all_elements)
+
         # Step 6c: Smart-merge over-segmented elements — a multi-word "full text"
         # box plus fragment boxes on the same text line (common with OmniParser:
         # a 2-line button split into halves + a full-text box). Rule-based; the
@@ -1179,6 +1183,51 @@ class VisualDOMPipeline:
         if removed > 0:
             log.info(f"Removed {removed} duplicate elements")
 
+        return keep
+
+    def _drop_absorbed_text_duplicates(self, elements: List[UIElement]) -> List[UIElement]:
+        """
+        Drop a text element that sits inside a non-text element carrying the
+        same literal text.
+
+        Detector backends that fuse OCR into their boxes (OmniParser's
+        remove_overlap and its port in the modular backend) hand us a control
+        that already reads e.g. "Online"; Step 1 then adds the same OCR box
+        again as a standalone text element, and Step 4 leaves it standalone
+        because a wide input field exceeds the text-merge area. The DOM ended
+        up with two elements whose `text` is "Online" - the field and the
+        value inside it - and the exactly-one locator contract refused to
+        click either. The monolith adapter hid this by emitting absorbed OCR as
+        `label` only (lifecycle benchmark 2026-10-26: 32 steps, the entire
+        modular-vs-omniparser gap). Keep the control: it is the clickable
+        thing, and its bounds contain the text's.
+        """
+        if not elements:
+            return []
+
+        hosts = [e for e in elements
+                 if e.visual_type not in ("text", "block") and e.ocr_text]
+        if not hosts:
+            return elements
+
+        keep: List[UIElement] = []
+        removed = 0
+        for elem in elements:
+            if elem.visual_type == "text" and elem.ocr_text:
+                key = self._norm_text(elem.ocr_text)
+                absorbed = any(
+                    key == self._norm_text(h.ocr_text)
+                    and is_contained(elem.bounds, h.bounds, 0.7)
+                    for h in hosts
+                )
+                if absorbed:
+                    removed += 1
+                    continue
+            keep.append(elem)
+
+        if removed:
+            log.info(f"Dropped {removed} text element(s) duplicating the "
+                     f"control that contains them")
         return keep
 
     def _limit_elements(self, elements: List[UIElement]) -> List[UIElement]:
