@@ -388,6 +388,113 @@ body.notes-on .slide.active .notes{display:block}
     24 keywords) are the same evidence used for the modifiability quality scenario (Q-01).</div>
 </section>
 
+<!-- 5c ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>On a real application — Windows Calculator: what the detector sees</h2>
+  <div class="cols" style="grid-template-columns:1.25fr 1fr">
+    <div class="fig"><img src="figures/calc_dom_annotated.png"
+      alt="Calculator screenshot with every detected element boxed and the glyph keys named"></div>
+    <div>
+      <div class="card good">
+        <h3 style="margin-top:0">Every control found — from pixels alone</h3>
+        <p class="small" style="color:var(--fg);margin:0"><strong>53 elements</strong>: 43
+          <code>button</code>, 6 icons, 3 text fields, 1 static text — <strong>49 clickable</strong>.
+          No accessibility tree, no app hooks: one window-scoped screenshot in, a UI-Automator-like
+          DOM out.</p>
+      </div>
+      <div class="card" style="margin-top:.8em">
+        <h3 style="margin-top:0">Naming what has no text</h3>
+        <p class="small" style="color:var(--fg);margin:0">The operator keys carry no readable label.
+          The <strong>symbol reader</strong> (ADR-011) reads <code>÷ × − + = .</code> structurally
+          — not as OCR characters — and the DOM assigns the canonical name:
+          <em>Divide, Multiply, Minus, Plus, Equals, Decimal</em>. Window chrome is named from its
+          caption: <em>Minimize, Maximize, Close</em>. Each becomes a stable
+          <code>desc=</code> target.</p>
+      </div>
+      <div class="card warn" style="margin-top:.8em">
+        <p class="small" style="color:var(--fg);margin:0"><strong>Stated plainly:</strong> composite
+          glyphs (x², ²√x, ⌫) still get unstable captions — which is exactly why every locator in the
+          demo is a <code>text= || desc=</code> fallback chain, not a single guess.</p>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><b>Concrete anchor for the audience:</b> the same Calculator the demo suite drives.
+    Point at the green grid (every key boxed, correct bounds), then at the yellow panel: the ÷ × − + =
+    keys have no label anywhere — the symbol reader's structural read is what makes them addressable.
+    Session <code>output/sessions/20260807_103844</code>, OmniParser + EasyOCR, 53 elements.</div>
+</section>
+
+<!-- 5d ────────────────────────────────────────── -->
+<section class="slide">
+  <h2>…and driving it from Robot Framework — the demo suite, end to end</h2>
+  <div class="cols" style="grid-template-columns:1.15fr 1fr">
+    <div>
+      <p class="small" style="font-family:Consolas,monospace;color:var(--fg);line-height:1.5;margin:0">
+        <span class="dim">*** Variables ***</span><br>
+        ${BTN_7}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text=7 || desc="digit seven button"<br>
+        ${BTN_DIVIDE}&nbsp;&nbsp;&nbsp;text="÷" || desc="divide button"<br>
+        ${BTN_EQUALS}&nbsp;&nbsp;&nbsp;text="=" || desc="equals button"<br>
+        ${BTN_BACKSPACE}&nbsp;desc="backspace button"<br>
+        <br>
+        <span class="dim">*** Test Cases ***</span><br>
+        <em>Calculator Adds Two Numbers</em><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Compute&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;&nbsp;&nbsp;add&nbsp;&nbsp;&nbsp;&nbsp;5<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Dump Visual DOM<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Visual Should Exist&nbsp;&nbsp;&nbsp;&nbsp;text=12<br>
+        <br>
+        <em>Calculator Divides And Verifies The Display Value</em><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Focus Calculator<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Press Key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="dim"># actuator only — no capture</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Compute&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8&nbsp;&nbsp;&nbsp;&nbsp;divide&nbsp;&nbsp;&nbsp;&nbsp;2<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Verify Element Value&nbsp;&nbsp;&nbsp;text=4&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;<span class="dim"># ADR-023: re-OCR this region only</span>
+      </p>
+      <div class="card" style="margin-top:.7em">
+        <h3 style="margin-top:0">Locating by description — <code>desc=</code> in action</h3>
+        <p class="small" style="color:var(--fg);margin:0 0 .4em">Every key is a <strong>fallback
+          chain</strong>: the free, deterministic <code>text=</code> lookup runs first;
+          <code>desc=</code> is reached only when it misses or is ambiguous — the measured failure
+          cases (an OCR misread of a small glyph), not a guess. The operator keys have
+          <em>no readable label</em>, so their description resolves against the <strong>name the DOM
+          assigned</strong>:</p>
+        <p class="small" style="font-family:Consolas,monospace;color:var(--fg);margin:0;line-height:1.5">
+          Click Visual&nbsp;&nbsp;&nbsp;&nbsp;desc="divide button"<br>
+          <span class="dim">→ E33&nbsp;&nbsp;text="÷"&nbsp;&nbsp;label="Divide"&nbsp;&nbsp;·&nbsp;&nbsp;tier=lexical&nbsp;&nbsp;score=3.00&nbsp;&nbsp;·&nbsp;&nbsp;candidates E33, E9, E11 …</span></p>
+        <p class="small" style="margin:.4em 0 0">Resolved by the <strong>lexical tier</strong> — no
+          model, deterministic, cached per screen; every hit records which tier answered. The SLM / VLM
+          tiers stay available for the long tail, but the demo pins <code>lexical</code> so CI is
+          reproducible.</p>
+      </div>
+    </div>
+    <div>
+      <div class="card good">
+        <h3 style="margin-top:0">Parse once, act many</h3>
+        <p class="small" style="color:var(--fg);margin:0">Suite Setup dumps the DOM <strong>once</strong>;
+          every click resolves against the cached DOM and taps. The second test re-uses it —
+          <strong>no re-open, no re-capture</strong> — only the result is read back from the live screen.</p>
+      </div>
+      <div class="card" style="margin-top:.8em">
+        <h3 style="margin-top:0">Fully distributed, zero code change</h3>
+        <p class="small" style="color:var(--fg);margin:0">Detector <code>:50051</code> · capture
+          <code>:50053</code> · actuator <code>:50054</code> — three gRPC services selected by one
+          <code>vizdom.config.json</code>. <strong>Run of 2026-08-07: 2 / 2 PASS</strong>
+          (<code>output/demo_run</code>).</p>
+      </div>
+      <div class="cols" style="grid-template-columns:auto 1fr;gap:.8em;margin-top:.8em;align-items:center">
+        <div class="fig" style="flex:none"><img src="figures/calc_failure_evidence.png"
+          alt="Window-scoped screenshot saved at a failing step" style="max-height:26vh"></div>
+        <p class="small" style="margin:0"><strong>Evidence on failure.</strong> When a keyword fails,
+          the library saves the <em>window-scoped</em> screenshot at that exact moment through the
+          capture port — here an earlier run, caught mid-expression (“8 ÷”), the state a tester
+          needs to see.</p>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><b>The payoff slide:</b> the suite is readable by a tester, every locator is
+    resilient by construction, and the economics are the parse-once model — two tests, one DOM.
+    Mention that the run shown was <em>distributed</em> (services), yet the suite is identical for a
+    local run: only the config file differs.</div>
+</section>
+
 <!-- 6 ─────────────────────────────────────────── -->
 <section class="slide">
   <h2>The CV pipeline</h2>

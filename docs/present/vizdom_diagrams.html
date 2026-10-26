@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VizDOM Diagrams</title>
+<meta name="author" content="Nguyen Huynh Tri Cuong (MS/EDT3-XC)">
+<style>
+  /* Companion to index.html: same dark deck look, every diagram is inline SVG
+     so the file is self-contained (no figures/ folder, no network). */
+  :root {
+    --ground: #0e1420;
+    --surface: #141c2b;
+    --surface-2: #1b2536;
+    --ink: #e8eef7;
+    --muted: #93a4bd;
+    --rule: #26334a;
+    --accent: #4db6ac;
+    --accent2: #7aa2f7;
+    --warn: #e0af68;
+    --bad: #f7768e;
+    --good: #9ece6a;
+    --font-body: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: "Cascadia Code", Consolas, "Courier New", monospace;
+    color-scheme: dark;
+  }
+  html { font-size: clamp(13px, min(1.22vw, 2.15vh), 23px); height: 100%; }
+  body { margin: 0; height: 100%; overflow: hidden; background: var(--ground); color: var(--ink); font-family: var(--font-body); line-height: 1.5; }
+  * { box-sizing: border-box; }
+
+  .slide {
+    position: absolute; inset: 0;
+    padding: 3vh 4vw max(7vh, 3.4rem);
+    display: flex; flex-direction: column; justify-content: center;
+    overflow-y: auto; opacity: 0; visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s;
+  }
+  .slide.active { opacity: 1; visibility: visible; }
+  .wrap { width: 100%; max-width: 1360px; margin: 0 auto; display: grid; gap: 0.6rem; }
+  .kicker { font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); }
+  h1, h2 { margin: 0; text-wrap: balance; line-height: 1.08; letter-spacing: -0.01em; }
+  h1 { font-size: 4.4rem; font-weight: 800; }
+  h2 { font-size: 2rem; font-weight: 700; }
+  h1 em, h2 em { font-style: normal; color: var(--accent); }
+  p { margin: 0; }
+  .lead { font-size: 1.3rem; line-height: 1.4; max-width: 50ch; }
+  .byline { font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); margin-top: 0.8rem; }
+  code { font-family: var(--font-mono); font-size: 0.86em; background: var(--surface-2); padding: 0.05em 0.35em; border-radius: 4px; color: var(--accent); }
+
+  figure.dia { margin: 0; display: grid; gap: 0.45rem; }
+  figure.dia svg { display: block; width: 100%; height: auto; max-height: calc(100vh - 3vh - max(7vh, 3.4rem) - 10.5rem); }
+  figure.dia figcaption { font-size: 0.92rem; line-height: 1.45; color: var(--muted); max-width: 120ch; }
+
+  table.ref { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+  table.ref th { text-align: left; font-family: var(--font-mono); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 0 0.8rem 0.45rem 0; border-bottom: 1px solid var(--rule); }
+  table.ref td { padding: 0.4rem 0.8rem 0.4rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.35; }
+  table.ref td:first-child { font-weight: 600; white-space: nowrap; }
+  table.ref td.by { font-family: var(--font-mono); font-size: 0.76rem; color: var(--muted); white-space: nowrap; }
+  table.ref td.mono { font-family: var(--font-mono); font-size: 0.8rem; color: #8fd3c1; white-space: nowrap; }
+  .refnote { font-size: 0.88rem; color: var(--muted); }
+
+  .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.8rem; }
+  .card { border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); padding: 0.8rem 0.9rem; display: grid; gap: 0.4rem; align-content: start; }
+  .card b { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .card h3 { margin: 0; font-size: 1.05rem; font-weight: 650; }
+  .card p { font-size: 0.86rem; color: var(--muted); line-height: 1.4; }
+  pre.code { margin: 0; background: #0a0f1a; border: 1px solid var(--rule); border-radius: 8px; padding: 0.6rem 0.75rem; font-family: var(--font-mono); font-size: 0.68rem; line-height: 1.4; overflow: auto; white-space: pre; color: var(--ink); }
+  pre.code .k { color: #8fd3c1; } pre.code .s { color: #f2c98a; } pre.code .c { color: #74877f; font-style: italic; }
+
+  .index { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.6rem; margin-top: 0.8rem; }
+  .index div { border: 1px solid var(--rule); border-radius: 10px; padding: 0.6rem 0.9rem; background: var(--surface); font-size: 0.92rem; }
+  .index b { display: block; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.2rem; }
+
+  #progress { position: fixed; left: 0; bottom: 0; height: 4px; width: 0; background: var(--accent); transition: width 0.3s ease; z-index: 20; }
+  #hud { position: fixed; right: 1.2rem; bottom: 0.9rem; display: flex; gap: 0.4rem; align-items: center; z-index: 20; font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); }
+  #hud button { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 0.2rem 0.6rem; cursor: pointer; }
+  #hud button:hover { border-color: var(--accent); }
+  #count { min-width: 4.2rem; text-align: center; font-variant-numeric: tabular-nums; }
+  #hint { position: fixed; left: 1.2rem; bottom: 0.9rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); z-index: 20; }
+  #notes { position: fixed; left: 50%; bottom: 3.4rem; transform: translateX(-50%); width: min(62rem, 92vw); background: #0a0f1af2; border: 1px solid var(--accent); border-radius: 10px; padding: 1rem 1.2rem; font-size: 1rem; line-height: 1.5; z-index: 30; }
+  #notes b { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.3rem; }
+  aside.notes { display: none; }
+  @media (max-width: 760px) {
+    html { font-size: 14px; } h1 { font-size: 2.8rem; } h2 { font-size: 1.6rem; }
+    .index, .cards { grid-template-columns: 1fr; } #hint { display: none; }
+    table.ref { display: block; overflow-x: auto; }
+    figure.dia { overflow-x: auto; } figure.dia svg { min-width: 720px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .slide, #progress { transition: none; } }
+</style>
+</head>
+<body>
+
+<!-- ═══════ 1 · title ═══════ -->
+<section class="slide active" id="title" aria-label="Title">
+  <div class="wrap">
+    <div class="kicker">VizDOM · how it works</div>
+    <h1>How <em>VizDOM</em> works</h1>
+    <p class="lead">What each component does, how a screenshot becomes a DOM, and how the pieces run as services on different machines. Every diagram follows the code as it runs in the Calculator demo.</p>
+    <p class="byline">Author: Nguyen Huynh Tri Cuong (MS/EDT3-XC)</p>
+    <div class="index">
+      <div><b>Component</b>Screenshot in, Visual DOM out</div>
+      <div><b>Component</b>Hexagon: core, ports, adapters, services</div>
+      <div><b>Reference</b>Who is responsible for what</div>
+      <div><b>Deployment</b>Three services, three machines</div>
+      <div><b>Deployment</b>A camera grabs, a robot arm taps</div>
+      <div><b>Reference</b>The three gRPC contracts</div>
+      <div><b>Sequence</b>One Robot test, end to end</div>
+      <div><b>Component</b>Detector backends are plug-ins</div>
+      <div><b>Flow</b>Finding an element from a locator</div>
+      <div><b>Deployment</b>Same suite, four deployments</div>
+    </div>
+  </div>
+  <aside class="notes">Companion to the main deck. Each diagram has one takeaway in its caption; the speaker notes say what to point at.</aside>
+</section>
+
+<!-- ═══════ 2 · component: whole system ═══════ -->
+<section class="slide" id="system" aria-label="Component view: screenshot in, Visual DOM out">
+  <div class="wrap">
+    <div class="kicker">Component view</div>
+    <h2>A screenshot goes in, a <em>Visual DOM</em> comes out</h2>
+    <figure class="dia">
+      <svg viewBox="0 0 1200 520" role="img" aria-label="Capture produces a screenshot where the app is. The CV pipeline runs a detector backend, an OCR text detector, a symbol reader, merge and split, reading-order sort and an optional SLM advisor, and emits detections. The hierarchy builder nests them and the DOM compiler assigns roles, locators and flags. The Visual DOM JSON is read by the Robot Framework library, the Viewer, the dashboard and the evaluation tools." font-family="Segoe UI, system-ui, Arial, sans-serif" font-size="14" fill="#e8eef7">
+        <defs>
+          <marker id="s2m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#93a4bd"/></marker>
+          <marker id="s2a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4db6ac"/></marker>
+        </defs>
+
+        <!-- Capture -->
+        <rect x="20" y="110" width="200" height="300" rx="12" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="40" y="140" font-weight="700" font-size="16">Capture</text>
+        <text x="200" y="140" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#93a4bd">ADR-018</text>
+        <text x="40" y="164" font-size="12" fill="#93a4bd">runs where the app is</text>
+        <rect x="40" y="180" width="160" height="36" rx="6" fill="#1b2536"/><text x="52" y="203" font-size="13">windows · linux</text>
+        <rect x="40" y="226" width="160" height="36" rx="6" fill="#1b2536"/><text x="52" y="249" font-size="13">android · camera</text>
+        <rect x="40" y="272" width="160" height="36" rx="6" fill="#1b2536"/><text x="52" y="295" font-size="13">gRPC → remote host</text>
+        <rect x="40" y="330" width="160" height="60" rx="6" fill="#1f3a3a" stroke="#4db6ac" stroke-width="1.5"/>
+        <text x="52" y="354" font-weight="600">Screenshot</text>
+        <text x="52" y="374" font-size="12" fill="#93a4bd">frame + window geometry</text>
+        <line x1="220" y1="360" x2="256" y2="360" stroke="#4db6ac" stroke-width="2.5" marker-end="url(#s2a)"/>
+
+        <!-- CV pipeline -->
+        <rect x="260" y="20" width="380" height="480" rx="12" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="280" y="50" font-weight="700" font-size="16">CV pipeline</text>
+        <text x="620" y="50" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#93a4bd">core.domain.pipeline</text>
+
+        <rect x="280" y="70" width="340" height="50" rx="6" fill="#1b2536"/>
+        <text x="292" y="91" font-weight="600">Detector backend</text><text x="608" y="91" text-anchor="end" font-size="11" fill="#e0af68">model</text>
+        <text x="292" y="110" font-size="12" fill="#93a4bd">UIED · YOLO · OmniParser · Modular (ADR-027) · gRPC</text>
+        <rect x="280" y="130" width="340" height="50" rx="6" fill="#1b2536"/>
+        <text x="292" y="151" font-weight="600">Text detector (OCR)</text><text x="608" y="151" text-anchor="end" font-size="11" fill="#e0af68">model</text>
+        <text x="292" y="170" font-size="12" fill="#93a4bd">EasyOCR · PaddleOCR · Tesseract — lines assembled</text>
+        <rect x="280" y="190" width="340" height="50" rx="6" fill="#1b2536"/>
+        <text x="292" y="211" font-weight="600">Symbol reader</text>
+        <text x="292" y="230" font-size="12" fill="#93a4bd">glyphs without text: ÷ × − + = . → a name (ADR-011)</text>
+        <rect x="280" y="250" width="340" height="50" rx="6" fill="#1b2536"/>
+        <text x="292" y="271" font-weight="600">Merge · split · NMS · dedup</text>
+        <text x="292" y="290" font-size="12" fill="#93a4bd">one box per control · over-merge and split guards</text>
+        <rect x="280" y="310" width="340" height="50" rx="6" fill="#1b2536"/>
+        <text x="292" y="331" font-weight="600">Reading-order sort</text>
+        <text x="292" y="350" font-size="12" fill="#93a4bd">row bands, top → bottom, left → right</text>
+        <rect x="280" y="370" width="340" height="50" rx="6" fill="#1b2536" stroke="#93a4bd" stroke-dasharray="5 4"/>
+        <text x="292" y="391" font-weight="600">SLM advisor</text><text x="608" y="391" text-anchor="end" font-size="11" fill="#93a4bd">optional</text>
+        <text x="292" y="410" font-size="12" fill="#93a4bd">split · retype · merge · label, gated to candidates</text>
+        <text x="450" y="458" text-anchor="middle" font-size="12" fill="#93a4bd">out: detections — bounds · type · text · confidence</text>
+        <text x="450" y="480" text-anchor="middle" font-size="11" fill="#e0af68">only the two rows marked "model" need a GPU or a weight file</text>
+        <line x1="640" y1="260" x2="676" y2="260" stroke="#4db6ac" stroke-width="2.5" marker-end="url(#s2a)"/>
+
+        <!-- Hierarchy + compiler -->
+        <rect x="680" y="120" width="240" height="120" rx="10" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="700" y="150" font-weight="700" font-size="16">Hierarchy builder</text>
+        <text x="700" y="174" font-size="12" fill="#93a4bd">containment · alignment</text>
+        <text x="700" y="192" font-size="12" fill="#93a4bd">label ↔ field association</text>
+        <text x="700" y="212" font-size="12" fill="#93a4bd">optional LLM refiner (Ollama)</text>
+        <line x1="800" y1="240" x2="800" y2="276" stroke="#93a4bd" stroke-width="1.6" marker-end="url(#s2m)"/>
+        <rect x="680" y="280" width="240" height="120" rx="10" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="700" y="310" font-weight="700" font-size="16">DOM compiler</text>
+        <text x="700" y="334" font-size="12" fill="#93a4bd">roles · locators · clickable flags</text>
+        <text x="700" y="352" font-size="12" fill="#93a4bd">text = literal read</text>
+        <text x="700" y="370" font-size="12" fill="#93a4bd">label = prediction (ADR-016)</text>
+        <line x1="920" y1="340" x2="956" y2="340" stroke="#4db6ac" stroke-width="2.5" marker-end="url(#s2a)"/>
+
+        <!-- Visual DOM -->
+        <rect x="960" y="290" width="220" height="100" rx="10" fill="#1f3a3a" stroke="#4db6ac" stroke-width="1.5"/>
+        <text x="980" y="320" font-weight="700" font-size="16">Visual DOM</text>
+        <text x="980" y="344" font-size="12" fill="#93a4bd">JSON · UIAutomator-like tree</text>
+        <text x="980" y="362" font-size="12" fill="#93a4bd">elements E1 … En, nested</text>
+        <text x="980" y="380" font-size="12" fill="#93a4bd">one tree per screen state</text>
+        <line x1="1070" y1="290" x2="1070" y2="254" stroke="#93a4bd" stroke-width="1.6" marker-end="url(#s2m)"/>
+        <text x="1080" y="276" font-size="12" fill="#93a4bd">read by</text>
+
+        <!-- Consumers -->
+        <rect x="960" y="20" width="220" height="230" rx="12" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="980" y="50" font-weight="700" font-size="16">Consumers</text>
+        <rect x="980" y="66" width="180" height="38" rx="6" fill="#1b2536"/><text x="992" y="90" font-size="13">Robot Framework library</text>
+        <rect x="980" y="110" width="180" height="38" rx="6" fill="#1b2536"/><text x="992" y="134" font-size="13">Viewer (PyQt5 inspector)</text>
+        <rect x="980" y="154" width="180" height="38" rx="6" fill="#1b2536"/><text x="992" y="178" font-size="13">Dashboard (Streamlit)</text>
+        <rect x="980" y="198" width="180" height="38" rx="6" fill="#1b2536"/><text x="992" y="222" font-size="13">Evaluation (IoU · F1)</text>
+      </svg>
+      <figcaption>One screenshot in, one tree out. Only the detector and the OCR engine need a model; everything after them is deterministic CPU code, so the DOM has the same shape whichever backend produced the boxes.</figcaption>
+    </figure>
+  </div>
+  <aside class="notes">Walk left to right. Capture is a strategy per platform and can be a remote service. The pipeline's first two rows are the only learned parts; the symbol reader is what names ÷ × − + when no text exists. The hierarchy builder nests boxes by containment, the compiler turns them into roles and locators. Everything on the right consumes the same JSON.</aside>
+</section>
+
+<!-- ═══════ 3 · component: hexagon ═══════ -->
+<section class="slide" id="hexagon" aria-label="Component view: hexagonal architecture">
+  <div class="wrap">
+    <div class="kicker">Component view · hexagonal architecture</div>
+    <h2>The core never imports an adapter — <em>every backend is chosen by name</em>, locally or behind a service</h2>
+    <figure class="dia">
+      <svg viewBox="0 0 1200 680" role="img" aria-label="Four driving adapters, the CLI, the Viewer, the dashboard and the Robot Framework library, enter the domain core through the pipeline. The core holds orchestration, merge and reading order, the hierarchy builder and the DOM compiler, and five outbound ports: detector, OCR, refiner, capture and actuator. Under each port sit local in-process adapters and, for detector, capture and actuator, a gRPC client. Each client talks to a gRPC service on another host; that service is itself an inbound adapter which builds the same local adapters by name from the registry." font-family="Segoe UI, system-ui, Arial, sans-serif" font-size="14" fill="#e8eef7">
+        <defs>
+          <marker id="s3m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#93a4bd"/></marker>
+          <marker id="s3a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4db6ac"/></marker>
+          <marker id="s3w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e0af68"/></marker>
+          <marker id="s3b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7aa2f7"/></marker>
+          <marker id="s3r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f7768e"/></marker>
+        </defs>
+
+        <text x="20" y="12" font-size="11" fill="#93a4bd" font-family="Consolas, monospace">DRIVING ADAPTERS · inbound</text>
+        <rect x="20" y="20" width="275" height="56" rx="8" fill="#1b2536"/><text x="157" y="54" text-anchor="middle" font-weight="600">CLI — process_gui_image</text>
+        <rect x="315" y="20" width="275" height="56" rx="8" fill="#1b2536"/><text x="452" y="54" text-anchor="middle" font-weight="600">Visual DOM Viewer</text>
+        <rect x="610" y="20" width="275" height="56" rx="8" fill="#1b2536"/><text x="747" y="54" text-anchor="middle" font-weight="600">Dashboard</text>
+        <rect x="905" y="20" width="275" height="56" rx="8" fill="#1b2536"/><text x="1042" y="54" text-anchor="middle" font-weight="600">Robot Framework library</text>
+        <g stroke="#93a4bd" stroke-width="1.6">
+          <line x1="157" y1="76" x2="157" y2="118" marker-end="url(#s3m)"/>
+          <line x1="452" y1="76" x2="452" y2="118" marker-end="url(#s3m)"/>
+          <line x1="747" y1="76" x2="747" y2="118" marker-end="url(#s3m)"/>
+          <line x1="1042" y1="76" x2="1042" y2="118" marker-end="url(#s3m)"/>
+        </g>
+
+        <!-- core -->
+        <rect x="20" y="122" width="1160" height="190" rx="14" fill="#141c2b" stroke="#4db6ac" stroke-width="2"/>
+        <text x="40" y="150" font-weight="700" font-size="16" fill="#4db6ac">Domain core</text>
+        <text x="1160" y="150" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#93a4bd">pure Python · CPU · imports no adapter</text>
+        <rect x="40" y="165" width="270" height="48" rx="6" fill="#1b2536"/><text x="175" y="195" text-anchor="middle" font-weight="600">Pipeline orchestration</text>
+        <rect x="330" y="165" width="270" height="48" rx="6" fill="#1b2536"/><text x="465" y="195" text-anchor="middle" font-weight="600">Merge · reading order</text>
+        <rect x="620" y="165" width="270" height="48" rx="6" fill="#1b2536"/><text x="755" y="195" text-anchor="middle" font-weight="600">Hierarchy builder</text>
+        <rect x="910" y="165" width="270" height="48" rx="6" fill="#1b2536"/><text x="1045" y="195" text-anchor="middle" font-weight="600">DOM compiler + schema</text>
+
+        <g>
+          <rect x="40" y="236" width="210" height="52" rx="6" fill="#1f3a3a" stroke="#4db6ac" stroke-dasharray="5 4"/>
+          <text x="52" y="258" font-weight="600" font-size="13">DetectorPort</text><text x="52" y="278" font-size="11" fill="#93a4bd">detect(image) → detections</text>
+          <rect x="270" y="236" width="210" height="52" rx="6" fill="#1f3a3a" stroke="#4db6ac" stroke-dasharray="5 4"/>
+          <text x="282" y="258" font-weight="600" font-size="13">OcrPort</text><text x="282" y="278" font-size="11" fill="#93a4bd">read text + confidence</text>
+          <rect x="500" y="236" width="210" height="52" rx="6" fill="#1f3a3a" stroke="#4db6ac" stroke-dasharray="5 4"/>
+          <text x="512" y="258" font-weight="600" font-size="13">RefinerPort</text><text x="512" y="278" font-size="11" fill="#93a4bd">advise · refine · ground</text>
+          <rect x="730" y="236" width="210" height="52" rx="6" fill="#1f3a3a" stroke="#4db6ac" stroke-dasharray="5 4"/>
+          <text x="742" y="258" font-weight="600" font-size="13">CapturePort</text><text x="742" y="278" font-size="11" fill="#93a4bd">grab() · focus(title)</text>
+          <rect x="960" y="236" width="210" height="52" rx="6" fill="#1f3a3a" stroke="#4db6ac" stroke-dasharray="5 4"/>
+          <text x="972" y="258" font-weight="600" font-size="13">ActuatorPort</text><text x="972" y="278" font-size="11" fill="#93a4bd">tap · type · key · scroll · swipe</text>
+        </g>
+        <g stroke="#4db6ac" stroke-width="2">
+          <line x1="145" y1="288" x2="145" y2="352" marker-end="url(#s3a)"/>
+          <line x1="375" y1="288" x2="375" y2="352" marker-end="url(#s3a)"/>
+          <line x1="605" y1="288" x2="605" y2="352" marker-end="url(#s3a)"/>
+          <line x1="835" y1="288" x2="835" y2="352" marker-end="url(#s3a)"/>
+          <line x1="1065" y1="288" x2="1065" y2="352" marker-end="url(#s3a)"/>
+        </g>
+
+        <text x="20" y="346" font-size="11" fill="#93a4bd" font-family="Consolas, monospace">DRIVEN ADAPTERS · outbound — local (solid) · remote client (dashed)</text>
+        <!-- detector column -->
+        <rect x="40" y="356" width="210" height="100" rx="6" fill="#1b2536"/>
+        <text x="52" y="378" font-size="13">UIEDBackend (CPU)</text><text x="52" y="398" font-size="13">YOLOBackend</text>
+        <text x="52" y="418" font-size="13">OmniParserBackend</text><text x="52" y="438" font-size="13">ModularDetectorBackend</text>
+        <rect x="40" y="466" width="210" height="64" rx="6" fill="none" stroke="#7aa2f7" stroke-dasharray="5 4"/>
+        <text x="52" y="490" font-size="13">GrpcDetectorBackend</text><text x="52" y="512" font-size="11" fill="#93a4bd">client → detector service</text>
+        <!-- ocr column -->
+        <rect x="270" y="356" width="210" height="100" rx="6" fill="#1b2536"/>
+        <text x="282" y="378" font-size="13">TextDetector</text><text x="282" y="398" font-size="13">EasyOCR · PaddleOCR</text>
+        <text x="282" y="418" font-size="13">Tesseract</text><text x="282" y="438" font-size="12" fill="#93a4bd">upscaling, line assembly</text>
+        <rect x="270" y="466" width="210" height="64" rx="6" fill="none" stroke="#26334a" stroke-dasharray="5 4"/>
+        <text x="282" y="490" font-size="12" fill="#93a4bd">always local (CPU)</text><text x="282" y="512" font-size="11" fill="#93a4bd">also runs inside the detector service</text>
+        <!-- refiner column -->
+        <rect x="500" y="356" width="210" height="100" rx="6" fill="#1b2536"/>
+        <text x="512" y="378" font-size="13">SLMAdvisor</text><text x="512" y="398" font-size="13">LLM hierarchy refiner</text>
+        <text x="512" y="418" font-size="13">DescriptionResolver tiers</text><text x="512" y="438" font-size="12" fill="#93a4bd">all optional</text>
+        <rect x="500" y="466" width="210" height="64" rx="6" fill="none" stroke="#7aa2f7" stroke-dasharray="5 4"/>
+        <text x="512" y="490" font-size="13">Ollama HTTP</text><text x="512" y="512" font-size="11" fill="#93a4bd">qwen2.5 · minicpm-v · :11434</text>
+        <!-- capture column -->
+        <rect x="730" y="356" width="210" height="100" rx="6" fill="#1b2536"/>
+        <text x="742" y="378" font-size="13">WindowsCapture</text><text x="742" y="398" font-size="13">LinuxCapture</text>
+        <text x="742" y="418" font-size="13">AndroidCapture (adb)</text><text x="742" y="438" font-size="13">CameraCapture</text>
+        <rect x="730" y="466" width="210" height="64" rx="6" fill="none" stroke="#7aa2f7" stroke-dasharray="5 4"/>
+        <text x="742" y="490" font-size="13">GrpcCaptureStrategy</text><text x="742" y="512" font-size="11" fill="#93a4bd">client → capture service</text>
+        <!-- actuator column -->
+        <rect x="960" y="356" width="210" height="100" rx="6" fill="#1b2536"/>
+        <text x="972" y="378" font-size="13">DesktopActuator</text><text x="972" y="398" font-size="13">AndroidActuator (adb)</text>
+        <text x="972" y="418" font-size="13">+ plugins (robot arm)</text><text x="972" y="438" font-size="12" fill="#93a4bd">auto-discovered</text>
+        <rect x="960" y="466" width="210" height="64" rx="6" fill="none" stroke="#7aa2f7" stroke-dasharray="5 4"/>
+        <text x="972" y="490" font-size="13">GrpcActuatorStrategy</text><text x="972" y="512" font-size="11" fill="#93a4bd">client → actuator service</text>
+
+        <!-- gRPC services: inbound adapters on another host, driving the same local adapters -->
+        <text x="270" y="556" font-size="11" fill="#93a4bd" font-family="Consolas, monospace">GRPC SERVICES · inbound adapters on another host, building the same local adapters by name</text>
+        <line x1="145" y1="530" x2="145" y2="562" stroke="#e0af68" stroke-width="2" marker-end="url(#s3w)"/><text x="152" y="550" font-size="11" fill="#e0af68">gRPC</text>
+        <rect x="40" y="566" width="210" height="76" rx="6" fill="#2b2a1f" stroke="#e0af68" stroke-width="1.5"/>
+        <text x="52" y="590" font-weight="600" font-size="13">Detector service</text>
+        <text x="52" y="610" font-family="Consolas, monospace" font-size="11" fill="#93a4bd">:50051 · detector_server.py</text>
+        <text x="52" y="628" font-size="11" fill="#93a4bd">create_detector(name) → the box above</text>
+        <path d="M250,604 C 268,604 268,440 254,440" fill="none" stroke="#e0af68" stroke-width="1.6" marker-end="url(#s3w)"/>
+
+        <line x1="835" y1="530" x2="835" y2="562" stroke="#7aa2f7" stroke-width="2" marker-end="url(#s3b)"/><text x="842" y="550" font-size="11" fill="#7aa2f7">gRPC</text>
+        <rect x="730" y="566" width="210" height="76" rx="6" fill="#1b2a3f" stroke="#7aa2f7" stroke-width="1.5"/>
+        <text x="742" y="590" font-weight="600" font-size="13">Capture service</text>
+        <text x="742" y="610" font-family="Consolas, monospace" font-size="11" fill="#93a4bd">:50053 · capture_server.py</text>
+        <text x="742" y="628" font-size="11" fill="#93a4bd">create_capture(name) → the box above</text>
+        <path d="M940,604 C 958,604 958,440 944,440" fill="none" stroke="#7aa2f7" stroke-width="1.6" marker-end="url(#s3b)"/>
+
+        <line x1="1065" y1="530" x2="1065" y2="562" stroke="#f7768e" stroke-width="2" marker-end="url(#s3r)"/><text x="1072" y="550" font-size="11" fill="#f7768e">gRPC</text>
+        <rect x="960" y="566" width="210" height="76" rx="6" fill="#3a2230" stroke="#f7768e" stroke-width="1.5"/>
+        <text x="972" y="590" font-weight="600" font-size="13">Actuator service</text>
+        <text x="972" y="610" font-family="Consolas, monospace" font-size="11" fill="#93a4bd">:50054 · actuator_server.py</text>
+        <text x="972" y="628" font-size="11" fill="#93a4bd">create_actuator(name) → the box above</text>
+        <path d="M1170,604 C 1188,604 1188,440 1174,440" fill="none" stroke="#f7768e" stroke-width="1.6" marker-end="url(#s3r)"/>
+
+        <text x="380" y="600" font-size="12" fill="#93a4bd">no service for OCR or the refiner:</text>
+        <text x="380" y="618" font-size="12" fill="#93a4bd">OCR runs on the runner's CPU, Ollama is its own server</text>
+
+        <text x="600" y="672" text-anchor="middle" font-size="12" fill="#93a4bd">one config file picks each adapter by name: create_detector("grpc") · create_capture("windows") · create_actuator("android")</text>
+      </svg>
+      <figcaption>Dependencies point inward. The core sees five ports and nothing else. A gRPC service is just another inbound adapter: it builds the same local adapter the runner would have built in-process, so "local" and "remote" differ by one name in the config, not by code.</figcaption>
+    </figure>
+  </div>
+  <aside class="notes">This is the hexagon from ADR-017 to ADR-019. Top: four ways in, all through the pipeline. Middle: the core and its ports. Below the ports: local adapters and the gRPC clients. Bottom band: the three services. Point at the curved arrows: a service does not reimplement anything, it calls the same registry and drives the same adapters that sit above it, just on a different machine.</aside>
+</section>
+
+<!-- ═══════ 4 · reference: responsibilities ═══════ -->
+<section class="slide" id="responsibilities" aria-label="Reference: who is responsible for what">
+  <div class="wrap">
+    <div class="kicker">Reference · components</div>
+    <h2>Who is responsible <em>for what</em></h2>
+    <table class="ref">
+      <thead><tr><th>Component</th><th>Responsibility</th><th>Runs</th><th>Decided in</th></tr></thead>
+      <tbody>
+        <tr><td>Capture strategy</td><td>Grab a frame of the app; raise its window and crop to it, returning the window geometry so coordinates map back to the device.</td><td class="by">where the app is</td><td class="by">ADR-018 · 021</td></tr>
+        <tr><td>Detector backend</td><td>Propose boxes for controls and icons with a type and a confidence. UIED, YOLO, OmniParser, modular, or a remote service.</td><td class="by">GPU host</td><td class="by">ADR-017 · 027</td></tr>
+        <tr><td>Text detector</td><td>Read text with an OCR engine, upscale small UIs, assemble characters into lines with a real confidence.</td><td class="by">CPU, anywhere</td><td class="by">ADR-012</td></tr>
+        <tr><td>Symbol reader</td><td>Name glyphs that have no text (÷ × − + = ⌫) so they get a label and a locator.</td><td class="by">CPU</td><td class="by">ADR-011</td></tr>
+        <tr><td>Merge · split · NMS</td><td>Reconcile detector boxes with OCR boxes: one box per control, guarded against over-merging.</td><td class="by">CPU</td><td class="by">ADR-013</td></tr>
+        <tr><td>Hierarchy builder</td><td>Nest elements by containment and alignment, attach labels to their fields; an LLM may refine the tree.</td><td class="by">CPU (+ Ollama)</td><td class="by">ADR-014</td></tr>
+        <tr><td>DOM compiler</td><td>Assign roles, clickable flags and locators; keep literal text apart from predicted labels.</td><td class="by">CPU</td><td class="by">ADR-016</td></tr>
+        <tr><td>Locator resolver</td><td>Turn <code>text=7 || desc="digit seven button"</code> into exactly one element, or fail with every attempt listed.</td><td class="by">test runner</td><td class="by">ADR-022 · 024</td></tr>
+        <tr><td>Actuator strategy</td><td>Tap, type, press keys, scroll and swipe at normalized coordinates; focus the app first so input lands on it.</td><td class="by">where the app is</td><td class="by">ADR-019 · 021</td></tr>
+        <tr><td>VisualGuiLibrary</td><td>The Robot Framework keywords: Connect, Dump Visual DOM, Click Visual, Verify Element Value… A thin client with no model.</td><td class="by">test runner</td><td class="by">ADR-020 · 023</td></tr>
+        <tr><td>gRPC services</td><td>Detector, capture and actuator servers wrapping the same adapters, each with a health check and graceful shutdown.</td><td class="by">any host</td><td class="by">ADR-017 · 018 · 019</td></tr>
+        <tr><td>Viewer</td><td>PyQt5 inspector: analyze a screen, inspect the DOM, try a locator through the actuator, export a Robot suite.</td><td class="by">developer PC</td><td class="by">ADR-028</td></tr>
+      </tbody>
+    </table>
+    <p class="refnote">One session config (<code>vizdom.config.json</code>) names the backend and strategy for each row and the target of every remote service. The same file drives the CLI, the Viewer and the Robot library.</p>
+  </div>
+  <aside class="notes">Use this as a lookup when someone asks "where does X happen". The Runs column is the distributed story in one glance: three rows run where the app is, one on a GPU, the rest on the test runner's CPU.</aside>
+</section>
+
+<!-- ═══════ 5 · deployment: three services ═══════ -->
+<section class="slide" id="distributed" aria-label="Deployment: three services on three machines">
+  <div class="wrap">
+    <div class="kicker">Deployment view</div>
+    <h2>Perception where the GPU is, capture and input <em>where the app is</em></h2>
+    <figure class="dia">
+      <svg viewBox="0 0 1200 520" role="img" aria-label="The test-runner host runs the Robot suite, the VisualGuiLibrary, the locator resolver and the CPU domain core, with three gRPC client adapters. The detector client calls the detector service on port 50051 on a GPU host, next to an optional Ollama. The capture client calls the capture service on port 50053 and the actuator client the actuator service on port 50054, both on the machine under test. The capture service reads the pixels of the application under test and the actuator service sends input to it; the application itself is not instrumented. One config file names all three targets." font-family="Segoe UI, system-ui, Arial, sans-serif" font-size="14" fill="#e8eef7">
+        <defs>
+          <marker id="s5w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e0af68"/></marker>
+          <marker id="s5b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7aa2f7"/></marker>
+          <marker id="s5r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f7768e"/></marker>
+        </defs>
+
+        <!-- test runner host -->
+        <rect x="20" y="20" width="330" height="480" rx="12" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="40" y="50" font-weight="700" font-size="16">Test-runner host</text>
+        <text x="330" y="50" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#93a4bd">no GPU · no model</text>
+        <rect x="40" y="70" width="290" height="46" rx="6" fill="#1b2536"/>
+        <text x="52" y="98" font-size="13">Robot Framework suite</text><text x="318" y="98" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#93a4bd">robot CLI</text>
+        <rect x="40" y="124" width="290" height="46" rx="6" fill="#1b2536"/>
+        <text x="52" y="152" font-size="13">VisualGuiLibrary — keywords</text><text x="318" y="152" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#93a4bd">thin client</text>
+        <rect x="40" y="178" width="290" height="46" rx="6" fill="#1b2536"/>
+        <text x="52" y="206" font-size="13">Locator resolver</text><text x="318" y="206" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#93a4bd">text= · desc= tiers</text>
+        <rect x="40" y="232" width="290" height="66" rx="6" fill="#1b2536"/>
+        <text x="52" y="256" font-size="13">Domain core (CPU)</text>
+        <text x="52" y="278" font-size="12" fill="#93a4bd">OCR · merge · reading order · hierarchy · compile</text>
+        <rect x="40" y="306" width="290" height="112" rx="6" fill="#1f3a3a" stroke="#4db6ac" stroke-width="1.5"/>
+        <text x="52" y="328" font-weight="600" font-size="13">gRPC clients (remote adapters)</text>
+        <text x="52" y="358" font-size="13" fill="#e0af68">GrpcDetectorBackend</text>
+        <text x="52" y="382" font-size="13" fill="#7aa2f7">GrpcCaptureStrategy</text>
+        <text x="52" y="406" font-size="13" fill="#f7768e">GrpcActuatorStrategy</text>
+        <rect x="40" y="430" width="290" height="56" rx="6" fill="none" stroke="#93a4bd" stroke-dasharray="5 4"/>
+        <text x="52" y="452" font-family="Consolas, monospace" font-size="12">vizdom.config.json</text>
+        <text x="52" y="472" font-size="11" fill="#93a4bd">one file names all three services</text>
+
+        <!-- GPU host -->
+        <rect x="600" y="20" width="580" height="150" rx="12" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="620" y="50" font-weight="700" font-size="16">GPU host</text>
+        <text x="1160" y="50" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#93a4bd">any machine with a GPU · rented or in the lab</text>
+        <rect x="620" y="66" width="270" height="90" rx="8" fill="#2b2a1f" stroke="#e0af68" stroke-width="1.5"/>
+        <text x="636" y="92" font-weight="600">Detector service</text>
+        <text x="878" y="92" text-anchor="end" font-family="Consolas, monospace" font-size="13" fill="#e0af68">:50051</text>
+        <text x="636" y="114" font-size="12" fill="#93a4bd">warm OmniParser · YOLO · modular</text>
+        <text x="636" y="134" font-size="11" fill="#93a4bd">loads the model once, serves many runners</text>
+        <text x="636" y="150" font-size="11" fill="#93a4bd">the only place a GPU is needed</text>
+        <rect x="910" y="66" width="250" height="90" rx="8" fill="none" stroke="#93a4bd" stroke-dasharray="5 4"/>
+        <text x="926" y="92" font-weight="600">Ollama (optional)</text>
+        <text x="1148" y="92" text-anchor="end" font-family="Consolas, monospace" font-size="13" fill="#93a4bd">:11434</text>
+        <text x="926" y="114" font-size="12" fill="#93a4bd">SLM / VLM grounding tiers for desc=</text>
+        <text x="926" y="134" font-size="11" fill="#93a4bd">hierarchy refiner · SLM advisor</text>
+        <text x="926" y="150" font-size="11" fill="#93a4bd">HTTP, from the runner</text>
+
+        <!-- machine under test -->
+        <rect x="600" y="200" width="580" height="300" rx="12" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="620" y="230" font-weight="700" font-size="16">Machine under test</text>
+        <text x="1160" y="230" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#93a4bd">Windows PC · Android · camera rig</text>
+        <rect x="620" y="246" width="250" height="80" rx="8" fill="#1b2a3f" stroke="#7aa2f7" stroke-width="1.5"/>
+        <text x="636" y="270" font-weight="600">Capture service</text>
+        <text x="858" y="270" text-anchor="end" font-family="Consolas, monospace" font-size="13" fill="#7aa2f7">:50053</text>
+        <text x="636" y="292" font-size="12" fill="#93a4bd">windows · android · camera</text>
+        <text x="636" y="310" font-size="11" fill="#93a4bd">raises + crops the window (ADR-021)</text>
+        <rect x="620" y="340" width="250" height="80" rx="8" fill="#3a2230" stroke="#f7768e" stroke-width="1.5"/>
+        <text x="636" y="364" font-weight="600">Actuator service</text>
+        <text x="858" y="364" text-anchor="end" font-family="Consolas, monospace" font-size="13" fill="#f7768e">:50054</text>
+        <text x="636" y="386" font-size="12" fill="#93a4bd">desktop · android · robot arm</text>
+        <text x="636" y="404" font-size="11" fill="#93a4bd">normalized [0,1] → device pixels</text>
+
+        <!-- AUT -->
+        <rect x="930" y="246" width="230" height="174" rx="8" fill="#1b2536" stroke="#e8eef7" stroke-width="2"/>
+        <text x="946" y="272" font-weight="700" font-size="14">Application under test</text>
+        <text x="1144" y="272" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#93a4bd">AUT</text>
+        <text x="946" y="300" font-size="12">Calculator (Windows)</text>
+        <text x="946" y="320" font-size="12">an Android app, via adb</text>
+        <text x="946" y="340" font-size="12">an embedded panel seen</text>
+        <text x="946" y="356" font-size="12">by a camera</text>
+        <text x="946" y="388" font-size="11" fill="#4db6ac">not instrumented:</text>
+        <text x="946" y="404" font-size="11" fill="#4db6ac">no hooks, no accessibility tree</text>
+        <line x1="870" y1="286" x2="926" y2="286" stroke="#7aa2f7" stroke-width="2" marker-end="url(#s5b)"/>
+        <text x="898" y="278" text-anchor="middle" font-size="11" fill="#7aa2f7">pixels</text>
+        <line x1="870" y1="380" x2="926" y2="380" stroke="#f7768e" stroke-width="2" marker-end="url(#s5r)"/>
+        <text x="898" y="372" text-anchor="middle" font-size="11" fill="#f7768e">input</text>
+        <text x="890" y="470" text-anchor="middle" font-size="12" fill="#93a4bd">the two services are the only things installed next to the app; the app itself is untouched</text>
+
+        <!-- flows -->
+        <line x1="350" y1="354" x2="596" y2="110" stroke="#e0af68" stroke-width="2.5" marker-end="url(#s5w)"/>
+        <text x="473" y="222" text-anchor="middle" font-size="12" fill="#e0af68" transform="rotate(-45 473 222)">Detect(image) → detections</text>
+        <line x1="350" y1="378" x2="616" y2="286" stroke="#7aa2f7" stroke-width="2.5" marker-end="url(#s5b)"/>
+        <text x="483" y="322" text-anchor="middle" font-size="12" fill="#7aa2f7" transform="rotate(-19 483 322)">Focus · Grab → frame + geometry</text>
+        <line x1="350" y1="402" x2="616" y2="380" stroke="#f7768e" stroke-width="2.5" marker-end="url(#s5r)"/>
+        <text x="483" y="408" text-anchor="middle" font-size="12" fill="#f7768e" transform="rotate(-5 483 408)">Tap · TypeText · PressKey · Scroll · Swipe</text>
+      </svg>
+      <figcaption>The runner holds no model: it sends the frame to the GPU host and gets boxes back, and it sends normalized clicks to the machine under test. The application under test is only ever seen through its pixels and driven through its input; nothing is installed into it. Replace <code>localhost</code> in one config file and the same suite runs across three machines.</figcaption>
+    </figure>
+  </div>
+  <aside class="notes">Three colours, three services, three ports. The detector service loads the heavy model once and can serve several runners. Capture and actuator live next to the app because that is where pixels and input are; they do not need a GPU. The white box is the AUT: a Windows app, an Android app through adb, or a closed device under a camera. It is never modified, which is the whole point for a BSH-style target.</aside>
+</section>
+
+<!-- ═══════ 5b · deployment: camera in, robot arm out ═══════ -->
+<section class="slide" id="physical" aria-label="Deployment: the capture service drives a camera, the actuator service drives a robot arm">
+  <div class="wrap">
+    <div class="kicker">Deployment view · a closed device</div>
+    <h2>Same two contracts, different hardware: <em>a camera grabs, a robot arm taps</em></h2>
+    <figure class="dia">
+      <svg viewBox="0 0 1200 500" role="img" aria-label="The test-runner host runs the same Robot suite with a config that selects the camera capture strategy with camera mode, and the robot-arm actuator strategy. The capture service reads frames from a camera pointed at a physical screen and returns a photo; the pipeline's camera mode finds the screen's corners and warps it flat before building the DOM. A Tap at normalized coordinates reaches the actuator service, whose robot-arm plugin maps image pixels through a calibration homography to arm coordinates and drives the arm to touch the screen. Nothing is installed on the device." font-family="Segoe UI, system-ui, Arial, sans-serif" font-size="14" fill="#e8eef7">
+        <defs>
+          <marker id="c1b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7aa2f7"/></marker>
+          <marker id="c1r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f7768e"/></marker>
+        </defs>
+
+        <!-- test-runner host -->
+        <rect x="20" y="150" width="220" height="200" rx="12" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="36" y="178" font-weight="700" font-size="15">Test-runner host</text>
+        <text x="36" y="202" font-size="12" fill="#93a4bd">Robot suite + VisualGuiLibrary</text>
+        <text x="36" y="220" font-size="12" fill="#93a4bd">same keywords, same DOM</text>
+        <line x1="36" y1="232" x2="224" y2="232" stroke="#26334a"/>
+        <text x="36" y="252" font-family="Consolas, monospace" font-size="11" fill="#4db6ac">"capture": {</text>
+        <text x="36" y="268" font-family="Consolas, monospace" font-size="11" fill="#4db6ac">&#160;&#160;&#160;"strategy": "camera",</text>
+        <text x="36" y="284" font-family="Consolas, monospace" font-size="11" fill="#4db6ac">&#160;&#160;&#160;"camera_mode": true }</text>
+        <text x="36" y="306" font-family="Consolas, monospace" font-size="11" fill="#4db6ac">"actuator": {</text>
+        <text x="36" y="322" font-family="Consolas, monospace" font-size="11" fill="#4db6ac">&#160;&#160;&#160;"strategy": "robot-arm" }</text>
+
+        <!-- capture service · camera -->
+        <rect x="300" y="30" width="340" height="190" rx="10" fill="#1b2a3f" stroke="#7aa2f7" stroke-width="1.5"/>
+        <text x="316" y="58" font-weight="700" font-size="15">Capture service</text>
+        <text x="624" y="58" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#7aa2f7">:50053 · camera</text>
+        <text x="316" y="80" font-size="12" fill="#93a4bd">CameraCapture — cv2.VideoCapture</text>
+        <text x="316" y="98" font-size="12" fill="#93a4bd">USB camera · capture card · RTSP stream</text>
+        <text x="316" y="124" font-size="13">Grab → a photo of the physical screen</text>
+        <text x="316" y="144" font-size="12" fill="#93a4bd">Focus → always false: there is no OS to ask</text>
+        <text x="316" y="168" font-size="12" fill="#93a4bd">then the pipeline's camera_mode (step 0) finds the</text>
+        <text x="316" y="186" font-size="12" fill="#93a4bd">screen's four corners and warps the photo flat</text>
+        <text x="316" y="208" font-size="11" fill="#4db6ac">the DOM is built on the rectified image, like any screenshot</text>
+
+        <!-- actuator service · robot arm -->
+        <rect x="300" y="280" width="340" height="190" rx="10" fill="#3a2230" stroke="#f7768e" stroke-width="1.5"/>
+        <text x="316" y="308" font-weight="700" font-size="15">Actuator service</text>
+        <text x="624" y="308" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#f7768e">:50054 · robot-arm</text>
+        <text x="316" y="330" font-size="12" fill="#93a4bd">RobotArmActuator — a plugin file, auto-discovered</text>
+        <text x="316" y="348" font-size="12" fill="#93a4bd">Tap(nx, ny, image_size) → image px → H → arm XY</text>
+        <text x="316" y="372" font-size="13">_to_device = a calibration homography, taught once</text>
+        <text x="316" y="392" font-size="12" fill="#93a4bd">_move_and_tap → the arm's SDK, serial or CAN</text>
+        <text x="316" y="410" font-size="12" fill="#93a4bd">typing = on-screen keyboard taps, or a HID bridge</text>
+        <text x="316" y="434" font-size="11" fill="#e0af68">safety lives in the plugin: work area, speed cap, e-stop</text>
+        <text x="316" y="452" font-size="11" fill="#93a4bd">the shipped example prints; a real driver fills in two methods</text>
+
+        <!-- runner <-> services -->
+        <path d="M300,140 L270,140 L270,200 L244,200" fill="none" stroke="#7aa2f7" stroke-width="2" marker-end="url(#c1b)"/>
+        <text x="262" y="133" text-anchor="middle" font-size="11" fill="#7aa2f7">photo</text>
+        <path d="M244,300 L270,300 L270,360 L296,360" fill="none" stroke="#f7768e" stroke-width="2" marker-end="url(#c1r)"/>
+        <text x="257" y="293" text-anchor="middle" font-size="11" fill="#f7768e">Tap</text>
+
+        <!-- physical device -->
+        <rect x="760" y="30" width="420" height="440" rx="12" fill="#141c2b" stroke="#e8eef7" stroke-width="2"/>
+        <text x="780" y="60" font-weight="700" font-size="15">Device under test — physical</text>
+        <text x="1160" y="60" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#93a4bd">no OS access</text>
+        <text x="780" y="80" font-size="12" fill="#93a4bd">nothing installed on it: seen by a camera, touched by an arm</text>
+
+        <!-- camera -->
+        <rect x="1060" y="92" width="40" height="26" rx="4" fill="#1b2536" stroke="#7aa2f7" stroke-width="1.5"/>
+        <circle cx="1080" cy="105" r="7" fill="none" stroke="#7aa2f7" stroke-width="1.5"/>
+        <text x="1108" y="110" font-size="12" fill="#7aa2f7">camera</text>
+        <g stroke="#7aa2f7" stroke-width="1" stroke-dasharray="4 3">
+          <line x1="1066" y1="118" x2="800" y2="190"/>
+          <line x1="1094" y1="118" x2="1140" y2="190"/>
+        </g>
+
+        <!-- screen -->
+        <rect x="800" y="190" width="340" height="160" rx="6" fill="#0a0f1a" stroke="#93a4bd" stroke-width="2"/>
+        <text x="970" y="214" text-anchor="middle" font-size="12" fill="#93a4bd">appliance panel · HMI · phone</text>
+        <rect x="820" y="236" width="80" height="36" rx="5" fill="#1b2536"/><text x="860" y="259" text-anchor="middle" font-size="13">Start</text>
+        <rect x="920" y="236" width="80" height="36" rx="5" fill="#1b2536"/><text x="960" y="259" text-anchor="middle" font-size="13">Stop</text>
+        <rect x="1020" y="236" width="100" height="36" rx="5" fill="#1b2536"/><text x="1070" y="259" text-anchor="middle" font-size="13">Menu</text>
+        <rect x="820" y="290" width="300" height="36" rx="5" fill="#141c2b" stroke="#26334a"/><text x="970" y="313" text-anchor="middle" font-family="Consolas, monospace" font-size="13" fill="#9ece6a">12:30 · ready</text>
+
+        <!-- robot arm -->
+        <rect x="975" y="446" width="50" height="12" rx="3" fill="#3a2230" stroke="#f7768e"/>
+        <polyline points="1000,446 1000,415 930,392 866,300 860,274" fill="none" stroke="#f7768e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="860" cy="262" r="6" fill="#f7768e"/>
+        <text x="1034" y="440" font-size="12" fill="#f7768e">robot arm</text>
+
+        <!-- services <-> hardware -->
+        <line x1="1060" y1="105" x2="644" y2="105" stroke="#7aa2f7" stroke-width="2" marker-end="url(#c1b)"/>
+        <text x="700" y="97" text-anchor="middle" font-size="11" fill="#7aa2f7">frames</text>
+        <line x1="640" y1="400" x2="971" y2="450" stroke="#f7768e" stroke-width="2" marker-end="url(#c1r)"/>
+        <text x="700" y="398" text-anchor="middle" font-size="11" fill="#f7768e">arm XY</text>
+      </svg>
+      <figcaption>Grab returns a photograph instead of a screenshot and the pipeline flattens it before analysis; Tap goes through a calibration homography into arm coordinates instead of screen pixels. The suite, the keywords and the DOM do not change. Today: camera capture and screen rectification are implemented; the robot-arm actuator is the shipped example plugin, whose two hardware methods, the calibration and the safety limits belong to the real arm driver.</figcaption>
+    </figure>
+  </div>
+  <aside class="notes">This is the case the actuator port was designed for (ADR-019). Top path: the capture service is a camera; the only new work is step 0 of the pipeline, which finds the screen in the photo and warps it flat. Bottom path: a Tap arrives as normalized coordinates with the image size, and the plugin's homography turns image pixels into arm coordinates. Be clear about status: the camera side runs today; the arm plugin is a worked stub that prints, and a real arm needs its driver, a calibration routine and its own e-stop.</aside>
+</section>
+
+<!-- ═══════ 6 · reference: the gRPC contracts ═══════ -->
+<section class="slide" id="contracts" aria-label="Reference: the three gRPC contracts">
+  <div class="wrap">
+    <div class="kicker">Reference · protos/*.proto</div>
+    <h2>The three gRPC contracts, <em>call by call</em></h2>
+    <table class="ref">
+      <thead><tr><th>Service</th><th>Call</th><th>What goes in · what comes back</th><th>Port</th></tr></thead>
+      <tbody>
+        <tr><td>Detector</td><td class="mono">Detect</td><td>encoded image + optional <code>box_threshold</code>, <code>text_ensemble</code> → detections (bounds, visual_type, confidence, text, source), backend name, <code>infer_ms</code></td><td class="by">:50051</td></tr>
+        <tr><td></td><td class="mono">HealthCheck</td><td>→ ready, backend, model info — what the Viewer's Services window polls</td><td class="by"></td></tr>
+        <tr><td>Capture</td><td class="mono">Grab</td><td><code>window_title</code> (empty = full screen) → PNG, size, strategy, <code>grab_ms</code>, and the window's origin and device size for coordinate mapping (ADR-021)</td><td class="by">:50053</td></tr>
+        <tr><td></td><td class="mono">Focus</td><td>title → <code>focused</code> only when the server verified the app is in the foreground, plus a detail string</td><td class="by"></td></tr>
+        <tr><td></td><td class="mono">HealthCheck</td><td>→ ready, strategy, platform</td><td class="by"></td></tr>
+        <tr><td>Actuator</td><td class="mono">Tap · Scroll · Swipe</td><td>normalized <code>nx, ny</code> in [0,1] + the image size they were computed on → the server maps them to its own device pixels</td><td class="by">:50054</td></tr>
+        <tr><td></td><td class="mono">TypeText · PressKey</td><td>text or a key chord such as <code>ctrl+a</code> → ok, actuator name, <code>action_ms</code></td><td class="by"></td></tr>
+        <tr><td></td><td class="mono">Focus · HealthCheck</td><td>same focus semantics as capture; ready, actuator, platform</td><td class="by"></td></tr>
+      </tbody>
+    </table>
+    <p class="refnote">Every request carries a <code>request_id</code>, so one test step can be traced across all three services' logs. Field numbers are the versioned contract: new fields are appended, never renumbered. Each server installs a graceful shutdown handler, so a stop finishes in-flight calls before the model is released.</p>
+  </div>
+  <aside class="notes">Two design choices worth saying out loud. Coordinates are normalized, so a DOM built on a cropped window still clicks the right pixel on a second monitor with negative coordinates. And the capture service returns geometry with the frame, which is what makes that mapping possible without the runner knowing the screen layout.</aside>
+</section>
+
+<!-- ═══════ 7 · sequence: one Robot test ═══════ -->
+<section class="slide" id="sequence" aria-label="Sequence: one Robot test, end to end">
+  <div class="wrap">
+    <div class="kicker">Sequence view · examples/windows_calculator_demo</div>
+    <h2>One Robot test, end to end: <em>two model calls, zero per click</em></h2>
+    <figure class="dia">
+      <svg viewBox="0 0 1200 660" role="img" aria-label="The suite connects and dumps the Visual DOM: the library asks the capture service to focus and grab the Calculator window, sends the frame to the detector service, then builds the DOM locally and caches it. Computing seven plus five resolves each key in the cached DOM and sends one Tap to the actuator service per key, with no capture or detection. Verifying the display grabs a frame and re-reads only that element's box." font-family="Segoe UI, system-ui, Arial, sans-serif" font-size="13" fill="#e8eef7">
+        <defs>
+          <marker id="s7m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e8eef7"/></marker>
+          <marker id="s7d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#93a4bd"/></marker>
+          <marker id="s7a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4db6ac"/></marker>
+        </defs>
+
+        <!-- hosts -->
+        <rect x="20" y="10" width="380" height="36" rx="6" fill="#141c2b" stroke="#26334a"/><text x="210" y="33" text-anchor="middle" font-size="12" fill="#93a4bd">test-runner host</text>
+        <rect x="460" y="10" width="160" height="36" rx="6" fill="#141c2b" stroke="#26334a"/><text x="540" y="33" text-anchor="middle" font-size="12" fill="#93a4bd">GPU host</text>
+        <rect x="690" y="10" width="490" height="36" rx="6" fill="#141c2b" stroke="#26334a"/><text x="935" y="33" text-anchor="middle" font-size="12" fill="#93a4bd">machine under test</text>
+
+        <!-- participants -->
+        <rect x="30" y="56" width="120" height="40" rx="6" fill="#1b2536"/><text x="90" y="81" text-anchor="middle" font-weight="600">Robot suite</text>
+        <rect x="220" y="56" width="160" height="40" rx="6" fill="#1b2536"/><text x="300" y="81" text-anchor="middle" font-weight="600">VisualGuiLibrary</text>
+        <rect x="470" y="56" width="140" height="40" rx="6" fill="#2b2a1f" stroke="#e0af68"/><text x="540" y="81" text-anchor="middle" font-weight="600">Detector :50051</text>
+        <rect x="710" y="56" width="140" height="40" rx="6" fill="#1b2a3f" stroke="#7aa2f7"/><text x="780" y="81" text-anchor="middle" font-weight="600">Capture :50053</text>
+        <rect x="890" y="56" width="140" height="40" rx="6" fill="#3a2230" stroke="#f7768e"/><text x="960" y="81" text-anchor="middle" font-weight="600">Actuator :50054</text>
+        <rect x="1070" y="56" width="110" height="40" rx="6" fill="#1b2536"/><text x="1125" y="81" text-anchor="middle" font-weight="600">Calculator</text>
+        <g stroke="#26334a" stroke-width="1.5" stroke-dasharray="4 4">
+          <line x1="90" y1="96" x2="90" y2="650"/><line x1="300" y1="96" x2="300" y2="650"/><line x1="540" y1="96" x2="540" y2="650"/>
+          <line x1="780" y1="96" x2="780" y2="650"/><line x1="960" y1="96" x2="960" y2="650"/><line x1="1125" y1="96" x2="1125" y2="650"/>
+        </g>
+
+        <!-- suite setup -->
+        <line x1="90" y1="125" x2="296" y2="125" stroke="#e8eef7" stroke-width="1.5" marker-end="url(#s7m)"/><text x="195" y="119" text-anchor="middle" font-size="12">Connect(vizdom.config.json)</text>
+        <line x1="90" y1="155" x2="296" y2="155" stroke="#e8eef7" stroke-width="1.5" marker-end="url(#s7m)"/><text x="195" y="149" text-anchor="middle" font-size="12">Dump Visual DOM</text>
+        <line x1="300" y1="185" x2="776" y2="185" stroke="#7aa2f7" stroke-width="1.5" marker-end="url(#s7m)"/><text x="540" y="179" text-anchor="middle" font-size="12" fill="#7aa2f7">Focus("Calculator") · Grab(window_title="Calculator")</text>
+        <line x1="780" y1="215" x2="1121" y2="215" stroke="#e8eef7" stroke-width="1.5" marker-end="url(#s7m)"/><text x="955" y="209" text-anchor="middle" font-size="12">raise the window, crop its client area</text>
+        <line x1="780" y1="245" x2="304" y2="245" stroke="#93a4bd" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#s7d)"/><text x="540" y="239" text-anchor="middle" font-size="12" fill="#93a4bd">frame 461×658 + window geometry</text>
+        <line x1="300" y1="275" x2="536" y2="275" stroke="#e0af68" stroke-width="1.5" marker-end="url(#s7m)"/><text x="420" y="269" text-anchor="middle" font-size="12" fill="#e0af68">Detect(frame)</text>
+        <line x1="540" y1="305" x2="304" y2="305" stroke="#93a4bd" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#s7d)"/><text x="420" y="299" text-anchor="middle" font-size="12" fill="#93a4bd">53 detections · infer_ms</text>
+        <path d="M300,327 H336 V343 H306" fill="none" stroke="#4db6ac" stroke-width="1.5" marker-end="url(#s7a)"/>
+        <text x="344" y="339" font-size="12" fill="#4db6ac">OCR · merge · reading order · hierarchy · compile → Visual DOM, cached in the library</text>
+
+        <!-- compute -->
+        <rect x="20" y="366" width="1160" height="22" rx="4" fill="#1b2536"/>
+        <text x="600" y="381" text-anchor="middle" font-size="12" fill="#93a4bd">Compute 7 add 5 — for each key: 7, +, 5, =</text>
+        <path d="M300,402 H336 V418 H306" fill="none" stroke="#4db6ac" stroke-width="1.5" marker-end="url(#s7a)"/>
+        <text x="344" y="414" font-size="12" fill="#4db6ac">resolve text=7 || desc="digit seven button" in the cached DOM — no capture, no detector</text>
+        <line x1="300" y1="445" x2="956" y2="445" stroke="#f7768e" stroke-width="1.5" marker-end="url(#s7m)"/><text x="630" y="439" text-anchor="middle" font-size="12" fill="#f7768e">Tap(nx, ny, image_size)</text>
+        <line x1="960" y1="475" x2="1121" y2="475" stroke="#e8eef7" stroke-width="1.5" marker-end="url(#s7m)"/><text x="1042" y="469" text-anchor="middle" font-size="12">click at device pixels</text>
+        <line x1="960" y1="505" x2="304" y2="505" stroke="#93a4bd" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#s7d)"/><text x="630" y="499" text-anchor="middle" font-size="12" fill="#93a4bd">ok · action_ms</text>
+
+        <!-- verify -->
+        <line x1="90" y1="540" x2="296" y2="540" stroke="#e8eef7" stroke-width="1.5" marker-end="url(#s7m)"/><text x="195" y="534" text-anchor="middle" font-size="12">Verify Element Value  text=4  4</text>
+        <line x1="300" y1="570" x2="776" y2="570" stroke="#7aa2f7" stroke-width="1.5" marker-end="url(#s7m)"/><text x="540" y="564" text-anchor="middle" font-size="12" fill="#7aa2f7">Grab(window_title) — same scope as the dump</text>
+        <line x1="780" y1="598" x2="304" y2="598" stroke="#93a4bd" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#s7d)"/><text x="540" y="592" text-anchor="middle" font-size="12" fill="#93a4bd">frame</text>
+        <path d="M300,620 H336 V636 H306" fill="none" stroke="#4db6ac" stroke-width="1.5" marker-end="url(#s7a)"/>
+        <text x="344" y="632" font-size="12" fill="#4db6ac">re-OCR only that element's bounds (ADR-023) — no detector call; PASS: expected 4, read 4</text>
+      </svg>
+      <figcaption>Perception runs per screen state, not per action. The whole two-test suite makes two detector calls; every click is a lookup in the cached DOM plus one Tap, and a value check re-reads one box. A failing keyword additionally asks the capture service for a screenshot and embeds it in the Robot log.</figcaption>
+    </figure>
+  </div>
+  <aside class="notes">Follow the colours: blue to capture, orange to the detector, pink to the actuator. The green self-calls are the CPU work in the robot process. Point at the Compute block: four keys, four Taps, no model. That is why adding assertions or keys is nearly free, where a per-action grounder would re-infer every time.</aside>
+</section>
+
+<!-- ═══════ 8 · component: detector backends ═══════ -->
+<section class="slide" id="backends" aria-label="Component view: detector backends are plug-ins">
+  <div class="wrap">
+    <div class="kicker">Component view · DetectorPort</div>
+    <h2>Detector backends are plug-ins, and one of them is <em>built from stages</em></h2>
+    <figure class="dia">
+      <svg viewBox="0 0 1200 440" role="img" aria-label="The detector port is implemented by five backends chosen by name: uied on CPU with no model, yolo on GPU, omniparser on GPU combining YOLO and Florence-2, modular, and grpc for a remote service. All emit the same Detection record. The modular backend runs a region proposer, the shared text detector, a fusion step ported from OmniParser and an optional captioner, and matches the monolith at region recall 1.00 and type agreement 1.00 while being 1.4 to 2 times faster." font-family="Segoe UI, system-ui, Arial, sans-serif" font-size="14" fill="#e8eef7">
+        <defs>
+          <marker id="s8m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#93a4bd"/></marker>
+          <marker id="s8a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4db6ac"/></marker>
+        </defs>
+
+        <!-- registry -->
+        <rect x="20" y="20" width="440" height="400" rx="12" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="40" y="50" font-weight="700" font-size="16" fill="#4db6ac">DetectorPort</text>
+        <text x="440" y="50" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#93a4bd">detect(image) → List[Detection]</text>
+        <text x="40" y="72" font-size="12" fill="#93a4bd">chosen by name — create_detector(name), the registry</text>
+        <rect x="40" y="88" width="400" height="50" rx="6" fill="#1b2536"/>
+        <text x="52" y="109" font-family="Consolas, monospace" font-weight="600" font-size="13">uied</text><text x="428" y="109" text-anchor="end" font-size="11" fill="#9ece6a">CPU · contours · no model</text>
+        <text x="52" y="128" font-size="12" fill="#93a4bd">classical UIED: fast, license-clean, the fallback</text>
+        <rect x="40" y="146" width="400" height="50" rx="6" fill="#1b2536"/>
+        <text x="52" y="167" font-family="Consolas, monospace" font-weight="600" font-size="13">yolo</text><text x="428" y="167" text-anchor="end" font-size="11" fill="#e0af68">GPU · Ultralytics (AGPL)</text>
+        <text x="52" y="186" font-size="12" fill="#93a4bd">icon detector only; OCR comes from the pipeline</text>
+        <rect x="40" y="204" width="400" height="50" rx="6" fill="#1b2536"/>
+        <text x="52" y="225" font-family="Consolas, monospace" font-weight="600" font-size="13">omniparser</text><text x="428" y="225" text-anchor="end" font-size="11" fill="#e0af68">GPU · YOLO + Florence-2 (AGPL)</text>
+        <text x="52" y="244" font-size="12" fill="#93a4bd">monolith: regions, OCR and icon captions in one call</text>
+        <rect x="40" y="262" width="400" height="50" rx="6" fill="#1f3a3a" stroke="#4db6ac"/>
+        <text x="52" y="283" font-family="Consolas, monospace" font-weight="600" font-size="13">modular</text><text x="428" y="283" text-anchor="end" font-size="11" fill="#4db6ac">ADR-027 · three stages →</text>
+        <text x="52" y="302" font-size="12" fill="#93a4bd">the same stages as OmniParser, each one replaceable</text>
+        <rect x="40" y="320" width="400" height="50" rx="6" fill="none" stroke="#7aa2f7" stroke-dasharray="5 4"/>
+        <text x="52" y="341" font-family="Consolas, monospace" font-weight="600" font-size="13">grpc</text><text x="428" y="341" text-anchor="end" font-size="11" fill="#7aa2f7">remote</text>
+        <text x="52" y="360" font-size="12" fill="#93a4bd">any of the above, behind the detector service :50051</text>
+        <text x="240" y="400" text-anchor="middle" font-size="12" fill="#93a4bd">all emit one record: bounds · type · confidence · text · source</text>
+
+        <!-- modular -->
+        <rect x="500" y="20" width="680" height="400" rx="12" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="520" y="50" font-weight="700" font-size="16" fill="#4db6ac">Inside the modular backend</text>
+        <text x="1160" y="50" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#93a4bd">ModularDetectorBackend</text>
+        <rect x="520" y="90" width="150" height="90" rx="8" fill="#1b2536"/>
+        <text x="532" y="110" font-size="11" fill="#93a4bd">stage 1</text><text x="532" y="132" font-weight="600">Region proposer</text>
+        <text x="532" y="152" font-size="11" fill="#93a4bd">omniparser YOLO | uied</text><text x="532" y="168" font-size="11" fill="#93a4bd">the model's own scores</text>
+        <line x1="670" y1="135" x2="690" y2="135" stroke="#93a4bd" stroke-width="1.6" marker-end="url(#s8m)"/>
+        <rect x="694" y="90" width="150" height="90" rx="8" fill="#1b2536"/>
+        <text x="706" y="110" font-size="11" fill="#93a4bd">stage 2</text><text x="706" y="132" font-weight="600">Text detector</text>
+        <text x="706" y="152" font-size="11" fill="#93a4bd">the pipeline's OCR, shared</text><text x="706" y="168" font-size="11" fill="#93a4bd">(bounds, text, confidence)</text>
+        <line x1="844" y1="135" x2="864" y2="135" stroke="#93a4bd" stroke-width="1.6" marker-end="url(#s8m)"/>
+        <rect x="868" y="90" width="150" height="90" rx="8" fill="#1f3a3a" stroke="#4db6ac" stroke-width="1.5"/>
+        <text x="880" y="110" font-size="11" fill="#93a4bd">fusion</text><text x="880" y="132" font-weight="600">remove_overlap</text>
+        <text x="880" y="152" font-size="11" fill="#93a4bd">keep the smaller box</text><text x="880" y="168" font-size="11" fill="#93a4bd">absorb text inside a region</text>
+        <line x1="1018" y1="135" x2="1038" y2="135" stroke="#93a4bd" stroke-width="1.6" marker-end="url(#s8m)"/>
+        <rect x="1042" y="90" width="120" height="90" rx="8" fill="none" stroke="#93a4bd" stroke-dasharray="5 4"/>
+        <text x="1054" y="110" font-size="11" fill="#93a4bd">stage 3 · optional</text><text x="1054" y="132" font-weight="600">Captioner</text>
+        <text x="1054" y="152" font-size="11" fill="#93a4bd">florence | none</text><text x="1054" y="168" font-size="11" fill="#93a4bd">names icons</text>
+        <line x1="943" y1="180" x2="943" y2="226" stroke="#4db6ac" stroke-width="2" marker-end="url(#s8a)"/>
+        <line x1="1102" y1="180" x2="1102" y2="226" stroke="#93a4bd" stroke-width="1.6" marker-end="url(#s8m)"/>
+        <rect x="520" y="230" width="640" height="56" rx="8" fill="#1b2536"/>
+        <text x="840" y="254" text-anchor="middle" font-size="13">List[Detection] — source="modular", a real confidence from each stage</text>
+        <text x="840" y="274" text-anchor="middle" font-size="12" fill="#93a4bd">downstream merge · hierarchy · compile are unchanged; no other detector is touched</text>
+        <rect x="520" y="310" width="640" height="90" rx="8" fill="none" stroke="#9ece6a" stroke-dasharray="5 4"/>
+        <text x="536" y="336" font-weight="600" fill="#9ece6a">Parity benchmark against the monolith</text>
+        <text x="536" y="360" font-size="12">region recall 1.00 · type agreement 1.00 · 1.4–2× faster</text>
+        <text x="536" y="384" font-family="Consolas, monospace" font-size="12" fill="#93a4bd">swap a stage from the command line:  --regions uied  --captioner none</text>
+      </svg>
+      <figcaption>Every backend emits the same record, so the rest of the pipeline never knows which one ran. The modular backend reproduces OmniParser stage by stage, which is what lets a stage be replaced, benchmarked or run without a GPU, without touching the other backends.</figcaption>
+    </figure>
+  </div>
+  <aside class="notes">Left: the registry, five names. Right: what "modular" means. Stage 1 proposes boxes with real scores, stage 2 is the same OCR instance the pipeline already has, fusion is a faithful port of OmniParser's overlap rule, and the captioner is optional. The parity numbers come from the benchmark on the session screenshots.</aside>
+</section>
+
+<!-- ═══════ 9 · flow: locator resolution ═══════ -->
+<section class="slide" id="locators" aria-label="Flow: finding an element from a locator">
+  <div class="wrap">
+    <div class="kicker">Flow · ADR-022 · ADR-024</div>
+    <h2>From a locator to <em>exactly one element</em>, or a loud failure</h2>
+    <figure class="dia">
+      <svg viewBox="0 0 1200 460" role="img" aria-label="A locator string is split on double pipe into ordered alternatives. Each alternative is matched deterministically by the ElementFinder on id, text, hint, role, within, right_of and below. Exactly one match is the element. Several matches go to arbitration, where the desc part is grounded over just those candidates. No match moves to the next alternative; a lone desc alternative first tries tiered grounding: lexical, then a small language model over the DOM, then a vision model with numbered boxes. When no alternative is left, the keyword fails and lists every attempt." font-family="Segoe UI, system-ui, Arial, sans-serif" font-size="14" fill="#e8eef7">
+        <defs>
+          <marker id="s9m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#93a4bd"/></marker>
+          <marker id="s9g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9ece6a"/></marker>
+          <marker id="s9w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e0af68"/></marker>
+          <marker id="s9r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f7768e"/></marker>
+          <marker id="s9b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7aa2f7"/></marker>
+        </defs>
+
+        <rect x="20" y="150" width="250" height="100" rx="10" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="36" y="172" font-size="12" fill="#93a4bd">locator from the test</text>
+        <text x="36" y="198" font-family="Consolas, monospace" font-size="13" fill="#4db6ac">text=7 ||</text>
+        <text x="36" y="218" font-family="Consolas, monospace" font-size="13" fill="#4db6ac">desc="digit seven button"</text>
+        <text x="36" y="240" font-size="11" fill="#93a4bd">alternatives are tried in order</text>
+        <line x1="270" y1="200" x2="306" y2="200" stroke="#93a4bd" stroke-width="1.8" marker-end="url(#s9m)"/>
+
+        <rect x="310" y="150" width="200" height="100" rx="10" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="326" y="178" font-weight="600">split on ||</text>
+        <text x="326" y="200" font-size="12" fill="#93a4bd">ordered alternatives,</text>
+        <text x="326" y="218" font-size="12" fill="#93a4bd">each an AND-group</text>
+        <text x="326" y="238" font-size="11" fill="#93a4bd">(quote-aware)</text>
+        <line x1="510" y1="200" x2="546" y2="200" stroke="#93a4bd" stroke-width="1.8" marker-end="url(#s9m)"/>
+
+        <rect x="550" y="150" width="250" height="100" rx="10" fill="#1f3a3a" stroke="#4db6ac" stroke-width="1.5"/>
+        <text x="566" y="178" font-weight="600">ElementFinder — deterministic</text>
+        <text x="566" y="200" font-size="12" fill="#93a4bd">match every locator in the group,</text>
+        <text x="566" y="218" font-size="12" fill="#93a4bd">intersect: id · text · hint · role</text>
+        <text x="566" y="238" font-size="12" fill="#93a4bd">within · right_of · below</text>
+
+        <line x1="800" y1="180" x2="876" y2="66" stroke="#9ece6a" stroke-width="2" marker-end="url(#s9g)"/>
+        <line x1="800" y1="200" x2="876" y2="210" stroke="#e0af68" stroke-width="2" marker-end="url(#s9w)"/>
+        <line x1="800" y1="220" x2="876" y2="318" stroke="#93a4bd" stroke-width="1.8" marker-end="url(#s9m)"/>
+
+        <rect x="880" y="30" width="300" height="66" rx="10" fill="#1f3324" stroke="#9ece6a" stroke-width="1.5"/>
+        <text x="896" y="58" font-weight="600" fill="#9ece6a">exactly one → the element</text>
+        <text x="896" y="80" font-size="12" fill="#93a4bd">Click · Type · Verify proceed on it</text>
+
+        <rect x="880" y="170" width="300" height="80" rx="10" fill="#141c2b" stroke="#e0af68" stroke-width="1.5"/>
+        <text x="896" y="196" font-weight="600" fill="#e0af68">several → arbitration (ADR-024)</text>
+        <text x="896" y="218" font-size="12" fill="#93a4bd">ground the desc= over just those</text>
+        <text x="896" y="236" font-size="12" fill="#93a4bd">2–3 candidates: one winner, or give up</text>
+        <line x1="1030" y1="170" x2="1030" y2="100" stroke="#9ece6a" stroke-width="2" marker-end="url(#s9g)"/>
+        <text x="1040" y="140" font-size="11" fill="#9ece6a">confident</text>
+
+        <rect x="880" y="290" width="300" height="56" rx="10" fill="#141c2b" stroke="#26334a" stroke-width="1.5"/>
+        <text x="896" y="314" font-weight="600">none → next alternative</text>
+        <text x="896" y="334" font-size="12" fill="#93a4bd">a lone desc= tries grounding first ←</text>
+        <line x1="880" y1="330" x2="804" y2="350" stroke="#7aa2f7" stroke-width="2" marker-end="url(#s9b)"/>
+        <line x1="1030" y1="346" x2="1030" y2="376" stroke="#f7768e" stroke-width="2" marker-end="url(#s9r)"/>
+        <text x="1040" y="366" font-size="11" fill="#f7768e">no alternative left</text>
+
+        <rect x="880" y="380" width="300" height="60" rx="10" fill="#3a2230" stroke="#f7768e" stroke-width="1.5"/>
+        <text x="896" y="406" font-weight="600" fill="#f7768e">FAIL loudly</text>
+        <text x="896" y="428" font-size="12" fill="#93a4bd">every attempt and its reason is listed</text>
+
+        <rect x="310" y="300" width="490" height="144" rx="10" fill="#141c2b" stroke="#7aa2f7" stroke-width="1.5"/>
+        <text x="326" y="326" font-weight="600" fill="#7aa2f7">Tiered grounding for desc= (ADR-022)</text>
+        <rect x="326" y="340" width="150" height="56" rx="6" fill="#1b2536"/>
+        <text x="338" y="362" font-weight="600" font-size="13">1 · lexical</text><text x="338" y="382" font-size="11" fill="#93a4bd">no model, always on</text>
+        <line x1="476" y1="368" x2="482" y2="368" stroke="#93a4bd" stroke-width="1.6" marker-end="url(#s9m)"/>
+        <rect x="486" y="340" width="150" height="56" rx="6" fill="#1b2536"/>
+        <text x="498" y="362" font-weight="600" font-size="13">2 · SLM over the DOM</text><text x="498" y="382" font-size="11" fill="#93a4bd">Ollama; the id must exist</text>
+        <line x1="636" y1="368" x2="642" y2="368" stroke="#93a4bd" stroke-width="1.6" marker-end="url(#s9m)"/>
+        <rect x="646" y="340" width="140" height="56" rx="6" fill="#1b2536"/>
+        <text x="658" y="362" font-weight="600" font-size="13">3 · VLM Set-of-Mark</text><text x="658" y="382" font-size="11" fill="#93a4bd">numbered boxes, opt-in</text>
+        <text x="326" y="416" font-size="11" fill="#93a4bd">a confident tier → the element; a tie escalates to the next tier, never a guess</text>
+        <text x="326" y="432" font-size="11" fill="#93a4bd">position words such as "top right" are checked by geometry, never by a model</text>
+      </svg>
+      <figcaption>Exactly one, or fail. An alternative is abandoned when it matches nothing or several things, because clicking a coin-flip element is worse than failing. Models enter only through <code>desc=</code>, tier by tier, and every escalated hit logs which tier answered.</figcaption>
+    </figure>
+  </div>
+  <aside class="notes">Read it as a funnel. The deterministic finder handles most locators with no model at all; in the Calculator demo every key resolves on text= and never reaches desc=. The grounding tiers are the fallback for controls with no text, and the demo pins the lexical tier so the run is reproducible.</aside>
+</section>
+
+<!-- ═══════ 10 · deployment: same suite, four deployments ═══════ -->
+<section class="slide" id="topologies" aria-label="Deployment: the same suite, four deployments">
+  <div class="wrap">
+    <div class="kicker">Deployment view · vizdom.config.json</div>
+    <h2>The same suite, <em>four deployments</em> — the config is the only difference</h2>
+    <div class="cards">
+      <div class="card">
+        <b>1 · one laptop</b>
+        <h3>Everything in the robot process</h3>
+        <pre class="code">"detector": { "backend": "uied" },
+"capture":  { "strategy": "windows",
+              "window_title": "Calculator" },
+"actuator": { "strategy": "desktop" }</pre>
+        <p>No service, no GPU. The CPU detector; good for authoring tests and for CI smoke runs.</p>
+      </div>
+      <div class="card">
+        <b>2 · shared GPU</b>
+        <h3>Perception moves to a GPU box</h3>
+        <pre class="code">"detector": { "backend": "grpc",
+  "grpc_target": "gpu-box:50051" },
+"capture":  { "strategy": "windows" },
+"actuator": { "strategy": "desktop" }</pre>
+        <p>One warm OmniParser or modular server serves every tester's laptop. The model loads once.</p>
+      </div>
+      <div class="card">
+        <b>3 · fully distributed</b>
+        <h3>The demo: three machines</h3>
+        <pre class="code">"detector": { "backend": "grpc",
+  "grpc_target": "gpu-box:50051" },
+"capture":  { "strategy": "grpc",
+  "target": "sut:50053",
+  "window_title": "Calculator",
+  "window_scope": true },
+"actuator": { "strategy": "grpc",
+  "target": "sut:50054" }</pre>
+        <p>The runner holds no model and never touches the SUT's screen directly. Failure screenshots come from the SUT.</p>
+      </div>
+      <div class="card">
+        <b>4 · closed device</b>
+        <h3>Camera in, robot arm out</h3>
+        <pre class="code">"detector": { "backend": "grpc",
+  "grpc_target": "gpu-box:50051" },
+"capture":  { "strategy": "camera" },
+"actuator": { "strategy": "robot-arm" }</pre>
+        <p>An appliance panel with no OS access: the capture service reads a camera, an actuator plugin drives a finger. Same keywords, same DOM.</p>
+      </div>
+    </div>
+    <p class="refnote">Strategies 1 to 3 run today (the Calculator suite passed 2/2 in deployment 3). Deployment 4 uses the camera capture that exists and an actuator plugin slot that is auto-discovered; the robot-arm driver itself is the part still to write.</p>
+  </div>
+  <aside class="notes">Close on this one. The point of the hexagon is that these four are one code base and one test suite. Be honest about the fourth: the camera strategy and the plugin mechanism are there, the arm driver is not.</aside>
+</section>
+
+<div id="progress"></div>
+<div id="hint">← → navigate · F fullscreen · N notes</div>
+<div id="hud">
+  <button type="button" id="btnPrev" aria-label="Previous slide">‹</button>
+  <span id="count" aria-live="polite">1 / 11</span>
+  <button type="button" id="btnNext" aria-label="Next slide">›</button>
+  <button type="button" id="btnNotes" aria-pressed="false" title="Presenter notes (N)">notes</button>
+</div>
+<div id="notes" hidden><b>Presenter notes</b><span id="notesText"></span></div>
+
+<script>
+(function () {
+  'use strict';
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0;
+  var notesOn = false;
+  try { notesOn = sessionStorage.getItem('vizdom-dia-notes') === '1'; } catch (e) { /* storage unavailable */ }
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, k) { s.classList.toggle('active', k === i); s.setAttribute('aria-hidden', k === i ? 'false' : 'true'); });
+    document.getElementById('count').textContent = (i + 1) + ' / ' + slides.length;
+    document.getElementById('progress').style.width = ((i + 1) / slides.length * 100) + '%';
+    var note = slides[i].querySelector('aside.notes');
+    document.getElementById('notesText').textContent = note ? note.textContent : '';
+    document.getElementById('notes').hidden = !notesOn;
+    document.getElementById('btnNotes').setAttribute('aria-pressed', notesOn ? 'true' : 'false');
+    slides[i].scrollTop = 0;
+    if (history.replaceState) history.replaceState(null, '', location.search + '#' + (slides[i].id || (i + 1)));
+  }
+
+  function toggleNotes() {
+    notesOn = !notesOn;
+    try { sessionStorage.setItem('vizdom-dia-notes', notesOn ? '1' : '0'); } catch (e) { /* storage unavailable */ }
+    show(i);
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    switch (e.key) {
+      case 'ArrowRight': case 'PageDown': case ' ': case 'Enter': e.preventDefault(); show(i + 1); break;
+      case 'ArrowLeft': case 'PageUp': case 'Backspace': e.preventDefault(); show(i - 1); break;
+      case 'Home': e.preventDefault(); show(0); break;
+      case 'End': e.preventDefault(); show(slides.length - 1); break;
+      case 'n': case 'N': toggleNotes(); break;
+      case 'f': case 'F':
+        try {
+          if (document.fullscreenElement) document.exitFullscreen();
+          else document.documentElement.requestFullscreen();
+        } catch (err) { /* fullscreen not allowed here */ }
+        break;
+    }
+  });
+  document.getElementById('btnPrev').addEventListener('click', function () { show(i - 1); });
+  document.getElementById('btnNext').addEventListener('click', function () { show(i + 1); });
+  document.getElementById('btnNotes').addEventListener('click', toggleNotes);
+
+  var x0 = null;
+  document.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1));
+    x0 = null;
+  }, { passive: true });
+
+  // Colour the config snippets: keys and strings.
+  function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  document.querySelectorAll('pre.code').forEach(function (pre) {
+    pre.innerHTML = esc(pre.textContent)
+      .replace(/("[^"]*")(\s*:)/g, '<span class="k">$1</span>$2')
+      .replace(/(:\s*|\[\s*|,\s*)("[^"]*")/g, '$1<span class="s">$2</span>');
+  });
+
+  var want = decodeURIComponent((location.hash || '').slice(1));
+  var byId = slides.findIndex(function (sl) { return sl.id && sl.id === want; });
+  var byNumber = /^\d+$/.test(want) ? parseInt(want, 10) - 1 : -1;
+  show(byId >= 0 ? byId : (byNumber >= 0 ? byNumber : 0));
+})();
+</script>
+</body>
+</html>
