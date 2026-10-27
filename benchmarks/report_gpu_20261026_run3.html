@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lifecycle Benchmark Run 3</title>
-<meta name="description" content="Analysis of the third rented-GPU lifecycle benchmark run (2026-10-26, RTX 6000 Ada, commit 82f0b45): VizDOM columns versus ELAM-7B and UI-TARS-1.5-7B on lifecycle-synthetic-v1, with the full test configuration.">
+<meta name="description" content="Analysis of the third rented-GPU lifecycle benchmark run (2026-10-26, RTX 6000 Ada, commit 82f0b45): VizDOM columns versus ELAM-7B and UI-TARS-1.5-7B on lifecycle-synthetic-v1, with the full test configuration, plus the Aria-UI column measured in a follow-up rental on a 96 GB card.">
 <style>
 :root {
   color-scheme: light;
@@ -99,7 +99,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <body>
 <main>
 <h1>Lifecycle benchmark, run 3: VizDOM vs end-to-end grounders</h1>
-<p class="lede">Analysis of the third rented-GPU run. Five executor columns on one machine, one commit and one step set; the first run that carries the Step 6b2 pipeline fix.</p>
+<p class="lede">Analysis of the third rented-GPU run. Five executor columns on one machine, one commit and one step set; the first run that carries the Step 6b2 pipeline fix. The Aria-UI column was added from a separate rental the same night (see the note).</p>
 <div class="facts">
   <span>Run <b>gpu-20261026_212923</b></span>
   <span>GPU <b>RTX 6000 Ada, 48 GB</b> (Vast.ai)</span>
@@ -108,19 +108,31 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
   <span><b>514</b> steps over <b>44</b> screen states</span>
   <span>Date <b>2026-10-26</b>, 21:29 to 22:28 UTC</span>
 </div>
+<div class="facts">
+  <span>Aria-UI addendum: run <b>gpu-20261026_233909</b></span>
+  <span>GPU <b>RTX PRO 6000 Blackwell Max-Q, 96 GB</b> (Vast.ai)</span>
+  <span>Commit <b>411873c</b></span>
+  <span>same manifest, <b>aria-ui</b> column only</span>
+  <span>Date <b>2026-10-26</b>, 23:39 to 23:53 UTC</span>
+</div>
+
+<div class="callout">
+  <p><b>Note on the Aria-UI column.</b> Aria-UI (25 B mixture-of-experts, bf16 only, ~50 GB of weights) did not fit the 48 GB card of run 3 and was skipped by the kit's gate. It was measured two hours later in a second rental on a 96 GB RTX PRO 6000 Blackwell, with <code>ONLY="aria-ui"</code>, the same 514-step manifest and the same adapter code (commit <code>411873c</code> differs from <code>82f0b45</code> only by kit scripts, docs and the opt-in offload switch, which did not engage: the whole model sat on the GPU). Its accuracy numbers are comparable with the other columns, since the steps and the scoring are identical. Its latency is not comparable with run 3's grounders, since it ran on a different card and host; section 2.1 lists both hosts. Everywhere below, the Aria-UI row carries this origin.</p>
+</div>
 
 <div class="tiles">
   <div class="tile"><div class="k">False-pass rate, VizDOM (all three detectors)</div><div class="v good">0.000</div><div class="s">0 of 88 absent-target statements passed</div></div>
+  <div class="tile"><div class="k">False-pass rate, Aria-UI</div><div class="v bad">0.292</div><div class="s">88 of 88 absent-target statements passed</div></div>
   <div class="tile"><div class="k">False-pass rate, ELAM-7B</div><div class="v bad">0.286</div><div class="s">86 of 88 absent-target statements passed</div></div>
   <div class="tile"><div class="k">False-pass rate, UI-TARS-1.5-7B</div><div class="v bad">0.199</div><div class="s">60 of 88 absent-target statements passed</div></div>
-  <div class="tile"><div class="k">Best action-hit</div><div class="v">0.944</div><div class="s">UI-TARS; ELAM 0.930; VizDOM-OmniParser and modular 0.883</div></div>
+  <div class="tile"><div class="k">Best action-hit</div><div class="v">0.962</div><div class="s">Aria-UI; UI-TARS 0.944; ELAM 0.930; VizDOM-OmniParser and modular 0.883</div></div>
 </div>
 
 <h2>1. Summary</h2>
-<p>The two end-to-end grounders click the right element more often than VizDOM: by 5 to 6 points over the OmniParser and modular detectors and by 11 to 12 over UIED. On the test-oracle question the picture inverts. Asked whether a button that is not on the screen is visible, ELAM says <em>PASSED</em> in 86 of 88 cases and UI-TARS in 60 of 88. VizDOM never does, because its locator contract requires exactly one match before anything is reported present. VizDOM's own verify errors are all in the conservative direction: a present caption that OCR could not read, reported as <em>FAILED</em>.</p>
+<p>The three end-to-end grounders click the right element more often than VizDOM: Aria-UI by 8 points over the OmniParser and modular detectors, ELAM and UI-TARS by 5 to 6, and all of them by 11 to 14 over UIED. On the test-oracle question the picture inverts. Asked whether a button that is not on the screen is visible, Aria-UI says <em>PASSED</em> in 88 of 88 cases, ELAM in 86 of 88 and UI-TARS in 60 of 88. VizDOM never does, because its locator contract requires exactly one match before anything is reported present. VizDOM's own verify errors are all in the conservative direction: a present caption that OCR could not read, reported as <em>FAILED</em>.</p>
 <p>Two things are new in this run. The modular backend now ties the OmniParser monolith on every one of the 514 steps, at 61 % of its parse time, which closes the gap diagnosed in the run 2 report. And the same fix lifted UIED by 9 click steps. The OmniParser column itself is identical to run 2 on all 514 steps, on a different card, so every VizDOM change is accounted for by the code change.</p>
 <div class="callout">
-  <p><b>Reading for the thesis.</b> A GUI test oracle must not pass a check whose target is absent. That is the one failure class the lifecycle benchmark isolates with the <code>verify-neg</code> steps, and it is the one where the architecture difference shows: 0 for a resolved-DOM system against 0.20 to 0.29 for per-step vision-language grounding, at one twenty-sixth of the inference cost per step on this suite.</p>
+  <p><b>Reading for the thesis.</b> A GUI test oracle must not pass a check whose target is absent. That is the one failure class the lifecycle benchmark isolates with the <code>verify-neg</code> steps, and it is the one where the architecture difference shows: 0 for a resolved-DOM system against 0.20 to 0.29 for per-step vision-language grounding, at one fifteenth to one twenty-sixth of the inference cost per step on this suite. The best grounder at clicking, Aria-UI, is also the worst oracle: it never says no.</p>
 </div>
 
 <h2>2. Test configuration (PV)</h2>
@@ -136,11 +148,26 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <tr><th>RAM</th><td>52 of 95.4 GB allocated to the instance</td></tr>
 <tr><th>Motherboard / bus</th><td>ASUS ProArt X670E-CREATOR WIFI; GPU on PCIe 4.0 ×8, 13 GB/s measured by the host</td></tr>
 <tr><th>Disk</th><td>Samsung SSD 9100 PRO; disk slider set to 150 to 200 GB (setup refuses below 120 GB free)</td></tr>
-<tr><th>Aria-UI</th><td>skipped by the 70 GB gate: this card is below the bf16 load (~50 GB of weights plus activations); see section 9</td></tr>
+<tr><th>Aria-UI</th><td>skipped by the 70 GB gate: this card is below the bf16 load (~50 GB of weights plus activations); measured on the second host below</td></tr>
 </tbody>
 </table>
 </div>
 <p class="src">The run 2 host was an RTX 4090 (24 GB) on a different Vast.ai machine; CPU, RAM and bus of that host were not recorded. Where run 2 and run 3 differ in latency, the host is the likely cause (section 6).</p>
+
+<h3>2.1a Host of the Aria-UI addendum (run gpu-20261026_233909)</h3>
+<div class="table-wrap">
+<table class="kv">
+<tbody>
+<tr><th>Provider / instance</th><td>Vast.ai, on-demand rental, SSH launch mode, PyTorch CUDA template; 1.462 $/h, about half an hour of rental in total</td></tr>
+<tr><th>GPU</th><td>1 × NVIDIA RTX PRO 6000 Blackwell Max-Q Workstation Edition, 97 887 MiB (reported to torch as 102 GB), 1 405 GB/s memory bandwidth, driver 615.71.09, CUDA 13.4 max</td></tr>
+<tr><th>CPU</th><td>AMD Ryzen 9 9950X, 16 cores; all 32 threads allocated to the instance</td></tr>
+<tr><th>RAM</th><td>126.2 GB on the host, 2 GB in use by the instance at rest</td></tr>
+<tr><th>Motherboard / bus</th><td>MSI MAG X870 TOMAHAWK WIFI; GPU on PCIe 5.0 ×16, 53 GB/s measured by the host</td></tr>
+<tr><th>Disk / network</th><td>WD_BLACK SN7100 4 TB (3 774 MB/s); 2 035 Mbps down, 1 960 Mbps up, so the 50 GB download took minutes</td></tr>
+<tr><th>What ran</th><td><code>ONLY="aria-ui"</code>: prefetch pulled only Aria-UI-base, preflight loaded it once, the sweep ran the one column in 834 s. Offload mode was exported but did not engage, because the card is above the 70 GB gate: the device map shows the whole model on the GPU.</td></tr>
+</tbody>
+</table>
+</div>
 
 <h3>2.2 Software</h3>
 <div class="table-wrap">
@@ -148,11 +175,11 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <tbody>
 <tr><th>Repository</th><td><code>vizdom</code> at commit <code>82f0b45</code> (develop), fresh clone; kit <code>deploy/gpu/</code> run end to end with no manual intervention</td></tr>
 <tr><th>Python</th><td>3.12 in two <code>uv</code> virtual environments created by <code>setup.sh</code></td></tr>
-<tr><th>torch</th><td>CUDA 12.6 wheel index (<code>cu126</code>), latest at install time; exact version is printed by setup but not kept in the tarball</td></tr>
-<tr><th>transformers</th><td><code>.venv</code>: 4.49.0 (VizDOM, OmniParser, Florence-2, UI-TARS). <code>.venv-legacy</code>: 4.47.1 with sentencepiece, einops, tensorflow-cpu (ELAM's Molmo code, Aria-UI)</td></tr>
+<tr><th>torch</th><td>CUDA 12.6 wheel index (<code>cu126</code>) on the Ada card, <code>cu128</code> on the Blackwell card (setup picks it from the compute capability); latest at install time, exact version printed by setup but not kept in the tarball</td></tr>
+<tr><th>transformers</th><td><code>.venv</code>: 4.49.0 (VizDOM, OmniParser, Florence-2, UI-TARS). <code>.venv-legacy</code>: 4.47.1 with sentencepiece, einops, tensorflow-cpu (ELAM's Molmo code, Aria-UI). Aria-UI's remote code reported <code>grouped_gemm</code> not installed and used its sequential GEMM path, which is slower; the 1.57 s per step below includes that.</td></tr>
 <tr><th>OCR</th><td>easyocr on GPU, upscale 1.4× for 1920×1080 screens (from the column logs)</td></tr>
 <tr><th>Detector weights</th><td>OmniParser v2 <code>icon_detect/model.pt</code> (YOLO) and <code>icon_caption_florence</code> (Florence-2), prefetched into <code>models/omniparser</code>; OmniParser source under <code>third_party/OmniParser</code> with the project's lazy-PaddleOCR patch</td></tr>
-<tr><th>Grounder weights</th><td><code>sparks-solutions/ELAM-7B</code> (4 shards), <code>ByteDance-Seed/UI-TARS-1.5-7B</code> (7 shards), from the Hugging Face Hub via <code>prefetch.sh</code></td></tr>
+<tr><th>Grounder weights</th><td><code>sparks-solutions/ELAM-7B</code> (4 shards), <code>ByteDance-Seed/UI-TARS-1.5-7B</code> (7 shards), <code>Aria-UI/Aria-UI-base</code> (12 shards, ~50 GB, addendum run), from the Hugging Face Hub via <code>prefetch.sh</code></td></tr>
 <tr><th>Preflight</th><td>each grounder grounds one instruction (ELAM also judges one statement) and the pipeline runs once with the omniparser and the modular backend before the sweep starts</td></tr>
 </tbody>
 </table>
@@ -185,7 +212,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <tr class="ours"><td>vizdom-modular</td><td>.venv</td><td>modular backend: the same YOLO as stage 1, project OCR as stage 2, OmniParser's fusion ported; captioner off</td><td>refiner off, GPU on; absorbed OCR lands in <code>text</code>, Step 6b2 drops the duplicate value text</td></tr>
 <tr><td>elam-7b</td><td>.venv-legacy</td><td>ELAM-7B (Molmo-7B-D), bf16 unquantized, bf16 autocast, <code>device_map=auto</code></td><td>model-card "Test Action" template, 96 new tokens, <code>&lt;point&gt;</code> in percent mapped to pixels</td><td>native: model-card "Expected Result" template, think step by step, 512 new tokens, last PASSED/FAILED wins</td><td>greedy decoding, stop at end of text</td></tr>
 <tr><td>ui-tars-1.5-7b</td><td>.venv</td><td>UI-TARS-1.5-7B (Qwen2.5-VL), bf16 unquantized, <code>device_map=auto</code></td><td>grounding prompt "Output only the coordinate of one point", 64 new tokens, point in processed-image space rescaled by the processor grid</td><td>proxy: ground the quoted subject; PASSED iff a point came back</td><td>greedy decoding</td></tr>
-<tr><td>aria-ui</td><td>.venv-legacy</td><td colspan="4">not run: <code>available()</code> refused the 48 GB card (gate 70 GB), prefetch skipped the 50 GB download, the sweep skipped the column</td></tr>
+<tr><td>aria-ui <span class="src">(addendum run)</span></td><td>.venv-legacy</td><td>Aria-UI-base (25.3 B MoE, 3.9 B active), bf16 unquantized, <code>device_map=auto</code>, whole model on the GPU</td><td>model-card grounding prompt "relative (0-1000) pixel point coordinates", pixel values cast to bf16, inference mode + bf16 autocast, 50 new tokens, stop at <code>&lt;|im_end|&gt;</code>, 0-1000 point mapped to pixels</td><td>proxy, like UI-TARS: ground the quoted subject; PASSED iff a point came back</td><td>greedy decoding; refused on the 48 GB card of run 3, run on the 96 GB card</td></tr>
 </tbody>
 </table>
 </div>
@@ -203,6 +230,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <tr><td>5</td><td>ui-tars-1.5-7b</td><td class="num">1 405 s (23 min)</td><td>OK</td><td>514 inferences; first step 12.1 s including load</td></tr>
 <tr><td>6</td><td>aria-ui</td><td class="num">—</td><td>skipped</td><td>48 GB card below the 70 GB gate</td></tr>
 <tr><td>7</td><td>parity</td><td class="num">17 s</td><td>OK</td><td>ADR-027 monolith vs modular+Florence on three dashboard screens</td></tr>
+<tr><td>addendum</td><td>aria-ui <span class="src">(96 GB card, 23:39 UTC)</span></td><td class="num">834 s (14 min)</td><td>OK</td><td>514 inferences; shards loaded in 6 s, first step 22 s including warm-up</td></tr>
 </tbody>
 </table>
 </div>
@@ -218,21 +246,22 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <tr class="ours"><td>vizdom-modular</td><td>CV, captioner off</td><td class="num">0.883</td><td class="num">0.934</td><td class="num">0.000</td><td class="num">0.912</td><td>load 4.2 s, parse 0.62 s/state</td></tr>
 <tr><td>elam-7b</td><td>bf16</td><td class="num">0.930</td><td class="num">0.704</td><td class="num">0.286</td><td class="num">0.798</td><td>4.00 s/step, 514 inferences</td></tr>
 <tr><td>ui-tars-1.5-7b</td><td>bf16</td><td class="num">0.944</td><td class="num">0.801</td><td class="num">0.199</td><td class="num">0.860</td><td>2.72 s/step, 514 inferences</td></tr>
-<tr><td>aria-ui</td><td>—</td><td colspan="5">not run: 25 B MoE, bf16 only (~50 GB of weights); below the 70 GB gate on this 48 GB card</td></tr>
+<tr><td>aria-ui <span class="src">(addendum, 96 GB card)</span></td><td>bf16</td><td class="num">0.962</td><td class="num">0.708</td><td class="num">0.292</td><td class="num">0.813</td><td>1.57 s/step, 514 inferences, other host</td></tr>
 </tbody>
 </table>
 </div>
-<p class="src">Metric definitions: action-hit = produced click point inside the ground-truth element bounds. Verify accuracy = verdict equals expectation over all 301 verify steps (213 positive, 88 negative). False-pass = <em>PASSED</em> on a negative statement, divided by all 301 verifies (so 86 of 88 is 0.286). "All steps correct" is the plain fraction of the 514 steps with a hit or a correct verdict.</p>
+<p class="src">Metric definitions: action-hit = produced click point inside the ground-truth element bounds. Verify accuracy = verdict equals expectation over all 301 verify steps (213 positive, 88 negative). False-pass = <em>PASSED</em> on a negative statement, divided by all 301 verifies (so 88 of 88 is 0.292). "All steps correct" is the plain fraction of the 514 steps with a hit or a correct verdict.</p>
 
 <h3>Run history on the same 514 steps</h3>
 <p class="howto"><b>How to read:</b> each cell is action-hit / verify accuracy / false-pass. Compare down a column to see what moved between runs; the commit and card explain why.</p>
 <div class="table-wrap">
 <table>
-<thead><tr><th>Run</th><th>Card, commit</th><th>vizdom-uied</th><th>vizdom-omniparser</th><th>vizdom-modular</th><th>elam-7b</th><th>ui-tars-1.5-7b</th></tr></thead>
+<thead><tr><th>Run</th><th>Card, commit</th><th>vizdom-uied</th><th>vizdom-omniparser</th><th>vizdom-modular</th><th>elam-7b</th><th>ui-tars-1.5-7b</th><th>aria-ui</th></tr></thead>
 <tbody>
-<tr><td>1, 2026-10-25</td><td>RTX 4090, commit not recorded</td><td>0.779 / 0.934 / 0</td><td>0.883 / 0.934 / 0</td><td>—</td><td>0.0 (prompt bug; rescored offline 0.916)</td><td>4-bit: 0.845 / 0.797 / 0.199</td></tr>
-<tr><td>2, 2026-10-26</td><td>RTX 4090, a4cb85e</td><td>0.779 / 0.934 / 0</td><td>0.883 / 0.934 / 0</td><td>0.732 / 0.934 / 0</td><td>0.939 / 0.701 / 0.289</td><td>0.934 / 0.807 / 0.193</td></tr>
-<tr class="ours"><td>3, 2026-10-26</td><td>RTX 6000 Ada, 82f0b45</td><td><b>0.822</b> / 0.934 / 0</td><td>0.883 / 0.934 / 0</td><td><b>0.883</b> / 0.934 / 0</td><td>0.930 / 0.704 / 0.286</td><td>0.944 / 0.801 / 0.199</td></tr>
+<tr><td>1, 2026-10-25</td><td>RTX 4090, commit not recorded</td><td>0.779 / 0.934 / 0</td><td>0.883 / 0.934 / 0</td><td>—</td><td>0.0 (prompt bug; rescored offline 0.916)</td><td>4-bit: 0.845 / 0.797 / 0.199</td><td>—</td></tr>
+<tr><td>2, 2026-10-26</td><td>RTX 4090, a4cb85e</td><td>0.779 / 0.934 / 0</td><td>0.883 / 0.934 / 0</td><td>0.732 / 0.934 / 0</td><td>0.939 / 0.701 / 0.289</td><td>0.934 / 0.807 / 0.193</td><td>OOM at shard 5/12 (4-bit, 24 GB)</td></tr>
+<tr class="ours"><td>3, 2026-10-26</td><td>RTX 6000 Ada, 82f0b45</td><td><b>0.822</b> / 0.934 / 0</td><td>0.883 / 0.934 / 0</td><td><b>0.883</b> / 0.934 / 0</td><td>0.930 / 0.704 / 0.286</td><td>0.944 / 0.801 / 0.199</td><td>skipped (gate)</td></tr>
+<tr class="ours"><td>3a, 2026-10-26</td><td>RTX PRO 6000 Blackwell 96 GB, 411873c</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><b>0.962</b> / 0.708 / 0.292</td></tr>
 </tbody>
 </table>
 </div>
@@ -243,7 +272,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
   <p class="sub">Share of the 213 click steps whose produced point fell inside the target element. ▲ Longer bar is better; 1.00 means every click landed. Faded bars are superseded runs, kept for scale.</p>
   <div id="chart-hit"></div>
 </div>
-<p>The grounders are within one and a half points of each other and swapped places since run 2 (UI-TARS 0.934 → 0.944, ELAM 0.939 → 0.930). Both moves are a handful of steps on a different GPU with greedy decoding, see section 8. VizDOM-OmniParser misses 25 steps; UI-TARS hits 22 of those 25 and ELAM 20, so the grounders are not merely trading errors, they resolve cases the DOM cannot.</p>
+<p>Aria-UI leads with 205 of 213, then UI-TARS and ELAM within one and a half points of each other; those two swapped places since run 2 (UI-TARS 0.934 → 0.944, ELAM 0.939 → 0.930), a handful of steps on a different GPU with greedy decoding, see section 8. VizDOM-OmniParser misses 25 steps; Aria-UI and UI-TARS each hit 22 of those 25 and ELAM 20, so the grounders are not merely trading errors, they resolve cases the DOM cannot. The reverse also holds in a small way: of Aria-UI's 8 misses, VizDOM-OmniParser hits 5 and the other grounders 7 each, so no single executor dominates step by step.</p>
 <h3>Where VizDOM misses</h3>
 <p>Every VizDOM miss is a <em>resolution</em> miss. The text locator finds either no element or more than one, and the exactly-one contract refuses to click.</p>
 <p class="howto"><b>How to read:</b> counts of missed click steps out of 213, so ▼ lower is better in every column and 0 would be perfect. "0 matches" is an OCR failure, "2+ matches" a detection or merging failure, "resolved, wrong box" a mislocated element. The run 2 column shows what Step 6b2 removed.</p>
@@ -266,6 +295,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <ul>
   <li><b>ELAM</b> (15 misses) fails mostly in the data-table family: 8 of its 28 click steps there, the small numbered pagination and row controls (<code>data_table_0182/E100</code> to <code>E103</code>). The rest are four settings rows, two value fields on form_sidebar and one login control.</li>
   <li><b>UI-TARS</b> (12 misses) fails on the login screens: 5 of 12 steps, including the three social-login buttons on <code>login_0137</code> (<code>E13</code> to <code>E15</code>) and one control each on <code>login_0017</code> and <code>login_0185</code>. Its login hit rate is 0.58 against ELAM's 0.92. The other seven are four form_sidebar value fields and three settings rows.</li>
+  <li><b>Aria-UI</b> (8 misses, addendum run) is perfect on dialog, info_panel, login and settings. Its misses are five form_sidebar input fields (<code>form_sidebar_0007/E15</code> and <code>E19</code>, <code>0023/E26</code>, <code>0103/E30</code>, <code>0111/E15</code>), one data-table control and the two toolbar buttons <code>toolbar_0036/E10</code> and <code>toolbar_0140/E9</code>, which are also among the captions OCR cannot read. Every miss produced a point; it was outside the target box.</li>
 </ul>
 
 <h2>5. Verification: the oracle row</h2>
@@ -279,25 +309,26 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <ul>
   <li><b>ELAM</b> uses its native verdict mode, the model-card prompt that asks it to think step by step and conclude PASSED or FAILED. It concluded <em>PASSED</em> on 296 of 301 statements, including 86 of the 88 impossible ones. Reading its outputs, it rationalises the unknown label onto a nearby real element and then confirms visibility. The two negatives it rejected were <em>Warp Cores</em> and <em>Moon Cheese</em> on two login screens; in run 2 it rejected one. It also produced three false fails on true statements (<code>form_sidebar_0031/E28</code>, <code>settings_0002/E5</code>, <code>settings_0194/E15</code>).</li>
   <li><b>UI-TARS</b> has no verdict mode; the benchmark proxies the verdict by whether the model grounds the target to a point. It grounded 60 of the 88 nonsense labels to some element and never refused a true statement. It did reject <em>Frobnicate</em> 13 times out of 17, so the behaviour is label-dependent rather than random; it also rejected every negative on the dashboard family except four.</li>
+  <li><b>Aria-UI</b> (addendum run) uses the same proxy as UI-TARS, and it returned a point for every one of the 301 statements: all 213 true ones (no false fail) and all 88 impossible ones. A false-pass rate of 0.292 is the ceiling of this metric: 88 of 301. The model that grounds best is the one that never declines to ground, which is exactly what makes it unusable as an oracle without a second mechanism.</li>
   <li><b>VizDOM</b> resolves the locator against the parsed DOM. An absent label has zero matches, so the verdict is <em>FAILED</em> by construction. Its 20 errors are the OCR-unreadable captions above, and they are false fails: the test would stop and a human would look, which is the cheap failure. A false pass is the expensive one, because the suite stays green while the UI is broken.</li>
 </ul>
-<p class="howto"><b>How to read:</b> false passes per family, out of the negatives in that family. ▼ lower is better; the VizDOM columns are 0 everywhere and are left out. Every family has some, so no screen type is safe for either grounder.</p>
+<p class="howto"><b>How to read:</b> false passes per family, out of the negatives in that family. ▼ lower is better; the VizDOM columns are 0 everywhere and are left out. Every family has some, so no screen type is safe for any grounder.</p>
 <div class="table-wrap">
 <table>
-<thead><tr><th>Family (negatives)</th><th class="num down">ELAM false passes</th><th class="num down">UI-TARS false passes</th></tr></thead>
+<thead><tr><th>Family (negatives)</th><th class="num down">ELAM false passes</th><th class="num down">UI-TARS false passes</th><th class="num down">Aria-UI false passes</th></tr></thead>
 <tbody>
-<tr><td>settings (20)</td><td class="num">20</td><td class="num">11</td></tr>
-<tr><td>dashboard (12)</td><td class="num">12</td><td class="num">4</td></tr>
-<tr><td>form_sidebar (12)</td><td class="num">12</td><td class="num">10</td></tr>
-<tr><td>info_panel (12)</td><td class="num">12</td><td class="num">6</td></tr>
-<tr><td>data_table (8)</td><td class="num">8</td><td class="num">6</td></tr>
-<tr><td>dialog (8)</td><td class="num">8</td><td class="num">8</td></tr>
-<tr><td>toolbar (8)</td><td class="num">8</td><td class="num">8</td></tr>
-<tr><td>login (8)</td><td class="num">6</td><td class="num">7</td></tr>
+<tr><td>settings (20)</td><td class="num">20</td><td class="num">11</td><td class="num">20</td></tr>
+<tr><td>dashboard (12)</td><td class="num">12</td><td class="num">4</td><td class="num">12</td></tr>
+<tr><td>form_sidebar (12)</td><td class="num">12</td><td class="num">10</td><td class="num">12</td></tr>
+<tr><td>info_panel (12)</td><td class="num">12</td><td class="num">6</td><td class="num">12</td></tr>
+<tr><td>data_table (8)</td><td class="num">8</td><td class="num">6</td><td class="num">8</td></tr>
+<tr><td>dialog (8)</td><td class="num">8</td><td class="num">8</td><td class="num">8</td></tr>
+<tr><td>toolbar (8)</td><td class="num">8</td><td class="num">8</td><td class="num">8</td></tr>
+<tr><td>login (8)</td><td class="num">6</td><td class="num">7</td><td class="num">8</td></tr>
 </tbody>
 </table>
 </div>
-<div class="callout"><p><b>Why this is structural, not a tuning problem.</b> A per-step vision-language grounder answers "where would this be?" and is trained to always produce an answer. A resolved DOM answers "is there exactly one of these?" and can say no. The benchmark's false-pass column measures that difference on identical screens and steps, and it reproduced across two cards and two runs.</p></div>
+<div class="callout"><p><b>Why this is structural, not a tuning problem.</b> A per-step vision-language grounder answers "where would this be?" and is trained to always produce an answer. A resolved DOM answers "is there exactly one of these?" and can say no. The benchmark's false-pass column measures that difference on identical screens and steps; it reproduced across two cards and two runs, and the third grounder, measured on a third card, sits at the metric's ceiling.</p></div>
 
 <h2>6. Cost: pay per screen vs pay per step</h2>
 <div class="card">
@@ -315,10 +346,11 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <tr class="ours"><td>vizdom-modular</td><td class="num">4.2</td><td class="num">0.62</td><td class="num">31</td><td class="num">0.06</td><td class="num">0.13</td></tr>
 <tr><td>elam-7b</td><td class="num">≈ 8.5</td><td class="num">—</td><td class="num">2 055</td><td class="num">4.00</td><td class="num">5.15</td></tr>
 <tr><td>ui-tars-1.5-7b</td><td class="num">≈ 9.4</td><td class="num">—</td><td class="num">1 400</td><td class="num">2.72</td><td class="num">1.68</td></tr>
+<tr><td>aria-ui <span class="src">(addendum, 96 GB card)</span></td><td class="num">≈ 20.7</td><td class="num">—</td><td class="num">826</td><td class="num">1.57</td><td class="num">—</td></tr>
 </tbody>
 </table>
 </div>
-<p>The ratio depends on how many steps a suite runs against each screen. Here it is 514 steps over 44 states, about 12 steps per state, and VizDOM-OmniParser is 26 times cheaper per step than UI-TARS and 39 times cheaper than ELAM; the modular backend is 44 and 65 times cheaper. A suite that visits each screen once would narrow the gap to parse time against inference time, 1.0 s against 2.7 s. Regression suites revisit the same screens constantly, which is the regime the comparison is about.</p>
+<p>The ratio depends on how many steps a suite runs against each screen. Here it is 514 steps over 44 states, about 12 steps per state, and VizDOM-OmniParser is 15 times cheaper per step than Aria-UI, 26 times cheaper than UI-TARS and 39 times cheaper than ELAM; the modular backend is 26, 44 and 65 times cheaper. A suite that visits each screen once would narrow the gap to parse time against inference time, 1.0 s against 1.6 to 2.7 s. Regression suites revisit the same screens constantly, which is the regime the comparison is about. Aria-UI's per-step figure comes from a faster card with 1.4 TB/s of memory bandwidth and only 3.9 B active parameters per token, so it is the cheapest grounder here despite being the largest model; on the run 3 host it would likely sit between the other two.</p>
 <p>Across the two hosts the VizDOM columns got about twice as fast (the 6000 Ada and a faster CPU for the CV stages), ELAM got faster per step (5.15 → 4.00 s) and UI-TARS slower (1.68 → 2.72 s). ELAM's verify steps take longer than its actions (median 4.3 s vs 3.3 s) because the verdict prompt reasons before concluding. Neither adapter changed between the runs, so the UI-TARS shift is a host effect; the grounders' per-step cost should be quoted as a range across cards, not as one number.</p>
 
 <h2>7. Action-hit by screen family</h2>
@@ -330,8 +362,9 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <ul>
   <li><b>info_panel and toolbar</b> are solved by everything except the DOM columns on toolbars (14 of 17): three icon buttons without text, where only a caption could help.</li>
   <li><b>form_sidebar</b> no longer separates the VizDOM columns: all three sit at 54 of 62, up from 25 (modular) and 46 (UIED) in run 2. The remaining 8 are the OCR floor.</li>
-  <li><b>data_table</b> is the hardest family for everything except UI-TARS, which is now perfect there: the pagination digits are small, repeated and close together, which defeats a text locator (many matches) and ELAM alike.</li>
-  <li><b>login</b> flips the grounder ranking: ELAM 0.92, UI-TARS 0.58. Small sample (12 steps), but all of UI-TARS's misses there are checkboxes and icon buttons.</li>
+  <li><b>data_table</b> is the hardest family for everything except UI-TARS, which is now perfect there, and Aria-UI at 27 of 28: the pagination digits are small, repeated and close together, which defeats a text locator (many matches) and ELAM alike.</li>
+  <li><b>login</b> flips the grounder ranking: Aria-UI 1.00, ELAM 0.92, UI-TARS 0.58. Small sample (12 steps), but all of UI-TARS's misses there are checkboxes and icon buttons.</li>
+  <li><b>form_sidebar</b> is the only family where Aria-UI gives up anything to ELAM (57 vs 60 of 62): its five misses are all input fields there.</li>
 </ul>
 
 <h2>8. What run 3 settles: the Step 6b2 fix and run-to-run stability</h2>
@@ -346,6 +379,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <tr class="ours"><td>vizdom-omniparser</td><td class="num">0</td><td>—</td><td>bit-identical on a different GPU, host and torch build: the pipeline is deterministic on fixed versions</td></tr>
 <tr><td>elam-7b</td><td class="num">3</td><td>2 hit → miss, 1 false pass → correct</td><td>greedy decoding is not bit-stable across GPU generations (bf16 kernels differ); ±1 point of noise</td></tr>
 <tr><td>ui-tars-1.5-7b</td><td class="num">6</td><td>2 miss → hit, 3 correct → false pass, 1 false pass → correct</td><td>same cause; the net +1 action-hit and −0.6 verify are within that noise</td></tr>
+<tr><td>aria-ui</td><td class="num">—</td><td>—</td><td>single measurement (addendum run); no earlier run to diff against, so its numbers carry the same ±1 point caveat untested</td></tr>
 </tbody>
 </table>
 </div>
@@ -355,11 +389,11 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <ul>
   <li><b>Synthetic screens.</b> All 44 states come from the project's generator. Real applications have denser, noisier layouts; the headline caveat of the whole benchmark stands.</li>
   <li><b>Negative statements are easy for exact text and hard for a VLM in different ways.</b> A nonsense label can never partially match a DOM, which favours VizDOM. A model that reads the screen might reasonably be expected to reject "Zylophone", yet mostly did not. A harder negative set (plausible-but-absent labels such as "Export" on a screen with "Import") is planned as defect injection and would test VizDOM's OCR as well.</li>
-  <li><b>UI-TARS's verify is a proxy.</b> It has no verdict mode, so "grounded a point" counts as PASSED. ELAM's native verdict is the fairer comparison, and it is the worse of the two on false passes.</li>
+  <li><b>UI-TARS's and Aria-UI's verify is a proxy.</b> Neither has a verdict mode, so "grounded a point" counts as PASSED, and Aria-UI always grounds. ELAM's native verdict is the fairer comparison, and it still passes 86 of 88 absent targets, so the proxy is not what drives the finding.</li>
   <li><b>Two runs, two cards, no seeds.</b> Greedy decoding still moved the grounders by 3 and 6 steps between cards, so their figures carry about one point of uncertainty; there is no estimate across sampling seeds. The VizDOM columns reproduced exactly.</li>
   <li><b>Verify accuracy for VizDOM is capped by OCR</b>, not by the DOM logic. The 20 misses are the same 20 captions in all three detector columns and in both runs.</li>
   <li><b>Latency is host-dependent.</b> UI-TARS was 60 % slower per step on this host than on the 4090 host with the same code; per-step cost should be quoted as a range.</li>
-  <li><b>Aria-UI is still unmeasured.</b> Its mixture-of-experts weights are not quantized by bitsandbytes (a 24 GB card OOMs at shard 5 of 12 in 4-bit, extrapolating to ~53 GB), so the column runs bf16 and needs an 80 GB card. The gate refused this 48 GB card as designed; until that run it is cited from published numbers.</li>
+  <li><b>Aria-UI comes from a different rental.</b> Its mixture-of-experts weights are not quantized by bitsandbytes (a 24 GB card OOMs at shard 5 of 12 in 4-bit, extrapolating to ~53 GB), so the column runs bf16 and the gate refused the 48 GB card of run 3 as designed. It was measured on a 96 GB Blackwell card two hours later at commit <code>411873c</code>, with the adapter unchanged. Its accuracy rows are comparable (same manifest, same scoring); its latency row is not (different card, host and CUDA build, and Aria's remote code ran without <code>grouped_gemm</code>).</li>
 </ul>
 
 <h2>10. Files and reproduction</h2>
@@ -372,13 +406,18 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
   20261026_222802.{json,md}   ui-tars-1.5-7b
   &lt;column&gt;.log                one log per column
 
+benchmarks/results/gpu-20261026_233909/      # Aria-UI addendum (96 GB card, commit 411873c)
+  summary.md  gpu.txt  sweep.log  aria-ui.log
+  20261026_235303.{json,md}   aria-ui
+
 # rerun on a rented card (deploy/gpu/README.md, deploy/gpu/vast_runbook.html)
 bash deploy/gpu/setup.sh &amp;&amp; bash deploy/gpu/prefetch.sh &amp;&amp; bash deploy/gpu/preflight.sh
 bash deploy/gpu/run_benchmarks.sh
-# Aria-UI column: the same four commands on an A100 80 GB / H100</code></pre>
+# Aria-UI column alone, on an 80+ GB card:
+ONLY="aria-ui" bash deploy/gpu/prefetch.sh &amp;&amp; ONLY="aria-ui" bash deploy/gpu/run_benchmarks.sh</code></pre>
 <p>Every result JSON records the dataset id, the commit and the per-step outcome, so any number in this report can be traced to a step id such as <code>login_0137/act/E13</code>. The run 2 report (<code>report_gpu_20261026.html</code>) holds the root-cause analysis of the modular gap with the DOM diff on <code>form_sidebar_0007</code>.</p>
 
-<footer>VizDOM lifecycle benchmark, run gpu-20261026_212923, commit 82f0b45, RTX 6000 Ada. Numbers are from the result JSON files; charts are drawn from the same values inline in this page.</footer>
+<footer>VizDOM lifecycle benchmark, run gpu-20261026_212923, commit 82f0b45, RTX 6000 Ada; Aria-UI column from run gpu-20261026_233909, commit 411873c, RTX PRO 6000 Blackwell 96 GB. Numbers are from the result JSON files; charts are drawn from the same values inline in this page.</footer>
 </main>
 <div class="tip" id="tip"></div>
 
@@ -472,6 +511,7 @@ bash deploy/gpu/run_benchmarks.sh
 
   // --- data (from the result JSON files of gpu-20261026_212923) ---
   const hit = [
+    { label: 'aria-ui (bf16, 96 GB card)', v: 0.962, tip: '<b>Aria-UI bf16</b> (addendum run)<br>205 of 213 hits<br>misses: 5 form_sidebar fields, 1 table control, 2 toolbar buttons' },
     { label: 'ui-tars-1.5-7b (bf16)', v: 0.944, tip: '<b>UI-TARS-1.5-7B bf16</b><br>201 of 213 hits<br>misses: login checkboxes and social buttons, 4 value fields, 3 settings rows' },
     { label: 'elam-7b (bf16)', v: 0.930, tip: '<b>ELAM-7B</b><br>198 of 213 hits<br>misses: data-table pagination (8), settings rows (4), value fields (2), login (1)' },
     { label: 'vizdom-omniparser', v: 0.883, tip: '<b>VizDOM + OmniParser</b><br>188 of 213 hits<br>20 zero-match (OCR), 4 many-match (table digits), 1 wrong box' },
@@ -491,12 +531,14 @@ bash deploy/gpu/run_benchmarks.sh
     { label: 'vizdom (all three)', v: [281, 20, 0] },
     { label: 'ui-tars-1.5-7b', v: [241, 0, 60] },
     { label: 'elam-7b', v: [212, 3, 86] },
+    { label: 'aria-ui (addendum)', v: [213, 0, 88] },
   ], verifySeries, 301);
 
   const cost = [
     { label: 'vizdom-uied', v: 0.038, tip: '<b>VizDOM + UIED</b><br>(2.6 s load + 44 × 0.39 s) / 514 steps' },
     { label: 'vizdom-modular', v: 0.061, tip: '<b>VizDOM modular</b><br>(4.2 s load + 44 × 0.62 s) / 514 steps' },
     { label: 'vizdom-omniparser', v: 0.103, tip: '<b>VizDOM + OmniParser</b><br>(8.1 s load + 44 × 1.02 s) / 514 steps' },
+    { label: 'aria-ui (bf16, 96 GB card)', v: 1.57, tip: '<b>Aria-UI</b> (addendum run, other host)<br>median inference per step; 514 inferences, 826 s' },
     { label: 'ui-tars-1.5-7b (bf16)', v: 2.72, tip: '<b>UI-TARS-1.5-7B</b><br>median inference per step; 514 inferences, ~1 400 s' },
     { label: 'elam-7b (bf16)', v: 4.00, tip: '<b>ELAM-7B</b><br>median inference per step; 514 inferences, ~2 055 s<br>actions 3.3 s, verifies 4.3 s' },
   ];
@@ -511,6 +553,7 @@ bash deploy/gpu/run_benchmarks.sh
     ['vizdom-modular',    [20, 3, 54, 32, 11, 54, 14]],
     ['elam-7b',           [20, 5, 60, 32, 11, 53, 17]],
     ['ui-tars-1.5-7b',    [28, 5, 58, 32, 7, 54, 17]],
+    ['aria-ui (addendum)', [27, 5, 57, 32, 12, 57, 15]],
   ];
   const steps = ['--seq-100', '--seq-250', '--seq-400', '--seq-550', '--seq-700'];
   const tbl = document.getElementById('heat');

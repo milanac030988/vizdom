@@ -533,10 +533,12 @@ body.notes-on .slide.active .notes{display:block}
       <tr><td>UIED</td><td>classical CV</td><td>flat elements</td><td class="n">No</td><td>—</td><td>research</td></tr>
       <tr><td>OmniParser V2</td><td>detector + caption</td><td>flat labelled boxes + interactability</td>
           <td class="n">Yes</td><td>YOLOv8 + Florence-2</td><td>AGPL-3.0 / MIT</td></tr>
-      <tr><td>Aria-UI</td><td>vision grounding</td><td>single point</td><td class="n">Yes</td>
-          <td>Aria MoE, 3.9B act.</td><td>n/v</td></tr>
+      <tr><td>Aria-UI</td><td>vision grounding</td><td>single point</td><td class="n">Yes (96 GB)</td>
+          <td>Aria MoE 25.3B, 3.9B act.</td><td>Apache-2.0</td></tr>
       <tr><td>ELAM-7B</td><td>grounding + eval</td><td>point + PASSED/FAILED</td><td class="n">Yes</td>
           <td>Molmo-7B-D</td><td>Apache-2.0</td></tr>
+      <tr><td>UI-TARS-1.5-7B</td><td>vision grounding (agent)</td><td>single point</td><td class="n">Yes</td>
+          <td>Qwen2.5-VL-7B</td><td>Apache-2.0</td></tr>
       <tr><td>Jedi-3B/7B</td><td>vision grounding</td><td>single point</td><td class="n">Yes</td>
           <td>3B / 7B</td><td>n/v</td></tr>
     </table>
@@ -573,12 +575,11 @@ body.notes-on .slide.active .notes{display:block}
               <td class="n lose">one GPU inference</td></tr>
         </table>
         <p class="small"><strong>Cost scales with screen states, not with test steps.</strong>
-          On the unified lifecycle benchmark VizDOM pays
-          <em>load once</em> (7&nbsp;s UIED / 27&nbsp;s OmniParser) + <strong>44 parses</strong>
-          (2.1&nbsp;s / 4.8&nbsp;s per state) + 514 sub-millisecond lookups. A grounder pays
-          <strong>514 inferences</strong>: <strong>11.7× more model calls</strong> for the same suite.
-          <span class="dim">Grounder wall-clock awaits a bigger GPU — the harness runs them behind one
-          flag; 7–8B parameters are GPU-bound per call by construction.</span></p>
+          Measured on a rented RTX 6000 Ada: VizDOM pays <em>load once</em> (2.6&nbsp;s UIED /
+          8.1&nbsp;s OmniParser) + <strong>44 parses</strong> (0.39&nbsp;s / 1.02&nbsp;s per state) +
+          514 sub-millisecond lookups — <strong>0.04–0.10&nbsp;s per step</strong> amortised. A grounder
+          pays <strong>514 inferences</strong> at 1.6–4.0&nbsp;s each (Aria-UI / UI-TARS / ELAM):
+          <strong>15–39× the per-step cost</strong> for the same suite.</p>
         <div class="card good"><p class="small" style="margin:0;color:var(--fg)">
           <strong>Reuse economics:</strong> one parse serves many locators <em>and</em> assertions —
           the artifact is reused, the inference is not repeated.</p></div>
@@ -996,28 +997,33 @@ body.notes-on .slide.active .notes{display:block}
           produce, and agent benchmarks do not measure it.</p></div>
       </div>
       <div>
-        <h3>Baseline — measured</h3>
+        <h3>All six columns — measured on rented GPUs</h3>
         <table>
           <tr><th>Executor</th><th class="n">action-hit</th><th class="n">verify</th>
-              <th class="n">false-pass</th><th class="n">cost / state</th></tr>
-          <tr><td>VizDOM + UIED <span class="dim">CPU</span></td><td class="n">0.803</td>
-              <td class="n">0.957</td><td class="n win">0.000</td><td class="n">2.1 s</td></tr>
-          <tr class="hi"><td><strong>VizDOM + OmniParser</strong></td><td class="n win">0.916</td>
-              <td class="n">0.957</td><td class="n win">0.000</td><td class="n">4.8 s</td></tr>
-          <tr><td>ELAM-7B <span class="dim">native verdicts</span></td>
-              <td class="n dim">pending</td><td class="n dim">pending</td>
-              <td class="n dim">pending</td><td class="n dim">1 inference / step</td></tr>
-          <tr><td>UI-TARS-1.5-7B</td><td class="n dim">pending</td><td class="n dim">pending</td>
-              <td class="n dim">pending</td><td class="n dim">1 inference / step</td></tr>
+              <th class="n">false-pass</th><th class="n">cost</th></tr>
+          <tr><td>VizDOM + UIED <span class="dim">no LLM</span></td><td class="n">0.822</td>
+              <td class="n">0.934</td><td class="n win">0.000</td><td class="n">0.39 s / state</td></tr>
+          <tr class="hi"><td><strong>VizDOM + OmniParser</strong></td><td class="n">0.883</td>
+              <td class="n">0.934</td><td class="n win">0.000</td><td class="n">1.02 s / state</td></tr>
+          <tr class="hi"><td><strong>VizDOM modular</strong> <span class="dim">captioner off</span></td><td class="n">0.883</td>
+              <td class="n">0.934</td><td class="n win">0.000</td><td class="n">0.62 s / state</td></tr>
+          <tr><td>ELAM-7B <span class="dim">native verdicts</span></td><td class="n">0.930</td>
+              <td class="n">0.704</td><td class="n lose">0.286</td><td class="n">4.00 s / step</td></tr>
+          <tr><td>UI-TARS-1.5-7B</td><td class="n">0.944</td>
+              <td class="n">0.801</td><td class="n lose">0.199</td><td class="n">2.72 s / step</td></tr>
+          <tr><td>Aria-UI <span class="dim">25B MoE*</span></td><td class="n win">0.962</td>
+              <td class="n">0.708</td><td class="n lose">0.292</td><td class="n">1.57 s / step*</td></tr>
         </table>
-        <p class="small"><strong>Reading it:</strong> OmniParser converts its detection edge into an
-          <strong>11-point action-hit lead</strong> at ~2.3× the parse cost. Both stacks share the
-          identical verify accuracy — the same 13 captions are misread by OCR <em>upstream of both</em>
-          — and both hold <strong>zero false passes</strong>, which the exactly-one resolution contract
-          guarantees <em>by construction</em>. That row is what the grounder columns must answer.</p>
-        <p class="small dim">Adapters for ELAM-7B / UI-TARS are written and tested; the runs await a
-          GPU with ≥16 GB. Aria-UI (25.3B MoE) needs a multi-GPU server — reported as a cited column
-          rather than silently omitted.</p>
+        <p class="small"><strong>Reading it:</strong> the grounders click better — by 5–8 points over
+          OmniParser-VizDOM — and <strong>every one of them passes absent targets</strong>: Aria-UI
+          88 of 88, ELAM 86, UI-TARS 60. VizDOM passes <strong>none</strong>; the exactly-one
+          resolution contract guarantees it <em>by construction</em>. Its 20 verify errors are the
+          other way round (an OCR-unreadable caption reported FAILED), the cheap failure. Per step,
+          the DOM costs 0.04–0.10&nbsp;s against 1.6–4.0&nbsp;s. The best clicker is the worst oracle.</p>
+        <p class="small dim">RTX 6000 Ada 48 GB, commit 82f0b45, 2026-10-26; same 514 steps for every
+          row. *Aria-UI needs ~50 GB in bf16: measured the same night on an RTX PRO 6000 96 GB
+          (commit 411873c), so its latency is from another host. Modular = OmniParser's YOLO +
+          our OCR + the ported fusion: identical outcome on all 514 steps at 61 % of the parse time.</p>
       </div>
     </div>
   </div>
@@ -1025,7 +1031,10 @@ body.notes-on .slide.active .notes{display:block}
     over one dataset: stage metrics keep every end-to-end failure attributable, the lifecycle score
     says whether a suite would work. The false-pass column is the part reviewers have not seen in
     agent benchmarks — and the cost columns turn slide 9's economics argument into measurement:
-    44 parses vs 514 inferences for the same suite.</div>
+    44 parses vs 514 inferences for the same suite. If asked why the grounders win on clicking:
+    their misses are mislocated points; ours are resolution misses (OCR floor, 20 captions shared by
+    all three detectors; table digits with many matches). If asked about Aria-UI: it never says no —
+    a point for all 301 statements — which is exactly the property a test oracle cannot have.</div>
 </section>
 
 <!-- 13b ───────────────────────────────────────── -->
@@ -1393,8 +1402,12 @@ body.notes-on .slide.active .notes{display:block}
         mitigated by the <code>text</code>/<code>label</code> split, not eliminated.</li>
       <li><strong>Hierarchy &amp; locator axes not yet scored</strong> — the ground truth is a flat list
         with parent references, no tree, no locators.</li>
-      <li><strong>No wall-clock benchmark</strong> yet; efficiency is argued structurally (warm-model
-        service, CPU path) rather than measured.</li>
+      <li><strong>Wall-clock measured on three rented hosts only.</strong> The DOM columns reproduce
+        bit-for-bit across cards; grounder latency is host-dependent (UI-TARS 1.7–2.7 s/step) and
+        their scores move ±1 point between GPUs even with greedy decoding — every number is quoted
+        with commit and machine.</li>
+      <li><strong>Negatives are nonsense labels</strong> ("Frobnicate"). Plausible-but-absent labels
+        would be a harder false-pass test, for VizDOM's OCR as much as for the grounders.</li>
       <li><strong>ADR-017 still <em>Proposed</em></strong> — the deployability claim is demonstrated,
         not ratified. Security: gRPC channels are insecure (LAN/trusted only).</li>
     </ul>
@@ -1415,8 +1428,8 @@ body.notes-on .slide.active .notes{display:block}
           <li><strong>desc= experiment</strong> — auto-generate descriptions for labelled elements,
             report <em>per-tier resolution accuracy</em>
             <span class="dim">— an additional locator column of the lifecycle benchmark</span></li>
-          <li><strong>Grounder columns</strong> (ELAM-7B, UI-TARS-1.5) — adapters ready and tested,
-            awaiting a ≥16 GB GPU</li>
+          <li><strong>Harder negatives</strong> for the false-pass metric — plausible-but-absent labels
+            ("Export" on a screen with "Import"); the grounder columns themselves are done</li>
           <li><strong>Defect injection</strong> — mutate a state, measure whether the suite
             <em>catches</em> it: mutation testing for GUI automation</li>
           <li>Wall-clock comparison of a <em>warm gRPC service</em> against in-process

@@ -285,10 +285,10 @@ per-screen caching (ADR-022).
 
 \section{Detector landscape (why a pluggable port)}
 The detector port must accommodate very different technologies. Table~\ref{tab:models}
-compares the candidate systems~\cite{xie2020uied,omniparser2024,ariaui2024,elam7b,osworldg}.
+compares the candidate systems~\cite{xie2020uied,omniparser2024,ariaui2024,elam7b,uitars2025,osworldg}.
 They split into two families: \emph{parsers} that enumerate elements (UIED,
 OmniParser, VizDOM) and \emph{grounders} that return a single point for a
-natural-language instruction (Aria-UI, ELAM-7B, Jedi). Only parsers fit VizDOM's
+natural-language instruction (Aria-UI, ELAM-7B, UI-TARS, Jedi). Only parsers fit VizDOM's
 goal of producing a complete tree; none of the compared systems build a hierarchy,
 which is where the contribution sits. The pluggable port lets VizDOM adopt the
 strongest parser (OmniParser) as a backend, keep a CPU baseline (UIED) for
@@ -338,8 +338,9 @@ this measures \emph{type} only.}
     VizDOM (ours) & parser (CV + SLM) & hierarchical DOM tree & No$^\ast$ & composed pipeline & per backend \\
     UIED & classical CV & flat elements & No & --- & research \\
     OmniParser V2 & detector + caption & flat labelled boxes + interactability & Yes & YOLOv8 + Florence-2 & AGPL-3.0 / MIT \\
-    Aria-UI & vision grounding & single point $[0,1000]$ & Yes & Aria MoE (3.9B act.) & n/v \\
+    Aria-UI & vision grounding & single point $[0,1000]$ & Yes & Aria MoE 25.3B (3.9B act.); $\sim$50\,GB bf16 & Apache-2.0 \\
     ELAM-7B & grounding + eval & point + PASSED/FAILED & Yes & Molmo-7B-D (Qwen2-7B) & Apache-2.0 \\
+    UI-TARS-1.5-7B \cite{uitars2025} & vision grounding (agent) & single point & Yes & Qwen2.5-VL-7B & Apache-2.0 \\
     Jedi-3B/7B & vision grounding & single point & Yes & 3B / 7B & n/v \\
     \bottomrule
   \end{tabular}\\[0.3em]
@@ -657,6 +658,7 @@ Q-02 & End-to-end gRPC round-trip across processes & config-only; round-trip OK 
 Q-03 & Instrument model-load count in the service & load count = 1 & \textbf{Verified} functionally \\
 Q-04 & Run pipeline + RF with CPU/static/recording adapters & completes, no I/O & \textbf{Verified} \\
 Q-05 & Detection metrics on synthetic set (harness) & F1 $\geq 0.80$, mIoU $\geq 0.60$ & \textbf{Measured}: F1 0.58, mIoU 0.68; F1 target not met; OmniParser actionable center-hit 0.97 (R-04) \\
+--- & Lifecycle benchmark: 514 locate--act--verify steps, VizDOM vs ELAM-7B / UI-TARS-1.5 / Aria-UI on rented GPUs (2026-10-26) & zero false passes for VizDOM; cost per step below the grounders & \textbf{Measured}: false-pass 0.000 vs 0.199--0.292; action-hit 0.883 vs 0.930--0.962; 0.04--0.10\,s vs 1.57--4.00\,s per step \\
 \bottomrule
 \end{longtable}
 

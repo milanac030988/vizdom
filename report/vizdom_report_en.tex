@@ -115,6 +115,11 @@ As a Method-3 applied project, the contributions are of an engineering character
         decouples detection space from device space (Section~\ref{sec:impl}).
   \item \textbf{An evaluation framework} and a dataset methodology for measuring
         detection and DOM quality (Section~\ref{sec:eval}).
+  \item \textbf{A unified lifecycle benchmark} that runs parsers and
+        instruction-grounding models on the same 514 locate--act--verify steps and
+        adds the testing-specific \emph{false-pass} metric; measured for VizDOM,
+        ELAM-7B, UI-TARS-1.5-7B and Aria-UI on rented GPUs
+        (Section~\ref{sec:lifecycle}).
 \end{enumerate}
 
 \begin{figure}[H]
@@ -251,8 +256,9 @@ Table~\ref{tab:capability} contrasts their capabilities.
     VizDOM (ours) & parser (CV + SLM) & hierarchical DOM tree & No$^\ast$ & composed pipeline & per backend \\
     UIED & classical CV & flat elements & No & --- & research \\
     OmniParser V2 & detector + caption & flat labelled boxes + interactability & Yes & YOLOv8 + Florence-2 & AGPL-3.0 / MIT \\
-    Aria-UI & vision grounding & single point $[0,1000]$ & Yes & Aria MoE (3.9B act.) & n/v \\
+    Aria-UI & vision grounding & single point $[0,1000]$ & Yes & Aria MoE 25.3B (3.9B act.); $\sim$50\,GB bf16 & Apache-2.0 \\
     ELAM-7B & grounding + eval & point + PASSED/FAILED & Yes & Molmo-7B-D (Qwen2-7B) & Apache-2.0 \\
+    UI-TARS-1.5-7B \cite{uitars2025} & vision grounding (agent) & single point & Yes & Qwen2.5-VL-7B & Apache-2.0 \\
     Jedi-3B/7B & vision grounding & single point & Yes & 3B / 7B & n/v \\
     \bottomrule
   \end{tabular}\\[0.3em]
@@ -788,13 +794,17 @@ dashboard, and an annotation tool.
 % =====================================================================
 
 \subsection{Methodology}
-Quality is assessed along four axes with an evaluation harness:
+Quality is assessed along five axes with an evaluation harness:
 \begin{itemize}[leftmargin=1.4em]
   \item \textbf{Element detection}: precision, recall, F1, and mean IoU against
         annotated ground-truth boxes;
   \item \textbf{OCR}: character accuracy and character-/word-error rates (CER/WER);
-  \item \textbf{Hierarchy}: correctness of containment/label association; and
-  \item \textbf{Locator quality}: uniqueness and stability of generated locators.
+  \item \textbf{Hierarchy}: correctness of containment/label association;
+  \item \textbf{Locator quality}: uniqueness and stability of generated locators; and
+  \item \textbf{Testing effectiveness}: a unified lifecycle benchmark
+        (Section~\ref{sec:lifecycle}) that runs parsers and grounders on the same
+        locate--act--verify steps and scores action-hit, verify accuracy, false-pass
+        rate and cost.
 \end{itemize}
 The benchmark is a \textbf{synthetic UI dataset} (programmatically generated
 screenshots at $1920\times1080$ with exact ground truth --- element bounds,
@@ -1070,30 +1080,129 @@ on the synthetic benchmark or the calculator probes. Two lessons generalise:
 per-type synthetic metrics do not surface stage-interaction bugs, and keeping both
 the detector and the OCR engine swappable was what made these bugs findable at all.
 
+\subsection{Testing effectiveness: the unified lifecycle benchmark}
+\label{sec:lifecycle}
+Stage metrics grade a \emph{component}. A test suite lives or dies on the whole
+lifecycle --- locate $\rightarrow$ act $\rightarrow$ verify --- so a second benchmark
+runs every system under comparison on the \emph{same steps} and scores the same
+outcomes. The 514 steps are derived from the synthetic test set's element ground
+truth with no new annotation: on each of the 44 states, every element whose caption
+is unique in that state yields one \emph{action} step (click it) and one positive
+\emph{verification} (``the `Save' button is visible'', expected PASSED), and two
+deliberately absent captions per state (``Frobnicate'', ``Warp Cores'', \ldots) yield
+88 \emph{negative} verifications (expected FAILED). Every step carries a dual
+representation --- a locator (\code{text="Save"}) for DOM systems and a
+natural-language instruction for grounders --- so each receives the task in its
+native form. The manifest is generated once (seed 42) and committed.
+
+Four metrics are scored. \emph{Action-hit}: the produced click point lies inside
+the ground-truth bounds. \emph{Verify accuracy}: the verdict equals the expectation
+over all 301 verifications. \emph{False-pass rate}: PASSED on an absent target, over
+all 301 verifications --- the testing-specific metric, since an agent benchmark asks
+\emph{did it click correctly} but a test benchmark must also ask \emph{does it judge
+correctly}, and a false pass is the worst failure a test system can produce.
+\emph{Cost}: per-state parse time for DOM systems, which then answer every step
+from the cached DOM, versus per-step inference for grounders. VizDOM resolves a
+locator under the exactly-one contract: an action requires exactly one match and
+clicks its centre; a verification passes iff at least one element matches, so an
+absent caption has zero matches and fails by construction. ELAM-7B uses its native
+verdict mode (model-card ``Expected Result'' prompt); UI-TARS-1.5-7B and Aria-UI
+have none, so their verdict is proxied by whether the statement's subject grounds to
+a point, and is reported as such. All grounders run unquantised in bf16 with greedy
+decoding.
+
+\begin{table}[H]
+  \centering\footnotesize
+  \caption{Unified lifecycle benchmark, 514 steps over 44 states (213 actions, 213
+  positive and 88 negative verifications). Rented RTX 6000 Ada 48\,GB, commit
+  \code{82f0b45}, 2026-10-26. $^\dagger$Aria-UI ($\sim$50\,GB in bf16) was measured the
+  same night on an RTX PRO 6000 Blackwell 96\,GB (commit \code{411873c}); its accuracy
+  is comparable (same steps, same scoring), its latency is from another host.}
+  \label{tab:lifecycle}
+  \begin{tabular}{@{}p{3.4cm}p{2.5cm}cccp{2.6cm}@{}}
+    \toprule
+    Executor & Weights & Action-hit & Verify acc. & False-pass & Cost \\
+    \midrule
+    VizDOM + UIED & CV, no LLM & 0.822 & 0.934 & \textbf{0.000} & 0.39\,s / state \\
+    VizDOM + OmniParser & CV + Florence-2 & 0.883 & 0.934 & \textbf{0.000} & 1.02\,s / state \\
+    VizDOM modular & CV, captioner off & 0.883 & 0.934 & \textbf{0.000} & 0.62\,s / state \\
+    ELAM-7B & bf16 & 0.930 & 0.704 & 0.286 & 4.00\,s / step \\
+    UI-TARS-1.5-7B & bf16 & 0.944 & 0.801 & 0.199 & 2.72\,s / step \\
+    Aria-UI$^\dagger$ & bf16 & \textbf{0.962} & 0.708 & 0.292 & 1.57\,s / step \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Action-hit.} The three grounders click better than VizDOM: Aria-UI by
+8 points over the OmniParser and modular detectors, UI-TARS and ELAM by 5--6, and all
+of them by 11--14 over UIED. Every VizDOM miss is a \emph{resolution} miss: 20 steps
+are captions the OCR cannot read (the placeholder ``Search\ldots'', a path-like value,
+a few small buttons) and are identical across the three detectors, four are
+data-table digits that match 12--18 cells, and UIED adds twelve of its own
+fragmentation duplicates. The grounders' misses are mislocated points --- data-table
+pagination for ELAM, login checkboxes and icon buttons for UI-TARS, a few input
+fields for Aria-UI.
+
+\paragraph{Verification and false passes.} The picture inverts on the oracle
+question. Asked whether a control that is \emph{not on the screen} is visible,
+Aria-UI says PASSED in 88 of 88 cases, ELAM in 86 of 88 (its native verdict
+rationalises the unknown label onto a nearby element and then confirms it) and
+UI-TARS in 60 of 88. VizDOM never does; its 20 verification errors are all in the
+conservative direction (a present caption reported FAILED because OCR misread it),
+which stops the test and summons a person --- the cheap failure. A false pass is the
+expensive one, because the suite stays green while the UI is broken. The best clicker
+is thus the worst oracle, and the difference is structural: a per-step grounder is
+trained to always produce an answer, whereas a resolved DOM can say \emph{no}.
+
+\paragraph{Cost.} Amortised over this suite, VizDOM + OmniParser spends 53\,s in
+total (8.1\,s load plus 44 parses) for 514 steps, about 0.10\,s per step, and the
+modular backend 0.06\,s; the grounders spend 1.57--4.00\,s on every step, 15--39
+times more, and the ratio grows with the number of steps per screen state (here
+about twelve). The modular backend --- OmniParser's YOLO as stage~1, the project's
+OCR as stage~2 and a port of OmniParser's fusion --- produces the monolith's outcome
+on all 514 steps at 61\,\% of its parse time, which is the parity the backend was
+designed for. An earlier run (commit \code{a4cb85e}) had it 15 points behind; the
+gap was traced to a schema mismatch (absorbed OCR text emitted as \code{text} rather
+than \code{label}, so a value-bearing field and its value both matched the locator)
+and closed by a pipeline rule that drops a text element nested in a control carrying
+the same literal, which also lifted UIED from 0.779 to 0.822.
+
+\paragraph{Stability.} Between two runs on different cards the OmniParser column
+reproduced on 514 of 514 steps and every VizDOM change was accounted for by that
+fix, whereas ELAM and UI-TARS moved on 3 and 6 steps respectively with greedy
+decoding (bf16 kernels differ across GPU generations), about one point of noise on
+their figures. Grounder latency is host-dependent (UI-TARS 1.68\,s per step on an RTX
+4090 host, 2.72\,s on the RTX 6000 Ada host), so every number above is quoted with
+its commit and machine.
+
 \subsection{Efficiency considerations}
-Efficiency is analysed along three axes. Wall-clock figures await the like-for-like
-benchmark (Table~\ref{tab:results}), so the discussion here is structural and relies
-on published model characteristics rather than unmeasured timings.
+Efficiency is analysed along three axes. The lifecycle benchmark
+(Section~\ref{sec:lifecycle}) was run on rented GPUs, so the per-step figures below
+are measured rather than argued.
 
 \paragraph{Hardware footprint.} The grounding models are large and GPU-bound ---
-Aria-UI activates 3.9B parameters, and ELAM-7B and Jedi-7B are 7B-class --- whereas
-VizDOM's UIED backend is CPU-only. A CPU path is a genuine differentiator for test
-rigs and embedded targets without a GPU; the accurate-but-heavy OmniParser backend
-is offered for hosts that have one.
+Aria-UI holds 25.3B parameters (3.9B active) and needs about 50\,GB in bf16, which a
+48\,GB card cannot host; ELAM-7B and UI-TARS-1.5-7B are 7B-class and run in bf16 on
+a 24\,GB card --- whereas VizDOM's UIED backend is CPU-only. A CPU path is a genuine
+differentiator for test rigs and embedded targets without a GPU; the accurate-but-heavy
+OmniParser backend is offered for hosts that have one.
 
 \paragraph{Reuse economics.} A parser amortises cost: one DOM parse serves many
 locator lookups and assertions ($O(1)$ model work followed by $n$ cheap tree
-queries), whereas a grounder re-infers per instruction ($n$ model invocations). In a
-regression suite of thousands of steps this asymptotic difference is the distinction
-between a practical and an impractical tool --- a decisive efficiency argument for
-the DOM abstraction in testing, independent of any single latency number.
+queries), whereas a grounder re-infers per instruction ($n$ model invocations).
+Measured on the 514-step suite (Table~\ref{tab:lifecycle}), that is 0.04--0.10\,s per
+step for VizDOM against 1.57--4.00\,s for the grounders, and in a regression suite of
+thousands of steps the asymptotic difference is the distinction between a practical
+and an impractical tool --- a decisive efficiency argument for the DOM abstraction in
+testing.
 
 \paragraph{Warm-model services and offload.} The detector service loads its model
 once and serves subsequent requests with inference only, and one GPU host can serve a
 fleet of light CPU clients. Placing capture at the device, inference on the GPU host,
 and orchestration on the client keeps each node doing what it is suited to and avoids
-shipping a heavy model to every machine. The planned benchmark will report
-CPU-versus-GPU latency and detector throughput per the methodology above.
+shipping a heavy model to every machine. The lifecycle benchmark reports the one-off
+load (2.6--8.1\,s per backend) separately from the per-state parse; CPU-versus-GPU
+latency of the service path itself remains to be measured.
 
 % =====================================================================
 \section{Discussion and Limitations}
@@ -1106,6 +1215,14 @@ CPU-versus-GPU latency and detector throughput per the methodology above.
         benchmark (Section~\ref{sec:eval}); a larger, \emph{real-world} labelled set
         is still needed to confirm the numbers transfer beyond clean UIs, and to
         exercise the hierarchy and locator axes the current ground truth cannot.
+  \item \textbf{Grounder comparison.} The lifecycle benchmark's negatives are
+        nonsense labels, which an exact-text DOM can never partially match; plausible
+        but absent labels (``Export'' on a screen with ``Import'') would test VizDOM's
+        OCR as well. The UI-TARS and Aria-UI verdicts are proxies, since neither has a
+        verdict mode; ELAM's native verdict is the fairer comparison and passes 86 of
+        88 absent targets regardless. Grounder scores move about one point between
+        GPU generations even with greedy decoding, and Aria-UI's latency comes from a
+        different host than the other columns.
   \item \textbf{Calibration for physical actuation.} The robot-arm case requires a
         per-setup image-to-physical calibration; the architecture isolates this to
         the plugin, but it remains real work, and physical actuation carries safety
@@ -1123,12 +1240,17 @@ screenshot by composing classical computer vision, a modern vision grounding mod
 and a small-model refinement stage, and that the resulting engine can be deployed
 flexibly through a hexagonal, service-oriented architecture. The system already
 delivers value to a real test framework and supports deployments as unconventional
-as camera capture with robot-arm actuation. Future work includes: completing the
-quantitative benchmark on a larger labelled dataset; reducing over-segmentation on
-themed real-world UIs; evaluating instruction-grounding models (Aria-UI, ELAM-7B,
-Jedi) as replacements or complements for the small-model refinement step; and
-hardening the services with authentication/TLS and setuptools entry-point plugin
-discovery.
+as camera capture with robot-arm actuation. On the unified lifecycle benchmark the
+instruction-grounding models (Aria-UI, ELAM-7B, UI-TARS-1.5-7B) click more
+accurately than VizDOM (0.93--0.96 against 0.88) but pass 60--88 of 88 absent
+targets, whereas VizDOM passes none by construction and costs 15--39 times less per
+step --- the testing-specific result this project set out to measure. Future work
+includes: completing the quantitative benchmark on a larger labelled dataset;
+reducing over-segmentation on themed real-world UIs; harder negatives
+(plausible-but-absent labels) and real-application states for the lifecycle
+benchmark; integrating a dedicated grounder as an alternative Tier-2 backend of the
+\code{desc=} locator, where grounding pays; and hardening the services with
+authentication/TLS and setuptools entry-point plugin discovery.
 
 \bibliographystyle{plain}
 \bibliography{references}

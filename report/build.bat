@@ -16,15 +16,29 @@ cd /d "%~dp0"
 
 REM --- Put MiKTeX on PATH (installed here but not on PATH) ---
 set "MIKTEX=C:\Users\ugc1hc\AppData\Local\Programs\MiKTeX\miktex\bin\x64"
-if exist "%MIKTEX%\xelatex.exe" set "PATH=%MIKTEX%;%PATH%"
+if exist "%MIKTEX%\miktex.exe" set "PATH=%MIKTEX%;%PATH%"
 
-where xelatex >nul 2>&1
+REM --- Resolve the tools. xelatex.exe / bibtex.exe / xdvipdfmx.exe are thin
+REM launchers that MiKTeX creates in its "links install" step, which needs admin
+REM mode; after a user-mode-only setup or an out-of-sync update they are absent
+REM while the engines (miktex-xetex.exe, ...) are present. Then call the engines
+REM directly - it is exactly what the launchers do.
+set "XELATEX=xelatex"
+set "BIBTEX=bibtex"
+set "XDVIPDFMX=xdvipdfmx"
+where xelatex >nul 2>&1   || set "XELATEX=miktex-xetex -undump=xelatex"
+where bibtex >nul 2>&1    || set "BIBTEX=miktex-bibtex"
+where xdvipdfmx >nul 2>&1 || set "XDVIPDFMX=miktex-dvipdfmx"
+
+where xelatex >nul 2>&1 || where miktex-xetex >nul 2>&1
 if errorlevel 1 (
-  echo [ERROR] xelatex not found on PATH.
-  echo         Edit the MIKTEX line in this script to point at your MiKTeX bin\x64.
+  echo [ERROR] neither xelatex nor miktex-xetex found on PATH.
+  echo         Edit the MIKTEX line in this script to point at your MiKTeX bin\x64,
+  echo         or install the xetex package: miktex packages install miktex-xetex-bin-x64-2.9
   pause
   exit /b 1
 )
+echo Using: %XELATEX% / %BIBTEX% / %XDVIPDFMX%
 
 REM --- Allow MiKTeX to auto-install missing packages without prompting ---
 initexmf --set-config-value="[MPM]AutoInstall=1" >nul 2>&1
@@ -62,10 +76,10 @@ if not exist "%D%.tex" (
 )
 REM LaTeX passes write only .xdv/.aux/.toc - never the .pdf, so an open
 REM viewer can't block them. Three passes + bibtex so refs/ToC/citations settle.
-xelatex -no-pdf -interaction=nonstopmode "%D%.tex"
-bibtex "%D%"
-xelatex -no-pdf -interaction=nonstopmode "%D%.tex"
-xelatex -no-pdf -interaction=nonstopmode "%D%.tex"
+%XELATEX% -no-pdf -interaction=nonstopmode "%D%.tex"
+%BIBTEX% "%D%"
+%XELATEX% -no-pdf -interaction=nonstopmode "%D%.tex"
+%XELATEX% -no-pdf -interaction=nonstopmode "%D%.tex"
 
 if not exist "%D%.xdv" (
   echo [ERROR] %D%.xdv not produced - see %D%.log for LaTeX errors.
@@ -73,11 +87,11 @@ if not exist "%D%.xdv" (
 )
 
 REM Convert .xdv -> .pdf. If the .pdf is locked (open in a viewer), fall back.
-xdvipdfmx -o "%D%.pdf" "%D%.xdv"
+%XDVIPDFMX% -o "%D%.pdf" "%D%.xdv"
 if errorlevel 1 (
   echo [WARN] Could not write %D%.pdf ^(is it open in a viewer?^).
   echo        Writing %D%_new.pdf instead - close the viewer and rerun to refresh %D%.pdf.
-  xdvipdfmx -o "%D%_new.pdf" "%D%.xdv"
+  %XDVIPDFMX% -o "%D%_new.pdf" "%D%.xdv"
 )
 goto :eof
 

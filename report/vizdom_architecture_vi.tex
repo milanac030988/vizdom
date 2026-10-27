@@ -288,10 +288,10 @@ geometry và kết quả được cache theo từng màn hình (ADR-022).
 
 \section{Bức tranh các detector (lý do cần một port có thể thay thế)}
 Detector port phải hỗ trợ nhiều công nghệ rất khác nhau. Bảng~\ref{tab:models} so sánh
-các hệ thống ứng viên~\cite{xie2020uied,omniparser2024,ariaui2024,elam7b,osworldg}.
+các hệ thống ứng viên~\cite{xie2020uied,omniparser2024,ariaui2024,elam7b,uitars2025,osworldg}.
 Chúng được chia thành hai họ: \emph{parser}, liệt kê toàn bộ phần tử (UIED, OmniParser,
 VizDOM), và \emph{grounder}, trả về một điểm duy nhất cho một chỉ dẫn bằng ngôn ngữ tự
-nhiên (Aria-UI, ELAM-7B, Jedi). Chỉ parser phù hợp với mục tiêu tạo một cây hoàn chỉnh
+nhiên (Aria-UI, ELAM-7B, UI-TARS, Jedi). Chỉ parser phù hợp với mục tiêu tạo một cây hoàn chỉnh
 của VizDOM; không hệ thống nào được so sánh xây dựng cấu trúc phân cấp, và đây chính là
 lớp đóng góp của đồ án. Port có thể thay thế cho phép VizDOM sử dụng parser mạnh nhất
 (OmniParser) làm backend, giữ CPU baseline (UIED) cho các test rig không có GPU, và thay
@@ -342,8 +342,9 @@ chỉ đo \emph{loại phần tử}.}
     VizDOM (đề xuất) & parser (CV + SLM) & cây DOM phân cấp & Không$^\ast$ & pipeline kết hợp & theo từng backend \\
     UIED & CV cổ điển & danh sách phần tử phẳng & Không & --- & nghiên cứu \\
     OmniParser V2 & detector + caption & bounding box phẳng có label + interactability & Có & YOLOv8 + Florence-2 & AGPL-3.0 / MIT \\
-    Aria-UI & vision grounding & một điểm $[0,1000]$ & Có & Aria MoE (3.9B tham số hoạt động) & n/v \\
+    Aria-UI & vision grounding & một điểm $[0,1000]$ & Có & Aria MoE 25.3B (3.9B tham số hoạt động); $\sim$50\,GB bf16 & Apache-2.0 \\
     ELAM-7B & grounding + đánh giá & điểm + PASSED/FAILED & Có & Molmo-7B-D (Qwen2-7B) & Apache-2.0 \\
+    UI-TARS-1.5-7B \cite{uitars2025} & vision grounding (agent) & một điểm & Có & Qwen2.5-VL-7B & Apache-2.0 \\
     Jedi-3B/7B & vision grounding & một điểm & Có & 3B / 7B & n/v \\
     \bottomrule
   \end{tabular}\\[0.3em]
@@ -664,6 +665,7 @@ Q-02 & Round-trip gRPC end-to-end qua nhiều process & chỉ thay đổi cấu 
 Q-03 & Instrument số lần tải model trong service & số lần tải = 1 & \textbf{Đã xác minh về chức năng} \\
 Q-04 & Chạy pipeline + RF với CPU/static/recording adapter & hoàn tất, không I/O thật & \textbf{Đã xác minh} \\
 Q-05 & Đo detection metric trên tập synthetic bằng evaluation harness & F1 $\geq 0.80$, mIoU $\geq 0.60$ & \textbf{Đã đo}: F1 0.58, mIoU 0.68; chưa đạt mục tiêu F1; actionable center-hit của OmniParser đạt 0.97 (R-04) \\
+--- & Lifecycle benchmark: 514 bước locate--act--verify, so sánh VizDOM với ELAM-7B / UI-TARS-1.5 / Aria-UI trên GPU thuê ngoài (2026-10-26) & VizDOM không có false-pass; chi phí mỗi bước thấp hơn các grounder & \textbf{Đã đo}: false-pass 0.000 so với 0.199--0.292; action-hit 0.883 so với 0.930--0.962; 0.04--0.10\,s so với 1.57--4.00\,s mỗi bước \\
 \bottomrule
 \end{longtable}
 

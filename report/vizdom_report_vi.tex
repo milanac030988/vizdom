@@ -120,6 +120,11 @@ Theo định hướng của Phương thức 3, các đóng góp chủ yếu thu�
         không gian detection khỏi không gian thiết bị (Phần~\ref{sec:impl}).
   \item \textbf{Một framework đánh giá} và phương pháp xây dựng dataset để đo chất
         lượng detection và DOM (Phần~\ref{sec:eval}).
+  \item \textbf{Một lifecycle benchmark thống nhất}, chạy parser và các mô hình
+        instruction grounding trên cùng 514 bước locate--act--verify, đồng thời bổ sung
+        metric \emph{false-pass} đặc thù cho kiểm thử; benchmark đã được đo với VizDOM,
+        ELAM-7B, UI-TARS-1.5-7B và Aria-UI trên GPU thuê ngoài
+        (Phần~\ref{sec:lifecycle}).
 \end{enumerate}
 
 \begin{figure}[H]
@@ -246,8 +251,9 @@ Bảng~\ref{tab:capability} đối chiếu khả năng của chúng.
     VizDOM (đề xuất) & parser (CV + SLM) & cây DOM phân cấp & Không$^\ast$ & pipeline kết hợp & tùy backend \\
     UIED & CV cổ điển & danh sách phần tử phẳng & Không & --- & research \\
     OmniParser V2 & detector + caption & bounding box phẳng có label + khả năng tương tác & Có & YOLOv8 + Florence-2 & AGPL-3.0 / MIT \\
-    Aria-UI & vision grounding & một điểm $[0,1000]$ & Có & Aria MoE (3.9B act.) & n/v \\
+    Aria-UI & vision grounding & một điểm $[0,1000]$ & Có & Aria MoE 25.3B (3.9B tham số hoạt động); $\sim$50\,GB bf16 & Apache-2.0 \\
     ELAM-7B & grounding + đánh giá & điểm + PASSED/FAILED & Có & Molmo-7B-D (Qwen2-7B) & Apache-2.0 \\
+    UI-TARS-1.5-7B \cite{uitars2025} & vision grounding (agent) & một điểm & Có & Qwen2.5-VL-7B & Apache-2.0 \\
     Jedi-3B/7B & vision grounding & một điểm & Có & 3B / 7B & n/v \\
     \bottomrule
   \end{tabular}\\[0.3em]
@@ -812,14 +818,18 @@ annotation.
 % =====================================================================
 
 \subsection{Phương pháp đánh giá}
-Chất lượng được đánh giá theo bốn trục bằng evaluation harness:
+Chất lượng được đánh giá theo năm trục bằng evaluation harness:
 \begin{itemize}[leftmargin=1.4em]
   \item \textbf{Phát hiện phần tử}: precision, recall, F1 và mean IoU so với
         bounding box ground truth đã annotation;
   \item \textbf{OCR}: độ chính xác ký tự và tỷ lệ lỗi ký tự/từ (CER/WER);
-  \item \textbf{Hierarchy}: độ đúng của containment và liên kết label; và
+  \item \textbf{Hierarchy}: độ đúng của containment và liên kết label;
   \item \textbf{Chất lượng locator}: tính duy nhất và độ ổn định của locator được
-        sinh ra.
+        sinh ra; và
+  \item \textbf{Hiệu quả kiểm thử}: lifecycle benchmark thống nhất
+        (Phần~\ref{sec:lifecycle}) chạy parser và grounder trên cùng các bước
+        locate--act--verify, rồi đo action-hit, verify accuracy, false-pass rate và
+        chi phí.
 \end{itemize}
 Benchmark sử dụng \textbf{dataset UI tổng hợp} (ảnh chụp màn hình được sinh bằng
 chương trình ở độ phân giải $1920\times1080$, có ground truth chính xác --- bounds,
@@ -889,6 +899,27 @@ Hệ thống đầu-cuối và các dịch vụ phân tán đã được xác mi
         hóa, ánh xạ sang tọa độ thiết bị ở phía server (được xác minh đầu-cuối bằng
         recording actuator và robot-arm homography stub).
 \end{itemize}
+
+Hình~\ref{fig:robotsuite} cho thấy demo end-to-end được phân phối cùng dự án khi chạy
+thực tế: một Robot Framework suite điều khiển Windows Calculator với cả ba port chạy
+dưới dạng dịch vụ gRPC. Hình này cũng làm rõ cấu trúc chi phí: toàn suite chỉ thực hiện
+\textbf{hai lần gọi detector} (một lần trong suite setup và một lần trước assertion đọc
+nội dung display); test case thứ hai không thêm lần gọi detector nào, vì các thao tác
+click được phân giải trên Visual DOM mà test case đầu đã dựng. Đây là tính chất tái sử
+dụng được nêu ở Phần~\ref{sec:dombenefits}, quan sát từ một lần chạy thực tế chứ không
+chỉ là lập luận kiến trúc.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{Robot_Suite_Sequence.png}
+  \caption{Demo suite end-to-end có thể chạy trực tiếp
+  (\code{examples/windows\_calculator\_demo}). Các service chỉ được khởi động một
+  lần và tồn tại qua nhiều lần chạy; suite setup đưa ứng dụng đang kiểm thử lên
+  foreground và dựng DOM một lần; mỗi action tiếp theo chỉ là lookup trên DOM đã cache
+  cộng với một lệnh \code{Tap} theo tọa độ chuẩn hóa; còn khi cần đọc lại giá trị,
+  hệ thống dùng region-level recapture thay vì chạy thêm một detector pass.}
+  \label{fig:robotsuite}
+\end{figure}
 
 \subsection{Kết quả định lượng trên benchmark tổng hợp}
 Bảng~\ref{tab:results} trình bày metric tổng thể (pooled) cho element detection và
@@ -1089,31 +1120,131 @@ khái quát: metrics theo từng type trên dữ liệu tổng hợp không phá
 sự tương tác giữa các stage, và khả năng hoán đổi cả detector lẫn OCR engine chính
 là điều giúp các lỗi này được tìm thấy.
 
+\subsection{Hiệu quả kiểm thử: lifecycle benchmark thống nhất}
+\label{sec:lifecycle}
+Metric theo từng stage chỉ đánh giá một \emph{component}; trong khi một test suite
+thành công hay thất bại dựa trên toàn bộ vòng đời --- locate $\rightarrow$ act
+$\rightarrow$ verify. Vì vậy, benchmark thứ hai chạy mọi hệ thống được so sánh trên
+\emph{cùng một tập bước} và chấm cùng một loại kết quả. 514 bước được sinh trực tiếp
+từ ground truth của tập synthetic mà không cần annotation mới: trên mỗi trong số 44
+trạng thái, mọi phần tử có caption duy nhất trong trạng thái đó tạo ra một bước
+\emph{action} (click phần tử) và một \emph{verification} dương (``button `Save' đang
+hiển thị'', kỳ vọng PASSED); đồng thời hai caption cố ý không tồn tại trên mỗi trạng
+thái (``Frobnicate'', ``Warp Cores'', \ldots) tạo ra 88 \emph{verification âm}
+(kỳ vọng FAILED). Mỗi bước có hai biểu diễn song song --- locator
+(\code{text="Save"}) cho hệ thống DOM và instruction ngôn ngữ tự nhiên cho grounder
+--- để mỗi hệ thống nhận bài toán ở dạng phù hợp với chính nó. Manifest được sinh một
+lần với seed 42 và được commit vào repository.
+
+Bốn metric được sử dụng. \emph{Action-hit}: điểm click được tạo ra nằm bên trong
+bounding box ground truth. \emph{Verify accuracy}: verdict khớp kỳ vọng trên toàn bộ
+301 verification. \emph{False-pass rate}: trả về PASSED cho một target không tồn tại,
+tính trên toàn bộ 301 verification --- đây là metric đặc thù cho kiểm thử, bởi benchmark
+agent hỏi \emph{có click đúng không}, còn benchmark kiểm thử còn phải hỏi \emph{hệ thống
+có phán định đúng không}; false pass là dạng lỗi nguy hiểm nhất của một hệ thống test.
+\emph{Chi phí}: với hệ thống DOM là thời gian parse theo từng trạng thái rồi mọi bước
+sau được trả lời từ DOM đã cache; với grounder là inference ở từng bước. VizDOM phân
+giải locator theo contract exactly-one: action yêu cầu đúng một match rồi click vào tâm;
+verification pass nếu có ít nhất một element match, nên caption không tồn tại có 0 match
+và fail theo thiết kế. ELAM-7B dùng verdict mode native (prompt ``Expected Result'' từ
+model card); UI-TARS-1.5-7B và Aria-UI không có verdict mode, nên verdict của chúng được
+proxy bằng việc subject của statement có ground về một point hay không, và kết quả được
+báo cáo rõ theo cách đó. Tất cả grounder chạy bf16 không quantize với greedy decoding.
+
+\begin{table}[H]
+  \centering\footnotesize
+  \caption{Lifecycle benchmark thống nhất, 514 bước trên 44 trạng thái (213 action,
+  213 verification dương và 88 verification âm). RTX 6000 Ada 48\,GB thuê ngoài,
+  commit \code{82f0b45}, ngày 2026-10-26. $^\dagger$Aria-UI ($\sim$50\,GB ở bf16)
+  được đo cùng đêm trên RTX PRO 6000 Blackwell 96\,GB (commit \code{411873c});
+  accuracy có thể so sánh trực tiếp vì dùng cùng bước và cùng cách chấm, còn latency
+  đến từ host khác.}
+  \label{tab:lifecycle}
+  \begin{tabular}{@{}p{3.4cm}p{2.5cm}cccp{2.6cm}@{}}
+    \toprule
+    Hệ thống & Weights & Action-hit & Verify acc. & False-pass & Chi phí \\
+    \midrule
+    VizDOM + UIED & CV, không LLM & 0.822 & 0.934 & \textbf{0.000} & 0.39\,s / trạng thái \\
+    VizDOM + OmniParser & CV + Florence-2 & 0.883 & 0.934 & \textbf{0.000} & 1.02\,s / trạng thái \\
+    VizDOM modular & CV, tắt captioner & 0.883 & 0.934 & \textbf{0.000} & 0.62\,s / trạng thái \\
+    ELAM-7B & bf16 & 0.930 & 0.704 & 0.286 & 4.00\,s / bước \\
+    UI-TARS-1.5-7B & bf16 & 0.944 & 0.801 & 0.199 & 2.72\,s / bước \\
+    Aria-UI$^\dagger$ & bf16 & \textbf{0.962} & 0.708 & 0.292 & 1.57\,s / bước \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Action-hit.} Cả ba grounder đều click chính xác hơn VizDOM: Aria-UI cao
+hơn 8 điểm so với detector OmniParser và modular, UI-TARS và ELAM cao hơn 5--6 điểm,
+và cả ba cao hơn UIED 11--14 điểm. Mọi lần miss của VizDOM đều là \emph{resolution
+miss}: 20 bước có caption OCR không đọc được (placeholder ``Search\ldots'', một giá
+trị giống đường dẫn và một số button nhỏ) và giống nhau trên cả ba detector; bốn bước
+là các chữ số trong data table khớp 12--18 cell; UIED còn có thêm 12 duplicate do
+fragmentation. Miss của grounder lại là các point bị đặt sai vị trí --- pagination của
+data table với ELAM, checkbox đăng nhập và icon button với UI-TARS, cùng một số input
+field với Aria-UI.
+
+\paragraph{Verification và false pass.} Bức tranh đảo chiều khi xét vai trò oracle.
+Khi được hỏi một control \emph{không tồn tại trên màn hình} có hiển thị hay không,
+Aria-UI trả PASSED ở 88/88 trường hợp, ELAM ở 86/88 (native verdict diễn giải label
+không biết thành một phần tử gần đó rồi xác nhận nó), và UI-TARS ở 60/88. VizDOM không
+false-pass trường hợp nào; 20 lỗi verification của nó đều theo hướng bảo thủ --- một
+caption thực sự tồn tại bị báo FAILED vì OCR đọc sai --- khiến test dừng và cần con
+người kiểm tra, tức dạng lỗi rẻ hơn. False pass đắt hơn vì test suite vẫn xanh trong
+khi UI đã sai. Vì vậy, hệ thống click tốt nhất lại là oracle tệ nhất; khác biệt này
+mang tính cấu trúc: grounder theo từng bước được huấn luyện để luôn đưa ra một câu trả
+lời, còn DOM đã resolve có thể trả lời \emph{không}.
+
+\paragraph{Chi phí.} Tính trung bình trên toàn suite, VizDOM + OmniParser mất tổng
+53\,s (8.1\,s load cộng 44 lần parse) cho 514 bước, tương đương khoảng 0.10\,s mỗi
+bước; modular backend là 0.06\,s. Các grounder mất 1.57--4.00\,s ở \emph{mỗi bước},
+đắt hơn 15--39 lần; tỷ lệ này còn tăng theo số bước trên mỗi trạng thái màn hình
+(ở đây khoảng 12). Modular backend --- YOLO của OmniParser ở stage~1, OCR của dự án
+ở stage~2 và một port của fusion logic OmniParser --- cho kết quả giống monolith trên
+cả 514 bước nhưng chỉ dùng 61\,\% thời gian parse, đúng với mục tiêu parity khi backend
+này được thiết kế. Một lần chạy trước đó (commit \code{a4cb85e}) còn thấp hơn 15 điểm;
+khoảng cách được truy về một schema mismatch (OCR text đã absorbed được emit dưới
+\code{text} thay vì \code{label}, khiến field có value và chính value cùng match
+locator) và được đóng lại bằng một rule trong pipeline: loại text element nằm bên
+trong một control đã mang cùng literal. Thay đổi này đồng thời nâng UIED từ 0.779 lên
+0.822.
+
+\paragraph{Độ ổn định.} Giữa hai lần chạy trên các GPU khác nhau, cột OmniParser tái
+lập đúng 514/514 bước và mọi thay đổi của VizDOM đều được giải thích bởi bản sửa nói
+trên; trong khi ELAM và UI-TARS thay đổi lần lượt 3 và 6 bước dù dùng greedy decoding
+(do bf16 kernel khác nhau giữa các thế hệ GPU), tương đương khoảng một điểm nhiễu trên
+các số liệu. Latency của grounder phụ thuộc host (UI-TARS 1.68\,s/bước trên máy RTX
+4090 và 2.72\,s/bước trên RTX 6000 Ada), vì vậy mỗi con số ở trên đều được báo cáo kèm
+commit và máy chạy.
+
 \subsection{Các khía cạnh hiệu năng}
-Hiệu năng được phân tích theo ba trục. Số liệu wall-clock cần chờ benchmark so sánh
-đồng nhất (Bảng~\ref{tab:results}), vì vậy phần thảo luận này tập trung vào cấu trúc
-và dựa trên đặc điểm mô hình đã công bố thay vì timing chưa được đo.
+Hiệu năng được phân tích theo ba trục. Lifecycle benchmark
+(Phần~\ref{sec:lifecycle}) đã được chạy trên GPU thuê ngoài, vì vậy các số liệu theo
+bước dưới đây là kết quả đo thực tế chứ không còn chỉ là lập luận cấu trúc.
 
 \paragraph{Yêu cầu phần cứng.} Các mô hình grounding lớn và phụ thuộc GPU ---
-Aria-UI kích hoạt 3.9B parameter, còn ELAM-7B và Jedi-7B thuộc nhóm 7B --- trong khi
-backend UIED của VizDOM chỉ cần CPU. Một đường chạy CPU là khác biệt thực sự đối với
-test rig và thiết bị nhúng không có GPU; backend OmniParser chính xác nhưng nặng
-được cung cấp cho các host có GPU.
+Aria-UI có tổng 25.3B parameter (3.9B active) và cần khoảng 50\,GB ở bf16, vượt khả
+năng của card 48\,GB; ELAM-7B và UI-TARS-1.5-7B thuộc nhóm 7B và chạy bf16 trên card
+24\,GB --- trong khi backend UIED của VizDOM chỉ cần CPU. Đường chạy CPU là khác biệt
+thực sự đối với test rig và thiết bị nhúng không có GPU; backend OmniParser chính xác
+nhưng nặng được cung cấp cho các host có GPU.
 
 \paragraph{Hiệu quả tái sử dụng.} Parser phân bổ chi phí theo nhiều lần sử dụng: một
 lần parse DOM phục vụ nhiều truy vấn locator và assertion ($O(1)$ lần chạy mô hình,
 sau đó là $n$ truy vấn cây rẻ), trong khi grounder phải infer lại theo từng
-instruction ($n$ lần gọi mô hình). Trong regression suite gồm hàng nghìn bước, khác
-biệt tiệm cận này quyết định một công cụ có thực tế hay không --- đây là lập luận
-hiệu năng quan trọng cho abstraction DOM trong kiểm thử, độc lập với bất kỳ con số
-latency riêng lẻ nào.
+instruction ($n$ lần gọi mô hình). Đo trên suite 514 bước
+(Bảng~\ref{tab:lifecycle}), VizDOM mất 0.04--0.10\,s mỗi bước so với 1.57--4.00\,s
+của các grounder; trong regression suite gồm hàng nghìn bước, khác biệt tiệm cận này
+quyết định một công cụ có thực tế hay không --- đây là lập luận hiệu quả quan trọng
+cho abstraction DOM trong kiểm thử.
 
 \paragraph{Dịch vụ warm-model và offload.} Dịch vụ detector nạp mô hình một lần và
 chỉ chạy inference cho các request tiếp theo; một GPU host có thể phục vụ cả nhóm
 client CPU nhẹ. Đặt capture trên thiết bị, inference trên GPU host và orchestration
 trên client giúp mỗi node đảm nhiệm phần việc phù hợp, đồng thời tránh phải cài mô
-hình nặng trên mọi máy. Benchmark dự kiến sẽ báo cáo latency CPU so với GPU và
-throughput của detector theo phương pháp đã nêu.
+hình nặng trên mọi máy. Lifecycle benchmark báo cáo riêng one-off load
+(2.6--8.1\,s tùy backend) và thời gian parse theo trạng thái; latency CPU so với GPU
+của chính service path vẫn cần được đo.
 
 % =====================================================================
 \section{Thảo luận và giới hạn}
@@ -1126,6 +1257,14 @@ throughput của detector theo phương pháp đã nêu.
         hợp (Phần~\ref{sec:eval}); vẫn cần một tập gán nhãn \emph{thực tế} lớn hơn
         để xác nhận các số liệu có chuyển giao ra ngoài UI sạch hay không, đồng thời
         đánh giá các trục hierarchy và locator mà ground truth hiện tại chưa hỗ trợ.
+  \item \textbf{So sánh với grounder.} Các negative trong lifecycle benchmark là
+        những label vô nghĩa, nên DOM dựa trên exact text không thể vô tình partial-match;
+        các label hợp lý nhưng không tồn tại (ví dụ ``Export'' trên màn hình chỉ có
+        ``Import'') sẽ kiểm tra cả giới hạn OCR của VizDOM. Verdict của UI-TARS và
+        Aria-UI là proxy vì hai model không có verdict mode; native verdict của ELAM là
+        phép so sánh công bằng hơn và vẫn pass 86/88 target không tồn tại. Điểm số của
+        grounder dao động khoảng một điểm giữa các thế hệ GPU dù dùng greedy decoding,
+        và latency của Aria-UI đến từ một host khác các cột còn lại.
   \item \textbf{Calibration cho actuation vật lý.} Trường hợp cánh tay robot yêu cầu
         calibration từ ảnh sang không gian vật lý cho từng setup; kiến trúc đã cô
         lập phần này vào plugin nhưng đây vẫn là công việc thực tế, và actuation vật
@@ -1146,11 +1285,17 @@ mô hình vision grounding hiện đại và giai đoạn tinh chỉnh bằng m�
 thời engine này có thể được triển khai linh hoạt nhờ kiến trúc lục giác hướng dịch
 vụ. Hệ thống đã mang lại giá trị cho một test framework thực tế và hỗ trợ các cách
 triển khai khác thường như capture bằng camera kết hợp actuation bằng cánh tay robot.
-Các hướng phát triển tiếp theo gồm: hoàn thiện benchmark định lượng trên dataset gán
-nhãn lớn hơn; giảm over-segmentation trên UI thực tế có theme; đánh giá các mô hình
-instruction grounding (Aria-UI, ELAM-7B, Jedi) như phương án thay thế hoặc bổ sung
-cho bước tinh chỉnh bằng mô hình nhỏ; và hardening dịch vụ bằng authentication/TLS
-cùng cơ chế plugin discovery dựa trên setuptools entry point.
+Trên lifecycle benchmark thống nhất, các mô hình instruction grounding (Aria-UI,
+ELAM-7B, UI-TARS-1.5-7B) click chính xác hơn VizDOM (0.93--0.96 so với 0.88), nhưng
+lại pass 60--88 trong tổng số 88 target không tồn tại; VizDOM không false-pass trường
+hợp nào theo thiết kế và có chi phí mỗi bước thấp hơn 15--39 lần --- đây là kết quả
+đặc thù cho kiểm thử mà đồ án đặt mục tiêu đo lường. Các hướng phát triển tiếp theo
+gồm: hoàn thiện benchmark định lượng trên dataset gán nhãn lớn hơn; giảm
+over-segmentation trên UI thực tế có theme; bổ sung negative khó hơn (label hợp lý
+nhưng không tồn tại) và trạng thái từ ứng dụng thực cho lifecycle benchmark; tích hợp
+một grounder chuyên dụng như backend Tier-2 thay thế cho locator \code{desc=} ở nơi
+grounding thực sự có lợi; và hardening dịch vụ bằng authentication/TLS cùng cơ chế
+plugin discovery dựa trên setuptools entry point.
 
 \bibliographystyle{plain}
 \bibliography{references}
