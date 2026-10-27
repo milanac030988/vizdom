@@ -1,15 +1,19 @@
 # Rented-GPU benchmark runbook
 
 Purpose: run the hardware-gated benchmarks — the **grounder columns** (ELAM-7B,
-UI-TARS-1.5-7B, Aria-UI) for the lifecycle comparison, and the **ADR-027
+UI-TARS-1.5-7B, Aria-UI) for the lifecycle comparison, the **`desc=` columns**
+(VizDOM's own language tier, ADR-022, behind Ollama), and the **ADR-027
 combos** — on a rented GPU box, spending as little paid time as possible.
 Everything is scripted; the human steps are clone, four commands, one download.
 
-Status: three paid runs so far (2026-10-25 and 2026-10-26 on RTX 4090,
-2026-10-26 on RTX 6000 Ada 48 GB, all Vast.ai); the third ran the kit as
-committed in `82f0b45` end to end without intervention. Everything that
-went wrong on the first day is now caught by `setup.sh` or `preflight.sh` —
-see "Version pins" below before changing any dependency.
+Status: four paid runs so far (2026-10-25 and 2026-10-26 on RTX 4090,
+2026-10-26 on RTX 6000 Ada 48 GB, and the Aria-UI column alone on an RTX
+PRO 6000 Blackwell 96 GB the same night, all Vast.ai); the last two ran the
+kit as committed (`82f0b45`, `411873c`) end to end without intervention.
+The offload mode below has not been exercised yet (the 96 GB card is above
+the gate, so the whole model sat on the GPU). Everything that went wrong on
+the first day is now caught by `setup.sh` or `preflight.sh` — see "Version
+pins" below before changing any dependency.
 
 ## Renting: what to pick
 
@@ -41,12 +45,13 @@ says why, prefetch skips the 50 GB download, and the sweep skips the column.
 
 ## Cost picture
 
-Downloads (~80 GB) dominate wall time on the box — typically 10–25 min on a
-datacenter pipe. Setup ~6 min (two venvs). The sweep itself: ~1 min per VizDOM
-column, ~15 min per 7B grounder column in bf16, Aria-UI bf16 longer (3.9 B
-active parameters, but 50 GB to load). Budget **2–3 hours total**; at
-typical 24 GB rates that is 3–5 $ including bandwidth, an 80 GB card
-roughly double.
+Downloads (~85 GB incl. the two Ollama models) dominate wall time on the box
+— typically 10–25 min on a datacenter pipe. Setup ~6 min (two venvs). The
+sweep itself: ~1 min per VizDOM column, ~5–15 min per `desc=` column (one
+Ollama call per step for the model tiers), ~15 min per 7B grounder column in
+bf16, Aria-UI bf16 longer (3.9 B active parameters, but 50 GB to load).
+Budget **2–3 hours total**; at typical 24 GB rates that is 3–5 $ including
+bandwidth, an 80 GB card roughly double.
 
 ## The four commands
 
@@ -62,11 +67,12 @@ bash deploy/gpu/run_benchmarks.sh # the unattended sweep (prints a summary table
 **Do not skip preflight.** It loads every model from the env the sweep will
 use it in, grounds one instruction, checks the point is inside the image, and
 for ELAM also checks that a verdict comes back; it also runs one VizDOM pass
-with the omniparser *and* the modular backend. Every failure class seen so
-far (missing package, wrong transformers, wrong prompt template, wrong
-coordinate scale, OmniParser or the modular stage 1 silently degrading to
-UIED) fails there in minute two, not two hours into the sweep as a column of
-zeros.
+with the omniparser *and* the modular backend, and asks each `desc=` model
+tier (SLM over DOM, VLM Set-of-Mark) through Ollama to resolve one
+description. Every failure class seen so far (missing package, wrong
+transformers, wrong prompt template, wrong coordinate scale, OmniParser or
+the modular stage 1 silently degrading to UIED) fails there in minute two,
+not two hours into the sweep as a column of zeros.
 
 Then from your own machine (or the MobaXterm SFTP panel):
 
@@ -85,11 +91,40 @@ same run dir; the tarball and `summary.md` are rebuilt:
 ONLY="elam-7b aria-ui" OUT_DIR=benchmarks/results/gpu-<stamp> bash deploy/gpu/run_benchmarks.sh
 ```
 
-Column names: `vizdom-uied vizdom-omniparser vizdom-modular elam-7b
+Column names: `vizdom-uied vizdom-omniparser vizdom-modular
+vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm elam-7b
 ui-tars-1.5-7b aria-ui parity`. Each run writes a new timestamped json+md, so
 nothing is overwritten; `summary.md` lists every row found. `prefetch.sh`
 honours the same `ONLY=` so a single-column rental downloads only that
 column's weights.
+
+### The `desc=` columns (ADR-022, VizDOM's language tier)
+
+The six headline columns resolve VizDOM steps with `text=` only, so they
+compare *VizDOM without its language tier* against grounders that are all
+language tier. The `desc=` columns close that gap: same parse-once DOM as
+`vizdom-modular`, but each step resolves the manifest's auto-generated
+description (`Save button`, `Username input field`) through the `desc=`
+tier chain — the code behind `Get Visual Element  desc="..."`. One column per
+chain:
+
+| Column | `--grounding-tiers` | What it measures |
+|---|---|---|
+| `vizdom-modular-desc` | `lexical,slm` (the production default) | what a test author gets from `desc=` today, plus the per-tier resolution rate |
+| `vizdom-modular-desc-slm` | `slm` pinned | the text LM over the DOM table, alone |
+| `vizdom-modular-desc-vlm` | `vlm` pinned | the VLM Set-of-Mark over the screenshot, alone — the head-to-head with the grounders (both sides resolve language; VizDOM picks among DOM candidates, the grounders regress a point) |
+
+A fresh resolver is built per step (the production per-screen cache would
+otherwise answer the verify step from the action step), so the false-pass
+rate on the 88 nonsense captions is a real measurement of the tier, not of
+the cache. Models: `qwen2.5:3b` (slm) and `qwen2.5vl:3b` (vlm) through Ollama
+— `prefetch.sh` installs Ollama and pulls both (~5 GB), `run_benchmarks.sh`
+starts the server if needed and **skips** the three columns when it is not
+reachable. Override the models with `VIZDOM_GROUNDING_MODEL` /
+`VIZDOM_GROUNDING_VISION_MODEL` (both scripts read them; e.g. `qwen2.5vl:7b`
+on a big card — then quote the size with the number). Note the Ollama tag is
+`qwen2.5vl` (no dash); the project config default `qwen2.5-vl:3b` is the HF
+name and does not pull.
 
 ### Aria-UI on a 48 GB card: offload mode (experimental)
 
@@ -126,6 +161,10 @@ decoding are the same).
 `benchmarks/results/gpu-<stamp>/` with one result json+md per column:
 
 - `vizdom-uied`, `vizdom-omniparser`, `vizdom-modular` — our approach
+- `vizdom-modular-desc`, `-desc-slm`, `-desc-vlm` — our approach resolving
+  `desc=` through each ADR-022 tier chain (row names carry the chain, e.g.
+  `vizdom-modular+desc[vlm]`; `cost.resolved_by_tier` says which tier answered
+  how many steps)
 - `elam-7b`, `ui-tars-1.5-7b`, `aria-ui` — the competing end-to-end grounders
 - `parity.txt` — ADR-027 combos incl. per-stage latency on this GPU
 - `summary.md` — all result rows in one table; `gpu.txt` — card, driver, commit
@@ -178,10 +217,14 @@ Learned on the first paid run (2026-10-25, RTX 4090 on Vast):
 - Aria-UI is auto-skipped below 70 GB VRAM (`available()` says why in the log).
   Preflight prints SKIP for that one reason only; a grounder that is
   unavailable for any other reason (missing package) is a FAIL.
+- The `desc=` columns are skipped (not failed) when Ollama is not reachable;
+  preflight prints SKIP for that one reason and FAIL when Ollama runs but a
+  model is missing or a tier cannot answer. Ollama shares the card with the
+  pipeline (the two 3B models take ~5 GB), fine on anything ≥ 16 GB.
 - The Qwen2-VL captioner combo is picked up automatically once an
   ollama-backed Captioner lands in `modular_backend._CAPTIONERS`; until then
-  `parity_on_box.py` notes it as unavailable, and the Ollama pull in
-  `prefetch.sh` is opt-in (`VIZDOM_PREFETCH_OLLAMA=1`).
+  `parity_on_box.py` notes it as unavailable. The Ollama pull it needs is the
+  same one the `desc=` columns make.
 - The RT-DETR region fine-tune (ADR-027 trigger 2b) is **not** part of this
   sweep — it is a training job; keep the box after the sweep only if that has
   been prepared separately.

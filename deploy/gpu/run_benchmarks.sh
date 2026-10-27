@@ -62,6 +62,36 @@ run_column vizdom-uied        $RUN --manifest "$MANIFEST" --executors vizdom-uie
 run_column vizdom-omniparser  $RUN --manifest "$MANIFEST" --executors vizdom-omniparser  --out-dir "$OUT"
 run_column vizdom-modular     $RUN --manifest "$MANIFEST" --executors vizdom-modular     --out-dir "$OUT"
 
+# --- the desc= columns (ADR-022: VizDOM's language tier over the same DOM) --
+# Same parse-once DOM as vizdom-modular; each step resolves the auto-generated
+# description ("Save button") instead of text="Save". Three chains: the
+# production default (lexical -> slm), and each model tier pinned alone -
+# that is the head-to-head with the grounders, both sides then resolve
+# language (VizDOM over its DOM candidates via Set-of-Mark, the grounders over
+# raw pixels). Needs Ollama with the two small models (prefetch.sh installs
+# and pulls them); when it is not reachable the columns are skipped, not
+# failed. VIZDOM_GROUNDING_MODEL / VIZDOM_GROUNDING_VISION_MODEL override the
+# 3B defaults (e.g. qwen2.5vl:7b on a big card) - keep prefetch.sh in sync.
+DESC_COLUMNS="vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm"
+OLLAMA="${VIZDOM_OLLAMA_HOST:-http://localhost:11434}"
+GMODEL="${VIZDOM_GROUNDING_MODEL:-qwen2.5:3b}"
+GVISION="${VIZDOM_GROUNDING_VISION_MODEL:-qwen2.5vl:3b}"
+desc_wanted=0; for c in $DESC_COLUMNS; do wanted "$c" && desc_wanted=1; done
+if [ "$desc_wanted" -eq 1 ]; then
+    if command -v ollama >/dev/null 2>&1 && ! curl -fsS "$OLLAMA/api/tags" >/dev/null 2>&1; then
+        (ollama serve >/dev/null 2>&1 &); sleep 3
+    fi
+    if curl -fsS "$OLLAMA/api/tags" >/dev/null 2>&1; then
+        DESC="$RUN --manifest $MANIFEST --executors vizdom-modular+desc --out-dir $OUT
+              --grounding-host $OLLAMA --grounding-model $GMODEL --grounding-vision-model $GVISION"
+        run_column vizdom-modular-desc     $DESC --grounding-tiers lexical,slm
+        run_column vizdom-modular-desc-slm $DESC --grounding-tiers slm
+        run_column vizdom-modular-desc-vlm $DESC --grounding-tiers vlm
+    else
+        echo "desc= columns: SKIPPED - Ollama not reachable at $OLLAMA (prefetch.sh installs it and pulls $GMODEL + $GVISION)"
+    fi
+fi
+
 # --- the grounder columns (the competing end-to-end paradigm) --------------
 # 7B grounders run in bf16 on a >= 20 GB card (the 4-bit path exists for the
 # laptop; Molmo/ELAM under bnb 4-bit fails with a Float/Half dtype error).
@@ -77,7 +107,7 @@ QUANT=""; [ "$VRAM_GB" -ge 20 ] && QUANT="--no-quantize"
 # column is skipped here rather than paid for and then marked FAILED.
 # VIZDOM_ARIA_OFFLOAD=1 (>= 40 GB card) opts into the experimental offload
 # mode instead: the adapter spills the last layers to host RAM.
-[ "$VRAM_GB" -ge 70 ] || [ -n "${VIZDOM_ARIA_OFFLOAD:-}" ] || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular elam-7b ui-tars-1.5-7b parity}"
+[ "$VRAM_GB" -ge 70 ] || [ -n "${VIZDOM_ARIA_OFFLOAD:-}" ] || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular $DESC_COLUMNS elam-7b ui-tars-1.5-7b parity}"
 if [ -x .venv-legacy/bin/python ]; then
     LEGACY=".venv-legacy/bin/python -m visual_dom.evaluation.lifecycle.runner"
 else

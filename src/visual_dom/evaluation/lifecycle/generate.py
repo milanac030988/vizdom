@@ -6,7 +6,9 @@ unbiased step set for free by exploiting what the element GT already contains:
 
 - every actionable element (button / input_field / checkbox) whose caption text
   is UNIQUE in its state becomes an ACTION step - locator ``text=<caption>``,
-  instruction "click the '<caption>' <type>", target = the element's bounds;
+  instruction "click the '<caption>' <type>", description "<caption> <type>"
+  (the ``desc=`` form of the same intent, ADR-022), target = the element's
+  bounds;
 - the same uniqueness rule yields positive VERIFY steps ("'<caption>' is
   visible" -> PASSED);
 - deliberately-absent captions yield negative VERIFY steps (expect FAILED),
@@ -94,6 +96,10 @@ def generate_steps(labels_dir, images_dir, seed: int = 42):
             seen_captions.add(caption.lower())
             kind_word = {"button": "button", "input_field": "input field",
                          "checkbox": "checkbox"}[e["visual_type"]]
+            # Three forms of ONE intent, all derived from the same caption so
+            # no executor gets extra information: the property locator, the
+            # grounder instruction, and the desc= description (what a test
+            # author would write as desc="Save button").
             steps.append({
                 "id": f"{state_id}/act/{e['id']}",
                 "state": state_id,
@@ -101,6 +107,7 @@ def generate_steps(labels_dir, images_dir, seed: int = 42):
                 "action": "click",
                 "locator": f'text="{caption}"',
                 "instruction": f"click the '{caption}' {kind_word}",
+                "description": f"{caption} {kind_word}",
                 "target_id": e["id"],
                 "target_bounds": e["bounds"],
             })
@@ -110,6 +117,7 @@ def generate_steps(labels_dir, images_dir, seed: int = 42):
                 "kind": "verify",
                 "locator": f'text="{caption}"',
                 "instruction": f"the '{caption}' {kind_word} is visible",
+                "description": f"{caption} {kind_word}",
                 "expect": "PASSED",
                 "target_id": e["id"],
                 "target_bounds": e["bounds"],
@@ -123,6 +131,7 @@ def generate_steps(labels_dir, images_dir, seed: int = 42):
                 "kind": "verify",
                 "locator": f'text="{caption}"',
                 "instruction": f"the '{caption}' button is visible",
+                "description": f"{caption} button",
                 "expect": "FAILED",
                 "target_id": None,
                 "target_bounds": None,

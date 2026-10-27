@@ -12,7 +12,8 @@ import json
 import pytest
 
 from visual_dom.evaluation.lifecycle.generate import generate_steps
-from visual_dom.evaluation.lifecycle.runner import _inside, _score, run_benchmark
+from visual_dom.evaluation.lifecycle.runner import (
+    VizDomDescExecutor, _inside, _require_descriptions, _score, run_benchmark)
 
 
 # --------------------------------------------------------------------------- #
@@ -80,6 +81,32 @@ def test_generator_is_deterministic(tmp_path):
         labels, images, seed=7)
 
 
+def test_generator_emits_desc_form_of_every_step(tmp_path):
+    """The desc= column (ADR-022) resolves a description derived from the same
+    caption as the locator and the instruction - no executor gets more."""
+    labels, images = _write_state(tmp_path, "s1", [
+        {"id": "E1", "visual_type": "input_field", "bounds": [0, 0, 50, 20],
+         "ocr_text": "Username"},
+    ])
+    steps = generate_steps(labels, images)["steps"]
+    by_kind = {}
+    for s in steps:
+        by_kind.setdefault((s["kind"], s.get("expect")), s)
+    assert by_kind[("action", None)]["description"] == "Username input field"
+    assert by_kind[("verify", "PASSED")]["description"] == "Username input field"
+    negative = by_kind[("verify", "FAILED")]
+    assert negative["description"].endswith(" button")
+    assert negative["description"].split(" button")[0] in negative["locator"]
+    assert all(s["description"] for s in steps)
+
+
+def test_require_descriptions_rejects_old_manifest():
+    old = {"steps": [{"id": "s/act/E1", "locator": "text=x", "instruction": "click x"}]}
+    with pytest.raises(SystemExit, match="regenerate"):
+        _require_descriptions(old)
+    _require_descriptions({"steps": [{"id": "a", "description": "x button"}]})
+
+
 # --------------------------------------------------------------------------- #
 # scoring
 # --------------------------------------------------------------------------- #
@@ -145,6 +172,96 @@ def test_runner_aggregates_and_writes_results(tmp_path):
     assert s["verify_accuracy"] == 0.5          # v2 judged PASSED, expected FAILED
     assert s["false_pass_rate"] == 0.5
     assert list(tmp_path.glob("*.json")) and list(tmp_path.glob("*.md"))
+
+
+# --------------------------------------------------------------------------- #
+# the desc= column (ADR-022 resolver behind the same DOM)
+# --------------------------------------------------------------------------- #
+
+_DESC_MANIFEST = {
+    "benchmark": "unit",
+    "states": [{"id": "s", "image": "none.png", "gt": "none.json"}],
+    "steps": [
+        {"id": "a1", "state": "s", "kind": "action", "locator": 'text="x"',
+         "instruction": "click the 'x' button", "description": "x button",
+         "target_id": "E1", "target_bounds": [0, 0, 10, 10]},
+        {"id": "v1", "state": "s", "kind": "verify", "locator": 'text="x"',
+         "instruction": "the 'x' button is visible", "description": "x button",
+         "expect": "PASSED", "target_id": "E1", "target_bounds": [0, 0, 10, 10]},
+        {"id": "v2", "state": "s", "kind": "verify", "locator": 'text="Warp Cores"',
+         "instruction": "the 'Warp Cores' button is visible",
+         "description": "Warp Cores button", "expect": "FAILED",
+         "target_id": None, "target_bounds": None},
+    ],
+}
+
+
+class _FakeResolver:
+    """Stands in for DescriptionResolver: knows one element, by its description."""
+
+    made = 0
+
+    def __init__(self, dom, screenshot):
+        _FakeResolver.made += 1
+        self.dom = dom
+
+    def resolve(self, description):
+        if description == "x button":
+            return self.dom["elements"][0], {"tier": "slm", "reason": "conf=0.90: it says x"}
+        return None, {"tier": None, "reason": "no tier produced a confident match",
+                      "candidates": []}
+
+
+def _desc_executor(tiers, **kw):
+    ex = VizDomDescExecutor(detector="modular", tiers=tiers,
+                            resolver_factory=_FakeResolver, **kw)
+    # the DOM the pipeline would have produced for state "s" - no models here
+    ex._dom_cache["s"] = {"image_size": {"width": 100, "height": 50},
+                          "elements": [{"id": "E1", "role": "button",
+                                        "visual_type": "button", "text": "x",
+                                        "bounds": [0, 0, 10, 10]}]}
+    return ex
+
+
+def test_desc_executor_scores_like_the_other_columns(tmp_path):
+    _FakeResolver.made = 0
+    ex = _desc_executor(["lexical", "slm"])
+    assert ex.name == "vizdom-modular+desc[lexical+slm]"
+    payload = run_benchmark(_DESC_MANIFEST, [ex], out_dir=str(tmp_path))
+    s = payload["results"][ex.name]["summary"]
+    assert (s["action_hit_rate"], s["verify_accuracy"], s["false_pass_rate"]) == (1.0, 1.0, 0.0)
+    rows = {r["step"]: r for r in payload["results"][ex.name]["steps"]}
+    assert rows["a1"]["outcome"] == [5, 5] and rows["a1"]["detail"].startswith("tier=slm")
+    assert rows["v1"]["outcome"] == "PASSED"
+    assert rows["v2"]["outcome"] == "FAILED" and rows["v2"]["detail"].startswith("tier=none")
+    assert s["cost"]["resolved_by_tier"] == {"slm": 2, "none": 1}
+    assert s["cost"]["tiers"] == ["lexical", "slm"]
+    # one resolver per step: the verify step must not be answered from the
+    # action step's cached resolution
+    assert _FakeResolver.made == 3
+
+
+def test_desc_executor_rejects_unknown_tier():
+    with pytest.raises(ValueError, match="lexical"):
+        VizDomDescExecutor(detector="modular", tiers=["lexical", "magic"])
+    with pytest.raises(ValueError):
+        VizDomDescExecutor(detector="modular", tiers=[])
+
+
+def test_desc_executor_availability_is_honest():
+    # the model-free chain never needs a server
+    ok, why = _desc_executor(["lexical"]).available()
+    assert ok and "no model" in why
+    # a model tier with no Ollama behind it says so and names the fix
+    ok, why = _desc_executor(["slm"], host="http://127.0.0.1:9").available()
+    assert not ok and "ollama serve" in why
+
+
+def test_desc_executor_needs_description_on_the_step():
+    ex = _desc_executor(["lexical"])
+    with pytest.raises(RuntimeError, match="regenerate"):
+        ex.run_step({"id": "s", "image": "none.png"},
+                    {"id": "a", "kind": "action", "locator": 'text="x"'})
 
 
 class _BrokenExecutor:

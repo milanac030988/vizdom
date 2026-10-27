@@ -64,6 +64,7 @@ into test steps automatically:
    checkbox) whose caption is **unique within its state** becomes:
    - a *locator* for DOM-based systems: `text="Save"`
    - an *instruction* for grounding models: `click the 'Save' button`
+   - a *description* for VizDOM's `desc=` tier chain (ADR-022): `Save button`
    - the GT target bounds to score against.
 2. **Positive verify steps** — the same elements: `the 'Save' button is
    visible` → expected verdict `PASSED`.
@@ -80,9 +81,11 @@ the resulting `steps.json` is committed so results are reproducible.
 Current set (`lifecycle-synthetic-v1`): **514 steps** = 213 action +
 213 positive verify + 88 negative verify, over 44 states.
 
-Every step carries a **dual representation**, which is what makes parser-based
-systems and per-step grounding models directly comparable — they receive the
-same task in their native input form and are scored on the same outcome.
+Every step carries the same intent in **three forms** derived from one
+caption — locator, instruction, description — which is what makes parser-based
+systems, VizDOM's own language tier and per-step grounding models directly
+comparable: each receives the task in its native input form and is scored on
+the same outcome, and none gets information the others lack.
 
 ---
 
@@ -104,6 +107,14 @@ same task in their native input form and are scored on the same outcome.
           cached DOM  ..... timed as "resolution"       ..... timed as step latency
           action → element centre = click point
           verify → exactly-one contract answers
+        VizDomDescExecutor (per tier chain)
+        ─ same DOM; per STEP: resolve the step's
+          description through the desc= chain
+          (lexical / SLM over DOM / VLM Set-of-Mark,
+          one Ollama call per model tier), fresh
+          resolver per step ..... timed as "resolution"
+          action → chosen element's centre
+          verify → confident resolution = PASSED
                                         │
                     ┌───────────────────┴──────────────────────────┐
                     ▼                                              ▼
@@ -152,6 +163,7 @@ text), so **per-type recall and center-hit are the testing-relevant figures**
 | **Resolution / step** | locator lookup time in the cached DOM | the "cheap lookup" half of the cost claim |
 | **Model load** | one-time connect + warm-up | amortized cost, reported separately |
 | **Parse / state** | mean full-pipeline time per screen state | the "pay once per screen" half of the cost claim |
+| (`desc=` columns) **Resolved by tier** | how many steps each tier of the chain answered (`none` = no confident match) | the per-tier resolution rate ADR-022 promised to report |
 | (grounders) **Inference / step** | one model call per step | the cost model being compared against |
 
 The cost columns make the parse-once economics **measured rather than
@@ -178,37 +190,48 @@ with charts and the test configuration: `benchmarks/report_gpu_20261026_run3.htm
 | `vizdom-modular` | CV, captioner off | 0.883 | 0.934 | **0.000** | load 4.2 s + parse **0.62 s/state** |
 | `elam-7b` | bf16 | **0.930** | 0.704 | 0.286 (86 of 88 negatives passed) | **4.00 s/step** |
 | `ui-tars-1.5-7b` | bf16 | **0.944** | 0.801 | 0.199 (60 of 88 negatives passed) | **2.72 s/step** |
-| `aria-ui` | — | not run | | | 25 B MoE, bf16 only (~50 GB): skipped by the 70 GB gate on this 48 GB card; needs an 80 GB card |
+| `aria-ui` (run 3a, 96 GB card) | bf16 | **0.962** | 0.708 | 0.292 (88 of 88 negatives passed) | **1.57 s/step** (other host) |
 
 Run history, same 514 steps (action-hit / verify acc / false-pass):
 
-| Run | Card, commit | uied | omniparser | modular | elam-7b | ui-tars-1.5-7b |
-|---|---|---|---|---|---|---|
-| 1, 2026-10-25 | RTX 4090, commit not recorded | 0.779 / 0.934 / 0 | 0.883 / 0.934 / 0 | — | 0.0 (prompt bug, rescored 0.916) | 4-bit: 0.845 / 0.797 / 0.199 |
-| 2, 2026-10-26 | RTX 4090, `a4cb85e` | 0.779 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.732 / 0.934 / 0 | 0.939 / 0.701 / 0.289 | 0.934 / 0.807 / 0.193 |
-| 3, 2026-10-26 | RTX 6000 Ada, `82f0b45` | 0.822 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.930 / 0.704 / 0.286 | 0.944 / 0.801 / 0.199 |
+| Run | Card, commit | uied | omniparser | modular | elam-7b | ui-tars-1.5-7b | aria-ui |
+|---|---|---|---|---|---|---|---|
+| 1, 2026-10-25 | RTX 4090, commit not recorded | 0.779 / 0.934 / 0 | 0.883 / 0.934 / 0 | — | 0.0 (prompt bug, rescored 0.916) | 4-bit: 0.845 / 0.797 / 0.199 | — |
+| 2, 2026-10-26 | RTX 4090, `a4cb85e` | 0.779 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.732 / 0.934 / 0 | 0.939 / 0.701 / 0.289 | 0.934 / 0.807 / 0.193 | OOM (4-bit, 24 GB) |
+| 3, 2026-10-26 | RTX 6000 Ada, `82f0b45` | 0.822 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.930 / 0.704 / 0.286 | 0.944 / 0.801 / 0.199 | skipped (gate) |
+| 3a, 2026-10-26 | RTX PRO 6000 Blackwell 96 GB, `411873c` | — | — | — | — | — | 0.962 / 0.708 / 0.292 |
+
+Run 3a is the Aria-UI column alone (`ONLY="aria-ui"`), same manifest and
+adapter, on a second rental two hours after run 3; raw files in
+`benchmarks/results/gpu-20261026_233909/`. Its accuracy is comparable with
+the run 3 rows; its latency is from another card and host.
 
 Interpretation, column by column:
 
-- **Action-hit.** The end-to-end grounders win by 5–6 points over
-  OmniParser-VizDOM (0.944 / 0.930 vs 0.883) and by 11–12 over UIED-VizDOM.
-  Our misses are resolution misses: the locator finds 0 or 2+ matches on a
-  fragmented or merged element; the grounders have no such failure mode.
-  Quantization matters for UI-TARS (+9 points from 4-bit to bf16, run 1 vs 2).
-- **Verify / false-pass — the testing row.** Both grounders say `PASSED` to
-  statements about elements that are *not on the screen*: ELAM accepts 86 of
-  the 88 negative statements (its native verdict mode rationalises the
-  nonsense label into a nearby element), UI-TARS 60 of 88 (it grounds
-  whatever it is asked to ground). VizDOM's 20 verify errors are all the
-  other direction — a present caption the OCR cannot read, so the oracle
-  says `FAILED` on a true statement — and it never passes an absent target,
-  by construction of the exactly-one resolution contract. For a test oracle
-  the false-pass column is the one that matters, and it is 0 vs 0.20–0.29.
+- **Action-hit.** The end-to-end grounders win over OmniParser-VizDOM:
+  Aria-UI by 8 points (0.962 vs 0.883), UI-TARS and ELAM by 5–6 (0.944 /
+  0.930), and all three by 11–14 over UIED-VizDOM. Our misses are
+  resolution misses: the locator finds 0 or 2+ matches on a fragmented or
+  merged element; the grounders have no such failure mode. Quantization
+  matters for UI-TARS (+9 points from 4-bit to bf16, run 1 vs 2).
+- **Verify / false-pass — the testing row.** All three grounders say
+  `PASSED` to statements about elements that are *not on the screen*:
+  Aria-UI accepts all 88 negative statements (it returns a point for
+  everything it is asked), ELAM 86 of 88 (its native verdict mode
+  rationalises the nonsense label into a nearby element), UI-TARS 60 of 88.
+  VizDOM's 20 verify errors are all the other direction — a present caption
+  the OCR cannot read, so the oracle says `FAILED` on a true statement — and
+  it never passes an absent target, by construction of the exactly-one
+  resolution contract. For a test oracle the false-pass column is the one
+  that matters, and it is 0 vs 0.20–0.29; the best clicker is the worst
+  oracle.
 - **Cost.** Per step, amortised over this suite: VizDOM-OmniParser spends
   53 s in total (load + 44 parses) for 514 steps, i.e. ~0.1 s/step, the
   modular backend 31 s; UI-TARS spends 2.72 s on every step (1 400 s), ELAM
-  4.00 s (2 055 s). The DOM systems pay once per screen state; the grounders
-  pay once per step, and a test suite revisits the same states constantly.
+  4.00 s (2 055 s), Aria-UI 1.57 s (826 s, on the faster 96 GB card with
+  3.9 B active parameters per token). The DOM systems pay once per screen
+  state; the grounders pay once per step, and a test suite revisits the
+  same states constantly.
 - **Modular vs monolith.** In run 2 the modular backend (same YOLO regions,
   same OCR, same fusion port, captioner off) was 15 points behind OmniParser
   on action-hit, and the gap was exactly 32 steps, all `2 matches`, all on
@@ -240,27 +263,66 @@ versions): the same VizDOM columns on the laptop gave uied 0.803 / omniparser
 latencies of the grounders also depend on the box (ELAM 5.15 → 4.00 s,
 UI-TARS 1.68 → 2.72 s from the 4090 to the 6000 Ada host).
 
-### Not run: Aria-UI
+### Aria-UI: measured on a 96 GB card (run 3a)
 
 Aria-UI (25.3 B MoE) does not fit a 24 GB card even in 4-bit (OOM at shard
 5/12, measured 2026-10-26; bitsandbytes leaves the expert weights in bf16,
-and the allocation rate extrapolates to ~53 GB, beyond a 48 GB card too).
-The column runs bf16, the model card's recipe, and needs an 80 GB rental
-(A100 80 GB / H100). The adapter is implemented and preflight-tested up to
-the load step; the column is cited from published numbers until that run is
-paid for. Run 3 (2026-10-26, RTX 6000 Ada 48 GB) was skipped by the gate as
-designed; the plan stays one 80 GB run of the full sweep once the pipeline
-is frozen.
+and the allocation rate extrapolates to ~53 GB, beyond a 48 GB card too), so
+the column runs bf16, the model card's recipe, behind a 70 GB gate. Run 3
+(RTX 6000 Ada 48 GB) was skipped by the gate as designed; the same night a
+second rental on an RTX PRO 6000 Blackwell (96 GB, commit `411873c`) ran the
+column alone in 14 minutes: shards loaded in 6 s, the whole model on the
+GPU, 1.57 s per step. Result: action-hit 0.962 (205 of 213, the best of all
+columns; misses are five form_sidebar fields, one table control and two
+toolbar buttons that OCR cannot read either), verify 0.708, false-pass
+0.292 — it returned a point for every one of the 301 statements, so all 88
+absent targets passed. The opt-in CPU-offload path for 40–70 GB cards is
+implemented but still unexercised (the card was above the gate).
+
+### Prepared, not yet run: the `desc=` columns (run 4)
+
+The six columns above resolve VizDOM steps with `text=` only, so the table
+compares *VizDOM without its language tier* against grounders that are all
+language tier — and VizDOM's zero false-pass rate is partly structural, since
+a nonsense caption can never match OCR output. The `desc=` columns close that
+gap. Each step now also carries a description derived from the same caption
+(`Save button`, `Remember me checkbox`, `Warp Cores button` for the
+negatives), and `vizdom-<detector>+desc` resolves it through the ADR-022 tier
+chain behind `Get Visual Element  desc="..."`, over the same parse-once DOM as
+`vizdom-modular`. The chain is pinned per column (`--grounding-tiers`):
+
+| Column | Chain | Question it answers |
+|---|---|---|
+| `vizdom-modular+desc[lexical+slm]` | production default | what `desc=` gives a test author today, and how often each tier answers |
+| `vizdom-modular+desc[slm]` | text LM over the DOM table | can a 3B text model pick the element from the DOM alone |
+| `vizdom-modular+desc[vlm]` | VLM Set-of-Mark over the screenshot | the head-to-head with the grounders: both resolve language, VizDOM by choosing among its DOM candidates, the grounders by regressing a point |
+
+Expectations to test, not claims: action-hit should sit between the `text=`
+column (0.883) and the grounders, because the DOM candidates already contain
+the right element in ≥ 88 % of cases and the model only has to choose; the
+false-pass rate is the real question — a model asked "which numbered box is
+the *Warp Cores* button" may rationalise one, which is exactly the failure
+the grounders show at 0.20–0.29, and the `conf ≥ 0.5` gate in the resolver
+is what stands against it. Models: `qwen2.5:3b` and `qwen2.5vl:3b` through
+Ollama (the kit installs and pulls them; `deploy/gpu/README.md`). A fresh
+resolver is built per step so the production cache cannot answer a verify
+step from its action step.
+
+Harness verified locally (laptop, `uied` DOM): the model-free lexical tier
+over all 514 steps gives action-hit **0.911** / verify 0.944 / false-pass
+0 — already above the `text=` figure for the same DOM (0.822), because token
+overlap plus the role word tolerates the OCR noise that an exact `text=`
+cannot — and both model tiers ran end to end on state samples through the
+laptop's Ollama. The headline numbers will come from the next rental on the
+`modular` DOM with the intended 3B models.
 
 ### Planned extensions (in priority order)
 
 1. **Real-application states** in the same schema (the headline caveat).
-2. **`desc=` per-tier accuracy** as an additional locator column
-   (auto-generated descriptions per labelled element).
-3. **Defect injection**: mutate a state (shift a button, change a caption) and
+2. **Defect injection**: mutate a state (shift a button, change a caption) and
    measure whether the suite *catches* it — mutation testing for GUI
    automation; the false-pass machinery already supports it.
-4. **Hierarchy axis** once tree-bearing ground truth exists (register D-01).
+3. **Hierarchy axis** once tree-bearing ground truth exists (register D-01).
 
 ---
 
@@ -274,6 +336,12 @@ python -m visual_dom.evaluation.lifecycle.generate
 python -m visual_dom.evaluation.lifecycle.runner --executors vizdom-uied,vizdom-omniparser
 python -m visual_dom.evaluation.lifecycle.runner --executors elam-7b --limit-states 10
 
+# the desc= column (ADR-022): same DOM, each step resolves its description
+# through the pinned tier chain; model tiers need a running Ollama with
+# qwen2.5:3b / qwen2.5vl:3b (the runner refuses to start otherwise)
+python -m visual_dom.evaluation.lifecycle.runner --executors vizdom-modular+desc --grounding-tiers lexical,slm
+python -m visual_dom.evaluation.lifecycle.runner --executors vizdom-modular+desc --grounding-tiers vlm
+
 # per-stage evaluation (detection/OCR/type metrics)
 python -m visual_dom.evaluation.cli --help
 ```
@@ -286,8 +354,8 @@ regenerate; real applications can be captured with
 `CaptureStrategy.capture_window` and annotated with the tooling under
 `scripts/annotation/`.
 
-**Adding an executor**: DOM-based systems get a `VizDomExecutor(detector=...)`;
-grounding models implement the two-method `Grounder` interface
+**Adding an executor**: DOM-based systems get a `VizDomExecutor(detector=...)`
+(`VizDomDescExecutor` for a `desc=` chain); grounding models implement the two-method `Grounder` interface
 (`ground(image, instruction) → (x, y)`, `judge(image, statement) → verdict`)
 in `src/visual_dom/evaluation/lifecycle/grounders.py` — adapters stay thin
 prompt-and-parse shims, and `available()` must say honestly whether the model

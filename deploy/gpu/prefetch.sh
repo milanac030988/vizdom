@@ -12,6 +12,7 @@
 #   Aria-UI-base            ~50 GB   (skipped automatically on < 70 GB GPUs
 #                                     unless VIZDOM_ARIA_OFFLOAD=1)
 #   OmniParser v2 weights   ~1.2 GB  (icon_detect + icon_caption_florence)
+#   Ollama qwen2.5:3b + qwen2.5vl:3b  ~5 GB  (the desc= columns, ADR-022)
 #
 # ONLY="aria-ui" (same column names as run_benchmarks.sh) limits the
 # downloads to what those columns need - e.g. an Aria-UI-only rental does
@@ -80,14 +81,22 @@ if want_omniparser; then
         ln -s "$(pwd)/models/omniparser_hf/icon_caption" models/omniparser/icon_caption_florence
 fi
 
-# Optional: Ollama for the Qwen2-VL captioner combo (ADR-027). Opt-in: the
-# ollama-backed Captioner is not implemented yet, so by default this would
-# only cost a 3 GB pull and paid bandwidth for a combo parity_on_box.py then
-# reports as unavailable. Never fatal.
-if [ -n "${VIZDOM_PREFETCH_OLLAMA:-}" ]; then
+# Ollama + the two small models behind the desc= columns (ADR-022):
+# qwen2.5:3b for the slm tier (~2 GB) and qwen2.5vl:3b for the vlm
+# Set-of-Mark tier (~3 GB). Pulled whenever a desc column is wanted (default:
+# all). Never fatal: run_benchmarks.sh skips the desc columns when Ollama is
+# not reachable. The same pull also serves the Qwen2-VL captioner combo
+# (ADR-027) once an ollama-backed Captioner exists.
+want_desc() { [ -z "${ONLY:-}" ] || [[ " ${ONLY} " == *desc* ]]; }
+if want_desc || [ -n "${VIZDOM_PREFETCH_OLLAMA:-}" ]; then
     if command -v ollama >/dev/null 2>&1 || curl -fsSL https://ollama.com/install.sh | sh; then
-        (ollama serve >/dev/null 2>&1 &) ; sleep 3
-        ollama pull qwen2.5vl:3b || echo "!! qwen2.5vl pull failed - captioner combo will be skipped"
+        OLLAMA="${VIZDOM_OLLAMA_HOST:-http://localhost:11434}"
+        curl -fsS "$OLLAMA/api/tags" >/dev/null 2>&1 || { (ollama serve >/dev/null 2>&1 &); sleep 3; }
+        for m in "${VIZDOM_GROUNDING_MODEL:-qwen2.5:3b}" "${VIZDOM_GROUNDING_VISION_MODEL:-qwen2.5vl:3b}"; do
+            ollama pull "$m" || echo "!! ollama pull $m failed - the desc= columns will be skipped"
+        done
+    else
+        echo "!! Ollama install failed - the desc= columns will be skipped"
     fi
 fi
 

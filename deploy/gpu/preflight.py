@@ -29,6 +29,9 @@ def main():
     ap.add_argument("--grounders", default="", help="comma list; empty = none")
     ap.add_argument("--pipeline", action="store_true",
                     help="also run one VizDOM pass with the omniparser and modular backends")
+    ap.add_argument("--grounding", action="store_true",
+                    help="check the desc= columns: Ollama reachable, the slm and "
+                         "vlm tiers each resolve one description")
     args = ap.parse_args()
 
     # The manifest's screens are tracked under data/synthetic (tests/samples/*.png
@@ -133,7 +136,93 @@ def main():
                 failures.append(column)
                 print(f"  {column:16} FAIL  {type(exc).__name__}: {exc}")
 
+    if args.grounding:
+        failures += preflight_grounding(images)
+
     sys.exit(1 if failures else 0)
+
+
+def _label_for(image_path):
+    """<root>/images/<state>.png -> <root>/labels/<state>.json (os.path, not a
+    string replace: the glob yields backslashes on Windows)."""
+    stem = os.path.splitext(os.path.basename(image_path))[0]
+    return os.path.join(os.path.dirname(os.path.dirname(image_path)), "labels", stem + ".json")
+
+
+def preflight_grounding(images):
+    """
+    The desc= columns (ADR-022) resolve against the DOM through Ollama. Build
+    the DOM from a screen's ground-truth label (no detector needed here) and
+    ask each model tier, pinned alone, to resolve one description. SKIP when
+    Ollama is absent - run_benchmarks.sh skips those columns too; FAIL when it
+    runs but a model is missing or a tier cannot answer, because then the
+    sweep would pay for a FAILED column.
+    """
+    import json
+    from visual_dom.evaluation.lifecycle.runner import VizDomDescExecutor
+
+    # the first screen whose label has a captioned button (dashboards have none)
+    dom = target = image = None
+    for image_path in images:
+        try:
+            gt = json.load(open(_label_for(image_path), encoding="utf-8"))
+        except OSError:
+            continue
+        elements = [{"id": e["id"], "role": e.get("visual_type"),
+                     "visual_type": e.get("visual_type"),
+                     "text": e.get("ocr_text") or "", "bounds": e["bounds"]}
+                    for e in gt.get("elements", [])]
+        target = next((e for e in elements
+                       if e["visual_type"] == "button" and e["text"].strip()), None)
+        if target is not None:
+            dom = {"image_size": gt.get("image_size"), "elements": elements}
+            image = cv2.imread(image_path)
+            break
+    if target is None:
+        print(f"  {'desc=':16} SKIP  no screen with a label and a captioned button "
+              f"(needs data/synthetic/test/{{images,labels}})")
+        return []
+    description = f"{target['text'].strip()} button"
+    print(f"  desc= probe: {description!r} on {os.path.basename(image_path)} "
+          f"({len(dom['elements'])} GT elements)")
+
+    failures = []
+    for tier in ("slm", "vlm"):
+        column = f"desc[{tier}]"
+        ex = VizDomDescExecutor(
+            detector="modular", tiers=[tier],
+            host=os.environ.get("VIZDOM_OLLAMA_HOST", VizDomDescExecutor.DEFAULT_HOST),
+            model=os.environ.get("VIZDOM_GROUNDING_MODEL", VizDomDescExecutor.DEFAULT_MODEL),
+            vision_model=os.environ.get("VIZDOM_GROUNDING_VISION_MODEL",
+                                        VizDomDescExecutor.DEFAULT_VISION_MODEL))
+        ok, why = ex.available()
+        if not ok:
+            if "not reachable" in why:
+                print(f"  {column:16} SKIP  {why}")
+            else:
+                failures.append(column)
+                print(f"  {column:16} FAIL  {why}")
+            continue
+        try:
+            from visual_gui_library.locators.desc_resolver import DescriptionResolver
+            resolver = DescriptionResolver(dom, screenshot=image, tiers=[tier],
+                                           backend=ex.backend, model=ex.model,
+                                           vision_model=ex.vision_model, host=ex.host)
+            t0 = time.perf_counter()
+            elem, info = resolver.resolve(description)
+            dt = time.perf_counter() - t0
+            reason = str(info.get("reason", ""))
+            if "unavailable" in reason or "unparseable" in reason:
+                raise RuntimeError(reason)
+            got = elem.get("id") if elem else None
+            verdict = "hit" if got == target["id"] else ("miss" if elem else "no match")
+            print(f"  {column:16} OK    {description!r} -> {got} ({verdict}, "
+                  f"GT {target['id']}; {ex.model if tier == 'slm' else ex.vision_model}, "
+                  f"{dt:.1f}s incl. model load)")
+        except Exception as exc:
+            failures.append(column)
+            print(f"  {column:16} FAIL  {type(exc).__name__}: {exc}")
+    return failures
 
 
 if __name__ == "__main__":

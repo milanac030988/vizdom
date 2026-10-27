@@ -210,7 +210,7 @@ git clone https://github.com/milanac030988/vizdom.git &amp;&amp; cd vizdom</code
   <li><strong>Check the summary on the box.</strong>
 <pre><code>cat benchmarks/results/gpu-*/summary.md
 ls -la benchmarks/results/</code></pre>
-    <div class="expect"><b>Expect</b> one row each for vizdom-uied, vizdom-omniparser, vizdom-modular, elam-7b, ui-tars-1.5-7b, aria-ui, and a <code>parity.txt</code>. A column marked FAILED in sweep.log has a <code>.log</code> with the reason; see section 6 to rerun it.</div>
+    <div class="expect"><b>Expect</b> one row each for vizdom-uied, vizdom-omniparser, vizdom-modular, the three desc= chains (<code>vizdom-modular+desc[lexical+slm]</code>, <code>[slm]</code>, <code>[vlm]</code> — skipped, not failed, if Ollama is not reachable), elam-7b, ui-tars-1.5-7b, aria-ui, and a <code>parity.txt</code>. A column marked FAILED in sweep.log has a <code>.log</code> with the reason; see section 6 to rerun it.</div>
   </li>
   <li><strong>Download the tarball</strong> to <code>D:\Project\MasterProject\benchmarks\results\</code>. MobaXterm: SFTP panel on the left, navigate to <code>/workspace/vizdom/benchmarks/results/</code>, right-click the <code>gpu-&lt;stamp&gt;.tar.gz</code>, Download. PowerShell alternative:
 <pre><code>scp -i $env:USERPROFILE\.ssh\vast_ed25519 -P &lt;PORT&gt; "root@&lt;IP&gt;:~/vizdom/benchmarks/results/gpu-*.tar.gz" D:\Project\MasterProject\benchmarks\results\
@@ -225,7 +225,7 @@ tar tzf D:\Project\MasterProject\benchmarks\results\gpu-*.tar.gz | Select-String
 <h2 id="rerun">6. Re-running single columns</h2>
 <p>After fixing something on the box, rerun only the affected columns into the same run folder. The tarball and <code>summary.md</code> are rebuilt, and nothing earlier is overwritten because every run writes its own timestamped files.</p>
 <pre><code>ONLY="elam-7b aria-ui" OUT_DIR=benchmarks/results/gpu-&lt;stamp&gt; bash deploy/gpu/run_benchmarks.sh</code></pre>
-<p>Column names: <code>vizdom-uied</code> <code>vizdom-omniparser</code> <code>vizdom-modular</code> <code>elam-7b</code> <code>ui-tars-1.5-7b</code> <code>aria-ui</code> <code>parity</code>. Which environment each column uses is decided by the script: UI-TARS and the VizDOM columns in <code>.venv</code>, ELAM and Aria-UI in <code>.venv-legacy</code>.</p>
+<p>Column names: <code>vizdom-uied</code> <code>vizdom-omniparser</code> <code>vizdom-modular</code> <code>vizdom-modular-desc</code> <code>vizdom-modular-desc-slm</code> <code>vizdom-modular-desc-vlm</code> <code>elam-7b</code> <code>ui-tars-1.5-7b</code> <code>aria-ui</code> <code>parity</code>. Which environment each column uses is decided by the script: UI-TARS and the VizDOM columns in <code>.venv</code>, ELAM and Aria-UI in <code>.venv-legacy</code>.</p>
 <div class="warn"><b>Do not chain reruns with one Ctrl-C in mind.</b> On the first run an abort of one manual rerun also stopped the two queued behind it, which is why the ONLY mechanism exists.</div>
 
 <h2 id="after">7. Back on the laptop</h2>

@@ -21,6 +21,9 @@ fail=0
 echo "=== main env ==="
 .venv/bin/python deploy/gpu/preflight.py --grounders ui-tars-1.5-7b || fail=1
 .venv/bin/python deploy/gpu/preflight.py --pipeline || fail=1
+# desc= columns: Ollama reachable + both small models answer one resolution.
+# SKIP (not FAIL) only when Ollama is absent - the sweep skips those columns.
+.venv/bin/python deploy/gpu/preflight.py --grounding || fail=1
 
 if [ -x .venv-legacy/bin/python ]; then
     echo "=== legacy env ==="

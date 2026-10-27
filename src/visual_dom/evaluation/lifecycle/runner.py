@@ -3,10 +3,14 @@ Run the lifecycle benchmark: every executor over the same steps, one table out.
 
 Executors
 ---------
-- ``vizdom:<detector>``  the real VizDOM stack: pipeline once per STATE
+- ``vizdom-<detector>``  the real VizDOM stack: pipeline once per STATE
   (parse-once), then each step is a locator resolution in the cached DOM.
   Clicks score "action-hit" (element centre inside GT bounds); verifications
   answer from the exactly-one contract.
+- ``vizdom-<detector>+desc``  the same DOM, but each step resolves the
+  step's natural-language *description* through the ``desc=`` tier chain
+  (ADR-022: lexical / SLM over DOM / VLM Set-of-Mark) instead of ``text=``.
+  ``--grounding-tiers`` pins the chain, so one column per tier is possible.
 - ``<grounder>``         a per-step model (ELAM-7B, UI-TARS, ...): one
   inference per step, no DOM, no reuse.
 
@@ -24,10 +28,11 @@ table, both stamped with dataset id, git commit, and executor config.
 """
 
 import json
+import os
 import statistics
 import subprocess
 import time
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 from visual_dom.logging_utils import get_logger
@@ -120,6 +125,126 @@ class VizDomExecutor:
                 "parse_seconds_total": round(sum(parses.values()), 2),
                 "parse_seconds_mean": round(sum(parses.values()) / len(parses), 2)
                 if parses else None}
+
+
+class VizDomDescExecutor(VizDomExecutor):
+    """
+    The production stack resolving ``desc=`` (ADR-022) instead of ``text=``.
+
+    Same parse-once DOM as `VizDomExecutor`; each step is then ONE
+    natural-language resolution through `DescriptionResolver` - the code behind
+    ``Get Visual Element  desc="Save button"`` - with the tier chain pinned by
+    ``tiers``. Pinning ``["vlm"]`` (or ``["slm"]``) makes the column a head-to-
+    head with the grounders: both sides then resolve language, VizDOM over its
+    DOM candidates (Set-of-Mark), the grounders over raw pixels.
+
+    A FRESH resolver per step, deliberately: the production per-screen cache
+    would answer the verify step from the action step's result (same
+    description), and here every step must be its own measurement.
+    """
+
+    TIERS = ("lexical", "slm", "vlm")
+    DEFAULT_TIERS = ("lexical", "slm")          # VizDomConfig.grounding default
+    DEFAULT_MODEL = "qwen2.5:3b"
+    # Ollama's library tag is qwen2.5vl (no dash); the config default
+    # "qwen2.5-vl:3b" is the HF-style name and 404s on `ollama pull`.
+    DEFAULT_VISION_MODEL = "qwen2.5vl:3b"
+    DEFAULT_HOST = "http://localhost:11434"
+
+    def __init__(self, detector: str, tiers=DEFAULT_TIERS, backend: str = "ollama",
+                 model: str = DEFAULT_MODEL, vision_model: str = DEFAULT_VISION_MODEL,
+                 host: str = DEFAULT_HOST, ocr: str = "easyocr",
+                 resolver_factory=None):
+        super().__init__(detector, ocr)
+        self.tiers = [t.strip() for t in tiers if t.strip()]
+        unknown = [t for t in self.tiers if t not in self.TIERS]
+        if not self.tiers or unknown:
+            raise ValueError(f"grounding tiers must be a non-empty subset of "
+                             f"{list(self.TIERS)}, got {list(tiers)!r}")
+        self.name = f"vizdom-{detector}+desc[{'+'.join(self.tiers)}]"
+        self.backend, self.model, self.vision_model, self.host = \
+            backend, model, vision_model, host
+        # tests inject a factory(dom, screenshot) -> resolver; production builds
+        # the real DescriptionResolver
+        self._resolver_factory = resolver_factory
+        self._tier_counts = Counter()
+        self._images = {}
+
+    # -- availability (the same honesty contract as Grounder.available) --------
+
+    def available(self):
+        """(ok, reason): can the model tiers of this chain run here?"""
+        need = {t: m for t, m in (("slm", self.model), ("vlm", self.vision_model))
+                if t in self.tiers}
+        if not need:
+            return True, "lexical tier only - no model needed"
+        if self.backend != "ollama":
+            return True, f"backend {self.backend}: {need}"
+        import requests
+        try:
+            r = requests.get(f"{self.host}/api/tags", timeout=5)
+            r.raise_for_status()
+            have = {m.get("name") for m in r.json().get("models", [])}
+        except Exception as exc:  # noqa: BLE001 - any failure means "not here"
+            return False, (f"Ollama not reachable at {self.host} ({exc}); "
+                           f"start it with `ollama serve`")
+        missing = [m for m in need.values()
+                   if m not in have and f"{m}:latest" not in have]
+        if missing:
+            return False, (f"Ollama at {self.host} lacks {missing}; "
+                           f"run `ollama pull {' '.join(missing)}`")
+        return True, "Ollama at %s: %s" % (
+            self.host, ", ".join(f"{t}={m}" for t, m in need.items()))
+
+    # -- per step -----------------------------------------------------------
+
+    def _image_for(self, state):
+        sid = state["id"]
+        if sid not in self._images:
+            import cv2
+            self._images[sid] = cv2.imread(state["image"])
+        return self._images[sid]
+
+    def _resolver(self, state, dom):
+        screenshot = self._image_for(state) if "vlm" in self.tiers else None
+        if self._resolver_factory is not None:
+            return self._resolver_factory(dom, screenshot)
+        from visual_gui_library.locators.desc_resolver import DescriptionResolver
+        return DescriptionResolver(dom, screenshot=screenshot, tiers=self.tiers,
+                                   backend=self.backend, model=self.model,
+                                   vision_model=self.vision_model, host=self.host)
+
+    def run_step(self, state, step):
+        description = step.get("description")
+        if not description:
+            raise RuntimeError("step has no 'description' - regenerate the manifest "
+                               "(python -m visual_dom.evaluation.lifecycle.generate)")
+        dom = self._dom_for(state)                 # parse once per state, as above
+        resolver = self._resolver(state, dom)      # fresh per step (no cache)
+        t0 = time.perf_counter()
+        elem, info = resolver.resolve(description)
+        latency = time.perf_counter() - t0
+        tier = info.get("tier") or "none"
+        self._tier_counts[tier] += 1
+        reason = " ".join(str(info.get("reason", "")).split())[:160]
+        detail = f"tier={tier} {reason}".strip()
+        if step["kind"] == "action":
+            if elem is None:
+                return {"outcome": None, "latency": latency, "detail": detail}
+            b = elem.get("bounds", [0, 0, 0, 0])
+            point = ((b[0] + b[2]) // 2, (b[1] + b[3]) // 2)
+            return {"outcome": point, "latency": latency, "detail": detail}
+        # verify: a confident resolution asserts existence, like exactly-one does
+        verdict = "PASSED" if elem is not None else "FAILED"
+        return {"outcome": verdict, "latency": latency, "detail": detail}
+
+    def cost_summary(self):
+        base = super().cost_summary()
+        base.update({"tiers": list(self.tiers),
+                     "resolved_by_tier": dict(self._tier_counts),
+                     "grounding": {"backend": self.backend, "model": self.model,
+                                   "vision_model": self.vision_model}})
+        return base
 
 
 class GrounderExecutor:
@@ -265,25 +390,61 @@ def run_benchmark(manifest, executors, limit_states=None, out_dir="benchmarks/re
     return payload
 
 
+def _require_descriptions(manifest):
+    """A desc= column needs the 'description' field on every step."""
+    missing = [s["id"] for s in manifest["steps"] if not s.get("description")]
+    if missing:
+        raise SystemExit(f"{len(missing)} steps have no 'description' (first: "
+                         f"{missing[0]}) - the manifest predates the desc= column; "
+                         f"regenerate it: python -m visual_dom.evaluation.lifecycle.generate")
+
+
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Run the full-lifecycle benchmark")
     parser.add_argument("--manifest", default="benchmarks/lifecycle-synthetic-v1/steps.json")
     parser.add_argument("--executors", default="vizdom-uied",
                         help="comma list: vizdom-uied, vizdom-omniparser, "
+                             "vizdom-modular, vizdom-<detector>+desc, "
                              "elam-7b, ui-tars-1.5-7b, aria-ui")
     parser.add_argument("--limit-states", type=int, default=None)
     parser.add_argument("--no-quantize", action="store_true")
     parser.add_argument("--out-dir", default="benchmarks/results",
                         help="directory for the timestamped result json/md "
                              "(deploy/gpu sweep points each column at one run dir)")
+    g = parser.add_argument_group("desc= columns (vizdom-<detector>+desc, ADR-022)")
+    g.add_argument("--grounding-tiers", default=",".join(VizDomDescExecutor.DEFAULT_TIERS),
+                   help="comma list from lexical,slm,vlm - the chain, in order; "
+                        "pin one tier (e.g. vlm) for a per-tier column")
+    g.add_argument("--grounding-backend", default="ollama", help="ollama | openai")
+    g.add_argument("--grounding-model", default=VizDomDescExecutor.DEFAULT_MODEL,
+                   help="text model for the slm tier")
+    g.add_argument("--grounding-vision-model", default=VizDomDescExecutor.DEFAULT_VISION_MODEL,
+                   help="vision model for the vlm (Set-of-Mark) tier")
+    g.add_argument("--grounding-host",
+                   default=os.environ.get("VIZDOM_OLLAMA_HOST", VizDomDescExecutor.DEFAULT_HOST))
     args = parser.parse_args()
 
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     executors = []
     for name in [n.strip() for n in args.executors.split(",") if n.strip()]:
         if name.startswith("vizdom-"):
-            executors.append(VizDomExecutor(detector=name.split("-", 1)[1]))
+            spec = name[len("vizdom-"):]
+            if spec.endswith("+desc"):
+                _require_descriptions(manifest)
+                ex = VizDomDescExecutor(
+                    detector=spec[:-len("+desc")],
+                    tiers=args.grounding_tiers.split(","),
+                    backend=args.grounding_backend, model=args.grounding_model,
+                    vision_model=args.grounding_vision_model,
+                    host=args.grounding_host)
+                ok, reason = ex.available()
+                if not ok:
+                    raise SystemExit(f"{ex.name} is not runnable here: {reason}")
+                print(f"{ex.name}: {reason}")
+                executors.append(ex)
+            else:
+                executors.append(VizDomExecutor(detector=spec))
             continue
         from .grounders import GROUNDERS
         cls = GROUNDERS.get(name)
