@@ -103,5 +103,16 @@ report/*.fdb_latexmk
 report/*.synctex.gz
 report/*.lof
 report/*.lot
+# Same for the paper draft (paper/).
+paper/*.aux
+paper/*.log
+paper/*.bbl
+paper/*.blg
+paper/*.out
+paper/*.pdf
+paper/*.xdv
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.synctex.gz
 src/visual_dom/generated/*_pb2.py
 src/visual_dom/generated/*_pb2_grpc.py
