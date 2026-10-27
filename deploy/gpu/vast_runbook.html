@@ -225,7 +225,7 @@ tar tzf D:\Project\MasterProject\benchmarks\results\gpu-*.tar.gz | Select-String
 <h2 id="rerun">6. Re-running single columns</h2>
 <p>After fixing something on the box, rerun only the affected columns into the same run folder. The tarball and <code>summary.md</code> are rebuilt, and nothing earlier is overwritten because every run writes its own timestamped files.</p>
 <pre><code>ONLY="elam-7b aria-ui" OUT_DIR=benchmarks/results/gpu-&lt;stamp&gt; bash deploy/gpu/run_benchmarks.sh</code></pre>
-<p>Column names: <code>vizdom-uied</code> <code>vizdom-omniparser</code> <code>vizdom-modular</code> <code>vizdom-modular-desc</code> <code>vizdom-modular-desc-slm</code> <code>vizdom-modular-desc-vlm</code> <code>elam-7b</code> <code>ui-tars-1.5-7b</code> <code>aria-ui</code> <code>parity</code>. Which environment each column uses is decided by the script: UI-TARS and the VizDOM columns in <code>.venv</code>, ELAM and Aria-UI in <code>.venv-legacy</code>.</p>
+<p>Column names: <code>vizdom-uied</code> <code>vizdom-omniparser</code> <code>vizdom-modular</code> <code>vizdom-modular-desc</code> <code>vizdom-modular-desc-slm</code> <code>vizdom-modular-desc-vlm</code> <code>vizdom-modular-desc-vlm-chain</code> <code>elam-7b</code> <code>ui-tars-1.5-7b</code> <code>aria-ui</code> <code>parity</code>. Which environment each column uses is decided by the script: UI-TARS and the VizDOM columns in <code>.venv</code>, ELAM and Aria-UI in <code>.venv-legacy</code>.</p>
 <div class="warn"><b>Do not chain reruns with one Ctrl-C in mind.</b> On the first run an abort of one manual rerun also stopped the two queued behind it, which is why the ONLY mechanism exists.</div>
 
 <h2 id="after">7. Back on the laptop</h2>

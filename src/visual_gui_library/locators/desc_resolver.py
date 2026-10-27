@@ -239,12 +239,17 @@ class DescriptionResolver:
     def _resolve_uncached(self, description: str, within=None):
         pool = within if within is not None else self.elements
         ranked = []
+        # Each tier's own verdict is kept so that a miss explains itself:
+        # "no confident match" alone cannot tell a null answer from an
+        # out-of-range mark or a low confidence (lifecycle run 4, 2026-10-27).
+        why: List[str] = []
         if "lexical" in self.tiers:
             ranked = lexical_rank(pool, description, self._image_size())
             elem = lexical_confident(ranked)
             if elem is not None:
                 return elem, {"tier": "lexical", "reason": f"score={ranked[0][0]:.2f}",
                               "candidates": [e.get("id") for _, e in ranked[:5]]}
+            why.append(self._lexical_why(ranked))
 
         candidates = [e for _, e in ranked[:8]] or pool
 
@@ -268,15 +273,35 @@ class DescriptionResolver:
             if elem is not None:
                 return elem, {"tier": "slm", "reason": reason,
                               "candidates": [e.get("id") for e in candidates[:5]]}
+            why.append(reason)
 
-        if "vlm" in self.tiers and self.screenshot is not None:
-            elem, reason = self._resolve_vlm(description, candidates)
-            if elem is not None:
-                return elem, {"tier": "vlm", "reason": reason,
-                              "candidates": [e.get("id") for e in candidates[:5]]}
+        if "vlm" in self.tiers:
+            if self.screenshot is None:
+                why.append("vlm skipped: no screenshot")
+            else:
+                elem, reason = self._resolve_vlm(description, candidates)
+                if elem is not None:
+                    return elem, {"tier": "vlm", "reason": reason,
+                                  "candidates": [e.get("id") for e in candidates[:5]]}
+                why.append(reason)
 
-        return None, {"tier": None, "reason": "no tier produced a confident match",
+        return None, {"tier": None,
+                      "reason": "no confident match (" + "; ".join(why) + ")",
                       "candidates": [e.get("id") for _, e in ranked[:5]]}
+
+    @staticmethod
+    def _lexical_why(ranked: List[Tuple[float, Dict[str, Any]]],
+                     min_score: float = 1.5, min_margin: float = 0.5) -> str:
+        """Why lexical_confident() declined, in the words a log reader needs."""
+        if not ranked:
+            return "lexical: no element shares a token or role word"
+        top = ranked[0][0]
+        if top < min_score:
+            return f"lexical: best score {top:.2f} < {min_score}"
+        second = ranked[1][0]
+        tied = sum(1 for s, _ in ranked if top - s < min_margin)
+        return (f"lexical: tie at {top:.2f} between {tied} candidates "
+                f"(runner-up {second:.2f}, margin < {min_margin})")
 
     # -- tier 1: SLM over DOM ---------------------------------------------
 

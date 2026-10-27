@@ -9,7 +9,9 @@ import types
 
 import pytest
 
-from visual_dom.evaluation.lifecycle.grounders import AriaUiGrounder
+pytest.importorskip("torch")   # the fixture patches torch.cuda; no torch, no test
+
+from visual_dom.evaluation.lifecycle.grounders import AriaUiGrounder  # noqa: E402
 
 
 @pytest.fixture

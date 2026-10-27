@@ -354,9 +354,12 @@ What the three rows say:
   exactly like the grounders. The intended head-to-head therefore did not
   happen: the tier was built as a disambiguator over a short candidate list,
   and this column asked it to be a whole-screen grounder with a 3B model on
-  a 1920×1080 frame. A fair version needs the lexical shortlist in front
-  (as in production) or a larger mark budget, and the resolver should
-  record the tier's own reason.
+  a 1920×1080 frame. Both gaps are closed in the kit since 2026-10-27: the
+  sweep has a `vizdom-modular-desc-vlm-chain` column (`lexical,vlm`, the
+  vision tier behind the lexical shortlist, as in production; not yet run),
+  and a missed step's `detail` now carries every tier's own verdict
+  (`lexical: tie at 3.00 between 2 candidates`, `vlm returned out-of-range
+  mark 37`) instead of the chain's generic line.
 - **Caveat on the descriptions.** They are generated as caption plus role
   word, which is the lexical tier's ideal input; a tester's own wording
   ("the blue save button at the bottom") would exercise the model tiers more
@@ -395,6 +398,7 @@ python -m visual_dom.evaluation.lifecycle.runner --executors elam-7b --limit-sta
 # qwen2.5:3b / qwen2.5vl:3b (the runner refuses to start otherwise)
 python -m visual_dom.evaluation.lifecycle.runner --executors vizdom-modular+desc --grounding-tiers lexical,slm
 python -m visual_dom.evaluation.lifecycle.runner --executors vizdom-modular+desc --grounding-tiers vlm
+python -m visual_dom.evaluation.lifecycle.runner --executors vizdom-modular+desc --grounding-tiers lexical,vlm   # the vision tier as production uses it
 
 # per-stage evaluation (detection/OCR/type metrics)
 python -m visual_dom.evaluation.cli --help

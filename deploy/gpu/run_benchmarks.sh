@@ -72,7 +72,12 @@ run_column vizdom-modular     $RUN --manifest "$MANIFEST" --executors vizdom-mod
 # and pulls them); when it is not reachable the columns are skipped, not
 # failed. VIZDOM_GROUNDING_MODEL / VIZDOM_GROUNDING_VISION_MODEL override the
 # 3B defaults (e.g. qwen2.5vl:7b on a big card) - keep prefetch.sh in sync.
-DESC_COLUMNS="vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm"
+# Run 4 (2026-10-27) showed the vlm tier pinned ALONE is a harness limit, not
+# a model result: the Set-of-Mark overlay caps at 20 marks in DOM order and
+# without the lexical shortlist in front fewer than half the targets are among
+# them. The -vlm-chain column runs the vision tier the way production does,
+# behind the lexical scoring; -desc-vlm is kept for the comparison.
+DESC_COLUMNS="vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm vizdom-modular-desc-vlm-chain"
 OLLAMA="${VIZDOM_OLLAMA_HOST:-http://localhost:11434}"
 GMODEL="${VIZDOM_GROUNDING_MODEL:-qwen2.5:3b}"
 GVISION="${VIZDOM_GROUNDING_VISION_MODEL:-qwen2.5vl:3b}"
@@ -87,6 +92,7 @@ if [ "$desc_wanted" -eq 1 ]; then
         run_column vizdom-modular-desc     $DESC --grounding-tiers lexical,slm
         run_column vizdom-modular-desc-slm $DESC --grounding-tiers slm
         run_column vizdom-modular-desc-vlm $DESC --grounding-tiers vlm
+        run_column vizdom-modular-desc-vlm-chain $DESC --grounding-tiers lexical,vlm
     else
         echo "desc= columns: SKIPPED - Ollama not reachable at $OLLAMA (prefetch.sh installs it and pulls $GMODEL + $GVISION)"
     fi
@@ -106,8 +112,16 @@ QUANT=""; [ "$VRAM_GB" -ge 20 ] && QUANT="--no-quantize"
 # ~85); gate 70, same as AriaUiGrounder.MIN_VRAM_GB - on a smaller card the
 # column is skipped here rather than paid for and then marked FAILED.
 # VIZDOM_ARIA_OFFLOAD=1 (>= 40 GB card) opts into the experimental offload
-# mode instead: the adapter spills the last layers to host RAM.
-[ "$VRAM_GB" -ge 70 ] || [ -n "${VIZDOM_ARIA_OFFLOAD:-}" ] || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular $DESC_COLUMNS elam-7b ui-tars-1.5-7b parity}"
+# mode instead: the adapter spills the last layers to host RAM. Same rule as
+# AriaUiGrounder._offload_requested: empty or 0 is OFF, and the 40 GB floor
+# applies here too, so a card the adapter would refuse is not paid for.
+aria_offload() {
+    case "$(printf '%s' "${VIZDOM_ARIA_OFFLOAD:-}" | tr -d '[:space:]')" in
+        ""|0) return 1 ;;
+        *)    [ "$VRAM_GB" -ge 40 ] ;;
+    esac
+}
+[ "$VRAM_GB" -ge 70 ] || aria_offload || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular $DESC_COLUMNS elam-7b ui-tars-1.5-7b parity}"
 if [ -x .venv-legacy/bin/python ]; then
     LEGACY=".venv-legacy/bin/python -m visual_dom.evaluation.lifecycle.runner"
 else

@@ -43,9 +43,16 @@ want ui-tars-1.5-7b && run_bg "$HF" download ByteDance-Seed/UI-TARS-1.5-7B
 # ~53 GB extrapolation does not fit 48 GB either). Only worth 50 GB of
 # bandwidth on an 80 GB card; the gate is 70 (same as AriaUiGrounder) -
 # or on a >= 40 GB card in the experimental offload mode (VIZDOM_ARIA_OFFLOAD=1,
-# the spill runs from host RAM).
+# the spill runs from host RAM; empty or 0 is OFF, the same rule as
+# AriaUiGrounder._offload_requested and run_benchmarks.sh).
+aria_offload() {
+    case "$(printf '%s' "${VIZDOM_ARIA_OFFLOAD:-}" | tr -d '[:space:]')" in
+        ""|0) return 1 ;;
+        *)    [ "$VRAM_GB" -ge 40 ] ;;
+    esac
+}
 if want aria-ui; then
-    if [ "$VRAM_GB" -ge 70 ] || { [ -n "${VIZDOM_ARIA_OFFLOAD:-}" ] && [ "$VRAM_GB" -ge 40 ]; }; then
+    if [ "$VRAM_GB" -ge 70 ] || aria_offload; then
         run_bg "$HF" download Aria-UI/Aria-UI-base
     else
         echo "!! skipping Aria-UI (~50 GB): needs an 80 GB card (A100 80 / H100) or VIZDOM_ARIA_OFFLOAD=1 on >= 40 GB; this one has ${VRAM_GB} GB"

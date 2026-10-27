@@ -241,6 +241,42 @@ def test_desc_executor_scores_like_the_other_columns(tmp_path):
     assert _FakeResolver.made == 3
 
 
+class _OllamaDownResolver:
+    """What DescriptionResolver returns with no Ollama behind the model tiers."""
+
+    def __init__(self, dom, screenshot):
+        pass
+
+    def resolve(self, description):
+        return None, {"tier": None,
+                      "reason": "no confident match (lexical: best score 1.00 < 1.5; "
+                                "slm unavailable: HTTPConnectionPool(host='127.0.0.1', "
+                                "port=9): connection refused)",
+                      "candidates": []}
+
+
+def test_desc_executor_turns_unavailable_tier_into_an_error(tmp_path):
+    """A dead Ollama must not score as a column of misses whose negative
+    verifies all 'pass' (bench review, 2026-10-27): the step errors, and a
+    column where every step errored is marked FAILED and exits 1."""
+    ex = VizDomDescExecutor(detector="modular", tiers=["lexical", "slm"],
+                            resolver_factory=_OllamaDownResolver)
+    ex._dom_cache["s"] = {"image_size": {"width": 100, "height": 50}, "elements": []}
+    with pytest.raises(RuntimeError, match="slm unavailable"):
+        ex.run_step({"id": "s", "image": "none.png"}, _DESC_MANIFEST["steps"][0])
+    with pytest.raises(SystemExit) as info:
+        run_benchmark(_DESC_MANIFEST, [ex], out_dir=str(tmp_path))
+    assert info.value.code == 1
+    payload = json.loads(next(tmp_path.glob("*.json")).read_text(encoding="utf-8"))
+    res = payload["results"][ex.name]
+    assert res["summary"]["all_steps_errored"] is True
+    assert all(r["detail"].startswith("error:") and "slm unavailable" in r["detail"]
+               for r in res["steps"])
+    # the negative verify is NOT counted as correct
+    assert all(r["correct"] is False for r in res["steps"] if r["kind"] == "verify")
+    assert res["summary"]["cost"]["resolved_by_tier"] == {}
+
+
 def test_desc_executor_rejects_unknown_tier():
     with pytest.raises(ValueError, match="lexical"):
         VizDomDescExecutor(detector="modular", tiers=["lexical", "magic"])

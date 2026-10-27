@@ -92,8 +92,8 @@ ONLY="elam-7b aria-ui" OUT_DIR=benchmarks/results/gpu-<stamp> bash deploy/gpu/ru
 ```
 
 Column names: `vizdom-uied vizdom-omniparser vizdom-modular
-vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm elam-7b
-ui-tars-1.5-7b aria-ui parity`. Each run writes a new timestamped json+md, so
+vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm
+vizdom-modular-desc-vlm-chain elam-7b ui-tars-1.5-7b aria-ui parity`. Each run writes a new timestamped json+md, so
 nothing is overwritten; `summary.md` lists every row found. `prefetch.sh`
 honours the same `ONLY=` so a single-column rental downloads only that
 column's weights.
@@ -112,7 +112,8 @@ chain:
 |---|---|---|
 | `vizdom-modular-desc` | `lexical,slm` (the production default) | what a test author gets from `desc=` today, plus the per-tier resolution rate |
 | `vizdom-modular-desc-slm` | `slm` pinned | the text LM over the DOM table, alone |
-| `vizdom-modular-desc-vlm` | `vlm` pinned | the VLM Set-of-Mark over the screenshot, alone — the head-to-head with the grounders (both sides resolve language; VizDOM picks among DOM candidates, the grounders regress a point) |
+| `vizdom-modular-desc-vlm` | `vlm` pinned | the VLM Set-of-Mark over the screenshot with no shortlist — measured in run 4 at 0.117: the overlay caps at 20 marks in DOM order, so on a DOM with a median of 33 elements fewer than half the targets are even marked. Kept for the comparison, not a model result |
+| `vizdom-modular-desc-vlm-chain` | `lexical,vlm` | the vision tier the way production uses it: lexical scoring answers what it can and hands the VLM a shortlist of eight (or the pool when nothing scored) — the fair head-to-head with the grounders (both sides resolve language; VizDOM picks among DOM candidates, the grounders regress a point). Not yet run |
 
 A fresh resolver is built per step (the production per-screen cache would
 otherwise answer the verify step from the action step), so the false-pass
@@ -124,12 +125,17 @@ reachable. Override the models with `VIZDOM_GROUNDING_MODEL` /
 `VIZDOM_GROUNDING_VISION_MODEL` (both scripts read them; e.g. `qwen2.5vl:7b`
 on a big card — then quote the size with the number). Note the Ollama tag is
 `qwen2.5vl` (no dash); the project config default `qwen2.5-vl:3b` is the HF
-name and does not pull.
+name and does not pull. Since run 4 a miss records every tier's own verdict
+in the step's `detail` (`no confident match (lexical: tie at 3.00 between 2
+candidates ...; vlm returned out-of-range mark 37)`), so a column of misses
+can be diagnosed from the tarball alone.
 
 ### Aria-UI on a 48 GB card: offload mode (experimental)
 
 The clean path for Aria-UI is an 80 GB card. The opt-in alternative is
-`VIZDOM_ARIA_OFFLOAD=1`: the adapter loads bf16 with an accelerate
+`VIZDOM_ARIA_OFFLOAD=1` (empty or `0` means off, in the adapter and in the
+two shell scripts alike; below 40 GB the scripts skip the column instead of
+downloading 50 GB for a load the adapter refuses): the adapter loads bf16 with an accelerate
 `max_memory` budget of card-minus-5 GiB on the GPU and the rest in host RAM,
 so the last decoder layers stream over PCIe on every generated token. Expect
 several seconds per step (2026-10-26 run 3 host: PCIe 4.0 ×8, 13 GB/s) and
@@ -161,10 +167,11 @@ decoding are the same).
 `benchmarks/results/gpu-<stamp>/` with one result json+md per column:
 
 - `vizdom-uied`, `vizdom-omniparser`, `vizdom-modular` — our approach
-- `vizdom-modular-desc`, `-desc-slm`, `-desc-vlm` — our approach resolving
-  `desc=` through each ADR-022 tier chain (row names carry the chain, e.g.
-  `vizdom-modular+desc[vlm]`; `cost.resolved_by_tier` says which tier answered
-  how many steps)
+- `vizdom-modular-desc`, `-desc-slm`, `-desc-vlm`, `-desc-vlm-chain` — our
+  approach resolving `desc=` through each ADR-022 tier chain (row names carry
+  the chain, e.g. `vizdom-modular+desc[lexical+vlm]`; `cost.resolved_by_tier`
+  says which tier answered how many steps, and a missed step's `detail` says
+  why each tier declined)
 - `elam-7b`, `ui-tars-1.5-7b`, `aria-ui` — the competing end-to-end grounders
 - `parity.txt` — ADR-027 combos incl. per-stage latency on this GPU
 - `summary.md` — all result rows in one table; `gpu.txt` — card, driver, commit
@@ -220,7 +227,10 @@ Learned on the first paid run (2026-10-25, RTX 4090 on Vast):
 - The `desc=` columns are skipped (not failed) when Ollama is not reachable;
   preflight prints SKIP for that one reason and FAIL when Ollama runs but a
   model is missing or a tier cannot answer. Ollama shares the card with the
-  pipeline (the two 3B models take ~5 GB), fine on anything ≥ 16 GB.
+  pipeline (the two 3B models take ~5 GB), fine on anything ≥ 16 GB. If
+  Ollama dies mid-column, the steps whose model tier reports `unavailable`
+  are recorded as errors (not misses), and a column of nothing but errors is
+  marked FAILED and exits 1 like any other column.
 - The Qwen2-VL captioner combo is picked up automatically once an
   ollama-backed Captioner lands in `modular_backend._CAPTIONERS`; until then
   `parity_on_box.py` notes it as unavailable. The Ollama pull it needs is the

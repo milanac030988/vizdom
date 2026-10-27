@@ -224,9 +224,18 @@ class VizDomDescExecutor(VizDomExecutor):
         t0 = time.perf_counter()
         elem, info = resolver.resolve(description)
         latency = time.perf_counter() - t0
+        full_reason = str(info.get("reason", ""))
+        if elem is None and "unavailable" in full_reason:
+            # The resolver swallows a dead Ollama ("slm unavailable: ...") so
+            # production falls through to the next tier. Here that is a broken
+            # environment, not a measurement: raising makes the runner record
+            # the step as an error (an all-error column exits 1), instead of
+            # scoring a quiet miss that even passes the negative verifies
+            # (bench review, 2026-10-27).
+            raise RuntimeError(full_reason)
         tier = info.get("tier") or "none"
         self._tier_counts[tier] += 1
-        reason = " ".join(str(info.get("reason", "")).split())[:160]
+        reason = " ".join(full_reason.split())[:160]
         detail = f"tier={tier} {reason}".strip()
         if step["kind"] == "action":
             if elem is None:
