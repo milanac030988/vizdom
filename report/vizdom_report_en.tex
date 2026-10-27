@@ -1122,7 +1122,10 @@ decoding.
   \code{3fb0924}, 2026-10-27) resolve each step's \emph{description} (``Save button'')
   through the ADR-022 tier chain over the same modular DOM, pinned per row; the
   modular control column reproduced run 3 on all 514 steps. Their per-step cost is the
-  median resolver call (Ollama, 3B models) on top of the parse.}
+  median resolver call (Ollama, 3B models) on top of the parse. $^\S$Run 5 (same card
+  model, commit \code{c03c438}, 2026-10-27): the vision tier behind the lexical
+  shortlist, as production would run it; 68 of its 116 vision calls failed with a
+  model-server error and are scored as misses, so its action-hit is partial.}
   \label{tab:lifecycle}
   \begin{tabular}{@{}p{3.4cm}p{2.5cm}cccp{2.6cm}@{}}
     \toprule
@@ -1134,6 +1137,7 @@ decoding.
     VizDOM modular, \code{desc=}$^\ddagger$ & lexical $\rightarrow$ SLM (qwen2.5:3b) & 0.930 & \textbf{0.954} & 0.003 & 0.03\,s / step \\
     \quad \code{desc=} SLM only$^\ddagger$ & qwen2.5:3b over the DOM & 0.634 & 0.877 & 0.020 & 0.21\,s / step \\
     \quad \code{desc=} VLM only$^\ddagger$ & qwen2.5vl:3b, Set-of-Mark & 0.117 & 0.365 & 0.076 & 0.49\,s / step \\
+    \quad \code{desc=} lexical $\rightarrow$ VLM$^\S$ & qwen2.5vl:3b behind the shortlist & 0.930 & 0.691 & 0.113 & 0.83\,s / VLM call \\
     ELAM-7B & bf16 & 0.930 & 0.704 & 0.286 & 4.00\,s / step \\
     UI-TARS-1.5-7B & bf16 & 0.944 & 0.801 & 0.199 & 2.72\,s / step \\
     Aria-UI$^\dagger$ & bf16 & \textbf{0.962} & 0.708 & 0.292 & 1.57\,s / step \\
@@ -1209,10 +1213,25 @@ model over the full DOM table reaches 0.634, picking a confidently wrong element
 over the Set-of-Mark overlay 0.117, which is mostly a harness limit --- the overlay
 draws at most 20 marks in DOM order and, without the lexical shortlist in front of
 it, fewer than half of the targets are among them on a DOM with a median of 33
-elements per state. Two caveats bound the result: the descriptions are generated as
-caption plus role word, the lexical tier's ideal input, so 0.930 is an upper bound
-for that phrasing rather than a general \code{desc=} accuracy; and the vision-tier
-head-to-head with the grounders remains to be run with the shortlist in place.
+elements per state. A fifth run (same card model, commit \code{c03c438}, with the
+control and the production chain reproducing run~4 step for step) therefore put the
+vision model where production would put it, behind the lexical shortlist of at most
+eight marks. It keeps the lexical tier's hits (0.930) and fails as an oracle: asked
+about a nonsense caption with a numbered overlay in front of it, the model answered a
+mark on 34 of the 40 negatives it was shown, at confidence 0.90--0.99 and 22 times
+``mark~1'', and declined six --- a false-pass rate of 0.113 against the text model's
+0.003 on the same 116 steps. The row is partial on the action side, because the model
+server refused 68 of the 116 vision calls during a two-minute outage; the benchmark
+runner records those as errors rather than misses (a fix from the kit review of the
+same day; under the earlier harness the 48 errored negatives would have counted as
+correct), and 10 of the 14 action steps the vision model was meant to recover fell
+inside the outage. The verdict on the verify side does not depend on them. Two caveats
+bound the result: the descriptions are generated as caption plus role word, the
+lexical tier's ideal input, so 0.930 is an upper bound for that phrasing rather than
+a general \code{desc=} accuracy; and whether the vision tier recovers the OCR floor on
+actions is still unmeasured. What the two runs do settle is the ADR-022 tier order:
+the vision tier stays opt-in, and a Set-of-Mark prompt with a null option must not sit
+in a chain used for verification.
 
 \subsection{Efficiency considerations}
 Efficiency is analysed along three axes. The lifecycle benchmark
@@ -1263,8 +1282,9 @@ latency of the service path itself remains to be measured.
         GPU generations even with greedy decoding, and Aria-UI's latency comes from a
         different host than the other columns. The \code{desc=} rows use generated
         descriptions (caption plus role word), which favour the lexical tier; the
-        vision tier was measured without its candidate shortlist and is therefore
-        not yet a fair head-to-head with the grounders.
+        vision tier, measured behind its shortlist in run~5, lost 68 of 116 calls to
+        a model-server outage, so its action-side figure is partial (its verify-side
+        verdict, 34 false passes in 40 answered negatives, is not).
   \item \textbf{Calibration for physical actuation.} The robot-arm case requires a
         per-setup image-to-physical calibration; the architecture isolates this to
         the plugin, but it remains real work, and physical actuation carries safety

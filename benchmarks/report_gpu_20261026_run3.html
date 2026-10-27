@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lifecycle Benchmark Run 3</title>
-<meta name="description" content="Analysis of the third rented-GPU lifecycle benchmark run (2026-10-26, RTX 6000 Ada, commit 82f0b45): VizDOM columns versus ELAM-7B and UI-TARS-1.5-7B on lifecycle-synthetic-v1, with the full test configuration, plus the Aria-UI column measured in a follow-up rental on a 96 GB card and run 4 (2026-10-27), VizDOM's own desc= language tier on the same steps.">
+<meta name="description" content="Analysis of the third rented-GPU lifecycle benchmark run (2026-10-26, RTX 6000 Ada, commit 82f0b45): VizDOM columns versus ELAM-7B and UI-TARS-1.5-7B on lifecycle-synthetic-v1, with the full test configuration, plus the Aria-UI column measured in a follow-up rental on a 96 GB card and runs 4 and 5 (2026-10-27), VizDOM's own desc= language tier on the same steps, including the vision tier behind its shortlist.">
 <style>
 :root {
   color-scheme: light;
   --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
   --grid: #e1e0d9; --axis: #c3c2b7; --border: rgba(11,11,11,0.10);
-  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #7e57c2;
   --seq-100: #cde2fb; --seq-250: #86b6ef; --seq-400: #3987e5; --seq-550: #1c5cab; --seq-700: #0d366b;
   --good-text: #006300; --crit: #d03b3b;
   --accent-wash: rgba(42,120,214,0.08);
@@ -21,7 +21,7 @@
     color-scheme: dark;
     --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
     --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
-    --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #9575cd;
     --seq-100: #0d366b; --seq-250: #184f95; --seq-400: #256abf; --seq-550: #5598e7; --seq-700: #9ec5f4;
     --good-text: #0ca30c; --crit: #e66767;
     --accent-wash: rgba(57,135,229,0.12);
@@ -32,7 +32,7 @@
   color-scheme: dark;
   --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink-2: #c3c2b7; --muted: #898781;
   --grid: #2c2c2a; --axis: #383835; --border: rgba(255,255,255,0.10);
-  --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #9575cd;
   --seq-100: #0d366b; --seq-250: #184f95; --seq-400: #256abf; --seq-550: #5598e7; --seq-700: #9ec5f4;
   --good-text: #0ca30c; --crit: #e66767;
   --accent-wash: rgba(57,135,229,0.12);
@@ -99,7 +99,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <body>
 <main>
 <h1>Lifecycle benchmark, run 3: VizDOM vs end-to-end grounders</h1>
-<p class="lede">Analysis of the third rented-GPU run. Five executor columns on one machine, one commit and one step set; the first run that carries the Step 6b2 pipeline fix. The Aria-UI column was added from a separate rental the same night (see the note), and the three <code>desc=</code> columns, VizDOM resolving each step by description through its own language tier, from run 4 the next morning (section 9).</p>
+<p class="lede">Analysis of the third rented-GPU run. Five executor columns on one machine, one commit and one step set; the first run that carries the Step 6b2 pipeline fix. The Aria-UI column was added from a separate rental the same night (see the note), and the three <code>desc=</code> columns, VizDOM resolving each step by description through its own language tier, from run 4 the next morning, and the vision tier behind its shortlist from run 5 at noon (section 9).</p>
 <div class="facts">
   <span>Run <b>gpu-20261026_212923</b></span>
   <span>GPU <b>RTX 6000 Ada, 48 GB</b> (Vast.ai)</span>
@@ -122,6 +122,13 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
   <span>same manifest, <b>vizdom-modular</b> control + three <b>desc=</b> columns</span>
   <span>Date <b>2026-10-27</b>, 06:23 to 06:35 UTC</span>
 </div>
+<div class="facts">
+  <span>vision-tier addendum: run <b>gpu-20261027_111610</b></span>
+  <span>GPU <b>RTX PRO 5000 Blackwell, 48 GB</b> (Vast.ai, second rental)</span>
+  <span>Commit <b>c03c438</b></span>
+  <span>same manifest, <b>vizdom-modular</b> control + <b>desc=</b> lexical+slm and lexical+vlm</span>
+  <span>Date <b>2026-10-27</b>, 11:16 to 11:22 UTC</span>
+</div>
 
 <div class="callout">
   <p><b>Note on the Aria-UI column.</b> Aria-UI (25 B mixture-of-experts, bf16 only, ~50 GB of weights) did not fit the 48 GB card of run 3 and was skipped by the kit's gate. It was measured two hours later in a second rental on a 96 GB RTX PRO 6000 Blackwell, with <code>ONLY="aria-ui"</code>, the same 514-step manifest and the same adapter code (commit <code>411873c</code> differs from <code>82f0b45</code> only by kit scripts, docs and the opt-in offload switch, which did not engage: the whole model sat on the GPU). Its accuracy numbers are comparable with the other columns, since the steps and the scoring are identical. Its latency is not comparable with run 3's grounders, since it ran on a different card and host; section 2.1 lists both hosts. Everywhere below, the Aria-UI row carries this origin.</p>
@@ -139,7 +146,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <h2>1. Summary</h2>
 <p>The three end-to-end grounders click the right element more often than VizDOM: Aria-UI by 8 points over the OmniParser and modular detectors, ELAM and UI-TARS by 5 to 6, and all of them by 11 to 14 over UIED. On the test-oracle question the picture inverts. Asked whether a button that is not on the screen is visible, Aria-UI says <em>PASSED</em> in 88 of 88 cases, ELAM in 86 of 88 and UI-TARS in 60 of 88. VizDOM never does, because its locator contract requires exactly one match before anything is reported present. VizDOM's own verify errors are all in the conservative direction: a present caption that OCR could not read, reported as <em>FAILED</em>.</p>
 <p>Two things are new in this run. The modular backend now ties the OmniParser monolith on every one of the 514 steps, at 61 % of its parse time, which closes the gap diagnosed in the run 2 report. And the same fix lifted UIED by 9 click steps. The OmniParser column itself is identical to run 2 on all 514 steps, on a different card, so every VizDOM change is accounted for by the code change.</p>
-<p>Run 4 answers the objection that the table compares VizDOM <em>without</em> its language tier against grounders that are all language tier. Resolving the same steps as descriptions (<code>desc="Save button"</code>) through the production chain, lexical scoring over the DOM with a 3B text model as tie-breaker, lifts VizDOM to action-hit 0.930, ELAM's figure, and the best verify accuracy of the table, 0.954, while passing 1 of the 88 absent targets. The model tiers pinned alone do not hold up: the 3B text model over the whole DOM reaches 0.634 and the 3B vision model with the Set-of-Mark overlay 0.117, the latter mostly a harness limit (section 9).</p>
+<p>Run 4 answers the objection that the table compares VizDOM <em>without</em> its language tier against grounders that are all language tier. Resolving the same steps as descriptions (<code>desc="Save button"</code>) through the production chain, lexical scoring over the DOM with a 3B text model as tie-breaker, lifts VizDOM to action-hit 0.930, ELAM's figure, and the best verify accuracy of the table, 0.954, while passing 1 of the 88 absent targets. The model tiers pinned alone do not hold up: the 3B text model over the whole DOM reaches 0.634 and the 3B vision model with the Set-of-Mark overlay 0.117, the latter mostly a harness limit. Run 5 put the vision model behind the lexical shortlist, as production does: it keeps the hits (0.930) and passes 34 of the 40 absent targets it was asked, so the vision tier is not an oracle and stays out of the default chain (section 9).</p>
 <div class="callout">
   <p><b>Reading for the thesis.</b> A GUI test oracle must not pass a check whose target is absent. That is the one failure class the lifecycle benchmark isolates with the <code>verify-neg</code> steps, and it is the one where the architecture difference shows: 0 for a resolved-DOM system against 0.20 to 0.29 for per-step vision-language grounding, at one fifteenth to one twenty-sixth of the inference cost per step on this suite. The best grounder at clicking, Aria-UI, is also the worst oracle: it never says no.</p>
 </div>
@@ -178,14 +185,14 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 </table>
 </div>
 
-<h3>2.1b Host of the desc= addendum (run gpu-20261027_062331)</h3>
+<h3>2.1b Host of the desc= addenda (runs gpu-20261027_062331 and gpu-20261027_111610)</h3>
 <div class="table-wrap">
 <table class="kv">
 <tbody>
 <tr><th>Provider / instance</th><td>Vast.ai, on-demand rental, same kit; about 12 minutes of sweep after setup, prefetch and preflight</td></tr>
 <tr><th>GPU</th><td>1 × NVIDIA RTX PRO 5000 Blackwell, 48 935 MiB, driver 610.43.02 (from <code>gpu.txt</code>; CPU, RAM and bus of this host were not recorded)</td></tr>
 <tr><th>Models</th><td>the modular detector as in run 3; the <code>desc=</code> tiers through Ollama on the same host: <code>qwen2.5:3b</code> (SLM over the DOM table), <code>qwen2.5vl:3b</code> (VLM, Set-of-Mark), both pulled by <code>prefetch.sh</code>, checked by <code>preflight.py --grounding</code> before the sweep</td></tr>
-<tr><th>What ran</th><td><code>ONLY="vizdom-modular vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm"</code>: the control column (66 s) and the three chains, lexical+slm (85 s), slm alone (183 s), vlm alone (370 s). The control reproduced run 3 on 514 of 514 steps, so the three new rows are comparable with the run 3 rows step for step. Parse time on this host is 1.26 s per state against 0.62 s in run 3, a CPU-side difference; latencies of this run are therefore quoted per step and not against the run 3 parse figures.</td></tr>
+<tr><th>What ran</th><td><code>ONLY="vizdom-modular vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm"</code>: the control column (66 s) and the three chains, lexical+slm (85 s), slm alone (183 s), vlm alone (370 s). The control reproduced run 3 on 514 of 514 steps, so the three new rows are comparable with the run 3 rows step for step. Parse time on this host is 1.26 s per state against 0.62 s in run 3, a CPU-side difference; latencies of this run are therefore quoted per step and not against the run 3 parse figures. Run 5, a second rental of the same card model five hours later at commit <code>c03c438</code> (the kit with the per-tier reasons and the error path, no pipeline change): <code>ONLY="vizdom-modular vizdom-modular-desc vizdom-modular-desc-vlm-chain"</code>, 6 minutes of sweep; the control (73 s) and the lexical+slm chain (88 s) reproduced run 4 on 514 of 514 steps, and the lexical+vlm chain took 191 s with a two-minute Ollama outage in the middle.</td></tr>
 </tbody>
 </table>
 </div>
@@ -257,6 +264,9 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <tr><td>run 4</td><td>vizdom-modular+desc[lexical+slm]</td><td class="num">85 s</td><td>OK</td><td>44 parses; 116 SLM calls (the steps the lexical tier could not settle), 16 s of resolver time in total</td></tr>
 <tr><td>run 4</td><td>vizdom-modular+desc[slm]</td><td class="num">183 s</td><td>OK</td><td>44 parses; 514 SLM calls at 0.21 s median</td></tr>
 <tr><td>run 4</td><td>vizdom-modular+desc[vlm]</td><td class="num">370 s</td><td>OK</td><td>44 parses; 514 VLM calls with the overlay image at 0.49 s median, first call 4.5 s including model load</td></tr>
+<tr><td>run 5</td><td>vizdom-modular <span class="src">(control, 2026-10-27 11:16 UTC)</span></td><td class="num">73 s</td><td>OK</td><td>9.9 s load, 44 parses at 1.38 s; identical to runs 3 and 4 on all 514 steps</td></tr>
+<tr><td>run 5</td><td>vizdom-modular+desc[lexical+slm]</td><td class="num">88 s</td><td>OK</td><td>identical to run 4 on all 514 steps (same tier counts: lexical 398, slm 3)</td></tr>
+<tr><td>run 5</td><td>vizdom-modular+desc[lexical+vlm]</td><td class="num">191 s</td><td>OK, 68 steps errored</td><td>44 parses; 116 VLM calls, 48 answered at 0.83 s mean, 68 refused with Ollama HTTP 500 between 11:19:22 and 11:21:13 UTC</td></tr>
 </tbody>
 </table>
 </div>
@@ -276,6 +286,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <tr class="ours"><td>vizdom-modular+desc[lexical+slm] <span class="src">(run 4)</span></td><td>CV + qwen2.5:3b</td><td class="num">0.930</td><td class="num">0.954</td><td class="num">0.003</td><td class="num">0.944</td><td>parse 1.26 s/state on that host + 0.03 s/step resolve (116 SLM calls)</td></tr>
 <tr class="ours"><td>vizdom-modular+desc[slm] <span class="src">(run 4)</span></td><td>CV + qwen2.5:3b</td><td class="num">0.634</td><td class="num">0.877</td><td class="num">0.020</td><td class="num">0.776</td><td>parse + 0.21 s/step, 514 SLM calls</td></tr>
 <tr class="ours"><td>vizdom-modular+desc[vlm] <span class="src">(run 4)</span></td><td>CV + qwen2.5vl:3b</td><td class="num">0.117</td><td class="num">0.365</td><td class="num">0.076</td><td class="num">0.263</td><td>parse + 0.49 s/step, 514 VLM calls</td></tr>
+<tr class="ours"><td>vizdom-modular+desc[lexical+vlm] <span class="src">(run 5; 68 steps errored)</span></td><td>CV + qwen2.5vl:3b</td><td class="num">0.930</td><td class="num">0.691</td><td class="num">0.113</td><td class="num">0.790</td><td>parse + 0.08 s/step mean; 116 VLM calls at 0.83 s, 68 lost to an Ollama outage</td></tr>
 </tbody>
 </table>
 </div>
@@ -292,6 +303,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <tr class="ours"><td>3, 2026-10-26</td><td>RTX 6000 Ada, 82f0b45</td><td><b>0.822</b> / 0.934 / 0</td><td>0.883 / 0.934 / 0</td><td><b>0.883</b> / 0.934 / 0</td><td>0.930 / 0.704 / 0.286</td><td>0.944 / 0.801 / 0.199</td><td>skipped (gate)</td></tr>
 <tr class="ours"><td>3a, 2026-10-26</td><td>RTX PRO 6000 Blackwell 96 GB, 411873c</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td><b>0.962</b> / 0.708 / 0.292</td></tr>
 <tr class="ours"><td>4, 2026-10-27</td><td>RTX PRO 5000 Blackwell 48 GB, 3fb0924</td><td>—</td><td>—</td><td>0.883 / 0.934 / 0 (control, bit-identical to run 3); with desc= <b>0.930</b> / <b>0.954</b> / 0.003</td><td>—</td><td>—</td><td>—</td></tr>
+<tr class="ours"><td>5, 2026-10-27</td><td>RTX PRO 5000 Blackwell 48 GB, c03c438</td><td>—</td><td>—</td><td>0.883 / 0.934 / 0 (control, bit-identical); desc= lexical+slm reproduced run 4 on 514 of 514; lexical+vlm 0.930 / 0.691 / 0.113</td><td>—</td><td>—</td><td>—</td></tr>
 </tbody>
 </table>
 </div>
@@ -332,7 +344,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <div class="card">
   <h3>Outcome of the 301 verify steps per executor</h3>
   <p class="sub">213 statements are true (the element is on screen), 88 are false (the label does not exist on that screen). Each bar sums to 301. ▲ A longer blue segment is better; the green "false pass" segment is the one to minimise, and 0 (no green at all) is the only acceptable value for a test oracle. Orange false fails are cheap: the test stops and a person looks.</p>
-  <div class="legend"><span style="--c:var(--s1)">correct verdict</span><span style="--c:var(--s2)">false fail (true statement, said FAILED)</span><span style="--c:var(--s3)">false pass (absent target, said PASSED)</span></div>
+  <div class="legend"><span style="--c:var(--s1)">correct verdict</span><span style="--c:var(--s2)">false fail (true statement, said FAILED)</span><span style="--c:var(--s3)">false pass (absent target, said PASSED)</span><span style="--c:var(--s4)">errored (run 5: Ollama refused the call, no verdict)</span></div>
   <div id="chart-verify"></div>
 </div>
 <p>The negative statements use labels that cannot exist on a business dashboard: <em>Frobnicate</em>, <em>Warp Cores</em>, <em>Zylophone</em>, <em>Moon Cheese</em>, <em>Purple Elephant</em>, <em>Antigravity</em>, <em>Bogus Panel</em>, <em>Quantum Sync</em>. The statement is of the form "the 'Frobnicate' button is visible", expected verdict <em>FAILED</em>.</p>
@@ -380,6 +392,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <tr class="ours"><td>vizdom-modular+desc[lexical+slm] <span class="src">(run 4, other host)</span></td><td class="num">9.1</td><td class="num">1.31</td><td class="num">83</td><td class="num">0.16</td><td class="num">—</td></tr>
 <tr class="ours"><td>vizdom-modular+desc[slm] <span class="src">(run 4)</span></td><td class="num">9.0</td><td class="num">1.35</td><td class="num">182</td><td class="num">0.35</td><td class="num">—</td></tr>
 <tr class="ours"><td>vizdom-modular+desc[vlm] <span class="src">(run 4)</span></td><td class="num">9.1</td><td class="num">1.35</td><td class="num">368</td><td class="num">0.72</td><td class="num">—</td></tr>
+<tr class="ours"><td>vizdom-modular+desc[lexical+vlm] <span class="src">(run 5, 48 of 116 VLM calls answered)</span></td><td class="num">9.2</td><td class="num">1.34</td><td class="num">108</td><td class="num">0.21</td><td class="num">—</td></tr>
 </tbody>
 </table>
 </div>
@@ -418,12 +431,12 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 </div>
 <div class="callout"><p><b>Consequence.</b> Modular and OmniParser columns are identical on all 514 steps, and modular parses in 0.62 s per state against 1.02 s, so the ADR-027 claim holds on the rented card: the monolith's accuracy at 61 % of its parse time, with the captioner off. The 0.732 in the run 2 report was a representation bug, not a detection difference, and it is closed. The grounders' numbers move by a point between cards even with greedy decoding; VizDOM's do not.</p></div>
 
-<h2>9. Run 4: VizDOM's own language tier (<code>desc=</code>)</h2>
-<p>The six columns above resolve VizDOM steps with <code>text=</code> only. That compares VizDOM <em>without</em> its language tier against grounders that are all language tier, and VizDOM's zero false-pass is partly structural: a nonsense caption can never match OCR output. Run 4 adds the missing comparison. Every step of the manifest also carries a <em>description</em> derived from the same caption, "Save button", "Remember me checkbox", "Warp Cores button" for the negatives, and <code>vizdom-modular+desc</code> resolves it through the tier chain of ADR-022 behind <code>Get Visual Element  desc="..."</code>, over the same parse-once modular DOM. A fresh resolver is built per step so the production cache cannot answer a verify step from its action step. The chain is pinned per column: the production default (lexical scoring, then a 3B text model over the DOM table), the text model alone, and the 3B vision model alone over a Set-of-Mark overlay. The control column, plain <code>vizdom-modular</code>, reproduced run 3 on 514 of 514 steps, so the rows are comparable step for step.</p>
+<h2>9. Runs 4 and 5: VizDOM's own language tier (<code>desc=</code>)</h2>
+<p>The six columns above resolve VizDOM steps with <code>text=</code> only. That compares VizDOM <em>without</em> its language tier against grounders that are all language tier, and VizDOM's zero false-pass is partly structural: a nonsense caption can never match OCR output. Run 4 adds the missing comparison. Every step of the manifest also carries a <em>description</em> derived from the same caption, "Save button", "Remember me checkbox", "Warp Cores button" for the negatives, and <code>vizdom-modular+desc</code> resolves it through the tier chain of ADR-022 behind <code>Get Visual Element  desc="..."</code>, over the same parse-once modular DOM. A fresh resolver is built per step so the production cache cannot answer a verify step from its action step. The chain is pinned per column: the production default (lexical scoring, then a 3B text model over the DOM table), the text model alone, and the 3B vision model alone over a Set-of-Mark overlay. The control column, plain <code>vizdom-modular</code>, reproduced run 3 on 514 of 514 steps, so the rows are comparable step for step. Run 5, five hours later on a second rental of the same card model, added the fourth chain, the vision model behind the lexical shortlist as production runs it; its control and its production-chain column reproduced run 4 step for step.</p>
 <div class="card">
   <h3>Which tier answered each of the 514 steps</h3>
-  <p class="sub">Per column, how many steps each tier of the pinned chain resolved to an element, and how many ended with no confident match (which is the correct answer for the 88 negatives). Each bar sums to 514. The production chain answers 77 % of the steps without any model.</p>
-  <div class="legend"><span style="--c:var(--s1)">lexical (no model)</span><span style="--c:var(--s3)">SLM qwen2.5:3b</span><span style="--c:var(--s2)">VLM qwen2.5vl:3b</span><span style="--c:var(--muted)">no confident match</span></div>
+  <p class="sub">Per column, how many steps each tier of the pinned chain resolved to an element, how many ended with no confident match (which is the correct answer for the 88 negatives), and in run 5 how many could not be resolved because the model server refused the call. Each bar sums to 514. The production chain answers 77 % of the steps without any model.</p>
+  <div class="legend"><span style="--c:var(--s1)">lexical (no model)</span><span style="--c:var(--s3)">SLM qwen2.5:3b</span><span style="--c:var(--s2)">VLM qwen2.5vl:3b</span><span style="--c:var(--muted)">no confident match</span><span style="--c:var(--s4)">Ollama error (HTTP 500)</span></div>
   <div id="chart-tiers"></div>
 </div>
 <p class="howto"><b>How to read:</b> ▲ higher is better for action-hit and verify accuracy, ▼ lower for false-pass. Counts in brackets are hits of 213, false passes of 88. The <code>text=</code> row is the same DOM resolved by exact text, from the control column.</p>
@@ -435,6 +448,7 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <tr class="ours"><td>vizdom-modular+desc[lexical+slm]</td><td>production default</td><td class="num">0.930 (198)</td><td class="num">0.954</td><td class="num">0.003 (1)</td><td>lexical 398, slm 3, none 113</td><td class="num">0.0002 s median, 0.03 s mean</td></tr>
 <tr class="ours"><td>vizdom-modular+desc[slm]</td><td>text model over the full DOM table</td><td class="num">0.634 (135)</td><td class="num">0.877</td><td class="num">0.020 (6)</td><td>slm 372, none 142</td><td class="num">0.21 s</td></tr>
 <tr class="ours"><td>vizdom-modular+desc[vlm]</td><td>vision model over a 20-mark overlay</td><td class="num">0.117 (25)</td><td class="num">0.365</td><td class="num">0.076 (23)</td><td>vlm 113, none 401</td><td class="num">0.49 s</td></tr>
+<tr class="ours"><td>vizdom-modular+desc[lexical+vlm] <span class="src">(run 5)</span></td><td>vision model behind the lexical shortlist</td><td class="num">0.930 (198)</td><td class="num">0.691</td><td class="num">0.113 (34)</td><td>lexical 398, vlm 40, none 8, <b>error 68</b></td><td class="num">0.0001 s median, 0.08 s mean; 0.83 s per VLM call</td></tr>
 </tbody>
 </table>
 </div>
@@ -442,18 +456,19 @@ footer { color: var(--muted); font-size: 0.82rem; margin-top: 44px; border-top: 
 <ul>
   <li><b>198 hits against 188: eleven gained, one lost.</b> Every gain is a caption that exact text cannot match but token overlap plus the role word can: the placeholder <code>Search...</code>, which OCR reads without the dots (seven steps on data_table, form_sidebar and toolbar), and the path-like values <code>APAC\USER01</code> and <code>C:\Users\admin</code> (partial overlap, lexical scores 1.7 to 2.6). The one loss is a table digit, <code>data_table_0110/E80</code> "2 button", where the margin between repeated digits is zero. Verify accuracy follows the same pattern, 0.954 against 0.934.</li>
   <li><b>The lexical tier does the work.</b> 398 of 514 steps are answered without a model, in 0.2 ms. The text model is called on the other 116, the 88 negatives plus 28 positives with no confident lexical top, and answers 3 of them; the whole column spends 16 s on resolution. The 13 remaining action misses are the OCR floor, nine captions that were never read so there is no token to overlap (<code>Save</code> three times, <code>Confirm</code>, <code>Cancel</code>, <code>Download</code>, three value fields on <code>form_sidebar_0103</code>), and four repeated table digits.</li>
-  <li><b>One false pass.</b> Asked about "Purple Elephant button" on <code>dialog_0141</code>, the text model answered the <em>Retry</em> button at confidence 0.85, the same rationalisation the grounders show; it declined the other 87 negatives. Action-hit now equals ELAM's 0.930, with a false-pass rate of 0.003 against the grounders' 0.199 to 0.292.</li>
+  <li><b>One false pass.</b> Asked about "Purple Elephant button" on <code>dialog_0141</code>, the text model answered the <em>Retry</em> button at confidence 0.85, the same rationalisation the grounders show; it declined the other 87 negatives. Action-hit now equals ELAM's 0.930, with a false-pass rate of 0.003 against the grounders' 0.199 to 0.292. The root cause, found on 2026-10-28 by reproducing the step with the same model on a laptop, is a shortlist of one: the dialog's other button, <em>Cancel</em>, is one of the nine captions OCR never read, so the lexical ranking scored exactly one element and the model was handed a one-row table, which turns "which of these matches?" into "is this it?". With the same phrase and two rows the model declines. The resolver now pads the shortlist to at least three candidates and tells the model that null is expected and a matching role alone is no match; the runner keeps every parsed DOM in the tarball so the next such case can be read off directly.</li>
 </ul>
 <h3>The model tiers alone</h3>
 <ul>
   <li><b>The 3B text model over the whole DOM is a poor grounder.</b> Given the full element table (30 to 110 rows) it picks a <em>wrong</em> element on 49 of its 78 action misses, at confidence 1.00 and semantically unrelated ("Prev button" → a static text <em>John Doe</em>; "Search... input field" → the number <em>70</em>), and declines on 29. Worst on form_sidebar (33 of 62) and settings (33 of 57), fine on toolbar (16 of 17) and login (11 of 12). Its six false passes are rationalisations ("Zylophone button" → the <em>Zip Code</em> button, "Warp Cores button" → the <em>Time</em> button, all at 1.00). What makes the production chain a 0.930 column is the lexical tier in front: it answers the easy 77 % itself and hands the model a shortlist of eight.</li>
-  <li><b>The VLM-only column measures the harness more than the model.</b> The Set-of-Mark overlay draws at most 20 numbered boxes in DOM order, and the pinned <code>vlm</code> chain has no lexical shortlist in front of it, so the marks are the first 20 elements of a DOM that has a median of 33 elements per state (5 to 112); on a laptop parse of the same states only 102 of the 213 action targets fall inside the first 20 marks at all. On 30 of the 44 states the model gave no usable answer on any step (null, out-of-range or below the confidence gate; the result file keeps the chain's "no confident match", not the tier's own reason). On the 14 states where it did answer, all four toolbars, six settings screens and four dashboards, it answered almost every step: 25 of 45 actions hit, and all 23 negatives it was asked passed at confidence 0.95 to 1.00. Within its answered set it behaves exactly like the grounders. The intended head-to-head with Aria-UI, ELAM and UI-TARS therefore did not take place: the tier was designed as a disambiguator over a short candidate list, and this column asked it to be a whole-screen grounder with a 3B model on a 1920×1080 frame. Both harness gaps are closed in the kit since 2026-10-27: a <code>vizdom-modular-desc-vlm-chain</code> column runs the vision tier behind the lexical shortlist, as production does (not yet run), and a missed step now records every tier's own verdict in its detail instead of the chain's generic line.</li>
+  <li><b>The VLM-only column measures the harness more than the model.</b> The Set-of-Mark overlay draws at most 20 numbered boxes in DOM order, and the pinned <code>vlm</code> chain has no lexical shortlist in front of it, so the marks are the first 20 elements of a DOM that has a median of 33 elements per state (5 to 112); on a laptop parse of the same states only 102 of the 213 action targets fall inside the first 20 marks at all. On 30 of the 44 states the model gave no usable answer on any step (null, out-of-range or below the confidence gate; the result file keeps the chain's "no confident match", not the tier's own reason). On the 14 states where it did answer, all four toolbars, six settings screens and four dashboards, it answered almost every step: 25 of 45 actions hit, and all 23 negatives it was asked passed at confidence 0.95 to 1.00. Within its answered set it behaves exactly like the grounders. The intended head-to-head with Aria-UI, ELAM and UI-TARS therefore did not take place: the tier was designed as a disambiguator over a short candidate list, and this column asked it to be a whole-screen grounder with a 3B model on a 1920×1080 frame. Both harness gaps were closed in the kit the same day: a <code>vizdom-modular-desc-vlm-chain</code> column runs the vision tier behind the lexical shortlist, as production does, a missed step records every tier's own verdict in its detail instead of the chain's generic line, and a tier that cannot reach its model is a step error rather than a miss.</li>
+  <li><b>Run 5: the vision tier behind the shortlist keeps the hits and fails as an oracle.</b> The <code>lexical,vlm</code> chain hands the vision model the 116 steps the lexical tier cannot settle, with at most eight marks on the overlay. Two things happened. For two minutes in the middle of the column (11:19:22 to 11:21:13 UTC) Ollama answered HTTP 500 to every call, 68 of the 116: 10 actions, 10 positive and 48 negative verifies. The error path records them as errors, scored as misses and wrong verdicts, so the row is a partial measurement; under the run 4 harness those 48 negatives would have counted as <em>correct</em> and the column would have looked better than it is. On the 48 calls that went through, the model behaved like the grounders. Asked about a nonsense caption with a numbered overlay in front of it, it answered a mark on 34 of 40 negatives at confidence 0.90 to 0.99, 22 of them mark #1, and declined 6 (all on dashboards and toolbars). Of its four action answers one hit (<code>settings_0042</code> "Save button", mark #6 at 1.00), two chose mark #1 for the same description on other settings screens, and one was out of range. The chain therefore keeps the lexical tier's 198 hits (one gained, one lost to the outage) and loses the oracle: false-pass 0.113 as measured, which is also the floor had every errored negative been declined, and about 0.25 had they followed the answered rate. The action-side question, whether the vision model recovers the OCR floor of nine unread captions and four repeated digits, is still open: 10 of those 14 steps fell inside the outage. The verify-side question is closed: a Set-of-Mark prompt with a null option is not a usable oracle with this model, and <code>vlm</code> stays out of the production default.</li>
 </ul>
-<div class="callout"><p><b>Reading for the thesis.</b> With its language tier switched on, VizDOM clicks as well as ELAM (0.930), verifies better than any column (0.954) and passes 1 absent target in 88, against 60 to 88 for the grounders. The ADR-022 design, deterministic scoring first and a small model only where the scoring is not confident, is what produces that: the model is consulted on 23 % of the steps and overruled by the DOM's id validation and the confidence gate on the rest. The caveat is the phrasing: the benchmark's descriptions are caption plus role word, the lexical tier's ideal input; a tester's own wording ("the blue save button at the bottom") would exercise the model tiers more and the lexical tier less, so 0.930 is an upper bound for this phrasing, not a general <code>desc=</code> accuracy.</p></div>
+<div class="callout"><p><b>Reading for the thesis.</b> With its language tier switched on, VizDOM clicks as well as ELAM (0.930), verifies better than any column (0.954) and passes 1 absent target in 88, against 60 to 88 for the grounders. The ADR-022 design, deterministic scoring first and a small model only where the scoring is not confident, is what produces that: the model is consulted on 23 % of the steps and overruled by the DOM's id validation and the confidence gate on the rest. The caveat is the phrasing: the benchmark's descriptions are caption plus role word, the lexical tier's ideal input; a tester's own wording ("the blue save button at the bottom") would exercise the model tiers more and the lexical tier less, so 0.930 is an upper bound for this phrasing, not a general <code>desc=</code> accuracy. Run 5 adds the second half of the ADR-022 argument: the tier order matters. The same vision model that is a 0.117 column alone and an 0.113 false-pass column behind the shortlist is harmless in the default chain only because it is not in it; the text model, consulted on the same 116 steps, declines 87 of 88 nonsense captions where the vision model accepts 34 of 40.</p></div>
 
 <h2>10. Threats to validity</h2>
 <ul>
-  <li><b>The desc= descriptions are generated, not written.</b> Caption plus role word is exactly what the lexical tier scores, so the chain's 0.930 (section 9) is an upper bound for that phrasing. The VLM-only column is capped by the overlay's 20-mark budget without a shortlist and does not measure the vision model's grounding ability on this suite.</li>
+  <li><b>The desc= descriptions are generated, not written.</b> Caption plus role word is exactly what the lexical tier scores, so the chain's 0.930 (section 9) is an upper bound for that phrasing. The VLM-only column is capped by the overlay's 20-mark budget without a shortlist and does not measure the vision model's grounding ability on this suite. The run 5 column that does put the shortlist in place lost 68 of its 116 vision calls to a model-server outage, so its action-side figure is partial; its verify-side verdict rests on the 40 negatives that were answered and is not.</li>
   <li><b>Synthetic screens.</b> All 44 states come from the project's generator. Real applications have denser, noisier layouts; the headline caveat of the whole benchmark stands.</li>
   <li><b>Negative statements are easy for exact text and hard for a VLM in different ways.</b> A nonsense label can never partially match a DOM, which favours VizDOM. A model that reads the screen might reasonably be expected to reject "Zylophone", yet mostly did not. A harder negative set (plausible-but-absent labels such as "Export" on a screen with "Import") is planned as defect injection and would test VizDOM's OCR as well.</li>
   <li><b>UI-TARS's and Aria-UI's verify is a proxy.</b> Neither has a verdict mode, so "grounded a point" counts as PASSED, and Aria-UI always grounds. ELAM's native verdict is the fairer comparison, and it still passes 86 of 88 absent targets, so the proxy is not what drives the finding.</li>
@@ -485,6 +500,13 @@ benchmarks/results/gpu-20261027_062331/      # desc= addendum, run 4 (RTX PRO 50
   20261027_063514.{json,md}   vizdom-modular+desc[vlm]
   &lt;column&gt;.log                one log per column
 
+benchmarks/results/gpu-20261027_111610/      # vision-tier addendum, run 5 (RTX PRO 5000 48 GB, commit c03c438)
+  summary.md  gpu.txt  sweep.log
+  20261027_111721.{json,md}   vizdom-modular (control)
+  20261027_111850.{json,md}   vizdom-modular+desc[lexical+slm]
+  20261027_112200.{json,md}   vizdom-modular+desc[lexical+vlm]   (68 steps "error: ... vlm unavailable: Ollama error: 500")
+  &lt;column&gt;.log                one log per column
+
 # rerun on a rented card (deploy/gpu/README.md, deploy/gpu/vast_runbook.html)
 bash deploy/gpu/setup.sh &amp;&amp; bash deploy/gpu/prefetch.sh &amp;&amp; bash deploy/gpu/preflight.sh
 bash deploy/gpu/run_benchmarks.sh
@@ -493,10 +515,12 @@ ONLY="aria-ui" bash deploy/gpu/prefetch.sh &amp;&amp; ONLY="aria-ui" bash deploy
 # desc= columns with the modular control (any 24+ GB card; Ollama is installed by prefetch):
 ONLY="vizdom-modular vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm" bash deploy/gpu/prefetch.sh
 PYTHONPATH=src .venv/bin/python deploy/gpu/preflight.py --pipeline --grounding
-ONLY="vizdom-modular vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm" bash deploy/gpu/run_benchmarks.sh</code></pre>
+ONLY="vizdom-modular vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm" bash deploy/gpu/run_benchmarks.sh
+# the vision tier behind the shortlist (run 5):
+ONLY="vizdom-modular vizdom-modular-desc vizdom-modular-desc-vlm-chain" bash deploy/gpu/run_benchmarks.sh</code></pre>
 <p>Every result JSON records the dataset id, the commit and the per-step outcome, so any number in this report can be traced to a step id such as <code>login_0137/act/E13</code>. The run 2 report (<code>report_gpu_20261026.html</code>) holds the root-cause analysis of the modular gap with the DOM diff on <code>form_sidebar_0007</code>.</p>
 
-<footer>VizDOM lifecycle benchmark, run gpu-20261026_212923, commit 82f0b45, RTX 6000 Ada; Aria-UI column from run gpu-20261026_233909, commit 411873c, RTX PRO 6000 Blackwell 96 GB; desc= columns from run gpu-20261027_062331, commit 3fb0924, RTX PRO 5000 Blackwell 48 GB. Numbers are from the result JSON files; charts are drawn from the same values inline in this page.</footer>
+<footer>VizDOM lifecycle benchmark, run gpu-20261026_212923, commit 82f0b45, RTX 6000 Ada; Aria-UI column from run gpu-20261026_233909, commit 411873c, RTX PRO 6000 Blackwell 96 GB; desc= columns from run gpu-20261027_062331, commit 3fb0924, and the lexical+vlm chain from run gpu-20261027_111610, commit c03c438, both RTX PRO 5000 Blackwell 48 GB. Numbers are from the result JSON files; charts are drawn from the same values inline in this page.</footer>
 </main>
 <div class="tip" id="tip"></div>
 
@@ -601,6 +625,7 @@ ONLY="vizdom-modular vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-
     { label: 'ui-tars-1.5-7b (4-bit, run 1)', v: 0.845, tip: '<b>UI-TARS-1.5-7B 4-bit</b> (2026-10-25)<br>180 of 213 hits', dim: true },
     { label: 'desc= SLM only (run 4)', v: 0.634, tip: '<b>VizDOM modular, qwen2.5:3b alone over the DOM table</b><br>135 of 213 hits<br>49 confident wrong picks, 29 declined', dim: true },
     { label: 'desc= VLM only (run 4)', v: 0.117, tip: '<b>VizDOM modular, qwen2.5vl:3b alone, Set-of-Mark</b><br>25 of 213 hits<br>no answer on 30 of 44 states; 20-mark cap without a shortlist', dim: true },
+    { label: 'desc= lexical → VLM (run 5)', v: 0.930, tip: '<b>VizDOM modular, desc= chain lexical → VLM</b> (run 5)<br>198 of 213 hits: the lexical tier\'s 199 minus one lost to the outage; the VLM answered 4 actions, hit 1<br>10 actions errored (Ollama HTTP 500)', dim: true },
   ];
   hbars('chart-hit', hit, { max: 1, grid: [0, 0.25, 0.5, 0.75, 1], fmt: (v, lbl) => lbl ? v.toFixed(3) : v.toFixed(2), aria: 'Action-hit rate per executor' });
 
@@ -608,6 +633,7 @@ ONLY="vizdom-modular vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-
     { name: 'correct verdict', color: 'var(--s1)' },
     { name: 'false fail', color: 'var(--s2)', of: v => `${v} true statements rejected` },
     { name: 'false pass', color: 'var(--s3)', of: v => `${v} of 88 absent-target statements accepted` },
+    { name: 'errored (Ollama HTTP 500)', color: 'var(--s4)', of: v => `${v} verifies with no verdict, scored as wrong` },
   ];
   hstack('chart-verify', [
     { label: 'vizdom (all three)', v: [281, 20, 0] },
@@ -617,6 +643,7 @@ ONLY="vizdom-modular vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-
     { label: 'vizdom desc= chain (run 4)', v: [287, 13, 1] },
     { label: 'desc= SLM only (run 4)', v: [264, 31, 6] },
     { label: 'desc= VLM only (run 4)', v: [110, 168, 23] },
+    { label: 'desc= lexical → VLM (run 5)', v: [208, 1, 34, 58] },
   ], verifySeries, 301);
 
   // --- run 4: which tier answered, per pinned chain (counts of 514 steps) ---
@@ -625,11 +652,13 @@ ONLY="vizdom-modular vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-
     { name: 'SLM qwen2.5:3b', color: 'var(--s3)' },
     { name: 'VLM qwen2.5vl:3b', color: 'var(--s2)' },
     { name: 'no confident match', color: 'var(--muted)', of: v => 'correct for the 88 negatives, a miss for the rest' },
+    { name: 'Ollama error (HTTP 500)', color: 'var(--s4)', of: v => 'run 5: the model server refused the call; scored as a miss or a wrong verdict' },
   ];
   hstack('chart-tiers', [
     { label: 'desc[lexical+slm]', v: [398, 3, 0, 113] },
     { label: 'desc[slm]', v: [0, 372, 0, 142] },
     { label: 'desc[vlm]', v: [0, 0, 113, 401] },
+    { label: 'desc[lexical+vlm] (run 5)', v: [398, 0, 40, 8, 68] },
   ], tierSeries, 514, [0, 100, 200, 300, 400, 500], 'Steps resolved per tier for each pinned desc= chain, stacked counts of 514');
 
   const cost = [
@@ -656,6 +685,7 @@ ONLY="vizdom-modular vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-
     ['vizdom desc= chain (run 4)', [23, 3, 59, 32, 11, 54, 16]],
     ['desc= SLM only (run 4)', [13, 3, 33, 26, 11, 33, 16]],
     ['desc= VLM only (run 4)', [0, 0, 0, 0, 0, 11, 14]],
+    ['desc= lexical → VLM (run 5)', [23, 3, 58, 32, 11, 55, 16]],
   ];
   const steps = ['--seq-100', '--seq-250', '--seq-400', '--seq-550', '--seq-700'];
   const tbl = document.getElementById('heat');

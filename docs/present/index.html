@@ -1029,7 +1029,11 @@ body.notes-on .slide.active .notes{display:block}
           (commit 411873c), so its latency is from another host. **Run 4, RTX PRO 5000 48 GB, commit
           3fb0924, 2026-10-27, modular control bit-identical to run 3; the model tiers pinned alone:
           SLM-only 0.634 / 0.877 / 0.020, VLM Set-of-Mark-only 0.117 / 0.365 / 0.076 (the 20-mark
-          overlay cap, a harness limit — see the benchmark report). Modular = OmniParser's YOLO +
+          overlay cap, a harness limit — see the benchmark report). Run 5 (commit c03c438, same card
+          model) put the VLM behind the lexical shortlist, as production would: 0.930 / 0.691 / 0.113 —
+          it keeps the lexical hits and passes 34 of the 40 nonsense captions it was asked (22 of them
+          "mark #1"); 68 of its 116 calls hit an Ollama outage and count as errors. The vision tier is
+          not an oracle and stays out of the default chain. Modular = OmniParser's YOLO +
           our OCR + the ported fusion: identical outcome on all 514 steps at 61 % of the parse time.</p>
       </div>
     </div>
@@ -1048,7 +1052,13 @@ body.notes-on .slide.active .notes{display:block}
     the gains over text= are exactly the OCR-noisy captions ("Search..." read without the dots,
     path-like values). Pinned alone the SLM drops to 0.63 and the VLM to 0.12: the VLM tier was built
     as a disambiguator over a short candidate list (20-mark cap), not a whole-screen grounder, and
-    the benchmark's descriptions are caption + role word, i.e. the lexical tier's ideal input.</div>
+    the benchmark's descriptions are caption + role word, i.e. the lexical tier's ideal input.
+    If asked "so put the VLM behind the shortlist": run 5 did. Same hits (the lexical tier answers
+    398 of 514 either way), but the VLM said "mark 1, confidence 0.99" to 34 of the 40 nonsense
+    captions it was shown — a numbered overlay with a null option is a yes-man with a 3B model. The
+    text model, asked the same 116 steps, declined 87 of 88. That is why the default chain is
+    lexical → SLM and the vision tier is opt-in. Run 5 is partial on the action side (an Ollama
+    outage ate 68 of 116 calls; they count as errors, not misses, thanks to the review fix).</div>
 </section>
 
 <!-- 13b ───────────────────────────────────────── -->

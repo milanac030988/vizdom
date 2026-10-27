@@ -1162,7 +1162,9 @@ báo cáo rõ theo cách đó. Tất cả grounder chạy bf16 không quantize v
   48\,GB, commit \code{3fb0924}, 2026-10-27) phân giải \emph{mô tả} của mỗi bước
   (``Save button'') qua chuỗi tier ADR-022 trên cùng DOM modular, ghim từng tier theo
   dòng; cột đối chứng modular tái lập run 3 trên cả 514 bước. Chi phí mỗi bước là
-  median của lời gọi resolver (Ollama, mô hình 3B) cộng thêm vào parse.}
+  median của lời gọi resolver (Ollama, mô hình 3B) cộng thêm vào parse. $^\S$Run 5
+  (cùng loại card, commit \code{c03c438}, 2026-10-27): tier VLM đặt sau shortlist
+  lexical như production; 68 trong 116 lời gọi VLM lỗi phía server, tính là miss.}
   \label{tab:lifecycle}
   \begin{tabular}{@{}p{3.4cm}p{2.5cm}cccp{2.6cm}@{}}
     \toprule
@@ -1174,6 +1176,7 @@ báo cáo rõ theo cách đó. Tất cả grounder chạy bf16 không quantize v
     VizDOM modular, \code{desc=}$^\ddagger$ & lexical $\rightarrow$ SLM (qwen2.5:3b) & 0.930 & \textbf{0.954} & 0.003 & 0.03\,s / bước \\
     \quad \code{desc=} chỉ SLM$^\ddagger$ & qwen2.5:3b trên DOM & 0.634 & 0.877 & 0.020 & 0.21\,s / bước \\
     \quad \code{desc=} chỉ VLM$^\ddagger$ & qwen2.5vl:3b, Set-of-Mark & 0.117 & 0.365 & 0.076 & 0.49\,s / bước \\
+    \quad \code{desc=} lexical $\rightarrow$ VLM$^\S$ & qwen2.5vl:3b sau shortlist & 0.930 & 0.691 & 0.113 & 0.83\,s / lời gọi VLM \\
     ELAM-7B & bf16 & 0.930 & 0.704 & 0.286 & 4.00\,s / bước \\
     UI-TARS-1.5-7B & bf16 & 0.944 & 0.801 & 0.199 & 2.72\,s / bước \\
     Aria-UI$^\dagger$ & bf16 & \textbf{0.962} & 0.708 & 0.292 & 1.57\,s / bước \\

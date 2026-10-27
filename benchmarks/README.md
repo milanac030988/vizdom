@@ -191,6 +191,7 @@ with charts and the test configuration: `benchmarks/report_gpu_20261026_run3.htm
 | `vizdom-modular+desc[lexical+slm]` (run 4) | + qwen2.5:3b via Ollama | **0.930** | **0.954** | 0.003 (1 of 88 negatives passed) | parse + **0.03 s/step** resolve (SLM called on 116 steps) |
 | `vizdom-modular+desc[slm]` (run 4) | qwen2.5:3b over the DOM table | 0.634 | 0.877 | 0.020 (6 of 88) | parse + **0.21 s/step** |
 | `vizdom-modular+desc[vlm]` (run 4) | qwen2.5vl:3b Set-of-Mark | 0.117 | 0.365 | 0.076 (23 of 88) | parse + **0.49 s/step** |
+| `vizdom-modular+desc[lexical+vlm]` (run 5) | qwen2.5vl:3b Set-of-Mark behind the lexical shortlist | **0.930** | 0.691 | 0.113 (34 of the 40 negatives the VLM answered; 48 more errored) | parse + **0.08 s/step** (0.83 s per VLM call; 68 of 116 calls lost to an Ollama HTTP 500 outage) |
 | `elam-7b` | bf16 | **0.930** | 0.704 | 0.286 (86 of 88 negatives passed) | **4.00 s/step** |
 | `ui-tars-1.5-7b` | bf16 | **0.944** | 0.801 | 0.199 (60 of 88 negatives passed) | **2.72 s/step** |
 | `aria-ui` (run 3a, 96 GB card) | bf16 | **0.962** | 0.708 | 0.292 (88 of 88 negatives passed) | **1.57 s/step** (other host) |
@@ -204,6 +205,7 @@ Run history, same 514 steps (action-hit / verify acc / false-pass):
 | 3, 2026-10-26 | RTX 6000 Ada, `82f0b45` | 0.822 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.930 / 0.704 / 0.286 | 0.944 / 0.801 / 0.199 | skipped (gate) |
 | 3a, 2026-10-26 | RTX PRO 6000 Blackwell 96 GB, `411873c` | — | — | — | — | — | 0.962 / 0.708 / 0.292 |
 | 4, 2026-10-27 | RTX PRO 5000 Blackwell 48 GB, `3fb0924` | — | — | 0.883 / 0.934 / 0 (control) + `desc=` columns, see below | — | — | — |
+| 5, 2026-10-27 | RTX PRO 5000 Blackwell 48 GB, `c03c438` | — | — | 0.883 / 0.934 / 0 (control); `desc=` lexical+slm reproduced run 4 on 514 of 514; lexical+vlm 0.930 / 0.691 / 0.113, see below | — | — | — |
 
 Run 3a is the Aria-UI column alone (`ONLY="aria-ui"`), same manifest and
 adapter, on a second rental two hours after run 3; raw files in
@@ -211,6 +213,10 @@ adapter, on a second rental two hours after run 3; raw files in
 the run 3 rows; its latency is from another card and host. Run 4 is the
 `desc=` columns with `vizdom-modular` as the control, which reproduced run 3
 on all 514 steps; raw files in `benchmarks/results/gpu-20261027_062331/`.
+Run 5 is the vision tier behind the lexical shortlist (`lexical,vlm`), with
+the control and the production chain re-run on a second rental of the same
+card model; both reproduced run 4 step for step; raw files in
+`benchmarks/results/gpu-20261027_111610/`.
 
 Interpretation, column by column:
 
@@ -285,7 +291,7 @@ toolbar buttons that OCR cannot read either), verify 0.708, false-pass
 absent targets passed. The opt-in CPU-offload path for 40–70 GB cards is
 implemented but still unexercised (the card was above the gate).
 
-### Measured: the `desc=` columns, VizDOM's language tier (run 4, 2026-10-27)
+### Measured: the `desc=` columns, VizDOM's language tier (runs 4 and 5, 2026-10-27)
 
 The six columns above resolve VizDOM steps with `text=` only, so they
 compare *VizDOM without its language tier* against grounders that are all
@@ -307,8 +313,9 @@ minutes of sweep; raw files `benchmarks/results/gpu-20261027_062331/`. The
 | `vizdom-modular+desc[lexical+slm]` | production default | **0.930** (198) | **0.954** | 0.003 (1 of 88) | lexical 398, slm 3, none 113 | 0.0002 s median, 0.03 s mean (16 s for 514 steps) |
 | `vizdom-modular+desc[slm]` | 3B text LM over the DOM table | 0.634 (135) | 0.877 | 0.020 (6 of 88) | slm 372, none 142 | 0.21 s |
 | `vizdom-modular+desc[vlm]` | 3B VLM, Set-of-Mark over the screenshot | 0.117 (25) | 0.365 | 0.076 (23 of 88) | vlm 113, none 401 | 0.49 s |
+| `vizdom-modular+desc[lexical+vlm]` (run 5) | the VLM behind the lexical shortlist, as in production | **0.930** (198) | 0.691 | 0.113 (34 of 88) | lexical 398, vlm 40, none 8, **error 68** | 0.0001 s median, 0.08 s mean; 0.83 s per VLM call |
 
-What the three rows say:
+What the rows say:
 
 - **The production chain beats `text=` on the same DOM and keeps the
   oracle.** 198 hits against 188: eleven gained, one lost. Every gain is an
@@ -321,6 +328,17 @@ What the three rows say:
   false-pass stays at 1 of 88 against the grounders' 60–88: the SLM, asked
   about `Purple Elephant button` on `dialog_0141`, rationalised it onto the
   *Retry* button at confidence 0.85. The other 87 negatives it declined.
+  Root cause (diagnosed 2026-10-28, reproduced byte for byte with the same
+  model on the laptop): the dialog's other button, *Cancel*, is one of the
+  nine captions OCR never read, so the lexical ranking left exactly one
+  scored element and the SLM was handed a **one-row table**. With one row,
+  "which of these matches?" becomes "is this it?", and the 3B model says
+  yes to a plausible-sounding name; with two or more rows it declines on
+  the same dialog and the same phrase. Fixed in the resolver: the model
+  tiers' shortlist is padded from the pool to at least three candidates and
+  the prompt states that null is expected and a matching role alone is not a
+  match; the runner now also keeps every parsed DOM in the tarball
+  (`<stamp>-doms/`), which is what this diagnosis was missing.
 - **The lexical tier does the work; the SLM is a rarely consulted
   tie-breaker.** 398 of 514 steps are answered without a model, at 0.2 ms.
   The SLM is called on the remaining 116 (the 88 negatives plus 28 positives
@@ -354,12 +372,38 @@ What the three rows say:
   exactly like the grounders. The intended head-to-head therefore did not
   happen: the tier was built as a disambiguator over a short candidate list,
   and this column asked it to be a whole-screen grounder with a 3B model on
-  a 1920×1080 frame. Both gaps are closed in the kit since 2026-10-27: the
-  sweep has a `vizdom-modular-desc-vlm-chain` column (`lexical,vlm`, the
-  vision tier behind the lexical shortlist, as in production; not yet run),
-  and a missed step's `detail` now carries every tier's own verdict
-  (`lexical: tie at 3.00 between 2 candidates`, `vlm returned out-of-range
-  mark 37`) instead of the chain's generic line.
+  a 1920×1080 frame. Both gaps were closed in the kit the same day: the
+  sweep gained a `vizdom-modular-desc-vlm-chain` column (`lexical,vlm`, the
+  vision tier behind the lexical shortlist, as in production), a missed
+  step's `detail` carries every tier's own verdict (`lexical: tie at 3.00
+  between 2 candidates`, `vlm returned out-of-range mark 37`), and a tier
+  that cannot reach its model is a step *error*, not a miss.
+- **Run 5 puts the vision tier where production puts it, and it fails as
+  an oracle.** Second rental of the same card model, commit `c03c438`,
+  2026-10-27 11:16 UTC; the control and the lexical+slm column reproduced
+  run 4 on 514 of 514 steps, so the row is comparable step for step. The
+  `lexical,vlm` chain hands the VLM the 116 steps the lexical tier cannot
+  settle, with a shortlist of at most eight marks. Two things happened. For
+  two minutes in the middle of the column (11:19:22 to 11:21:13 UTC) Ollama
+  answered HTTP 500 to every VLM call, 68 of the 116: 10 actions, 10 positive
+  and 48 negative verifies. The new error path records them as errors,
+  scored as misses and wrong verdicts, so the row is a partial measurement;
+  under the run-4 harness those 48 negatives would have counted as *correct*
+  and the column would have looked better than it is. On the 48 calls that
+  did go through, the model behaved like the grounders: asked about a
+  nonsense caption with a numbered overlay in front of it, it answered a
+  mark on 34 of 40 negatives at confidence 0.90–0.99 (22 of them mark #1)
+  and declined 6. Of its 4 action answers, 1 hit (`settings_0042` Save,
+  mark #6 at 1.00), 2 chose mark #1 for "Save button" and 1 was out of
+  range. So the chain keeps the lexical tier's hits (198: one gained, one
+  lost to the outage) and loses the oracle: false-pass 0.113 as measured,
+  which is also the floor had every errored negative been declined, and
+  about 0.25 had they followed the answered rate. The action-side question
+  run 5 was meant to settle, whether the VLM recovers the OCR floor of nine
+  unread captions and four repeated digits, is still open: 10 of those 14
+  steps fell in the outage. The verify-side question is closed: a
+  Set-of-Mark tier with a null option is not a usable oracle with this
+  model, and `vlm` stays out of the production default (ADR-022).
 - **Caveat on the descriptions.** They are generated as caption plus role
   word, which is the lexical tier's ideal input; a tester's own wording
   ("the blue save button at the bottom") would exercise the model tiers more
@@ -371,7 +415,10 @@ the RTX 6000 Ada host; this card's CPU side is slower), so the chain column
 amortises to about 0.16 s per step including its 16 s of resolver time,
 against 1.57–4.00 s for the grounders. Per-step latency of the model-only
 columns is the Ollama call: 0.21 s for the 3B text model, 0.49 s for the 3B
-VLM with the image.
+VLM with the image. In run 5 the lexical+vlm chain spent 40 s on resolution
+(0.83 s per answered VLM call, with the overlay image attached) on top of a
+1.34 s parse, about 0.21 s per step amortised; the production chain
+reproduced its run-4 cost.
 
 ### Planned extensions (in priority order)
 
@@ -398,7 +445,7 @@ python -m visual_dom.evaluation.lifecycle.runner --executors elam-7b --limit-sta
 # qwen2.5:3b / qwen2.5vl:3b (the runner refuses to start otherwise)
 python -m visual_dom.evaluation.lifecycle.runner --executors vizdom-modular+desc --grounding-tiers lexical,slm
 python -m visual_dom.evaluation.lifecycle.runner --executors vizdom-modular+desc --grounding-tiers vlm
-python -m visual_dom.evaluation.lifecycle.runner --executors vizdom-modular+desc --grounding-tiers lexical,vlm   # the vision tier as production uses it
+python -m visual_dom.evaluation.lifecycle.runner --executors vizdom-modular+desc --grounding-tiers lexical,vlm   # the vision tier as production uses it (run 5)
 
 # per-stage evaluation (detection/OCR/type metrics)
 python -m visual_dom.evaluation.cli --help

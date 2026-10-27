@@ -113,7 +113,7 @@ chain:
 | `vizdom-modular-desc` | `lexical,slm` (the production default) | what a test author gets from `desc=` today, plus the per-tier resolution rate |
 | `vizdom-modular-desc-slm` | `slm` pinned | the text LM over the DOM table, alone |
 | `vizdom-modular-desc-vlm` | `vlm` pinned | the VLM Set-of-Mark over the screenshot with no shortlist — measured in run 4 at 0.117: the overlay caps at 20 marks in DOM order, so on a DOM with a median of 33 elements fewer than half the targets are even marked. Kept for the comparison, not a model result |
-| `vizdom-modular-desc-vlm-chain` | `lexical,vlm` | the vision tier the way production uses it: lexical scoring answers what it can and hands the VLM a shortlist of eight (or the pool when nothing scored) — the fair head-to-head with the grounders (both sides resolve language; VizDOM picks among DOM candidates, the grounders regress a point). Not yet run |
+| `vizdom-modular-desc-vlm-chain` | `lexical,vlm` | the vision tier the way production uses it: lexical scoring answers what it can and hands the VLM a shortlist of eight (or the pool when nothing scored) — the fair head-to-head with the grounders (both sides resolve language; VizDOM picks among DOM candidates, the grounders regress a point). Run 5 (2026-10-27): 0.930 / 0.691 / 0.113; it keeps the lexical hits and passes 34 of the 40 nonsense captions the VLM answered, and 68 of its 116 VLM calls were refused by Ollama (HTTP 500, two minutes mid-column) and are recorded as errors |
 
 A fresh resolver is built per step (the production per-screen cache would
 otherwise answer the verify step from the action step), so the false-pass
@@ -172,6 +172,10 @@ decoding are the same).
   the chain, e.g. `vizdom-modular+desc[lexical+vlm]`; `cost.resolved_by_tier`
   says which tier answered how many steps, and a missed step's `detail` says
   why each tier declined)
+- `<stamp>-doms/<executor>/<state>.json` — every DOM a VizDOM column parsed,
+  next to its result file, so a missed step can be diagnosed from the DOM it
+  actually saw (run 4's false pass needed the GPU DOM of `dialog_0141` and it
+  had not been kept; about 1 MB per column)
 - `elam-7b`, `ui-tars-1.5-7b`, `aria-ui` — the competing end-to-end grounders
 - `parity.txt` — ADR-027 combos incl. per-stage latency on this GPU
 - `summary.md` — all result rows in one table; `gpu.txt` — card, driver, commit
