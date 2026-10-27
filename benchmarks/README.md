@@ -188,6 +188,9 @@ with charts and the test configuration: `benchmarks/report_gpu_20261026_run3.htm
 | `vizdom-uied` | CV, no LLM | 0.822 | 0.934 | **0.000** | load 2.6 s + parse **0.39 s/state** |
 | `vizdom-omniparser` | CV + Florence-2 | 0.883 | 0.934 | **0.000** | load 8.1 s + parse **1.02 s/state** |
 | `vizdom-modular` | CV, captioner off | 0.883 | 0.934 | **0.000** | load 4.2 s + parse **0.62 s/state** |
+| `vizdom-modular+desc[lexical+slm]` (run 4) | + qwen2.5:3b via Ollama | **0.930** | **0.954** | 0.003 (1 of 88 negatives passed) | parse + **0.03 s/step** resolve (SLM called on 116 steps) |
+| `vizdom-modular+desc[slm]` (run 4) | qwen2.5:3b over the DOM table | 0.634 | 0.877 | 0.020 (6 of 88) | parse + **0.21 s/step** |
+| `vizdom-modular+desc[vlm]` (run 4) | qwen2.5vl:3b Set-of-Mark | 0.117 | 0.365 | 0.076 (23 of 88) | parse + **0.49 s/step** |
 | `elam-7b` | bf16 | **0.930** | 0.704 | 0.286 (86 of 88 negatives passed) | **4.00 s/step** |
 | `ui-tars-1.5-7b` | bf16 | **0.944** | 0.801 | 0.199 (60 of 88 negatives passed) | **2.72 s/step** |
 | `aria-ui` (run 3a, 96 GB card) | bf16 | **0.962** | 0.708 | 0.292 (88 of 88 negatives passed) | **1.57 s/step** (other host) |
@@ -200,11 +203,14 @@ Run history, same 514 steps (action-hit / verify acc / false-pass):
 | 2, 2026-10-26 | RTX 4090, `a4cb85e` | 0.779 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.732 / 0.934 / 0 | 0.939 / 0.701 / 0.289 | 0.934 / 0.807 / 0.193 | OOM (4-bit, 24 GB) |
 | 3, 2026-10-26 | RTX 6000 Ada, `82f0b45` | 0.822 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.930 / 0.704 / 0.286 | 0.944 / 0.801 / 0.199 | skipped (gate) |
 | 3a, 2026-10-26 | RTX PRO 6000 Blackwell 96 GB, `411873c` | — | — | — | — | — | 0.962 / 0.708 / 0.292 |
+| 4, 2026-10-27 | RTX PRO 5000 Blackwell 48 GB, `3fb0924` | — | — | 0.883 / 0.934 / 0 (control) + `desc=` columns, see below | — | — | — |
 
 Run 3a is the Aria-UI column alone (`ONLY="aria-ui"`), same manifest and
 adapter, on a second rental two hours after run 3; raw files in
 `benchmarks/results/gpu-20261026_233909/`. Its accuracy is comparable with
-the run 3 rows; its latency is from another card and host.
+the run 3 rows; its latency is from another card and host. Run 4 is the
+`desc=` columns with `vizdom-modular` as the control, which reproduced run 3
+on all 514 steps; raw files in `benchmarks/results/gpu-20261027_062331/`.
 
 Interpretation, column by column:
 
@@ -279,42 +285,90 @@ toolbar buttons that OCR cannot read either), verify 0.708, false-pass
 absent targets passed. The opt-in CPU-offload path for 40–70 GB cards is
 implemented but still unexercised (the card was above the gate).
 
-### Prepared, not yet run: the `desc=` columns (run 4)
+### Measured: the `desc=` columns, VizDOM's language tier (run 4, 2026-10-27)
 
-The six columns above resolve VizDOM steps with `text=` only, so the table
-compares *VizDOM without its language tier* against grounders that are all
+The six columns above resolve VizDOM steps with `text=` only, so they
+compare *VizDOM without its language tier* against grounders that are all
 language tier — and VizDOM's zero false-pass rate is partly structural, since
-a nonsense caption can never match OCR output. The `desc=` columns close that
-gap. Each step now also carries a description derived from the same caption
-(`Save button`, `Remember me checkbox`, `Warp Cores button` for the
-negatives), and `vizdom-<detector>+desc` resolves it through the ADR-022 tier
-chain behind `Get Visual Element  desc="..."`, over the same parse-once DOM as
-`vizdom-modular`. The chain is pinned per column (`--grounding-tiers`):
+a nonsense caption can never match OCR output. Run 4 closes that gap. Each
+step also carries a description derived from the same caption (`Save
+button`, `Remember me checkbox`, `Warp Cores button` for the negatives), and
+`vizdom-modular+desc` resolves it through the ADR-022 tier chain behind
+`Get Visual Element  desc="..."`, over the same parse-once DOM as
+`vizdom-modular`, with a fresh resolver per step so the production cache
+cannot answer a verify step from its action step. The chain is pinned per
+column (`--grounding-tiers`); models `qwen2.5:3b` and `qwen2.5vl:3b` through
+Ollama. One rental, RTX PRO 5000 Blackwell 48 GB, commit `3fb0924`, 11
+minutes of sweep; raw files `benchmarks/results/gpu-20261027_062331/`. The
+`vizdom-modular` control column reproduced run 3 on 514 of 514 steps.
 
-| Column | Chain | Question it answers |
-|---|---|---|
-| `vizdom-modular+desc[lexical+slm]` | production default | what `desc=` gives a test author today, and how often each tier answers |
-| `vizdom-modular+desc[slm]` | text LM over the DOM table | can a 3B text model pick the element from the DOM alone |
-| `vizdom-modular+desc[vlm]` | VLM Set-of-Mark over the screenshot | the head-to-head with the grounders: both resolve language, VizDOM by choosing among its DOM candidates, the grounders by regressing a point |
+| Column | Chain | Action-hit | Verify | False-pass | Resolved by tier | Resolve / step |
+|---|---|---|---|---|---|---|
+| `vizdom-modular+desc[lexical+slm]` | production default | **0.930** (198) | **0.954** | 0.003 (1 of 88) | lexical 398, slm 3, none 113 | 0.0002 s median, 0.03 s mean (16 s for 514 steps) |
+| `vizdom-modular+desc[slm]` | 3B text LM over the DOM table | 0.634 (135) | 0.877 | 0.020 (6 of 88) | slm 372, none 142 | 0.21 s |
+| `vizdom-modular+desc[vlm]` | 3B VLM, Set-of-Mark over the screenshot | 0.117 (25) | 0.365 | 0.076 (23 of 88) | vlm 113, none 401 | 0.49 s |
 
-Expectations to test, not claims: action-hit should sit between the `text=`
-column (0.883) and the grounders, because the DOM candidates already contain
-the right element in ≥ 88 % of cases and the model only has to choose; the
-false-pass rate is the real question — a model asked "which numbered box is
-the *Warp Cores* button" may rationalise one, which is exactly the failure
-the grounders show at 0.20–0.29, and the `conf ≥ 0.5` gate in the resolver
-is what stands against it. Models: `qwen2.5:3b` and `qwen2.5vl:3b` through
-Ollama (the kit installs and pulls them; `deploy/gpu/README.md`). A fresh
-resolver is built per step so the production cache cannot answer a verify
-step from its action step.
+What the three rows say:
 
-Harness verified locally (laptop, `uied` DOM): the model-free lexical tier
-over all 514 steps gives action-hit **0.911** / verify 0.944 / false-pass
-0 — already above the `text=` figure for the same DOM (0.822), because token
-overlap plus the role word tolerates the OCR noise that an exact `text=`
-cannot — and both model tiers ran end to end on state samples through the
-laptop's Ollama. The headline numbers will come from the next rental on the
-`modular` DOM with the intended 3B models.
+- **The production chain beats `text=` on the same DOM and keeps the
+  oracle.** 198 hits against 188: eleven gained, one lost. Every gain is an
+  OCR-noisy caption that exact text cannot match but token overlap plus the
+  role word can — the placeholder `Search...` (OCR drops the dots; seven
+  steps), the path-like values `APAC\USER01` and `C:\Users\admin` (partial
+  overlap, scores 1.7–2.6). The loss is one table digit (`2 button`, where
+  the lexical margin between repeated digits is zero). Verify follows the
+  same pattern, 0.954 against 0.934. Action-hit now equals ELAM's 0.930 and
+  false-pass stays at 1 of 88 against the grounders' 60–88: the SLM, asked
+  about `Purple Elephant button` on `dialog_0141`, rationalised it onto the
+  *Retry* button at confidence 0.85. The other 87 negatives it declined.
+- **The lexical tier does the work; the SLM is a rarely consulted
+  tie-breaker.** 398 of 514 steps are answered without a model, at 0.2 ms.
+  The SLM is called on the remaining 116 (the 88 negatives plus 28 positives
+  where lexical had no confident top) and answers 3, so the whole column costs
+  16 s of resolver time on top of the parse. The 13 remaining action misses
+  are the OCR floor (nine captions never read at all, so there is no token
+  to overlap: `Save` ×3, `Confirm`, `Cancel`, `Download`, three value fields
+  on `form_sidebar_0103`) and four repeated table digits.
+- **The SLM alone is a poor grounder.** Over the full DOM table (30–110
+  rows) the 3B text model picks a *wrong* element on 49 of its 78 action
+  misses, at confidence 1.00, and semantically unrelated (`Prev button` →
+  a static text `John Doe`; `Search... input field` → the number `70`); it
+  declines on 29. Worst on form_sidebar (33 of 62) and settings (33 of 57),
+  fine on toolbar (16 of 17) and login (11 of 12). Its 6 false passes are
+  the same rationalisation the grounders show (`Zylophone button` → the
+  *Zip Code* button, `Warp Cores button` → the *Time* button, all at 1.00).
+  The lexical tier in front of it is what turns this into a 0.930 column:
+  it answers the easy 77 % itself and hands the SLM a shortlist of eight.
+- **The VLM-only column measures the harness more than the model.** The
+  Set-of-Mark overlay draws at most 20 numbered boxes, in DOM order, and
+  the pinned `vlm` chain has no lexical shortlist in front of it, so the
+  marks are simply the first 20 elements of a DOM that has a median of 33
+  (5 to 112) per state; on the laptop parse only 102 of the 213 action
+  targets fall inside the first 20 marks at all. On 30 of the 44 states the
+  model returned no usable answer on any step (null, out-of-range or
+  low-confidence; the result file keeps only the chain's "no confident
+  match", not the tier's reason). On the 14 states where it did answer
+  (all four toolbars, six settings, four dashboards) it answered almost
+  every step, hit 25 of 45 actions, and passed all 23 negatives it was
+  asked, at confidence 0.95–1.00 — within its answered set it behaves
+  exactly like the grounders. The intended head-to-head therefore did not
+  happen: the tier was built as a disambiguator over a short candidate list,
+  and this column asked it to be a whole-screen grounder with a 3B model on
+  a 1920×1080 frame. A fair version needs the lexical shortlist in front
+  (as in production) or a larger mark budget, and the resolver should
+  record the tier's own reason.
+- **Caveat on the descriptions.** They are generated as caption plus role
+  word, which is the lexical tier's ideal input; a tester's own wording
+  ("the blue save button at the bottom") would exercise the model tiers more
+  and the lexical tier less. The chain's figure is an upper bound for this
+  phrasing, not a general `desc=` accuracy.
+
+Cost on this host: the modular parse took 1.26 s per state (run 3: 0.62 s on
+the RTX 6000 Ada host; this card's CPU side is slower), so the chain column
+amortises to about 0.16 s per step including its 16 s of resolver time,
+against 1.57–4.00 s for the grounders. Per-step latency of the model-only
+columns is the Ollama call: 0.21 s for the 3B text model, 0.49 s for the 3B
+VLM with the image.
 
 ### Planned extensions (in priority order)
 

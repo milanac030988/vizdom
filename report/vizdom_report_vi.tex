@@ -1158,7 +1158,11 @@ báo cáo rõ theo cách đó. Tất cả grounder chạy bf16 không quantize v
   commit \code{82f0b45}, ngày 2026-10-26. $^\dagger$Aria-UI ($\sim$50\,GB ở bf16)
   được đo cùng đêm trên RTX PRO 6000 Blackwell 96\,GB (commit \code{411873c});
   accuracy có thể so sánh trực tiếp vì dùng cùng bước và cùng cách chấm, còn latency
-  đến từ host khác.}
+  đến từ host khác. $^\ddagger$Các dòng \code{desc=} (run 4, RTX PRO 5000 Blackwell
+  48\,GB, commit \code{3fb0924}, 2026-10-27) phân giải \emph{mô tả} của mỗi bước
+  (``Save button'') qua chuỗi tier ADR-022 trên cùng DOM modular, ghim từng tier theo
+  dòng; cột đối chứng modular tái lập run 3 trên cả 514 bước. Chi phí mỗi bước là
+  median của lời gọi resolver (Ollama, mô hình 3B) cộng thêm vào parse.}
   \label{tab:lifecycle}
   \begin{tabular}{@{}p{3.4cm}p{2.5cm}cccp{2.6cm}@{}}
     \toprule
@@ -1167,6 +1171,9 @@ báo cáo rõ theo cách đó. Tất cả grounder chạy bf16 không quantize v
     VizDOM + UIED & CV, không LLM & 0.822 & 0.934 & \textbf{0.000} & 0.39\,s / trạng thái \\
     VizDOM + OmniParser & CV + Florence-2 & 0.883 & 0.934 & \textbf{0.000} & 1.02\,s / trạng thái \\
     VizDOM modular & CV, tắt captioner & 0.883 & 0.934 & \textbf{0.000} & 0.62\,s / trạng thái \\
+    VizDOM modular, \code{desc=}$^\ddagger$ & lexical $\rightarrow$ SLM (qwen2.5:3b) & 0.930 & \textbf{0.954} & 0.003 & 0.03\,s / bước \\
+    \quad \code{desc=} chỉ SLM$^\ddagger$ & qwen2.5:3b trên DOM & 0.634 & 0.877 & 0.020 & 0.21\,s / bước \\
+    \quad \code{desc=} chỉ VLM$^\ddagger$ & qwen2.5vl:3b, Set-of-Mark & 0.117 & 0.365 & 0.076 & 0.49\,s / bước \\
     ELAM-7B & bf16 & 0.930 & 0.704 & 0.286 & 4.00\,s / bước \\
     UI-TARS-1.5-7B & bf16 & 0.944 & 0.801 & 0.199 & 2.72\,s / bước \\
     Aria-UI$^\dagger$ & bf16 & \textbf{0.962} & 0.708 & 0.292 & 1.57\,s / bước \\

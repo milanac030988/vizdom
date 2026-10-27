@@ -1117,7 +1117,12 @@ decoding.
   positive and 88 negative verifications). Rented RTX 6000 Ada 48\,GB, commit
   \code{82f0b45}, 2026-10-26. $^\dagger$Aria-UI ($\sim$50\,GB in bf16) was measured the
   same night on an RTX PRO 6000 Blackwell 96\,GB (commit \code{411873c}); its accuracy
-  is comparable (same steps, same scoring), its latency is from another host.}
+  is comparable (same steps, same scoring), its latency is from another host.
+  $^\ddagger$The \code{desc=} rows (run 4, RTX PRO 5000 Blackwell 48\,GB, commit
+  \code{3fb0924}, 2026-10-27) resolve each step's \emph{description} (``Save button'')
+  through the ADR-022 tier chain over the same modular DOM, pinned per row; the
+  modular control column reproduced run 3 on all 514 steps. Their per-step cost is the
+  median resolver call (Ollama, 3B models) on top of the parse.}
   \label{tab:lifecycle}
   \begin{tabular}{@{}p{3.4cm}p{2.5cm}cccp{2.6cm}@{}}
     \toprule
@@ -1126,6 +1131,9 @@ decoding.
     VizDOM + UIED & CV, no LLM & 0.822 & 0.934 & \textbf{0.000} & 0.39\,s / state \\
     VizDOM + OmniParser & CV + Florence-2 & 0.883 & 0.934 & \textbf{0.000} & 1.02\,s / state \\
     VizDOM modular & CV, captioner off & 0.883 & 0.934 & \textbf{0.000} & 0.62\,s / state \\
+    VizDOM modular, \code{desc=}$^\ddagger$ & lexical $\rightarrow$ SLM (qwen2.5:3b) & 0.930 & \textbf{0.954} & 0.003 & 0.03\,s / step \\
+    \quad \code{desc=} SLM only$^\ddagger$ & qwen2.5:3b over the DOM & 0.634 & 0.877 & 0.020 & 0.21\,s / step \\
+    \quad \code{desc=} VLM only$^\ddagger$ & qwen2.5vl:3b, Set-of-Mark & 0.117 & 0.365 & 0.076 & 0.49\,s / step \\
     ELAM-7B & bf16 & 0.930 & 0.704 & 0.286 & 4.00\,s / step \\
     UI-TARS-1.5-7B & bf16 & 0.944 & 0.801 & 0.199 & 2.72\,s / step \\
     Aria-UI$^\dagger$ & bf16 & \textbf{0.962} & 0.708 & 0.292 & 1.57\,s / step \\
@@ -1175,6 +1183,37 @@ their figures. Grounder latency is host-dependent (UI-TARS 1.68\,s per step on a
 4090 host, 2.72\,s on the RTX 6000 Ada host), so every number above is quoted with
 its commit and machine.
 
+\paragraph{VizDOM's own language tier.} The six rows above resolve VizDOM steps with
+\code{text=} only, which compares VizDOM \emph{without} its language tier against
+grounders that are all language tier, and makes its zero false-pass partly structural
+(a nonsense caption can never match OCR output). A fourth run (RTX PRO 5000 Blackwell
+48\,GB, commit \code{3fb0924}, 2026-10-27) therefore resolves every step a third way:
+as a \emph{description} derived from the same caption (``Save button'', ``Warp Cores
+button'' for the negatives) through the \code{desc=} tier chain of ADR-022
+(Section~\ref{sec:desc}) over the same modular DOM, with the chain pinned per row; the
+plain modular column was re-run as a control and reproduced run~3 on all 514 steps.
+The production chain --- lexical scoring over the DOM, then a 3B text model
+(\code{qwen2.5:3b} via Ollama) as tie-breaker --- reaches action-hit 0.930, ELAM's
+figure, the best verification accuracy of the table (0.954) and one false pass in 88.
+The lexical tier answers 398 of the 514 steps without a model, in 0.2\,ms; the eleven
+steps gained over \code{text=} are exactly the OCR-noisy captions that exact text
+cannot match but token overlap plus the role word can (the placeholder
+``Search\ldots'' read without its dots, path-like values such as
+\code{APAC\textbackslash USER01}), and the thirteen remaining misses are nine captions
+OCR never read and four repeated table digits. The model is consulted on the 116
+steps the scoring cannot settle and answers three; its one error is the grounders'
+failure in miniature, ``Purple Elephant button'' rationalised onto a \emph{Retry}
+button at confidence 0.85. Pinned alone, the model tiers do not hold up: the 3B text
+model over the full DOM table reaches 0.634, picking a confidently wrong element on
+49 of its 78 action misses and passing six absent targets, and the 3B vision model
+over the Set-of-Mark overlay 0.117, which is mostly a harness limit --- the overlay
+draws at most 20 marks in DOM order and, without the lexical shortlist in front of
+it, fewer than half of the targets are among them on a DOM with a median of 33
+elements per state. Two caveats bound the result: the descriptions are generated as
+caption plus role word, the lexical tier's ideal input, so 0.930 is an upper bound
+for that phrasing rather than a general \code{desc=} accuracy; and the vision-tier
+head-to-head with the grounders remains to be run with the shortlist in place.
+
 \subsection{Efficiency considerations}
 Efficiency is analysed along three axes. The lifecycle benchmark
 (Section~\ref{sec:lifecycle}) was run on rented GPUs, so the per-step figures below
@@ -1222,7 +1261,10 @@ latency of the service path itself remains to be measured.
         verdict mode; ELAM's native verdict is the fairer comparison and passes 86 of
         88 absent targets regardless. Grounder scores move about one point between
         GPU generations even with greedy decoding, and Aria-UI's latency comes from a
-        different host than the other columns.
+        different host than the other columns. The \code{desc=} rows use generated
+        descriptions (caption plus role word), which favour the lexical tier; the
+        vision tier was measured without its candidate shortlist and is therefore
+        not yet a fair head-to-head with the grounders.
   \item \textbf{Calibration for physical actuation.} The robot-arm case requires a
         per-setup image-to-physical calibration; the architecture isolates this to
         the plugin, but it remains real work, and physical actuation carries safety
@@ -1244,7 +1286,10 @@ as camera capture with robot-arm actuation. On the unified lifecycle benchmark t
 instruction-grounding models (Aria-UI, ELAM-7B, UI-TARS-1.5-7B) click more
 accurately than VizDOM (0.93--0.96 against 0.88) but pass 60--88 of 88 absent
 targets, whereas VizDOM passes none by construction and costs 15--39 times less per
-step --- the testing-specific result this project set out to measure. Future work
+step --- the testing-specific result this project set out to measure. With its own
+language tier switched on (\code{desc=}, lexical scoring with a 3B model as
+tie-breaker) VizDOM clicks as well as ELAM (0.930), verifies best (0.954) and passes
+one absent target in 88, at 0.03\,s of resolution per step. Future work
 includes: completing the quantitative benchmark on a larger labelled dataset;
 reducing over-segmentation on themed real-world UIs; harder negatives
 (plausible-but-absent labels) and real-application states for the lifecycle

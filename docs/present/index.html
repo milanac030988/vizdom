@@ -997,7 +997,7 @@ body.notes-on .slide.active .notes{display:block}
           produce, and agent benchmarks do not measure it.</p></div>
       </div>
       <div>
-        <h3>All six columns — measured on rented GPUs</h3>
+        <h3>Seven columns — measured on rented GPUs</h3>
         <table>
           <tr><th>Executor</th><th class="n">action-hit</th><th class="n">verify</th>
               <th class="n">false-pass</th><th class="n">cost</th></tr>
@@ -1007,6 +1007,8 @@ body.notes-on .slide.active .notes{display:block}
               <td class="n">0.934</td><td class="n win">0.000</td><td class="n">1.02 s / state</td></tr>
           <tr class="hi"><td><strong>VizDOM modular</strong> <span class="dim">captioner off</span></td><td class="n">0.883</td>
               <td class="n">0.934</td><td class="n win">0.000</td><td class="n">0.62 s / state</td></tr>
+          <tr class="hi"><td><strong>VizDOM modular + <code>desc=</code></strong> <span class="dim">lexical → SLM 3B**</span></td><td class="n">0.930</td>
+              <td class="n win">0.954</td><td class="n win">0.003</td><td class="n">+ 0.03 s / step</td></tr>
           <tr><td>ELAM-7B <span class="dim">native verdicts</span></td><td class="n">0.930</td>
               <td class="n">0.704</td><td class="n lose">0.286</td><td class="n">4.00 s / step</td></tr>
           <tr><td>UI-TARS-1.5-7B</td><td class="n">0.944</td>
@@ -1015,14 +1017,19 @@ body.notes-on .slide.active .notes{display:block}
               <td class="n">0.708</td><td class="n lose">0.292</td><td class="n">1.57 s / step*</td></tr>
         </table>
         <p class="small"><strong>Reading it:</strong> the grounders click better — by 5–8 points over
-          OmniParser-VizDOM — and <strong>every one of them passes absent targets</strong>: Aria-UI
-          88 of 88, ELAM 86, UI-TARS 60. VizDOM passes <strong>none</strong>; the exactly-one
-          resolution contract guarantees it <em>by construction</em>. Its 20 verify errors are the
-          other way round (an OCR-unreadable caption reported FAILED), the cheap failure. Per step,
-          the DOM costs 0.04–0.10&nbsp;s against 1.6–4.0&nbsp;s. The best clicker is the worst oracle.</p>
+          <code>text=</code> VizDOM — and <strong>every one of them passes absent targets</strong>: Aria-UI
+          88 of 88, ELAM 86, UI-TARS 60. VizDOM passes <strong>none</strong> with <code>text=</code>; the
+          exactly-one resolution contract guarantees it <em>by construction</em>. Its 20 verify errors are
+          the other way round (an OCR-unreadable caption reported FAILED), the cheap failure. With its own
+          language tier (<code>desc="Save button"</code>) VizDOM reaches ELAM's action-hit, 0.930, the best
+          verify of the table and <strong>1 false pass</strong> of 88 — the SLM is consulted on 116 steps only.
+          Per step, the DOM costs 0.04–0.16&nbsp;s against 1.6–4.0&nbsp;s. The best clicker is the worst oracle.</p>
         <p class="small dim">RTX 6000 Ada 48 GB, commit 82f0b45, 2026-10-26; same 514 steps for every
           row. *Aria-UI needs ~50 GB in bf16: measured the same night on an RTX PRO 6000 96 GB
-          (commit 411873c), so its latency is from another host. Modular = OmniParser's YOLO +
+          (commit 411873c), so its latency is from another host. **Run 4, RTX PRO 5000 48 GB, commit
+          3fb0924, 2026-10-27, modular control bit-identical to run 3; the model tiers pinned alone:
+          SLM-only 0.634 / 0.877 / 0.020, VLM Set-of-Mark-only 0.117 / 0.365 / 0.076 (the 20-mark
+          overlay cap, a harness limit — see the benchmark report). Modular = OmniParser's YOLO +
           our OCR + the ported fusion: identical outcome on all 514 steps at 61 % of the parse time.</p>
       </div>
     </div>
@@ -1034,7 +1041,14 @@ body.notes-on .slide.active .notes{display:block}
     44 parses vs 514 inferences for the same suite. If asked why the grounders win on clicking:
     their misses are mislocated points; ours are resolution misses (OCR floor, 20 captions shared by
     all three detectors; table digits with many matches). If asked about Aria-UI: it never says no —
-    a point for all 301 statements — which is exactly the property a test oracle cannot have.</div>
+    a point for all 301 statements — which is exactly the property a test oracle cannot have.
+    If asked "but the grounders get language and VizDOM gets exact text": the desc= row is the
+    answer — same DOM, each step as "Save button" through the ADR-022 chain. Lexical tier answers
+    398 of 514, the 3B SLM only 3 (it declined 87 of 88 nonsense captions, rationalised one), and
+    the gains over text= are exactly the OCR-noisy captions ("Search..." read without the dots,
+    path-like values). Pinned alone the SLM drops to 0.63 and the VLM to 0.12: the VLM tier was built
+    as a disambiguator over a short candidate list (20-mark cap), not a whole-screen grounder, and
+    the benchmark's descriptions are caption + role word, i.e. the lexical tier's ideal input.</div>
 </section>
 
 <!-- 13b ───────────────────────────────────────── -->
