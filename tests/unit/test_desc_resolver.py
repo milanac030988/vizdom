@@ -76,6 +76,61 @@ def test_dead_ollama_is_named_in_the_reason():
     assert "slm unavailable:" in info["reason"]
 
 
+def _text(eid, s, y=0):
+    return {"id": eid, "role": "text", "visual_type": "text", "text": s,
+            "bounds": [0, y, 100, y + 10]}
+
+
+def test_model_tiers_never_see_a_single_candidate(monkeypatch):
+    """Lifecycle run 4's one false pass: 'Purple Elephant button' on a dialog
+    whose only scored element was the Retry button (the Cancel caption was
+    unread), so the SLM got a ONE-row table and said yes at 0.85. The
+    shortlist is now padded from the pool to at least three rows."""
+    dom = _dom(_text("E3", "An error occurred", 20), _text("E4", "request:", 30),
+               _btn("E6", "Retry", 60))
+    r = DescriptionResolver(dom, tiers=["lexical", "slm"])
+    seen = {}
+    monkeypatch.setattr(r, "_resolve_slm",
+                        lambda description, candidates: seen.update(c=list(candidates)) or (None, "slm not confident (0.00)"))
+    elem, info = r.resolve("Purple Elephant button")
+    assert elem is None
+    ids = [e["id"] for e in seen["c"]]
+    assert ids[0] == "E6", "the lexical top stays first"
+    assert len(ids) >= 3 and set(ids) == {"E6", "E3", "E4"}
+
+
+def test_shortlist_is_whole_pool_when_it_is_small():
+    dom = _dom(_btn("E6", "Retry"), _text("E3", "oops", 20))
+    cands = DescriptionResolver._shortlist([(1.0, dom["elements"][0])], dom["elements"])
+    assert [e["id"] for e in cands] == ["E6", "E3"]
+    # nothing scored at all: the whole pool, unchanged
+    assert DescriptionResolver._shortlist([], dom["elements"]) == dom["elements"]
+
+
+def test_shortlist_keeps_lexical_top_eight_and_pads_only_below_three():
+    pool = [_btn(f"E{i}", f"b{i}", x=i * 12) for i in range(12)]
+    ranked = [(1.0, e) for e in pool[:10]]
+    assert [e["id"] for e in DescriptionResolver._shortlist(ranked, pool)] == [f"E{i}" for i in range(8)]
+    ranked2 = [(1.0, pool[5]), (0.9, pool[7])]
+    ids = [e["id"] for e in DescriptionResolver._shortlist(ranked2, pool)]
+    assert ids == ["E5", "E7", "E0"]
+
+
+def test_slm_prompt_says_null_is_expected_and_role_alone_is_no_match(monkeypatch):
+    dom = _dom(_btn("E6", "Retry"))
+    r = DescriptionResolver(dom, tiers=["slm"])
+    captured = {}
+
+    class _Advisor:
+        def _call_llm(self, prompt, image_b64=None):
+            captured["prompt"] = prompt
+            return '{"id": null, "confidence": 0.0, "reason": "none"}'
+    monkeypatch.setattr(r, "_make_advisor", lambda model: _Advisor())
+    r.resolve("Purple Elephant button")
+    p = captured["prompt"]
+    assert "may refer to nothing" in p and "role alone" in p and "null" in p
+
+
 def test_confident_answers_are_unchanged():
     r = DescriptionResolver(_dom(_btn("E1", "Save"), _btn("E2", "Cancel", x=50)), tiers=["lexical"])
     elem, info = r.resolve("save button")

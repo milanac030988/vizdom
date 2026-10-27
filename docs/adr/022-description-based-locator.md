@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted (Tiers 0–1 implemented; Tier 2 implemented behind config, needs a vision model)
+Accepted (Tiers 0–1 implemented and measured; Tier 2 implemented behind config and measured 2026-10-27: not an oracle, stays opt-in)
 
 ## Date
 
@@ -21,6 +21,8 @@ Nguyen Huynh Tri Cuong
 | Date | Version | Description |
 |------|---------|-------------|
 | 2026-07-30 | 1.0 | Design + Tiers 0/1 implemented (`desc=` strategy, lexical matcher, SLM-over-DOM resolver, `grounding` config, RF wiring). Tier 2 (VLM Set-of-Mark) implemented behind `grounding.tiers`, disabled by default. |
+| 2026-10-27 | 1.1 | Measured on the lifecycle benchmark (`benchmarks/README.md` §6, runs 4–5, 514 steps): default chain lexical→slm 0.930 action-hit / 0.954 verify / 0.003 false-pass (lexical answers 398 of 514, the SLM 3); SLM alone over the whole DOM 0.634; VLM Set-of-Mark alone 0.117 (20-mark cap, harness limit); VLM behind the lexical shortlist keeps the hits (0.930) but passes 34 of the 40 nonsense captions it was shown (false-pass 0.113). Tier 2 stays out of the default chain and must not be used for verification until the prompt has a real null option. Resolver now records every tier's verdict in the miss reason. |
+| 2026-10-28 | 1.2 | The one false pass traced to a one-row SLM table (the other button's caption unread → one scored element). Shortlist padded to ≥ 3 candidates; SLM/VLM prompts state that null is expected and a matching role alone is no match. Benchmark runner keeps every parsed DOM. |
 
 ## Context
 
@@ -82,6 +84,24 @@ Cross-cutting rules:
 - Non-determinism is contained by config (tier pinning), temperature 0, and the
   cache; a `desc=` locator is still less deterministic than `text=` and is
   documented as such.
+- The tier order is load-bearing, not cosmetic (measured 2026-10-27): the
+  lexical tier answers 77 % of the benchmark steps on its own and turns the
+  3B text model from a 0.634 whole-DOM grounder into a 0.930 chain by handing
+  it a shortlist of eight. The same shortlist does not rescue the vision tier
+  as an oracle: `qwen2.5vl:3b` answers "mark 1, confidence 0.99" to most
+  nonsense captions, where the text model declines 87 of 88. A `verify`
+  keyword must therefore never run a chain that ends in `vlm` until the
+  Set-of-Mark prompt has a null option the model actually uses (candidate
+  fix: ask for the caption of the chosen mark and cross-check it lexically).
+- The model tiers never see a shortlist of one (2026-10-28). The benchmark's
+  single false pass was a one-row candidate table: on a dialog whose other
+  button OCR had not read, "Purple Elephant button" scored exactly one
+  element by role word, and a 3B model asked "which of these?" about one row
+  answers "this one" at 0.85, where it declines with two rows. The shortlist
+  is padded from the pool to at least three candidates
+  (`SHORTLIST_MIN`), and the prompt says null is expected and a matching
+  role alone is not a match. A paraphrase ("close button" → the `×` icon)
+  still resolves: padding adds choice, it does not remove the candidate.
 - Future: an embedding tier between 0 and 1 (semantic similarity, no
   generation); a dedicated grounder model as an alternative Tier 2 backend;
   caching successful resolutions as persistent aliases ("self-healing"

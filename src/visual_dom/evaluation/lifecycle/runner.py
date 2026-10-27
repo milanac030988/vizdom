@@ -24,7 +24,9 @@ cost           parses, inferences, and wall-clock are recorded per step so the
                parse-once economics is measured, not argued.
 
 Results are written as JSON (full per-step detail) plus a Markdown summary
-table, both stamped with dataset id, git commit, and executor config.
+table, both stamped with dataset id, git commit, and executor config. The
+VizDOM executors also write every parsed DOM to ``<stamp>-doms/<executor>/``
+next to the result file, so a step can be diagnosed from the DOM it saw.
 """
 
 import json
@@ -55,6 +57,11 @@ class VizDomExecutor:
         self._dom_cache = {}
         self._parse_seconds = {}
         self._load_seconds = 0.0
+        # run_benchmark points this at <out>/<stamp>-doms/<executor>/ so every
+        # parsed DOM lands in the tarball: a miss can then be diagnosed from
+        # the DOM the step actually saw, not from a laptop re-parse (run 4's
+        # false pass needed the GPU DOM of dialog_0141 and it was not kept).
+        self.dom_dump_dir = None
 
     def _connect(self):
         # Session creation loads the models. That is a ONE-TIME warm-up cost -
@@ -87,7 +94,20 @@ class VizDomExecutor:
             dom = session.analyze(state["image"])
             self._parse_seconds[sid] = time.perf_counter() - t0
             self._dom_cache[sid] = dom
+            self._dump_dom(sid, dom)
         return self._dom_cache[sid]
+
+    def _dump_dom(self, sid, dom):
+        if not self.dom_dump_dir:
+            return
+        try:
+            d = Path(self.dom_dump_dir)
+            d.mkdir(parents=True, exist_ok=True)
+            (d / f"{sid}.json").write_text(
+                json.dumps(dom, indent=1, ensure_ascii=False, default=str),
+                encoding="utf-8")
+        except Exception as exc:  # noqa: BLE001 - a dump failure must not fail the column
+            log.warning("could not dump DOM of %s: %s", sid, exc)
 
     def _finder_for(self, state):
         sid = state["id"]
@@ -311,8 +331,15 @@ def run_benchmark(manifest, executors, limit_states=None, out_dir="benchmarks/re
     except Exception:
         commit = "unknown"
 
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    stamp = time.strftime("%Y%m%d_%H%M%S")
+
     all_results = {}
     for ex in executors:
+        if hasattr(ex, "dom_dump_dir"):
+            # keep the parsed DOMs next to the result file (one dir per executor)
+            ex.dom_dump_dir = out / f"{stamp}-doms" / ex.name.replace("+", "_")
         rows, agg = [], defaultdict(list)
         log.info("Executor %s: %d steps over %d states",
                  ex.name, len(step_list), len({s['state'] for s in step_list}))
@@ -367,9 +394,6 @@ def run_benchmark(manifest, executors, limit_states=None, out_dir="benchmarks/re
         "generated_steps": len(step_list),
         "results": all_results,
     }
-    out = Path(out_dir)
-    out.mkdir(parents=True, exist_ok=True)
-    stamp = time.strftime("%Y%m%d_%H%M%S")
     (out / f"{stamp}.json").write_text(
         json.dumps(payload, indent=1, ensure_ascii=False), encoding="utf-8")
 

@@ -13,7 +13,8 @@ import pytest
 
 from visual_dom.evaluation.lifecycle.generate import generate_steps
 from visual_dom.evaluation.lifecycle.runner import (
-    VizDomDescExecutor, _inside, _require_descriptions, _score, run_benchmark)
+    VizDomDescExecutor, VizDomExecutor, _inside, _require_descriptions, _score,
+    run_benchmark)
 
 
 # --------------------------------------------------------------------------- #
@@ -239,6 +240,36 @@ def test_desc_executor_scores_like_the_other_columns(tmp_path):
     # one resolver per step: the verify step must not be answered from the
     # action step's cached resolution
     assert _FakeResolver.made == 3
+
+
+def test_vizdom_executor_dumps_every_parsed_dom(tmp_path, monkeypatch):
+    """The parsed DOM of each state lands in <out>/<stamp>-doms/<executor>/,
+    so a miss can be diagnosed from the DOM the step saw (run 4's false pass
+    could not be: the GPU DOM of dialog_0141 was never kept)."""
+    dom = {"image_size": {"width": 100, "height": 50},
+           "elements": [{"id": "E1", "role": "button", "visual_type": "button",
+                         "text": "x", "bounds": [0, 0, 10, 10]}]}
+
+    class _Session:
+        def analyze(self, image):
+            return dom
+    ex = VizDomExecutor(detector="modular")
+    monkeypatch.setattr(ex, "_connect", lambda: _Session())
+    manifest = {
+        "benchmark": "unit",
+        "states": [{"id": "s", "image": "none.png", "gt": "none.json"}],
+        "steps": [{"id": "a1", "state": "s", "kind": "action", "locator": 'text="x"',
+                   "instruction": "click x", "target_id": "E1",
+                   "target_bounds": [0, 0, 10, 10]}],
+    }
+    payload = run_benchmark(manifest, [ex], out_dir=str(tmp_path))
+    assert payload["results"]["vizdom-modular"]["summary"]["action_hit_rate"] == 1.0
+    dumps = list(tmp_path.glob("*-doms/vizdom-modular/s.json"))
+    assert len(dumps) == 1
+    assert json.loads(dumps[0].read_text(encoding="utf-8")) == dom
+    # the dump dir shares the stamp of the result file
+    stamp = next(tmp_path.glob("*.json")).stem
+    assert dumps[0].parent.parent.name == f"{stamp}-doms"
 
 
 class _OllamaDownResolver:

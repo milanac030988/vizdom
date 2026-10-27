@@ -251,7 +251,7 @@ class DescriptionResolver:
                               "candidates": [e.get("id") for _, e in ranked[:5]]}
             why.append(self._lexical_why(ranked))
 
-        candidates = [e for _, e in ranked[:8]] or pool
+        candidates = self._shortlist(ranked, pool)
 
         # Positional words are deterministic geometry - small LMs reason poorly
         # about coordinates (a 3B model happily calls top-left "top right"), so
@@ -288,6 +288,34 @@ class DescriptionResolver:
         return None, {"tier": None,
                       "reason": "no confident match (" + "; ".join(why) + ")",
                       "candidates": [e.get("id") for _, e in ranked[:5]]}
+
+    #: the model tiers see at most this many candidates ...
+    SHORTLIST_MAX = 8
+    #: ... and at least this many. A table of ONE row turns "which of these
+    #: matches?" into "is this it?", and a 3B model says yes to a plausible-
+    #: sounding name: lifecycle run 4's single false pass ("Purple Elephant
+    #: button" -> the only button of a dialog whose other button OCR had not
+    #: read, confidence 0.85). With two or more rows the same model declines.
+    SHORTLIST_MIN = 3
+
+    @classmethod
+    def _shortlist(cls, ranked: List[Tuple[float, Dict[str, Any]]],
+                   pool: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """The candidates handed to the model tiers: the lexical top-8, padded
+        from the pool (in DOM order) to at least SHORTLIST_MIN so the model
+        always has a real choice; the whole pool when nothing scored."""
+        cands = [e for _, e in ranked[:cls.SHORTLIST_MAX]]
+        if not cands:
+            return list(pool)
+        if len(cands) < cls.SHORTLIST_MIN:
+            seen = {id(e) for e in cands}
+            for e in pool:
+                if len(cands) >= cls.SHORTLIST_MIN:
+                    break
+                if id(e) not in seen:
+                    cands.append(e)
+                    seen.add(id(e))
+        return cands
 
     @staticmethod
     def _lexical_why(ranked: List[Tuple[float, Dict[str, Any]]],
@@ -336,13 +364,17 @@ class DescriptionResolver:
         """Ask a text LM to pick the best-matching element id from the table."""
         table = self._element_table(candidates)
         prompt = (
-            "You match a natural-language description to ONE UI element.\n"
+            "You match a natural-language description to ONE UI element, "
+            "or to none.\n"
             f"Description: {description!r}\n"
             "Elements (center is normalized 0-1, (0,0)=top-left):\n"
             f"{table}\n\n"
+            "The description may refer to nothing in this list. Answer null "
+            "unless an element's text or role clearly corresponds to it; a "
+            "matching role alone (e.g. any button for '... button') is NOT a "
+            "match.\n"
             "Reply with ONLY a JSON object: "
-            '{"id": "<element id or null>", "confidence": 0.0-1.0, "reason": "..."}\n'
-            "Use null if no element matches the description."
+            '{"id": "<element id or null>", "confidence": 0.0-1.0, "reason": "..."}'
         )
         try:
             advisor = self._make_advisor(self.model)
@@ -394,9 +426,11 @@ class DescriptionResolver:
             prompt = (
                 "The screenshot shows UI elements marked with red numbered boxes.\n"
                 f"Description: {description!r}\n"
-                "Which numbered box best matches the description?\n"
+                "Which numbered box matches the description? The description "
+                "may refer to nothing that is marked; answer null unless a box "
+                "clearly shows it.\n"
                 'Reply with ONLY a JSON object: {"number": <int or null>, '
-                '"confidence": 0.0-1.0}. Use null if none match.'
+                '"confidence": 0.0-1.0}.'
             )
             advisor = self._make_advisor(self.vision_model)
             response = advisor._call_llm(prompt, image_b64=image_b64)
