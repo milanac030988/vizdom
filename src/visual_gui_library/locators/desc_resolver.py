@@ -59,6 +59,12 @@ POSITION_WORDS = {
 
 _WORD_RE = re.compile(r"[a-z0-9]+")
 
+# Function words that never name an element. Only used to decide whether a
+# description names something (see `lexical_rank`); they still take part in
+# the overlap so that existing scores do not move.
+_STOP_WORDS = {"the", "a", "an", "at", "of", "in", "on", "to", "for", "with",
+               "that", "this", "which", "and", "or", "is", "it", "its", "one"}
+
 
 def _tokens(s: str) -> List[str]:
     return _WORD_RE.findall((s or "").lower())
@@ -87,6 +93,15 @@ def lexical_rank(
           + 1.0 * role-word match (role/visual_type)
           + 0.5 * positional-word match.
 
+    Role and position words say *which kind* and *where*, not *which one*.
+    When the description names something ("Purple Elephant button") and the
+    element carries none of those words, they earn half credit, capped at
+    1.0: enough to order a shortlist for the model tiers, never enough to
+    clear `lexical_confident`'s floor on their own. Otherwise "top left
+    Frobnicate button" would confidently resolve to whatever button sits
+    top-left (review, 2026-10-28). A description with no name tokens ("the
+    button at the top left") is unaffected.
+
     Returns:
         (score, element) pairs with score > 0, best first.
     """
@@ -105,9 +120,14 @@ def lexical_rank(
         else:
             name_tokens.append(t)
 
+    # the words that actually name something: "the button at the top left"
+    # has name tokens ("the", "at") but names nothing, and must keep resolving
+    # on role and position alone
+    naming = [t for t in name_tokens if t not in _STOP_WORDS]
+
     ranked = []
     for elem in elements:
-        score = 0.0
+        name_score = 0.0
 
         # name-token overlap against label / text / hint
         if name_tokens:
@@ -123,7 +143,9 @@ def lexical_rank(
                     if t not in elem_tokens and any(t in e for e in elem_tokens)
                 )
                 overlap = (hits + 0.7 * subs) / len(name_tokens)
-                score += 2.0 * overlap
+                name_score = 2.0 * overlap
+
+        kind_score = 0.0
 
         # role words
         if role_types:
@@ -131,13 +153,17 @@ def lexical_rank(
             vtype = str(elem.get("visual_type") or "").lower().replace("_", "")
             wanted = {r.replace("_", "") for r in role_types}
             if role.replace("_", "") in wanted or vtype in wanted:
-                score += 1.0
+                kind_score += 1.0
 
         # positional words
         if pos_preds:
             cx, cy = _norm_center(elem, image_size)
             if all(p(cx, cy) for p in pos_preds):
-                score += 0.5 * len(pos_preds)
+                kind_score += 0.5 * len(pos_preds)
+
+        if naming and name_score == 0:
+            kind_score = min(0.5 * kind_score, 1.0)   # see the docstring
+        score = name_score + kind_score
 
         if score > 0:
             ranked.append((score, elem))
@@ -251,25 +277,19 @@ class DescriptionResolver:
                               "candidates": [e.get("id") for _, e in ranked[:5]]}
             why.append(self._lexical_why(ranked))
 
-        candidates = self._shortlist(ranked, pool)
-
         # Positional words are deterministic geometry - small LMs reason poorly
         # about coordinates (a 3B model happily calls top-left "top right"), so
-        # enforce them here: if the description names positions and some
-        # candidates satisfy them, drop the ones that don't before any model.
-        pos_preds = [POSITION_WORDS[t] for t in _tokens(description)
-                     if t in POSITION_WORDS]
-        if pos_preds:
-            size = self._image_size()
-            satisfying = [
-                e for e in candidates
-                if all(p(*_norm_center(e, size)) for p in pos_preds)
-            ]
-            if satisfying:
-                candidates = satisfying
+        # they are enforced here, not by the model: candidates that are not
+        # where the description says are filtered out BEFORE the shortlist is
+        # padded (filtering after padding could cut the table back to one row,
+        # the case SHORTLIST_MIN exists for - review, 2026-10-28), and a model
+        # answer that lands outside the described position is rejected.
+        in_place = self._position_predicate(description, pool)
+        candidates = self._shortlist(ranked, pool, in_place)
 
         if "slm" in self.tiers:
             elem, reason = self._resolve_slm(description, candidates)
+            elem, reason = self._enforce_position("slm", elem, reason, in_place)
             if elem is not None:
                 return elem, {"tier": "slm", "reason": reason,
                               "candidates": [e.get("id") for e in candidates[:5]]}
@@ -280,6 +300,7 @@ class DescriptionResolver:
                 why.append("vlm skipped: no screenshot")
             else:
                 elem, reason = self._resolve_vlm(description, candidates)
+                elem, reason = self._enforce_position("vlm", elem, reason, in_place)
                 if elem is not None:
                     return elem, {"tier": "vlm", "reason": reason,
                                   "candidates": [e.get("id") for e in candidates[:5]]}
@@ -302,22 +323,53 @@ class DescriptionResolver:
 
     @classmethod
     def _shortlist(cls, ranked: List[Tuple[float, Dict[str, Any]]],
-                   pool: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+                   pool: List[Dict[str, Any]], in_place=None) -> List[Dict[str, Any]]:
         """The candidates handed to the model tiers: the lexical top-8, padded
         from the pool (in DOM order) to at least SHORTLIST_MIN so the model
-        always has a real choice; the whole pool when nothing scored."""
-        cands = [e for _, e in ranked[:cls.SHORTLIST_MAX]]
+        always has a real choice; the whole pool when nothing scored.
+
+        `in_place`, when given, is the description's positional predicate
+        (see `_position_predicate`): scored candidates that fail it are
+        dropped first, and padding prefers pool elements that pass it, so
+        the filter can never leave the model a one-row table."""
+        keep = in_place or (lambda e: True)
+        cands = [e for _, e in ranked[:cls.SHORTLIST_MAX] if keep(e)]
         if not cands:
-            return list(pool)
+            cands = [e for e in pool if keep(e)]
         if len(cands) < cls.SHORTLIST_MIN:
             seen = {id(e) for e in cands}
-            for e in pool:
+            # elements in the described place first, then the rest in DOM order
+            for e in [e for e in pool if keep(e)] + [e for e in pool if not keep(e)]:
                 if len(cands) >= cls.SHORTLIST_MIN:
                     break
                 if id(e) not in seen:
                     cands.append(e)
                     seen.add(id(e))
         return cands
+
+    def _position_predicate(self, description: str, pool: List[Dict[str, Any]]):
+        """A predicate over elements for the description's position words
+        ("top", "left", ...), or None when it has none or nothing in the
+        pool satisfies them (then the words are not used as a filter)."""
+        pos_preds = [POSITION_WORDS[t] for t in _tokens(description)
+                     if t in POSITION_WORDS]
+        if not pos_preds:
+            return None
+        size = self._image_size()
+
+        def in_place(e):
+            return all(p(*_norm_center(e, size)) for p in pos_preds)
+
+        return in_place if any(in_place(e) for e in pool) else None
+
+    @staticmethod
+    def _enforce_position(tier: str, elem, reason: str, in_place):
+        """A model answer that is not where the description says is a miss,
+        not a match: the padded rows of the shortlist may lie elsewhere."""
+        if elem is not None and in_place is not None and not in_place(elem):
+            return None, (f"{tier} picked {elem.get('id')} outside the described "
+                          f"position ({reason})")
+        return elem, reason
 
     @staticmethod
     def _lexical_why(ranked: List[Tuple[float, Dict[str, Any]]],

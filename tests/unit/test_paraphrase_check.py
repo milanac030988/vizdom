@@ -64,3 +64,32 @@ def test_missing_paraphrase_is_an_error(tmp_path):
                            "description": "Save button", "target_bounds": [0, 0, 50, 20]}]}
     with pytest.raises(SystemExit, match="no paraphrase"):
         pc.run_variant(manifest, tmp_path, {}, ["lexical"], "m", "http://x")
+
+
+def test_vlm_tier_needs_the_screenshot_not_a_silent_skip(tmp_path):
+    # without the image every step would end "vlm skipped: no screenshot" and
+    # the column would measure nothing; the script must refuse instead
+    (tmp_path / "s1.json").write_text(json.dumps(_dom()), encoding="utf-8")
+    manifest = {"states": [{"id": "s1", "image": str(tmp_path / "missing.png")}],
+                "steps": [{"id": "s1/act/E1", "state": "s1", "kind": "action",
+                           "description": "Save button", "target_bounds": [0, 0, 50, 20]}]}
+    with pytest.raises(SystemExit, match="needs the screenshot of s1"):
+        pc.run_variant(manifest, tmp_path, None, ["lexical", "vlm"], "m", "http://x")
+
+
+def test_vlm_tier_gets_the_manifest_screenshot(tmp_path, monkeypatch):
+    import numpy as np
+    import cv2
+    img = tmp_path / "s1.png"
+    cv2.imwrite(str(img), np.zeros((100, 200, 3), dtype=np.uint8))
+    (tmp_path / "s1.json").write_text(json.dumps(_dom()), encoding="utf-8")
+    manifest = {"states": [{"id": "s1", "image": str(img)}],
+                "steps": [{"id": "s1/act/E1", "state": "s1", "kind": "action",
+                           "description": "Frobnicate button", "target_bounds": [0, 0, 50, 20]}]}
+    seen = {}
+    from visual_gui_library.locators import desc_resolver as dr
+    monkeypatch.setattr(dr.DescriptionResolver, "_resolve_vlm",
+                        lambda self, d, c: seen.update(shape=self.screenshot.shape) or (None, "vlm null"))
+    summary, rows = pc.run_variant(manifest, tmp_path, None, ["vlm"], "m", "http://x")
+    assert seen["shape"] == (100, 200, 3)
+    assert rows[0]["detail"] == "no confident match (vlm null)"

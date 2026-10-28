@@ -28,11 +28,12 @@ def test_lexical_reports_no_candidate():
 
 
 def test_lexical_reports_score_below_floor():
-    # role word only: score 1.0 < 1.5
+    # role word only, and the description names something the button does
+    # not carry: the role earns half credit, 0.5 < 1.5
     r = DescriptionResolver(_dom(_btn("E1", "Save")), tiers=["lexical"])
     elem, info = r.resolve("frobnicate button")
     assert elem is None
-    assert "lexical: best score 1.00 < 1.5" in info["reason"]
+    assert "lexical: best score 0.50 < 1.5" in info["reason"]
 
 
 def test_lexical_reports_tie_between_repeated_captions():
@@ -51,7 +52,7 @@ def test_every_tier_leaves_its_own_verdict(monkeypatch):
                         lambda description, candidates: (None, "slm not confident (0.30)"))
     elem, info = r.resolve("frobnicate button")
     assert elem is None
-    assert info["reason"] == ("no confident match (lexical: best score 1.00 < 1.5; "
+    assert info["reason"] == ("no confident match (lexical: best score 0.50 < 1.5; "
                               "slm not confident (0.30); vlm skipped: no screenshot)")
 
 
@@ -140,3 +141,65 @@ def test_confident_answers_are_unchanged():
     r = DescriptionResolver(_dom(_btn("E1", "Save"), _btn("E2", "Cancel", x=50)), tiers=["lexical"])
     elem, info = r.resolve("save button")
     assert elem["id"] == "E1" and info["tier"] == "lexical" and info["reason"] == "score=3.00"
+
+
+# -- position words (review, 2026-10-28) --------------------------------------
+
+def _corner_dom():
+    # E1: a button top-left; E2, E3: text bottom-right; E4: a button bottom-right
+    return _dom(_btn("E1", "Retry"),
+                {"id": "E2", "role": "text", "visual_type": "text", "text": "oops",
+                 "bounds": [80, 80, 100, 90]},
+                {"id": "E3", "role": "text", "visual_type": "text", "text": "again",
+                 "bounds": [80, 90, 100, 100]},
+                _btn("E4", "Close", x=90) | {"bounds": [90, 90, 100, 100]})
+
+
+def test_position_filter_cannot_leave_the_model_a_single_row(monkeypatch):
+    """The position filter used to run after the padding and could cut the
+    table back to one row - the case SHORTLIST_MIN exists for."""
+    r = DescriptionResolver(_corner_dom(), tiers=["slm"])
+    seen = {}
+    monkeypatch.setattr(r, "_resolve_slm",
+                        lambda description, candidates: seen.update(c=list(candidates)) or (None, "slm not confident (0.00)"))
+    elem, info = r.resolve("top left Purple Elephant button")
+    assert elem is None
+    ids = [e["id"] for e in seen["c"]]
+    assert ids[0] == "E1", "the only element in place stays first"
+    assert len(ids) >= DescriptionResolver.SHORTLIST_MIN
+
+
+def test_model_answer_outside_the_described_position_is_rejected(monkeypatch):
+    dom = _corner_dom()
+    r = DescriptionResolver(dom, tiers=["slm"])
+    monkeypatch.setattr(r, "_resolve_slm",
+                        lambda description, candidates: (dom["elements"][3], "conf=0.95: close"))
+    elem, info = r.resolve("top left Purple Elephant button")
+    assert elem is None and info["tier"] is None
+    assert "slm picked E4 outside the described position (conf=0.95: close)" in info["reason"]
+
+
+def test_lexical_does_not_resolve_positional_nonsense():
+    """'top left Purple Elephant button': position + role used to score 2.0 on
+    their own and resolve the top-left button confidently - a false pass with
+    no model involved. Role and position now earn half credit when the
+    description names something the element does not carry."""
+    r = DescriptionResolver(_corner_dom(), tiers=["lexical"])
+    elem, info = r.resolve("top left Purple Elephant button")
+    assert elem is None
+    assert "lexical: best score 1.00 < 1.5" in info["reason"]
+
+
+def test_lexical_still_resolves_a_position_only_description():
+    # no name token: role + position are the whole description, and resolve
+    r = DescriptionResolver(_corner_dom(), tiers=["lexical"])
+    elem, info = r.resolve("the button at the top left")
+    assert elem is not None and elem["id"] == "E1" and info["tier"] == "lexical"
+    elem, info = r.resolve("bottom right button")
+    assert elem is not None and elem["id"] == "E4"
+
+
+def test_named_description_still_resolves_by_name_with_position():
+    r = DescriptionResolver(_corner_dom(), tiers=["lexical"])
+    elem, info = r.resolve("top left Retry button")
+    assert elem is not None and elem["id"] == "E1"

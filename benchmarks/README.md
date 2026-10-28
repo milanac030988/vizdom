@@ -525,8 +525,8 @@ What the rows say:
   | generated | lexical+slm | 0.930 | 0.960 | 0.000 | 0.930 | lexical 398, slm 4, none 112 |
   | terse (`Save`) | lexical | 0.864 | 0.907 | 0.000 | 0.864 | lexical 370, none 144 |
   | terse | lexical+slm | **0.901** | **0.967** | **0.000** | 0.901 | lexical 370, slm 36, none 108 |
-  | wordy (`the button that saves the changes`) | lexical | 0.113 | 0.375 | 0.000 | 0.113 | lexical 50, none 464 |
-  | wordy | lexical+slm | **0.690** | **0.870** | **0.000** | 0.685 | lexical 50, slm 297, none 167 |
+  | wordy (`the button that saves the changes`) | lexical | 0.113 | 0.372 | 0.000 | 0.113 | lexical 48, none 466 |
+  | wordy | lexical+slm | **0.685** | **0.864** | **0.000** | 0.676 | lexical 48, slm 296, none 170 |
 
   Three readings. (1) **The oracle property does not depend on the
   wording**: 0 false passes of 88 in every row, including the wordy
@@ -538,14 +538,14 @@ What the rows say:
   pager button whose text is `1`) or left the SLM to choose between
   look-alike value fields (`the Connected field` on a form with three status
   boxes). Wordy is where the model tier earns its place: the lexical tier
-  alone answers 50 steps and hits 0.113; the SLM behind it lifts that to
-  0.690 with 297 answers, and the 66 remaining action misses split into 40
+  alone answers 48 steps and hits 0.113; the SLM behind it lifts that to
+  0.685 with 296 answers, and the 67 remaining action misses split into 41
   declines (`the previous-page control of the pager`, `the search bar where
   you type a query`: no token in common with `Prev` or `Search...`) and 26
   wrong elements. (3) **The wrong elements are the SLM's known weakness, now
   visible on the verify side.** The strict column is what the plain verify
   metric hides: on the wordy set 28 positive verifies passed on a *different*
-  element than the target, 27 of them SLM answers, 25 at confidence 0.85–1.00
+  element than the target, all of them SLM answers, 24 at confidence 0.85–1.00
   (`the first page number in the pagination` → the text `Showing 1-9 of
   204`; `the box whose value is Enabled` → the field reading `Stopped`), the
   same rationalisation the SLM-only column shows over a whole DOM, here over
@@ -554,7 +554,14 @@ What the rows say:
   action-hit and the strict column are the metrics that see it. The
   paraphrases were written by the project's assistant and reviewed by the
   author, not collected from other testers; descriptions by other people
-  remain the stronger version of this check.
+  remain the stronger version of this check. The rows are measured on the
+  resolver after the 2026-10-28 review fixes (ADR-022 1.5): the first pass
+  had one *lexical* wrong-element pass in the wordy set, `the button that
+  checks for updates right now` resolved on role plus the position word
+  `right` at 1.50 to another button; role and position words now earn half
+  credit when the description names something the element does not carry,
+  so that step declines, and the position filter runs before the shortlist
+  is padded. The generated-description rows did not move.
 
 Cost on this host: the modular parse took 1.26 s per state (run 3: 0.62 s on
 the RTX 6000 Ada host; this card's CPU side is slower), so the chain column

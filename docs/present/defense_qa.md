@@ -179,8 +179,8 @@ claim; venue after the real-world rows.
 | generated (lexical+slm) | 0.930 | 0.960 | 0.000 | 0.930 | lexical 398, slm 4, none 112 |
 | terse (lexical only) | 0.864 | 0.907 | 0.000 | 0.864 | lexical 370, none 144 |
 | terse (lexical+slm) | 0.901 | 0.967 | 0.000 | 0.901 | lexical 370, slm 36, none 108 |
-| wordy (lexical only) | 0.113 | 0.375 | 0.000 | 0.113 | lexical 50, none 464 |
-| wordy (lexical+slm) | 0.690 | 0.870 | 0.000 | 0.685 | lexical 50, slm 297, none 167 |
+| wordy (lexical only) | 0.113 | 0.372 | 0.000 | 0.113 | lexical 48, none 466 |
+| wordy (lexical+slm) | 0.685 | 0.864 | 0.000 | 0.676 | lexical 48, slm 296, none 170 |
 
 Say it this way: the oracle holds under every wording; hit rate degrades with
 how much of the label the wording keeps; the model tier is what recovers wordy

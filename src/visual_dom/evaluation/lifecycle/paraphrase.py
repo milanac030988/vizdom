@@ -50,12 +50,37 @@ def _wordings(paraphrases, variants):
     return out
 
 
-def run_variant(manifest, doms_dir, mapping, tiers, model, host, log=print):
+def _screenshot_loader(manifest, tiers):
+    """The vision tier needs the screenshot the DOM was parsed from; without
+    one the resolver would record 'vlm skipped' on every step and the column
+    would silently measure nothing (review, 2026-10-28)."""
+    if "vlm" not in tiers:
+        return lambda sid: None
+    import cv2
+    states = {s["id"]: s for s in manifest.get("states", [])}
+    cache = {}
+
+    def load(sid):
+        if sid not in cache:
+            path = states.get(sid, {}).get("image")
+            image = cv2.imread(str(path)) if path else None
+            if image is None:
+                raise SystemExit(f"the vlm tier needs the screenshot of {sid}: "
+                                 f"{path!r} is not readable (manifest 'states')")
+            cache[sid] = image
+        return cache[sid]
+
+    return load
+
+
+def run_variant(manifest, doms_dir, mapping, tiers, model, host, log=print,
+                vision_model="qwen2.5vl:3b"):
     from visual_gui_library.locators.desc_resolver import DescriptionResolver
 
     doms = {}
     rows = []
     tier_counts = Counter()
+    screenshot_of = _screenshot_loader(manifest, tiers)
     t_start = time.perf_counter()
     for step in manifest["steps"]:
         sid = step["state"]
@@ -67,7 +92,8 @@ def run_variant(manifest, doms_dir, mapping, tiers, model, host, log=print):
         if description is None:
             raise SystemExit(f"no paraphrase for {original!r} ({step['id']})")
 
-        resolver = DescriptionResolver(dom, tiers=tiers, model=model, host=host)
+        resolver = DescriptionResolver(dom, screenshot=screenshot_of(sid), tiers=tiers,
+                                       model=model, vision_model=vision_model, host=host)
         t0 = time.perf_counter()
         elem, info = resolver.resolve(description)
         latency = time.perf_counter() - t0
@@ -123,6 +149,8 @@ def main(argv=None):
     p.add_argument("--variants", default="original,terse,wordy")
     p.add_argument("--tiers", default="lexical,slm")
     p.add_argument("--model", default="qwen2.5:3b")
+    p.add_argument("--vision-model", default="qwen2.5vl:3b",
+                   help="used when --tiers includes vlm; screenshots come from the manifest")
     p.add_argument("--host", default="http://localhost:11434")
     p.add_argument("--out", default="benchmarks/results")
     args = p.parse_args(argv)
@@ -143,7 +171,7 @@ def main(argv=None):
     for v in variants:
         print(f"== {v} ({'+'.join(tiers)}) ...", flush=True)
         summary, rows = run_variant(manifest, args.doms, wordings[v], tiers,
-                                    args.model, args.host)
+                                    args.model, args.host, vision_model=args.vision_model)
         results[v] = {"summary": summary, "steps": rows}
         print("   ", json.dumps(summary), flush=True)
         # saved after every wording: a model run of several hundred calls can be
