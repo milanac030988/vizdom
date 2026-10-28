@@ -48,6 +48,32 @@ class TextElement:
         }
 
 
+def find_tesseract() -> Optional[str]:
+    """
+    The Tesseract binary, or None. PATH first (Linux, macOS, a Windows
+    install that is on PATH), then the usual Windows install folders, whose
+    tessdata is exported as TESSDATA_PREFIX. Until 2026-10-28 only the Windows
+    folders were tried, so on every rented Linux host the low-confidence
+    retry silently never ran and the OCR stage was measured without its
+    second engine (lifecycle runs 1-6; the stage ablation found it).
+    """
+    import os
+    import shutil
+    exe = shutil.which("tesseract")
+    if exe:
+        return exe
+    for base in (r"C:\Program Files\Tesseract-OCR",
+                 r"C:\Program Files (x86)\Tesseract-OCR",
+                 r"D:\Program Files\Tesseract-OCR"):
+        candidate = os.path.join(base, "tesseract.exe")
+        if os.path.exists(candidate):
+            tessdata = os.path.join(base, "tessdata")
+            if os.path.exists(tessdata):
+                os.environ["TESSDATA_PREFIX"] = tessdata
+            return candidate
+    return None
+
+
 class TextDetector:
     """Detect and extract text from GUI screenshots."""
 
@@ -137,26 +163,7 @@ class TextDetector:
             scale_factor: The upscale factor applied to the image
         """
         try:
-            import os
-            import shutil
-            # PATH first (Linux, macOS, a Windows install that is on PATH), then
-            # the usual Windows install folders. Until 2026-10-28 only the
-            # Windows folders were tried, so on every rented Linux host the
-            # retry silently never ran and the OCR stage was measured without
-            # its second engine (lifecycle runs 1-6; the ablation found it).
-            tesseract_exe = shutil.which("tesseract")
-            if not tesseract_exe:
-                for base in (r"C:\Program Files\Tesseract-OCR",
-                             r"C:\Program Files (x86)\Tesseract-OCR",
-                             r"D:\Program Files\Tesseract-OCR"):
-                    exe = os.path.join(base, "tesseract.exe")
-                    if os.path.exists(exe):
-                        tessdata = os.path.join(base, "tessdata")
-                        if os.path.exists(tessdata):
-                            os.environ["TESSDATA_PREFIX"] = tessdata
-                        tesseract_exe = exe
-                        break
-
+            tesseract_exe = find_tesseract()
             if not tesseract_exe:
                 self._warn_no_tesseract("no tesseract binary on PATH or in the usual folders")
                 return results

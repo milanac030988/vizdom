@@ -108,6 +108,16 @@ def main():
 
     if args.pipeline:
         from visual_dom.core.domain.pipeline import VisualDOMPipeline
+        # The OCR stage's second engine (ADR-012): runs 1-6 silently had none
+        # on Linux, so a VizDOM column measured without it must fail here.
+        from visual_dom.adapters.outbound.ocr.text_detector import find_tesseract
+        tess = find_tesseract()
+        if tess:
+            print(f"  {'tesseract':16} OK    {tess}")
+        else:
+            failures.append("tesseract")
+            print(f"  {'tesseract':16} FAIL  no binary on PATH - apt-get install -y tesseract-ocr "
+                  "(setup.sh does this); without it ocr.retry_low_confidence is a no-op")
         os.environ.setdefault("OMNIPARSER_ROOT", "third_party/OmniParser")
         os.environ.setdefault("OMNIPARSER_ICON_DETECT",
                               "models/omniparser/icon_detect/model.pt")

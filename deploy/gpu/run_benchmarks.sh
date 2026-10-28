@@ -37,6 +37,9 @@ exec > >(tee -a "$OUT/sweep.log") 2>&1
 echo "results -> $OUT   (columns: ${ONLY:-all})"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv > "$OUT/gpu.txt"
 { echo "commit: $(git rev-parse --short HEAD 2>/dev/null)"; date -u; } >> "$OUT/gpu.txt"
+# The OCR stage's second engine: runs 1-6 had none (ADR-012 1.1), so every
+# VizDOM row of a run must say whether it was there.
+echo "tesseract: $(command -v tesseract >/dev/null 2>&1 && tesseract --version 2>&1 | head -1 || echo MISSING)" >> "$OUT/gpu.txt"
 
 wanted() { [ -z "$ONLY" ] || [[ " $ONLY " == *" $1 "* ]]; }
 
@@ -103,6 +106,16 @@ if [ "$desc_wanted" -eq 1 ]; then
     fi
 fi
 
+# --- the stage ablation (benchmarks/README.md sec. 7) ----------------------
+# Modular detector held fixed, one stage of VizDOM's own pipeline off per
+# column, scored on both levels; the driver writes ablation-<stamp>.json into
+# the run dir after every column and keeps going past a failed one (the
+# refiner=on column needs the Ollama server started above). About 20 min.
+ABLATION_COLUMNS="${VIZDOM_ABLATION_COLUMNS:-modular,modular[roles=off],modular[labels=off],modular[symbols=off],modular[merge=off],modular[ocr=plain],modular[ocr=none],modular[refiner=on],modular+desc,modular[roles=off]+desc,modular[labels=off]+desc}"
+run_column ablation python -m visual_dom.evaluation.lifecycle.ablation \
+    --manifest "$MANIFEST" --out-dir "$OUT" --columns "$ABLATION_COLUMNS"
+wanted ablation && python -m visual_dom.evaluation.lifecycle.ablation --report --out-dir "$OUT" > /dev/null 2>&1 || true
+
 # --- the grounder columns (the competing end-to-end paradigm) --------------
 # 7B grounders run in bf16 on a >= 20 GB card (the 4-bit path exists for the
 # laptop; Molmo/ELAM under bnb 4-bit fails with a Float/Half dtype error).
@@ -126,7 +139,7 @@ aria_offload() {
         *)    [ "$VRAM_GB" -ge 40 ] ;;
     esac
 }
-[ "$VRAM_GB" -ge 70 ] || aria_offload || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular $DESC_COLUMNS elam-7b ui-tars-1.5-7b parity}"
+[ "$VRAM_GB" -ge 70 ] || aria_offload || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular $DESC_COLUMNS ablation elam-7b ui-tars-1.5-7b parity}"
 if [ -x .venv-legacy/bin/python ]; then
     LEGACY=".venv-legacy/bin/python -m visual_dom.evaluation.lifecycle.runner"
 else

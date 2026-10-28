@@ -93,10 +93,38 @@ ONLY="elam-7b aria-ui" OUT_DIR=benchmarks/results/gpu-<stamp> bash deploy/gpu/ru
 
 Column names: `vizdom-uied vizdom-omniparser vizdom-modular
 vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm
-vizdom-modular-desc-vlm-chain elam-7b ui-tars-1.5-7b aria-ui parity`. Each run writes a new timestamped json+md, so
+vizdom-modular-desc-vlm-chain ablation elam-7b ui-tars-1.5-7b aria-ui parity`. Each run writes a new timestamped json+md, so
 nothing is overwritten; `summary.md` lists every row found. `prefetch.sh`
 honours the same `ONLY=` so a single-column rental downloads only that
-column's weights.
+column's weights. `ablation` is the stage ablation of `benchmarks/README.md`
+sec. 7 (eleven columns, about 20 min; `VIZDOM_ABLATION_COLUMNS` overrides the
+list); its `ablation-<stamp>.json` and `ablation-report.md` land in the run dir.
+
+### Run 7: the VizDOM columns only (after the Tesseract fix, 2026-10-28)
+
+The grounder columns reproduced bit for bit on an Ada card twice, so a run
+that only needs the VizDOM rows re-measured with the OCR retry in place
+skips them. About 40 min of a 48 GB card, no 7B download:
+
+```bash
+tmux new -s bench
+git clone https://github.com/milanac030988/vizdom.git && cd vizdom && git checkout develop
+export ONLY="vizdom-uied vizdom-omniparser vizdom-modular vizdom-modular-desc vizdom-modular-desc-slm ablation"
+bash deploy/gpu/setup.sh                 # installs tesseract-ocr and prints its version - check that line
+bash deploy/gpu/prefetch.sh              # OmniParser weights + Ollama with the two small models only
+PYTHONPATH=src USE_TF=0 .venv/bin/python deploy/gpu/preflight.py --pipeline --grounding
+#   want:  tesseract         OK  /usr/bin/tesseract
+#          vizdom-omniparser OK  N elements      vizdom-modular  OK  N elements
+#          slm / vlm tiers   OK  (one description resolved each)
+#   a FAIL on tesseract means the OCR stage would run as in runs 1-6: fix before paying for the sweep
+bash deploy/gpu/run_benchmarks.sh        # the six columns, then summary.md and the tarball
+```
+
+`gpu.txt` in the run dir now records the Tesseract version (or `MISSING`),
+so a result file says whether the second OCR engine was there. Expect the
+VizDOM rows above those of runs 3 and 6 (laptop: modular `text=` 0.915
+against 0.883, the chain 0.958 against 0.934) and the grounder rows to be
+quoted from run 3 / run 6 as before.
 
 ### The `desc=` columns (ADR-022, VizDOM's language tier)
 
