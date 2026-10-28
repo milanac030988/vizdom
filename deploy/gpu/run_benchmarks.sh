@@ -82,9 +82,14 @@ OLLAMA="${VIZDOM_OLLAMA_HOST:-http://localhost:11434}"
 GMODEL="${VIZDOM_GROUNDING_MODEL:-qwen2.5:3b}"
 GVISION="${VIZDOM_GROUNDING_VISION_MODEL:-qwen2.5vl:3b}"
 desc_wanted=0; for c in $DESC_COLUMNS; do wanted "$c" && desc_wanted=1; done
+# The server's own log goes into the tarball: runs 4-6 each lost a block of
+# VLM calls to "Ollama error: 500" and the log that would have said why was
+# sent to /dev/null (prefetch.sh writes to the same file when it starts the
+# server first).
+OLLAMA_LOG="${VIZDOM_OLLAMA_LOG:-$HOME/ollama-serve.log}"
 if [ "$desc_wanted" -eq 1 ]; then
     if command -v ollama >/dev/null 2>&1 && ! curl -fsS "$OLLAMA/api/tags" >/dev/null 2>&1; then
-        (ollama serve >/dev/null 2>&1 &); sleep 3
+        (ollama serve >>"$OLLAMA_LOG" 2>&1 &); sleep 3
     fi
     if curl -fsS "$OLLAMA/api/tags" >/dev/null 2>&1; then
         DESC="$RUN --manifest $MANIFEST --executors vizdom-modular+desc --out-dir $OUT
@@ -154,6 +159,7 @@ run_column parity             python "deploy/gpu/parity_on_box.py" "$OUT/parity.
 } > "$OUT/summary.md"
 echo; cat "$OUT/summary.md"
 
+[ -f "$OLLAMA_LOG" ] && cp "$OLLAMA_LOG" "$OUT/ollama-serve.log"
 tar czf "$OUT.tar.gz" -C "$(dirname "$OUT")" "$(basename "$OUT")"
 echo; echo "sweep complete: $OUT.tar.gz"
 echo "copy it back, verify it opens, then DESTROY THE RENTAL."

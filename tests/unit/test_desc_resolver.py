@@ -116,7 +116,11 @@ def test_shortlist_keeps_lexical_top_eight_and_pads_only_below_three():
     assert ids == ["E5", "E7", "E0"]
 
 
-def test_slm_prompt_says_null_is_expected_and_role_alone_is_no_match(monkeypatch):
+def test_slm_prompt_offers_null_plainly_without_an_explanatory_rule(monkeypatch):
+    # Lifecycle run 6: an explanatory null rule ("answer null unless text or
+    # role clearly corresponds; role alone is NOT a match") made qwen2.5:3b
+    # answer six of six nonsense captions over a whole-DOM table. The plain
+    # "Use null if no element matches" wording declines; keep it plain.
     dom = _dom(_btn("E6", "Retry"))
     r = DescriptionResolver(dom, tiers=["slm"])
     captured = {}
@@ -128,7 +132,8 @@ def test_slm_prompt_says_null_is_expected_and_role_alone_is_no_match(monkeypatch
     monkeypatch.setattr(r, "_make_advisor", lambda model: _Advisor())
     r.resolve("Purple Elephant button")
     p = captured["prompt"]
-    assert "may refer to nothing" in p and "role alone" in p and "null" in p
+    assert "or to none" in p and "Use null if no element matches" in p
+    assert "role alone" not in p and "clearly corresponds" not in p
 
 
 def test_confident_answers_are_unchanged():

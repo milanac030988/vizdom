@@ -113,7 +113,7 @@ chain:
 | `vizdom-modular-desc` | `lexical,slm` (the production default) | what a test author gets from `desc=` today, plus the per-tier resolution rate |
 | `vizdom-modular-desc-slm` | `slm` pinned | the text LM over the DOM table, alone |
 | `vizdom-modular-desc-vlm` | `vlm` pinned | the VLM Set-of-Mark over the screenshot with no shortlist — measured in run 4 at 0.117: the overlay caps at 20 marks in DOM order, so on a DOM with a median of 33 elements fewer than half the targets are even marked. Kept for the comparison, not a model result |
-| `vizdom-modular-desc-vlm-chain` | `lexical,vlm` | the vision tier the way production uses it: lexical scoring answers what it can and hands the VLM a shortlist of eight (or the pool when nothing scored) — the fair head-to-head with the grounders (both sides resolve language; VizDOM picks among DOM candidates, the grounders regress a point). Run 5 (2026-10-27): 0.930 / 0.691 / 0.113; it keeps the lexical hits and passes 34 of the 40 nonsense captions the VLM answered, and 68 of its 116 VLM calls were refused by Ollama (HTTP 500, two minutes mid-column) and are recorded as errors |
+| `vizdom-modular-desc-vlm-chain` | `lexical,vlm` | the vision tier the way production uses it: lexical scoring answers what it can and hands the VLM a shortlist of eight (or the pool when nothing scored) — the fair head-to-head with the grounders (both sides resolve language; VizDOM picks among DOM candidates, the grounders regress a point). Run 5 (2026-10-27): 0.930 / 0.691 / 0.113; it keeps the lexical hits and passes 34 of the 40 nonsense captions the VLM answered, and 68 of its 116 VLM calls were refused by Ollama (HTTP 500) and are recorded as errors. Run 6 (ca1f0f7, same card as run 3): 0.925 / 0.714 / 0.057 with 80 of 116 calls refused — the refusals cover the same block of states in every run (`dashboard_0195` to `settings_0050` on the Ada host) and are the vision model looping into a repeated token, which Ollama aborts with `500 prediction aborted, token repeat limit reached`; the column has never been fully measured, see the benchmark README |
 
 A fresh resolver is built per step (the production per-screen cache would
 otherwise answer the verify step from the action step), so the false-pass
@@ -175,7 +175,14 @@ decoding are the same).
 - `<stamp>-doms/<executor>/<state>.json` — every DOM a VizDOM column parsed,
   next to its result file, so a missed step can be diagnosed from the DOM it
   actually saw (run 4's false pass needed the GPU DOM of `dialog_0141` and it
-  had not been kept; about 1 MB per column)
+  had not been kept). Indented JSON with the flat list and the hierarchy:
+  21–35 MB per column uncompressed, which is why a full-sweep tarball is
+  ~18 MB from run 6 on (30–57 KB before). Columns parsed by the same
+  backend produce byte-identical folders — a free parity check.
+- `ollama-serve.log` — the model server's own log for the whole sweep
+  (`prefetch.sh` / `run_benchmarks.sh` start it with the log on
+  `$VIZDOM_OLLAMA_LOG`, default `~/ollama-serve.log`, and the sweep copies
+  it in); needed to say *why* a VLM call came back `Ollama error: 500`
 - `elam-7b`, `ui-tars-1.5-7b`, `aria-ui` — the competing end-to-end grounders
 - `parity.txt` — ADR-027 combos incl. per-stage latency on this GPU
 - `summary.md` — all result rows in one table; `gpu.txt` — card, driver, commit
@@ -234,7 +241,13 @@ Learned on the first paid run (2026-10-25, RTX 4090 on Vast):
   pipeline (the two 3B models take ~5 GB), fine on anything ≥ 16 GB. If
   Ollama dies mid-column, the steps whose model tier reports `unavailable`
   are recorded as errors (not misses), and a column of nothing but errors is
-  marked FAILED and exits 1 like any other column.
+  marked FAILED and exits 1 like any other column. A step detail reading
+  `Ollama error: 500 {"error":"prediction aborted, token repeat limit
+  reached"}` is **not** the server dying: it is the model looping on that
+  prompt (qwen2.5vl:3b emits `8888…` on some 1080p Set-of-Mark overlays at
+  temperature 0, runs 4–6) and Ollama ≥ 0.40 cutting it off. Such steps are
+  errors too; the server keeps serving the next call. `ollama-serve.log` in
+  the tarball shows them as aborted slots.
 - The Qwen2-VL captioner combo is picked up automatically once an
   ollama-backed Captioner lands in `modular_backend._CAPTIONERS`; until then
   `parity_on_box.py` notes it as unavailable. The Ollama pull it needs is the

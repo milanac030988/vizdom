@@ -326,7 +326,13 @@ Answer:"""
                 timeout=self.timeout,
             )
             if response.status_code != 200:
-                raise RuntimeError(f"Ollama error: {response.status_code}")
+                # Keep the server's own words: a bare "500" cannot tell a
+                # crashed runner from a rejected image or an overflowed
+                # context (lifecycle runs 4-6 lost 68-394 steps to "Ollama
+                # error: 500" with no way to say which).
+                body = " ".join((response.text or "").split())[:200]
+                raise RuntimeError(f"Ollama error: {response.status_code}"
+                                   + (f" {body}" if body else ""))
             return response.json()["response"]
 
         elif self.backend == "openai":

@@ -98,7 +98,9 @@ want_desc() { [ -z "${ONLY:-}" ] || [[ " ${ONLY} " == *desc* ]]; }
 if want_desc || [ -n "${VIZDOM_PREFETCH_OLLAMA:-}" ]; then
     if command -v ollama >/dev/null 2>&1 || curl -fsSL https://ollama.com/install.sh | sh; then
         OLLAMA="${VIZDOM_OLLAMA_HOST:-http://localhost:11434}"
-        curl -fsS "$OLLAMA/api/tags" >/dev/null 2>&1 || { (ollama serve >/dev/null 2>&1 &); sleep 3; }
+        # same log file as run_benchmarks.sh, which copies it into the tarball
+        OLLAMA_LOG="${VIZDOM_OLLAMA_LOG:-$HOME/ollama-serve.log}"
+        curl -fsS "$OLLAMA/api/tags" >/dev/null 2>&1 || { (ollama serve >>"$OLLAMA_LOG" 2>&1 &); sleep 3; }
         for m in "${VIZDOM_GROUNDING_MODEL:-qwen2.5:3b}" "${VIZDOM_GROUNDING_VISION_MODEL:-qwen2.5vl:3b}"; do
             ollama pull "$m" || echo "!! ollama pull $m failed - the desc= columns will be skipped"
         done

@@ -296,6 +296,8 @@ class DescriptionResolver:
     #: sounding name: lifecycle run 4's single false pass ("Purple Elephant
     #: button" -> the only button of a dialog whose other button OCR had not
     #: read, confidence 0.85). With two or more rows the same model declines.
+    #: Lifecycle run 6 confirmed it: the same step declines at 0.00 and the
+    #: chain's false-pass is 0 of 88.
     SHORTLIST_MIN = 3
 
     @classmethod
@@ -363,18 +365,24 @@ class DescriptionResolver:
     def _resolve_slm(self, description: str, candidates: List[Dict[str, Any]]):
         """Ask a text LM to pick the best-matching element id from the table."""
         table = self._element_table(candidates)
+        # Keep the wording plain. An explanatory null rule ("answer null
+        # unless text or role clearly corresponds; a matching role alone is
+        # NOT a match", 22e50c0) made the 3B model *more* willing to answer
+        # on long tables: on the whole DOM it picked a button for six of six
+        # nonsense captions (lifecycle run 6, slm-only column, false-pass
+        # 0.020 -> 0.126; reproduced on the laptop against the same model,
+        # where the plain wording below declines five of the six). The
+        # one-row case that motivated the rule is handled by the shortlist
+        # padding (SHORTLIST_MIN), not by the prompt.
         prompt = (
             "You match a natural-language description to ONE UI element, "
             "or to none.\n"
             f"Description: {description!r}\n"
             "Elements (center is normalized 0-1, (0,0)=top-left):\n"
             f"{table}\n\n"
-            "The description may refer to nothing in this list. Answer null "
-            "unless an element's text or role clearly corresponds to it; a "
-            "matching role alone (e.g. any button for '... button') is NOT a "
-            "match.\n"
             "Reply with ONLY a JSON object: "
-            '{"id": "<element id or null>", "confidence": 0.0-1.0, "reason": "..."}'
+            '{"id": "<element id or null>", "confidence": 0.0-1.0, "reason": "..."}\n'
+            "Use null if no element matches the description."
         )
         try:
             advisor = self._make_advisor(self.model)
