@@ -502,11 +502,59 @@ What the rows say:
   server's reason. The lexical+vlm row is therefore a measurement of the
   36 calls the model did not loop on, and the OCR-floor question stays open
   (again 10 of its 14 steps collapsed).
-- **Caveat on the descriptions.** They are generated as caption plus role
-  word, which is the lexical tier's ideal input; a tester's own wording
-  ("the blue save button at the bottom") would exercise the model tiers more
-  and the lexical tier less. The chain's figure is an upper bound for this
-  phrasing, not a general `desc=` accuracy.
+- **Caveat on the descriptions, and a paraphrase check (2026-10-28).** They
+  are generated as caption plus role word, which is the lexical tier's ideal
+  input; a tester's own wording would exercise the model tiers more and the
+  lexical tier less, so the chain's figure is an upper bound for this
+  phrasing. To put a number on the gap, every one of the 76 distinct
+  descriptions was rewritten by hand in two styles
+  (`lifecycle-synthetic-v1/paraphrases.json`): **terse**, what a tester
+  types in a hurry (`Save`, `search box`, `the field that says Enabled`,
+  `page 1`), and **wordy**, the purpose or the look with the label or the
+  role word often dropped (`the button that saves the changes`, `the search
+  bar where you type a query`, `the previous-page control of the pager`).
+  `python -m visual_dom.evaluation.lifecycle.paraphrase` re-resolves all 514
+  steps over the run-6 DOM dumps through the same resolver and the same
+  scoring, so the DOM is held fixed and only the wording moves; it also
+  reports a *strict* verify-pos that requires the resolved element to be the
+  target. Laptop, `qwen2.5:3b` Q4 on a mobile GPU, 2.7 s per SLM call:
+
+  | Wording | Tiers | Action-hit | Verify | False-pass | Strict verify-pos | Resolved by tier |
+  |---|---|---|---|---|---|---|
+  | generated (`Save button`) | lexical | 0.925 | 0.954 | 0.000 | 0.925 | lexical 398, none 116 |
+  | generated | lexical+slm | 0.930 | 0.960 | 0.000 | 0.930 | lexical 398, slm 4, none 112 |
+  | terse (`Save`) | lexical | 0.864 | 0.907 | 0.000 | 0.864 | lexical 370, none 144 |
+  | terse | lexical+slm | **0.901** | **0.967** | **0.000** | 0.901 | lexical 370, slm 36, none 108 |
+  | wordy (`the button that saves the changes`) | lexical | 0.113 | 0.375 | 0.000 | 0.113 | lexical 50, none 464 |
+  | wordy | lexical+slm | **0.690** | **0.870** | **0.000** | 0.685 | lexical 50, slm 297, none 167 |
+
+  Three readings. (1) **The oracle property does not depend on the
+  wording**: 0 false passes of 88 in every row, including the wordy
+  paraphrases of the nonsense captions (`the button that frobnicates the
+  record`), all 88 declined by the lexical tier and the SLM alike. (2)
+  **Wording that keeps the label costs three points, wording that drops it
+  costs twenty-four.** Terse loses six hits to the generated form, mostly
+  where the paraphrase removed the only token the DOM has (`page 1` for a
+  pager button whose text is `1`) or left the SLM to choose between
+  look-alike value fields (`the Connected field` on a form with three status
+  boxes). Wordy is where the model tier earns its place: the lexical tier
+  alone answers 50 steps and hits 0.113; the SLM behind it lifts that to
+  0.690 with 297 answers, and the 66 remaining action misses split into 40
+  declines (`the previous-page control of the pager`, `the search bar where
+  you type a query`: no token in common with `Prev` or `Search...`) and 26
+  wrong elements. (3) **The wrong elements are the SLM's known weakness, now
+  visible on the verify side.** The strict column is what the plain verify
+  metric hides: on the wordy set 28 positive verifies passed on a *different*
+  element than the target, 27 of them SLM answers, 25 at confidence 0.85–1.00
+  (`the first page number in the pagination` → the text `Showing 1-9 of
+  204`; `the box whose value is Enabled` → the field reading `Stopped`), the
+  same rationalisation the SLM-only column shows over a whole DOM, here over
+  an eight-row shortlist whose rows are all plausible. For a test that only
+  asserts existence this is a correct verdict on the wrong evidence;
+  action-hit and the strict column are the metrics that see it. The
+  paraphrases were written by the project's assistant and reviewed by the
+  author, not collected from other testers; descriptions by other people
+  remain the stronger version of this check.
 
 Cost on this host: the modular parse took 1.26 s per state (run 3: 0.62 s on
 the RTX 6000 Ada host; this card's CPU side is slower), so the chain column

@@ -43,7 +43,11 @@ Every number traces to a result JSON under `benchmarks/results/gpu-<stamp>/`
 1. **Real-application states** in the same schema, with their rows in
    Table III and Section VII. This is the one a reviewer can reject on.
 2. **Harder negatives**: plausible-but-absent labels (defect injection).
-3. **Human-written or paraphrased descriptions** for the `desc=` rows.
+3. **Human-written descriptions** for the `desc=` rows. A hand-paraphrase check
+   exists (2026-10-28, `benchmarks/README.md` sec. 6, `paraphrases.json`):
+   terse wording 0.901 / 0.967 / 0.000, wordy wording 0.690 / 0.870 / 0.000
+   over the run-6 DOMs. Written by the assistant and reviewed by the author;
+   descriptions from other testers are what a reviewer will want.
 4. **Repeat the grounder columns** (two more runs) for error bars.
 5. **Rerun the vision rows with a vision model that does not loop** (runs 5
    and 6 lost 68 and 80 of 116 calls to `qwen2.5vl:3b` collapsing into a
