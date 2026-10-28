@@ -126,6 +126,17 @@ kbd{font-family:inherit;background:#1b2536;border:1px solid var(--line);border-b
 #deck.overview .slide .kpi b{font-size:12px}
 #deck.overview .slide.active{outline:2px solid var(--accent)}
 
+/* ---------- companion links (diagrams / walkthroughs, open in a new tab) ---------- */
+.dlinks{display:flex;flex-wrap:wrap;gap:.4em .5em;align-items:center;margin:.9em 0 0;
+  font-size:clamp(11px,.95vw,14px)}
+.dlinks>span{color:var(--dim);font-size:.82em;letter-spacing:.12em;text-transform:uppercase;margin:0 .1em 0 .4em}
+.dlinks>span:first-child{margin-left:0}
+.dlinks a{text-decoration:none;background:var(--bg2);border:1px solid var(--line);border-radius:999px;
+  padding:.18em .75em;color:var(--accent)}
+.dlinks a.w{color:var(--accent2)}
+.dlinks a::after{content:" \2197";color:var(--dim)}
+.dlinks a:hover,.dlinks a:focus-visible{border-color:currentColor;outline:none;color:#fff}
+
 /* ---------- notes ---------- */
 .notes{display:none;margin-top:auto;padding:.7em 1em;background:#0b1220;
   border-top:1px solid var(--line);border-radius:6px}
@@ -136,7 +147,7 @@ body.notes-on .slide.active .notes{display:block}
 @page{size:A4 landscape;margin:10mm}
 @media print{
   html,body{height:auto;overflow:visible;background:#fff;color:#111}
-  #bar,#num,#help,#title-chip,#lb,#lbctl,#lbhint{display:none!important}
+  #bar,#num,#help,#title-chip,.dlinks,#lb,#lbctl,#lbhint{display:none!important}
   .fig::after{display:none}
   .fig img{cursor:default}
   #deck{height:auto;display:block}
@@ -173,6 +184,7 @@ body.notes-on .slide.active .notes{display:block}
       <span style="color:var(--accent)">bấm vào sơ đồ để phóng to</span>
 </p>
 </div>
+  <p class="dlinks"><span>Sơ đồ</span> <a class="d" href="vizdom_diagrams.html?from=deck#title" target="_blank" rel="noopener">All diagrams</a> <span>Từng bước</span> <a class="w" href="vizdom_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">A suite, end to end</a> <a class="w" href="desc_walkthrough.html?from=deck#lexical/0" target="_blank" rel="noopener">Tier 0: no model needed</a></p>
 <div class="notes"><b>Dẫn nhập:</b> CV kết hợp với một mô hình nhỏ để biến ảnh chụp màn hình thành DOM có thể truy vấn, giúp kiểm thử GUI hoạt động ngay cả khi ứng dụng không cung cấp accessibility tree. Đây là đồ án ứng dụng theo Phương thức 3, với trọng tâm là giải pháp kỹ thuật có nội dung khoa học.</div>
 </section>
 <!-- 2 ─────────────────────────────────────────── -->
@@ -255,6 +267,7 @@ body.notes-on .slide.active .notes{display:block}
 <h2>Tổng quan hệ thống</h2>
 <div class="fig"><img alt="Tổng quan hệ thống" src="figures/System_Overview.svg"/></div>
 <p class="small" style="text-align:center">Ảnh chụp màn hình → phát hiện bằng CV + OCR → gộp và loại trùng → dựng cấu trúc phân cấp → tạo DOM (role, thuộc tính tương tác, label, locator) → sử dụng qua Robot Framework keywords.</p>
+  <p class="dlinks"><span>Sơ đồ</span> <a class="d" href="vizdom_diagrams.html?from=deck#system" target="_blank" rel="noopener">Screenshot in, Visual DOM out</a> <span>Từng bước</span> <a class="w" href="vizdom_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">A suite, end to end</a></p>
 <div class="notes"><b>Hai thành phần bàn giao:</b> Visual DOM engine và thư viện Robot Framework sử dụng DOM được sinh ra.</div>
 </section>
 <!-- 5b ────────────────────────────────────────── -->
@@ -304,6 +317,7 @@ body.notes-on .slide.active .notes{display:block}
 </div>
 <div class="card" style="margin-top:.8em"><p class="small" style="margin:0;color:var(--fg)"><strong>10 · Gán tên cho control không có text.</strong> Icon và phím chỉ có ký hiệu được bổ sung ngữ nghĩa theo nhiều lớp: <strong>symbol reader</strong> đọc trực tiếp các glyph như <code>+ − = × ÷</code> vào trường <code>text</code>; label do caption sinh ra được giữ tách biệt với text thực sự đọc được; các control đã nhận dạng có thêm tên chuẩn hóa như ÷ → “Divide”; và <code>desc=</code> đóng vai trò phương án cuối cho những trường hợp còn lại.</p></div><p class="small" style="margin-top:.6em">Tùy chọn: một bước tinh chỉnh bằng LM/VLM nhỏ (tách / đổi loại / gộp / gán label). Mỗi session lưu lại screenshot, detections và DOM để có thể kiểm tra lại. <span class="dim">Hai thành phần chính: engine và thư viện Robot Framework sử dụng engine này.</span></p>
 </div>
+  <p class="dlinks"><span>Sơ đồ</span> <a class="d" href="vizdom_diagrams.html?from=deck#locators" target="_blank" rel="noopener">From a locator to an element</a> <span>Từng bước</span> <a class="w" href="vizdom_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">A suite, end to end</a></p>
 <div class="notes"><b>Slide trọng tâm của Phương thức 3:</b> đây là phần thể hiện sản phẩm kỹ thuật. Mỗi chức năng đều đã được hiện thực và có thể demo; các con số 4 detector, 5 nguồn capture và 28 keywords cũng là bằng chứng cho quality scenario về khả năng mở rộng (Q-01).</div>
 </section>
 <!-- 6 ─────────────────────────────────────────── -->
@@ -325,6 +339,7 @@ body.notes-on .slide.active .notes{display:block}
 </div>
 <div class="fig"><img alt="Chi tiết CV pipeline" src="figures/CV_Pipeline_Detail.svg"/></div>
 </div>
+  <p class="dlinks"><span>Sơ đồ</span> <a class="d" href="vizdom_diagrams.html?from=deck#backends" target="_blank" rel="noopener">Detector backends are plug-ins</a></p>
 <div class="notes"><b>Điểm cần nhấn mạnh:</b> các bước làm sạch xuất phát trực tiếp từ đặc trưng của GUI ở slide 3 — phần tử dày đặc, nằm sát nhau và thường bị detector chia quá nhỏ.</div>
 </section>
 <!-- 7 ─────────────────────────────────────────── -->
@@ -439,6 +454,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 <div class="fig"><img alt="Kiến trúc lục giác" src="figures/Architecture.svg"/></div>
 </div>
+  <p class="dlinks"><span>Sơ đồ</span> <a class="d" href="vizdom_diagrams.html?from=deck#hexagon" target="_blank" rel="noopener">The core never imports an adapter</a> <a class="d" href="vizdom_diagrams.html?from=deck#responsibilities" target="_blank" rel="noopener">Who is responsible for what</a></p>
 <div class="notes"><b>Các quality attribute chính:</b> khả năng mở rộng/thay đổi, khả năng triển khai và khả năng kiểm thử. Mỗi thuộc tính đều được truy vết tới một architecture driver đã xếp hạng trong tài liệu arc42.</div>
 </section>
 <!-- 10 ────────────────────────────────────────── -->
@@ -538,6 +554,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 </div>
 </div>
+  <p class="dlinks"><span>Sơ đồ</span> <a class="d" href="vizdom_diagrams.html?from=deck#distributed" target="_blank" rel="noopener">Three services, three machines</a> <a class="d" href="vizdom_diagrams.html?from=deck#physical" target="_blank" rel="noopener">Camera in, robot arm out</a> <a class="d" href="vizdom_diagrams.html?from=deck#topologies" target="_blank" rel="noopener">One suite, four deployments</a></p>
 <div class="notes"><b>Việc phân tán xuất phát từ vị trí vật lý và nhu cầu tài nguyên, không phải chạy theo xu hướng.</b> Đây là cách áp dụng microservice hợp lý và có thể bảo vệ cho một đồ án do một người phát triển.</div>
 </section>
 <!-- 13 ────────────────────────────────────────── -->
@@ -567,6 +584,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 </div>
 </div>
+  <p class="dlinks"><span>Sơ đồ</span> <a class="d" href="vizdom_diagrams.html?from=deck#contracts" target="_blank" rel="noopener">The three gRPC contracts</a> <a class="d" href="vizdom_diagrams.html?from=deck#locators" target="_blank" rel="noopener">From a locator to an element</a></p>
 <div class="notes">Có sẵn demo tại <code>examples/windows_calculator_demo/</code>: khởi động detector service, sau đó chạy <code>robot calculator_demo.robot</code> để điều khiển Windows Calculator thông qua Visual DOM.</div>
 </section>
 <!-- 14 ────────────────────────────────────────── -->
@@ -598,6 +616,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 <p class="small">Các rủi ro khác cũng được ghi nhận: ADR-017 vẫn ở trạng thái <em>Proposed</em> dù bằng chứng deployability phụ thuộc vào quyết định này; các kênh gRPC hiện chưa mã hóa và chỉ phù hợp với môi trường LAN tin cậy.</p>
 </div>
+  <p class="dlinks"><span>Sơ đồ</span> <a class="d" href="vizdom_diagrams.html?from=deck#topologies" target="_blank" rel="noopener">One suite, four deployments</a> <a class="d" href="vizdom_diagrams.html?from=deck#physical" target="_blank" rel="noopener">Camera in, robot arm out</a> <span>Từng bước</span> <a class="w" href="vizdom_walkthrough.html?from=deck#camera/0" target="_blank" rel="noopener">Camera in, robot arm out</a></p>
 <div class="notes">Slide phương pháp: quality tree theo arc42, các scenario theo phong cách ATAM và một vòng review D-CAR tạo ra bảng này. Dòng Q-05 được trình bày trung thực để chủ động mở thảo luận về accuracy.</div>
 </section>
 <!-- 15 ────────────────────────────────────────── -->
@@ -695,6 +714,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 </div>
 </div>
+  <p class="dlinks"><span>Từng bước</span> <a class="w" href="vizdom_walkthrough.html?from=deck#oracle/0" target="_blank" rel="noopener">The oracle: an absent target</a> <a class="w" href="desc_walkthrough.html?from=deck#no/0" target="_blank" rel="noopener">Saying no: 88 absent targets</a></p>
 <div class="notes">Đây là câu trả lời cho câu hỏi “làm sao biết hệ thống thực sự hiệu quả cho kiểm thử?”. Có hai mức đánh giá trên cùng một dataset: metric theo stage giúp truy nguyên nguyên nhân của từng lỗi end-to-end; lifecycle score cho biết cả test suite có thực sự hoạt động hay không. Cột false-pass là phần các agent benchmark thường không đo, còn cột chi phí biến lập luận ở slide parser-vs-grounder thành số đo thực tế: 44 lần parse so với 514 lần inference cho cùng một suite.</div>
 </section>
 
@@ -864,6 +884,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 <p class="small">Tính deterministic được kiểm soát bằng policy cấu hình: chuỗi tier có thể cấu hình; CI có thể chỉ bật lexical tier; kết quả được cache theo từng screen; mỗi lần resolve đều ghi lại tier đã trả lời. Nhờ đó chiến lược <strong>“parse once, resolve long-tail locators”</strong> có thể đo lường được.</p><div class="card good"><p style="margin:0"><strong>Kết hợp trực tiếp với fallback chain.</strong> Ví dụ <code>text=Save || desc="save button in the toolbar"</code>: locator xác định và gần như không tốn chi phí được chạy trước; <code>desc=</code> chỉ được dùng khi locator đầu tiên không tìm thấy hoặc trả về nhiều kết quả. Khi fallback thành công, hệ thống ghi warning và chỉ rõ locator chính nào đã lỗi thời — đây chính là tín hiệu đầu vào cần thiết cho cơ chế <em>self-healing locator</em> dự kiến trong ADR-024.</p></div>
 </div>
+  <p class="dlinks"><span>Từng bước</span> <a class="w" href="desc_walkthrough.html?from=deck#lexical/0" target="_blank" rel="noopener">Tier 0: no model needed</a> <a class="w" href="desc_walkthrough.html?from=deck#slm/0" target="_blank" rel="noopener">Tier 1: a short table</a> <a class="w" href="desc_walkthrough.html?from=deck#vlm/0" target="_blank" rel="noopener">Tier 2: why vision stays out</a> <a class="w" href="vizdom_walkthrough.html?from=deck#desc/0" target="_blank" rel="noopener">desc=: the tiers</a></p>
 <div class="notes">ADR-022. Đây là phần mới nhất và có thể phát triển thành một thí nghiệm phù hợp cho luận văn: đo tỷ lệ resolve đúng của từng tier trên dataset có label.</div>
 </section>
 <!-- 21b ───────────────────────────────────────── -->
@@ -893,6 +914,7 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 <p class="small">Tính năng này mặc định tắt vì đưa cửa sổ lên foreground <strong>là một action</strong>: nó có thể làm tooltip hoặc popup tạm thời biến mất, nên không được ngầm thực hiện như một phần của thao tác đọc. Khi window title khớp nhiều cửa sổ, hệ thống báo lỗi kèm danh sách ứng viên thay vì chọn ngẫu nhiên.</p>
 </div>
+  <p class="dlinks"><span>Từng bước</span> <a class="w" href="vizdom_walkthrough.html?from=deck#suite/2" target="_blank" rel="noopener">Raise the window, grab the screen</a></p>
 <div class="notes"><b>ADR-021.</b> Viewer đã có sẵn đoạn code Win32 này và né lỗi bằng cách tự ẩn cửa sổ của nó — capability đúng nhưng nằm sai layer. Đưa nó vào các port giúp Robot Framework, CLI và remote service đều sử dụng được, đồng thời mỗi hệ điều hành chỉ cần một implementation. Đây là ví dụ rõ ràng cho lợi ích của kiến trúc: một capability cross-cutting mới không cần thêm port, không cần thêm section cấu hình và không làm thay đổi test.</div>
 </section>
 <!-- 22 ────────────────────────────────────────── -->
@@ -985,11 +1007,12 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
 </div>
 <p class="small" style="margin-top:2em">Tài liệu và báo cáo: <code>docs/</code> · <code>report/</code> (tổng quan + arc42, tiếng Anh + tiếng Việt)<br/>Trang tài liệu: <strong>milanac030988.github.io/vizdom</strong></p>
 </div>
+  <p class="dlinks"><span>Sơ đồ</span> <a class="d" href="vizdom_diagrams.html?from=deck#title" target="_blank" rel="noopener">All diagrams</a> <span>Từng bước</span> <a class="w" href="vizdom_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">A suite, end to end</a> <a class="w" href="vizdom_walkthrough.html?from=deck#oracle/0" target="_blank" rel="noopener">The oracle: an absent target</a> <a class="w" href="vizdom_walkthrough.html?from=deck#camera/0" target="_blank" rel="noopener">Camera in, robot arm out</a> <a class="w" href="desc_walkthrough.html?from=deck#lexical/0" target="_blank" rel="noopener">Tier 0: no model needed</a> <a class="w" href="desc_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">desc= in a suite</a></p>
 <div class="notes">Tài liệu dự phòng khi được hỏi: sequence diagram, component diagram, tài liệu cấu hình theo từng stage, demo Windows Calculator và kết quả của các session trong <code>output/sessions/</code>.</div>
 </section>
 </div><!-- /deck -->
 <div id="bar"></div>
-<div id="title-chip">VizDOM — trình bày đồ án  ·  <a href="index.html">EN</a></div>
+<div id="title-chip">VizDOM — trình bày đồ án  ·  <a href="vizdom_diagrams.html?from=deck#title" target="_blank" rel="noopener">Sơ đồ</a> &nbsp;·&nbsp; <a href="vizdom_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">Từng bước</a> &nbsp;·&nbsp; <a href="index.html">EN</a></div>
 <div id="num"></div>
 <!-- lớp phủ phóng to sơ đồ -->
 <div id="lb">
@@ -1165,6 +1188,20 @@ Ngoài ra, các kết quả công bố trên ScreenSpot và OSWorld đo một <s
     if(Math.abs(dx)>60) show(i + (dx<0?1:-1));
     x0=null;
   }, {passive:true});
+
+  // Companion links carry the deck and the slide they were opened from, so
+  // the diagrams and walkthrough pages can offer a way back to this slide.
+  var deckName = location.pathname.split('/').pop() || 'index.html';
+  function backHref(a, n){
+    a.href = a.getAttribute('href').replace(/\?from=deck[^#]*/, '?from=deck&deck=' + encodeURIComponent(deckName) + '&back=' + n);
+  }
+  slides.forEach(function(s,k){
+    s.querySelectorAll('a[href*="?from=deck"]').forEach(function(a){ backHref(a, k+1); });
+  });
+  document.querySelectorAll('#title-chip a[href*="?from=deck"]').forEach(function(a){
+    a.addEventListener('mousedown', function(){ backHref(a, i+1); });
+    a.addEventListener('focus', function(){ backHref(a, i+1); });
+  });
 
   var start = parseInt((location.hash||'').replace('#',''),10);
   show(isNaN(start)?0:start-1);

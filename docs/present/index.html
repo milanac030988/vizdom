@@ -125,6 +125,17 @@ kbd{font-family:inherit;background:#1b2536;border:1px solid var(--line);border-b
 #deck.overview .slide .kpi b{font-size:12px}
 #deck.overview .slide.active{outline:2px solid var(--accent)}
 
+/* ---------- companion links (diagrams / walkthroughs, open in a new tab) ---------- */
+.dlinks{display:flex;flex-wrap:wrap;gap:.4em .5em;align-items:center;margin:.9em 0 0;
+  font-size:clamp(11px,.95vw,14px)}
+.dlinks>span{color:var(--dim);font-size:.82em;letter-spacing:.12em;text-transform:uppercase;margin:0 .1em 0 .4em}
+.dlinks>span:first-child{margin-left:0}
+.dlinks a{text-decoration:none;background:var(--bg2);border:1px solid var(--line);border-radius:999px;
+  padding:.18em .75em;color:var(--accent)}
+.dlinks a.w{color:var(--accent2)}
+.dlinks a::after{content:" \2197";color:var(--dim)}
+.dlinks a:hover,.dlinks a:focus-visible{border-color:currentColor;outline:none;color:#fff}
+
 /* ---------- notes ---------- */
 .notes{display:none;margin-top:auto;padding:.7em 1em;background:#0b1220;
   border-top:1px solid var(--line);border-radius:6px}
@@ -135,7 +146,7 @@ body.notes-on .slide.active .notes{display:block}
 @page{size:A4 landscape;margin:10mm}
 @media print{
   html,body{height:auto;overflow:visible;background:#fff;color:#111}
-  #bar,#num,#help,#title-chip,#lb,#lbctl,#lbhint{display:none!important}
+  #bar,#num,#help,#title-chip,.dlinks,#lb,#lbctl,#lbhint{display:none!important}
   .fig::after{display:none}
   .fig img{cursor:default}
   #deck{height:auto;display:block}
@@ -184,6 +195,7 @@ body.notes-on .slide.active .notes{display:block}
       <span style="color:var(--accent)">click any diagram to zoom</span>
     </p>
   </div>
+  <p class="dlinks"><span>Diagrams</span> <a class="d" href="vizdom_diagrams.html?from=deck#title" target="_blank" rel="noopener">All diagrams</a> <span>Walkthrough</span> <a class="w" href="vizdom_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">A suite, end to end</a> <a class="w" href="desc_walkthrough.html?from=deck#lexical/0" target="_blank" rel="noopener">Tier 0: no model needed</a></p>
   <div class="notes"><b>Talk track:</b> CV + small LLM turns a screenshot into a queryable DOM so GUI tests
     work where no accessibility tree exists. Method 3 — applied engineering with scientific content.</div>
 </section>
@@ -298,6 +310,7 @@ body.notes-on .slide.active .notes{display:block}
   <div class="fig"><img src="figures/System_Overview.svg" alt="System overview"></div>
   <p class="small" style="text-align:center">Screenshot → CV + OCR detection → merge &amp; deduplicate →
     hierarchy → DOM compilation (roles, flags, labels, locators) → Robot Framework keywords.</p>
+  <p class="dlinks"><span>Diagrams</span> <a class="d" href="vizdom_diagrams.html?from=deck#system" target="_blank" rel="noopener">Screenshot in, Visual DOM out</a> <span>Walkthrough</span> <a class="w" href="vizdom_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">A suite, end to end</a></p>
   <div class="notes"><b>Two deliverables:</b> the Visual DOM engine, and the Robot Framework library
     that consumes it.</div>
 </section>
@@ -383,6 +396,7 @@ body.notes-on .slide.active .notes{display:block}
       later inspection. <span class="dim">Two deliverables: the engine, and the Robot Framework
       library that consumes it.</span></p>
   </div>
+  <p class="dlinks"><span>Diagrams</span> <a class="d" href="vizdom_diagrams.html?from=deck#locators" target="_blank" rel="noopener">From a locator to an element</a> <span>Walkthrough</span> <a class="w" href="vizdom_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">A suite, end to end</a></p>
   <div class="notes"><b>Method-3 anchor slide:</b> for an applied project this is the deliverable —
     spend time here. Every card is implemented and demonstrable; the numbers (4 detectors, 5 captures,
     24 keywords) are the same evidence used for the modifiability quality scenario (Q-01).</div>
@@ -418,6 +432,7 @@ body.notes-on .slide.active .notes{display:block}
       </div>
     </div>
   </div>
+  <p class="dlinks"><span>Walkthrough</span> <a class="w" href="vizdom_walkthrough.html?from=deck#suite/3" target="_blank" rel="noopener">One Visual DOM per screen</a></p>
   <div class="notes"><b>Concrete anchor for the audience:</b> the same Calculator the demo suite drives.
     Point at the green grid (every key boxed, correct bounds), then at the yellow panel: the ÷ × − + =
     keys have no label anywhere — the symbol reader's structural read is what makes them addressable.
@@ -489,6 +504,7 @@ body.notes-on .slide.active .notes{display:block}
       </div>
     </div>
   </div>
+  <p class="dlinks"><span>Diagrams</span> <a class="d" href="vizdom_diagrams.html?from=deck#sequence" target="_blank" rel="noopener">One Robot test, end to end</a> <span>Walkthrough</span> <a class="w" href="vizdom_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">A suite, end to end</a></p>
   <div class="notes"><b>The payoff slide:</b> the suite is readable by a tester, every locator is
     resilient by construction, and the economics are the parse-once model — two tests, one DOM.
     Mention that the run shown was <em>distributed</em> (services), yet the suite is identical for a
@@ -516,6 +532,7 @@ body.notes-on .slide.active .notes{display:block}
     </div>
     <div class="fig"><img src="figures/CV_Pipeline_Detail.svg" alt="CV pipeline detail"></div>
   </div>
+  <p class="dlinks"><span>Diagrams</span> <a class="d" href="vizdom_diagrams.html?from=deck#backends" target="_blank" rel="noopener">Detector backends are plug-ins</a></p>
   <div class="notes"><b>Emphasise:</b> the clean-up stages exist because of the problem-space
     properties on slide 3 — dense, adjacent, over-segmented elements.</div>
 </section>
@@ -671,6 +688,7 @@ body.notes-on .slide.active .notes{display:block}
     </div>
     <div class="fig"><img src="figures/Architecture.svg" alt="Hexagonal architecture"></div>
   </div>
+  <p class="dlinks"><span>Diagrams</span> <a class="d" href="vizdom_diagrams.html?from=deck#hexagon" target="_blank" rel="noopener">The core never imports an adapter</a> <a class="d" href="vizdom_diagrams.html?from=deck#responsibilities" target="_blank" rel="noopener">Who is responsible for what</a></p>
   <div class="notes"><b>Quality attributes:</b> modifiability, deployability, testability — each
     traced to a ranked driver in the arc42 document.</div>
 </section>
@@ -801,6 +819,7 @@ body.notes-on .slide.active .notes{display:block}
       </div>
     </div>
   </div>
+  <p class="dlinks"><span>Diagrams</span> <a class="d" href="vizdom_diagrams.html?from=deck#distributed" target="_blank" rel="noopener">Three services, three machines</a> <a class="d" href="vizdom_diagrams.html?from=deck#physical" target="_blank" rel="noopener">Camera in, robot arm out</a> <a class="d" href="vizdom_diagrams.html?from=deck#topologies" target="_blank" rel="noopener">One suite, four deployments</a></p>
   <div class="notes"><b>Distribution is driven by physical locality and resource — not fashion.</b>
     This is the defensible version of "microservices" for a single-developer project.</div>
 </section>
@@ -837,6 +856,7 @@ body.notes-on .slide.active .notes{display:block}
       </div>
     </div>
   </div>
+  <p class="dlinks"><span>Diagrams</span> <a class="d" href="vizdom_diagrams.html?from=deck#contracts" target="_blank" rel="noopener">The three gRPC contracts</a> <a class="d" href="vizdom_diagrams.html?from=deck#locators" target="_blank" rel="noopener">From a locator to an element</a></p>
   <div class="notes">Demo available: <code>examples/windows_calculator_demo/</code> — start the detector
     service, then <code>robot calculator_demo.robot</code> drives Windows Calculator by its Visual DOM.</div>
 </section>
@@ -879,6 +899,7 @@ body.notes-on .slide.active .notes{display:block}
     <p class="small">Also logged as risks: <strong>ADR-017 is still <em>Proposed</em></strong> while
       deployability evidence leans on it, and gRPC channels are insecure (LAN/trusted only).</p>
   </div>
+  <p class="dlinks"><span>Diagrams</span> <a class="d" href="vizdom_diagrams.html?from=deck#topologies" target="_blank" rel="noopener">One suite, four deployments</a> <a class="d" href="vizdom_diagrams.html?from=deck#physical" target="_blank" rel="noopener">Camera in, robot arm out</a> <span>Walkthrough</span> <a class="w" href="vizdom_walkthrough.html?from=deck#camera/0" target="_blank" rel="noopener">Camera in, robot arm out</a></p>
   <div class="notes"><b>Method slide:</b> arc42 quality tree + ATAM-style scenarios + a D-CAR review
     produced these. The honest Q-05 row is deliberate — it invites the accuracy discussion on my terms.</div>
 </section>
@@ -1039,6 +1060,7 @@ body.notes-on .slide.active .notes{display:block}
       </div>
     </div>
   </div>
+  <p class="dlinks"><span>Walkthrough</span> <a class="w" href="vizdom_walkthrough.html?from=deck#oracle/0" target="_blank" rel="noopener">The oracle: an absent target</a> <a class="w" href="desc_walkthrough.html?from=deck#no/0" target="_blank" rel="noopener">Saying no: 88 absent targets</a></p>
   <div class="notes">This is the answer to "how do you know it works for <i>testing</i>". Two levels
     over one dataset: stage metrics keep every end-to-end failure attributable, the lifecycle score
     says whether a suite would work. The false-pass column is the part reviewers have not seen in
@@ -1328,6 +1350,7 @@ body.notes-on .slide.active .notes{display:block}
       fallback win logs a <strong>warning naming the stale primary</strong>, which is exactly the
       signal the planned <em>self-healing locators</em> need (ADR-024).</p></div>
   </div>
+  <p class="dlinks"><span>Walkthrough</span> <a class="w" href="desc_walkthrough.html?from=deck#lexical/0" target="_blank" rel="noopener">Tier 0: no model needed</a> <a class="w" href="desc_walkthrough.html?from=deck#slm/0" target="_blank" rel="noopener">Tier 1: a short table</a> <a class="w" href="desc_walkthrough.html?from=deck#vlm/0" target="_blank" rel="noopener">Tier 2: why vision stays out</a> <a class="w" href="vizdom_walkthrough.html?from=deck#desc/0" target="_blank" rel="noopener">desc=: the tiers</a></p>
   <div class="notes">ADR-022. This is the newest work and a natural thesis experiment: per-tier
     resolution accuracy over the labelled set.</div>
 </section>
@@ -1375,6 +1398,7 @@ body.notes-on .slide.active .notes{display:block}
       dismiss tooltips and transient popups, so it must never be implied by a read. Ambiguity fails
       with its candidate list rather than driving a coin-flip window.</p>
   </div>
+  <p class="dlinks"><span>Walkthrough</span> <a class="w" href="vizdom_walkthrough.html?from=deck#suite/2" target="_blank" rel="noopener">Raise the window, grab the screen</a></p>
   <div class="notes">ADR-021. The Viewer already carried this Win32 code and worked around the problem
     by hiding itself — the capability existed in the wrong layer. Promoting it to the ports made it
     reachable from Robot Framework, the CLI and the remote services, with one implementation per OS
@@ -1508,6 +1532,7 @@ body.notes-on .slide.active .notes{display:block}
       Published site: milanac030988.github.io/vizdom
     </p>
   </div>
+  <p class="dlinks"><span>Diagrams</span> <a class="d" href="vizdom_diagrams.html?from=deck#title" target="_blank" rel="noopener">All diagrams</a> <span>Walkthrough</span> <a class="w" href="vizdom_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">A suite, end to end</a> <a class="w" href="vizdom_walkthrough.html?from=deck#oracle/0" target="_blank" rel="noopener">The oracle: an absent target</a> <a class="w" href="vizdom_walkthrough.html?from=deck#camera/0" target="_blank" rel="noopener">Camera in, robot arm out</a> <a class="w" href="desc_walkthrough.html?from=deck#lexical/0" target="_blank" rel="noopener">Tier 0: no model needed</a> <a class="w" href="desc_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">desc= in a suite</a></p>
   <div class="notes"><b>Backup material if asked:</b> sequence diagram, component diagram, per-stage
     config reference, the calculator demo, session outputs in <code>output/sessions/</code>.</div>
 </section>
@@ -1515,7 +1540,7 @@ body.notes-on .slide.active .notes{display:block}
 </div><!-- /deck -->
 
 <div id="bar"></div>
-<div id="title-chip">VizDOM — progress review &nbsp;·&nbsp; <a href="vi.html">VI</a></div>
+<div id="title-chip">VizDOM — progress review &nbsp;·&nbsp; <a href="vizdom_diagrams.html?from=deck#title" target="_blank" rel="noopener">Diagrams</a> &nbsp;·&nbsp; <a href="vizdom_walkthrough.html?from=deck#suite/0" target="_blank" rel="noopener">Walkthrough</a> &nbsp;·&nbsp; <a href="vi.html">VI</a></div>
 <div id="num"></div>
 
 <!-- diagram zoom overlay -->
@@ -1700,6 +1725,20 @@ body.notes-on .slide.active .notes{display:block}
     if(Math.abs(dx)>60) show(i + (dx<0?1:-1));
     x0=null;
   }, {passive:true});
+
+  // Companion links carry the deck and the slide they were opened from, so
+  // the diagrams and walkthrough pages can offer a way back to this slide.
+  var deckName = location.pathname.split('/').pop() || 'index.html';
+  function backHref(a, n){
+    a.href = a.getAttribute('href').replace(/\?from=deck[^#]*/, '?from=deck&deck=' + encodeURIComponent(deckName) + '&back=' + n);
+  }
+  slides.forEach(function(s,k){
+    s.querySelectorAll('a[href*="?from=deck"]').forEach(function(a){ backHref(a, k+1); });
+  });
+  document.querySelectorAll('#title-chip a[href*="?from=deck"]').forEach(function(a){
+    a.addEventListener('mousedown', function(){ backHref(a, i+1); });
+    a.addEventListener('focus', function(){ backHref(a, i+1); });
+  });
 
   var start = parseInt((location.hash||'').replace('#',''),10);
   show(isNaN(start)?0:start-1);
