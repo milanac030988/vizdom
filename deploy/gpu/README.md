@@ -229,6 +229,13 @@ Learned on the first paid run (2026-10-25, RTX 4090 on Vast):
 
 ## Notes & failure modes
 
+- **Tesseract is a binary, not a pip package.** `setup.sh` now installs
+  `tesseract-ocr` and prints its version; without it the OCR stage's
+  low-confidence retry (ADR-012) does not run and the detector warns once.
+  Runs 1–6 lacked it (the detector only looked for a Windows install), so
+  every VizDOM row of those runs is a lower bound: the laptop with the
+  retry measures modular `text=` 0.915 / 0.957 against the hosts' 0.883 /
+  0.934 (`benchmarks/README.md` §7).
 - **Every download is resumable** — rerun `prefetch.sh` after an interruption.
 - **One column failing does not kill the sweep** (`run_benchmarks.sh` runs each
   in its own process and keeps going); check its `.log` in the results dir.

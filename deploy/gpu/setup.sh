@@ -36,6 +36,16 @@ if [ "${AVAIL_GB:-0}" -lt 120 ] && [ -z "${VIZDOM_SKIP_DISK_CHECK:-}" ]; then
 fi
 # tmux so the sweep survives a dropped SSH session; never fatal.
 command -v tmux >/dev/null 2>&1 || (apt-get install -y -qq tmux >/dev/null 2>&1 || true)
+# Tesseract binary: the OCR stage re-reads easyocr's low-confidence boxes
+# with it (ADR-012). pytesseract is a pip dependency but the binary is not,
+# and runs 1-6 measured every VizDOM column without it (the detector only
+# looked for a Windows install; found by the stage ablation, 2026-10-28).
+command -v tesseract >/dev/null 2>&1 || apt-get install -y -qq tesseract-ocr >/dev/null 2>&1 || true
+if command -v tesseract >/dev/null 2>&1; then
+    echo "tesseract: $(tesseract --version 2>&1 | head -1)"
+else
+    echo "WARNING: no tesseract binary - the OCR retry will not run (ocr.retry_low_confidence)"
+fi
 
 echo "=== [2/6] uv (standalone) ==="
 if ! command -v uv >/dev/null 2>&1; then

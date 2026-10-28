@@ -21,6 +21,7 @@ Nguyen Huynh Tri Cuong
 | Date | Version | Description |
 |------|---------|-------------|
 | 2026-03-30 | 1.0 | Initial version |
+| 2026-10-28 | 1.1 | The Tesseract retry looked for a Windows install only (`C:\Program Files\Tesseract-OCR`), so on every rented Linux host of lifecycle runs 1–6 it silently never ran and the OCR stage was measured without its second engine (modular `text=` 0.883 there against 0.915 on the laptop with it; found by the stage ablation, `benchmarks/README.md` §7). The lookup now tries PATH first (`shutil.which`), warns once when nothing is found, and `deploy/gpu/setup.sh` installs `tesseract-ocr`. The pair (upscale + retry) is worth 12 action hits and 0.028 character accuracy on the synthetic set; both are now session config (`ocr.upscale`, `ocr.retry_low_confidence`). |
 
 ## Context
 

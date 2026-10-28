@@ -61,6 +61,7 @@ class TextDetector:
         confidence_threshold: float = 0.2,
         gpu: bool = True,
         upscale: bool = True,
+        retry_low_confidence: bool = True,
     ):
         """
         Initialize text detector.
@@ -71,12 +72,15 @@ class TextDetector:
             confidence_threshold: Minimum confidence to accept detection
             gpu: Use GPU acceleration if available
             upscale: Auto-upscale small images for better OCR accuracy
+            retry_low_confidence: Re-read easyocr's low-confidence boxes with
+                Tesseract (ADR-012). Off = a single plain engine pass.
         """
         self.ocr_engine = ocr_engine
         self.languages = languages or ["en"]
         self.confidence_threshold = confidence_threshold
         self.gpu = gpu
         self.upscale = upscale
+        self.retry_low_confidence = retry_low_confidence
         self._engine = None
         self._text_counter = 0
 
@@ -106,6 +110,15 @@ class TextDetector:
 
         return enhanced
 
+    def _warn_no_tesseract(self, why: str) -> None:
+        """Once per detector: the retry is configured but cannot run. A quiet
+        no-op here is a quality loss nobody sees (the GPU benchmark hosts,
+        2026-10-28), so it is said out loud and recorded for the stats."""
+        if not getattr(self, "_tesseract_warned", False):
+            self._tesseract_warned = True
+            log.warning("OCR retry with Tesseract is on but %s - low-confidence "
+                        "easyocr reads stay as they are (ocr.retry_low_confidence)", why)
+
     def _retry_low_confidence_with_tesseract(
         self,
         image: np.ndarray,
@@ -125,27 +138,33 @@ class TextDetector:
         """
         try:
             import os
-            tesseract_paths = [
-                r"C:\Program Files\Tesseract-OCR",
-                r"C:\Program Files (x86)\Tesseract-OCR",
-                r"D:\Program Files\Tesseract-OCR",
-            ]
-            tesseract_exe = None
-            for base in tesseract_paths:
-                exe = os.path.join(base, "tesseract.exe")
-                if os.path.exists(exe):
-                    tessdata = os.path.join(base, "tessdata")
-                    if os.path.exists(tessdata):
-                        os.environ["TESSDATA_PREFIX"] = tessdata
-                    tesseract_exe = exe
-                    break
+            import shutil
+            # PATH first (Linux, macOS, a Windows install that is on PATH), then
+            # the usual Windows install folders. Until 2026-10-28 only the
+            # Windows folders were tried, so on every rented Linux host the
+            # retry silently never ran and the OCR stage was measured without
+            # its second engine (lifecycle runs 1-6; the ablation found it).
+            tesseract_exe = shutil.which("tesseract")
+            if not tesseract_exe:
+                for base in (r"C:\Program Files\Tesseract-OCR",
+                             r"C:\Program Files (x86)\Tesseract-OCR",
+                             r"D:\Program Files\Tesseract-OCR"):
+                    exe = os.path.join(base, "tesseract.exe")
+                    if os.path.exists(exe):
+                        tessdata = os.path.join(base, "tessdata")
+                        if os.path.exists(tessdata):
+                            os.environ["TESSDATA_PREFIX"] = tessdata
+                        tesseract_exe = exe
+                        break
 
             if not tesseract_exe:
+                self._warn_no_tesseract("no tesseract binary on PATH or in the usual folders")
                 return results
 
             import pytesseract
             pytesseract.pytesseract.tesseract_cmd = tesseract_exe
         except ImportError:
+            self._warn_no_tesseract("pytesseract is not installed")
             return results
 
         retry_count = 0
@@ -350,7 +369,7 @@ class TextDetector:
                 )
 
         # For EasyOCR: re-OCR low confidence regions with Tesseract
-        if self.ocr_engine == "easyocr":
+        if self.ocr_engine == "easyocr" and self.retry_low_confidence:
             results = self._retry_low_confidence_with_tesseract(image, results, scale_factor)
 
         # Filter by confidence

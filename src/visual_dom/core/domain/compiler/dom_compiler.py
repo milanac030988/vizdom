@@ -124,8 +124,15 @@ class DOMCompiler:
         Returns:
             Final DOM JSON with metadata and flat element list
         """
-        # Build element lookup
+        # Build element lookup. Both maps are rebuilt per call: a session
+        # compiles many screens with ONE compiler, and a nodes_map that
+        # survived the call handed the previous screen's ROOT node to
+        # _build_hierarchy_tree, which then appended the new screen's children
+        # to it - every DOM after the first carried the earlier screens'
+        # hierarchy (found in the run-6 dumps, 2026-10-28; the flat element
+        # list was always right).
         self.elements_map = {e["id"]: e for e in elements}
+        self.nodes_map = {}
 
         # Convert elements to DOMNodes
         dom_nodes = []

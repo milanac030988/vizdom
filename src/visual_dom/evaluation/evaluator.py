@@ -145,19 +145,15 @@ class VisualDOMEvaluator:
         """Extract flat list of elements from DOM structure."""
         elements = []
 
-        # Handle different DOM formats
-        if "dom" in dom:
-            dom_data = dom["dom"]
-            # If there's a flat elements list, use it
-            if "elements" in dom_data:
-                elements = dom_data["elements"]
-            # Otherwise traverse hierarchy
-            elif "hierarchy" in dom_data:
-                self._traverse_hierarchy(dom_data["hierarchy"], elements)
-        elif "hierarchy" in dom:
-            self._traverse_hierarchy(dom["hierarchy"], elements)
-        elif "elements" in dom:
-            elements = dom["elements"]
+        # Handle different DOM formats. The flat list is authoritative when
+        # present (a compiled DOM carries both, and its tree may hold
+        # container nodes that are not detections); the tree is only walked
+        # for a DOM that has nothing else.
+        dom_data = dom.get("dom", dom) if isinstance(dom.get("dom"), dict) else dom
+        if "elements" in dom_data:
+            elements = dom_data["elements"]
+        elif "hierarchy" in dom_data:
+            self._traverse_hierarchy(dom_data["hierarchy"], elements)
 
         return elements
 
