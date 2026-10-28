@@ -84,7 +84,8 @@ DESC_COLUMNS="vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vl
 OLLAMA="${VIZDOM_OLLAMA_HOST:-http://localhost:11434}"
 GMODEL="${VIZDOM_GROUNDING_MODEL:-qwen2.5:3b}"
 GVISION="${VIZDOM_GROUNDING_VISION_MODEL:-qwen2.5vl:3b}"
-desc_wanted=0; for c in $DESC_COLUMNS; do wanted "$c" && desc_wanted=1; done
+# the ablation's refiner=on and +desc columns go through Ollama as well
+desc_wanted=0; for c in $DESC_COLUMNS ablation; do wanted "$c" && desc_wanted=1; done
 # The server's own log goes into the tarball: runs 4-6 each lost a block of
 # VLM calls to "Ollama error: 500" and the log that would have said why was
 # sent to /dev/null (prefetch.sh writes to the same file when it starts the
@@ -108,13 +109,17 @@ fi
 
 # --- the stage ablation (benchmarks/README.md sec. 7) ----------------------
 # Modular detector held fixed, one stage of VizDOM's own pipeline off per
-# column, scored on both levels; the driver writes ablation-<stamp>.json into
-# the run dir after every column and keeps going past a failed one (the
-# refiner=on column needs the Ollama server started above). About 20 min.
+# column, scored on both levels; the driver writes ablation-<stamp>.json
+# after every column and keeps going past a failed one (the refiner=on and
+# +desc columns need the Ollama server started above). About 20 min. Its
+# own SUBDIRECTORY: the driver runs the lifecycle runner per column, and its
+# control columns carry the main columns' names (vizdom-modular,
+# vizdom-modular+desc[lexical+slm]) - in the run dir their <stamp>.md would
+# replace the main rows in summary.md (review, 2026-10-28).
 ABLATION_COLUMNS="${VIZDOM_ABLATION_COLUMNS:-modular,modular[roles=off],modular[labels=off],modular[symbols=off],modular[merge=off],modular[ocr=plain],modular[ocr=none],modular[refiner=on],modular+desc,modular[roles=off]+desc,modular[labels=off]+desc}"
 run_column ablation python -m visual_dom.evaluation.lifecycle.ablation \
-    --manifest "$MANIFEST" --out-dir "$OUT" --columns "$ABLATION_COLUMNS"
-wanted ablation && python -m visual_dom.evaluation.lifecycle.ablation --report --out-dir "$OUT" > /dev/null 2>&1 || true
+    --manifest "$MANIFEST" --out-dir "$OUT/ablation" --columns "$ABLATION_COLUMNS"
+wanted ablation && python -m visual_dom.evaluation.lifecycle.ablation --report --out-dir "$OUT/ablation" > /dev/null 2>&1 || true
 
 # --- the grounder columns (the competing end-to-end paradigm) --------------
 # 7B grounders run in bf16 on a >= 20 GB card (the 4-bit path exists for the

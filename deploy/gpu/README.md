@@ -98,7 +98,11 @@ nothing is overwritten; `summary.md` lists every row found. `prefetch.sh`
 honours the same `ONLY=` so a single-column rental downloads only that
 column's weights. `ablation` is the stage ablation of `benchmarks/README.md`
 sec. 7 (eleven columns, about 20 min; `VIZDOM_ABLATION_COLUMNS` overrides the
-list); its `ablation-<stamp>.json` and `ablation-report.md` land in the run dir.
+list); its `ablation-<stamp>.json`, `ablation-report.md` and the per-column
+runner files land in `<run dir>/ablation/`, a subdirectory of their own so
+that its control columns, which carry the main columns' names, do not
+replace the main rows in `summary.md`. `ONLY="ablation"` alone also fetches
+OmniParser and the Ollama models and starts the server.
 
 ### Run 7: the VizDOM columns only (after the Tesseract fix, 2026-10-28)
 

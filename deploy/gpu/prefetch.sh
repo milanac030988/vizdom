@@ -27,7 +27,11 @@ VRAM_GB=$(python -c "import torch;print(int(torch.cuda.get_device_properties(0).
 echo "GPU VRAM: ${VRAM_GB} GB"
 [ -z "${ONLY:-}" ] || echo "ONLY=${ONLY}: fetching just what those columns need"
 want() { [ -z "${ONLY:-}" ] || [[ " ${ONLY} " == *" $1 "* ]]; }
-want_omniparser() { [ -z "${ONLY:-}" ] || [[ " ${ONLY} " == *vizdom-* ]] || want parity; }
+# The ablation column runs the modular detector (OmniParser stage 1) and two
+# Ollama-backed columns, so it needs both downloads like the vizdom-/desc
+# columns do (review, 2026-10-28: ONLY="ablation" fetched neither, and the
+# modular stage 1 then fell back to UIED with only a warning).
+want_omniparser() { [ -z "${ONLY:-}" ] || [[ " ${ONLY} " == *vizdom-* ]] || want parity || want ablation; }
 
 pids=()
 run_bg() { echo ">> $*"; "$@" & pids+=($!); }
@@ -94,7 +98,7 @@ fi
 # all). Never fatal: run_benchmarks.sh skips the desc columns when Ollama is
 # not reachable. The same pull also serves the Qwen2-VL captioner combo
 # (ADR-027) once an ollama-backed Captioner exists.
-want_desc() { [ -z "${ONLY:-}" ] || [[ " ${ONLY} " == *desc* ]]; }
+want_desc() { [ -z "${ONLY:-}" ] || [[ " ${ONLY} " == *desc* ]] || want ablation; }
 if want_desc || [ -n "${VIZDOM_PREFETCH_OLLAMA:-}" ]; then
     if command -v ollama >/dev/null 2>&1 || curl -fsSL https://ollama.com/install.sh | sh; then
         OLLAMA="${VIZDOM_OLLAMA_HOST:-http://localhost:11434}"
