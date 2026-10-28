@@ -1122,10 +1122,13 @@ decoding.
   \code{3fb0924}, 2026-10-27) resolve each step's \emph{description} (``Save button'')
   through the ADR-022 tier chain over the same modular DOM, pinned per row; the
   modular control column reproduced run 3 on all 514 steps. Their per-step cost is the
-  median resolver call (Ollama, 3B models) on top of the parse. $^\S$Run 5 (same card
-  model, commit \code{c03c438}, 2026-10-27): the vision tier behind the lexical
-  shortlist, as production would run it; 68 of its 116 vision calls failed with a
-  model-server error and are scored as misses, so its action-hit is partial.}
+  median resolver call (Ollama, 3B models) on top of the parse. The production chain
+  is quoted from run 6 (RTX 6000 Ada, commit \code{ca1f0f7}, 2026-10-27, the full sweep
+  after the shortlist fix of Section~\ref{sec:desc}); run 4 had it at
+  0.930 / 0.954 / 0.003. $^\S$Runs 5 and 6: the vision tier behind the lexical
+  shortlist, as production would run it; 68 and 80 of its 116 vision calls failed with
+  a model-server error and are scored as misses, so its action-hit is partial (run 6
+  quoted).}
   \label{tab:lifecycle}
   \begin{tabular}{@{}p{3.4cm}p{2.5cm}cccp{2.6cm}@{}}
     \toprule
@@ -1134,10 +1137,10 @@ decoding.
     VizDOM + UIED & CV, no LLM & 0.822 & 0.934 & \textbf{0.000} & 0.39\,s / state \\
     VizDOM + OmniParser & CV + Florence-2 & 0.883 & 0.934 & \textbf{0.000} & 1.02\,s / state \\
     VizDOM modular & CV, captioner off & 0.883 & 0.934 & \textbf{0.000} & 0.62\,s / state \\
-    VizDOM modular, \code{desc=}$^\ddagger$ & lexical $\rightarrow$ SLM (qwen2.5:3b) & 0.930 & \textbf{0.954} & 0.003 & 0.03\,s / step \\
+    VizDOM modular, \code{desc=}$^\ddagger$ & lexical $\rightarrow$ SLM (qwen2.5:3b) & 0.934 & \textbf{0.964} & \textbf{0.000} & 0.03\,s / step \\
     \quad \code{desc=} SLM only$^\ddagger$ & qwen2.5:3b over the DOM & 0.634 & 0.877 & 0.020 & 0.21\,s / step \\
     \quad \code{desc=} VLM only$^\ddagger$ & qwen2.5vl:3b, Set-of-Mark & 0.117 & 0.365 & 0.076 & 0.49\,s / step \\
-    \quad \code{desc=} lexical $\rightarrow$ VLM$^\S$ & qwen2.5vl:3b behind the shortlist & 0.930 & 0.691 & 0.113 & 0.83\,s / VLM call \\
+    \quad \code{desc=} lexical $\rightarrow$ VLM$^\S$ & qwen2.5vl:3b behind the shortlist & 0.925 & 0.714 & 0.057 & 0.6\,s / VLM call \\
     ELAM-7B & bf16 & 0.930 & 0.704 & 0.286 & 4.00\,s / step \\
     UI-TARS-1.5-7B & bf16 & 0.944 & 0.801 & 0.199 & 2.72\,s / step \\
     Aria-UI$^\dagger$ & bf16 & \textbf{0.962} & 0.708 & 0.292 & 1.57\,s / step \\
@@ -1197,8 +1200,9 @@ button'' for the negatives) through the \code{desc=} tier chain of ADR-022
 (Section~\ref{sec:desc}) over the same modular DOM, with the chain pinned per row; the
 plain modular column was re-run as a control and reproduced run~3 on all 514 steps.
 The production chain --- lexical scoring over the DOM, then a 3B text model
-(\code{qwen2.5:3b} via Ollama) as tie-breaker --- reaches action-hit 0.930, ELAM's
-figure, the best verification accuracy of the table (0.954) and one false pass in 88.
+(\code{qwen2.5:3b} via Ollama) as tie-breaker --- reached, in that run, action-hit
+0.930, ELAM's figure, the best verification accuracy of the table (0.954) and one
+false pass in 88 (the sixth run, below, lifts this to 0.934 / 0.964 / none).
 The lexical tier answers 398 of the 514 steps without a model, in 0.2\,ms; the eleven
 steps gained over \code{text=} are exactly the OCR-noisy captions that exact text
 cannot match but token overlap plus the role word can (the placeholder
@@ -1225,13 +1229,30 @@ server refused 68 of the 116 vision calls during a two-minute outage; the benchm
 runner records those as errors rather than misses (a fix from the kit review of the
 same day; under the earlier harness the 48 errored negatives would have counted as
 correct), and 10 of the 14 action steps the vision model was meant to recover fell
-inside the outage. The verdict on the verify side does not depend on them. Two caveats
-bound the result: the descriptions are generated as caption plus role word, the
-lexical tier's ideal input, so 0.930 is an upper bound for that phrasing rather than
-a general \code{desc=} accuracy; and whether the vision tier recovers the OCR floor on
-actions is still unmeasured. What the two runs do settle is the ADR-022 tier order:
-the vision tier stays opt-in, and a Set-of-Mark prompt with a null option must not sit
-in a chain used for verification.
+inside the outage. The verdict on the verify side does not depend on them. The one
+false pass of run~4 was traced, by reproducing the step with the same model on a
+laptop, to a candidate table of one row: the dialog's other button is a caption OCR
+never read, so the lexical ranking scored a single element and the model was asked
+``is this it?'' rather than ``which of these?''. The resolver now pads the model
+tiers' shortlist to at least three candidates, and a sixth run (the full sweep on the
+run-3 card model, commit \code{ca1f0f7}, 2026-10-27, with every control and grounder
+column reproducing run~3 on all 514 steps) confirms it: the same step declines at
+confidence 0.00, the chain passes none of the 88 absent targets, and it gains a step
+on each side (action-hit 0.934, verification 0.964), which is the row quoted in
+Table~\ref{tab:lifecycle}. The same run repeated the vision chain with a prompt that
+offers null explicitly: it passed 17 of the 30 absent targets it answered (run~5: 34
+of 40), and lost 80 of its 116 calls to the same failure as run~5, which in every run
+begins at the same step and covers the same block of states on a given card; replayed
+offline with the server's reply kept, it is the 3B vision model collapsing into a
+repeated token on those prompts (the serving layer aborts the generation), not the
+server, so the vision rows remain partial on the action side and their answered
+subset is the subset the model did not loop on. Two caveats bound the result: the descriptions
+are generated as caption plus role word, the lexical tier's ideal input, so 0.934 is
+an upper bound for that phrasing rather than a general \code{desc=} accuracy; and
+whether the vision tier recovers the OCR floor on actions is still unmeasured. What
+the three runs do settle is the ADR-022 tier order: the vision tier stays opt-in, and
+a Set-of-Mark prompt with a null option must not sit in a chain used for
+verification.
 
 \subsection{Efficiency considerations}
 Efficiency is analysed along three axes. The lifecycle benchmark
@@ -1282,9 +1303,11 @@ latency of the service path itself remains to be measured.
         GPU generations even with greedy decoding, and Aria-UI's latency comes from a
         different host than the other columns. The \code{desc=} rows use generated
         descriptions (caption plus role word), which favour the lexical tier; the
-        vision tier, measured behind its shortlist in run~5, lost 68 of 116 calls to
-        a model-server outage, so its action-side figure is partial (its verify-side
-        verdict, 34 false passes in 40 answered negatives, is not).
+        vision tier, measured behind its shortlist in runs~5 and~6, lost 68 and 80 of
+        its 116 calls to the 3B vision model looping into a repeated token on the
+        same block of states in every run (the serving layer aborts such
+        generations), so its action-side figure is partial (its verify-side verdict,
+        34 false passes in 40 and then 17 in 30 answered negatives, is not).
   \item \textbf{Calibration for physical actuation.} The robot-arm case requires a
         per-setup image-to-physical calibration; the architecture isolates this to
         the plugin, but it remains real work, and physical actuation carries safety
@@ -1308,8 +1331,8 @@ accurately than VizDOM (0.93--0.96 against 0.88) but pass 60--88 of 88 absent
 targets, whereas VizDOM passes none by construction and costs 15--39 times less per
 step --- the testing-specific result this project set out to measure. With its own
 language tier switched on (\code{desc=}, lexical scoring with a 3B model as
-tie-breaker) VizDOM clicks as well as ELAM (0.930), verifies best (0.954) and passes
-one absent target in 88, at 0.03\,s of resolution per step. Future work
+tie-breaker) VizDOM clicks slightly better than ELAM (0.934), verifies best (0.964)
+and passes none of the 88 absent targets, at 0.03\,s of resolution per step. Future work
 includes: completing the quantitative benchmark on a larger labelled dataset;
 reducing over-segmentation on themed real-world UIs; harder negatives
 (plausible-but-absent labels) and real-application states for the lifecycle

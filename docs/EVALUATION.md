@@ -414,29 +414,42 @@ python -m visual_dom.evaluation.lifecycle.runner     --executors vizdom-uied,viz
 python -m visual_dom.evaluation.lifecycle.runner --executors elam-7b
 ```
 
-**First baseline** — `lifecycle-synthetic-v1`: 44 states, 514 steps
-(213 action / 213 positive verify / 88 negative verify):
+**Measured on rented GPUs** — `lifecycle-synthetic-v1`: 44 states, 514 steps
+(213 action / 213 positive verify / 88 negative verify). Run 3 (RTX 6000 Ada,
+commit `82f0b45`) for the `text=` columns and the grounders, reproduced step for
+step by run 6 (same card model, `ca1f0f7`) which also measured the `desc=` chain
+after its shortlist fix; Aria-UI from a 96 GB card. Full analysis, run history
+and raw files: `benchmarks/README.md` §6 and `benchmarks/report_gpu_20261026_run3.html`.
 
-| executor | action-hit | verify acc | false-pass | resolution / step | one-time load | parse / state |
-|---|---|---|---|---|---|---|
-| vizdom-uied | **0.803** | 0.957 | **0.000** | < 1 ms | 7.2 s | 2.11 s (44 states, 92.9 s) |
-| vizdom-omniparser | **0.916** | 0.957 | **0.000** | < 1 ms | 26.9 s | 4.81 s (44 states, 211.8 s) |
+| executor | action-hit | verify acc | false-pass (of 88) | cost per step |
+|---|---|---|---|---|
+| vizdom-uied (`text=`) | 0.822 | 0.934 | **0.000** | 0.04 s (parse 0.39 s/state) |
+| vizdom-omniparser (`text=`) | 0.883 | 0.934 | **0.000** | 0.10 s (parse 1.02 s/state) |
+| vizdom-modular (`text=`) | 0.883 | 0.934 | **0.000** | 0.06 s (parse 0.62 s/state) |
+| vizdom-modular + `desc=` lexical → SLM (run 6) | **0.934** | **0.964** | **0.000** | 0.10 s (116 model calls in 514 steps) |
+| elam-7b | 0.930 | 0.704 | 0.286 (86) | 4.00 s |
+| ui-tars-1.5-7b | 0.944 | 0.801 | 0.199 (60) | 2.72 s |
+| aria-ui | 0.962 | 0.708 | 0.292 (88) | 1.57 s (other host) |
 
 Model load is reported **separately** from parsing (a dummy-frame warm-up at
 connect time flushes lazy first-use initializations such as the EasyOCR
 reader): warm-model amortization is itself a claim under test (NFR3), so it
 must not be smeared into one arbitrary state's parse time.
 
-Reading the numbers: OmniParser converts its detection edge into an 11-point
-action-hit lead at ~2.3× the parse cost; both stacks share the identical
-verify accuracy (the same 13 captions are misread by OCR upstream of both) —
-and both hold a **zero false-pass rate**, which the exactly-one resolution
-contract guarantees by construction. Every result file is stamped with dataset id + git commit;
-per-step outcomes are kept so failures remain attributable to a stage.
+Reading the numbers: the grounders click better than VizDOM resolving exact
+text, and every one of them passes absent targets (60 to 88 of 88); VizDOM
+passes none, which the exactly-one resolution contract guarantees by
+construction, and keeps that property with its language tier switched on (the
+`desc=` row: a 3B text model consulted on the 116 steps the deterministic
+scoring cannot settle, over a short candidate list with a null it takes). Its
+verify errors are false fails on OCR-unreadable captions. Every result file is
+stamped with dataset id + git commit; per-step outcomes and every parsed DOM
+are kept so failures remain attributable to a stage.
 
-Planned extensions: the grounder columns above, real-application states in the
-same schema, `desc=` per-tier accuracy as an additional locator column, and
-defect injection (mutate a state, measure whether the suite catches it).
+Planned extensions: real-application states in the same schema, plausible-but-
+absent negatives (defect injection), human-written descriptions, and a vision
+tier that does not loop (the 3B vision model collapsed on a third of the
+screens in every run; see the benchmark README).
 
 ## Interpreting Results
 

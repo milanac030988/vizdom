@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted (Tiers 0–1 implemented and measured; Tier 2 implemented behind config and measured 2026-10-27: not an oracle, stays opt-in)
+Accepted (Tiers 0–1 implemented and measured, 0.934 / 0.964 / 0.000 on the lifecycle benchmark after the shortlist fix; Tier 2 implemented behind config and measured 2026-10-27: not an oracle, stays opt-in)
 
 ## Date
 
@@ -23,6 +23,7 @@ Nguyen Huynh Tri Cuong
 | 2026-07-30 | 1.0 | Design + Tiers 0/1 implemented (`desc=` strategy, lexical matcher, SLM-over-DOM resolver, `grounding` config, RF wiring). Tier 2 (VLM Set-of-Mark) implemented behind `grounding.tiers`, disabled by default. |
 | 2026-10-27 | 1.1 | Measured on the lifecycle benchmark (`benchmarks/README.md` §6, runs 4–5, 514 steps): default chain lexical→slm 0.930 action-hit / 0.954 verify / 0.003 false-pass (lexical answers 398 of 514, the SLM 3); SLM alone over the whole DOM 0.634; VLM Set-of-Mark alone 0.117 (20-mark cap, harness limit); VLM behind the lexical shortlist keeps the hits (0.930) but passes 34 of the 40 nonsense captions it was shown (false-pass 0.113). Tier 2 stays out of the default chain and must not be used for verification until the prompt has a real null option. Resolver now records every tier's verdict in the miss reason. |
 | 2026-10-28 | 1.2 | The one false pass traced to a one-row SLM table (the other button's caption unread → one scored element). Shortlist padded to ≥ 3 candidates; SLM/VLM prompts state that null is expected and a matching role alone is no match. Benchmark runner keeps every parsed DOM. |
+| 2026-10-28 | 1.3 | Run 6 (full sweep, `ca1f0f7`): the padding holds — default chain 0.934 / 0.964 / **0.000**, the one-row step declines at 0.00. The explanatory SLM wording of 1.2 is a regression on long tables (SLM-only column 0.020 → 0.126 false-pass; reproduced on the laptop: 6 of 6 nonsense captions answered over the whole DOM, 1 of 6 with the plain wording, 0 of 6 either way over the padded shortlist) and is reverted to the plain "use null if no element matches"; the VLM wording stays (17 of 30 answered negatives passed against 34 of 40). The vision rows' "Ollama 500" steps (68–394 per column, the same block of states per card) are `qwen2.5vl:3b` collapsing into a repeated token on those overlays, aborted by the server's repeat guard — a model failure, recorded as errors. |
 
 ## Context
 
@@ -99,9 +100,18 @@ Cross-cutting rules:
   element by role word, and a 3B model asked "which of these?" about one row
   answers "this one" at 0.85, where it declines with two rows. The shortlist
   is padded from the pool to at least three candidates
-  (`SHORTLIST_MIN`), and the prompt says null is expected and a matching
-  role alone is not a match. A paraphrase ("close button" → the `×` icon)
+  (`SHORTLIST_MIN`). A paraphrase ("close button" → the `×` icon)
   still resolves: padding adds choice, it does not remove the candidate.
+  Confirmed on the lifecycle benchmark (run 6, 2026-10-27): the chain passes
+  none of 88 negatives at 0.934 action-hit.
+- The SLM prompt stays plain (2026-10-28). An explanatory null rule ("answer
+  null unless text or role clearly corresponds; a matching role alone is
+  NOT a match") made `qwen2.5:3b` *more* willing to answer when the table is
+  long: it quotes the rule back as its justification ("role=button
+  text='Files'") and picks any button. Over a whole-DOM table it answered 6
+  of 6 nonsense captions where "use null if no element matches" answers 1;
+  over the padded shortlist both decline. Prompt rules are not a substitute
+  for a short candidate list with a 3B model; the shortlist is the control.
 - Future: an embedding tier between 0 and 1 (semantic similarity, no
   generation); a dedicated grounder model as an alternative Tier 2 backend;
   caching successful resolutions as persistent aliases ("self-healing"

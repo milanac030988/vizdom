@@ -1158,13 +1158,18 @@ báo cáo rõ theo cách đó. Tất cả grounder chạy bf16 không quantize v
   commit \code{82f0b45}, ngày 2026-10-26. $^\dagger$Aria-UI ($\sim$50\,GB ở bf16)
   được đo cùng đêm trên RTX PRO 6000 Blackwell 96\,GB (commit \code{411873c});
   accuracy có thể so sánh trực tiếp vì dùng cùng bước và cùng cách chấm, còn latency
-  đến từ host khác. $^\ddagger$Các dòng \code{desc=} (run 4, RTX PRO 5000 Blackwell
-  48\,GB, commit \code{3fb0924}, 2026-10-27) phân giải \emph{mô tả} của mỗi bước
-  (``Save button'') qua chuỗi tier ADR-022 trên cùng DOM modular, ghim từng tier theo
-  dòng; cột đối chứng modular tái lập run 3 trên cả 514 bước. Chi phí mỗi bước là
-  median của lời gọi resolver (Ollama, mô hình 3B) cộng thêm vào parse. $^\S$Run 5
-  (cùng loại card, commit \code{c03c438}, 2026-10-27): tier VLM đặt sau shortlist
-  lexical như production; 68 trong 116 lời gọi VLM lỗi phía server, tính là miss.}
+  đến từ host khác. $^\ddagger$Các dòng \code{desc=} (lần chạy 4, RTX PRO 5000
+  Blackwell 48\,GB, commit \code{3fb0924}, ngày 2026-10-27) phân giải \emph{mô tả}
+  của từng bước (``Save button'') qua tier chain ADR-022 trên cùng modular DOM,
+  với tier chain được pin riêng cho từng dòng; cột modular đối chứng tái lập kết quả
+  của lần chạy 3 trên toàn bộ 514 bước. Chi phí mỗi bước là median thời gian gọi
+  resolver (Ollama, model 3B) cộng thêm lên trên chi phí parse. Kết quả production
+  chain được lấy từ lần chạy 6 (RTX 6000 Ada, commit \code{ca1f0f7}, ngày 2026-10-27),
+  tức full sweep sau bản sửa shortlist ở Phần~\ref{sec:desc}; run 4 trước đó đạt
+  0.930 / 0.954 / 0.003. $^\S$Runs 5 và 6 đặt vision tier phía sau lexical shortlist
+  như production sẽ chạy; lần lượt 68 và 80 trong 116 vision call bị lỗi model server
+  và được tính là miss, nên action-hit của hàng này chỉ phản ánh một phần kết quả
+  (bảng dùng số liệu run 6).}
   \label{tab:lifecycle}
   \begin{tabular}{@{}p{3.4cm}p{2.5cm}cccp{2.6cm}@{}}
     \toprule
@@ -1173,10 +1178,10 @@ báo cáo rõ theo cách đó. Tất cả grounder chạy bf16 không quantize v
     VizDOM + UIED & CV, không LLM & 0.822 & 0.934 & \textbf{0.000} & 0.39\,s / trạng thái \\
     VizDOM + OmniParser & CV + Florence-2 & 0.883 & 0.934 & \textbf{0.000} & 1.02\,s / trạng thái \\
     VizDOM modular & CV, tắt captioner & 0.883 & 0.934 & \textbf{0.000} & 0.62\,s / trạng thái \\
-    VizDOM modular, \code{desc=}$^\ddagger$ & lexical $\rightarrow$ SLM (qwen2.5:3b) & 0.930 & \textbf{0.954} & 0.003 & 0.03\,s / bước \\
+    VizDOM modular, \code{desc=}$^\ddagger$ & lexical $\rightarrow$ SLM (qwen2.5:3b) & 0.934 & \textbf{0.964} & \textbf{0.000} & 0.03\,s / bước \\
     \quad \code{desc=} chỉ SLM$^\ddagger$ & qwen2.5:3b trên DOM & 0.634 & 0.877 & 0.020 & 0.21\,s / bước \\
     \quad \code{desc=} chỉ VLM$^\ddagger$ & qwen2.5vl:3b, Set-of-Mark & 0.117 & 0.365 & 0.076 & 0.49\,s / bước \\
-    \quad \code{desc=} lexical $\rightarrow$ VLM$^\S$ & qwen2.5vl:3b sau shortlist & 0.930 & 0.691 & 0.113 & 0.83\,s / lời gọi VLM \\
+    \quad \code{desc=} lexical $\rightarrow$ VLM$^\S$ & qwen2.5vl:3b sau shortlist & 0.925 & 0.714 & 0.057 & 0.6\,s / VLM call \\
     ELAM-7B & bf16 & 0.930 & 0.704 & 0.286 & 4.00\,s / bước \\
     UI-TARS-1.5-7B & bf16 & 0.944 & 0.801 & 0.199 & 2.72\,s / bước \\
     Aria-UI$^\dagger$ & bf16 & \textbf{0.962} & 0.708 & 0.292 & 1.57\,s / bước \\
@@ -1227,6 +1232,81 @@ các số liệu. Latency của grounder phụ thuộc host (UI-TARS 1.68\,s/bư
 4090 và 2.72\,s/bước trên RTX 6000 Ada), vì vậy mỗi con số ở trên đều được báo cáo kèm
 commit và máy chạy.
 
+\paragraph{Language tier của chính VizDOM.} Sáu dòng phía trên phân giải các bước của
+VizDOM chỉ bằng \code{text=}. Cách đó so sánh VizDOM \emph{không bật} language tier với
+các grounder vốn đều hoạt động như language tier, đồng thời làm cho false-pass bằng 0
+của VizDOM một phần mang tính cấu trúc: một caption vô nghĩa sẽ không thể khớp với OCR
+text. Vì vậy, lần chạy thứ tư (RTX PRO 5000 Blackwell 48\,GB, commit \code{3fb0924},
+ngày 2026-10-27) phân giải mỗi bước theo cách thứ ba: dùng một \emph{mô tả} sinh từ
+chính caption đó (``Save button'', còn negative là ``Warp Cores button'') đi qua tier
+chain \code{desc=} của ADR-022 (Phần~\ref{sec:desc}) trên cùng modular DOM; từng tier
+được pin theo từng dòng. Cột modular thuần được chạy lại làm đối chứng và tái lập lần
+chạy 3 trên toàn bộ 514 bước.
+
+Production chain --- lexical scoring trên DOM, sau đó dùng model text 3B
+(\code{qwen2.5:3b} qua Ollama) làm tie-breaker --- trong lần chạy này đạt action-hit
+0.930, ngang ELAM; đạt verify accuracy tốt nhất bảng là 0.954; và chỉ có một
+false-pass trong 88 negative (lần chạy thứ sáu bên dưới nâng kết quả lên
+0.934 / 0.964 / không false-pass).
+Lexical tier tự giải quyết 398 trong 514 bước mà không cần model, trong 0.2\,ms. Mười
+một bước được cải thiện so với \code{text=} chính là các caption bị OCR nhiễu mà exact
+text không khớp được nhưng token overlap cộng role word vẫn nhận ra, ví dụ placeholder
+``Search\ldots'' bị đọc mất dấu chấm hoặc value dạng path như
+\code{APAC\textbackslash USER01}. Mười ba bước còn miss gồm chín caption OCR hoàn toàn
+không đọc được và bốn chữ số lặp lại trong data table. Model chỉ được gọi ở 116 bước mà
+scoring không tự giải quyết được và xử lý đúng thêm ba bước. Một lỗi duy nhất của model
+là phiên bản thu nhỏ của failure mode ở grounder: ``Purple Elephant button'' bị
+rationalize thành nút \emph{Retry} với confidence 0.85.
+
+Khi ép chạy độc lập, các model tier không giữ được chất lượng này. Model text 3B trên
+toàn bộ bảng DOM chỉ đạt action-hit 0.634, chọn sai phần tử với confidence cao ở 49
+trong 78 action miss và pass sáu target không tồn tại. Model vision 3B trên overlay
+Set-of-Mark chỉ đạt 0.117; phần lớn đây là giới hạn của harness hiện tại: overlay chỉ
+vẽ tối đa 20 mark theo DOM order, trong khi một trạng thái có median 33 element, nên
+nếu không có lexical shortlist phía trước thì chưa tới một nửa target xuất hiện trong
+các mark.
+
+Vì vậy, lần chạy thứ năm (cùng loại GPU, commit \code{c03c438}; cột control và
+production chain tái lập run 4 theo từng bước) đặt vision model đúng vị trí mà production
+sẽ dùng: phía sau lexical shortlist tối đa tám mark. Action-hit vẫn giữ ở 0.930 nhưng
+không giữ được vai trò oracle: khi được hỏi một caption vô nghĩa trước numbered overlay,
+model chọn một mark trong 34/40 negative đã thực sự được xử lý, với confidence
+0.90--0.99 và 22 lần trả ``mark~1''; chỉ sáu trường hợp bị từ chối. False-pass vì vậy
+là 0.113, trong khi text model trên cùng nhóm 116 bước chỉ là 0.003. Hàng này chỉ phản
+ánh một phần phía action vì model server từ chối 68/116 vision call trong một outage
+kéo dài hai phút; benchmark runner ghi chúng là error thay vì miss (bản sửa của kit
+cùng ngày; với harness cũ, 48 negative bị error sẽ bị tính nhầm là đúng), và 10/14
+action step mà vision model cần khôi phục rơi đúng vào outage. Kết luận phía verify
+không phụ thuộc vào các bước đó.
+
+False-pass duy nhất của run 4 sau đó được tái lập với cùng model trên laptop và truy
+ngược về candidate table chỉ có một hàng: button còn lại của dialog dùng caption mà OCR
+không đọc được, nên lexical ranking chỉ đưa ra một element và model thực chất được hỏi
+``có phải cái này không?'' thay vì ``trong các candidate này là cái nào?''. Resolver
+nay luôn pad shortlist của model tier lên tối thiểu ba candidate. Lần chạy thứ sáu
+(full sweep trên cùng loại GPU của run 3, commit \code{ca1f0f7}, ngày 2026-10-27;
+mọi cột control và grounder tái lập run 3 trên toàn bộ 514 bước) xác nhận bản sửa:
+cùng bước đó nay bị từ chối với confidence 0.00, chain không pass target nào trong 88
+negative, đồng thời tăng thêm một bước ở cả hai phía --- action-hit 0.934 và verify
+accuracy 0.964 --- chính là kết quả được dùng trong Bảng~\ref{tab:lifecycle}.
+
+Cùng run này cũng lặp lại vision chain với prompt có null option rõ ràng. Model vẫn pass
+17/30 negative mà nó thực sự trả lời (run 5 là 34/40), đồng thời 80/116 call lại thất
+bại ở cùng failure mode với run 5. Ở mọi run, failure bắt đầu tại cùng một step và phủ
+cùng một block trạng thái trên cùng loại GPU; khi replay offline với response của server
+được giữ lại, nguyên nhân là model vision 3B rơi vào vòng lặp token lặp lại trên các
+prompt đó và serving layer buộc phải abort generation, không phải server tự hỏng. Vì
+vậy các hàng vision vẫn chỉ là kết quả một phần ở phía action, còn subset verify đã
+được trả lời thì vẫn cho thấy model có xu hướng false-pass mạnh.
+
+Có hai caveat cần giới hạn cách diễn giải kết quả: mô tả được sinh theo công thức
+caption cộng role word, tức đúng dạng input thuận lợi cho lexical tier, vì vậy 0.934 là
+upper bound cho kiểu phrasing này chứ không phải accuracy tổng quát của \code{desc=};
+và khả năng vision tier thực sự khôi phục OCR floor ở phía action vẫn chưa được đo.
+Những gì ba lần chạy đã đủ để kết luận là thứ tự tier của ADR-022: vision tier tiếp tục
+chỉ là opt-in, và một Set-of-Mark prompt có null option không được đặt trong chain dùng
+cho verification.
+
 \subsection{Các khía cạnh hiệu năng}
 Hiệu năng được phân tích theo ba trục. Lifecycle benchmark
 (Phần~\ref{sec:lifecycle}) đã được chạy trên GPU thuê ngoài, vì vậy các số liệu theo
@@ -1274,7 +1354,14 @@ của chính service path vẫn cần được đo.
         Aria-UI là proxy vì hai model không có verdict mode; native verdict của ELAM là
         phép so sánh công bằng hơn và vẫn pass 86/88 target không tồn tại. Điểm số của
         grounder dao động khoảng một điểm giữa các thế hệ GPU dù dùng greedy decoding,
-        và latency của Aria-UI đến từ một host khác các cột còn lại.
+        và latency của Aria-UI đến từ một host khác các cột còn lại. Các dòng
+        \code{desc=} dùng mô tả được sinh theo công thức caption cộng role word nên
+        có lợi cho lexical tier; vision tier, dù đã được đo sau shortlist ở runs~5
+        và~6, mất lần lượt 68 và 80 trong 116 call vì model vision 3B lặp lại cùng
+        một token trên cùng block trạng thái ở mỗi run (serving layer abort các
+        generation đó). Vì vậy số action-hit của vision tier chỉ phản ánh một phần
+        kết quả; verdict phía verify --- 34 false-pass trong 40 negative được trả lời
+        ở run 5 và 17 trong 30 ở run 6 --- thì không bị ảnh hưởng bởi khoảng trống đó.
   \item \textbf{Calibration cho actuation vật lý.} Trường hợp cánh tay robot yêu cầu
         calibration từ ảnh sang không gian vật lý cho từng setup; kiến trúc đã cô
         lập phần này vào plugin nhưng đây vẫn là công việc thực tế, và actuation vật
@@ -1299,7 +1386,11 @@ Trên lifecycle benchmark thống nhất, các mô hình instruction grounding (
 ELAM-7B, UI-TARS-1.5-7B) click chính xác hơn VizDOM (0.93--0.96 so với 0.88), nhưng
 lại pass 60--88 trong tổng số 88 target không tồn tại; VizDOM không false-pass trường
 hợp nào theo thiết kế và có chi phí mỗi bước thấp hơn 15--39 lần --- đây là kết quả
-đặc thù cho kiểm thử mà đồ án đặt mục tiêu đo lường. Các hướng phát triển tiếp theo
+đặc thù cho kiểm thử mà đồ án đặt mục tiêu đo lường. Khi bật language tier của chính
+VizDOM (\code{desc=}, lexical scoring với model 3B làm tie-breaker), hệ thống đạt
+action-hit nhỉnh hơn ELAM (0.934), verify accuracy tốt nhất (0.964) và không pass
+target nào trong 88 trường hợp không tồn tại, với chi phí resolution 0.03\,s mỗi bước. Các hướng
+phát triển tiếp theo
 gồm: hoàn thiện benchmark định lượng trên dataset gán nhãn lớn hơn; giảm
 over-segmentation trên UI thực tế có theme; bổ sung negative khó hơn (label hợp lý
 nhưng không tồn tại) và trạng thái từ ứng dụng thực cho lifecycle benchmark; tích hợp

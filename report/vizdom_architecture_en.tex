@@ -658,7 +658,7 @@ Q-02 & End-to-end gRPC round-trip across processes & config-only; round-trip OK 
 Q-03 & Instrument model-load count in the service & load count = 1 & \textbf{Verified} functionally \\
 Q-04 & Run pipeline + RF with CPU/static/recording adapters & completes, no I/O & \textbf{Verified} \\
 Q-05 & Detection metrics on synthetic set (harness) & F1 $\geq 0.80$, mIoU $\geq 0.60$ & \textbf{Measured}: F1 0.58, mIoU 0.68; F1 target not met; OmniParser actionable center-hit 0.97 (R-04) \\
---- & Lifecycle benchmark: 514 locate--act--verify steps, VizDOM vs ELAM-7B / UI-TARS-1.5 / Aria-UI on rented GPUs (2026-10-26) & zero false passes for VizDOM; cost per step below the grounders & \textbf{Measured}: false-pass 0.000 vs 0.199--0.292; action-hit 0.883 vs 0.930--0.962; 0.04--0.10\,s vs 1.57--4.00\,s per step. With the \code{desc=} tier chain (ADR-022, run 4, 2026-10-27): action-hit 0.930, verify 0.954, false-pass 0.003 \\
+--- & Lifecycle benchmark: 514 locate--act--verify steps, VizDOM vs ELAM-7B / UI-TARS-1.5 / Aria-UI on rented GPUs (2026-10-26) & zero false passes for VizDOM; cost per step below the grounders & \textbf{Measured}: false-pass 0.000 vs 0.199--0.292; action-hit 0.883 vs 0.930--0.962; 0.04--0.10\,s vs 1.57--4.00\,s per step. With the \code{desc=} tier chain (ADR-022, run 6, 2026-10-27): action-hit 0.934, verify 0.964, false-pass 0.000 \\
 \bottomrule
 \end{longtable}
 
