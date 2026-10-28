@@ -566,8 +566,10 @@ What the rows say:
   all four *Check Now* targets (cx 0.06–0.26) out of the model's shortlist,
   eight guaranteed misses from the parser, not the model. A position word
   now counts only inside a positional phrase (`on the right`, `top left`,
-  `right side`, `left button`), and all four states hit. The generated and
-  terse rows did not move through either round. Two measurements of the
+  `right side`, `left button`), and all four states hit; a third round
+  made a position word that follows a naming word part of the caption
+  (`Align Left button`), which touches no benchmark description. The
+  generated and terse rows did not move through any round. Two measurements of the
   wordy chain on the same code also differ on 11 of 514 steps (the laptop
   model's answers are not bit-stable between runs at temperature 0, mostly
   verify steps flipping between a wrong-element pass and a decline), so the

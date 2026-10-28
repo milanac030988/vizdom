@@ -245,3 +245,43 @@ def test_qualifiers_do_not_make_a_description_naming():
     # the safe side is a decline, not a guess
     elem, info = r.resolve("the frobnicating button at the top left")
     assert elem is None
+
+
+# -- third review round (2026-10-28): captions that contain a position word --
+
+def _toolbar():
+    # three alignment buttons, all in the right third of the screen
+    return _dom(_btn("E1", "Align Left", x=70), _btn("E2", "Align Center", x=80),
+                _btn("E3", "Align Right", x=90), _btn("E4", "Save", x=0))
+
+
+def test_caption_with_a_position_word_is_a_name_for_the_lexical_tier():
+    from visual_gui_library.locators.desc_resolver import parse_description
+    for desc in ("Align Left button", "Turn Right button", "Scroll Left icon",
+                 "Align Right button", "Top Up button"):
+        assert parse_description(desc)[3] == [], desc
+    r = DescriptionResolver(_toolbar(), tiers=["lexical"])
+    elem, info = r.resolve("Align Left button")
+    assert elem is not None and elem["id"] == "E1" and info["tier"] == "lexical"
+    elem, info = r.resolve("Align Right button")
+    assert elem is not None and elem["id"] == "E3"
+
+
+def test_caption_with_a_position_word_is_not_geometry_filtered(monkeypatch):
+    dom = _toolbar()
+    r = DescriptionResolver(dom, tiers=["slm"])
+    monkeypatch.setattr(r, "_resolve_slm",
+                        lambda description, candidates: (dom["elements"][0], "conf=0.9"))
+    elem, info = r.resolve("Align Left button")
+    assert elem is not None and elem["id"] == "E1", info
+
+
+def test_bare_position_word_before_a_role_is_a_caption_only_when_the_screen_has_it():
+    # a button that reads "Left" sits at the right; "Left button" means it
+    with_caption = _dom(_btn("E1", "Save", x=0), _btn("E2", "Left", x=90))
+    elem, info = DescriptionResolver(with_caption, tiers=["lexical"]).resolve("Left button")
+    assert elem is not None and elem["id"] == "E2"
+    # no element reads "Left": the leftmost button
+    without = _dom(_btn("E1", "Save", x=0), _btn("E2", "Cancel", x=90))
+    elem, info = DescriptionResolver(without, tiers=["lexical"]).resolve("left button")
+    assert elem is not None and elem["id"] == "E1"

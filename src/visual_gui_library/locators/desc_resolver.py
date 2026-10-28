@@ -85,7 +85,11 @@ _QUALIFIER_WORDS = {
 # right", "the left field"), or before a part or role word ("right side",
 # "left button"). Elsewhere it is an ordinary word: "right now", "left over",
 # "right click" (review, 2026-10-28, second round: "the button that checks
-# for updates right now" filtered every candidate with cx <= 0.66).
+# for updates right now" filtered every candidate with cx <= 0.66). A
+# position word that FOLLOWS a naming word continues a caption, never a
+# position: "Align Left button", "Turn Right button", "Scroll Left icon"
+# (third round). "Left button" alone is a position unless an element on the
+# screen actually reads "Left", which is what `known_tokens` is for.
 _POSITION_BEFORE = {"at", "on", "in", "to", "the", "near", "toward", "towards",
                     "from", "upper", "lower", "far"}
 _POSITION_AFTER = {"side", "corner", "edge", "half", "area", "region", "pane",
@@ -97,18 +101,42 @@ def _tokens(s: str) -> List[str]:
     return _WORD_RE.findall((s or "").lower())
 
 
-def _is_positional(toks: List[str], i: int) -> bool:
+def element_tokens(elements: List[Dict[str, Any]]) -> set:
+    """Every word any element carries in label / text / hint."""
+    known: set = set()
+    for e in elements:
+        for k in ("label", "text", "hint"):
+            known.update(_tokens(str(e.get(k) or "")))
+    return known
+
+
+def _is_positional(toks: List[str], i: int, prev_kind: Optional[str],
+                   known_tokens: Optional[set]) -> bool:
+    t = toks[i]
     prev = toks[i - 1] if i > 0 else None
     nxt = toks[i + 1] if i + 1 < len(toks) else None
+    if prev_kind == "name":
+        return False                     # "Align Left": the caption goes on
     if prev is None and nxt is None:
         return True                      # the whole description is "left"
-    return (prev in POSITION_WORDS or nxt in POSITION_WORDS
-            or prev in _POSITION_BEFORE or nxt in _POSITION_AFTER)
+    if prev_kind == "pos" or nxt in POSITION_WORDS:
+        return True                      # "top left"
+    if prev in _POSITION_BEFORE:
+        return True                      # "on the right", "the left field"
+    if nxt in _POSITION_AFTER:           # "left button", "right side" ...
+        return not (known_tokens and t in known_tokens)   # ... unless a caption reads "Left"
+    return False
 
 
-def parse_description(description: str):
+def parse_description(description: str, known_tokens: Optional[set] = None):
     """
     Split a description into what it says about the element.
+
+    Args:
+        description: the natural-language description.
+        known_tokens: the words the screen's elements carry (see
+            `element_tokens`); lets "Left button" mean the button that reads
+            "Left" when there is one, and the leftmost button otherwise.
 
     Returns:
         (name_tokens, naming, role_types, pos_preds):
@@ -124,13 +152,19 @@ def parse_description(description: str):
     role_types: set = set()
     pos_preds = []
     name_tokens: List[str] = []
+    prev_kind: Optional[str] = None
     for i, t in enumerate(toks):
         if t in ROLE_WORDS:
             role_types |= ROLE_WORDS[t]
-        elif t in POSITION_WORDS and _is_positional(toks, i):
+            kind = "role"
+        elif t in POSITION_WORDS and _is_positional(toks, i, prev_kind, known_tokens):
             pos_preds.append(POSITION_WORDS[t])
+            kind = "pos"
         else:
             name_tokens.append(t)
+            kind = ("stop" if t in _STOP_WORDS
+                    else "qual" if t in _QUALIFIER_WORDS else "name")
+        prev_kind = kind
     naming = [t for t in name_tokens
               if t not in _STOP_WORDS and t not in _QUALIFIER_WORDS]
     return name_tokens, naming, role_types, pos_preds
@@ -172,7 +206,8 @@ def lexical_rank(
     Returns:
         (score, element) pairs with score > 0, best first.
     """
-    name_tokens, naming, role_types, pos_preds = parse_description(description)
+    name_tokens, naming, role_types, pos_preds = parse_description(
+        description, element_tokens(elements))
     if not (name_tokens or role_types or pos_preds):
         return []
 
@@ -402,7 +437,7 @@ class DescriptionResolver:
         """A predicate over elements for the description's position words
         ("top", "left", ...), or None when it has none or nothing in the
         pool satisfies them (then the words are not used as a filter)."""
-        pos_preds = parse_description(description)[3]
+        pos_preds = parse_description(description, element_tokens(pool))[3]
         if not pos_preds:
             return None
         size = self._image_size()
