@@ -239,3 +239,78 @@ def test_tesseract_lookup_tries_path_first_and_warns_once_when_missing(monkeypat
     td2 = TextDetector(ocr_engine="easyocr", gpu=False)
     td2._retry_low_confidence_with_tesseract(img, [TextElement(id="T1", text="x", bounds=(0, 0, 5, 5), confidence=0.2)], 1.0)
     assert _PT.pytesseract.tesseract_cmd == "/usr/bin/tesseract"
+
+
+# -- review 2026-10-28: combined specs and a batch that survives one failure --
+
+def test_split_specs_keeps_commas_inside_brackets():
+    from visual_dom.evaluation.lifecycle.runner import split_specs
+    assert split_specs("vizdom-modular[roles=off,ocr=plain],elam-7b, vizdom-uied") == \
+        ["vizdom-modular[roles=off,ocr=plain]", "elam-7b", "vizdom-uied"]
+    assert split_specs("modular[roles=off, ocr=plain]+desc") == ["modular[roles=off, ocr=plain]+desc"]
+    assert split_specs("") == []
+
+
+def test_combined_column_reaches_the_driver_through_the_cli(monkeypatch, tmp_path):
+    """`--columns "modular[roles=off,ocr=plain]"` was cut at the comma inside
+    the brackets before parsing; the unit test of parse_vizdom_spec never saw
+    it because it called the parser directly."""
+    manifest = tmp_path / "steps.json"
+    manifest.write_text(json.dumps({"benchmark": "t", "states": [], "steps": []}), encoding="utf-8")
+    seen = {}
+    monkeypatch.setattr(ablation, "run_columns",
+                        lambda columns, m, out, limit_states=None: seen.update(c=columns) or {})
+    rc = ablation.main(["--manifest", str(manifest), "--out-dir", str(tmp_path),
+                        "--columns", "modular[roles=off,ocr=plain],modular[labels=off]+desc"])
+    assert rc == 0
+    assert seen["c"] == ["modular[roles=off,ocr=plain]", "modular[labels=off]+desc"]
+
+
+def test_runner_cli_accepts_a_combined_column(monkeypatch, tmp_path):
+    from visual_dom.evaluation.lifecycle import runner
+    manifest = tmp_path / "steps.json"
+    manifest.write_text(json.dumps({"benchmark": "t", "states": [], "steps": []}), encoding="utf-8")
+    seen = {}
+    monkeypatch.setattr(runner, "run_benchmark",
+                        lambda m, executors, limit_states=None, out_dir=None: seen.update(n=[e.name for e in executors]))
+    monkeypatch.setattr(__import__("sys"), "argv",
+                        ["runner", "--manifest", str(manifest),
+                         "--executors", "vizdom-modular[roles=off,ocr=plain],vizdom-uied"])
+    runner.main()
+    assert seen["n"] == ["vizdom-modular[roles=off,ocr=plain]", "vizdom-uied"]
+
+
+def test_a_failed_column_is_recorded_and_the_batch_goes_on(monkeypatch, tmp_path):
+    """run_benchmark exits non-zero when every step of a column errors (no
+    Ollama for refiner=on is the usual way); the driver used to write its
+    file only at the end, losing every finished column with it."""
+    manifest = {"benchmark": "t", "states": [], "steps": []}
+    calls = []
+
+    def fake_run_benchmark(m, executors, limit_states=None, out_dir=None):
+        name = executors[0].name
+        calls.append(name)
+        if "refiner=on" in name:
+            raise SystemExit(1)
+        return {"commit": "abc", "results": {name: {"summary": {"action_hit_rate": 0.9}}}}
+
+    monkeypatch.setattr(ablation, "run_benchmark", fake_run_benchmark)
+    monkeypatch.setattr(ablation, "stage_metrics", lambda d, m: {"samples": 0})
+    results = ablation.run_columns(["modular", "modular[refiner=on]", "modular[ocr=plain]"],
+                                   manifest, tmp_path)
+    assert calls == ["vizdom-modular", "vizdom-modular[refiner=on]", "vizdom-modular[ocr=plain]"]
+    assert results["modular[refiner=on]"]["error"].startswith("exit 1")
+    assert results["modular[ocr=plain]"]["lifecycle"] == {"action_hit_rate": 0.9}
+    saved = json.loads(next(tmp_path.glob("ablation-*.json")).read_text(encoding="utf-8"))["results"]
+    assert set(saved) == {"modular", "modular[refiner=on]", "modular[ocr=plain]"}
+    table = ablation.report(tmp_path)
+    assert "| `vizdom-modular[refiner=on]` | FAILED | FAILED | FAILED |" in table
+    assert "`vizdom-modular`" in table.splitlines()[2]
+
+
+def test_main_returns_nonzero_when_a_column_failed(monkeypatch, tmp_path):
+    manifest = tmp_path / "steps.json"
+    manifest.write_text(json.dumps({"benchmark": "t", "states": [], "steps": []}), encoding="utf-8")
+    monkeypatch.setattr(ablation, "run_columns",
+                        lambda columns, m, out, limit_states=None: {"x": {"column": "x", "error": "boom"}})
+    assert ablation.main(["--manifest", str(manifest), "--out-dir", str(tmp_path), "--columns", "x"]) == 1

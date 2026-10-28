@@ -32,7 +32,7 @@ import time
 from pathlib import Path
 
 from visual_dom.evaluation.lifecycle.runner import (
-    VizDomDescExecutor, VizDomExecutor, parse_vizdom_spec, run_benchmark,
+    VizDomDescExecutor, VizDomExecutor, parse_vizdom_spec, run_benchmark, split_specs,
 )
 
 DEFAULT_COLUMNS = [
@@ -90,31 +90,54 @@ def stage_metrics(dom_dir: Path, manifest) -> dict:
 
 
 def run_columns(columns, manifest, out_dir, limit_states=None):
+    """
+    Run each column and score it; returns {spec: row}. The result file is
+    rewritten after EVERY column, and a column that cannot run (no Ollama
+    for refiner=on, every step erroring) is recorded as {"error": ...} and
+    the next one starts - a batch of eight must not lose seven finished
+    columns to the eighth (review, 2026-10-28).
+    """
     out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    stamp = time.strftime("%Y%m%d_%H%M%S")
+    path = out / f"ablation-{stamp}.json"
     results = {}
+
+    def save():
+        path.write_text(json.dumps({"benchmark": manifest.get("benchmark"), "results": results},
+                                   indent=1, ensure_ascii=False), encoding="utf-8")
+
     for spec in columns:
         # "modular[roles=off]+desc": the same stage switch under the desc=
         # resolver (default chain), which is where roles and labels matter -
         # the text= steps never read them.
         desc = spec.endswith("+desc")
-        detector, overrides, suffix = parse_vizdom_spec(spec[:-5] if desc else spec)
-        if desc:
-            ex = VizDomDescExecutor(detector=detector, overrides=overrides, suffix=suffix)
-            ok, reason = ex.available()
-            if not ok:
-                raise SystemExit(f"{ex.name} is not runnable here: {reason}")
-        else:
-            ex = VizDomExecutor(detector=detector, overrides=overrides, suffix=suffix)
-        payload = run_benchmark(manifest, [ex], limit_states=limit_states, out_dir=out)
+        try:
+            detector, overrides, suffix = parse_vizdom_spec(spec[:-5] if desc else spec)
+            if desc:
+                ex = VizDomDescExecutor(detector=detector, overrides=overrides, suffix=suffix)
+                ok, reason = ex.available()
+                if not ok:
+                    raise SystemExit(f"{ex.name} is not runnable here: {reason}")
+            else:
+                ex = VizDomExecutor(detector=detector, overrides=overrides, suffix=suffix)
+            payload = run_benchmark(manifest, [ex], limit_states=limit_states, out_dir=out)
+        except (SystemExit, ValueError) as exc:
+            code = getattr(exc, "code", None)
+            if isinstance(code, int):      # run_benchmark: every step of the column errored
+                reason = f"exit {code}: all steps errored - see the column's own result file"
+            else:
+                reason = " ".join(str(exc).split())[:300] or "failed"
+            print(f"!! {spec}: {reason}", file=sys.stderr)
+            results[spec] = {"column": f"vizdom-{spec}", "error": reason}
+            save()
+            continue
         lifecycle = payload["results"][ex.name]["summary"]
         stage = stage_metrics(Path(ex.dom_dump_dir), manifest) if ex.dom_dump_dir else {}
         results[spec] = {"column": ex.name, "overrides": overrides,
                          "lifecycle": lifecycle, "stage": stage,
                          "commit": payload.get("commit")}
-    stamp = time.strftime("%Y%m%d_%H%M%S")
-    path = out / f"ablation-{stamp}.json"
-    path.write_text(json.dumps({"benchmark": manifest.get("benchmark"), "results": results},
-                               indent=1, ensure_ascii=False), encoding="utf-8")
+        save()
     print(f"-> {path}")
     return results
 
@@ -147,6 +170,11 @@ def report(out_dir, control="modular"):
              "|---|---|---|---|---|---|---|---|---|---|---|"]
     for k in order:
         r = merged[k]
+        if r.get("error"):
+            # not a measurement: say so in the row, never a table of dashes
+            lines.append(f"| `{r['column']}` | FAILED | FAILED | FAILED | - | - | - | - | - "
+                         f"| {r['error'].replace('|', '/')[:120]} | |")
+            continue
         lc, st = r["lifecycle"], r.get("stage", {})
         rt, ta = st.get("recall_by_type", {}), st.get("type_accuracy", {})
         lines.append(
@@ -181,9 +209,12 @@ def main(argv=None):
         report(args.out_dir, args.control)
         return 0
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
-    columns = [c.strip() for c in args.columns.split(",") if c.strip()]
-    run_columns(columns, manifest, args.out_dir, limit_states=args.limit_states)
-    return 0
+    columns = split_specs(args.columns)          # commas inside [...] are switches
+    results = run_columns(columns, manifest, args.out_dir, limit_states=args.limit_states)
+    failed = [k for k, r in results.items() if r.get("error")]
+    if failed:
+        print(f"{len(failed)} of {len(results)} columns did not run: {failed}", file=sys.stderr)
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":

@@ -37,6 +37,8 @@ import time
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from typing import List
+
 from visual_dom.logging_utils import get_logger
 
 log = get_logger(__name__)
@@ -85,6 +87,27 @@ def _deep_merge(base: dict, extra: dict) -> dict:
         else:
             base[k] = v
     return base
+
+
+def split_specs(value: str) -> List[str]:
+    """
+    Split a comma list of column specs without cutting inside brackets:
+    "vizdom-modular[roles=off,ocr=plain],elam-7b" -> two specs. A plain
+    str.split(",") broke every combined column (review, 2026-10-28).
+    """
+    out, buf, depth = [], [], 0
+    for ch in value:
+        if ch == "[":
+            depth += 1
+        elif ch == "]":
+            depth = max(0, depth - 1)
+        if ch == "," and depth == 0:
+            out.append("".join(buf))
+            buf = []
+        else:
+            buf.append(ch)
+    out.append("".join(buf))
+    return [s.strip() for s in out if s.strip()]
 
 
 def parse_vizdom_spec(spec: str):
@@ -531,7 +554,7 @@ def main():
 
     manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     executors = []
-    for name in [n.strip() for n in args.executors.split(",") if n.strip()]:
+    for name in split_specs(args.executors):
         if name.startswith("vizdom-"):
             spec = name[len("vizdom-"):]
             if spec.endswith("+desc"):

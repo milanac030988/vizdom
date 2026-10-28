@@ -684,8 +684,14 @@ would make the three "no effect" rows informative.
 python -m visual_dom.evaluation.lifecycle.ablation --columns "modular"
 python -m visual_dom.evaluation.lifecycle.ablation --columns "modular[ocr=plain]"
 python -m visual_dom.evaluation.lifecycle.ablation --columns "modular[roles=off]+desc"
+python -m visual_dom.evaluation.lifecycle.ablation --columns "modular[roles=off,ocr=plain]"   # switches combine
 python -m visual_dom.evaluation.lifecycle.ablation --report     # merges ablation-*.json -> ablation-report.md
 ```
+
+The result file is rewritten after every column, and a column that cannot
+run (no Ollama for `refiner=on`, every step erroring) is recorded as an
+error row and the batch goes on; the driver exits non-zero at the end if any
+column failed.
 
 Switches: `roles=off`, `labels=off`, `symbols=off`, `merge=off`, `ocr=plain`,
 `ocr=none`, `ensemble=off` (OmniParser backend), `refiner=on`, or any
