@@ -1459,9 +1459,10 @@ body.notes-on .slide.active .notes{display:block}
         <h3>Near term</h3>
         <ul>
           <li><strong>Real-world labelled set</strong> — the headline accuracy caveat</li>
-          <li><strong>desc= experiment</strong> — auto-generate descriptions for labelled elements,
-            report <em>per-tier resolution accuracy</em>
-            <span class="dim">— an additional locator column of the lifecycle benchmark</span></li>
+          <li><strong>Descriptions by other testers</strong> — the <code>desc=</code> column is measured on
+            generated wording; a hand-paraphrase check holds the oracle (0 false passes) at
+            0.90 action-hit for terse wording and 0.69 for wording that drops the label
+            <span class="dim">— wording from people other than the author is the stronger version</span></li>
           <li><strong>Harder negatives</strong> for the false-pass metric — plausible-but-absent labels
             ("Export" on a screen with "Import"); the grounder columns themselves are done</li>
           <li><strong>Defect injection</strong> — mutate a state, measure whether the suite
@@ -1484,8 +1485,9 @@ body.notes-on .slide.active .notes{display:block}
       </div>
     </div>
     <div class="card" style="margin-top:.6em"><p style="margin:0">
-      <strong>Ask:</strong> which of these best serves the thesis — a real-world dataset, or the
-      description-grounding experiment?</p></div>
+      <strong>Priority:</strong> the real-world labelled set — every caveat on the previous slide
+      points to it, and the benchmark schema, the kit and the <code>desc=</code> chain are ready to
+      take it.</p></div>
   </div>
   <div class="notes">End with a concrete question so the supervisor can steer priorities.</div>
 </section>
