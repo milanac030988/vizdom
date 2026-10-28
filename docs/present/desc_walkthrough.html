@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Nguyen Huynh Tri Cuong">
+<title>VizDOM desc= walkthrough</title>
+<style>
+    :root { --bg:#0b1120; --panel:#1e293b; --panel2:#334155; --text:#f1f5f9; --muted:#94a3b8; --accent:#38bdf8; --accent2:#a78bfa;
+            --good:#10b981; --warn:#f59e0b; --bad:#f87171; --border:#475569; --cmd:#86efac; --evt:#fde047; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+    main { padding-block:56px 70px; padding-inline:28px; }
+    h1 { font-size:1.85em; font-weight:800; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent; text-wrap:balance; }
+    .subtitle { color:var(--muted); margin:4px 0 4px; } .meta { color:var(--muted); font-size:0.8em; margin-bottom:18px; }
+    code, .mono { font-family:Consolas,monospace; font-size:0.86em; }
+    code { background:var(--panel); color:var(--accent); padding:1px 6px; border-radius:4px; }
+
+    .bar { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; margin-bottom:14px; }
+    .tabs { display:flex; flex-wrap:wrap; gap:6px; }
+    .tabs button, .ctl button { font:inherit; font-size:0.86em; color:var(--text); background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:6px 12px; cursor:pointer; }
+    .tabs button[aria-pressed="true"] { background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:700; }
+    .ctl { display:flex; gap:6px; align-items:center; margin-left:auto; }
+    .ctl button:disabled { opacity:0.4; cursor:default; }
+    .ctl .count { color:var(--muted); font-size:0.85em; min-width:84px; text-align:center; font-variant-numeric:tabular-nums; }
+    button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    .scn-intro { color:var(--muted); font-size:0.9em; margin:-4px 0 12px; }
+
+    .grid { display:grid; grid-template-columns:minmax(0,1fr) 430px; gap:16px; align-items:start; }
+    @media (max-width:1150px) { .grid { grid-template-columns:1fr; } }
+    .map { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:10px; overflow-x:auto; }
+    .map svg { display:block; width:100%; min-width:820px; height:auto; }
+    .node rect { fill:#172033; stroke:var(--border); stroke-width:1.5; transition:stroke 0.2s, fill 0.2s; }
+    .node .t { fill:var(--text); font-size:14px; font-weight:700; }
+    .node .s { fill:var(--muted); font-size:11.5px; }
+    .node.on rect { stroke-width:3; }
+    .node.dim { opacity:0.55; }
+    .svc { fill:rgba(56,189,248,0.04); stroke:#38bdf8; stroke-width:1.6; stroke-dasharray:6 4; }
+    .svc-l { fill:#38bdf8; font-size:11px; font-weight:700; letter-spacing:0.06em; }
+    .edge-faint { stroke:#334155; stroke-width:1.2; fill:none; }
+    .pulse { fill:none; stroke-width:3; opacity:0; }
+    .pulse.go { animation:pulse 1.1s ease-out 1; }
+    @keyframes pulse { 0% { opacity:0.9; } 100% { opacity:0; transform:scale(1.18); } }
+    @media (prefers-reduced-motion:reduce) { .pulse.go { animation:none; opacity:0.8; } }
+
+    .side { display:flex; flex-direction:column; gap:14px; }
+    .card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:14px 16px; }
+    .kicker { color:var(--muted); font-size:0.72em; text-transform:uppercase; letter-spacing:0.7px; font-weight:700; }
+    .step h2 { font-size:1.12em; margin:4px 0 6px; text-wrap:balance; }
+    .route { display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:0.82em; margin-bottom:8px; }
+    .chip { border:1px solid var(--border); border-radius:999px; padding:1px 9px; background:#172033; }
+    .step p { font-size:0.92em; }
+    .wire { margin-top:8px; background:#0e1628; border:1px solid var(--border); border-radius:8px; padding:7px 9px; color:#bae6fd; white-space:pre-wrap; word-break:break-word; }
+    .tag { display:inline-block; padding:0 8px; border-radius:999px; font-size:0.7em; font-weight:800; letter-spacing:0.4px; white-space:nowrap; }
+    .tag.ok { background:rgba(16,185,129,0.18); color:#6ee7b7; border:1px solid #10b981; }
+    .tag.meas { background:rgba(56,189,248,0.16); color:#7dd3fc; border:1px solid #38bdf8; }
+    .tag.open { background:rgba(245,158,11,0.18); color:#fcd34d; border:1px solid #f59e0b; }
+    .tag.bad { background:rgba(248,113,113,0.18); color:#fca5a5; border:1px solid #f87171; }
+
+    .sig table { font-size:0.8em; }
+    .sig td.k { color:var(--muted); font-family:Consolas,monospace; font-size:0.92em; }
+    .sig td.chg { background:rgba(253,224,71,0.13); color:#fef08a; font-weight:700; }
+    .sig tr.win td { background:rgba(134,239,172,0.12); }
+    .sig tr.win td:first-child { box-shadow:inset 3px 0 0 #86efac; }
+    .sig tr.cand td { background:rgba(167,139,250,0.10); }
+    .sig .sub { margin:12px 0 6px; }
+    .bench { display:flex; flex-wrap:wrap; gap:4px 14px; font-size:0.84em; margin:6px 0 2px; font-variant-numeric:tabular-nums; }
+    .bench span b { color:var(--muted); font-weight:600; margin-right:4px; }
+    .bench span.chg { color:#fef08a; font-weight:700; }
+
+    .life { display:flex; flex-wrap:wrap; gap:5px; margin:10px 0 4px; align-items:center; }
+    .life .lt { color:var(--muted); font-size:0.74em; font-weight:700; min-width:118px; }
+    .life span.s { font-size:0.74em; font-weight:700; padding:3px 8px; border-radius:6px; background:#172033; border:1px solid #334155; color:#64748b; letter-spacing:0.3px; }
+    .life span.seen { color:var(--muted); border-color:var(--border); }
+    .life span.now { color:var(--bg); background:var(--accent2); border-color:var(--accent2); }
+    .legend { display:flex; flex-wrap:wrap; gap:8px 18px; font-size:0.8em; color:var(--muted); margin:8px 0 0; }
+    .legend i { display:inline-block; width:22px; height:0; border-top:3px solid; vertical-align:middle; margin-right:6px; }
+
+    h3 { font-size:1em; color:var(--accent); margin:22px 0 8px; }
+    .tw { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:0.84em; background:var(--panel); border-radius:10px; overflow:hidden; }
+    th { background:var(--panel2); color:var(--accent); padding:6px 10px; text-align:left; font-size:0.78em; text-transform:uppercase; letter-spacing:0.5px; }
+    td { padding:5px 10px; border-top:1px solid var(--border); vertical-align:top; font-variant-numeric:tabular-nums; }
+    tr.new td { background:rgba(253,224,71,0.08); }
+    td.ev { color:var(--evt); font-family:Consolas,monospace; }
+    td.pass { color:#6ee7b7; font-weight:700; } td.fail { color:#fca5a5; font-weight:700; } td.fp { color:#fca5a5; font-weight:800; }
+    .empty { color:var(--muted); font-style:italic; }
+    .notes { color:var(--muted); font-size:0.82em; margin-top:18px; }
+    .notes li { margin:3px 0 3px 18px; }
+    @media (max-width:700px) { main { padding-inline:16px; } .ctl { margin-left:0; } }
+</style>
+</head>
+<body>
+<main>
+<h1>VizDOM <code style="font-size:0.8em">desc=</code> walkthrough</h1>
+<div class="subtitle">How a natural-language locator is resolved against the Visual DOM, one decision at a time: deterministic scoring first, a small text model over a <b>short</b> candidate table only when the scoring is not confident, a vision model only if configured, and a "no" at every tier that is a real no. Pick a scenario, then step with <b>Next</b>, the arrow keys or <b>Play</b>.</div>
+<div class="meta">2026-10-28 · Nguyen Huynh Tri Cuong · Master's project VizDOM · ADR-022 · Every DOM row, score, model reply and verdict below is taken from the lifecycle benchmark's run 6 (RTX 6000 Ada, commit ca1f0f7, <code>benchmarks/results/gpu-20261027_224706/</code>) or reproduced on the laptop with the same models; rates are from benchmarks/README.md §6 · Companion to <code>vizdom_walkthrough.html</code></div>
+
+<div class="bar">
+  <div class="tabs" id="tabs" role="group" aria-label="Scenario"></div>
+  <div class="ctl">
+    <button id="reset" type="button" title="Back to the start (Home)">⏮</button>
+    <button id="back" type="button" title="Previous step (←)">◀ Back</button>
+    <span class="count" id="count" aria-live="polite"></span>
+    <button id="next" type="button" title="Next step (→)">Next ▶</button>
+    <button id="play" type="button" title="Play or pause (Space)">Play</button>
+  </div>
+</div>
+<div class="scn-intro" id="intro"></div>
+
+<div class="grid">
+  <div>
+    <div class="map"><svg id="map" viewBox="0 0 1150 525" role="img" aria-label="Map of the desc= resolver: the client with the keyword, the library and the verdict; tier 0 with tokenizer, lexical scorer and confidence gate over the cached Visual DOM; the candidate list with shortlist, position filter and id validation, plus the per-screen cache; the tier 1 table prompt and the opt-in tier 2 Set-of-Mark overlay; and the Ollama model server with the 3B text and vision models. The current step's message is drawn as an arrow."></svg></div>
+    <div class="legend">
+      <span><i style="border-color:#cbd5e1"></i>keyword / config</span>
+      <span><i style="border-color:#c4b5fd"></i>deterministic step (no model)</span>
+      <span><i style="border-color:#38bdf8"></i>DOM read / cache</span>
+      <span><i style="border-color:#f472b6"></i>model call</span>
+      <span><i style="border-color:#fde047"></i>action / verdict</span>
+      <span><i style="border-color:#f87171"></i>failure</span>
+    </div>
+    <div id="life"></div>
+  </div>
+  <div class="side">
+    <div class="card step" id="step"></div>
+    <div class="card sig" id="sig"></div>
+  </div>
+</div>
+
+<h3>Keyword log so far <span style="color:var(--muted);font-weight:400;font-size:0.85em">what the suite would see in its Robot log · a red PASSED is a false pass</span></h3>
+<div class="tw"><table><thead><tr><th>#</th><th>Keyword</th><th>Locator / input</th><th>Outcome</th><th>Step</th></tr></thead><tbody id="log"></tbody></table></div>
+
+<ul class="notes">
+<li><span class="tag ok">in the code</span> is shipped behaviour (ADR-022, <code>desc_resolver.py</code>). <span class="tag meas">measured</span> quotes a figure from the lifecycle benchmark (514 steps over 44 states; runs 4 to 6 on rented GPUs). <span class="tag bad">failure case</span> is a defect or a limit this walkthrough explains.</li>
+<li>In the DOM table the <b>score</b> column is the lexical tier's score for the current description (2 × name overlap + 1 × role word + 0.5 × position word). Purple rows are the shortlist a model would see; the green row is the element the chain resolved to. Highlighted cells changed in this step.</li>
+<li>Lexical score floor 1.5 and margin 0.5 to the runner-up; model confidence gate 0.5; shortlist = lexical top 8, padded from the DOM to at least 3 rows; every returned id is checked against the DOM.</li>
+<li>Link to a step: the address keeps <code>#scenario/step</code>, for example <code>#no/6</code>.</li>
+</ul>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // ------------------------------------------------------------ the resolver
+  var W = 180, H = 62;
+  var NODES = {
+    KW:     { x: 110, y: 80,  t: 'Robot keyword',        s: 'Click Visual · Should Exist',       c: '#cbd5e1' },
+    LIB:    { x: 110, y: 170, t: 'VisualGuiLibrary',     s: 'text= || desc= fallback chain',    c: '#cbd5e1' },
+    OUT:    { x: 110, y: 380, t: 'Verdict / action',     s: 'exactly one → tap · verdict',   c: '#fde047' },
+    TOK:    { x: 330, y: 80,  t: 'Tokenizer',            s: 'name · role · position words',     c: '#c4b5fd' },
+    LEX:    { x: 330, y: 170, t: 'Lexical scorer',       s: '2·overlap + 1·role + ½·position', c: '#c4b5fd' },
+    GATE:   { x: 330, y: 260, t: 'Confidence gate',      s: 'floor 1.5 · margin 0.5',           c: '#c4b5fd' },
+    DOM:    { x: 330, y: 380, t: 'Visual DOM',           s: 'parsed once · ids, roles, text',   c: '#38bdf8' },
+    SHORT:  { x: 550, y: 80,  t: 'Shortlist',            s: 'top 8 · padded to ≥ 3 rows',       c: '#c4b5fd' },
+    POS:    { x: 550, y: 170, t: 'Position filter',      s: 'top / left … as geometry',         c: '#c4b5fd' },
+    VALID:  { x: 550, y: 260, t: 'Id check + gate',      s: 'id ∈ DOM · confidence ≥ 0.5',      c: '#c4b5fd' },
+    CACHE:  { x: 550, y: 380, t: 'Resolution cache',     s: 'per screen · per description',     c: '#38bdf8' },
+    SLM:    { x: 790, y: 150, t: 'Tier 1: table prompt', s: 'rows of the shortlist + null',     c: '#f472b6' },
+    VLM:    { x: 790, y: 330, t: 'Tier 2: Set-of-Mark',  s: 'numbered boxes on the screen',   c: '#f472b6' },
+    TXT:    { x: 1030, y: 150, t: 'qwen2.5:3b',          s: 'text model · temperature 0',       c: '#f472b6' },
+    VIS:    { x: 1030, y: 330, t: 'qwen2.5vl:3b',        s: 'vision model · temperature 0',     c: '#f472b6' }
+  };
+  var GROUPS = [
+    { d: 'M12,40 h196 v380 h-196 z',   l: 'CLIENT · ROBOT FRAMEWORK',     x: 12,  y: 34,  c: '#cbd5e1' },
+    { d: 'M230,40 h200 v262 h-200 z',  l: 'TIER 0 · LEXICAL · NO MODEL',  x: 230, y: 34,  c: '#a78bfa' },
+    { d: 'M230,340 h200 v80 h-200 z',  l: 'VISUAL DOM · CACHED',          x: 230, y: 334, c: '#38bdf8' },
+    { d: 'M450,40 h200 v262 h-200 z',  l: 'RESOLVER · CANDIDATE LIST',    x: 450, y: 34,  c: '#a78bfa' },
+    { d: 'M450,340 h200 v80 h-200 z',  l: 'CACHE · PER SCREEN',           x: 450, y: 334, c: '#38bdf8' },
+    { d: 'M690,100 h200 v100 h-200 z', l: 'TIER 1 · TEXT MODEL',          x: 690, y: 94,  c: '#f472b6' },
+    { d: 'M690,280 h200 v100 h-200 z', l: 'TIER 2 · VISION · OPT-IN',     x: 690, y: 274, c: '#f472b6' },
+    { d: 'M930,100 h200 v280 h-200 z', l: 'MODEL SERVER · OLLAMA',        x: 930, y: 94,  c: '#f472b6' }
+  ];
+  var KIND = { read: '#cbd5e1', det: '#c4b5fd', dom: '#38bdf8', model: '#f472b6', act: '#fde047', fail: '#f87171' };
+  var STAGES = ['cache', 'tokenize', 'score', 'gate', 'shortlist', 'position', 'prompt', 'model', 'validate', 'verdict'];
+  var TIERS = ['lexical', 'slm', 'vlm', 'none'];
+
+  // DOM rows: [id, role, text, score]. Rows are the GPU host's parse (run 6 DOM dump), subsets of the screen.
+  function tbl(rows) { return rows.map(function (r) { return [r[0], r[1], r[2], '']; }); }
+  function scored(rows, scores) { return rows.map(function (r) { return [r[0], r[1], r[2], scores[r[0]] !== undefined ? String(scores[r[0]]) : '0']; }); }
+  var FORM = [['E8', 'textField', 'John Doe'], ['E17', 'textField', 'Stopped'], ['E23', 'textField', 'Disconnected'], ['E38', 'button', 'Save'], ['E39', 'button', 'Cancel'], ['E40', 'button', 'Reset']];
+  var TABLE = [['E2', 'button', 'Export'], ['E3', 'button', 'Add New'], ['E4', 'textField', 'Search:'], ['E28', 'staticText', '1.2'], ['E60', 'image', '2'], ['E78', 'button', 'Prev'], ['E81', 'button', 'Next']];
+  // dialog_0141 as the GPU host parsed it: E5 is the Cancel button, a box OCR read no text in
+  var DIALOG = [['E1', 'staticText', 'Warning'], ['E2', 'image', '×'], ['E3', 'staticText', 'An error occurred while proc…'], ['E4', 'staticText', 'request:'], ['E5', 'image', ''], ['E6', 'button', 'Retry']];
+  var SETTINGS = [['E16', 'button', 'License'], ['E19', 'button', 'License'], ['E22', 'button', 'Zip Code'], ['E26', 'button', 'State'], ['E40', 'button', 'Cancel'], ['E41', 'button', 'e']];
+  var TOOLBAR = [['E1', 'image', '×'], ['E2', 'image', '×'], ['E3', 'image', '±'], ['E6', 'button', 'Stop'], ['E7', 'button', 'Uninstall'], ['E8', 'button', 'Connect'], ['E9', 'button', 'Copy'], ['E10', 'staticText', 'Document Editor']];
+  var CALC = [['E12', 'text', '0'], ['E21', 'button', '7'], ['E22', 'button', '8'], ['E31', 'button', '÷'], ['E35', 'button', '='], ['E40', 'button', '⌫']];
+
+  function ses(lookups, calls, tier, cost) { return { lookups: lookups, calls: calls, tier: tier, cost: cost }; }
+  function loc(kw, l, matches, verdict) { return { kw: kw, loc: l, matches: matches, verdict: verdict }; }
+  function init(screen, rows) { return { screen: screen, dom: tbl(rows), win: '', cand: [], ses: ses('0', '0', '—', '—'), loc: loc('—', '—', '—', '—') }; }
+
+  // ------------------------------------------------------------ scenarios
+  // a, b: nodes. k: kind. st: resolver stage. set: values after the step. ev: log rows [keyword, input, outcome].
+  var SCENARIOS = [
+    { id: 'lexical', name: 'Tier 0: no model needed', intro: 'The deterministic tier answers 398 of the 514 benchmark steps on its own. Screen: form_sidebar_0007, then two data tables. Every score is the real one from run 6.',
+      init: init('form_sidebar_0007 (40 elements, 6 shown)', FORM),
+      steps: [
+        { a: 'KW', b: 'LIB', k: 'read', tag: 'ok', set: { loc: loc('Click Visual', 'desc="Save button"', '—', '—') },
+          t: 'Click Visual  desc="Save button"',
+          d: 'A description instead of an exact property. In the shipped demo every locator is a fallback chain, text=Save || desc="Save button", and the description is consulted only when the deterministic half misses; this walkthrough follows the desc= half on its own.',
+          w: 'Click Visual    desc="Save button"' },
+        { a: 'LIB', b: 'CACHE', k: 'dom', st: 'cache', tag: 'ok', set: { ses: ses('1', '0', '—', '0.2 ms') },
+          t: 'Cache lookup: per screen, per description',
+          d: 'One resolver lives per parsed DOM. The key is the lower-cased description (plus the candidate set when a text= locator asks desc= to disambiguate among its matches). First time on this screen: miss, resolve.',
+          w: "cache['save button'] → miss" },
+        { a: 'LIB', b: 'TOK', k: 'det', st: 'tokenize', tag: 'ok',
+          t: 'Tokenize: name words, role words, position words',
+          d: '"save" is a name token, to be matched against each element\'s label, text and hint. "button" is a role word, mapped to the roles {button, pushbutton}. There is no position word. Role and position words are taken out of the name match, so "button" never has to appear in a caption.',
+          w: "name: ['save']   role: {button, pushbutton}   position: []" },
+        { a: 'TOK', b: ['LEX', 'DOM'], k: 'det', st: 'score', tag: 'ok', set: { dom: scored(FORM, { E38: '3.0', E39: '1.0', E40: '1.0' }) },
+          t: 'Score every element: 2 × overlap + 1 × role + 0.5 × position',
+          d: 'Name overlap is the share of name tokens found in the element\'s words (a substring match counts 0.7, so "setting" meets "settings"). The Save button: overlap 1.0 × 2 plus the role word = 3.0. Cancel and Reset are buttons and nothing else: 1.0. Every text field scores 0. Pure arithmetic over the DOM, 0.2 ms, the same answer on every run and every machine.',
+          w: "E38 button 'Save'   2.0 + 1.0 = 3.0\nE39 button 'Cancel' 0   + 1.0 = 1.0\nE40 button 'Reset'  0   + 1.0 = 1.0" },
+        { a: 'LEX', b: 'GATE', k: 'det', st: 'gate', tag: 'ok', set: { win: 'E38', ses: ses('1', '0', 'lexical', '0.2 ms'), loc: loc('Click Visual', 'desc="Save button"', '1', 'E38 · tier=lexical score=3.00') },
+          t: 'Confidence gate: floor 1.5, margin 0.5',
+          d: 'The top score must clear 1.5 and lead the runner-up by 0.5. 3.0 clears the floor and leads by 2.0: confident. The chain stops here; no model is consulted. This is what "tier=lexical" means in a benchmark detail.',
+          w: 'lexical_confident: 3.00 ≥ 1.5 and 3.00 − 1.00 ≥ 0.5  →  E38' },
+        { a: 'GATE', b: ['CACHE', 'OUT'], k: 'act', st: 'verdict', tag: 'ok', ev: [['Click Visual', 'desc="Save button"', 'tapped E38 (lexical 3.00)']],
+          t: 'Store, then act: exactly one element',
+          d: 'The result is cached for this screen and handed back as one element. The action keyword taps its centre as a normalized point; a verification keyword would report PASSED. Zero or several candidates would fail with the list.',
+          w: "cache['save button'] = E38   →   Tap(centre of E38)" },
+        { a: 'KW', b: 'LIB', k: 'read', tag: 'meas', set: { screen: 'data_table_0078 (88 elements, 7 shown)', dom: tbl(TABLE), win: '', ses: ses('2', '0', '—', '0.2 ms'), loc: loc('Click Visual', 'desc="Search... input field"', '—', '—') },
+          t: 'Where desc= beats text=: desc="Search... input field"',
+          d: 'OCR read the placeholder as "Search:" and dropped the dots, so text="Search..." finds nothing and the step is a miss with exact text. The description still works, because matching is by tokens, not by the whole string.' },
+        { a: 'TOK', b: ['LEX', 'DOM'], k: 'det', st: 'score', tag: 'meas', set: { dom: scored(TABLE, { E4: '3.0' }), win: 'E4', ses: ses('2', '0', 'lexical', '0.2 ms'), loc: loc('Click Visual', 'desc="Search... input field"', '1', 'E4 · tier=lexical score=3.00') },
+          ev: [['Click Visual', 'desc="Search... input field"', 'tapped E4 (lexical 3.00)']],
+          t: '"search" overlaps "Search:", "input field" names the role: 3.0',
+          d: 'The name token "search" is found in the OCR word; "input" and "field" are both role words for text fields. 2.0 + 1.0 = 3.0, nothing else scores, confident. Seven benchmark steps are exactly this case, plus path-like values such as APAC\\USER01 with partial overlap (scores 1.7 to 2.6): the eleven hits desc= gains over text= on the same DOM.',
+          w: "tokens: name ['search']  role {input_field, textfield, edittext}\nE4 textField 'Search:'  2.0 + 1.0 = 3.0  →  confident" },
+        { a: 'KW', b: 'LIB', k: 'read', tag: 'bad', set: { screen: 'data_table_0110 (62 elements, 7 shown)', win: '', ses: ses('3', '0', '—', '0.2 ms'), loc: loc('Click Visual', 'desc="2 button"', '—', '—') },
+          t: 'Where it cannot decide: desc="2 button", a pagination digit',
+          d: 'The digit "2" appears in several cells of the table. The pagination "2" itself was parsed as an image, not a button, so the role word helps nobody.' },
+        { a: 'LEX', b: 'GATE', k: 'fail', st: 'gate', tag: 'bad', set: { dom: scored(TABLE, { E28: '2.0', E60: '2.0' }), cand: ['E28', 'E60'] },
+          t: 'A tie at 2.0: the gate declines and escalates',
+          d: '"1.2" and the pagination "2" both contain the token, both score 2.0, margin 0. The lexical tier says why it declined and passes the shortlist on. The text model, asked next, also declines (null, 0.00), so the step fails with every tier\'s verdict in the message. Four repeated-digit steps are the chain\'s remaining misses of this kind; a wrong guess would have been worse than a loud miss.',
+          w: 'lexical: tie at 2.00 between 2 candidates (runner-up 2.00, margin < 0.5)\nslm not confident (0.00)  →  FAILED, candidates: E28, E60' },
+        { a: 'GATE', b: 'OUT', k: 'fail', st: 'verdict', tag: 'bad', set: { ses: ses('3', '1', 'none', 'SLM 0.2 s'), loc: loc('Click Visual', 'desc="2 button"', '0 confident', 'FAILED (candidates listed)') },
+          ev: [['Click Visual', 'desc="2 button"', 'FAILED: no confident match (lexical: tie at 2.00 between 2 candidates; slm not confident (0.00))']],
+          t: 'The miss is loud and explains itself',
+          d: 'A failed resolution carries each tier\'s own reason, so a log reader can tell a tie from a null answer from an unreachable model server. Measured over the suite: the lexical tier answers 398 of 514 steps, the model is asked on the other 116, and the whole column spends 18 s on resolution.' }
+      ] },
+
+    { id: 'slm', name: 'Tier 1: a short table for a small model', intro: 'When the scoring is not confident, the lexical top 8, padded from the DOM to at least 3 rows, goes to a 3B text model as a table. Screen: the benchmark\'s dialog_0141 as the GPU host parsed it, where OCR never read the Cancel caption; then settings_0042.',
+      init: init('dialog_0141 (6 elements)', DIALOG),
+      steps: [
+        { a: 'KW', b: 'LIB', k: 'read', tag: 'ok', set: { loc: loc('Click Visual', 'desc="Cancel button"', '—', '—') },
+          t: 'Click Visual  desc="Cancel button"',
+          d: 'The dialog has a Cancel button (E5), but the OCR on the GPU host read no text inside it, so in this DOM it is an image with no words. With text=Cancel this step is a plain miss: zero matches, FAILED.' },
+        { a: 'TOK', b: ['LEX', 'DOM'], k: 'det', st: 'score', tag: 'ok', set: { dom: scored(DIALOG, { E6: '1.0' }) },
+          t: '"cancel" overlaps nothing; "button" scores Retry 1.0',
+          d: 'No element carries the word; the only element with role button is Retry, which gets the role point and nothing more.',
+          w: "E6 button 'Retry'  0 + 1.0 = 1.0   (E5, the real Cancel: image, no text → 0)" },
+        { a: 'LEX', b: 'GATE', k: 'det', st: 'gate', tag: 'ok', set: { ses: ses('1', '0', '—', '0.2 ms'), loc: loc('Click Visual', 'desc="Cancel button"', '0 confident', 'escalate') },
+          t: '1.0 is below the floor: escalate',
+          d: 'The gate declines and records "lexical: best score 1.00 < 1.5". The scored list is handed to the shortlist builder.' },
+        { a: 'GATE', b: 'SHORT', k: 'det', st: 'shortlist', tag: 'ok', set: { cand: ['E6', 'E1', 'E2'] },
+          t: 'Shortlist: top 8 of the scored list, padded to at least 3 rows',
+          d: 'Only one element scored, so the list is padded from the DOM in reading order: Retry, then Warning, then the × icon. The padding exists because of this very dialog (next scenario): a one-row table asks the model "is this it?", and a 3B model says yes. With three rows it is asked "which, if any?".',
+          w: 'ranked: [E6]  →  shortlist: [E6, E1, E2]   (SHORTLIST_MIN = 3, SHORTLIST_MAX = 8)' },
+        { a: 'SHORT', b: 'POS', k: 'det', st: 'position', tag: 'ok',
+          t: 'Position filter: nothing to apply',
+          d: 'Words such as "top", "left" or "corner" are enforced as geometry on the normalized centres before any model sees the list, because a 3B model confidently called a top-left element "top right" in development. This description has none.' },
+        { a: 'POS', b: 'SLM', k: 'det', st: 'prompt', tag: 'ok',
+          t: 'Build the table prompt: one row per candidate, a null offered plainly',
+          d: 'Each row carries id, role, text, label and the normalized centre. The wording stays plain: "use null if no element matches". Run 6 showed that an explanatory rule in this prompt makes the model answer more, not less, when the table is long (scenario 3).',
+          w: "You match a natural-language description to ONE UI element, or to none.\nDescription: 'Cancel button'\nElements (center is normalized 0-1, (0,0)=top-left):\n  id=E6 role=button text='Retry' center=(0.64,0.61)\n  id=E1 role=staticText text='Warning' center=(0.36,0.39)\n  id=E2 role=image text='×' label='Multiply' center=(0.67,0.37)\nReply with ONLY a JSON object: {\"id\": \"<element id or null>\", \"confidence\": 0.0-1.0, \"reason\": \"...\"}\nUse null if no element matches the description." },
+        { a: 'SLM', b: 'TXT', k: 'model', st: 'model', tag: 'ok', set: { ses: ses('1', '1', '—', 'SLM call 0.2 s') },
+          t: 'One call to qwen2.5:3b through Ollama, temperature 0',
+          d: 'About 0.2 s on the GPU host. The model sees three rows and a description, never the screenshot and never the whole DOM.' },
+        { a: 'TXT', b: 'VALID', k: 'model', st: 'validate', tag: 'ok', set: { win: 'E2', ses: ses('1', '1', 'slm', 'SLM call 0.2 s'), loc: loc('Click Visual', 'desc="Cancel button"', '1', 'E2 · tier=slm conf=1.00') },
+          t: 'The reply names E2, the × icon; the id is checked against the DOM',
+          d: 'A returned id that is not in the DOM is rejected, so a hallucinated element cannot become a click; a confidence under 0.5 is a decline. E2 exists and 1.00 clears the gate. This is the real run-6 answer and its reason.',
+          w: '{"id": "E2", "confidence": 1.0, "reason": "text \'×\' is commonly used for a cancel button"}' },
+        { a: 'VALID', b: 'OUT', k: 'act', st: 'verdict', tag: 'bad', ev: [['Click Visual', 'desc="Cancel button"', 'tapped E2, the × icon · benchmark: miss (target was E5)']],
+          t: 'A sensible answer that is the wrong element',
+          d: 'Closing the dialog is what a human might do for "Cancel", but the benchmark\'s target is the Cancel button, so the action step scores a miss. Its verify twin, "the Cancel button is visible", scored PASSED and counts as correct, because a positive verify only asks whether some element was confidently resolved. A wrong-element pass on a true statement is invisible to verify accuracy; action-hit is the metric that catches it. Worth knowing when reading 0.964.' },
+        { a: 'KW', b: 'LIB', k: 'read', tag: 'meas', set: { screen: 'settings_0042 (41 elements, 6 shown)', dom: tbl(SETTINGS), win: '', cand: [], ses: ses('2', '1', '—', '0.2 ms'), loc: loc('Click Visual', 'desc="Save button"', '—', '—') },
+          t: 'The case the model is for: desc="Save button" when OCR read "e"',
+          d: 'On this screen OCR read the Save caption as the single letter "e". Exact text cannot find it, and the lexical tier cannot either: "save" overlaps nothing.' },
+        { a: 'LEX', b: 'SHORT', k: 'det', st: 'shortlist', tag: 'meas', set: { dom: scored(SETTINGS, { E16: '1.0', E19: '1.0', E22: '1.0', E26: '1.0', E40: '1.0', E41: '1.0' }), cand: ['E16', 'E19', 'E22', 'E26', 'E40', 'E41'] },
+          t: 'Six buttons tie at 1.0: all six go to the model',
+          d: 'Every button on the screen gets the role point and nothing else. The shortlist is the six of them, in score order then reading order.' },
+        { a: 'TXT', b: 'VALID', k: 'model', st: 'validate', tag: 'meas', set: { win: 'E41', ses: ses('2', '2', 'slm', 'SLM call 0.2 s'), loc: loc('Click Visual', 'desc="Save button"', '1', 'E41 · tier=slm conf=0.95') },
+          ev: [['Click Visual', 'desc="Save button"', 'tapped E41 (slm 0.95) · benchmark: HIT']],
+          t: 'The model picks the button whose caption is "e": a hit',
+          d: 'Among License, License, Zip Code, State, Cancel and "e", the model chose the one that is none of the others, at 0.95, and the centre falls inside the Save button. This is the one action step run 6 gained over run 4, and the kind of OCR floor the language tier can recover.',
+          w: '{"id": "E41", "confidence": 0.95, "reason": "role=button text=\'e\'"}' },
+        { a: 'TXT', k: 'model', tag: 'meas', t: 'How often the model is consulted, and how often it answers',
+          d: 'Run 6, production chain: the text model was asked on 116 of 514 steps (the 88 negatives plus 28 positives with no confident lexical top) and answered 6; of its 3 action answers, 2 were hits. The other 110 were declines. The whole column spent 18 s on resolution, 0.03 s per step, on top of the parse.' }
+      ] },
+
+    { id: 'no', name: 'Saying no: 88 absent targets', intro: 'A test oracle must fail a check whose target is not there. The lifecycle benchmark asks that 88 times with nonsense captions; this scenario follows the chain on one of them, then shows the two ways it was made to say yes and what fixed each. Screen: toolbar_0020, then dialog_0141.',
+      init: init('toolbar_0020 (20 elements, 8 shown)', TOOLBAR),
+      steps: [
+        { a: 'KW', b: 'LIB', k: 'read', tag: 'ok', set: { loc: loc('Visual Should Exist', 'desc="Frobnicate button"', '—', '—') },
+          t: 'Visual Should Exist  desc="Frobnicate button"',
+          d: 'A caption that cannot exist on a business screen. The expected verdict is FAILED; a PASSED here is the failure a suite cannot see, because it stays green.' },
+        { a: 'TOK', b: ['LEX', 'DOM'], k: 'det', st: 'score', tag: 'ok', set: { dom: scored(TOOLBAR, { E6: '1.0', E7: '1.0', E8: '1.0', E9: '1.0' }), cand: ['E6', 'E7', 'E8', 'E9'] },
+          t: '"frobnicate" overlaps nothing; four buttons score 1.0 by role',
+          d: 'Stop, Uninstall, Connect and Copy get the role point. Below the floor, no winner: the four buttons are the shortlist. Note what the model is about to see: four real buttons and a word that matches none of them.' },
+        { a: 'SLM', b: 'TXT', k: 'model', st: 'model', tag: 'ok', set: { ses: ses('1', '1', '—', 'SLM call 0.2 s') },
+          t: 'The table prompt goes to the text model',
+          w: "Description: 'Frobnicate button'\n  id=E6 role=button text='Stop'      center=(0.74,0.03)\n  id=E7 role=button text='Uninstall' center=(0.81,0.03)\n  id=E8 role=button text='Connect'   center=(0.90,0.03)\n  id=E9 role=button text='Copy'      center=(0.97,0.03)\n…Use null if no element matches the description." },
+        { a: 'TXT', b: 'VALID', k: 'model', st: 'validate', tag: 'ok', set: { win: '', ses: ses('1', '1', 'none', 'SLM call 0.2 s'), loc: loc('Visual Should Exist', 'desc="Frobnicate button"', '0', 'FAILED (correct)') },
+          ev: [['Visual Should Exist', 'desc="Frobnicate button"', 'FAILED: no confident match (lexical: best score 1.00 < 1.5; slm not confident (0.00))']],
+          t: 'null, confidence 0.00: the chain says no',
+          d: 'The model declines and the keyword fails with both tiers\' verdicts. Run 6: the production chain declined all 88 nonsense captions. Measured against the same 88 statements, Aria-UI passed 88, ELAM 86, UI-TARS 60; they are built to return a location for any instruction.',
+          w: '{"id": null, "confidence": 0.0, "reason": "No UI element matches the description \'Frobnicate button\'"}' },
+        { a: 'KW', b: 'LIB', k: 'read', tag: 'bad', set: { screen: 'dialog_0141 (6 elements)', dom: scored(DIALOG, { E6: '1.0' }), win: '', cand: ['E6'], ses: ses('2', '1', '—', '0.2 ms'), loc: loc('Visual Should Exist', 'desc="Purple Elephant button"', '—', '—') },
+          t: 'How run 4 was made to say yes: a one-row table',
+          d: 'Before the padding, the shortlist was exactly the scored elements. On this dialog only Retry scores (the Cancel button has no text), so the model received one row.' },
+        { a: 'TXT', b: 'VALID', k: 'model', st: 'validate', tag: 'bad', set: { win: 'E6', ses: ses('2', '2', 'slm', 'SLM call 0.2 s'), loc: loc('Visual Should Exist', 'desc="Purple Elephant button"', '1 (wrong)', 'PASSED: false pass (run 4)') },
+          ev: [['Visual Should Exist', 'desc="Purple Elephant button"', 'PASSED (false pass, run 4, before the padding)']],
+          t: '"Is this it?" — a 3B model says yes at 0.85',
+          d: 'Asked "which of these matches?" about one row, the model answered the row, with a rationalisation about role and position. Reproduced byte for byte on the laptop with the same model. It was the only false pass in 88 negatives, and the only one in all of run 4.',
+          w: "  id=E6 role=button text='Retry' center=(0.64,0.61)\n→ {\"id\": \"E6\", \"confidence\": 0.85, \"reason\": \"… matches the element with role=button, text='Retry' … close to the provided element's position and role\"}" },
+        { a: 'GATE', b: 'SHORT', k: 'det', st: 'shortlist', tag: 'ok', set: { win: '', cand: ['E6', 'E1', 'E2'], ses: ses('3', '3', 'none', 'SLM call 0.2 s'), loc: loc('Visual Should Exist', 'desc="Purple Elephant button"', '0', 'FAILED (correct, run 6)') },
+          ev: [['Visual Should Exist', 'desc="Purple Elephant button"', 'FAILED: no confident match (lexical: best score 1.00 < 1.5; slm not confident (0.00))']],
+          t: 'The fix: never a one-row table. Same phrase, three rows: null at 0.00',
+          d: 'The shortlist is padded from the DOM to at least three rows (SHORTLIST_MIN). Run 6 measured it: this step declines, the chain passes 0 of 88, and nothing else got worse (509 of 514 outcomes identical to run 4, the other five gains).' },
+        { a: 'SLM', b: 'TXT', k: 'model', st: 'prompt', tag: 'bad', set: { screen: 'toolbar_0020, the whole DOM as the table', dom: scored(TOOLBAR, { E6: '1.0', E7: '1.0', E8: '1.0', E9: '1.0' }), cand: ['E1', 'E2', 'E3', 'E6', 'E7', 'E8', 'E9', 'E10'], win: 'E6', ses: ses('4', '4', 'slm', 'SLM call 0.2 s'), loc: loc('Visual Should Exist', 'desc="Frobnicate button"  (whole-DOM table, explanatory prompt)', '1 (wrong)', 'PASSED: false pass (SLM-only column, run 6)') },
+          ev: [['Visual Should Exist', 'desc="Frobnicate button" · SLM over the whole DOM', 'PASSED (false pass, run 6 SLM-only column)']],
+          t: 'The second way to make it say yes: a long table and a rule in the prompt',
+          d: 'Run 6 also ran the model alone over the whole DOM table (20 to 110 rows), with a prompt that spelled out the null rule: "answer null unless text or role clearly corresponds; a matching role alone is NOT a match". The column passed 38 of 88 negatives at confidence 1.00. Reproduced on the laptop: over the full table that wording answers 6 of 6 nonsense captions, the plain wording 1 of 6; over a padded shortlist both decline 6 of 6. Given a long list and a rule, a 3B model copies the rule into its justification; given a short list, it applies it.',
+          w: '{"id": "E6", "confidence": 1.0, "reason": "id=E6 role=button text=\'Stop\'"}   ← for "Frobnicate button", whole-DOM table, explanatory prompt' },
+        { a: 'SHORT', k: 'det', tag: 'meas', set: { win: '', cand: ['E6', 'E7', 'E8', 'E9'], loc: loc('Visual Should Exist', 'desc="Frobnicate button"', '0', 'FAILED (correct)') },
+          t: 'What keeps the oracle: a short list with a null the model will take',
+          d: 'Not the model (the same model says yes over the whole DOM), not a rule in the prompt (it made things worse), and not the absence of a model (the production chain has one). The deterministic tier shortens the list and the model is asked a question it can answer with "none". The prompt wording went back to the plain form; the padding stays.' }
+      ] },
+
+    { id: 'vlm', name: 'Tier 2: the vision tier, and why it stays out', intro: 'Set-of-Mark: numbered boxes drawn on the screenshot for the shortlist, and a vision model asked which number matches. Implemented, measured behind the same shortlist in runs 5 and 6, and kept out of the default chain. Screen: toolbar_0020.',
+      init: init('toolbar_0020 (20 elements, 8 shown)', TOOLBAR),
+      steps: [
+        { a: 'KW', b: 'LIB', k: 'read', tag: 'ok', set: { loc: loc('Visual Should Exist', 'desc="Frobnicate button"  (chain pinned: lexical, vlm)', '—', '—') },
+          t: 'The same absent target, with the chain pinned to lexical → VLM',
+          d: 'The tier order is configuration. The benchmark pinned "lexical,vlm" for one column to measure the vision tier where production would put it: behind the lexical shortlist, with at most eight marks.',
+          w: '"grounding": { "tiers": ["lexical", "vlm"], "vision_model": "qwen2.5vl:3b" }' },
+        { a: 'GATE', b: 'SHORT', k: 'det', st: 'shortlist', tag: 'ok', set: { dom: scored(TOOLBAR, { E6: '1.0', E7: '1.0', E8: '1.0', E9: '1.0' }), cand: ['E6', 'E7', 'E8', 'E9'], ses: ses('1', '0', '—', '0.2 ms') },
+          t: 'Lexical declines as before; the four buttons are the shortlist',
+          d: 'Everything up to the shortlist is identical to the text-model chain. Only the question asked of the model changes.' },
+        { a: 'SHORT', b: 'VLM', k: 'det', st: 'prompt', tag: 'ok',
+          t: 'Draw the marks: red numbered boxes on the screenshot',
+          d: 'Each candidate gets a box and a number, 1 to 4 here, at most 20. The image is PNG-encoded and sent with the prompt. The model answers a number, so the answer is a DOM element by construction: no coordinate regression, no hallucinated box.',
+          w: 'marks: 1 → E6 Stop, 2 → E7 Uninstall, 3 → E8 Connect, 4 → E9 Copy\n"The screenshot shows UI elements marked with red numbered boxes.\nDescription: \'Frobnicate button\'\nWhich numbered box matches the description? The description may refer to nothing that is marked; answer null unless a box clearly shows it.\nReply with ONLY a JSON object: {\"number\": <int or null>, \"confidence\": 0.0-1.0}."' },
+        { a: 'VLM', b: 'VIS', k: 'model', st: 'model', tag: 'ok', set: { ses: ses('1', '1', '—', 'VLM call 0.6 s') },
+          t: 'One call to qwen2.5vl:3b with the 1920×1080 overlay',
+          d: 'About 2 800 prompt tokens, most of them image; 0.6 to 0.8 s per answered call on the GPU hosts.' },
+        { a: 'VIS', b: 'VALID', k: 'model', st: 'validate', tag: 'bad', set: { win: 'E6', ses: ses('1', '1', 'vlm', 'VLM call 0.6 s'), loc: loc('Visual Should Exist', 'desc="Frobnicate button"  (lexical, vlm)', '1 (wrong)', 'PASSED: false pass (run 6)') },
+          ev: [['Visual Should Exist', 'desc="Frobnicate button" via VLM', 'PASSED (false pass, run 6)']],
+          t: '"number 1, confidence 0.95": mark 1 is the Stop button',
+          d: 'The real run-6 answer on this screen. The number is in range and the confidence clears the gate, so the chain resolves to Stop and the verify passes. The same four rows in text form made the text model say null.',
+          w: '{"number": 1, "confidence": 0.95}' },
+        { a: 'VIS', k: 'model', tag: 'meas', t: 'Measured: a yes-man, even with a null in the prompt',
+          d: 'Run 5 (older prompt): the vision tier answered a mark on 34 of the 40 nonsense captions it was shown, 22 of them "mark 1", at 0.90 to 0.99. Run 6 (null offered explicitly): 17 of 30, 14 of them at 0.95, 10 of them mark 1. The text model over the same shortlists: 0 of 88. Same list, same question, two 3B models, opposite behaviour: what the model is asked to do decides, not its size.' },
+        { a: 'VIS', b: 'VALID', k: 'fail', st: 'validate', tag: 'bad', set: { win: '', ses: ses('2', '2', '—', 'VLM call aborted'), loc: loc('Visual Should Exist', 'desc="Antigravity button"  (lexical, vlm)', 'error', 'step error: model produced no answer') },
+          ev: [['Visual Should Exist', 'desc="Antigravity button" via VLM', 'ERROR: vlm unavailable: Ollama error: 500 prediction aborted, token repeat limit reached']],
+          t: 'And on a third of the screens it produces no answer at all',
+          d: 'On 30 of the 44 states, the same block on a given card in every run, the vision model collapses into one repeated token ("8888…") until Ollama\'s repeat guard aborts the generation with HTTP 500. The benchmark records such steps as errors, not as declines, so they cannot flatter the false-pass rate; 68 to 394 steps per vision column were lost this way. Not context length, not the number of marks, not the image size: reproduced on the laptop with the same model and the DOMs from the tarball.',
+          w: 'HTTP 500 {"error":"prediction aborted, token repeat limit reached"}\nraw generation with the cap lifted: 888888888888888888888888…' },
+        { a: 'LIB', k: 'read', tag: 'ok', t: 'ADR-022 verdict: opt-in, and never in a chain used for verification',
+          d: 'The vision tier stays implemented and configurable, because a tester\'s wording may one day need it for actions. It is not in the default chain, and a verify keyword must never run a chain that ends in it. The next experiment is a different vision model, not a different prompt.',
+          w: '"grounding": { "tiers": ["lexical", "slm"] }   ← default; CI may pin ["lexical"]' }
+      ] },
+
+    { id: 'suite', name: 'In a suite: fallback chains, cache, cost', intro: 'How desc= sits in a real suite: as the second half of a fallback locator, cached per screen, pinned by config, and paid for only on the steps the deterministic half cannot settle. Screen: the shipped Calculator demo.',
+      init: init('Calculator (34 elements, 6 shown)', CALC),
+      steps: [
+        { a: 'KW', b: 'LIB', k: 'read', tag: 'ok', set: { loc: loc('Click Visual', '${BTN_7}  =  text=7 || desc="digit seven button"', '—', '—') },
+          t: 'Every demo locator is a chain: the deterministic half first',
+          d: 'text=7 is tried first under the exactly-one contract. The description after || is consulted only if the first half finds zero or several elements.',
+          w: '${BTN_7}         text=7 || desc="digit seven button"\n${BTN_DIVIDE}    text="÷" || desc="divide button"\n${BTN_BACKSPACE} desc="backspace button"' },
+        { a: 'LIB', b: 'DOM', k: 'dom', st: 'verdict', tag: 'ok', set: { win: 'E21', ses: ses('1', '0', '—', '0.2 ms'), loc: loc('Click Visual', 'text=7 || desc="digit seven button"', '1', 'E21 by text=; desc= never consulted') },
+          ev: [['Click Visual', 'text=7 || desc="digit seven button"', 'tapped E21 (text=)']],
+          t: 'text=7 resolves to exactly one element: desc= is never run',
+          d: 'Most steps of a suite end here. The description costs nothing until it is needed.' },
+        { a: 'KW', b: 'LIB', k: 'read', tag: 'ok', set: { win: '', loc: loc('Click Visual', 'desc="backspace button"', '—', '—') },
+          t: 'A glyph key: desc="backspace button"',
+          d: 'The ⌫ key has no readable text; the symbol reader gave it the label "backspace". Labels, text and hints are all matched by the lexical tier, so the description resolves without a model.' },
+        { a: 'LEX', b: 'GATE', k: 'det', st: 'gate', tag: 'ok', set: { dom: scored(CALC, { E40: '3.0', E21: '1.0', E22: '1.0', E31: '1.0', E35: '1.0' }), win: 'E40', ses: ses('2', '0', 'lexical', '0.2 ms'), loc: loc('Click Visual', 'desc="backspace button"', '1', 'E40 · tier=lexical score=3.00') },
+          ev: [['Click Visual', 'desc="backspace button"', 'tapped E40 (lexical 3.00)']],
+          t: 'label "backspace" + role button = 3.0, confident',
+          d: 'The other keys are buttons and score 1.0; the margin is 2.0. A caption-derived label is kept separate from read text in the DOM, but the lexical tier reads both.' },
+        { a: 'LIB', b: 'CACHE', k: 'dom', st: 'cache', tag: 'ok', set: { ses: ses('3', '0', 'lexical', '0.0 ms, cached'), loc: loc('Visual Should Exist', 'desc="backspace button"', '1', 'E40 from the cache') },
+          ev: [['Visual Should Exist', 'desc="backspace button"', 'PASSED (cached)']],
+          t: 'The same description again on the same screen: the cache answers',
+          d: 'A resolver lives as long as its DOM; a new capture is a new DOM and a new resolver. The benchmark builds a fresh resolver per step on purpose, so that a verify step cannot be answered by the cache of its action step.' },
+        { a: 'KW', b: 'LIB', k: 'read', tag: 'ok', t: 'Determinism is a policy: the chain is pinned in the session config',
+          d: 'Default lexical then SLM; CI can pin lexical alone and run with no model server at all; the vision tier is opt-in. Temperature is 0, every id is validated against the DOM, and every hit records which tier answered, so a desc= locator is auditable even though it is less deterministic than text=.',
+          w: '"grounding": { "backend": "ollama", "host": "http://localhost:11434",\n               "tiers": ["lexical", "slm"], "model": "qwen2.5:3b" }' },
+        { a: 'TXT', k: 'model', tag: 'meas', set: { ses: ses('514', '116', 'lexical', '0.03 s / step') },
+          t: 'Cost on the benchmark: the model is paid for on 116 of 514 steps',
+          d: 'Lexical answers 398 steps at 0.2 ms; the 116 model calls take 18 s in total. With the parse, the production chain costs 0.10 s per step for the whole suite on the run-6 host, against 2.8 to 4.2 s per step for ELAM and UI-TARS on the same card that night.' },
+        { a: 'OUT', k: 'act', tag: 'meas', t: 'The row this produces',
+          d: 'Run 6, 514 steps: action-hit 0.934 (ELAM 0.930, UI-TARS 0.944, Aria-UI 0.962), verification accuracy 0.964 (best of the table; grounders 0.70 to 0.80), false-pass 0.000 (grounders 0.199 to 0.292). Caveat: the benchmark\'s descriptions are generated as caption plus role word, the lexical tier\'s ideal input; a tester\'s own wording would send more steps to the model, so 0.934 is an upper bound for this phrasing.' }
+      ] }
+  ];
+
+  // ------------------------------------------------------------ drawing
+  var NS = 'http://www.w3.org/2000/svg';
+  var svg = document.getElementById('map');
+  function el(name, attrs, parent) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function edgePoint(n, toward) {
+    var dx = toward.x - n.x, dy = toward.y - n.y;
+    var s = Math.min((W / 2 + 4) / (Math.abs(dx) || 1e-9), (H / 2 + 4) / (Math.abs(dy) || 1e-9));
+    return { x: n.x + dx * s, y: n.y + dy * s };
+  }
+  function pathD(a, b, bend) {
+    var p = edgePoint(a, b), q = edgePoint(b, a);
+    var mx = (p.x + q.x) / 2, my = (p.y + q.y) / 2, dx = q.x - p.x, dy = q.y - p.y;
+    var len = Math.sqrt(dx * dx + dy * dy) || 1;
+    var cx = mx - dy / len * len * bend, cy = my + dx / len * len * bend;
+    return 'M' + p.x + ',' + p.y + ' Q' + cx + ',' + cy + ' ' + q.x + ',' + q.y;
+  }
+
+  var defs = el('defs', {}, svg);
+  Object.keys(KIND).forEach(function (k) {
+    var m = el('marker', { id: 'ah-' + k, viewBox: '0 0 10 10', refX: '9', refY: '5', markerWidth: '7', markerHeight: '7', orient: 'auto-start-reverse' }, defs);
+    el('path', { d: 'M0,0 L10,5 L0,10 z', fill: KIND[k] }, m);
+  });
+
+  var back = el('g', {}, svg);
+  GROUPS.forEach(function (g) {
+    el('path', { d: g.d, 'class': 'svc', style: 'stroke:' + g.c + ';fill:' + g.c + '0a' }, back);
+    var t = el('text', { x: g.x, y: g.y, 'class': 'svc-l', style: 'fill:' + g.c, 'text-anchor': g.end ? 'end' : 'start' }, back); t.textContent = g.l;
+  });
+  var faint = el('g', {}, svg), live = el('g', {}, svg), nodesG = el('g', {}, svg);
+  var pairs = {};
+  SCENARIOS.forEach(function (s) { s.steps.forEach(function (st) {
+    [].concat(st.b || []).forEach(function (b) { pairs[[st.a, b].sort().join('|')] = true; });
+  }); });
+  Object.keys(pairs).forEach(function (key) {
+    var ab = key.split('|'), a = NODES[ab[0]], b = NODES[ab[1]];
+    var p = edgePoint(a, b), q = edgePoint(b, a);
+    el('line', { x1: p.x, y1: p.y, x2: q.x, y2: q.y, 'class': 'edge-faint' }, faint);
+  });
+  var nodeEls = {};
+  Object.keys(NODES).forEach(function (id) {
+    var n = NODES[id];
+    var g = el('g', { 'class': 'node' }, nodesG);
+    var r = el('rect', { x: n.x - W / 2, y: n.y - H / 2, width: W, height: H, rx: 10 }, g);
+    var pulse = el('rect', { x: n.x - W / 2, y: n.y - H / 2, width: W, height: H, rx: 10, 'class': 'pulse', stroke: n.c,
+                             style: 'transform-origin:' + n.x + 'px ' + n.y + 'px' }, g);
+    var t = el('text', { x: n.x, y: n.y - 4, 'text-anchor': 'middle', 'class': 't' }, g); t.textContent = n.t;
+    var s = el('text', { x: n.x, y: n.y + 15, 'text-anchor': 'middle', 'class': 's' }, g); s.textContent = n.s;
+    nodeEls[id] = { g: g, r: r, pulse: pulse };
+  });
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var anim = 0;
+  function clearMap() {
+    while (live.firstChild) live.removeChild(live.firstChild);
+    cancelAnimationFrame(anim);
+    Object.keys(nodeEls).forEach(function (id) { nodeEls[id].g.setAttribute('class', 'node'); nodeEls[id].r.style.stroke = ''; nodeEls[id].r.style.fill = ''; });
+  }
+  function drawStep(step) {
+    clearMap();
+    var color = KIND[step.k];
+    var targets = [].concat(step.b || []);
+    var active = [step.a].concat(targets);
+    Object.keys(nodeEls).forEach(function (id) {
+      var on = active.indexOf(id) >= 0, ne = nodeEls[id];
+      ne.g.setAttribute('class', 'node ' + (on ? 'on' : 'dim'));
+      ne.r.style.stroke = on ? (id === step.a ? color : NODES[id].c) : '';
+      ne.r.style.fill = on ? '#1f2a44' : '';
+    });
+    var dots = [];
+    targets.forEach(function (b) {
+      var p = el('path', { d: pathD(NODES[step.a], NODES[b], 0.12), fill: 'none', stroke: color, 'stroke-width': 3, 'marker-end': 'url(#ah-' + step.k + ')' }, live);
+      if (step.k === 'read') p.setAttribute('stroke-dasharray', '7 5');
+      if (!reduced) dots.push({ p: p, c: el('circle', { r: 6, fill: color }, live) });
+    });
+    if (!targets.length) {
+      var pu = nodeEls[step.a].pulse;
+      pu.setAttribute('stroke', color);
+      pu.classList.remove('go'); void pu.getBBox(); pu.classList.add('go');
+    }
+    if (dots.length) {
+      var t0 = performance.now();
+      (function tick(now) {
+        var f = Math.min(1, (now - t0) / 750);
+        dots.forEach(function (d) {
+          var len = d.p.getTotalLength(), pt = d.p.getPointAtLength(len * f);
+          d.c.setAttribute('cx', pt.x); d.c.setAttribute('cy', pt.y);
+          d.c.setAttribute('opacity', f < 1 ? 1 : 0);
+        });
+        if (f < 1) anim = requestAnimationFrame(tick);
+      })(t0);
+    }
+  }
+
+  // ------------------------------------------------------------ state
+  var scn = SCENARIOS[0], idx = 0, timer = 0;
+  function stateAt(i) {
+    var s = JSON.parse(JSON.stringify(scn.init));
+    s.seenS = []; s.seenT = [];
+    var events = [], seq = 0;
+    for (var j = 0; j < i; j++) {
+      var st = scn.steps[j];
+      for (var path in (st.set || {})) {
+        var parts = path.split('.'), o = s;
+        for (var p = 0; p < parts.length - 1; p++) o = o[parts[p]];
+        o[parts[parts.length - 1]] = JSON.parse(JSON.stringify(st.set[path]));
+      }
+      (st.ev || []).forEach(function (e) { seq++; events.push({ seq: seq, kw: e[0], input: e[1], out: e[2], step: j + 1 }); });
+      if (st.st) s.seenS.push(st.st);
+      if (s.ses.tier !== '—') s.seenT.push(s.ses.tier);
+    }
+    s.events = events;
+    return s;
+  }
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var TAGS = { ok: ['ok', 'in the code'], meas: ['meas', 'measured'], open: ['open', 'future'], bad: ['bad', 'failure case'] };
+
+  function render() {
+    var n = scn.steps.length;
+    document.getElementById('count').textContent = idx === 0 ? 'start · ' + n + ' steps' : 'step ' + idx + ' / ' + n;
+    document.getElementById('back').disabled = idx === 0;
+    document.getElementById('reset').disabled = idx === 0;
+    document.getElementById('next').disabled = idx === n;
+    document.getElementById('intro').textContent = scn.intro;
+    var s = stateAt(idx), prev = idx ? stateAt(idx - 1) : s;
+    var step = idx ? scn.steps[idx - 1] : null;
+
+    var box = document.getElementById('step');
+    if (!step) {
+      box.innerHTML = '<div class="kicker">' + esc(scn.name) + '</div><h2>Before the first step</h2><p>' +
+        'Screen: ' + esc(s.screen) + '. The panel below shows the DOM rows the scenario uses, with the lexical score column empty until a description is scored. Press <b>Next</b> to begin.</p>';
+      clearMap();
+    } else {
+      var targets = [].concat(step.b || []);
+      var tag = TAGS[step.tag] || TAGS.ok;
+      var route = '<span class="chip">' + esc(NODES[step.a].t) + '</span>' +
+        (targets.length ? ' <span style="color:' + KIND[step.k] + '">→</span> ' + targets.map(function (b) { return '<span class="chip">' + esc(NODES[b].t) + '</span>'; }).join(' ') : ' <span class="chip">inside</span>');
+      box.innerHTML = '<div class="kicker">' + esc(scn.name) + ' · step ' + idx + ' <span class="tag ' + tag[0] + '">' + tag[1] + '</span></div>' +
+        '<h2>' + esc(step.t) + '</h2><div class="route">' + route + '</div>' +
+        (step.d ? '<p>' + esc(step.d) + '</p>' : '') +
+        (step.ev ? '<p style="margin-top:6px;font-size:0.85em">Logs: ' + step.ev.map(function (e) { return '<code style="color:var(--evt)">' + esc(e[0]) + '</code>'; }).join(' ') + '</p>' : '') +
+        (step.w ? '<div class="wire mono">' + esc(step.w) + '</div>' : '');
+      drawStep(step);
+    }
+
+    function cell(v, was) { return '<td' + (v !== was ? ' class="chg"' : '') + '>' + esc(v) + '</td>'; }
+    var prevRows = {}; prev.dom.forEach(function (r) { prevRows[r[0]] = r; });
+    var html = '<div class="kicker">What the Visual DOM holds · ' + esc(s.screen) + '</div>';
+    if (s.dom.length) {
+      html += '<table style="margin-top:6px"><thead><tr><th>id</th><th>role</th><th>text</th><th>score</th></tr></thead><tbody>' +
+        s.dom.map(function (r) {
+          var was = prevRows[r[0]] || ['', '', '', ''];
+          var cls = r[0] === s.win ? 'win' : (s.cand.indexOf(r[0]) >= 0 ? 'cand' : '');
+          return '<tr' + (cls ? ' class="' + cls + '"' : '') + '><td class="k">' + esc(r[0]) + '</td>' + cell(r[1], was[1]) + cell(r[2], was[2]) + cell(r[3], was[3]) + '</tr>';
+        }).join('') + '</tbody></table>';
+    } else {
+      html += '<p class="empty" style="font-size:0.85em;margin-top:6px">No DOM yet.</p>';
+    }
+    function b(label, obj, key, pobj) { return '<span' + (obj[key] !== pobj[key] ? ' class="chg"' : '') + '><b>' + label + '</b>' + esc(obj[key]) + '</span>'; }
+    html += '<div class="kicker sub">Current locator</div><div class="bench">' + b('keyword', s.loc, 'kw', prev.loc) + b('locator', s.loc, 'loc', prev.loc) +
+      '</div><div class="bench">' + b('matches', s.loc, 'matches', prev.loc) + b('verdict', s.loc, 'verdict', prev.loc) + '</div>';
+    html += '<div class="kicker sub">Session cost</div><div class="bench">' + b('resolutions', s.ses, 'lookups', prev.ses) + b('model calls', s.ses, 'calls', prev.ses) +
+      '</div><div class="bench">' + b('tier answered', s.ses, 'tier', prev.ses) + b('last cost', s.ses, 'cost', prev.ses) + '</div>';
+    document.getElementById('sig').innerHTML = html;
+
+    function strip(label, list, now, seen) {
+      return '<div class="life"><span class="lt">' + label + '</span>' + list.map(function (x) {
+        return '<span class="s ' + (x === now ? 'now' : (seen.indexOf(x) >= 0 ? 'seen' : '')) + '">' + x + '</span>';
+      }).join('') + '</div>';
+    }
+    document.getElementById('life').innerHTML = strip('resolver stage', STAGES, step ? step.st : '', s.seenS) +
+      strip('tier answered', TIERS, s.ses.tier, s.seenT);
+
+    var last = step ? step.ev || [] : [];
+    document.getElementById('log').innerHTML = s.events.length ? s.events.map(function (e) {
+      var cls = /false pass/.test(e.out) ? 'fp' : /^PASSED/.test(e.out) ? 'pass' : /^(FAILED|ERROR)/.test(e.out) ? 'fail' : '';
+      return '<tr class="' + (e.step === idx && last.length ? 'new' : '') + '"><td>' + e.seq + '</td><td class="ev">' + esc(e.kw) +
+        '</td><td class="mono">' + esc(e.input) + '</td><td class="' + cls + '">' + esc(e.out) + '</td><td>' + e.step + '</td></tr>';
+    }).join('') : '<tr><td colspan="5" class="empty">Nothing logged in this scenario yet.</td></tr>';
+
+    try { history.replaceState(null, '', '#' + scn.id + '/' + idx); } catch (e) { /* file: or sandbox */ }
+  }
+
+  function go(i) { idx = Math.max(0, Math.min(scn.steps.length, i)); render(); }
+  function stop() { clearInterval(timer); timer = 0; document.getElementById('play').textContent = 'Play'; }
+  function play() {
+    if (timer) { stop(); return; }
+    if (idx === scn.steps.length) go(0);
+    document.getElementById('play').textContent = 'Pause';
+    go(idx + 1);
+    timer = setInterval(function () { if (idx >= scn.steps.length) stop(); else go(idx + 1); }, 3600);
+  }
+  function choose(id, step) {
+    stop();
+    scn = SCENARIOS.filter(function (s) { return s.id === id; })[0] || SCENARIOS[0];
+    Array.prototype.forEach.call(document.querySelectorAll('#tabs button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.id === scn.id)); });
+    go(step || 0);
+  }
+
+  var tabs = document.getElementById('tabs');
+  SCENARIOS.forEach(function (s) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.dataset.id = s.id; b.textContent = s.name; b.title = s.intro;
+    b.addEventListener('click', function () { choose(s.id, 0); });
+    tabs.appendChild(b);
+  });
+  document.getElementById('next').addEventListener('click', function () { stop(); go(idx + 1); });
+  document.getElementById('back').addEventListener('click', function () { stop(); go(idx - 1); });
+  document.getElementById('reset').addEventListener('click', function () { stop(); go(0); });
+  document.getElementById('play').addEventListener('click', play);
+  document.addEventListener('keydown', function (e) {
+    if (e.target.closest && e.target.closest('input,textarea,select')) return;
+    if (e.key === 'ArrowRight') { stop(); go(idx + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { stop(); go(idx - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { stop(); go(0); e.preventDefault(); }
+    else if (e.key === ' ' && !(e.target.tagName === 'BUTTON')) { play(); e.preventDefault(); }
+  });
+
+  var m = /^#([a-z]+)\/(\d+)$/.exec(location.hash || '');
+  choose(m ? m[1] : 'lexical', m ? parseInt(m[2], 10) : 0);
+})();
+</script>
+</body>
+</html>

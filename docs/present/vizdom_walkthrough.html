@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Nguyen Huynh Tri Cuong">
+<title>VizDOM walkthrough</title>
+<style>
+    :root { --bg:#0b1120; --panel:#1e293b; --panel2:#334155; --text:#f1f5f9; --muted:#94a3b8; --accent:#38bdf8; --accent2:#a78bfa;
+            --good:#10b981; --warn:#f59e0b; --bad:#f87171; --border:#475569; --cmd:#86efac; --evt:#fde047; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:-apple-system,"Segoe UI",Roboto,sans-serif; background:var(--bg); color:var(--text); line-height:1.55; }
+    main { padding-block:56px 70px; padding-inline:28px; }
+    h1 { font-size:1.85em; font-weight:800; background:linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent; text-wrap:balance; }
+    .subtitle { color:var(--muted); margin:4px 0 4px; } .meta { color:var(--muted); font-size:0.8em; margin-bottom:18px; }
+    code, .mono { font-family:Consolas,monospace; font-size:0.86em; }
+    code { background:var(--panel); color:var(--accent); padding:1px 6px; border-radius:4px; }
+
+    .bar { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; margin-bottom:14px; }
+    .tabs { display:flex; flex-wrap:wrap; gap:6px; }
+    .tabs button, .ctl button { font:inherit; font-size:0.86em; color:var(--text); background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:6px 12px; cursor:pointer; }
+    .tabs button[aria-pressed="true"] { background:var(--accent); color:var(--bg); border-color:var(--accent); font-weight:700; }
+    .ctl { display:flex; gap:6px; align-items:center; margin-left:auto; }
+    .ctl button:disabled { opacity:0.4; cursor:default; }
+    .ctl .count { color:var(--muted); font-size:0.85em; min-width:84px; text-align:center; font-variant-numeric:tabular-nums; }
+    button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    .scn-intro { color:var(--muted); font-size:0.9em; margin:-4px 0 12px; }
+
+    .grid { display:grid; grid-template-columns:minmax(0,1fr) 430px; gap:16px; align-items:start; }
+    @media (max-width:1150px) { .grid { grid-template-columns:1fr; } }
+    .map { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:10px; overflow-x:auto; }
+    .map svg { display:block; width:100%; min-width:820px; height:auto; }
+    .node rect { fill:#172033; stroke:var(--border); stroke-width:1.5; transition:stroke 0.2s, fill 0.2s; }
+    .node .t { fill:var(--text); font-size:14px; font-weight:700; }
+    .node .s { fill:var(--muted); font-size:11.5px; }
+    .node.on rect { stroke-width:3; }
+    .node.dim { opacity:0.55; }
+    .svc { fill:rgba(56,189,248,0.04); stroke:#38bdf8; stroke-width:1.6; stroke-dasharray:6 4; }
+    .svc-l { fill:#38bdf8; font-size:11px; font-weight:700; letter-spacing:0.06em; }
+    .edge-faint { stroke:#334155; stroke-width:1.2; fill:none; }
+    .pulse { fill:none; stroke-width:3; opacity:0; }
+    .pulse.go { animation:pulse 1.1s ease-out 1; }
+    @keyframes pulse { 0% { opacity:0.9; } 100% { opacity:0; transform:scale(1.18); } }
+    @media (prefers-reduced-motion:reduce) { .pulse.go { animation:none; opacity:0.8; } }
+
+    .side { display:flex; flex-direction:column; gap:14px; }
+    .card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:14px 16px; }
+    .kicker { color:var(--muted); font-size:0.72em; text-transform:uppercase; letter-spacing:0.7px; font-weight:700; }
+    .step h2 { font-size:1.12em; margin:4px 0 6px; text-wrap:balance; }
+    .route { display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:0.82em; margin-bottom:8px; }
+    .chip { border:1px solid var(--border); border-radius:999px; padding:1px 9px; background:#172033; }
+    .step p { font-size:0.92em; }
+    .wire { margin-top:8px; background:#0e1628; border:1px solid var(--border); border-radius:8px; padding:7px 9px; color:#bae6fd; white-space:pre-wrap; word-break:break-word; }
+    .tag { display:inline-block; padding:0 8px; border-radius:999px; font-size:0.7em; font-weight:800; letter-spacing:0.4px; white-space:nowrap; }
+    .tag.ok { background:rgba(16,185,129,0.18); color:#6ee7b7; border:1px solid #10b981; }
+    .tag.meas { background:rgba(56,189,248,0.16); color:#7dd3fc; border:1px solid #38bdf8; }
+    .tag.open { background:rgba(245,158,11,0.18); color:#fcd34d; border:1px solid #f59e0b; }
+    .tag.bad { background:rgba(248,113,113,0.18); color:#fca5a5; border:1px solid #f87171; }
+
+    .sig table { font-size:0.8em; }
+    .sig td.k { color:var(--muted); font-family:Consolas,monospace; font-size:0.92em; }
+    .sig td.chg { background:rgba(253,224,71,0.13); color:#fef08a; font-weight:700; }
+    .sig tr.win td { background:rgba(134,239,172,0.12); }
+    .sig tr.win td:first-child { box-shadow:inset 3px 0 0 #86efac; }
+    .sig tr.gone td { color:#64748b; text-decoration:line-through; }
+    .sig .sub { margin:12px 0 6px; }
+    .bench { display:flex; flex-wrap:wrap; gap:4px 14px; font-size:0.84em; margin:6px 0 2px; font-variant-numeric:tabular-nums; }
+    .bench span b { color:var(--muted); font-weight:600; margin-right:4px; }
+    .bench span.chg { color:#fef08a; font-weight:700; }
+
+    .life { display:flex; flex-wrap:wrap; gap:5px; margin:10px 0 4px; align-items:center; }
+    .life .lt { color:var(--muted); font-size:0.74em; font-weight:700; min-width:118px; }
+    .life span.s { font-size:0.74em; font-weight:700; padding:3px 8px; border-radius:6px; background:#172033; border:1px solid #334155; color:#64748b; letter-spacing:0.3px; }
+    .life span.seen { color:var(--muted); border-color:var(--border); }
+    .life span.now { color:var(--bg); background:var(--accent2); border-color:var(--accent2); }
+    .legend { display:flex; flex-wrap:wrap; gap:8px 18px; font-size:0.8em; color:var(--muted); margin:8px 0 0; }
+    .legend i { display:inline-block; width:22px; height:0; border-top:3px solid; vertical-align:middle; margin-right:6px; }
+
+    h3 { font-size:1em; color:var(--accent); margin:22px 0 8px; }
+    .tw { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:0.84em; background:var(--panel); border-radius:10px; overflow:hidden; }
+    th { background:var(--panel2); color:var(--accent); padding:6px 10px; text-align:left; font-size:0.78em; text-transform:uppercase; letter-spacing:0.5px; }
+    td { padding:5px 10px; border-top:1px solid var(--border); vertical-align:top; font-variant-numeric:tabular-nums; }
+    tr.new td { background:rgba(253,224,71,0.08); }
+    td.ev { color:var(--evt); font-family:Consolas,monospace; }
+    td.pass { color:#6ee7b7; font-weight:700; } td.fail { color:#fca5a5; font-weight:700; } td.fp { color:#fca5a5; font-weight:800; }
+    .empty { color:var(--muted); font-style:italic; }
+    .notes { color:var(--muted); font-size:0.82em; margin-top:18px; }
+    .notes li { margin:3px 0 3px 18px; }
+    @media (max-width:700px) { main { padding-inline:16px; } .ctl { margin-left:0; } }
+</style>
+</head>
+<body>
+<main>
+<h1>VizDOM walkthrough</h1>
+<div class="subtitle">How a test step travels through VizDOM, one message at a time: the screen becomes a Visual DOM once, every locator is a query over it, and a check for something that is not there fails by construction. Each dashed box on the map is one process; a message that crosses a box crosses a gRPC boundary when the boxes sit on different machines. Pick a scenario, then step with <b>Next</b>, the arrow keys or <b>Play</b>.</div>
+<div class="meta">2026-10-28 · Nguyen Huynh Tri Cuong · Master's project VizDOM (screenshot → UI-Automator-like DOM → Robot Framework) · Locators and DOM contents are from the shipped Calculator demo and the lifecycle benchmark's <code>dialog_0141</code>; timings and rates are the measured ones (benchmarks/README.md §6) · Companion to the project slides</div>
+
+<div class="bar">
+  <div class="tabs" id="tabs" role="group" aria-label="Scenario"></div>
+  <div class="ctl">
+    <button id="reset" type="button" title="Back to the start (Home)">⏮</button>
+    <button id="back" type="button" title="Previous step (←)">◀ Back</button>
+    <span class="count" id="count" aria-live="polite"></span>
+    <button id="next" type="button" title="Next step (→)">Next ▶</button>
+    <button id="play" type="button" title="Play or pause (Space)">Play</button>
+  </div>
+</div>
+<div class="scn-intro" id="intro"></div>
+
+<div class="grid">
+  <div>
+    <div class="map"><svg id="map" viewBox="0 0 1150 525" role="img" aria-label="Component map, one dashed box per process: the client process with Robot Framework and the library, the capture and actuator services on the device, the detector service on the GPU host with region proposer, text and symbol reading and fusion, the pipeline core in the client with merge, order and types, hierarchy, compiler, the Visual DOM, the locator resolver and the optional refiners, the Ollama model server, a per-step grounder for comparison, and the rig with the application, a camera and a robot arm. The current step's message is drawn as an arrow."></svg></div>
+    <div class="legend">
+      <span><i style="border-color:#86efac"></i>pixels (capture, frame)</span>
+      <span><i style="border-color:#38bdf8"></i>parse stage</span>
+      <span><i style="border-color:#c4b5fd"></i>DOM query (locator)</span>
+      <span><i style="border-color:#fde047"></i>action (normalized tap)</span>
+      <span><i style="border-color:#f472b6"></i>model call</span>
+      <span><i style="border-color:#cbd5e1"></i>keyword / config</span>
+      <span><i style="border-color:#f87171"></i>failure</span>
+    </div>
+    <div id="life"></div>
+  </div>
+  <div class="side">
+    <div class="card step" id="step"></div>
+    <div class="card sig" id="sig"></div>
+  </div>
+</div>
+
+<h3>Keyword log so far <span style="color:var(--muted);font-weight:400;font-size:0.85em">what the suite would see in its Robot log · a red PASSED is a false pass</span></h3>
+<div class="tw"><table><thead><tr><th>#</th><th>Keyword</th><th>Locator / input</th><th>Outcome</th><th>Step</th></tr></thead><tbody id="log"></tbody></table></div>
+
+<ul class="notes">
+<li><span class="tag ok">in the code</span> is shipped behaviour (an ADR or a keyword). <span class="tag meas">measured</span> quotes a figure from the lifecycle benchmark (514 steps over 44 states, rented GPUs, runs 3 to 5). <span class="tag open">plugin / future</span> is something a deployment or the roadmap owes. <span class="tag bad">failure case</span> is a defect this walkthrough explains.</li>
+<li>Highlighted cells changed in this step. In the DOM table the green row is the element the current locator resolved to.</li>
+<li>The session counters make the economics visible: a DOM system pays <code>load + states × parse + steps × lookup</code>; a per-step grounder pays <code>load + steps × inference</code>. Measured: 0.06 s per step amortised for the modular backend against 1.57 to 4.00 s for the grounders.</li>
+<li>Link to a step: the address keeps <code>#scenario/step</code>, for example <code>#oracle/3</code>.</li>
+</ul>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // ------------------------------------------------------------ the system
+  var W = 180, H = 62;
+  // Columns: A client + the two device-side services, B detector service (top) and the
+  // first half of the pipeline core (bottom), C the rest of the core, D model servers, E the rig.
+  var NODES = {
+    RUNNER:  { x: 110, y: 80,  t: 'Robot Framework',     s: 'suite · test cases',              c: '#cbd5e1' },
+    LIB:     { x: 110, y: 170, t: 'VisualGuiLibrary',    s: 'Click Visual · Should Exist',     c: '#cbd5e1' },
+    CAP:     { x: 110, y: 320, t: 'Capture strategy',    s: 'on the device · screen / camera', c: '#86efac' },
+    ACT:     { x: 110, y: 460, t: 'Actuator strategy',   s: 'on the device · desktop / arm',  c: '#fde047' },
+    PROP:    { x: 330, y: 80,  t: 'Region proposer',     s: 'YOLO on the GPU · UIED · OmniP.', c: '#38bdf8' },
+    OCR:     { x: 330, y: 170, t: 'Text + symbols',      s: 'EasyOCR upscaled · glyph reader', c: '#38bdf8' },
+    FUSE:    { x: 330, y: 260, t: 'Fusion',              s: 'boxes × texts · interactable',    c: '#38bdf8' },
+    MERGE:   { x: 330, y: 380, t: 'Merge · split · dedup', s: 'NMS · smart-merge guards',      c: '#38bdf8' },
+    ORDER:   { x: 330, y: 470, t: 'Order · types',       s: 'row bands · button/icon/checkbox', c: '#38bdf8' },
+    TREE:    { x: 550, y: 80,  t: 'Hierarchy builder',   s: 'containment · alignment · labels', c: '#38bdf8' },
+    COMP:    { x: 550, y: 170, t: 'DOM compiler',        s: 'roles · locators · flags',        c: '#38bdf8' },
+    DOM:     { x: 550, y: 260, t: 'Visual DOM',          s: 'JSON tree, cached per screen',    c: '#c4b5fd' },
+    RES:     { x: 550, y: 380, t: 'Locator resolver',    s: 'text= · role= · desc= tiers',     c: '#c4b5fd' },
+    REFINE:  { x: 550, y: 470, t: 'Optional refiners',   s: 'SLM advisor · LLM refiner (off)', c: '#f472b6' },
+    OLLAMA:  { x: 790, y: 150, t: 'Ollama, 3B models',   s: 'SLM over table · VLM marks',      c: '#f472b6' },
+    GROUND:  { x: 790, y: 330, t: 'Per-step grounder',   s: 'ELAM · UI-TARS · Aria-UI',        c: '#f472b6' },
+    SUT:     { x: 1030, y: 150, t: 'App under test',     s: 'Calculator · dialog · HMI',       c: '#cbd5e1' },
+    CAMERA:  { x: 1030, y: 300, t: 'Camera',             s: 'frame of a physical screen',      c: '#86efac' },
+    ARM:     { x: 1030, y: 450, t: 'Robot arm',          s: 'homography · servo',              c: '#fde047' }
+  };
+  // Process boundaries: each is a deployable unit. gRPC between them only when they are on different machines.
+  // Labels sit just above each box (y = top - 6), so they never cross a node.
+  var GROUPS = [
+    { d: 'M12,40 h196 v172 h-196 z',                   l: 'CLIENT · ROBOT FRAMEWORK',   x: 12,  y: 34,  c: '#cbd5e1' },
+    { d: 'M12,282 h196 v78 h-196 z',                   l: 'CAPTURE SERVICE :50053',     x: 12,  y: 276, c: '#86efac' },
+    { d: 'M12,422 h196 v78 h-196 z',                   l: 'ACTUATOR SERVICE :50054',    x: 12,  y: 416, c: '#fde047' },
+    { d: 'M230,40 h200 v262 h-200 z',                  l: 'DETECTOR SERVICE :50051',    x: 230, y: 34,  c: '#38bdf8' },
+    { d: 'M230,340 h200 v170 h220 v-470 h-220 v300 z', l: 'PIPELINE CORE · IN THE CLIENT', x: 650, y: 34, c: '#a78bfa', end: true },
+    { d: 'M690,100 h200 v100 h-200 z',                 l: 'MODEL SERVER · OLLAMA',      x: 690, y: 94,  c: '#f472b6' },
+    { d: 'M690,280 h200 v100 h-200 z',                 l: 'COMPARISON · GROUNDER',      x: 690, y: 274, c: '#f472b6' },
+    { d: 'M930,100 h200 v400 h-200 z',                 l: 'RIG · DEVICE UNDER TEST',    x: 930, y: 94,  c: '#cbd5e1' }
+  ];
+  var KIND = { pix: '#86efac', parse: '#38bdf8', query: '#c4b5fd', act: '#fde047', model: '#f472b6', read: '#cbd5e1', fail: '#f87171' };
+  var STAGES = ['capture', 'propose', 'ocr', 'fuse', 'merge', 'order', 'types', 'tree', 'compile', 'resolve', 'act', 'verify'];
+  var TIERS = ['lexical', 'slm', 'vlm', 'none'];
+
+  // DOM rows: [id, role, text, label]
+  var CALC = [
+    ['E12', 'text', '0', 'display'],
+    ['E21', 'button', '7', ''], ['E22', 'button', '8', ''], ['E25', 'button', '5', ''], ['E23', 'button', '2', ''],
+    ['E31', 'button', '÷', 'divide'], ['E33', 'button', '+', 'plus'], ['E35', 'button', '=', 'equals'],
+    ['E40', 'button', '⌫', 'backspace']
+  ];
+  var CALC12 = CALC.map(function (r) { return r[0] === 'E12' ? ['E12', 'text', '12', 'display'] : r; });
+  var CALC4 = CALC.map(function (r) { return r[0] === 'E12' ? ['E12', 'text', '4', 'display'] : r; });
+  // the GPU-host DOM of dialog_0141: the Cancel caption was never read by OCR
+  var DIALOG = [
+    ['E2', 'icon', '×', 'Multiply'],
+    ['E3', 'text', 'An error occurred while processing your', ''],
+    ['E4', 'text', 'request:', ''],
+    ['E6', 'button', 'Retry', '']
+  ];
+  var HMI = [
+    ['E1', 'button', 'START', ''], ['E2', 'button', 'STOP', ''],
+    ['E3', 'text', 'Temp 21.5 °C', ''], ['E4', 'icon', '', 'Settings']
+  ];
+  function ses(parses, lookups, calls, tier, cost) { return { parses: parses, lookups: lookups, calls: calls, tier: tier, cost: cost }; }
+  function loc(kw, l, matches, verdict) { return { kw: kw, loc: l, matches: matches, verdict: verdict }; }
+  var EMPTY = { screen: 'none', dom: [], win: '', ses: ses('0', '0', '0', '—', '—'), loc: loc('—', '—', '—', '—') };
+
+  // ------------------------------------------------------------ scenarios
+  // a, b: nodes. k: kind. st: pipeline stage. set: values after the step. ev: log rows [keyword, input, outcome].
+  var SCENARIOS = [
+    { id: 'suite', name: 'A suite, end to end', intro: 'The shipped Calculator demo (examples/windows_calculator_demo): the app is captured and parsed ONCE in the suite setup, two tests drive it from that one Visual DOM, and the display is read back without a second detector pass.',
+      init: EMPTY,
+      steps: [
+        { a: 'RUNNER', b: 'LIB', k: 'read', tag: 'ok', t: 'Suite Setup: Connect ${CONFIG}',
+          d: 'One config file selects all three ports. Here every port is a gRPC service: the detector on a GPU host, capture on the machine showing the Calculator, the actuator on the machine receiving the clicks. A local run uses the same keywords with in-process adapters; gRPC is a transport, chosen per port, not a requirement.',
+          w: '"detector": { "strategy": "grpc", "target": "gpu-host:50051" }\n"capture":  { "strategy": "grpc", "target": "sut-pc:50053", "window_title": "Calculator" }\n"actuator": { "strategy": "grpc", "target": "sut-pc:50054" }' },
+        { a: 'LIB', b: 'CAP', k: 'pix', st: 'capture', tag: 'ok', set: { screen: 'Calculator, standard mode' }, ev: [['Bring App To Front', 'Calculator', 'raised'], ['Dump Visual DOM', '—', 'capturing']],
+          t: 'Dump Visual DOM: raise the window, grab the screen',
+          d: 'VizDOM grabs the whole screen and clicks by coordinate, so the app is raised first (ADR-021); a window covering it would make the pipeline analyse the wrong pixels and the actuator click the wrong application. The capture service returns the frame as bytes.',
+          w: 'CaptureStrategy.grab() → BGR frame 1920×1080' },
+        { a: 'CAP', b: 'PROP', k: 'pix', st: 'propose', tag: 'ok', t: 'The frame crosses to the detector service: region proposals',
+          d: 'The frame goes as bytes over gRPC to the GPU host, where the model has been warm since the service started (load 4.2 s, paid once per service life, not per test). The modular backend\'s stage one is OmniParser\'s YOLO: it proposes element boxes, each with an interactability flag. The proposer is the pluggable part of the port: UIED finds boxes with connected components and contours on a CPU (0.39 s per state), the OmniParser monolith adds a Florence-2 captioner (1.02 s), the modular backend keeps the YOLO and drops the captioner (0.62 s).',
+          w: 'DetectorPort.detect(frame)  →  YOLO: 36 boxes, 29 interactable · 0.24 s' },
+        { a: 'PROP', b: 'OCR', k: 'parse', st: 'ocr', tag: 'ok', t: 'Text: OCR with upscaling; symbols: the glyph reader',
+          d: 'Stage two is VizDOM\'s own OCR (EasyOCR), run on an upscaled frame so 8 px status text is readable. Where the detector brings its own OCR, the two are combined as a prefer-external union: our box REPLACES the detector\'s overlapping one, because the upscaled read is the better one by construction (a gap-fill-only union once deleted "Active" rows whose tiny OmniParser read was garbage). Operator keys carry no readable text, so the symbol detector reads ÷, ×, −, +, =, ⌫ as glyphs: only on textless elements in the button-size range, against a 130-case labelled set that includes required rejections, so a confident misread cannot poison a text= locator.',
+          w: "OCR (upscaled 2×): '7' '8' '9' '0' … 24 words\nsymbols: ÷ × − + = ⌫ √ %  (ADR-011: scaled(200) < area < scaled(40000))" },
+        { a: 'OCR', b: 'FUSE', k: 'parse', st: 'fuse', tag: 'ok', t: 'Fusion: texts attached to boxes, the detector\'s answer',
+          d: 'A port of OmniParser\'s fusion: every text box is matched to the proposal that contains it, boxes with no text stay as icon candidates, the interactable flag travels with each box. This is the end of the detector service\'s work; the elements go back to the client as a flat list in image pixels. Everything after this line runs in the client process and touches no model.',
+          w: 'DetectResult: 36 elements [bounds, text?, interactable, score]  →  gRPC → client' },
+        { a: 'FUSE', b: 'MERGE', k: 'parse', st: 'merge', tag: 'ok', t: 'Merge, split, dedup: one element per control',
+          d: 'Non-maximum suppression and dedup remove overlapping proposals. The smart-merge step joins over-segmented fragments under three guards: fill (the union must be mostly covered), delimiter (no divider between the parts) and interactable (never merge two interactables). The splitter divides a control that holds several texts only on a real gap of at least 1.5 median text heights, and never when the detector marked it as one interactable: "Check Now" stays one button even though EasyOCR emits two word boxes.',
+          w: '36 → 34 elements  (2 OCR fragments merged into their key)' },
+        { a: 'MERGE', b: 'ORDER', k: 'parse', st: 'order', tag: 'ok', t: 'Reading order and visual types',
+          d: 'Elements are sorted into row bands, top to bottom and left to right, so ids and the reading order are stable across runs. Then each element gets a visual type from three signals: interactivity, geometry and caption. A wide box of entry height is an input field; a wide labelled box is a button and a small near-square one an icon (buttons are about twice as wide as icons); a caption naming "check", "toggle", "radio" or "switch" marks a checkbox, which geometry alone cannot separate from an icon. Measured on the synthetic set: type accuracy on actionable controls 0.87 (buttons 0.89, inputs 0.99, icons 0.89, checkboxes 0.55).',
+          w: "E21 button '7' · E31 button '÷' · E40 button '⌫' · E12 text '0' (display)" },
+        { a: 'ORDER', b: 'REFINE', k: 'model', st: 'types', tag: 'ok', t: 'Optional refiners: off in this run',
+          d: 'Two model stages exist and are off by default. The SLM advisor can review merge, split and label decisions on ambiguous candidates; the LLM refiner can review the hierarchy. Both run through Ollama when enabled, and the benchmark columns run without them, so every number in this walkthrough is the model-free pipeline\'s.' },
+        { a: 'ORDER', b: 'TREE', k: 'parse', st: 'tree', tag: 'ok', t: 'Hierarchy: containment, alignment, label association',
+          d: 'The coarse builder nests elements by containment, groups aligned siblings, and associates a text with the control it labels, so a field can be found by the label next to it. A caption-derived label (from a captioner or the glyph reader) is kept strictly separate from read text: a tester can always tell what was read from what was inferred.' },
+        { a: 'TREE', b: 'COMP', k: 'parse', st: 'compile', tag: 'ok', t: 'Compile: roles, locators, flags',
+          d: 'The compiler maps visual types to UI-Automator-like roles, generates a locator per element (text, role, label, spatial relations), sets flags such as interactable and emits one JSON tree with ids, bounds in image pixels and the image size. The same schema the synthetic ground truth uses, which is why detection, OCR and the lifecycle benchmark can all be scored on one dataset.' },
+        { a: 'COMP', b: 'DOM', k: 'parse', st: 'compile', tag: 'ok', set: { dom: CALC, ses: ses('1', '0', '0', '—', 'parse 0.62 s') }, ev: [['Dump Visual DOM', '—', 'DOM: 34 elements']],
+          t: 'The Visual DOM is cached for this screen',
+          d: 'From here on nothing in this test touches a model or the detector until the layout changes. The table on the right shows the part of the tree the suite uses. Whole parse on the run-3 host: 0.62 s per state for the modular backend, bit-identical across five rented hosts.' },
+        { a: 'LIB', b: 'DOM', k: 'query', st: 'resolve', tag: 'ok', set: { win: 'E21', ses: ses('1', '1', '0', '—', 'parse 0.62 s'), loc: loc('Wait Until Visual Appears', 'text=7 || desc="digit seven button"', '1', 'appeared') },
+          ev: [['Wait Until Visual Appears', 'text=7 || desc="digit seven button"', 'PASSED']],
+          t: 'Wait Until Visual Appears ${BTN_7}',
+          d: 'Every locator of the demo is a fallback chain: the deterministic half first, desc= only if it misses or is ambiguous. text=7 resolves under the exactly-one contract to E21, so the description is never consulted.',
+          w: '${BTN_7}         text=7 || desc="digit seven button"\n${BTN_DIVIDE}    text="÷" || desc="divide button"\n${BTN_BACKSPACE} desc="backspace button"' },
+        { a: 'RUNNER', b: 'LIB', k: 'read', tag: 'ok', t: 'Test 1: Compute 7 add 5',
+          d: 'Four Click Visual calls: ${BTN_7}, ${BTN_ADD}, ${BTN_5}, ${BTN_EQUALS}. Each one resolves in the cached DOM and taps. No recapture: a click changes the display, not the layout.' },
+        { a: 'LIB', b: 'RES', k: 'query', st: 'resolve', tag: 'ok', set: { win: 'E21', ses: ses('1', '2', '0', '—', 'lookup 0.2 ms'), loc: loc('Click Visual', 'text=7', '1', 'resolved → centre') },
+          t: 'Click Visual text=7: exactly one match',
+          d: 'An action needs exactly one match; zero or several fail with the candidate list. The centre of E21 is the click point, in image pixels.',
+          w: 'ElementFinder.find(text=7) → [E21]  ·  centre (595, 670) px' },
+        { a: 'LIB', b: 'ACT', k: 'act', st: 'act', tag: 'ok', ev: [['Click Visual', 'text=7', 'tapped (0.31, 0.62)']],
+          t: 'A normalized tap crosses the port',
+          d: 'The actuator contract is a point in [0,1] plus the source image size. The desktop adapter multiplies by the screen resolution, an Android adapter by its input resolution, a robot-arm plugin applies a calibration homography. The orchestrator and the wire protocol never know any device\'s resolution.',
+          w: 'Tap(x=0.310, y=0.620, src=1920×1080)  →  pyautogui.click(595, 670)' },
+        { a: 'ACT', b: 'SUT', k: 'act', st: 'act', tag: 'ok', set: { win: 'E35', ses: ses('1', '5', '0', '—', 'lookup 0.2 ms'), loc: loc('Click Visual', 'text="="', '1', 'resolved → tapped') },
+          ev: [['Click Visual', 'text="+"', 'tapped'], ['Click Visual', 'text=5', 'tapped'], ['Click Visual', 'text="="', 'tapped']],
+          t: 'The Calculator receives the clicks: 7, +, 5, =',
+          d: 'Three more lookups, three more taps, zero captures. The session counter on the right is the whole cost story of this test so far: one parse, five lookups.' },
+        { a: 'LIB', b: 'CAP', k: 'pix', st: 'capture', tag: 'ok', set: { screen: 'Calculator, display 12', dom: CALC12, win: '', ses: ses('2', '5', '0', '—', 'parse 0.62 s'), loc: loc('Dump Visual DOM', '—', '—', '—') },
+          ev: [['Dump Visual DOM', '—', 'DOM: 36 elements, display changed']],
+          t: 'The display content changed: dump again',
+          d: 'This is the one capture the test performs on its own. The layout is the same; only E12 carries a new text. The highlighted cell is the only difference between the two DOMs.' },
+        { a: 'LIB', b: 'DOM', k: 'query', st: 'verify', tag: 'ok', set: { win: 'E12', ses: ses('2', '6', '0', '—', 'lookup 0.2 ms'), loc: loc('Visual Should Exist', 'text=12', '1', 'PASSED') },
+          ev: [['Visual Should Exist', 'text=12', 'PASSED']],
+          t: 'Visual Should Exist text=12',
+          d: 'A verification passes iff at least one element matches. One does. Test 1 is green.' },
+        { a: 'RUNNER', b: 'LIB', k: 'read', tag: 'ok', set: { win: 'E31', ses: ses('2', '10', '0', '—', 'lookup 0.2 ms'), loc: loc('Click Visual', 'text="÷" || desc="divide button"', '1', 'resolved → tapped') },
+          ev: [['Press Key', 'esc', 'sent (actuator only)'], ['Click Visual', 'text=8', 'tapped'], ['Click Visual', 'text="÷"', 'tapped'], ['Click Visual', 'text=2', 'tapped'], ['Click Visual', 'text="="', 'tapped']],
+          t: 'Test 2 reuses the DOM: Compute 8 divide 2',
+          d: 'No re-open, no recapture. Esc clears the display through the actuator alone; the keys have not moved, so the cached coordinates are still valid. The ÷ key is found by its glyph text; had the glyph read failed, desc="divide button" would have taken over.' },
+        { a: 'LIB', b: 'CAP', k: 'pix', st: 'verify', tag: 'ok', set: { dom: CALC4, win: 'E12', ses: ses('2', '11', '0', '—', 'region re-OCR 0.05 s'), loc: loc('Verify Element Value', 'text=4  expected 4', '1', 'PASSED') },
+          ev: [['Verify Element Value', 'text=4 · 4', 'PASSED']],
+          t: 'Verify Element Value text=4: read one region back',
+          d: 'ADR-023: the element\'s region is re-captured and re-OCRed, so the value is read AFTER the clicks without a full detector pass. The display cell updates; the rest of the DOM is untouched.' },
+        { a: 'DOM', k: 'query', tag: 'meas', t: 'Two detector passes for two tests',
+          d: 'Observed on the real run: the suite performs two Dump Visual DOM calls in total, and the second test adds none. On the 514-step benchmark the same economics is 44 parses for 514 steps: 0.06 s per step amortised for the modular backend, 0.10 s for OmniParser, against 1.57 to 4.00 s per step for the three grounders, which infer on every step.' }
+      ] },
+
+    { id: 'desc', name: 'desc=: the tiers, and when they say no', intro: 'ADR-022. A description is resolved by escalation: deterministic lexical scoring first, a 3B text model over a short candidate table only when the scoring is not confident, a vision model only if configured. The screen is the benchmark\'s dialog_0141 as the GPU host parsed it: OCR never read the Cancel caption.',
+      init: { screen: 'dialog_0141 (Warning dialog)', dom: DIALOG, win: '', ses: ses('1', '0', '0', '—', 'parse 1.26 s'), loc: loc('—', '—', '—', '—') },
+      steps: [
+        { a: 'LIB', b: 'RES', k: 'query', st: 'resolve', tag: 'ok', set: { win: 'E6', ses: ses('1', '1', '0', 'lexical', '0.2 ms'), loc: loc('Get Visual Element', 'desc="Retry button"', '1', 'E6 (lexical 3.00)') },
+          ev: [['Get Visual Element', 'desc="Retry button"', 'E6 · tier=lexical']],
+          t: 'desc="Retry button": the lexical tier answers',
+          d: 'Tokens of the description are scored against label, text and hint (weight 2 per overlap), role words against the role (1), positional words against the normalized centre (0.5). E6 scores 3.0, nothing else scores above 1.0, so the floor (1.5) and the margin (0.5) both hold: confident, no model.',
+          w: "lexical_rank: [(3.00, E6 'Retry'), …]  →  confident: E6" },
+        { a: 'RES', k: 'query', st: 'resolve', tag: 'ok', set: { win: '', ses: ses('1', '2', '0', '—', '0.2 ms'), loc: loc('Get Visual Element', 'desc="Cancel button"', '0 confident', 'escalate') },
+          t: 'desc="Cancel button": no caption to match',
+          d: 'The Cancel caption is one of nine the OCR never read on the GPU host, so the dialog\'s Cancel control is not in this DOM as a button. "Cancel" overlaps nothing; the role word gives E6 1.0, below the floor. The lexical tier declines and escalates. With text=Cancel this step is simply a miss: 0 matches, FAILED, the cheap failure.',
+          w: 'lexical: best score 1.00 < 1.5  →  not confident' },
+        { a: 'RES', b: 'OLLAMA', k: 'model', st: 'resolve', tag: 'ok', set: { ses: ses('1', '2', '1', '—', 'SLM call 0.21 s') },
+          t: 'The SLM gets a short table, never a single row',
+          d: 'Candidates are the lexical top eight, padded from the pool to at least three rows. The padding is the fix from the benchmark\'s one false pass (next steps): a one-row table turns "which of these matches?" into "is this it?". The prompt says the description may refer to nothing, that null is expected unless text or role clearly corresponds, and that a matching role alone is no match.',
+          w: "Description: 'Cancel button'\n  id=E6 role=button text='Retry'  center=(0.64,0.61)\n  id=E2 role=icon   text='×' label='Multiply' center=(0.67,0.37)\n  id=E3 role=text   text='An error occurred…' center=(0.43,0.46)\n→ {\"id\": <id or null>, \"confidence\": 0-1, \"reason\": …}" },
+        { a: 'OLLAMA', b: 'RES', k: 'model', st: 'resolve', tag: 'ok', set: { ses: ses('1', '2', '1', 'none', 'SLM call 0.21 s'), loc: loc('Get Visual Element', 'desc="Cancel button"', '0', 'FAILED, candidates listed') },
+          ev: [['Get Visual Element', 'desc="Cancel button"', 'FAILED: no confident match (lexical: best score 1.00 < 1.5; slm not confident (0.00))']],
+          t: 'The SLM declines: null, confidence 0.00',
+          d: 'Nothing in the table is a Cancel button, and the model says so. The keyword fails loudly with every tier\'s own verdict and the candidate list. This is the same answer a tester gets for a control that is really absent, which is the point: the chain can say no.',
+          w: '{"id": null, "confidence": 0.0, "reason": "No UI element matches the description \'Cancel button\'"}' },
+        { a: 'LIB', b: 'RES', k: 'query', st: 'resolve', tag: 'ok', set: { ses: ses('1', '3', '1', '—', '0.2 ms'), loc: loc('Get Visual Element', 'desc="the X button in the corner"', '0 confident', 'escalate') },
+          t: 'A paraphrase: desc="the X button in the corner"',
+          d: 'No element carries the words "X" or "corner"; "button" scores E6 by role. Below the floor again, so the shortlist goes to the model: E6 first, then E2 and E3 from the pool.' },
+        { a: 'OLLAMA', b: 'RES', k: 'model', st: 'resolve', tag: 'ok', set: { win: 'E2', ses: ses('1', '3', '2', 'slm', 'SLM call 0.21 s'), loc: loc('Get Visual Element', 'desc="the X button in the corner"', '1', 'E2 (slm 1.00)') },
+          ev: [['Get Visual Element', 'desc="the X button in the corner"', 'E2 · tier=slm conf=1.00']],
+          t: 'The SLM picks E2, the × icon; the id is validated against the DOM',
+          d: 'A returned id that is not in the DOM is rejected, so a hallucination cannot become a click. This is what the model tier is for: wording the lexical tier cannot bridge. Measured with the same 3B model on the laptop.',
+          w: '{"id": "E2", "confidence": 1.0, "reason": "role icon, text \'×\' … matches the X button in the corner"}' },
+        { a: 'RES', b: 'OLLAMA', k: 'model', st: 'resolve', tag: 'bad', set: { win: 'E6', ses: ses('1', '4', '3', 'slm', 'SLM call 0.21 s'), loc: loc('Visual Should Exist', 'desc="Purple Elephant button"', '1 (wrong)', 'PASSED: false pass, run 4') },
+          ev: [['Visual Should Exist', 'desc="Purple Elephant button"', 'PASSED (false pass, run 4 before the fix)']],
+          t: 'How run 4 passed "Purple Elephant button": a one-row table',
+          d: 'Before the padding, the shortlist was exactly the scored elements: E6 alone. Asked "which of these matches?" about one row, the 3B model answered "this one" at 0.85, with a rationalisation about position and role. Reproduced byte for byte with the same model on the laptop. It was the benchmark\'s only false pass in 88 negatives; the same model declines the same phrase on the same dialog as soon as the table has two rows.',
+          w: "Description: 'Purple Elephant button'\n  id=E6 role=button text='Retry' center=(0.64,0.61)\n→ {\"id\": \"E6\", \"confidence\": 0.85, \"reason\": \"… matches the element with role=button, text='Retry' … close to the provided element's position and role\"}" },
+        { a: 'OLLAMA', b: 'RES', k: 'model', st: 'resolve', tag: 'ok', set: { win: '', ses: ses('1', '5', '4', 'none', 'SLM call 0.21 s'), loc: loc('Visual Should Exist', 'desc="Purple Elephant button"', '0', 'FAILED (correct)') },
+          ev: [['Visual Should Exist', 'desc="Purple Elephant button"', 'FAILED: no confident match (after the fix)']],
+          t: 'Same phrase, three rows: null',
+          d: 'With the padded table and the null instruction the model declines; the keyword fails, which for an absent control is the correct verdict. The chain\'s measured false-pass rate was 0.003 (1 of 88); the fix is committed and waits for its GPU re-measurement.' },
+        { a: 'RES', k: 'query', st: 'resolve', tag: 'ok', t: 'Positions are geometry, not a model\'s opinion',
+          d: 'Words such as "top right" or "left" are enforced on the candidates before any model is consulted, because a 3B model confidently called a top-left element "top right" in development. If some candidates satisfy the position, the others are dropped first.' },
+        { a: 'RES', k: 'query', tag: 'meas', t: 'Determinism is a policy, and the vision tier stays out of verification',
+          d: 'The tier chain is set in the session config (default lexical then SLM; CI can pin lexical alone), resolutions are cached per screen, and every hit records which tier answered. The vision tier (Set-of-Mark over the screenshot) is opt-in: measured behind the same shortlist in run 5, it accepted 34 of the 40 nonsense captions it was shown at confidence 0.90 to 0.99, where the text model declined 87 of 88. A numbered overlay with a null option is a yes-man for a 3B vision model, so a verify chain must never end in it.' }
+      ] },
+
+    { id: 'oracle', name: 'The oracle: an absent target', intro: 'The testing-specific question an agent benchmark never asks: what happens when the thing you check for is not there? The 88 negative steps of the lifecycle benchmark ask it of every system; this scenario follows one of them.',
+      init: { screen: 'dialog_0141 (Warning dialog)', dom: DIALOG, win: '', ses: ses('1', '0', '0', '—', 'parse 1.26 s'), loc: loc('—', '—', '—', '—') },
+      steps: [
+        { a: 'RUNNER', b: 'LIB', k: 'read', st: 'verify', tag: 'ok', set: { loc: loc('Visual Should Exist', 'text="Warp Cores"', '—', '—') },
+          t: 'Visual Should Exist text="Warp Cores"',
+          d: 'A check for a button that does not exist on this screen. In a real suite this is the regression that matters: the dialog should have shown a control and did not, or the wrong screen is up.' },
+        { a: 'LIB', b: 'DOM', k: 'query', st: 'verify', tag: 'ok', set: { ses: ses('1', '1', '0', '—', '0.2 ms'), loc: loc('Visual Should Exist', 'text="Warp Cores"', '0', 'FAILED (correct)') },
+          ev: [['Visual Should Exist', 'text="Warp Cores"', 'FAILED']],
+          t: 'Zero matches, FAILED, by construction',
+          d: 'The exactly-one contract requires a match before anything is reported present. A caption that is not in the DOM cannot match, so the assertion fails, the suite stops and a person looks. Measured: 0 false passes in 88 for all three detector backends, in every run.' },
+        { a: 'RUNNER', b: 'GROUND', k: 'model', tag: 'meas', set: { ses: ses('1', '1', '1', '—', 'inference 1.6–4.0 s'), loc: loc('grounder verdict', "'Warp Cores' button is visible", 'a point', 'PASSED: false pass') },
+          ev: [['grounder (Aria-UI)', "the 'Warp Cores' button is visible", 'PASSED (false pass)']],
+          t: 'The same statement to a per-step grounder',
+          d: 'The grounders receive the step as an instruction over the raw pixels. Asked whether the "Warp Cores" button is visible, Aria-UI grounds a point for it in 88 of 88 cases, ELAM\'s native verdict mode says PASSED in 86 of 88 (it rationalises the unknown label onto a nearby element and confirms it), UI-TARS in 60 of 88.',
+          w: 'Aria-UI: "relative (0-1000) point for: the Warp Cores button" → (640, 610)\nELAM verdict prompt → "PASSED"' },
+        { a: 'GROUND', k: 'model', tag: 'meas', t: 'Why: a per-step grounder is trained to always answer',
+          d: 'A model built for agents returns a location for any instruction; it has no "not here". A resolved DOM can return zero matches. That is the structural difference the benchmark isolates: false-pass 0.000 against 0.199 to 0.292, while the grounders click better (0.930 to 0.962 against 0.883 with text=) and cost 15 to 39 times more per step.' },
+        { a: 'LIB', b: 'RES', k: 'query', st: 'verify', tag: 'meas', set: { ses: ses('1', '2', '2', 'none', 'SLM call 0.21 s'), loc: loc('Visual Should Exist', 'desc="Warp Cores button"', '0', 'FAILED (correct)') },
+          ev: [['Visual Should Exist', 'desc="Warp Cores button"', 'FAILED: slm not confident']],
+          t: 'With desc= the property survives a model in the loop',
+          d: 'Run 4 resolved every step as a description through the production chain: lexical first, the 3B text model as tie-breaker. Action-hit rose to 0.930 (ELAM\'s figure), verification accuracy to 0.954, the best of the table, and 1 of 88 absent targets passed. The text model, asked about the 88 nonsense captions over the shortlist, declined 87.' },
+        { a: 'RES', b: 'OLLAMA', k: 'model', st: 'verify', tag: 'bad', set: { win: 'E6', ses: ses('1', '3', '3', 'vlm', 'VLM call 0.83 s'), loc: loc('Visual Should Exist', 'desc="Warp Cores button"  (chain lexical→VLM)', '1 (wrong)', 'PASSED: false pass') },
+          ev: [['Visual Should Exist', 'desc="Warp Cores button" via VLM', 'PASSED (false pass, run 5)']],
+          t: 'Put a vision model in the verify path and it does not',
+          d: 'Run 5 ran the vision tier behind the same shortlist, as production would: numbered boxes on the screenshot, "which number matches, null allowed". It kept the lexical hits (0.930) and accepted 34 of the 40 nonsense captions it was shown, 22 of them as "mark 1", at confidence 0.90 to 0.99. Same shortlist, same question, two 3B models, opposite behaviour: the failure is in what the model is asked to do, not in model size.',
+          w: '{"number": 1, "confidence": 0.99}   ← for "Warp Cores button", mark 1 = Retry' },
+        { a: 'LIB', k: 'read', st: 'verify', tag: 'meas', set: { win: '', loc: loc('Visual Should Exist', 'text=Cancel', '0', 'FAILED (false fail: OCR)') },
+          ev: [['Visual Should Exist', 'text=Cancel', 'FAILED (false fail)']],
+          t: 'VizDOM\'s own errors go the cheap way',
+          d: 'Its 20 verification errors on the benchmark are all false fails: a present caption the OCR could not read, reported FAILED. The test stops and someone looks at a screenshot. The same 20 captions miss in all three detector columns and in every run; a better OCR moves that figure without touching the oracle result.' }
+      ] },
+
+    { id: 'camera', name: 'Camera in, robot arm out', intro: 'The deployment the accessibility tree can never serve: an embedded HMI observed through a camera and pressed by a robot arm. Same keywords, same DOM; only the capture and actuator strategies change, and both are plugins behind gRPC.',
+      init: { screen: 'none', dom: [], win: '', ses: ses('0', '0', '0', '—', '—'), loc: loc('—', '—', '—', '—') },
+      steps: [
+        { a: 'RUNNER', b: 'LIB', k: 'read', tag: 'ok', t: 'Connect: capture = camera, actuator = robot arm',
+          d: 'Each port has a strategy base class, a registry and auto-discovery of user plugins dropped into plugins/capture/ or plugins/actuator/. The camera and the arm are one file each; the config selects them by name. The core does not change.',
+          w: '"capture":  { "strategy": "grpc", "target": "rig:50053" }   # rig runs the camera plugin\n"actuator": { "strategy": "grpc", "target": "rig:50054" }   # rig runs the robot-arm plugin\n"detector": { "strategy": "grpc", "target": "gpu-host:50051" }' },
+        { a: 'CAMERA', b: 'CAP', k: 'pix', st: 'capture', tag: 'ok', set: { screen: 'HMI through a camera' }, ev: [['Dump Visual DOM', '—', 'capturing']],
+          t: 'A camera frame, not a screenshot',
+          d: 'Off-axis viewpoint, glare, blur and sensor noise. The synthetic benchmark has an augmentation layer that imitates exactly this channel, so the pipeline is exercised on it before any physical rig exists.' },
+        { a: 'CAP', k: 'pix', st: 'capture', tag: 'ok', t: 'Screen rectification',
+          d: 'The capture path finds the screen quadrilateral and warps it to a frontal view before detection. Every later coordinate lives in that rectified image, which is why the ground-truth labels of the augmented set still apply and why the actuator contract below works.' },
+        { a: 'CAP', b: 'PROP', k: 'pix', st: 'propose', tag: 'ok', t: 'The rectified frame goes to the detector service on the GPU host',
+          d: 'The warm detector service loaded its model once and serves many thin clients; gRPC carries the image bytes without base64 inflation. A rig with no GPU still gets the accurate backend, and a busy or crashed detector does not stall capture: the ports are isolated processes.' },
+        { a: 'PROP', b: 'FUSE', k: 'parse', st: 'fuse', tag: 'ok', t: 'Proposals, text, symbols, fusion: as on the desktop',
+          d: 'The three stages of the detector service run unchanged on the camera frame; the synthetic benchmark\'s camera-style augmentation (perspective, glare, blur, noise) is what exercised them before a rig existed.' },
+        { a: 'FUSE', b: 'MERGE', k: 'parse', st: 'merge', tag: 'ok', t: 'The flat element list returns to the client',
+          d: 'Merge, split, order, types, hierarchy and compile run in the client process as before. No stage after fusion knows whether the pixels came from a screenshot or a camera.' },
+        { a: 'COMP', b: 'DOM', k: 'parse', st: 'compile', tag: 'ok', set: { dom: HMI, ses: ses('1', '0', '0', '—', 'parse ~1 s') }, ev: [['Dump Visual DOM', '—', 'DOM: 4 elements shown']],
+          t: 'The same Visual DOM as on a desktop',
+          d: 'The HMI\'s controls come out with roles, text and locators. The gear icon has no text; it carries a caption-derived label, kept strictly separate from read text so a tester can see which is which.' },
+        { a: 'LIB', b: 'DOM', k: 'query', st: 'resolve', tag: 'ok', set: { win: 'E1', ses: ses('1', '1', '0', '—', '0.2 ms'), loc: loc('Click Visual', 'text=START', '1', 'resolved → centre') },
+          t: 'Click Visual text=START',
+          d: 'Exactly one match; the centre in rectified-image pixels becomes a normalized point.' },
+        { a: 'LIB', b: 'ACT', k: 'act', st: 'act', tag: 'ok', ev: [['Click Visual', 'text=START', 'Tap(0.21, 0.78)']],
+          t: 'The normalized tap travels to the rig',
+          d: 'The same message as for the desktop: a point in [0,1] and the source size. Nothing upstream knows it is about to move a motor.',
+          w: 'Tap(x=0.21, y=0.78, src=1280×720)' },
+        { a: 'ACT', b: 'ARM', k: 'act', st: 'act', tag: 'open', ev: [['robot-arm plugin', 'homography → servo', 'pressed']],
+          t: 'The arm plugin maps the point to servo coordinates',
+          d: 'A per-setup calibration homography from image pixels to the arm\'s physical plane. The architecture isolates this to the plugin; the calibration is real work for each rig, and physical actuation carries safety obligations the plugin must enforce: work-area limits and an emergency stop.',
+          w: 'H · (268, 562, 1)ᵀ → (x_mm, y_mm)  →  servo.press(x_mm, y_mm)' },
+        { a: 'ARM', b: 'SUT', k: 'act', st: 'act', tag: 'ok', t: 'The HMI is pressed', d: 'The application never knew a test framework existed: no instrumentation, no accessibility API, no debug port.' },
+        { a: 'LIB', b: 'CAP', k: 'pix', st: 'verify', tag: 'ok', set: { win: 'E3', dom: [['E1', 'button', 'START', ''], ['E2', 'button', 'STOP', ''], ['E3', 'text', 'Temp 22.0 °C', ''], ['E4', 'icon', '', 'Settings']], ses: ses('1', '2', '0', '—', 'region re-OCR'), loc: loc('Verify Element Value', 'text=Temp  expected 22.0', '1', 'PASSED') },
+          ev: [['Verify Element Value', 'text=Temp · 22.0', 'PASSED']],
+          t: 'Read a value back through the camera',
+          d: 'Region re-OCR (ADR-023) on the rectified frame: one element\'s area is re-captured and re-read, no detector pass. The temperature cell changes; the DOM stays.' },
+        { a: 'DOM', k: 'query', tag: 'meas', t: 'One suite, three deployments',
+          d: 'In-process on a desktop, Android through its input resolution, a camera and an arm through plugins: the keywords and the DOM are identical. What differs is measured per backend (UIED on a CPU at 0.39 s per state, the modular backend at 0.62 s on a GPU) and the one thing a plugin owes, its calibration.' }
+      ] }
+  ];
+
+  // ------------------------------------------------------------ drawing
+  var NS = 'http://www.w3.org/2000/svg';
+  var svg = document.getElementById('map');
+  function el(name, attrs, parent) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function edgePoint(n, toward) {
+    var dx = toward.x - n.x, dy = toward.y - n.y;
+    var s = Math.min((W / 2 + 4) / (Math.abs(dx) || 1e-9), (H / 2 + 4) / (Math.abs(dy) || 1e-9));
+    return { x: n.x + dx * s, y: n.y + dy * s };
+  }
+  function pathD(a, b, bend) {
+    var p = edgePoint(a, b), q = edgePoint(b, a);
+    var mx = (p.x + q.x) / 2, my = (p.y + q.y) / 2, dx = q.x - p.x, dy = q.y - p.y;
+    var len = Math.sqrt(dx * dx + dy * dy) || 1;
+    var cx = mx - dy / len * len * bend, cy = my + dx / len * len * bend;
+    return 'M' + p.x + ',' + p.y + ' Q' + cx + ',' + cy + ' ' + q.x + ',' + q.y;
+  }
+
+  var defs = el('defs', {}, svg);
+  Object.keys(KIND).forEach(function (k) {
+    var m = el('marker', { id: 'ah-' + k, viewBox: '0 0 10 10', refX: '9', refY: '5', markerWidth: '7', markerHeight: '7', orient: 'auto-start-reverse' }, defs);
+    el('path', { d: 'M0,0 L10,5 L0,10 z', fill: KIND[k] }, m);
+  });
+
+  // Process boundaries, one dashed box per deployable unit.
+  var back = el('g', {}, svg);
+  GROUPS.forEach(function (g) {
+    el('path', { d: g.d, 'class': 'svc', style: 'stroke:' + g.c + ';fill:' + g.c + '0a' }, back);
+    var t = el('text', { x: g.x, y: g.y, 'class': 'svc-l', style: 'fill:' + g.c, 'text-anchor': g.end ? 'end' : 'start' }, back); t.textContent = g.l;
+  });
+  var faint = el('g', {}, svg), live = el('g', {}, svg), nodesG = el('g', {}, svg);
+  var pairs = {};
+  SCENARIOS.forEach(function (s) { s.steps.forEach(function (st) {
+    [].concat(st.b || []).forEach(function (b) { pairs[[st.a, b].sort().join('|')] = true; });
+  }); });
+  Object.keys(pairs).forEach(function (key) {
+    var ab = key.split('|'), a = NODES[ab[0]], b = NODES[ab[1]];
+    var p = edgePoint(a, b), q = edgePoint(b, a);
+    el('line', { x1: p.x, y1: p.y, x2: q.x, y2: q.y, 'class': 'edge-faint' }, faint);
+  });
+  var nodeEls = {};
+  Object.keys(NODES).forEach(function (id) {
+    var n = NODES[id];
+    var g = el('g', { 'class': 'node' }, nodesG);
+    var r = el('rect', { x: n.x - W / 2, y: n.y - H / 2, width: W, height: H, rx: 10 }, g);
+    var pulse = el('rect', { x: n.x - W / 2, y: n.y - H / 2, width: W, height: H, rx: 10, 'class': 'pulse', stroke: n.c,
+                             style: 'transform-origin:' + n.x + 'px ' + n.y + 'px' }, g);
+    var t = el('text', { x: n.x, y: n.y - 4, 'text-anchor': 'middle', 'class': 't' }, g); t.textContent = n.t;
+    var s = el('text', { x: n.x, y: n.y + 15, 'text-anchor': 'middle', 'class': 's' }, g); s.textContent = n.s;
+    nodeEls[id] = { g: g, r: r, pulse: pulse };
+  });
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var anim = 0;
+  function clearMap() {
+    while (live.firstChild) live.removeChild(live.firstChild);
+    cancelAnimationFrame(anim);
+    Object.keys(nodeEls).forEach(function (id) { nodeEls[id].g.setAttribute('class', 'node'); nodeEls[id].r.style.stroke = ''; nodeEls[id].r.style.fill = ''; });
+  }
+  function drawStep(step) {
+    clearMap();
+    var color = KIND[step.k];
+    var targets = [].concat(step.b || []);
+    var active = [step.a].concat(targets);
+    Object.keys(nodeEls).forEach(function (id) {
+      var on = active.indexOf(id) >= 0, ne = nodeEls[id];
+      ne.g.setAttribute('class', 'node ' + (on ? 'on' : 'dim'));
+      ne.r.style.stroke = on ? (id === step.a ? color : NODES[id].c) : '';
+      ne.r.style.fill = on ? '#1f2a44' : '';
+    });
+    var dots = [];
+    targets.forEach(function (b) {
+      var p = el('path', { d: pathD(NODES[step.a], NODES[b], 0.12), fill: 'none', stroke: color, 'stroke-width': 3, 'marker-end': 'url(#ah-' + step.k + ')' }, live);
+      if (step.k === 'read') p.setAttribute('stroke-dasharray', '7 5');
+      if (!reduced) dots.push({ p: p, c: el('circle', { r: 6, fill: color }, live) });
+    });
+    if (!targets.length) {
+      var pu = nodeEls[step.a].pulse;
+      pu.setAttribute('stroke', color);
+      pu.classList.remove('go'); void pu.getBBox(); pu.classList.add('go');
+    }
+    if (dots.length) {
+      var t0 = performance.now();
+      (function tick(now) {
+        var f = Math.min(1, (now - t0) / 750);
+        dots.forEach(function (d) {
+          var len = d.p.getTotalLength(), pt = d.p.getPointAtLength(len * f);
+          d.c.setAttribute('cx', pt.x); d.c.setAttribute('cy', pt.y);
+          d.c.setAttribute('opacity', f < 1 ? 1 : 0);
+        });
+        if (f < 1) anim = requestAnimationFrame(tick);
+      })(t0);
+    }
+  }
+
+  // ------------------------------------------------------------ state
+  var scn = SCENARIOS[0], idx = 0, timer = 0;
+  function stateAt(i) {
+    var s = JSON.parse(JSON.stringify(scn.init));
+    s.seenS = []; s.seenT = [];
+    var events = [], seq = 0;
+    for (var j = 0; j < i; j++) {
+      var st = scn.steps[j];
+      for (var path in (st.set || {})) {
+        var parts = path.split('.'), o = s;
+        for (var p = 0; p < parts.length - 1; p++) o = o[parts[p]];
+        o[parts[parts.length - 1]] = JSON.parse(JSON.stringify(st.set[path]));
+      }
+      (st.ev || []).forEach(function (e) { seq++; events.push({ seq: seq, kw: e[0], input: e[1], out: e[2], step: j + 1 }); });
+      if (st.st) s.seenS.push(st.st);
+      if (s.ses.tier !== '—') s.seenT.push(s.ses.tier);
+    }
+    s.events = events;
+    return s;
+  }
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  var TAGS = { ok: ['ok', 'in the code'], meas: ['meas', 'measured'], open: ['open', 'plugin / future'], bad: ['bad', 'failure case'] };
+
+  function render() {
+    var n = scn.steps.length;
+    document.getElementById('count').textContent = idx === 0 ? 'start · ' + n + ' steps' : 'step ' + idx + ' / ' + n;
+    document.getElementById('back').disabled = idx === 0;
+    document.getElementById('reset').disabled = idx === 0;
+    document.getElementById('next').disabled = idx === n;
+    document.getElementById('intro').textContent = scn.intro;
+    var s = stateAt(idx), prev = idx ? stateAt(idx - 1) : s;
+    var step = idx ? scn.steps[idx - 1] : null;
+
+    var box = document.getElementById('step');
+    if (!step) {
+      box.innerHTML = '<div class="kicker">' + esc(scn.name) + '</div><h2>Before the first step</h2><p>' +
+        'Screen: ' + esc(s.screen) + '. The panel below shows what the Visual DOM holds and what the session has paid so far. Press <b>Next</b> to begin.</p>';
+      clearMap();
+    } else {
+      var targets = [].concat(step.b || []);
+      var tag = TAGS[step.tag] || TAGS.ok;
+      var route = '<span class="chip">' + esc(NODES[step.a].t) + '</span>' +
+        (targets.length ? ' <span style="color:' + KIND[step.k] + '">→</span> ' + targets.map(function (b) { return '<span class="chip">' + esc(NODES[b].t) + '</span>'; }).join(' ') : ' <span class="chip">inside</span>');
+      box.innerHTML = '<div class="kicker">' + esc(scn.name) + ' · step ' + idx + ' <span class="tag ' + tag[0] + '">' + tag[1] + '</span></div>' +
+        '<h2>' + esc(step.t) + '</h2><div class="route">' + route + '</div>' +
+        (step.d ? '<p>' + esc(step.d) + '</p>' : '') +
+        (step.ev ? '<p style="margin-top:6px;font-size:0.85em">Logs: ' + step.ev.map(function (e) { return '<code style="color:var(--evt)">' + esc(e[0]) + '</code>'; }).join(' ') + '</p>' : '') +
+        (step.w ? '<div class="wire mono">' + esc(step.w) + '</div>' : '');
+      drawStep(step);
+    }
+
+    function cell(v, was) { return '<td' + (v !== was ? ' class="chg"' : '') + '>' + esc(v) + '</td>'; }
+    var prevRows = {}; prev.dom.forEach(function (r) { prevRows[r[0]] = r; });
+    var html = '<div class="kicker">What the Visual DOM holds · ' + esc(s.screen) + '</div>';
+    if (s.dom.length) {
+      html += '<table style="margin-top:6px"><thead><tr><th>id</th><th>role</th><th>text</th><th>label</th></tr></thead><tbody>' +
+        s.dom.map(function (r) {
+          var was = prevRows[r[0]] || ['', '', '', ''];
+          return '<tr' + (r[0] === s.win ? ' class="win"' : '') + '><td class="k">' + esc(r[0]) + '</td>' + cell(r[1], was[1]) + cell(r[2], was[2]) + cell(r[3], was[3]) + '</tr>';
+        }).join('') + '</tbody></table>';
+    } else {
+      html += '<p class="empty" style="font-size:0.85em;margin-top:6px">No DOM yet: nothing has been captured.</p>';
+    }
+    function b(label, obj, key, pobj) { return '<span' + (obj[key] !== pobj[key] ? ' class="chg"' : '') + '><b>' + label + '</b>' + esc(obj[key]) + '</span>'; }
+    html += '<div class="kicker sub">Current locator</div><div class="bench">' + b('keyword', s.loc, 'kw', prev.loc) + b('locator', s.loc, 'loc', prev.loc) +
+      '</div><div class="bench">' + b('matches', s.loc, 'matches', prev.loc) + b('verdict', s.loc, 'verdict', prev.loc) + '</div>';
+    html += '<div class="kicker sub">Session cost</div><div class="bench">' + b('parses', s.ses, 'parses', prev.ses) + b('lookups', s.ses, 'lookups', prev.ses) +
+      b('model calls', s.ses, 'calls', prev.ses) + '</div><div class="bench">' + b('tier answered', s.ses, 'tier', prev.ses) + b('last cost', s.ses, 'cost', prev.ses) + '</div>';
+    document.getElementById('sig').innerHTML = html;
+
+    function strip(label, list, now, seen) {
+      return '<div class="life"><span class="lt">' + label + '</span>' + list.map(function (x) {
+        return '<span class="s ' + (x === now ? 'now' : (seen.indexOf(x) >= 0 ? 'seen' : '')) + '">' + x + '</span>';
+      }).join('') + '</div>';
+    }
+    document.getElementById('life').innerHTML = strip('pipeline stage', STAGES, step ? step.st : '', s.seenS) +
+      strip('desc= tier', TIERS, s.ses.tier, s.seenT);
+
+    var last = step ? step.ev || [] : [];
+    document.getElementById('log').innerHTML = s.events.length ? s.events.map(function (e) {
+      var cls = /false pass/.test(e.out) ? 'fp' : /^PASSED/.test(e.out) ? 'pass' : /^FAILED/.test(e.out) ? 'fail' : '';
+      return '<tr class="' + (e.step === idx && last.length ? 'new' : '') + '"><td>' + e.seq + '</td><td class="ev">' + esc(e.kw) +
+        '</td><td class="mono">' + esc(e.input) + '</td><td class="' + cls + '">' + esc(e.out) + '</td><td>' + e.step + '</td></tr>';
+    }).join('') : '<tr><td colspan="5" class="empty">Nothing logged in this scenario yet.</td></tr>';
+
+    try { history.replaceState(null, '', '#' + scn.id + '/' + idx); } catch (e) { /* file: or sandbox */ }
+  }
+
+  function go(i) { idx = Math.max(0, Math.min(scn.steps.length, i)); render(); }
+  function stop() { clearInterval(timer); timer = 0; document.getElementById('play').textContent = 'Play'; }
+  function play() {
+    if (timer) { stop(); return; }
+    if (idx === scn.steps.length) go(0);
+    document.getElementById('play').textContent = 'Pause';
+    go(idx + 1);
+    timer = setInterval(function () { if (idx >= scn.steps.length) stop(); else go(idx + 1); }, 3600);
+  }
+  function choose(id, step) {
+    stop();
+    scn = SCENARIOS.filter(function (s) { return s.id === id; })[0] || SCENARIOS[0];
+    Array.prototype.forEach.call(document.querySelectorAll('#tabs button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.id === scn.id)); });
+    go(step || 0);
+  }
+
+  var tabs = document.getElementById('tabs');
+  SCENARIOS.forEach(function (s) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.dataset.id = s.id; b.textContent = s.name; b.title = s.intro;
+    b.addEventListener('click', function () { choose(s.id, 0); });
+    tabs.appendChild(b);
+  });
+  document.getElementById('next').addEventListener('click', function () { stop(); go(idx + 1); });
+  document.getElementById('back').addEventListener('click', function () { stop(); go(idx - 1); });
+  document.getElementById('reset').addEventListener('click', function () { stop(); go(0); });
+  document.getElementById('play').addEventListener('click', play);
+  document.addEventListener('keydown', function (e) {
+    if (e.target.closest && e.target.closest('input,textarea,select')) return;
+    if (e.key === 'ArrowRight') { stop(); go(idx + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { stop(); go(idx - 1); e.preventDefault(); }
+    else if (e.key === 'Home') { stop(); go(0); e.preventDefault(); }
+    else if (e.key === ' ' && !(e.target.tagName === 'BUTTON')) { play(); e.preventDefault(); }
+  });
+
+  var m = /^#([a-z]+)\/(\d+)$/.exec(location.hash || '');
+  choose(m ? m[1] : 'suite', m ? parseInt(m[2], 10) : 0);
+})();
+</script>
+</body>
+</html>
