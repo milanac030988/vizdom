@@ -203,3 +203,45 @@ def test_named_description_still_resolves_by_name_with_position():
     r = DescriptionResolver(_corner_dom(), tiers=["lexical"])
     elem, info = r.resolve("top left Retry button")
     assert elem is not None and elem["id"] == "E1"
+
+
+# -- second review round (2026-10-28): "right now" and qualifiers ------------
+
+def test_right_now_is_not_a_position():
+    """'the button that checks for updates right now' filtered out every
+    candidate with cx <= 0.66, the 4 Check Now targets included, before the
+    model saw them. A position word counts only inside a positional phrase."""
+    from visual_gui_library.locators.desc_resolver import parse_description
+    assert parse_description("the button that checks for updates right now")[3] == []
+    assert len(parse_description("the button on the right")[3]) == 1
+    assert len(parse_description("top left Purple Elephant button")[3]) == 2
+    assert len(parse_description("right side panel")[3]) == 1
+    assert len(parse_description("left button")[3]) == 1
+    assert len(parse_description("right click menu")[3]) == 0
+    assert parse_description("left")[3] != []
+
+
+def test_check_now_target_stays_in_the_shortlist(monkeypatch):
+    # Check Now sits at the left (cx 0.06-0.26 in the benchmark); the wordy
+    # paraphrase must not geometry-filter it away
+    dom = _dom(_btn("E1", "Check Now"), _btn("E2", "Refresh", x=90),
+               _text("E3", "Updates", 50))
+    r = DescriptionResolver(dom, tiers=["lexical", "slm"])
+    seen = {}
+    monkeypatch.setattr(r, "_resolve_slm",
+                        lambda description, candidates: seen.update(c=[e["id"] for e in candidates]) or (dom["elements"][0], "conf=0.9"))
+    elem, info = r.resolve("the button that checks for updates right now")
+    assert "E1" in seen["c"]
+    assert elem is not None and elem["id"] == "E1" and info["tier"] == "slm"
+
+
+def test_qualifiers_do_not_make_a_description_naming():
+    r = DescriptionResolver(_corner_dom(), tiers=["lexical"])
+    for desc in ("the small button at the top left", "the big blue button at the top left",
+                 "the main button, top left"):
+        elem, info = r.resolve(desc)
+        assert elem is not None and elem["id"] == "E1", desc
+    # an unknown adjective still names something the element does not carry:
+    # the safe side is a decline, not a guess
+    elem, info = r.resolve("the frobnicating button at the top left")
+    assert elem is None

@@ -85,10 +85,10 @@ Correct, so the `desc=` row on them is an upper bound, and we measured the gap.
 All 514 steps were re-resolved over the same run-6 DOMs with two hand-written
 wordings: terse, as a tester types ("Save", "search box"), and wordy, which
 drops the label or the role word ("the button that saves the changes"). Terse
-costs three points of action-hit, wordy costs twenty-four, and the false-pass
+costs three points of action-hit, wordy costs twenty-two, and the false-pass
 rate stays zero in every wording. On the wordy set the lexical tier alone hits
-0.11; the model tier behind it lifts that to 0.69. The weak spot it exposes is
-wrong-element answers at high confidence, 26 of 213 actions.
+0.11; the model tier behind it lifts that to 0.71. The weak spot it exposes is
+wrong-element answers at high confidence, 24 of 213 actions.
 *README sec. 6 paraphrase bullet; `benchmarks/lifecycle-synthetic-v1/paraphrases.json`; table at the end of this sheet.*
 
 ## C. Models and the description tier
@@ -180,7 +180,7 @@ claim; venue after the real-world rows.
 | terse (lexical only) | 0.864 | 0.907 | 0.000 | 0.864 | lexical 370, none 144 |
 | terse (lexical+slm) | 0.901 | 0.967 | 0.000 | 0.901 | lexical 370, slm 36, none 108 |
 | wordy (lexical only) | 0.113 | 0.372 | 0.000 | 0.113 | lexical 48, none 466 |
-| wordy (lexical+slm) | 0.685 | 0.864 | 0.000 | 0.676 | lexical 48, slm 296, none 170 |
+| wordy (lexical+slm) | 0.709 | 0.860 | 0.000 | 0.695 | lexical 48, slm 298, none 168 |
 
 Say it this way: the oracle holds under every wording; hit rate degrades with
 how much of the label the wording keeps; the model tier is what recovers wordy

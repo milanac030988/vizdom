@@ -65,9 +65,75 @@ _WORD_RE = re.compile(r"[a-z0-9]+")
 _STOP_WORDS = {"the", "a", "an", "at", "of", "in", "on", "to", "for", "with",
                "that", "this", "which", "and", "or", "is", "it", "its", "one"}
 
+# Words that qualify an element's look without naming it ("the small blue
+# button at the top left"). Like the stop words they do not make a description
+# "naming" (review, 2026-10-28, second round); the DOM has no field for them,
+# so the lexical tier neither checks nor penalises them. Any other adjective
+# still counts as a name, on purpose: an unknown word the element does not
+# carry makes the tier decline rather than guess.
+_QUALIFIER_WORDS = {
+    "small", "big", "large", "little", "tiny", "huge", "wide", "narrow", "tall",
+    "short", "long", "main", "primary", "secondary", "bold", "plain", "round",
+    "square", "dark", "light", "bright", "blue", "red", "green", "yellow",
+    "orange", "grey", "gray", "black", "white", "purple", "pink", "brown",
+    "highlighted", "selected", "visible", "upper", "lower", "inner", "outer",
+    "same", "other", "second", "third", "last", "only",
+}
+
+# A position word counts as a position only in a positional phrase: next to
+# another position word ("top left"), after a preposition or article ("at the
+# right", "the left field"), or before a part or role word ("right side",
+# "left button"). Elsewhere it is an ordinary word: "right now", "left over",
+# "right click" (review, 2026-10-28, second round: "the button that checks
+# for updates right now" filtered every candidate with cx <= 0.66).
+_POSITION_BEFORE = {"at", "on", "in", "to", "the", "near", "toward", "towards",
+                    "from", "upper", "lower", "far"}
+_POSITION_AFTER = {"side", "corner", "edge", "half", "area", "region", "pane",
+                   "panel", "column", "row", "part", "hand", "most", "section",
+                   "bar", "toolbar", "sidebar", "margin"} | set(ROLE_WORDS)
+
 
 def _tokens(s: str) -> List[str]:
     return _WORD_RE.findall((s or "").lower())
+
+
+def _is_positional(toks: List[str], i: int) -> bool:
+    prev = toks[i - 1] if i > 0 else None
+    nxt = toks[i + 1] if i + 1 < len(toks) else None
+    if prev is None and nxt is None:
+        return True                      # the whole description is "left"
+    return (prev in POSITION_WORDS or nxt in POSITION_WORDS
+            or prev in _POSITION_BEFORE or nxt in _POSITION_AFTER)
+
+
+def parse_description(description: str):
+    """
+    Split a description into what it says about the element.
+
+    Returns:
+        (name_tokens, naming, role_types, pos_preds):
+        name_tokens - every token that is neither a role word nor a position
+                      (these take part in the overlap score);
+        naming      - the name tokens that actually name something: stop
+                      words and qualifiers removed ("the button at the top
+                      left" names nothing, "Purple Elephant button" does);
+        role_types  - acceptable role / visual_type values;
+        pos_preds   - predicates over the normalized centre.
+    """
+    toks = _tokens(description)
+    role_types: set = set()
+    pos_preds = []
+    name_tokens: List[str] = []
+    for i, t in enumerate(toks):
+        if t in ROLE_WORDS:
+            role_types |= ROLE_WORDS[t]
+        elif t in POSITION_WORDS and _is_positional(toks, i):
+            pos_preds.append(POSITION_WORDS[t])
+        else:
+            name_tokens.append(t)
+    naming = [t for t in name_tokens
+              if t not in _STOP_WORDS and t not in _QUALIFIER_WORDS]
+    return name_tokens, naming, role_types, pos_preds
 
 
 def _norm_center(elem: Dict[str, Any], image_size) -> Tuple[float, float]:
@@ -99,31 +165,16 @@ def lexical_rank(
     1.0: enough to order a shortlist for the model tiers, never enough to
     clear `lexical_confident`'s floor on their own. Otherwise "top left
     Frobnicate button" would confidently resolve to whatever button sits
-    top-left (review, 2026-10-28). A description with no name tokens ("the
-    button at the top left") is unaffected.
+    top-left (review, 2026-10-28). A description that names nothing ("the
+    small button at the top left") is unaffected; see `parse_description`
+    for what counts as a name and when a word counts as a position.
 
     Returns:
         (score, element) pairs with score > 0, best first.
     """
-    desc_tokens = _tokens(description)
-    if not desc_tokens:
+    name_tokens, naming, role_types, pos_preds = parse_description(description)
+    if not (name_tokens or role_types or pos_preds):
         return []
-
-    role_types: set = set()
-    pos_preds = []
-    name_tokens: List[str] = []
-    for t in desc_tokens:
-        if t in ROLE_WORDS:
-            role_types |= ROLE_WORDS[t]
-        elif t in POSITION_WORDS:
-            pos_preds.append(POSITION_WORDS[t])
-        else:
-            name_tokens.append(t)
-
-    # the words that actually name something: "the button at the top left"
-    # has name tokens ("the", "at") but names nothing, and must keep resolving
-    # on role and position alone
-    naming = [t for t in name_tokens if t not in _STOP_WORDS]
 
     ranked = []
     for elem in elements:
@@ -351,8 +402,7 @@ class DescriptionResolver:
         """A predicate over elements for the description's position words
         ("top", "left", ...), or None when it has none or nothing in the
         pool satisfies them (then the words are not used as a filter)."""
-        pos_preds = [POSITION_WORDS[t] for t in _tokens(description)
-                     if t in POSITION_WORDS]
+        pos_preds = parse_description(description)[3]
         if not pos_preds:
             return None
         size = self._image_size()

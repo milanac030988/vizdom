@@ -526,26 +526,26 @@ What the rows say:
   | terse (`Save`) | lexical | 0.864 | 0.907 | 0.000 | 0.864 | lexical 370, none 144 |
   | terse | lexical+slm | **0.901** | **0.967** | **0.000** | 0.901 | lexical 370, slm 36, none 108 |
   | wordy (`the button that saves the changes`) | lexical | 0.113 | 0.372 | 0.000 | 0.113 | lexical 48, none 466 |
-  | wordy | lexical+slm | **0.685** | **0.864** | **0.000** | 0.676 | lexical 48, slm 296, none 170 |
+  | wordy | lexical+slm | **0.709** | **0.860** | **0.000** | 0.695 | lexical 48, slm 298, none 168 |
 
   Three readings. (1) **The oracle property does not depend on the
   wording**: 0 false passes of 88 in every row, including the wordy
   paraphrases of the nonsense captions (`the button that frobnicates the
   record`), all 88 declined by the lexical tier and the SLM alike. (2)
   **Wording that keeps the label costs three points, wording that drops it
-  costs twenty-four.** Terse loses six hits to the generated form, mostly
+  costs twenty-two.** Terse loses six hits to the generated form, mostly
   where the paraphrase removed the only token the DOM has (`page 1` for a
   pager button whose text is `1`) or left the SLM to choose between
   look-alike value fields (`the Connected field` on a form with three status
   boxes). Wordy is where the model tier earns its place: the lexical tier
   alone answers 48 steps and hits 0.113; the SLM behind it lifts that to
-  0.685 with 296 answers, and the 67 remaining action misses split into 41
+  0.709 with 298 answers, and the 62 remaining action misses split into 38
   declines (`the previous-page control of the pager`, `the search bar where
-  you type a query`: no token in common with `Prev` or `Search...`) and 26
+  you type a query`: no token in common with `Prev` or `Search...`) and 24
   wrong elements. (3) **The wrong elements are the SLM's known weakness, now
   visible on the verify side.** The strict column is what the plain verify
-  metric hides: on the wordy set 28 positive verifies passed on a *different*
-  element than the target, all of them SLM answers, 24 at confidence 0.85–1.00
+  metric hides: on the wordy set 23 positive verifies passed on a *different*
+  element than the target, all of them SLM answers, 20 at confidence 0.85–1.00
   (`the first page number in the pagination` → the text `Showing 1-9 of
   204`; `the box whose value is Enabled` → the field reading `Stopped`), the
   same rationalisation the SLM-only column shows over a whole DOM, here over
@@ -561,7 +561,18 @@ What the rows say:
   `right` at 1.50 to another button; role and position words now earn half
   credit when the description names something the element does not carry,
   so that step declines, and the position filter runs before the shortlist
-  is padded. The generated-description rows did not move.
+  is padded. The second round of the review found the opposite error on the
+  same phrase: `right` in `right now` was read as a position and filtered
+  all four *Check Now* targets (cx 0.06–0.26) out of the model's shortlist,
+  eight guaranteed misses from the parser, not the model. A position word
+  now counts only inside a positional phrase (`on the right`, `top left`,
+  `right side`, `left button`), and all four states hit. The generated and
+  terse rows did not move through either round. Two measurements of the
+  wordy chain on the same code also differ on 11 of 514 steps (the laptop
+  model's answers are not bit-stable between runs at temperature 0, mostly
+  verify steps flipping between a wrong-element pass and a decline), so the
+  wordy row is good to about ±1 point; the GPU-measured columns above
+  reproduced bit for bit.
 
 Cost on this host: the modular parse took 1.26 s per state (run 3: 0.62 s on
 the RTX 6000 Ada host; this card's CPU side is slower), so the chain column

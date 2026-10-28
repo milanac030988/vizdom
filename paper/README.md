@@ -45,7 +45,7 @@ Every number traces to a result JSON under `benchmarks/results/gpu-<stamp>/`
 2. **Harder negatives**: plausible-but-absent labels (defect injection).
 3. **Human-written descriptions** for the `desc=` rows. A hand-paraphrase check
    exists (2026-10-28, `benchmarks/README.md` sec. 6, `paraphrases.json`):
-   terse wording 0.901 / 0.967 / 0.000, wordy wording 0.685 / 0.864 / 0.000
+   terse wording 0.901 / 0.967 / 0.000, wordy wording 0.709 / 0.860 / 0.000
    over the run-6 DOMs. Written by the assistant and reviewed by the author;
    descriptions from other testers are what a reviewer will want.
 4. **Repeat the grounder columns** (two more runs) for error bars.
