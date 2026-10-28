@@ -220,6 +220,7 @@ described here".
 | `omniparser_text_ensemble` | bool | `true` | feed VizDOM OCR into OmniParser to recover text (ADR-016) |
 | `omniparser_box_threshold` | float | `0.05` | YOLO icon confidence cutoff (default 0.05); lower to ~0.03 to recover faint glyphs like a minimize button |
 | `grpc_target` | str | `"localhost:50051"` | host:port of a running detector gRPC service (used only when backend == 'grpc', ADR-017) |
+| `infer_roles` | bool | `true` | modular backend: recover button / input_field / checkbox / icon from interactivity, geometry and caption; false keeps the raw text/icon split (ablation column 'roles off') |
 
 ### `ocr` — Stage 1 - text detection engine
 
@@ -228,6 +229,8 @@ described here".
 | `engine` | str | `"easyocr"` | easyocr \| paddleocr \| tesseract \| none |
 | `languages` | list of str | `['en']` | OCR language codes passed to the engine, e.g. ["en"] |
 | `confidence_threshold` | float | `0.3` | drop OCR detections below this confidence (0..1) |
+| `upscale` | bool | `true` | upscale frames under 1500 px tall before OCR so small text reads (ADR-012); false = native resolution |
+| `retry_low_confidence` | bool | `true` | re-read easyocr's low-confidence boxes with Tesseract (ADR-012); false = a single engine pass |
 
 ### `refiner` — Stage 8 - optional small-LM/VLM element review (needs a running backend)
 
@@ -254,6 +257,7 @@ described here".
 |---|---|---|---|
 | `containment_threshold` | float | `0.85` | fraction of a child's area that must sit inside its parent |
 | `min_containment_margin` | int | `5` | minimum px margin between child and parent edges for nesting |
+| `label_max_distance` | int | `50` | a text node within this many px above or left of a control becomes its label (ADR-016); 0 turns association off |
 | `use_llm` | bool | `false` | let the refiner LLM adjust the built hierarchy (needs refiner.enabled) |
 | `llm_model` | str | `"ollama"` | model used for LLM hierarchy refinement |
 

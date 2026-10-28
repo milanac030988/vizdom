@@ -1313,6 +1313,51 @@ body.notes-on .slide.active .notes{display:block}
     Good argument for keeping detectors and OCR engines swappable.</div>
 </section>
 
+<!-- 16c ───────────────────────────────────────── -->
+<section class="slide">
+  <h2>Ablation — what each stage of our own pipeline adds</h2>
+  <div class="grow">
+    <p class="small">Same detector (modular), same 514 steps; one stage of <em>our</em> code off per
+      column. Two readings per column: what a test suite loses (lifecycle) and what the DOM loses
+      (per-stage). Laptop GPU, 2026-10-28.</p>
+    <table>
+      <tr><th>Column</th><th>Stage off</th><th class="n">action-hit</th><th class="n">verify</th>
+          <th class="n">false-pass</th><th class="n">F1</th><th class="n">char acc</th>
+          <th class="n">typed button / input</th></tr>
+      <tr class="hi"><td><strong>control</strong></td><td>—</td><td class="n win">0.915</td><td class="n win">0.957</td>
+          <td class="n win">0.000</td><td class="n">0.637</td><td class="n">0.975</td><td class="n">0.91 / 0.99</td></tr>
+      <tr><td>roles off</td><td>role recovery (Impr. 1)</td><td class="n">0.915</td><td class="n">0.957</td>
+          <td class="n">0.000</td><td class="n">0.637</td><td class="n">0.975</td><td class="n lose">0.00 / 0.00</td></tr>
+      <tr><td>ocr plain</td><td>upscale + Tesseract retry (ADR-012)</td><td class="n lose">0.859</td>
+          <td class="n lose">0.930</td><td class="n">0.000</td><td class="n lose">0.607</td><td class="n lose">0.947</td>
+          <td class="n">0.89 / 0.99</td></tr>
+      <tr><td>ocr none</td><td>OCR entirely</td><td class="n lose">0.000</td><td class="n lose">0.292</td>
+          <td class="n">0.000</td><td class="n lose">0.406</td><td class="n lose">0.023</td><td class="n">0.00 / 0.99</td></tr>
+      <tr><td>merge off</td><td>smart merge (ADR-010)</td><td class="n">0.915</td><td class="n">0.957</td>
+          <td class="n">0.000</td><td class="n win">0.654</td><td class="n">0.975</td><td class="n">0.91 / 0.99</td></tr>
+      <tr><td>refiner on</td><td>(SLM review on, ADR-007)</td><td class="n">0.915</td><td class="n">0.957</td>
+          <td class="n">0.000</td><td class="n">0.637</td><td class="n">0.975</td><td class="n">0.91 / 0.99 · <span class="lose">3.2× parse</span></td></tr>
+      <tr><td>roles off + <code>desc=</code></td><td>role recovery, under the chain</td>
+          <td class="n lose">0.944</td><td class="n">0.964</td><td class="n">0.000</td>
+          <td colspan="3" class="small">chain control 0.958 / 0.973 — the role word stops scoring</td></tr>
+    </table>
+    <div class="cols" style="margin-top:.6em">
+      <div class="card"><p class="small" style="margin:0;color:var(--fg)">
+        <strong>Language carries the test.</strong> No OCR: every button still boxed, zero steps resolve.
+        Plain OCR: −12 hits, −8 verifies. <strong>Roles</strong> are invisible to <code>text=</code>, visible
+        in typed accuracy and in <code>desc=</code>. Labels, the glyph reader and the refiner change
+        nothing <em>here</em>: not exercised by clean synthetic screens, not useless.</p></div>
+      <div class="card bad"><p class="small" style="margin:0;color:var(--fg)">
+        <strong>Two findings of our own.</strong> Smart merge <em>costs</em> F1 on this set (fuses text
+        lines the GT keeps apart). And the Tesseract retry never ran on any rented Linux host (Windows-only
+        lookup): every GPU-measured VizDOM row is a lower bound — control 0.883 there, 0.915 here.</p></div>
+    </div>
+  </div>
+  <div class="notes">The instructor asked for exactly this: leave parts out to show what the combination
+    buys. Say plainly which rows are "not exercised" and why, and that the host finding makes the GPU rows
+    conservative, not wrong. <code>benchmarks/README.md</code> sec. 7 has the full table and the commands.</div>
+</section>
+
 <!-- 17 ────────────────────────────────────────── -->
 <section class="slide">
   <h2>New capability — locating by description</h2>

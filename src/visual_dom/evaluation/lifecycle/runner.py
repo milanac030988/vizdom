@@ -46,13 +46,84 @@ log = get_logger(__name__)
 # Executors
 # --------------------------------------------------------------------------- #
 
+#: Ablation switches a column spec may name, `vizdom-modular[roles=off,...]`
+#: (benchmarks/README.md sec. 7): each turns one stage of VizDOM's own
+#: pipeline off (or the optional refiner on) through the session config, so
+#: the column measures what that stage adds on the same detector and steps.
+#: Any other `section.key=value` is passed to the config as given.
+ABLATION_SWITCHES = {
+    ("roles", "off"): {"detector": {"infer_roles": False}},
+    ("labels", "off"): {"hierarchy": {"label_max_distance": 0}},
+    ("symbols", "off"): {"symbols": {"enabled": False}},
+    ("merge", "off"): {"merge": {"merge_oversegmented": False}},
+    ("ocr", "plain"): {"ocr": {"upscale": False, "retry_low_confidence": False}},
+    ("ocr", "none"): {"ocr": {"engine": "none"}},
+    ("ensemble", "off"): {"detector": {"omniparser_text_ensemble": False}},
+    ("refiner", "on"): {"refiner": {"enabled": True}},
+}
+
+
+def _coerce(value: str):
+    low = value.lower()
+    if low in ("true", "on", "yes"):
+        return True
+    if low in ("false", "off", "no"):
+        return False
+    try:
+        return int(value)
+    except ValueError:
+        try:
+            return float(value)
+        except ValueError:
+            return value
+
+
+def _deep_merge(base: dict, extra: dict) -> dict:
+    for k, v in extra.items():
+        if isinstance(v, dict) and isinstance(base.get(k), dict):
+            _deep_merge(base[k], v)
+        else:
+            base[k] = v
+    return base
+
+
+def parse_vizdom_spec(spec: str):
+    """
+    `modular` or `modular[roles=off,ocr=plain]` -> (detector, overrides, suffix).
+
+    `suffix` is the bracket part as written (or ""), kept in the column name
+    so a result file says which stages were off.
+    """
+    detector, suffix, overrides = spec, "", {}
+    if "[" in spec:
+        if not spec.endswith("]"):
+            raise ValueError(f"bad column spec {spec!r}: expected detector[key=value,...]")
+        detector, inner = spec[:-1].split("[", 1)
+        suffix = f"[{inner}]"
+        for item in [i.strip() for i in inner.split(",") if i.strip()]:
+            if "=" not in item:
+                raise ValueError(f"bad switch {item!r} in {spec!r}: expected key=value")
+            key, value = (p.strip() for p in item.split("=", 1))
+            if (key, value.lower()) in ABLATION_SWITCHES:
+                _deep_merge(overrides, json.loads(json.dumps(ABLATION_SWITCHES[(key, value.lower())])))
+            elif "." in key:
+                section, field = key.split(".", 1)
+                _deep_merge(overrides, {section: {field: _coerce(value)}})
+            else:
+                raise ValueError(f"unknown switch {item!r}; known: "
+                                 f"{sorted(f'{k}={v}' for k, v in ABLATION_SWITCHES)} "
+                                 f"or section.key=value")
+    return detector, overrides, suffix
+
+
 class VizDomExecutor:
     """The production stack: parse each state once, resolve steps from the DOM."""
 
-    def __init__(self, detector: str, ocr: str = "easyocr"):
-        self.name = f"vizdom-{detector}"
+    def __init__(self, detector: str, ocr: str = "easyocr", overrides=None, suffix=""):
+        self.name = f"vizdom-{detector}{suffix}"
         self.detector = detector
         self.ocr = ocr
+        self.overrides = overrides or {}
         self._session = None
         self._dom_cache = {}
         self._parse_seconds = {}
@@ -71,10 +142,10 @@ class VizDomExecutor:
             import numpy as np
             from visual_dom import connect
             t0 = time.perf_counter()
-            self._session = connect({
+            self._session = connect(_deep_merge({
                 "detector": {"backend": self.detector},
                 "ocr": {"engine": self.ocr},
-            })
+            }, json.loads(json.dumps(self.overrides))))
             # Warm-up analyze on a dummy frame: several components (the easyocr
             # reader, detector weights) initialize lazily on FIRST USE, and
             # without this they would land inside one arbitrary state's parse
@@ -174,14 +245,14 @@ class VizDomDescExecutor(VizDomExecutor):
     def __init__(self, detector: str, tiers=DEFAULT_TIERS, backend: str = "ollama",
                  model: str = DEFAULT_MODEL, vision_model: str = DEFAULT_VISION_MODEL,
                  host: str = DEFAULT_HOST, ocr: str = "easyocr",
-                 resolver_factory=None):
-        super().__init__(detector, ocr)
+                 resolver_factory=None, overrides=None, suffix=""):
+        super().__init__(detector, ocr, overrides=overrides, suffix=suffix)
         self.tiers = [t.strip() for t in tiers if t.strip()]
         unknown = [t for t in self.tiers if t not in self.TIERS]
         if not self.tiers or unknown:
             raise ValueError(f"grounding tiers must be a non-empty subset of "
                              f"{list(self.TIERS)}, got {list(tiers)!r}")
-        self.name = f"vizdom-{detector}+desc[{'+'.join(self.tiers)}]"
+        self.name = f"vizdom-{detector}{suffix}+desc[{'+'.join(self.tiers)}]"
         self.backend, self.model, self.vision_model, self.host = \
             backend, model, vision_model, host
         # tests inject a factory(dom, screenshot) -> resolver; production builds
@@ -465,8 +536,9 @@ def main():
             spec = name[len("vizdom-"):]
             if spec.endswith("+desc"):
                 _require_descriptions(manifest)
+                detector, overrides, suffix = parse_vizdom_spec(spec[:-len("+desc")])
                 ex = VizDomDescExecutor(
-                    detector=spec[:-len("+desc")],
+                    detector=detector, overrides=overrides, suffix=suffix,
                     tiers=args.grounding_tiers.split(","),
                     backend=args.grounding_backend, model=args.grounding_model,
                     vision_model=args.grounding_vision_model,
@@ -477,7 +549,9 @@ def main():
                 print(f"{ex.name}: {reason}")
                 executors.append(ex)
             else:
-                executors.append(VizDomExecutor(detector=spec))
+                detector, overrides, suffix = parse_vizdom_spec(spec)
+                executors.append(VizDomExecutor(detector=detector, overrides=overrides,
+                                                suffix=suffix))
             continue
         from .grounders import GROUNDERS
         cls = GROUNDERS.get(name)

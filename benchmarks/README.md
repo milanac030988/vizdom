@@ -377,7 +377,10 @@ What the rows say:
   16 s of resolver time on top of the parse. The 13 remaining action misses
   are the OCR floor (nine captions never read at all, so there is no token
   to overlap: `Save` ×3, `Confirm`, `Cancel`, `Download`, three value fields
-  on `form_sidebar_0103`) and four repeated table digits.
+  on `form_sidebar_0103`) and four repeated table digits. Part of that floor
+  was the host, not the screens: the Tesseract retry never ran on the rented
+  Linux hosts (sec. 7), and on the laptop with it `Confirm` and `Cancel` are
+  read.
 - **The SLM alone is a poor grounder.** Over the full DOM table (30–110
   rows) the 3B text model picks a *wrong* element on 49 of its 78 action
   misses, at confidence 1.00, and semantically unrelated (`Prev button` →
@@ -600,7 +603,98 @@ against the grounders' 2.79–4.24 s median step on that host that night
 
 ---
 
-## 7. Reproducing and extending
+## 7. Ablation: what each stage of VizDOM's own pipeline adds
+
+The columns above compare detectors and grounders. This table holds the
+detector fixed (modular, captioner off, the run-3 control) and turns one
+stage of VizDOM's own code off at a time through the session config, the
+runner's column spec `vizdom-modular[roles=off]`
+(`visual_dom.evaluation.lifecycle.ablation`, 2026-10-28, laptop RTX GPU,
+one run per column; the modular parse is deterministic). Every column is
+scored on both levels: the lifecycle metrics say what the stage is worth to
+a test suite, the per-stage metrics (detection F1 / recall / mean IoU, OCR
+character accuracy, and per GT type *found* = matched by any box, *typed* =
+matched by a box of the right role) say what it does to the DOM.
+
+| Column | What is off | Action-hit | Verify | False-pass | Parse s/state | F1 | Recall | mIoU | Char acc | Typed button / input / checkbox |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `modular` (control) | nothing | **0.915** | **0.957** | 0.000 | 2.96 | 0.637 | 0.631 | 0.688 | 0.975 | 0.91 / 0.99 / 0.00 |
+| `[roles=off]` | role recovery (slide 23) | 0.915 | 0.957 | 0.000 | 3.08 | 0.637 | 0.631 | 0.688 | 0.975 | **0.00 / 0.00 / 0.00** |
+| `[labels=off]` | label association (ADR-016) | 0.915 | 0.957 | 0.000 | 3.19 | 0.637 | 0.631 | 0.688 | 0.975 | 0.91 / 0.99 / 0.00 |
+| `[symbols=off]` | glyph reader (ADR-011) | 0.915 | 0.957 | 0.000 | 3.22 | 0.637 | 0.631 | 0.688 | 0.975 | 0.91 / 0.99 / 0.00 |
+| `[merge=off]` | smart merge (ADR-010) | 0.915 | 0.957 | 0.000 | 3.54 | **0.654** | 0.664 | 0.683 | 0.975 | 0.91 / 0.99 / 0.00 |
+| `[ocr=plain]` | OCR upscale + Tesseract retry (ADR-012) | **0.859** | **0.930** | 0.000 | 2.33 | 0.607 | 0.598 | 0.687 | 0.947 | 0.89 / 0.99 / 0.00 |
+| `[ocr=none]` | OCR entirely | **0.000** | **0.292** | 0.000 | 0.18 | 0.406 | 0.316 | 0.791 | 0.023 | 0.00 / 0.99 / 0.00 |
+| `[refiner=on]` | (SLM review ON, ADR-007) | 0.915 | 0.957 | 0.000 | **9.57** | 0.637 | 0.631 | 0.688 | 0.975 | 0.91 / 0.99 / 0.00 |
+| `+desc` (control) | nothing, `desc=` chain | **0.958** | **0.973** | 0.000 | 3.87 | same DOM | | | | lexical 408, slm 2, none 104 |
+| `[roles=off]+desc` | role recovery, `desc=` chain | **0.944** | 0.964 | 0.000 | 3.74 | same DOM | | | | lexical 402, slm 2, none 110 |
+| `[labels=off]+desc` | label association, `desc=` chain | 0.958 | 0.973 | 0.000 | 6.55 | same DOM | | | | lexical 408, slm 2, none 104 |
+
+What the rows say:
+
+- **Language carries the test; the OCR stage is the one that matters most.**
+  Without OCR the DOM still boxes every button and input (found 1.00 / 0.99)
+  and not one `text=` step resolves: 0.000 action-hit, and the 0.292 verify
+  accuracy is the 88 negatives failing for the right reason. Plain OCR, one
+  engine at native resolution, costs 12 hits and 8 verifies against the
+  ADR-012 pair (upscale to 1500 px, Tesseract re-read of easyocr's
+  low-confidence boxes): character accuracy 0.947 against 0.975, 28 captions
+  recovered, among them `Confirm` on `dialog_0037` and `Cancel` on
+  `dialog_0141`.
+- **Role recovery is invisible to `text=` and visible everywhere else.** The
+  lifecycle `text=` steps never read a role, so the row does not move; the
+  typed column drops from 0.91 / 0.99 to 0 / 0 (every control is `icon`
+  again, as OmniParser tags it), and under the `desc=` chain the role word in
+  the description stops scoring: 0.958 → 0.944, six fewer lexical
+  resolutions. `role=` locators, the `clickable` / `editable` flags and the
+  Viewer's tree are the other consumers.
+- **Label association, the glyph reader and the refiner change nothing on
+  this set.** The benchmark's descriptions name a field by its own text
+  (`Online input field`), never by a label beside it; the synthetic screens
+  have no glyph-only keys; and the SLM review proposes nothing the rules did
+  not already do, at 3.2× the parse time (9.57 s against 2.96 s per state),
+  which is why ADR-007 leaves it off. The first two stages were built for
+  real screens (the calculator's operator keys, the enterprise form's
+  labelled fields on slide 26) that this set does not contain: a zero here is
+  "not exercised", not "useless", and the real-application states are what
+  would exercise them.
+- **Smart merge costs detection F1 on this set and buys nothing a test
+  sees.** With it off, F1 rises 0.018 and text recall 0.65 → 0.69: the
+  merge fuses text lines the synthetic ground truth keeps separate. It was
+  built for OmniParser's split two-line buttons; on clean screens it
+  over-merges, which is the parked "over-merge heuristic" item.
+- **A host finding.** The control here, 0.915 / 0.957, is above the same
+  column's 0.883 / 0.934 on the rented RTX 6000 Ada (runs 3 and 6), and the
+  `desc=` chain 0.958 / 0.973 above 0.934 / 0.964. The difference is the
+  Tesseract retry: the detector looked for a Windows install only, so on
+  every Linux host the retry silently never ran, and `tesseract-ocr` was not
+  in the kit's apt list. The lookup now tries PATH first and warns once when
+  it finds nothing; the kit installs the binary. **Every GPU-measured VizDOM
+  row above stands as measured (commit and host quoted) and is a lower
+  bound**; part of run 6's "nine unread captions" was this. The grounder rows
+  are unaffected.
+
+Caveats: one laptop, one run per column, and the lifecycle `text=` steps
+cannot see roles, labels or glyphs by construction, so the per-stage columns
+and the `desc=` rows carry those stages. A real-application set is what
+would make the three "no effect" rows informative.
+
+```bash
+# one column per process (the parse holds the OCR + detector models in memory)
+python -m visual_dom.evaluation.lifecycle.ablation --columns "modular"
+python -m visual_dom.evaluation.lifecycle.ablation --columns "modular[ocr=plain]"
+python -m visual_dom.evaluation.lifecycle.ablation --columns "modular[roles=off]+desc"
+python -m visual_dom.evaluation.lifecycle.ablation --report     # merges ablation-*.json -> ablation-report.md
+```
+
+Switches: `roles=off`, `labels=off`, `symbols=off`, `merge=off`, `ocr=plain`,
+`ocr=none`, `ensemble=off` (OmniParser backend), `refiner=on`, or any
+`section.key=value` of the session config; `+desc` runs the column under
+the default `desc=` chain.
+
+---
+
+## 8. Reproducing and extending
 
 ```bash
 # regenerate the step set (deterministic; only needed after GT changes)

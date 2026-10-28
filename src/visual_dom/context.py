@@ -79,6 +79,8 @@ class Session:
             if det.omniparser_icon_caption_path:
                 detector_kwargs["icon_caption_path"] = det.omniparser_icon_caption_path
             detector_kwargs["box_threshold"] = det.omniparser_box_threshold
+            if det.backend == "modular":
+                detector_kwargs["infer_roles"] = det.infer_roles
         elif det.backend == "grpc":
             # Detector runs as a remote gRPC service (ADR-017); point at it.
             detector_kwargs["target"] = det.grpc_target
@@ -87,6 +89,8 @@ class Session:
             # Stage 1 - OCR
             ocr_engine=cfg.ocr.engine,
             ocr_languages=list(cfg.ocr.languages),
+            ocr_upscale=cfg.ocr.upscale,
+            ocr_retry_low_confidence=cfg.ocr.retry_low_confidence,
             confidence_threshold=cfg.detector.confidence_threshold,
             use_gpu=cfg.detector.use_gpu,
             # Stage 2 - detector
@@ -128,6 +132,7 @@ class Session:
         return CoarseHierarchyBuilder(
             containment_threshold=h.containment_threshold,
             min_containment_margin=h.min_containment_margin,
+            label_max_distance=h.label_max_distance,
         )
 
     # ---- public API ------------------------------------------------------ #

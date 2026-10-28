@@ -293,12 +293,18 @@ class ModularDetectorBackend(DetectorBackend):
         icon_detect_path: Optional[str] = None,
         icon_caption_path: Optional[str] = None,
         box_threshold: Optional[float] = None,
+        infer_roles: bool = True,
         **_ignored: Any,
     ):
         """
         Stage arguments accept either a registry name (str) or a ready
         instance - instances make the backend testable without any model and
         let callers share an already-loaded stage.
+
+        ``infer_roles=False`` keeps fusion's raw text/icon split instead of
+        recovering button / input_field / checkbox / icon from interactivity,
+        geometry and caption: the state of the DOM before that recovery, kept
+        as the "roles off" ablation column (benchmarks/README.md sec. 7).
 
         The OmniParser path arguments and ``box_threshold`` are conveniences
         forwarded to the stages that use them (explicit ``region_kwargs`` /
@@ -329,9 +335,10 @@ class ModularDetectorBackend(DetectorBackend):
 
             self._text = TextDetector(ocr_engine=ocr_engine, gpu=use_gpu)
         self._region_overlap = region_overlap
-        log.info("Modular detector: regions=%s ocr=%s captioner=%s",
+        self._infer_roles = infer_roles
+        log.info("Modular detector: regions=%s ocr=%s captioner=%s roles=%s",
                  self._proposer.name, getattr(self._text, "ocr_engine", "?"),
-                 self._captioner.name)
+                 self._captioner.name, "inferred" if infer_roles else "raw")
 
     def detect(self, image: np.ndarray) -> List[Detection]:
         height, width = image.shape[:2]
@@ -363,9 +370,12 @@ class ModularDetectorBackend(DetectorBackend):
 
         detections: List[Detection] = []
         for f in fused:
-            visual_type = OmniParserBackend._infer_visual_type(
-                f.kind, f.interactable, f.content,
-                f.bounds[2] - f.bounds[0], f.bounds[3] - f.bounds[1], height)
+            if self._infer_roles:
+                visual_type = OmniParserBackend._infer_visual_type(
+                    f.kind, f.interactable, f.content,
+                    f.bounds[2] - f.bounds[0], f.bounds[3] - f.bounds[1], height)
+            else:
+                visual_type = f.kind          # "text" | "icon", as fused
             if f.kind == "text":
                 det_text, det_label = f.content, None
             else:

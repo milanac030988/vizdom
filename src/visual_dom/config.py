@@ -63,6 +63,10 @@ class DetectorConfig:
     # For backend == "grpc": address of a running detector service (ADR-017),
     # e.g. a GPU host serving one warm OmniParser for many clients.
     grpc_target: str = "localhost:50051"
+    # Recover button / input_field / checkbox / icon from interactivity,
+    # geometry and caption (modular backend). False keeps the raw text/icon
+    # split - the ablation column "roles off" (benchmarks/README.md sec. 7).
+    infer_roles: bool = True
 
 
 @dataclass
@@ -71,6 +75,11 @@ class OcrConfig:
     engine: str = "easyocr"               # easyocr | paddleocr | tesseract | none
     languages: List[str] = field(default_factory=lambda: ["en"])
     confidence_threshold: float = 0.3
+    # ADR-012: upscale frames under 1500 px before OCR, and re-read easyocr's
+    # low-confidence boxes with Tesseract. Both off = the ablation column
+    # "ocr plain" (benchmarks/README.md sec. 7).
+    upscale: bool = True
+    retry_low_confidence: bool = True
 
 
 @dataclass
@@ -97,6 +106,9 @@ class HierarchyConfig:
     """Stage 3 - Hierarchy Building tunables."""
     containment_threshold: float = 0.85   # child-area fraction inside parent
     min_containment_margin: int = 5       # min px margin for parent-child
+    # ADR-016: a text node this close (px) above or left of a control becomes
+    # its label. 0 turns association off - the ablation column "labels off".
+    label_max_distance: int = 50
     use_llm: bool = False                 # LLM hierarchy refinement (needs refiner)
     llm_model: str = "ollama"
 
@@ -292,6 +304,7 @@ _FIELD_HELP: Dict[str, str] = {
     "detector.omniparser_text_ensemble": "feed VizDOM OCR into OmniParser to recover text (ADR-016)",
     "detector.omniparser_box_threshold": "YOLO icon confidence cutoff (default 0.05); lower to ~0.03 to recover faint glyphs like a minimize button",
     "detector.grpc_target": "host:port of a running detector gRPC service (used only when backend == 'grpc', ADR-017)",
+    "detector.infer_roles": "modular backend: recover button / input_field / checkbox / icon from interactivity, geometry and caption; false keeps the raw text/icon split (ablation column 'roles off')",
     "ocr": "Stage 1 - text detection engine",
     "ocr.engine": "easyocr | paddleocr | tesseract | none",
     "refiner": "Stage 8 - optional small-LM/VLM element review (needs a running backend)",
@@ -320,6 +333,8 @@ _FIELD_HELP: Dict[str, str] = {
     "detector.omniparser_icon_caption_path": 'null = auto-resolve from models/omniparser/icon_caption_florence',
     "ocr.languages": 'OCR language codes passed to the engine, e.g. ["en"]',
     "ocr.confidence_threshold": 'drop OCR detections below this confidence (0..1)',
+    "ocr.upscale": 'upscale frames under 1500 px tall before OCR so small text reads (ADR-012); false = native resolution',
+    "ocr.retry_low_confidence": "re-read easyocr's low-confidence boxes with Tesseract (ADR-012); false = a single engine pass",
     "refiner.enabled": 'run the optional small-LM/VLM element review stage (needs a running backend)',
     "refiner.backend": 'ollama | openai',
     "refiner.model": 'model for the review pass, e.g. qwen2.5:3b',
@@ -327,6 +342,7 @@ _FIELD_HELP: Dict[str, str] = {
     "merge.duplicate_tolerance_px": 'boxes whose corners differ by <= this many px (at 1080p) are duplicates',
     "merge.group_fill_ratio_min": 'apply a merge only when members fill >= this fraction of the merged box (guards against fusing distinct controls)',
     "hierarchy.min_containment_margin": 'minimum px margin between child and parent edges for nesting',
+    "hierarchy.label_max_distance": 'a text node within this many px above or left of a control becomes its label (ADR-016); 0 turns association off',
     "hierarchy.use_llm": 'let the refiner LLM adjust the built hierarchy (needs refiner.enabled)',
     "hierarchy.llm_model": 'model used for LLM hierarchy refinement',
     "symbols.enabled": 'run the glyph/operator reader (stage 4c) on textless elements',

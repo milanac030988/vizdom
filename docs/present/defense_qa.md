@@ -91,6 +91,27 @@ rate stays zero in every wording. On the wordy set the lexical tier alone hits
 wrong-element answers at high confidence, 24 of 213 actions.
 *README sec. 6 paraphrase bullet; `benchmarks/lifecycle-synthetic-v1/paraphrases.json`; table at the end of this sheet.*
 
+**10b. Your pipeline combines several models and stages. Which parts actually matter?**
+We left them out one at a time on the same detector and the same 514 steps
+(ablation, README sec. 7, slide 16c). Without OCR nothing resolves: every
+button is still boxed and the action-hit is 0.000, so language carries the
+test. Plain OCR without upscale and the Tesseract retry costs 12 hits. Role
+recovery is invisible to `text=` steps but drops typed accuracy from 0.91 to 0
+and costs 1.4 points under `desc=`. Label association, the glyph reader and the
+SLM refiner change nothing on clean synthetic screens; the first two were built
+for real screens and are not exercised here, the refiner costs 3.2x parse time
+for nothing and stays off. Smart merge costs detection F1 on this set and buys
+nothing a test sees, which is now a known over-merge to revisit.
+*README sec. 7; slide 16c; ADR-012 history 1.1.*
+
+**10c. Your laptop numbers are higher than the GPU numbers for the same column. Why?**
+The Tesseract retry only looked for a Windows install, so it never ran on the
+rented Linux hosts. The published GPU rows are therefore lower bounds for the
+VizDOM columns, measured and quoted as such with commit and host; the grounder
+rows are unaffected. The lookup is fixed and the kit installs the binary; a
+rerun would lift the VizDOM rows by about three points.
+*README sec. 7 host finding; ADR-012 1.1; `deploy/gpu/setup.sh`.*
+
 ## C. Models and the description tier
 
 **11. Why a 3B model? Would a larger one not be better?**

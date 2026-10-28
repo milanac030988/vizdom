@@ -128,6 +128,8 @@ class VisualDOMPipeline:
         hierarchy_containment_threshold: float = 0.7,
         detect_symbols: bool = True,
         symbol_min_score: float = None,
+        ocr_upscale: bool = True,
+        ocr_retry_low_confidence: bool = True,
     ):
         """
         Initialize CV pipeline.
@@ -177,7 +179,9 @@ class VisualDOMPipeline:
             ocr_engine=ocr_engine,
             languages=ocr_languages or ["en"],
             confidence_threshold=confidence_threshold,
-            gpu=use_gpu
+            gpu=use_gpu,
+            upscale=ocr_upscale,
+            retry_low_confidence=ocr_retry_low_confidence,
         )
 
         self.uied_detector = UIEDDetector(
