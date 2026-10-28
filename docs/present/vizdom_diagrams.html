@@ -834,6 +834,7 @@
 <div id="progress"></div>
 <div id="hint">← → navigate · F fullscreen · N notes</div>
 <div id="hud">
+  <button type="button" id="btnBack" hidden title="Back to the slides (B)">← slides</button>
   <button type="button" id="btnPrev" aria-label="Previous slide">‹</button>
   <span id="count" aria-live="polite">1 / 11</span>
   <button type="button" id="btnNext" aria-label="Next slide">›</button>
@@ -876,6 +877,7 @@
       case 'Home': e.preventDefault(); show(0); break;
       case 'End': e.preventDefault(); show(slides.length - 1); break;
       case 'n': case 'N': toggleNotes(); break;
+      case 'b': case 'B': if (fromDeck) goBack(); break;
       case 'f': case 'F':
         try {
           if (document.fullscreenElement) document.exitFullscreen();
@@ -887,6 +889,24 @@
   document.getElementById('btnPrev').addEventListener('click', function () { show(i - 1); });
   document.getElementById('btnNext').addEventListener('click', function () { show(i + 1); });
   document.getElementById('btnNotes').addEventListener('click', toggleNotes);
+
+  // Opened from a slide (the decks link here with ?from=deck&deck=<file>&back=<slide>):
+  // offer the way back. The tab was opened by a link, so it may close itself;
+  // if the browser refuses, reopen the deck at the slide the presenter came from.
+  var query = new URLSearchParams(location.search);
+  var fromDeck = query.get('from') === 'deck';
+  var deckFile = /^[\w-]+\.html$/.test(query.get('deck') || '') ? query.get('deck') : 'index.html';
+  var backTo = parseInt(query.get('back'), 10);
+  function goBack() {
+    window.close();
+    setTimeout(function () { location.href = deckFile + (isNaN(backTo) ? '' : '#' + backTo); }, 200);
+  }
+  if (fromDeck) {
+    var btnBack = document.getElementById('btnBack');
+    btnBack.hidden = false;
+    btnBack.addEventListener('click', goBack);
+    document.getElementById('hint').textContent = '← → navigate · F fullscreen · N notes · B back to the slides';
+  }
 
   var x0 = null;
   document.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });

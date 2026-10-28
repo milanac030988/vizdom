@@ -99,6 +99,7 @@
 <div class="bar">
   <div class="tabs" id="tabs" role="group" aria-label="Scenario"></div>
   <div class="ctl">
+    <button id="btnBack" type="button" hidden title="Back to the slides (B)">← slides</button>
     <button id="reset" type="button" title="Back to the start (Home)">⏮</button>
     <button id="back" type="button" title="Previous step (←)">◀ Back</button>
     <span class="count" id="count" aria-live="polite"></span>
@@ -585,7 +586,7 @@
         '</td><td class="mono">' + esc(e.input) + '</td><td class="' + cls + '">' + esc(e.out) + '</td><td>' + e.step + '</td></tr>';
     }).join('') : '<tr><td colspan="5" class="empty">Nothing logged in this scenario yet.</td></tr>';
 
-    try { history.replaceState(null, '', '#' + scn.id + '/' + idx); } catch (e) { /* file: or sandbox */ }
+    try { history.replaceState(null, '', location.search + '#' + scn.id + '/' + idx); } catch (e) { /* file: or sandbox */ }
   }
 
   function go(i) { idx = Math.max(0, Math.min(scn.steps.length, i)); render(); }
@@ -621,7 +622,25 @@
     else if (e.key === 'ArrowLeft') { stop(); go(idx - 1); e.preventDefault(); }
     else if (e.key === 'Home') { stop(); go(0); e.preventDefault(); }
     else if (e.key === ' ' && !(e.target.tagName === 'BUTTON')) { play(); e.preventDefault(); }
+    else if ((e.key === 'b' || e.key === 'B') && fromDeck && !(e.altKey || e.ctrlKey || e.metaKey)) goBack();
   });
+
+  // Opened from a slide (the decks link here with ?from=deck&deck=<file>&back=<slide>):
+  // offer the way back. The tab was opened by a link, so it may close itself;
+  // if the browser refuses, reopen the deck at the slide the presenter came from.
+  var query = new URLSearchParams(location.search);
+  var fromDeck = query.get('from') === 'deck';
+  var deckFile = /^[\w-]+\.html$/.test(query.get('deck') || '') ? query.get('deck') : 'index.html';
+  var backTo = parseInt(query.get('back'), 10);
+  function goBack() {
+    window.close();
+    setTimeout(function () { location.href = deckFile + (isNaN(backTo) ? '' : '#' + backTo); }, 200);
+  }
+  if (fromDeck) {
+    var btnBack = document.getElementById('btnBack');
+    btnBack.hidden = false;
+    btnBack.addEventListener('click', goBack);
+  }
 
   var m = /^#([a-z]+)\/(\d+)$/.exec(location.hash || '');
   choose(m ? m[1] : 'suite', m ? parseInt(m[2], 10) : 0);
