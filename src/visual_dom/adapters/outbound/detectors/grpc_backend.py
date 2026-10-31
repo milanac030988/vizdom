@@ -45,6 +45,12 @@ class GrpcDetectorBackend(DetectorBackend):
 
         grpc, pb2, pb2_grpc = self._imports()
         self._pb2 = pb2
+        # Stubs built before the `label` field (2026-10-31) would raise on
+        # HasField("label"); degrade to "no label" and say so once.
+        self._has_label = "label" in pb2.Detection.DESCRIPTOR.fields_by_name
+        if not self._has_label:
+            log.warning("detector stubs predate Detection.label - captions are "
+                        "dropped; regenerate them (ADR-017, Code generation)")
         self._channel = grpc.insecure_channel(target)
         self._stub = pb2_grpc.DetectorStub(self._channel)
         log.info("gRPC detector client connected to %s", target)
@@ -103,7 +109,7 @@ class GrpcDetectorBackend(DetectorBackend):
                 text=d.text if d.HasField("text") else None,
                 # captions ride in their own field (ADR-016); a server built
                 # before 2026-10-31 never sets it, which reads as "no label"
-                label=d.label if d.HasField("label") else None,
+                label=d.label if self._has_label and d.HasField("label") else None,
                 interactable=d.interactable if d.HasField("interactable") else None,
                 source=d.source or "grpc",
             )

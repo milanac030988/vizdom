@@ -22,6 +22,7 @@ Nguyen Huynh Tri Cuong
 |------|---------|-------------|
 | 2026-07-26 | 0.1 | Initial proposal — hexagonal ports/adapters + gRPC detector service |
 | 2026-10-31 | 0.2 | `Detection` gains `optional string label = 7`. Since the ADR-016 text/label split, captions travel in `label`, and the message had only `text`: every caption of a detector behind the service (OmniParser's Florence-2, the modular `florence` captioner) was dropped on the wire, so a remote DOM had unlabelled icons while the in-process one had "Minimize", "Close", "Hide" (found in the Viewer, 2026-10-31). Server sets it, client reads it; a server from before this change reads as "no label". Stubs regenerated with the command below; round-trip test `test_grpc_detector_labels.py`. |
+| 2026-10-31 | 0.3 | Review fix: the stubs are gitignored and built by hand, so a machine that pulls 0.2 without re-running protoc kept the old `Detection`, and `pd.label = ...` (server) / `HasField("label")` (client) raised on every captioned detection, failing the whole Detect call. Both sides now check `"label" in Detection.DESCRIPTOR.fields_by_name` once at startup, warn ("stubs predate Detection.label - regenerate them") and fall back to no label. The test module skips via `importorskip` when the stubs are absent instead of stopping collection of the whole suite. |
 
 ## Context
 
