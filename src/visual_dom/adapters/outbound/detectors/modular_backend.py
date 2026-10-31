@@ -148,6 +148,9 @@ class NoneCaptioner(Captioner):
         return [None] * len(boxes)
 
 
+_FLORENCE_CACHE: Dict[str, Any] = {}
+
+
 class FlorenceCaptioner(Captioner):
     """
     OmniParser's Florence-2 icon captioner as a standalone stage-3 model.
@@ -181,8 +184,15 @@ class FlorenceCaptioner(Captioner):
 
         self._utils = omni_utils
         self._batch_size = batch_size
-        self._processor = omni_utils.get_caption_model_processor(
-            model_name="florence2", model_name_or_path=icon_caption)
+        # Per-process cache, as OmniParser's _MODEL_CACHE: the Viewer builds a
+        # fresh pipeline per analysis and would otherwise reload Florence-2
+        # (~10 s, ~1 GB VRAM) every time.
+        processor = _FLORENCE_CACHE.get(icon_caption)
+        if processor is None:
+            processor = omni_utils.get_caption_model_processor(
+                model_name="florence2", model_name_or_path=icon_caption)
+            _FLORENCE_CACHE[icon_caption] = processor
+        self._processor = processor
 
     def caption(self, image, boxes):
         if not boxes:

@@ -65,6 +65,8 @@ class PipelineSettingsDialog(QDialog):
         df.setLabelAlignment(Qt.AlignRight)
         df.addRow("Detector:", widgets["detector"])
         df.addRow("Service target:", widgets["grpc_target"])
+        if "captioner" in widgets:
+            df.addRow("Captioner (modular):", widgets["captioner"])
         df.addRow("", widgets["merge"])
         root.addWidget(detect)
 
@@ -99,7 +101,7 @@ class PipelineSettingsDialog(QDialog):
         # widgets came from a toolbar, where narrow was a virtue; in a form they
         # should fill the row
         for key in ("capture_source", "capture_arg", "detector", "grpc_target",
-                    "ocr", "slm_model", "actuator", "actuator_target",
+                    "captioner", "ocr", "slm_model", "actuator", "actuator_target",
                     "actuator_window"):
             w = widgets.get(key)
             if w is not None:

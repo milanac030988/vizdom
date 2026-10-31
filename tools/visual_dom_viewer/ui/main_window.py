@@ -856,6 +856,7 @@ class VisualDOMViewerWindow(TryLocatorMixin, QMainWindow):
             "camera_mode": self._camera_mode_checkbox,
             "detector": self._detector_combo,
             "grpc_target": self._grpc_target_edit,
+            "captioner": self._captioner_combo,
             "merge": self._merge_checkbox,
             "ocr": self._ocr_combo,
             "text_ensemble": self._text_ensemble_checkbox,
@@ -932,6 +933,26 @@ class VisualDOMViewerWindow(TryLocatorMixin, QMainWindow):
             "Start one from Tools > Services."
         )
         self._grpc_target_edit.setPlaceholderText("host:port")
+
+        # Stage 3 of the in-process modular detector (ADR-027). It was fixed at
+        # "none", so a local modular DOM had unlabelled icons where OmniParser
+        # (which always runs Florence-2) named them (2026-10-31). A service
+        # chooses its own with --captioner.
+        self._captioner_combo = QComboBox()
+        self._captioner_combo.addItems(["florence", "ocr", "none"])
+        self._captioner_combo.setToolTip(
+            "Icon captioner for detector = modular (ADR-027 stage 3):\n"
+            "florence = OmniParser's Florence-2 names icons (\"Minimize\", \"Close\");\n"
+            "           ~1 GB VRAM, ~10 s first load\n"
+            "ocr = reads unread keys literally (a lone \"7\") - no names\n"
+            "none = icons unlabelled; desc= falls back to ADR-022 tier-2"
+        )
+
+        def _captioner_applies(*_):
+            self._captioner_combo.setEnabled(
+                self._detector_combo.currentText() == "modular")
+        self._detector_combo.currentIndexChanged.connect(_captioner_applies)
+        _captioner_applies()
 
         self._merge_checkbox = QCheckBox("Smart-merge over-segmented elements")
         self._merge_checkbox.setChecked(True)
@@ -1179,6 +1200,7 @@ class VisualDOMViewerWindow(TryLocatorMixin, QMainWindow):
         for widget, signal in (
             (self._capture_source_combo, "currentIndexChanged"),
             (self._detector_combo, "currentIndexChanged"),
+            (self._captioner_combo, "currentIndexChanged"),
             (self._ocr_combo, "currentIndexChanged"),
             (self._slm_checkbox, "toggled"),
             (self._camera_mode_checkbox, "toggled"),
@@ -1229,7 +1251,10 @@ class VisualDOMViewerWindow(TryLocatorMixin, QMainWindow):
         """One line describing the active pipeline, shown at the toolbar's right."""
         source = (self._capture_source_combo.currentData()
                   or self._capture_source_combo.currentText())
-        parts = [str(source), self._detector_combo.currentText(), self._ocr_combo.currentText()]
+        detector = self._detector_combo.currentText()
+        if detector == "modular":
+            detector += "+" + self._captioner_combo.currentText()
+        parts = [str(source), detector, self._ocr_combo.currentText()]
         if self._slm_checkbox.isChecked():
             parts.append("SLM")
         if self._camera_mode_checkbox.isChecked():
@@ -2083,16 +2108,20 @@ class VisualDOMViewerWindow(TryLocatorMixin, QMainWindow):
                     # paths itself and its 'auto' region proposer degrades the
                     # STAGE to uied (CPU) when OmniParser cannot run here.
                     from visual_dom.adapters.outbound.detectors.omniparser_paths import (
-                        box_threshold_from_env,
+                        box_threshold_from_env, resolve_omniparser_paths,
                     )
                     bt = box_threshold_from_env()
                     if bt is not None:
                         detector_kwargs["box_threshold"] = bt
-                    # No captioner by default: florence costs ~1 GB VRAM and
-                    # ~10 s load; desc= locators fall back to ADR-022 tier-2.
-                    detector_kwargs["captioner"] = "none"
+                    captioner = self._captioner_combo.currentText()
+                    if (captioner == "florence"
+                            and "icon_caption_path" not in resolve_omniparser_paths()):
+                        print("[Viewer] Warning: Florence caption weights not found "
+                              "(set OMNIPARSER_ICON_CAPTION) - captioner=none")
+                        captioner = "none"
+                    detector_kwargs["captioner"] = captioner
                     print(f"[Viewer] modular stages: regions=auto, "
-                          f"ocr={ocr_engine}, captioner=none")
+                          f"ocr={ocr_engine}, captioner={captioner}")
                 elif detector_mode == "grpc":
                     target = self._grpc_target_edit.text().strip() or "localhost:50051"
                     detector_kwargs["target"] = target
