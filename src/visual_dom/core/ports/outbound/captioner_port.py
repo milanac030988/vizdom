@@ -32,6 +32,12 @@ class Captioner(ABC):
 
     requires_gpu: bool = False
 
+    #: True for a captioner that READS the region's pixels (an OCR recogniser
+    #: run on the glyph alone) instead of predicting a name for it. Its output
+    #: is a literal read and the backend records it as `text`, the same field
+    #: the absorbed OCR fills; a predicting captioner stays `label`.
+    literal: bool = False
+
     @abstractmethod
     def caption(
         self,

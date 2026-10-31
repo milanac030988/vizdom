@@ -214,7 +214,67 @@ _REGION_PROPOSERS = {
     "uied": UIEDRegionProposer,
 }
 
+class OcrCaptioner(Captioner):
+    """
+    Reads unlabelled keys instead of naming them: stage 2's recogniser, run
+    on each region's glyph alone (``TextDetector.recognize_crop``).
+
+    A whole-screen text detector does not localise a lone "7" or "1" on a
+    calculator key while it reads every other digit (Windows Calculator,
+    2026-10-29); the recogniser on the tightened glyph reads both at 1.00.
+    The output is a literal pixel read, so ``literal = True`` and the
+    backend records it as `text`, where ``text=7`` finds it; a prediction
+    would have gone to `label`. Reads below ``min_confidence`` or longer than
+    ``max_chars`` are dropped: an icon that the recogniser forces into a
+    letter must stay unlabelled, not become a wrong key.
+    """
+
+    name = "ocr"
+    license = "project"
+    requires_gpu = False
+    literal = True
+
+    def __init__(self, text_detector: Any = None, ocr_engine: str = "easyocr",
+                 use_gpu: bool = True, min_confidence: float = 0.6,
+                 max_chars: int = 6, **_ignored: Any):
+        if text_detector is None:
+            from visual_dom.adapters.outbound.ocr.text_detector import TextDetector
+            text_detector = TextDetector(ocr_engine=ocr_engine, gpu=use_gpu)
+        self._text = text_detector
+        self._min_confidence = min_confidence
+        self._max_chars = max_chars
+
+    def caption(self, image, boxes):
+        # The structural symbol reader (ADR-011) goes first: a recogniser
+        # reads "+/-" as "+" and "×" as "X", the symbol reader reads them as
+        # "±" and "×" from their component layout, and the client pipeline
+        # would have run it on these very regions had they stayed unread.
+        from visual_dom.core.domain.cvops.symbol_detector import detect_symbol
+
+        out = []
+        for (x1, y1, x2, y2) in boxes:
+            crop = image[max(0, y1):y2, max(0, x1):x2]
+            if not crop.size:
+                out.append(None)
+                continue
+            symbol = detect_symbol(image, (max(0, x1), max(0, y1), x2, y2))
+            if symbol:
+                out.append(symbol)
+                continue
+            read = self._text.recognize_crop(crop, min_confidence=self._min_confidence)
+            text = read[0] if read else None
+            # Symbols are the symbol reader's call: a shape it declined (a
+            # hamburger menu, a backspace arrow) must not come back as "=" or
+            # "-" from a recogniser that has to answer something. Letters and
+            # digits are what the recogniser adds.
+            if text and not any(ch.isalnum() for ch in text):
+                text = None
+            out.append(text if text and len(text) <= self._max_chars else None)
+        return out
+
+
 _CAPTIONERS = {
+    "ocr": OcrCaptioner,
     "none": NoneCaptioner,
     "florence": FlorenceCaptioner,
 }
@@ -325,15 +385,19 @@ class ModularDetectorBackend(DetectorBackend):
         self._proposer = (region_proposer if isinstance(region_proposer, RegionProposer)
                           else create_region_proposer(str(region_proposer),
                                                       **region_kwargs))
-        self._captioner = (captioner if isinstance(captioner, Captioner)
-                           else create_captioner(str(captioner),
-                                                 **captioner_kwargs))
         if text_detector is not None:
             self._text = text_detector
         else:
             from visual_dom.adapters.outbound.ocr.text_detector import TextDetector
 
             self._text = TextDetector(ocr_engine=ocr_engine, gpu=use_gpu)
+        # The "ocr" captioner reads with stage 2's own recogniser: share the
+        # loaded engine instead of loading a second one.
+        if captioner == "ocr":
+            captioner_kwargs.setdefault("text_detector", self._text)
+        self._captioner = (captioner if isinstance(captioner, Captioner)
+                           else create_captioner(str(captioner),
+                                                 **captioner_kwargs))
         self._region_overlap = region_overlap
         self._infer_roles = infer_roles
         log.info("Modular detector: regions=%s ocr=%s captioner=%s roles=%s",
@@ -379,8 +443,11 @@ class ModularDetectorBackend(DetectorBackend):
             if f.kind == "text":
                 det_text, det_label = f.content, None
             else:
-                # absorbed OCR is a literal read; a caption is a prediction
-                literal = f.source == "box_yolo_content_ocr"
+                # absorbed OCR is a literal read, and so is a reading
+                # captioner's output; a predicting captioner's is a guess
+                literal = (f.source == "box_yolo_content_ocr"
+                           or (f.content is not None
+                               and getattr(self._captioner, "literal", False)))
                 det_text = f.content if literal else None
                 det_label = None if literal else f.content
             detections.append(Detection(

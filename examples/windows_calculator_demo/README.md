@@ -215,3 +215,15 @@ Step 1; the test file is unchanged.
   adjust. Operator glyphs come from symbol detection, digits from OCR.
 - **`grounding.tiers` includes `slm`/`vlm`** — those need a running Ollama; the
   demo pins the model-free `lexical` tier so it works offline.
+
+## See also: the same Calculator as a flow-driven endurance run
+
+`D:\Project\robotfwaio\demo\vizdom_calculator` (RobotFramework AIO, internal)
+runs this scenario as a two-flow run group: a DRIVER that parses once and enters
+an operation every cycle, a CHECKER that parses once per cycle, reads the display
+from the Visual DOM and requires an absent key to be reported absent. Two findings
+from building it landed here: the modular detector's `--captioner ocr` (a lone
+"7" or "1" on a key, ADR-027 1.3) and the symbol reader's halo rule (the minus
+key, ADR-011 1.1). Its locators bind digits and operators to `role=button`,
+because the display shows the same digit as a wide "button" and the title bar's
+minimize icon reads "-"; this suite's locators keep the shorter form.

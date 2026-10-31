@@ -310,6 +310,104 @@ class TextDetector:
         else:
             raise ValueError(f"Unknown OCR engine: {self.ocr_engine}")
 
+    # -- single-glyph reading -------------------------------------------------
+
+    @staticmethod
+    def tighten_glyph(crop: np.ndarray, margin_ratio: float = 0.12,
+                      contrast: int = 60, min_ink: int = 10) -> Optional[np.ndarray]:
+        """
+        The glyph of a control, cut out of its key: a greyscale patch 64 px
+        tall, dark ink on a light ground, with a quiet border.
+
+        A text detector run on a whole screen does not localise a lone
+        "7" or "1" on a calculator key (the Windows Calculator, 2026-10-29:
+        every other digit read, those two never), and a recogniser run on
+        the whole key crop reads its rounded edges as strokes. Cut away the
+        outer ``margin_ratio`` of the key, take everything that differs from
+        the median background by more than ``contrast`` as ink, and hand the
+        recogniser the ink's bounding box alone, upscaled. None when the
+        region holds fewer than ``min_ink`` ink pixels.
+        """
+        if crop is None or crop.size == 0:
+            return None
+        gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY) if crop.ndim == 3 else crop
+        h, w = gray.shape[:2]
+        m = int(margin_ratio * min(h, w))
+        inner = gray[m:h - m, m:w - m]
+        if inner.size == 0:
+            return None
+        background = float(np.median(inner))
+        ink = np.abs(inner.astype(np.int32) - background) > contrast
+        ys, xs = np.where(ink)
+        if len(xs) < min_ink:
+            return None
+        glyph = inner[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
+        gh, gw = glyph.shape
+        scale = 64.0 / max(1, gh)
+        glyph = cv2.resize(glyph, (max(1, int(round(gw * scale))), 64),
+                           interpolation=cv2.INTER_CUBIC)
+        if float(np.median(glyph)) < 128:
+            glyph = 255 - glyph
+        pad = int(np.median(glyph))
+        return cv2.copyMakeBorder(glyph, 16, 16, 24, 24, cv2.BORDER_CONSTANT, value=pad)
+
+    @staticmethod
+    def is_hollow_frame(patch: np.ndarray) -> bool:
+        """
+        True for a hollow rectangular outline: strong ink along the top and
+        bottom rows AND the left and right columns, an empty centre. A window's
+        maximize square and a checkbox frame are such shapes, and a recogniser
+        forced to name one answers "0" or "O" with confidence (the Windows
+        Calculator's title bar, 2026-10-29); a "0" glyph is an oval whose
+        extreme rows are short arcs, so it passes.
+        """
+        ink = patch < 128
+        ys, xs = np.where(ink)
+        if len(xs) == 0:
+            return False
+        ink = ink[ys.min():ys.max() + 1, xs.min():xs.max() + 1]   # the glyph's own box
+        h, w = ink.shape
+        if h < 12 or w < 12:
+            return False
+        # A frame's edges pass through all four corners of its box; an oval's
+        # corners are empty, however thick its stroke. Corner cells are a
+        # fifth of each side.
+        ch, cw = max(2, h // 5), max(2, w // 5)
+        corners = [ink[:ch, :cw], ink[:ch, -cw:], ink[-ch:, :cw], ink[-ch:, -cw:]]
+        corner_ink = min(float(c.mean()) for c in corners)
+        cy0, cy1 = h // 2 - h // 6, h // 2 + h // 6 + 1
+        cx0, cx1 = w // 2 - w // 6, w // 2 + w // 6 + 1
+        centre = ink[cy0:cy1, cx0:cx1].mean() if cy1 > cy0 and cx1 > cx0 else 1.0
+        return corner_ink > 0.15 and centre < 0.05
+
+    def recognize_crop(self, crop: np.ndarray,
+                       min_confidence: float = 0.6) -> Optional[Tuple[str, float]]:
+        """
+        Read one control's glyph with the recogniser alone (no text
+        detection): ``(text, confidence)`` or None. Only the easyocr engine
+        has a recogniser that takes a prepared patch; other engines return
+        None, as does a read below ``min_confidence`` or an empty one.
+        """
+        if self.ocr_engine != "easyocr":
+            return None
+        patch = self.tighten_glyph(crop)
+        if patch is None or self.is_hollow_frame(patch):
+            return None
+        self._init_engine()
+        try:
+            results = self._engine.recognize(patch, detail=1, paragraph=False)
+        except Exception as exc:  # noqa: BLE001 - one unreadable glyph must not fail the frame
+            log.debug("recognize_crop failed: %s", exc)
+            return None
+        best = None
+        for _box, text, conf in results or []:
+            text = (text or "").strip()
+            if text and (best is None or conf > best[1]):
+                best = (text, float(conf))
+        if best is None or best[1] < min_confidence:
+            return None
+        return best
+
     def detect(
         self,
         image: Union[np.ndarray, str],

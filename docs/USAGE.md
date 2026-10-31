@@ -77,6 +77,9 @@ python -m visual_dom.adapters.inbound.grpc.detector_server \
 # weights auto-resolve from models/omniparser/ + third_party/OmniParser
 #   (override with --icon-detect / --icon-caption / --omniparser-root)
 # --box-threshold 0.03  recovers faint glyphs (default 0.05)
+# --backend modular --captioner ocr   reads keys the text detector left unread
+#   (a lone "7" or "1" on a calculator key) with the recogniser on the glyph alone,
+#   after the symbol reader; the read lands in `text`, so text=7 resolves (ADR-027 1.3)
 ```
 
 !!! warning "Pass `--ocr` when serving OmniParser remotely"

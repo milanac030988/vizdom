@@ -237,18 +237,30 @@ def detect_symbol(
 
     # Evaluate EVERY binarization candidate (both polarities + adaptive); pick
     # the winner by (specificity, score) — see _SPECIFICITY.
-    best: Optional[Tuple[int, float, str]] = None
+    classified = []
     for strokes in _stroke_candidates(gray):
         result = _classify_candidate(strokes, min_score, region_h=gray.shape[0])
         if result is None:
             continue
-        sym, score = result
-        key = (_SPECIFICITY.get(sym, 0), score)
-        if best is None or key > (best[0], best[1]):
-            best = (key[0], key[1], sym)
-    if best is None or best[2] == "menu":     # hamburger veto — not a symbol
+        tight = _tighten_to_glyph(strokes)
+        ink = int(np.sum(tight[0] > 0)) if tight is not None else 0
+        classified.append((result[0], result[1], ink))
+    if not classified:
         return None
-    return best[2]
+    # A halo is not a reading. An adaptive threshold on a flat key turns a
+    # 2 px minus bar into a 23x27 blob that passes as "." and outranks the
+    # true "-" by specificity (Windows Calculator at 640 px, 2026-10-29).
+    # Specificity was built for candidates that LOSE components; a halo ADDS
+    # ink, several times the stroke it surrounds, so candidates with more
+    # than four times the sparsest classified candidate's ink are set aside
+    # (a full ÷, =, % or ± never carries 4x the ink of its degraded reading).
+    sparsest = min((ink for _, _, ink in classified if ink > 0), default=0)
+    if sparsest:
+        classified = [c for c in classified if c[2] <= 4 * sparsest]
+    sym, _score, _ink = max(classified, key=lambda c: (_SPECIFICITY.get(c[0], 0), c[1]))
+    if sym == "menu":                          # hamburger veto — not a symbol
+        return None
+    return sym
 
 
 def _components(glyph: np.ndarray) -> list:

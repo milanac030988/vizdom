@@ -21,6 +21,7 @@ Nguyen Huynh Tri Cuong
 | Date | Version | Description |
 |------|---------|-------------|
 | 2026-03-30 | 1.0 | Initial version |
+| 2026-10-29 | 1.1 | Halo rule in `detect_symbol`: candidates carrying more than four times the ink of the sparsest classified candidate are set aside before the specificity ranking. Found on the Windows Calculator at 640 px (the RobotFramework AIO demo project): an adaptive binarization turned the minus key's 2 px bar into a 23×27 blob that passed the "." rule and outranked the true "-" (specificity 2 against 1), so `text="-"` resolved to the title bar's minimize icon instead. Specificity was designed for candidates that *lose* components; a halo *adds* ink. The ten real key crops are regression fixtures (`tests/fixtures/calculator_keys/`); the 130-case glyph set is unchanged. |
 
 ## Context
 

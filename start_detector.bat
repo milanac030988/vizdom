@@ -14,6 +14,7 @@ REM   start_detector.bat                                 (uied, port 50051 - qui
 REM   start_detector.bat --backend omniparser --ocr easyocr
 REM   start_detector.bat --backend yolo --yolo-model models\pretrained\best.pt
 REM   start_detector.bat --backend modular --ocr easyocr --captioner none
+REM   start_detector.bat --backend modular --ocr easyocr --captioner ocr   (reads unread keys: lone digits)
 REM
 REM   Weight paths auto-resolve from models\omniparser\ + third_party\OmniParser
 REM   (override with --icon-detect / --icon-caption / --omniparser-root, or the

@@ -132,7 +132,7 @@ def main():
     ap = argparse.ArgumentParser(description="VizDOM detector gRPC server (ADR-017)")
     ap.add_argument("--backend", default="omniparser",
                     choices=["uied", "yolo", "omniparser", "modular"])
-    ap.add_argument("--captioner", default="none", choices=["none", "florence"],
+    ap.add_argument("--captioner", default="none", choices=["none", "florence", "ocr"],
                     help="modular only: stage-3 captioner. 'florence' loads the "
                          "OmniParser caption model (~1 GB VRAM); 'none' leaves "
                          "icons unlabelled and desc= falls back to ADR-022 tier-2.")

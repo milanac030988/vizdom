@@ -23,6 +23,7 @@ Nguyen Huynh Tri Cuong
 | 2026-08-13 | 1.0 | Initial evaluation (three boundaries, contracts, candidate models, benchmark plan) |
 | 2026-08-15 | 1.1 | Skeleton implemented: ports, fusion port, `modular` backend registered, pipeline integration; no-weights combo verified end-to-end |
 | 2026-08-15 | 1.2 | Parity benchmark run: trigger condition 1 met (results below) |
+| 2026-10-29 | 1.3 | Stage 3 gains a *reading* captioner, `ocr`: a region the whole-screen text detector left unread is handed to the structural symbol reader (ADR-011) and then to stage 2's recogniser on its tightened glyph alone (`TextDetector.recognize_crop`). Found on the Windows Calculator demo (RobotFramework AIO flow project): the detector read every digit key except the lone, thin "7" and "1"; the recogniser on the glyph reads both at 1.00. Its output is a literal pixel read, so `Captioner.literal = True` and the backend records it as `text` (where `text=7` finds it), not `label`; a hollow square frame (a maximize icon) is rejected before the recogniser can call it "0", and a read above 6 characters or below 0.6 confidence is dropped. `--captioner ocr` on the detector service. |
 
 ## Context
 
