@@ -1128,16 +1128,24 @@ decoding.
   0.930 / 0.954 / 0.003. $^\S$Runs 5 and 6: the vision tier behind the lexical
   shortlist, as production would run it; 68 and 80 of its 116 vision calls failed with
   a model-server error and are scored as misses, so its action-hit is partial (run 6
-  quoted).}
+  quoted). $^\P$The VizDOM rows are quoted from run 7 (RTX A6000 48\,GB, commit
+  \code{c6b8e72}, 2026-10-28), the first rented host with the OCR stage's second engine
+  present: the Tesseract re-read of low-confidence boxes (ADR-012) looked for a Windows
+  install only and had silently never run on a Linux host, which the stage ablation of
+  Section~\ref{sec:lifecycle} found. Runs 3 and 6 measured the same columns without it
+  at 0.822 / 0.883 / 0.883 action-hit and 0.934 verify, and the chain at 0.934 / 0.964;
+  every column gained six or seven hits and lost none, 499--501 of 514 steps identical.
+  The grounder columns reproduced bit for bit on the run-3 card twice and were not rerun;
+  their per-step cost is that host's.}
   \label{tab:lifecycle}
   \begin{tabular}{@{}p{3.4cm}p{2.5cm}cccp{2.6cm}@{}}
     \toprule
     Executor & Weights & Action-hit & Verify acc. & False-pass & Cost \\
     \midrule
-    VizDOM + UIED & CV, no LLM & 0.822 & 0.934 & \textbf{0.000} & 0.39\,s / state \\
-    VizDOM + OmniParser & CV + Florence-2 & 0.883 & 0.934 & \textbf{0.000} & 1.02\,s / state \\
-    VizDOM modular & CV, captioner off & 0.883 & 0.934 & \textbf{0.000} & 0.62\,s / state \\
-    VizDOM modular, \code{desc=}$^\ddagger$ & lexical $\rightarrow$ SLM (qwen2.5:3b) & 0.934 & \textbf{0.964} & \textbf{0.000} & 0.03\,s / step \\
+    VizDOM + UIED$^\P$ & CV, no LLM & 0.850 & 0.957 & \textbf{0.000} & 1.1\,s / state \\
+    VizDOM + OmniParser$^\P$ & CV + Florence-2 & 0.916 & 0.957 & \textbf{0.000} & 3.0\,s / state \\
+    VizDOM modular$^\P$ & CV, captioner off & 0.916 & 0.957 & \textbf{0.000} & 1.9\,s / state \\
+    VizDOM modular, \code{desc=}$^{\ddagger\P}$ & lexical $\rightarrow$ SLM (qwen2.5:3b) & \textbf{0.958} & \textbf{0.973} & \textbf{0.000} & 0.2\,ms / step \\
     \quad \code{desc=} SLM only$^\ddagger$ & qwen2.5:3b over the DOM & 0.634 & 0.877 & 0.020 & 0.21\,s / step \\
     \quad \code{desc=} VLM only$^\ddagger$ & qwen2.5vl:3b, Set-of-Mark & 0.117 & 0.365 & 0.076 & 0.49\,s / step \\
     \quad \code{desc=} lexical $\rightarrow$ VLM$^\S$ & qwen2.5vl:3b behind the shortlist & 0.925 & 0.714 & 0.057 & 0.6\,s / VLM call \\
@@ -1202,7 +1210,8 @@ plain modular column was re-run as a control and reproduced run~3 on all 514 ste
 The production chain --- lexical scoring over the DOM, then a 3B text model
 (\code{qwen2.5:3b} via Ollama) as tie-breaker --- reached, in that run, action-hit
 0.930, ELAM's figure, the best verification accuracy of the table (0.954) and one
-false pass in 88 (the sixth run, below, lifts this to 0.934 / 0.964 / none).
+false pass in 88 (the sixth run, below, lifts this to 0.934 / 0.964 / none, and the
+seventh, the first with the OCR stage's second engine present, to 0.958 / 0.973 / none).
 The lexical tier answers 398 of the 514 steps without a model, in 0.2\,ms; the eleven
 steps gained over \code{text=} are exactly the OCR-noisy captions that exact text
 cannot match but token overlap plus the role word can (the placeholder
@@ -1238,8 +1247,10 @@ tiers' shortlist to at least three candidates, and a sixth run (the full sweep o
 run-3 card model, commit \code{ca1f0f7}, 2026-10-27, with every control and grounder
 column reproducing run~3 on all 514 steps) confirms it: the same step declines at
 confidence 0.00, the chain passes none of the 88 absent targets, and it gains a step
-on each side (action-hit 0.934, verification 0.964), which is the row quoted in
-Table~\ref{tab:lifecycle}. The same run repeated the vision chain with a prompt that
+on each side (action-hit 0.934, verification 0.964). A seventh run on a host with the
+OCR stage's second engine present (RTX A6000, commit \code{c6b8e72}, 2026-10-28)
+lifts it to 0.958 / 0.973 with no false pass, six hits gained and one lost, which is
+the row quoted in Table~\ref{tab:lifecycle}. The sixth run repeated the vision chain with a prompt that
 offers null explicitly: it passed 17 of the 30 absent targets it answered (run~5: 34
 of 40), and lost 80 of its 116 calls to the same failure as run~5, which in every run
 begins at the same step and covers the same block of states on a given card; replayed
@@ -1247,7 +1258,7 @@ offline with the server's reply kept, it is the 3B vision model collapsing into 
 repeated token on those prompts (the serving layer aborts the generation), not the
 server, so the vision rows remain partial on the action side and their answered
 subset is the subset the model did not loop on. Two caveats bound the result: the descriptions
-are generated as caption plus role word, the lexical tier's ideal input, so 0.934 is
+are generated as caption plus role word, the lexical tier's ideal input, so 0.958 is
 an upper bound for that phrasing rather than a general \code{desc=} accuracy; and
 whether the vision tier recovers the OCR floor on actions is still unmeasured. What
 the three runs do settle is the ADR-022 tier order: the vision tier stays opt-in, and
@@ -1331,8 +1342,9 @@ accurately than VizDOM (0.93--0.96 against 0.88) but pass 60--88 of 88 absent
 targets, whereas VizDOM passes none by construction and costs 15--39 times less per
 step --- the testing-specific result this project set out to measure. With its own
 language tier switched on (\code{desc=}, lexical scoring with a 3B model as
-tie-breaker) VizDOM clicks slightly better than ELAM (0.934), verifies best (0.964)
-and passes none of the 88 absent targets, at 0.03\,s of resolution per step. Future work
+tie-breaker) VizDOM clicks better than both 7B grounders (0.958), verifies best (0.973)
+and passes none of the 88 absent targets, at a fifth of a millisecond of resolution per
+step. Future work
 includes: completing the quantitative benchmark on a larger labelled dataset;
 reducing over-segmentation on themed real-world UIs; harder negatives
 (plausible-but-absent labels) and real-application states for the lifecycle

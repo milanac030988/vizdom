@@ -185,11 +185,11 @@ with charts and the test configuration: `benchmarks/report_gpu_20261026_run3.htm
 
 | Column | Weights | Action-hit | Verify acc | False-pass (of 301 verifies) | Cost |
 |---|---|---|---|---|---|
-| `vizdom-uied` | CV, no LLM | 0.822 | 0.934 | **0.000** | load 2.6 s + parse **0.39 s/state** |
-| `vizdom-omniparser` | CV + Florence-2 | 0.883 | 0.934 | **0.000** | load 8.1 s + parse **1.02 s/state** |
-| `vizdom-modular` | CV, captioner off | 0.883 | 0.934 | **0.000** | load 4.2 s + parse **0.62 s/state** |
-| `vizdom-modular+desc[lexical+slm]` (run 6) | + qwen2.5:3b via Ollama | **0.934** | **0.964** | **0.000** (0 of 88; run 4, before the shortlist fix: 0.003) | parse + **0.03 s/step** resolve (SLM called on 116 steps) |
-| `vizdom-modular+desc[slm]` (run 6) | qwen2.5:3b over the DOM table | 0.667 | 0.867 | 0.126 (38 of 88; run 4: 0.020 — a prompt regression, see below) | parse + **0.19 s/step** |
+| `vizdom-uied` (run 7) | CV, no LLM | 0.850 (run 3: 0.822) | 0.957 (0.934) | **0.000** | load 7.2 s + parse **1.1 s/state** (run 3: 2.6 s + 0.39 s on the Ada) |
+| `vizdom-omniparser` (run 7) | CV + Florence-2 | 0.916 (0.883) | 0.957 (0.934) | **0.000** | load 14.7 s + parse **3.0 s/state** (run 3: 8.1 s + 1.02 s) |
+| `vizdom-modular` (run 7) | CV, captioner off | 0.916 (0.883) | 0.957 (0.934) | **0.000** | load 12.2 s + parse **1.9 s/state** (run 3: 4.2 s + 0.62 s) |
+| `vizdom-modular+desc[lexical+slm]` (run 7) | + qwen2.5:3b via Ollama | **0.958** (run 6: 0.934) | **0.973** (0.964) | **0.000** (0 of 88; run 4, before the shortlist fix: 0.003) | parse + 0.2 ms median resolve (SLM called on 106 steps) |
+| `vizdom-modular+desc[slm]` (run 7, plain prompt) | qwen2.5:3b over the DOM table | 0.639 | 0.877 | 0.017 (5 of 88; run 6 with the explanatory prompt: 0.126, see below) | parse + **0.60 s/step** |
 | `vizdom-modular+desc[vlm]` (run 6) | qwen2.5vl:3b Set-of-Mark | 0.113 | 0.203 | 0.043 (13 of the 30 negatives the VLM answered; 394 of 514 steps errored) | parse + 0.28 s per answered call |
 | `vizdom-modular+desc[lexical+vlm]` (run 6) | qwen2.5vl:3b Set-of-Mark behind the lexical shortlist | 0.925 | 0.714 | 0.057 (17 of the 30 negatives the VLM answered; 58 more errored) | parse + **0.04 s/step** (0.6 s per answered VLM call; 80 of 116 calls lost to Ollama HTTP 500) |
 | `elam-7b` | bf16 | **0.930** | 0.704 | 0.286 (86 of 88 negatives passed) | **4.00 s/step** |
@@ -207,6 +207,7 @@ Run history, same 514 steps (action-hit / verify acc / false-pass):
 | 4, 2026-10-27 | RTX PRO 5000 Blackwell 48 GB, `3fb0924` | — | — | 0.883 / 0.934 / 0 (control) + `desc=` columns, see below | — | — | — |
 | 5, 2026-10-27 | RTX PRO 5000 Blackwell 48 GB, `c03c438` | — | — | 0.883 / 0.934 / 0 (control); `desc=` lexical+slm reproduced run 4 on 514 of 514; lexical+vlm 0.930 / 0.691 / 0.113, see below | — | — | — |
 | 6, 2026-10-27 | RTX 6000 Ada, `ca1f0f7` | 0.822 / 0.934 / 0 | 0.883 / 0.934 / 0 | 0.883 / 0.934 / 0 (all three bit-identical to run 3); `desc=` lexical+slm **0.934 / 0.964 / 0** after the shortlist fix, see below | 0.930 / 0.704 / 0.286 (bit-identical to run 3) | 0.944 / 0.801 / 0.199 (bit-identical to run 3) | skipped (gate) |
+| 7, 2026-10-28 | RTX A6000, `c6b8e72`, **Tesseract present** | **0.850 / 0.957 / 0** | **0.916 / 0.957 / 0** | **0.916 / 0.957 / 0**; `desc=` lexical+slm **0.958 / 0.973 / 0**; slm-only 0.639 / 0.877 / 0.017 (plain prompt); + the stage ablation (sec. 7) | not rerun (bit-identical twice) | not rerun | — |
 
 Run 6 is the full default sweep after the shortlist fix, on the run-3 card
 model (`ca1f0f7`, 2026-10-27 22:47 UTC, 72 minutes of sweep). Every control
@@ -215,6 +216,18 @@ per-step detail, so the run-3 rows above stand as reproduced; the four
 `desc=` columns are the ones that moved. Raw files in
 `benchmarks/results/gpu-20261027_224706/` (an 18 MB tarball, the first that
 carries every parsed DOM under `<stamp>-doms/`).
+
+Run 7 (`c6b8e72`, 2026-10-28 12:08 UTC, RTX A6000 49 GB, 31 minutes) is the
+VizDOM columns alone after the stage ablation (sec. 7) found that the OCR
+stage's Tesseract retry had never run on a Linux host: `gpu.txt` now records
+`tesseract 5.3.4`. Every VizDOM column gained six or seven hits and lost
+none against run 6 (499–501 of 514 steps identical per column), the gains
+being the captions the second engine reads; the SLM-only row was re-measured
+with the restored plain prompt. The grounder columns were not rerun: they
+reproduced bit for bit on the Ada card twice and the OCR change cannot
+touch them. The main table above quotes run 7 for the VizDOM rows with the
+run-3 / run-6 figures in parentheses; raw files in
+`benchmarks/results/gpu-20261028_120820/`.
 
 Run 3a is the Aria-UI column alone (`ONLY="aria-ui"`), same manifest and
 adapter, on a second rental two hours after run 3; raw files in
@@ -229,18 +242,23 @@ card model; both reproduced run 4 step for step; raw files in
 
 Interpretation, column by column:
 
-- **Action-hit.** The end-to-end grounders win over OmniParser-VizDOM:
-  Aria-UI by 8 points (0.962 vs 0.883), UI-TARS and ELAM by 5–6 (0.944 /
-  0.930), and all three by 11–14 over UIED-VizDOM. Our misses are
-  resolution misses: the locator finds 0 or 2+ matches on a fragmented or
-  merged element; the grounders have no such failure mode. Quantization
-  matters for UI-TARS (+9 points from 4-bit to bf16, run 1 vs 2).
+- **Action-hit.** On the run-3 host the end-to-end grounders won over
+  OmniParser-VizDOM: Aria-UI by 8 points (0.962 vs 0.883), UI-TARS and ELAM
+  by 5–6 (0.944 / 0.930), and all three by 11–14 over UIED-VizDOM. With the
+  second OCR engine in place (run 7) the gap is 4.6 points to Aria-UI and
+  1.4–2.8 to UI-TARS and ELAM for the `text=` rows, and the `desc=` chain
+  (0.958) is above both 7B grounders. Our misses are resolution misses: the
+  locator finds 0 or 2+ matches on a fragmented or merged element (run 7's
+  18 modular misses: the `Search...` placeholder whose dots OCR drops ×8,
+  repeated table digits ×4, `APAC\USER01` ×3, three others); the grounders
+  have no such failure mode. Quantization matters for UI-TARS (+9 points
+  from 4-bit to bf16, run 1 vs 2).
 - **Verify / false-pass — the testing row.** All three grounders say
   `PASSED` to statements about elements that are *not on the screen*:
   Aria-UI accepts all 88 negative statements (it returns a point for
   everything it is asked), ELAM 86 of 88 (its native verdict mode
   rationalises the nonsense label into a nearby element), UI-TARS 60 of 88.
-  VizDOM's 20 verify errors are all the other direction — a present caption
+  VizDOM's 20 verify errors (13 in run 7) are all the other direction — a present caption
   the OCR cannot read, so the oracle says `FAILED` on a true statement — and
   it never passes an absent target, by construction of the exactly-one
   resolution contract. For a test oracle the false-pass column is the one
@@ -326,7 +344,9 @@ table quotes run 6 and keeps the earlier row of each column underneath it.
 |---|---|---|---|---|---|---|
 | `vizdom-modular+desc[lexical+slm]` (run 6) | production default | **0.934** (199) | **0.964** | **0.000** (0 of 88) | lexical 398, slm 6, none 110 | 0.0001 s median, 0.03 s mean (18 s for 514 steps) |
 | same, run 4 (before the shortlist fix) | | 0.930 (198) | 0.954 | 0.003 (1 of 88) | lexical 398, slm 3, none 113 | 0.03 s mean (16 s) |
-| `vizdom-modular+desc[slm]` (run 6) | 3B text LM over the DOM table | 0.667 (142) | 0.867 | 0.126 (38 of 88) | slm 459, none 55 | 0.19 s |
+| `vizdom-modular+desc[lexical+slm]` (run 7, Tesseract present) | production default | **0.958** (204) | **0.973** | **0.000** (0 of 88) | lexical 408, slm 2, none 104 | 0.2 ms median |
+| `vizdom-modular+desc[slm]` (run 7, plain prompt restored) | 3B text LM over the DOM table | 0.639 (136) | 0.877 | **0.017** (5 of 88) | slm 365, none 149 | 0.60 s |
+| `vizdom-modular+desc[slm]` (run 6, explanatory prompt) | 3B text LM over the DOM table | 0.667 (142) | 0.867 | 0.126 (38 of 88) | slm 459, none 55 | 0.19 s |
 | same, run 4 (plain prompt) | | 0.634 (135) | 0.877 | 0.020 (6 of 88) | slm 372, none 142 | 0.21 s |
 | `vizdom-modular+desc[vlm]` (run 6) | 3B VLM, Set-of-Mark over the screenshot | 0.113 (24) | 0.203 | 0.043 (13 of 88) | vlm 101, none 19, **error 394** | 0.28 s per answered call |
 | same, run 4 | | 0.117 (25) | 0.365 | 0.076 (23 of 88) | vlm 113, none 401 (the same outage, recorded as "none") | 0.49 s |
@@ -369,7 +389,13 @@ What the rows say:
   knowing: a wrong-element pass on a true statement is invisible to it (the
   action-hit column is what catches it). So 0.934 / 0.964 / 0.000: the chain
   beats `text=` by eleven hits, verifies best of the table, and is an oracle
-  again on the same terms as `text=`.
+  again on the same terms as `text=`. **Run 7 (Tesseract present, sec. 7)
+  lifts the chain to 0.958 / 0.973 / 0.000**: six more hits (`Confirm`,
+  `Cancel`, three `Save`s and two value fields whose captions the second
+  OCR engine now reads), one loss (`form_sidebar_0015` *admin*), 499 of 514
+  steps identical to run 6, still 0 of 88 negatives passed, the lexical tier
+  now answering 408 steps and the SLM called on 106. On the same host that
+  is above UI-TARS (0.944) and ELAM (0.930) on action-hit as well.
 - **The lexical tier does the work; the SLM is a rarely consulted
   tie-breaker.** 398 of 514 steps are answered without a model, at 0.2 ms.
   The SLM is called on the remaining 116 (the 88 negatives plus 28 positives
@@ -406,9 +432,14 @@ What the rows say:
   about "text or role" copies the rule into a justification ("role=button
   text='Files'") instead of applying it. The chain never saw this because
   its shortlist is short. The wording is reverted to the plain form in the
-  resolver (the padding, which is what fixed the one-row case, stays); the
-  SLM-only row must be re-measured before the 0.667 / 0.867 / 0.126 figures
-  are quoted as the model's own behaviour.
+  resolver (the padding, which is what fixed the one-row case, stays).
+  **Run 7 re-measured the row with the plain prompt: 0.639 / 0.877 /
+  0.017**, five false passes of 88 (`Frobnicate button` → a *Save* or
+  *Reset* button on three forms, `Warp Cores` and `Zylophone` → the *Time*
+  button, all at 0.90–1.00), the run-4 behaviour back to within one step.
+  The row is noisy at the step level (34 verify gains and 31 losses against
+  run 6) but its false-pass rate is not: 38 with the explanatory wording,
+  5 and 6 with the plain one.
 - **The VLM-only column measures the harness more than the model.** The
   Set-of-Mark overlay draws at most 20 numbered boxes, in DOM order, and
   the pinned `vlm` chain has no lexical shortlist in front of it, so the
@@ -609,8 +640,10 @@ The columns above compare detectors and grounders. This table holds the
 detector fixed (modular, captioner off, the run-3 control) and turns one
 stage of VizDOM's own code off at a time through the session config, the
 runner's column spec `vizdom-modular[roles=off]`
-(`visual_dom.evaluation.lifecycle.ablation`, 2026-10-28, laptop RTX GPU,
-one run per column; the modular parse is deterministic). Every column is
+(`visual_dom.evaluation.lifecycle.ablation`, 2026-10-28: first on the
+laptop, then as the `ablation` column of run 7 on the RTX A6000, where every
+accuracy figure reproduced to three decimals; the table quotes run 7, whose
+parse times are the A6000's). Every column is
 scored on both levels: the lifecycle metrics say what the stage is worth to
 a test suite, the per-stage metrics (detection F1 / recall / mean IoU, OCR
 character accuracy, and per GT type *found* = matched by any box, *typed* =
@@ -618,17 +651,17 @@ matched by a box of the right role) say what it does to the DOM.
 
 | Column | What is off | Action-hit | Verify | False-pass | Parse s/state | F1 | Recall | mIoU | Char acc | Typed button / input / checkbox |
 |---|---|---|---|---|---|---|---|---|---|---|
-| `modular` (control) | nothing | **0.915** | **0.957** | 0.000 | 2.96 | 0.637 | 0.631 | 0.688 | 0.975 | 0.91 / 0.99 / 0.00 |
-| `[roles=off]` | role recovery (slide 23) | 0.915 | 0.957 | 0.000 | 3.08 | 0.637 | 0.631 | 0.688 | 0.975 | **0.00 / 0.00 / 0.00** |
-| `[labels=off]` | label association (ADR-016) | 0.915 | 0.957 | 0.000 | 3.19 | 0.637 | 0.631 | 0.688 | 0.975 | 0.91 / 0.99 / 0.00 |
-| `[symbols=off]` | glyph reader (ADR-011) | 0.915 | 0.957 | 0.000 | 3.22 | 0.637 | 0.631 | 0.688 | 0.975 | 0.91 / 0.99 / 0.00 |
-| `[merge=off]` | smart merge (ADR-010) | 0.915 | 0.957 | 0.000 | 3.54 | **0.654** | 0.664 | 0.683 | 0.975 | 0.91 / 0.99 / 0.00 |
-| `[ocr=plain]` | OCR upscale + Tesseract retry (ADR-012) | **0.859** | **0.930** | 0.000 | 2.33 | 0.607 | 0.598 | 0.687 | 0.947 | 0.89 / 0.99 / 0.00 |
-| `[ocr=none]` | OCR entirely | **0.000** | **0.292** | 0.000 | 0.18 | 0.406 | 0.316 | 0.791 | 0.023 | 0.00 / 0.99 / 0.00 |
-| `[refiner=on]` | (SLM review ON, ADR-007) | 0.915 | 0.957 | 0.000 | **9.57** | 0.637 | 0.631 | 0.688 | 0.975 | 0.91 / 0.99 / 0.00 |
-| `+desc` (control) | nothing, `desc=` chain | **0.958** | **0.973** | 0.000 | 3.87 | same DOM | | | | lexical 408, slm 2, none 104 |
-| `[roles=off]+desc` | role recovery, `desc=` chain | **0.944** | 0.964 | 0.000 | 3.74 | same DOM | | | | lexical 402, slm 2, none 110 |
-| `[labels=off]+desc` | label association, `desc=` chain | 0.958 | 0.973 | 0.000 | 6.55 | same DOM | | | | lexical 408, slm 2, none 104 |
+| `modular` (control) | nothing | **0.915** | **0.957** | 0.000 | 1.89 | 0.638 | 0.632 | 0.688 | 0.975 | 0.91 / 0.99 / 0.00 |
+| `[roles=off]` | role recovery (slide 23) | 0.915 | 0.957 | 0.000 | 1.89 | 0.638 | 0.632 | 0.688 | 0.975 | **0.00 / 0.00 / 0.00** |
+| `[labels=off]` | label association (ADR-016) | 0.915 | 0.957 | 0.000 | 1.91 | 0.638 | 0.632 | 0.688 | 0.975 | 0.91 / 0.99 / 0.00 |
+| `[symbols=off]` | glyph reader (ADR-011) | 0.915 | 0.957 | 0.000 | 1.86 | 0.638 | 0.632 | 0.688 | 0.975 | 0.91 / 0.99 / 0.00 |
+| `[merge=off]` | smart merge (ADR-010) | 0.915 | 0.957 | 0.000 | 1.86 | **0.655** | 0.664 | 0.683 | 0.975 | 0.91 / 0.99 / 0.00 |
+| `[ocr=plain]` | OCR upscale + Tesseract retry (ADR-012) | **0.859** | **0.930** | 0.000 | 1.15 | 0.607 | 0.598 | 0.687 | 0.947 | 0.89 / 0.99 / 0.00 |
+| `[ocr=none]` | OCR entirely | **0.000** | **0.292** | 0.000 | 0.09 | 0.406 | 0.316 | 0.791 | 0.023 | 0.00 / 0.99 / 0.00 |
+| `[refiner=on]` | (SLM review ON, ADR-007) | 0.915 | 0.957 | 0.000 | **2.17** | 0.638 | 0.632 | 0.688 | 0.975 | 0.91 / 0.99 / 0.00 |
+| `+desc` (control) | nothing, `desc=` chain | **0.958** | **0.973** | 0.000 | 1.93 | same DOM | | | | lexical 408, slm 2, none 104 |
+| `[roles=off]+desc` | role recovery, `desc=` chain | **0.944** | 0.964 | 0.000 | 1.93 | same DOM | | | | lexical 402, slm 2, none 110 |
+| `[labels=off]+desc` | label association, `desc=` chain | 0.958 | 0.973 | 0.000 | 1.94 | same DOM | | | | lexical 408, slm 2, none 104 |
 
 What the rows say:
 
@@ -652,7 +685,8 @@ What the rows say:
   this set.** The benchmark's descriptions name a field by its own text
   (`Online input field`), never by a label beside it; the synthetic screens
   have no glyph-only keys; and the SLM review proposes nothing the rules did
-  not already do, at 3.2× the parse time (9.57 s against 2.96 s per state),
+  not already do, at 1.15× the parse time on the A6000 (2.17 s against
+  1.89 s per state; 3.2× on the laptop, where the Ollama calls are slower),
   which is why ADR-007 leaves it off. The first two stages were built for
   real screens (the calculator's operator keys, the enterprise form's
   labelled fields on slide 26) that this set does not contain: a zero here is
@@ -669,10 +703,16 @@ What the rows say:
   Tesseract retry: the detector looked for a Windows install only, so on
   every Linux host the retry silently never ran, and `tesseract-ocr` was not
   in the kit's apt list. The lookup now tries PATH first and warns once when
-  it finds nothing; the kit installs the binary. **Every GPU-measured VizDOM
-  row above stands as measured (commit and host quoted) and is a lower
-  bound**; part of run 6's "nine unread captions" was this. The grounder rows
-  are unaffected.
+  it finds nothing; the kit installs the binary. **Run 7 (RTX A6000,
+  `c6b8e72`, 2026-10-28 12:08 UTC, Tesseract 5.3.4 recorded in `gpu.txt`)
+  confirmed it**: every VizDOM column gained six or seven hits and lost
+  none, 499–501 of 514 steps identical to run 6 per column, and the gains
+  are exactly the captions the retry reads (`Confirm`, `Cancel`, three
+  `Save`s, `C:\Users\admin`, `10001`): uied 0.822 → 0.850, omniparser and
+  modular 0.883 → 0.916, the chain 0.934 → 0.958, verify 0.934 → 0.957
+  everywhere, false-pass 0 throughout. The run-3 and run-6 rows stay quoted
+  in the history as measured; the main table carries run 7. The grounder
+  rows are unaffected.
 
 Caveats: one laptop, one run per column, and the lifecycle `text=` steps
 cannot see roles, labels or glyphs by construction, so the per-stage columns

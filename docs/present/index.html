@@ -1022,14 +1022,14 @@ body.notes-on .slide.active .notes{display:block}
         <table>
           <tr><th>Executor</th><th class="n">action-hit</th><th class="n">verify</th>
               <th class="n">false-pass</th><th class="n">cost</th></tr>
-          <tr><td>VizDOM + UIED <span class="dim">no LLM</span></td><td class="n">0.822</td>
-              <td class="n">0.934</td><td class="n win">0.000</td><td class="n">0.39 s / state</td></tr>
-          <tr class="hi"><td><strong>VizDOM + OmniParser</strong></td><td class="n">0.883</td>
-              <td class="n">0.934</td><td class="n win">0.000</td><td class="n">1.02 s / state</td></tr>
-          <tr class="hi"><td><strong>VizDOM modular</strong> <span class="dim">captioner off</span></td><td class="n">0.883</td>
-              <td class="n">0.934</td><td class="n win">0.000</td><td class="n">0.62 s / state</td></tr>
-          <tr class="hi"><td><strong>VizDOM modular + <code>desc=</code></strong> <span class="dim">lexical → SLM 3B**</span></td><td class="n">0.934</td>
-              <td class="n win">0.964</td><td class="n win">0.000</td><td class="n">≈ 1.0 s / state</td></tr>
+          <tr><td>VizDOM + UIED <span class="dim">no LLM</span></td><td class="n">0.850</td>
+              <td class="n">0.957</td><td class="n win">0.000</td><td class="n">1.1 s / state</td></tr>
+          <tr class="hi"><td><strong>VizDOM + OmniParser</strong></td><td class="n">0.916</td>
+              <td class="n">0.957</td><td class="n win">0.000</td><td class="n">3.0 s / state</td></tr>
+          <tr class="hi"><td><strong>VizDOM modular</strong> <span class="dim">captioner off</span></td><td class="n">0.916</td>
+              <td class="n">0.957</td><td class="n win">0.000</td><td class="n">1.9 s / state</td></tr>
+          <tr class="hi"><td><strong>VizDOM modular + <code>desc=</code></strong> <span class="dim">lexical → SLM 3B**</span></td><td class="n win">0.958</td>
+              <td class="n win">0.973</td><td class="n win">0.000</td><td class="n">≈ 2.0 s / state</td></tr>
           <tr><td>ELAM-7B <span class="dim">native verdicts</span></td><td class="n">0.930</td>
               <td class="n">0.704</td><td class="n lose">0.286</td><td class="n">4.00 s / step</td></tr>
           <tr><td>UI-TARS-1.5-7B</td><td class="n">0.944</td>
@@ -1037,20 +1037,26 @@ body.notes-on .slide.active .notes{display:block}
           <tr><td>Aria-UI <span class="dim">25B MoE*</span></td><td class="n win">0.962</td>
               <td class="n">0.708</td><td class="n lose">0.292</td><td class="n">1.57 s / step*</td></tr>
         </table>
-        <p class="small"><strong>Reading it:</strong> the grounders click better — by 5–8 points over
-          <code>text=</code> VizDOM — and <strong>every one of them passes absent targets</strong>: Aria-UI
+        <p class="small"><strong>Reading it:</strong> the grounders click a little better — by 1.4–4.6 points
+          over <code>text=</code> VizDOM — and <strong>every one of them passes absent targets</strong>: Aria-UI
           88 of 88, ELAM 86, UI-TARS 60. VizDOM passes <strong>none</strong> with <code>text=</code>; the
-          exactly-one resolution contract guarantees it <em>by construction</em>. Its 20 verify errors are
+          exactly-one resolution contract guarantees it <em>by construction</em>. Its 13 verify errors are
           the other way round (an OCR-unreadable caption reported FAILED), the cheap failure. With its own
-          language tier (<code>desc="Save button"</code>) VizDOM beats ELAM's action-hit, 0.934, verifies best
-          of the table and passes <strong>none</strong> of the 88 — the SLM is consulted on 116 steps only.
-          Per step, the DOM costs 0.04–0.10&nbsp;s against 1.6–4.2&nbsp;s. The best clicker is the worst oracle.</p>
-        <p class="small dim">RTX 6000 Ada 48 GB, commit 82f0b45, 2026-10-26; same 514 steps for every
-          row. *Aria-UI needs ~50 GB in bf16: measured the same night on an RTX PRO 6000 96 GB
-          (commit 411873c), so its latency is from another host. **Run 6, same card model as run 3,
-          commit ca1f0f7, 2026-10-27: the full sweep reproduced every control and grounder row on all
-          514 steps; the desc= chain after the shortlist fix (run 4 had 1 false pass: a one-row
-          candidate table). The model tiers pinned alone (runs 4–6): SLM-only 0.63–0.67 action-hit,
+          language tier (<code>desc="Save button"</code>) VizDOM beats both 7B grounders' action-hit, 0.958,
+          verifies best of the table and passes <strong>none</strong> of the 88 — the SLM is consulted on
+          106 steps only. Per step, the DOM costs well under 0.2&nbsp;s against 1.6–4.2&nbsp;s. The best
+          clicker is the worst oracle.</p>
+        <p class="small dim">VizDOM rows: run 7, RTX A6000 48 GB, commit c6b8e72, 2026-10-28, the first
+          rented host with the OCR stage's Tesseract retry present (runs 3 and 6 on the RTX 6000 Ada
+          measured without it: 0.822 / 0.883 / 0.883 / 0.934 action-hit, verify 0.934–0.964, same
+          false-pass; the grounder columns reproduced bit for bit there twice). Grounders: run 3, RTX 6000
+          Ada 48 GB, commit 82f0b45, 2026-10-26; same 514 steps for every row. *Aria-UI needs ~50 GB in
+          bf16: measured the same night on an RTX PRO 6000 96 GB (commit 411873c), so its latency is from
+          another host. **Run 6, same card model as run 3, commit ca1f0f7, 2026-10-27: the full sweep
+          reproduced every control and grounder row on all 514 steps; the desc= chain after the shortlist
+          fix (run 4 had 1 false pass: a one-row candidate table). The model tiers pinned alone (runs 4–7):
+          SLM-only 0.63–0.67 action-hit, false-pass 0.017–0.020 with the plain prompt (0.126 in run 6 with
+          an explanatory one, reverted),
           VLM Set-of-Mark-only 0.12 (the 3B vision model collapsed into a repeated token on 30 of the
           44 states in every run, which the server aborts; plus the 20-mark overlay cap). The VLM behind the lexical shortlist, as production would run
           it (runs 5–6): 0.93 action-hit, false-pass 0.057–0.113 — it passed 34 of 40 and then 17 of 30
@@ -1071,7 +1077,7 @@ body.notes-on .slide.active .notes{display:block}
     a point for all 301 statements — which is exactly the property a test oracle cannot have.
     If asked "but the grounders get language and VizDOM gets exact text": the desc= row is the
     answer — same DOM, each step as "Save button" through the ADR-022 chain. Lexical tier answers
-    398 of 514, the 3B SLM only 6 (it declined all 88 nonsense captions in run 6), and
+    408 of 514 in run 7, the 3B SLM only 2 (it declined all 88 nonsense captions in runs 6 and 7), and
     the gains over text= are exactly the OCR-noisy captions ("Search..." read without the dots,
     path-like values). If asked about the earlier 1 false pass (run 4): a one-row candidate table —
     the dialog's other button was unread by OCR, so the SLM was asked "is this it?" about one row and
@@ -1089,8 +1095,11 @@ body.notes-on .slide.active .notes{display:block}
     VLM looping ("8888…") on those overlays at temperature 0 and Ollama aborting it, not a server
     outage; the kit keeps the server log from run 7.
     If asked about the SLM-only row getting worse in run 6 (0.020 → 0.126 false-pass): a prompt
-    regression — an explanatory null rule made the 3B model answer on long tables; reverted, to be
-    re-measured. Not the production chain, whose shortlist is short.</div>
+    regression — an explanatory null rule made the 3B model answer on long tables; reverted, and run 7
+    re-measured it at 0.017. Not the production chain, whose shortlist is short. If asked why the VizDOM
+    rows are higher than in the October-26 report: the OCR stage's Tesseract retry only looked for a
+    Windows install, so it never ran on the rented Linux hosts until run 7 (found by the stage
+    ablation); the gains are exactly the captions it reads, and the grounders cannot be affected.</div>
 </section>
 
 <!-- 13b ───────────────────────────────────────── -->
@@ -1319,7 +1328,7 @@ body.notes-on .slide.active .notes{display:block}
   <div class="grow">
     <p class="small">Same detector (modular), same 514 steps; one stage of <em>our</em> code off per
       column. Two readings per column: what a test suite loses (lifecycle) and what the DOM loses
-      (per-stage). Laptop GPU, 2026-10-28.</p>
+      (per-stage). Run 7, RTX A6000, 2026-10-28; identical to three decimals on the laptop.</p>
     <table>
       <tr><th>Column</th><th>Stage off</th><th class="n">action-hit</th><th class="n">verify</th>
           <th class="n">false-pass</th><th class="n">F1</th><th class="n">char acc</th>
@@ -1336,7 +1345,7 @@ body.notes-on .slide.active .notes{display:block}
       <tr><td>merge off</td><td>smart merge (ADR-010)</td><td class="n">0.915</td><td class="n">0.957</td>
           <td class="n">0.000</td><td class="n win">0.654</td><td class="n">0.975</td><td class="n">0.91 / 0.99</td></tr>
       <tr><td>refiner on</td><td>(SLM review on, ADR-007)</td><td class="n">0.915</td><td class="n">0.957</td>
-          <td class="n">0.000</td><td class="n">0.637</td><td class="n">0.975</td><td class="n">0.91 / 0.99 · <span class="lose">3.2× parse</span></td></tr>
+          <td class="n">0.000</td><td class="n">0.637</td><td class="n">0.975</td><td class="n">0.91 / 0.99 · <span class="lose">+15 % parse</span></td></tr>
       <tr><td>roles off + <code>desc=</code></td><td>role recovery, under the chain</td>
           <td class="n lose">0.944</td><td class="n">0.964</td><td class="n">0.000</td>
           <td colspan="3" class="small">chain control 0.958 / 0.973 — the role word stops scoring</td></tr>
@@ -1349,8 +1358,8 @@ body.notes-on .slide.active .notes{display:block}
         nothing <em>here</em>: not exercised by clean synthetic screens, not useless.</p></div>
       <div class="card bad"><p class="small" style="margin:0;color:var(--fg)">
         <strong>Two findings of our own.</strong> Smart merge <em>costs</em> F1 on this set (fuses text
-        lines the GT keeps apart). And the Tesseract retry never ran on any rented Linux host (Windows-only
-        lookup): every GPU-measured VizDOM row is a lower bound — control 0.883 there, 0.915 here.</p></div>
+        lines the GT keeps apart). And the Tesseract retry had never run on a rented Linux host (Windows-only
+        lookup): with it in place (run 7) every VizDOM row rose — modular 0.883 → 0.916, the chain 0.934 → 0.958.</p></div>
     </div>
   </div>
   <div class="notes">The instructor asked for exactly this: leave parts out to show what the combination

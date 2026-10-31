@@ -51,8 +51,11 @@ Every number traces to a result JSON under `benchmarks/results/gpu-<stamp>/`
 4. **Repeat the grounder columns** (two more runs) for error bars.
 5. **Rerun the vision rows with a vision model that does not loop** (runs 5
    and 6 lost 68 and 80 of 116 calls to `qwen2.5vl:3b` collapsing into a
-   repeated token; the kit now keeps the Ollama log); re-measure the
-   SLM-only row with the reverted prompt; optionally 7B tiers.
+   repeated token; the kit now keeps the Ollama log); optionally 7B tiers.
+   The SLM-only row was re-measured with the plain prompt in run 7 (0.639 /
+   0.877 / 0.017), and run 7 also carries the VizDOM rows with the Tesseract
+   retry in place (modular 0.916 / 0.957, chain 0.958 / 0.973); Table III
+   quotes them.
 6. Author order, affiliations, second author's email; publication clearance.
 7. Artifact: repository URL, Zenodo DOI for the manifest and tarballs.
 8. Verify the bibliography entries marked `verify` against the published

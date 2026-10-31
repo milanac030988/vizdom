@@ -1,9 +1,11 @@
 # Defense Q&A sheet
 
 One line per likely committee question: the answer to give in one breath, then
-the slide or table that backs it. Numbers are from lifecycle run 3 (controls and
-grounders) and run 6 (`desc=` chain), both on a rented RTX 6000 Ada; every figure
-traces to a result JSON under `benchmarks/results/` by run id and commit.
+the slide or table that backs it. VizDOM numbers are from lifecycle run 7 (RTX
+A6000, 2026-10-28, the first rented host with the OCR stage's Tesseract retry
+present), grounder numbers from run 3 (RTX 6000 Ada, reproduced bit for bit by
+run 6); every figure traces to a result JSON under `benchmarks/results/` by run
+id and commit.
 
 Slide numbers refer to `docs/present/index.html` (EN deck).
 
@@ -24,14 +26,16 @@ the description resolver, and a lifecycle benchmark with a false-pass metric.
 *Slide 29; ADR-022, ADR-024, ADR-027.*
 
 **3. Why not simply use UI-TARS or Aria-UI? They hit more clicks.**
-They do: 0.944 and 0.962 action-hit against our 0.934. But as test oracles they
-pass 60 and 88 of 88 absent elements, so a suite built on them cannot fail for a
-missing control. They also return a point, not an element: no text, role, count
+Aria-UI does, 0.962 against our chain's 0.958; UI-TARS and ELAM no longer do,
+0.944 and 0.930 against 0.958 (on the run-3 host, before the second OCR engine
+was present, the chain was at 0.934). As test oracles all three pass 60 to 88
+of 88 absent elements, so a suite built on them cannot fail for a missing
+control. They also return a point, not an element: no text, role, count
 or `within=` scoping. And each step is a fresh 1.6 to 4.0 s inference versus one
 parse per state plus a sub-millisecond lookup.
 *Slide 11 (economics), slide 21 (table); README sec. 6 main table.*
 
-**4. Is 0.934 action-hit good enough for real testing?**
+**4. Is 0.958 action-hit good enough for real testing?**
 On this benchmark the remaining misses are detector misses (an element the
 parser did not box) or ambiguous labels, not resolver errors. The honest answer
 is that the number is for clean synthetic screens. The real-application work
@@ -71,7 +75,7 @@ benchmarks score clicks only, so this failure mode is invisible there. Our
 columns: 0 of 88 for every DOM column, 60 to 88 of 88 for the grounders.
 *Slide 21; README sec. 5 metrics.*
 
-**9. Verify accuracy 0.964 counts a wrong element as correct. Is that cheating?**
+**9. Verify accuracy 0.973 counts a wrong element as correct. Is that cheating?**
 It is a known weakness of the verify metric and it is documented: a positive
 verify passes if any element resolves. One such case exists in run 6
 ("Cancel" resolved to the × icon on a dialog whose Cancel text OCR had not
@@ -99,25 +103,27 @@ test. Plain OCR without upscale and the Tesseract retry costs 12 hits. Role
 recovery is invisible to `text=` steps but drops typed accuracy from 0.91 to 0
 and costs 1.4 points under `desc=`. Label association, the glyph reader and the
 SLM refiner change nothing on clean synthetic screens; the first two were built
-for real screens and are not exercised here, the refiner costs 3.2x parse time
+for real screens and are not exercised here, the refiner adds 15 % parse time
 for nothing and stays off. Smart merge costs detection F1 on this set and buys
-nothing a test sees, which is now a known over-merge to revisit.
+nothing a test sees, which is now a known over-merge to revisit. Measured on
+the laptop and reproduced on the A6000 of run 7 to three decimals.
 *README sec. 7; slide 16c; ADR-012 history 1.1.*
 
 **10c. Your laptop numbers are higher than the GPU numbers for the same column. Why?**
 The Tesseract retry only looked for a Windows install, so it never ran on the
-rented Linux hosts. The published GPU rows are therefore lower bounds for the
-VizDOM columns, measured and quoted as such with commit and host; the grounder
-rows are unaffected. The lookup is fixed and the kit installs the binary; a
-rerun would lift the VizDOM rows by about three points.
+rented Linux hosts of runs 1 to 6; the stage ablation found it. Run 7, with the
+binary installed and its version recorded, re-measured the VizDOM columns:
+every one gained six or seven hits and lost none, and the gains are exactly the
+captions the retry reads. The grounder rows cannot be affected and were not
+rerun. Both sets of numbers are quoted with commit and host.
 *README sec. 7 host finding; ADR-012 1.1; `deploy/gpu/setup.sh`.*
 
 ## C. Models and the description tier
 
 **11. Why a 3B model? Would a larger one not be better?**
 The design goal is that the model is a fallback, not the path: the lexical tier
-answers 398 of 514 steps with no model at all, the SLM is called on 116 and
-answers 6. A 3B model runs on a laptop CPU and costs 0.2 s a call. Larger
+answers 408 of 514 steps with no model at all, the SLM is called on 106 and
+answers 2 (run 7; 398 / 116 / 6 in run 6). A 3B model runs on a laptop CPU and costs 0.2 s a call. Larger
 models would raise the SLM-only row (0.667) but that row is not the product
 configuration. 7B tiers are on the list for a later run.
 *Slide 27; README desc table; ADR-022.*
@@ -139,7 +145,7 @@ in run 6. The fix is a unit test, not a prompt change.
 *ADR-022 history; `desc_resolver.py` SHORTLIST_MIN.*
 
 **14. You changed the prompt between runs. Is the result prompt-sensitive?**
-The chain is not: lexical answers 398 steps deterministically and run 6
+The chain is not: lexical answers 398 steps deterministically (408 in run 7) and run 6
 reproduced run 4 on 509 of 514. The SLM-only column is: an explanatory null
 rule made the 3B model answer nonsense captions 6 of 6 times over a whole-DOM
 table, so that row fell from 0.020 to 0.126 false-pass. The prompt was reverted,

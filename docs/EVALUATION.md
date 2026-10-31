@@ -415,18 +415,20 @@ python -m visual_dom.evaluation.lifecycle.runner --executors elam-7b
 ```
 
 **Measured on rented GPUs** — `lifecycle-synthetic-v1`: 44 states, 514 steps
-(213 action / 213 positive verify / 88 negative verify). Run 3 (RTX 6000 Ada,
-commit `82f0b45`) for the `text=` columns and the grounders, reproduced step for
-step by run 6 (same card model, `ca1f0f7`) which also measured the `desc=` chain
-after its shortlist fix; Aria-UI from a 96 GB card. Full analysis, run history
-and raw files: `benchmarks/README.md` §6 and `benchmarks/report_gpu_20261026_run3.html`.
+(213 action / 213 positive verify / 88 negative verify). VizDOM rows from run 7
+(RTX A6000, commit `c6b8e72`, 2026-10-28), the first rented host with the OCR
+stage's Tesseract retry present; runs 3 and 6 (RTX 6000 Ada) measured them
+without it at 0.822 / 0.883 / 0.883 action-hit and 0.934 verify, the chain at
+0.934 / 0.964. Grounders from run 3 (`82f0b45`), reproduced bit for bit by run 6;
+Aria-UI from a 96 GB card. Full analysis, run history, the stage ablation and
+raw files: `benchmarks/README.md` §6–7 and `benchmarks/report_gpu_20261026_run3.html`.
 
 | executor | action-hit | verify acc | false-pass (of 88) | cost per step |
 |---|---|---|---|---|
-| vizdom-uied (`text=`) | 0.822 | 0.934 | **0.000** | 0.04 s (parse 0.39 s/state) |
-| vizdom-omniparser (`text=`) | 0.883 | 0.934 | **0.000** | 0.10 s (parse 1.02 s/state) |
-| vizdom-modular (`text=`) | 0.883 | 0.934 | **0.000** | 0.06 s (parse 0.62 s/state) |
-| vizdom-modular + `desc=` lexical → SLM (run 6) | **0.934** | **0.964** | **0.000** | 0.10 s (116 model calls in 514 steps) |
+| vizdom-uied (`text=`) | 0.850 | 0.957 | **0.000** | 0.11 s (parse 1.1 s/state) |
+| vizdom-omniparser (`text=`) | 0.916 | 0.957 | **0.000** | 0.29 s (parse 3.0 s/state) |
+| vizdom-modular (`text=`) | 0.916 | 0.957 | **0.000** | 0.19 s (parse 1.9 s/state) |
+| vizdom-modular + `desc=` lexical → SLM | **0.958** | **0.973** | **0.000** | 0.19 s (106 model calls in 514 steps) |
 | elam-7b | 0.930 | 0.704 | 0.286 (86) | 4.00 s |
 | ui-tars-1.5-7b | 0.944 | 0.801 | 0.199 (60) | 2.72 s |
 | aria-ui | 0.962 | 0.708 | 0.292 (88) | 1.57 s (other host) |
@@ -436,13 +438,14 @@ connect time flushes lazy first-use initializations such as the EasyOCR
 reader): warm-model amortization is itself a claim under test (NFR3), so it
 must not be smeared into one arbitrary state's parse time.
 
-Reading the numbers: the grounders click better than VizDOM resolving exact
-text, and every one of them passes absent targets (60 to 88 of 88); VizDOM
+Reading the numbers: the grounders click slightly better than VizDOM resolving
+exact text, and every one of them passes absent targets (60 to 88 of 88); VizDOM
 passes none, which the exactly-one resolution contract guarantees by
 construction, and keeps that property with its language tier switched on (the
-`desc=` row: a 3B text model consulted on the 116 steps the deterministic
-scoring cannot settle, over a short candidate list with a null it takes). Its
-verify errors are false fails on OCR-unreadable captions. Every result file is
+`desc=` row, above both 7B grounders on action-hit: a 3B text model consulted
+on the 106 steps the deterministic scoring cannot settle, over a short candidate
+list with a null it takes). Its verify errors are false fails on OCR-unreadable
+captions. Every result file is
 stamped with dataset id + git commit; per-step outcomes and every parsed DOM
 are kept so failures remain attributable to a stage.
 

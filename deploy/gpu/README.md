@@ -130,6 +130,11 @@ VizDOM rows above those of runs 3 and 6 (laptop: modular `text=` 0.915
 against 0.883, the chain 0.958 against 0.934) and the grounder rows to be
 quoted from run 3 / run 6 as before.
 
+Done on 2026-10-28 (`gpu-20261028_120820`, RTX A6000, `c6b8e72`, 31 min,
+`tesseract 5.3.4`): uied 0.850 / 0.957 / 0, omniparser and modular 0.916 /
+0.957 / 0, the chain 0.958 / 0.973 / 0, slm-only 0.639 / 0.877 / 0.017, and
+the eleven ablation columns reproduced the laptop figures to three decimals.
+
 ### The `desc=` columns (ADR-022, VizDOM's language tier)
 
 The six headline columns resolve VizDOM steps with `text=` only, so they

@@ -665,7 +665,7 @@ Q-02 & Round-trip gRPC end-to-end qua nhiều process & chỉ thay đổi cấu 
 Q-03 & Instrument số lần tải model trong service & số lần tải = 1 & \textbf{Đã xác minh về chức năng} \\
 Q-04 & Chạy pipeline + RF với CPU/static/recording adapter & hoàn tất, không I/O thật & \textbf{Đã xác minh} \\
 Q-05 & Đo detection metric trên tập synthetic bằng evaluation harness & F1 $\geq 0.80$, mIoU $\geq 0.60$ & \textbf{Đã đo}: F1 0.58, mIoU 0.68; chưa đạt mục tiêu F1; actionable center-hit của OmniParser đạt 0.97 (R-04) \\
---- & Lifecycle benchmark: 514 bước locate--act--verify, so sánh VizDOM với ELAM-7B / UI-TARS-1.5 / Aria-UI trên GPU thuê ngoài (2026-10-26) & VizDOM không có false-pass; chi phí mỗi bước thấp hơn các grounder & \textbf{Đã đo}: false-pass 0.000 so với 0.199--0.292; action-hit 0.883 so với 0.930--0.962; 0.04--0.10\,s so với 1.57--4.00\,s mỗi bước. Khi bật tier chain \code{desc=} (ADR-022, lần chạy 6, 2026-10-27): action-hit 0.934, verify 0.964, false-pass 0.000 \\
+--- & Lifecycle benchmark: 514 bước locate--act--verify, so sánh VizDOM với ELAM-7B / UI-TARS-1.5 / Aria-UI trên GPU thuê ngoài (2026-10-26) & VizDOM không có false-pass; chi phí mỗi bước thấp hơn các grounder & \textbf{Đã đo}: false-pass 0.000 so với 0.199--0.292; action-hit 0.916 so với 0.930--0.962 (lần chạy 7, 2026-10-28, có engine OCR thứ hai; 0.883 trên host 2026-10-26 không có); dưới 0.2\,s so với 1.57--4.00\,s mỗi bước. Khi bật tier chain \code{desc=} (ADR-022, lần chạy 7): action-hit 0.958, verify 0.973, false-pass 0.000 \\
 \bottomrule
 \end{longtable}
 
