@@ -17,7 +17,8 @@ import pytest
 
 from visual_dom.adapters.outbound.detectors import modular_backend, omniparser_paths
 from visual_dom.adapters.outbound.detectors.modular_backend import (
-    ModularDetectorBackend, UIEDRegionProposer, create_region_proposer,
+    ModularDetectorBackend, NoneCaptioner, UIEDRegionProposer, create_captioner,
+    create_region_proposer,
 )
 from visual_dom.adapters.outbound.detectors.omniparser_paths import (
     box_threshold_from_env, omniparser_unavailable_reason, resolve_omniparser_paths,
@@ -182,6 +183,70 @@ def test_backend_default_degrades_the_stage_not_the_backend():
     """The config-file path: `detector.backend: modular` with no weights."""
     backend = ModularDetectorBackend(text_detector=FakeText())
     assert backend._proposer.name == "uied"
+    backend.detect(np.full((200, 300, 3), 255, dtype=np.uint8))
+
+
+# --------------------------------------------------------------------------
+# captioner 'auto' (the Viewer's default since 2026-10-31)
+# --------------------------------------------------------------------------
+
+def test_captioner_auto_degrades_to_none_without_weights(caplog):
+    captioner = create_captioner("auto")
+    assert isinstance(captioner, NoneCaptioner)
+    assert "florence captioner unavailable" in caplog.text
+
+
+def test_captioner_auto_degrades_with_weights_but_no_repo(tmp_path, monkeypatch, caplog):
+    """The review's case: caption weights resolve, util.utils does not."""
+    weights = tmp_path / "icon_caption_florence"
+    weights.mkdir()
+    monkeypatch.setattr(omniparser_paths, "_module_missing", lambda name: False)
+    captioner = create_captioner("auto", icon_caption_path=str(weights),
+                                 omniparser_root=str(tmp_path / "no-repo"))
+    assert isinstance(captioner, NoneCaptioner)
+    assert "OMNIPARSER_ROOT" in caplog.text
+
+
+def test_captioner_auto_degrades_when_florence_fails_to_load(monkeypatch, caplog):
+    monkeypatch.setattr(omniparser_paths, "omniparser_unavailable_reason",
+                        lambda root, required=None: None)
+
+    def boom(**kwargs):
+        raise AttributeError("'Florence2ForConditionalGeneration' object has "
+                             "no attribute '_supports_sdpa'")
+
+    monkeypatch.setattr(modular_backend, "FlorenceCaptioner", boom)
+    captioner = create_captioner("auto", icon_caption_path="/w/florence")
+    assert isinstance(captioner, NoneCaptioner)
+    assert "loading it failed" in caplog.text
+
+
+def test_captioner_auto_picks_florence_with_resolved_paths(monkeypatch):
+    monkeypatch.setattr(omniparser_paths, "omniparser_unavailable_reason",
+                        lambda root, required=None: None)
+    seen = {}
+
+    class FakeFlorence(NoneCaptioner):
+        name = "florence"
+
+        def __init__(self, **kwargs):
+            seen.update(kwargs)
+
+    monkeypatch.setattr(modular_backend, "FlorenceCaptioner", FakeFlorence)
+    captioner = create_captioner("auto", icon_caption_path="/w/florence")
+    assert isinstance(captioner, FakeFlorence)
+    assert seen["icon_caption_path"] == "/w/florence"
+
+
+def test_explicit_florence_still_fails_fast():
+    with pytest.raises(ValueError, match="icon_caption"):
+        create_captioner("florence")
+
+
+def test_backend_with_captioner_auto_keeps_detecting():
+    """The Viewer path: modular + auto on a machine Florence cannot run on."""
+    backend = ModularDetectorBackend(text_detector=FakeText(), captioner="auto")
+    assert backend._captioner.name == "none"
     backend.detect(np.full((200, 300, 3), 255, dtype=np.uint8))
 
 

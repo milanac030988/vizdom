@@ -328,12 +328,45 @@ def _auto_region_proposer(**kwargs: Any) -> RegionProposer:
 
 
 def create_captioner(name: str, **kwargs: Any) -> Captioner:
+    """
+    Build a stage-3 captioner by name. ``auto`` picks florence when its
+    weights and the OmniParser repo are present and it loads, and otherwise
+    degrades the STAGE to none with a warning - never the whole backend.
+    An explicit ``florence`` fails fast, as an explicit region proposer does.
+    """
+    if name == "auto":
+        return _auto_captioner(**kwargs)
     try:
         cls = _CAPTIONERS[name]
     except KeyError:
         raise ValueError(f"Unknown captioner {name!r}; "
                          f"known: {sorted(_CAPTIONERS)}") from None
     return cls(**kwargs)
+
+
+def _auto_captioner(**kwargs: Any) -> Captioner:
+    # The Viewer's default (2026-10-31). Checking the weights alone was not
+    # enough: without the repo (util.utils) or with a transformers Florence-2
+    # rejects, FlorenceCaptioner raised out of the backend's __init__ and the
+    # pipeline fell back to an OCR-only DOM with only a log line.
+    from .omniparser_paths import (
+        omniparser_unavailable_reason, resolve_omniparser_paths,
+    )
+
+    paths = resolve_omniparser_paths(
+        omniparser_root=kwargs.get("omniparser_root"),
+        icon_caption_path=kwargs.get("icon_caption_path"))
+    reason = omniparser_unavailable_reason(
+        paths.get("omniparser_root"),
+        required={"icon_caption weights": paths.get("icon_caption_path")})
+    if reason is None:
+        try:
+            return FlorenceCaptioner(**{**kwargs, **paths})
+        except Exception as exc:     # repo or weights present but unloadable
+            reason = f"loading it failed: {exc}"
+    log.warning("modular: florence captioner unavailable (%s) - icons stay "
+                "unlabelled (captioner none)", reason)
+    return NoneCaptioner(**kwargs)
 
 
 # ---------------------------------------------------------------------------

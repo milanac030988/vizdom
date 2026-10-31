@@ -939,11 +939,13 @@ class VisualDOMViewerWindow(TryLocatorMixin, QMainWindow):
         # (which always runs Florence-2) named them (2026-10-31). A service
         # chooses its own with --captioner.
         self._captioner_combo = QComboBox()
-        self._captioner_combo.addItems(["florence", "ocr", "none"])
+        self._captioner_combo.addItems(["auto", "florence", "ocr", "none"])
         self._captioner_combo.setToolTip(
             "Icon captioner for detector = modular (ADR-027 stage 3):\n"
+            "auto = florence when it can load here, else none (with a warning)\n"
             "florence = OmniParser's Florence-2 names icons (\"Minimize\", \"Close\");\n"
-            "           ~1 GB VRAM, ~10 s first load\n"
+            "           ~1 GB VRAM, ~10 s first load; if it cannot load, the\n"
+            "           modular detector fails (OCR-only DOM)\n"
             "ocr = reads unread keys literally (a lone \"7\") - no names\n"
             "none = icons unlabelled; desc= falls back to ADR-022 tier-2"
         )
@@ -2108,17 +2110,15 @@ class VisualDOMViewerWindow(TryLocatorMixin, QMainWindow):
                     # paths itself and its 'auto' region proposer degrades the
                     # STAGE to uied (CPU) when OmniParser cannot run here.
                     from visual_dom.adapters.outbound.detectors.omniparser_paths import (
-                        box_threshold_from_env, resolve_omniparser_paths,
+                        box_threshold_from_env,
                     )
                     bt = box_threshold_from_env()
                     if bt is not None:
                         detector_kwargs["box_threshold"] = bt
+                    # 'auto' degrades the STAGE to none when Florence cannot
+                    # load here (weights, repo or transformers), never the
+                    # whole detector - the backend decides, not a weights check.
                     captioner = self._captioner_combo.currentText()
-                    if (captioner == "florence"
-                            and "icon_caption_path" not in resolve_omniparser_paths()):
-                        print("[Viewer] Warning: Florence caption weights not found "
-                              "(set OMNIPARSER_ICON_CAPTION) - captioner=none")
-                        captioner = "none"
                     detector_kwargs["captioner"] = captioner
                     print(f"[Viewer] modular stages: regions=auto, "
                           f"ocr={ocr_engine}, captioner={captioner}")
