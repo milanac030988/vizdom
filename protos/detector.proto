@@ -28,6 +28,10 @@ message Detection {
   optional string text = 4;
   optional bool interactable = 5;
   string source = 6;
+  // Semantic name predicted for the region (a caption: "Minimize", "Settings"),
+  // never a pixel read - that is `text` (ADR-016). Added 2026-10-31: without it
+  // every caption of a remote detector was dropped on the wire.
+  optional string label = 7;
 }
 
 message DetectParams {

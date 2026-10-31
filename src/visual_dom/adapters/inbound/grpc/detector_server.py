@@ -75,6 +75,8 @@ class DetectorServicer:
             pd.source = d.source or self._backend.name
             if d.text is not None:
                 pd.text = d.text
+            if getattr(d, "label", None) is not None:
+                pd.label = d.label
             if d.interactable is not None:
                 pd.interactable = bool(d.interactable)
         log.info("Detect [%s]: %d detections in %.0f ms", rid, len(dets), infer_ms)

@@ -21,6 +21,7 @@ Nguyen Huynh Tri Cuong
 | Date | Version | Description |
 |------|---------|-------------|
 | 2026-07-26 | 0.1 | Initial proposal — hexagonal ports/adapters + gRPC detector service |
+| 2026-10-31 | 0.2 | `Detection` gains `optional string label = 7`. Since the ADR-016 text/label split, captions travel in `label`, and the message had only `text`: every caption of a detector behind the service (OmniParser's Florence-2, the modular `florence` captioner) was dropped on the wire, so a remote DOM had unlabelled icons while the in-process one had "Minimize", "Close", "Hide" (found in the Viewer, 2026-10-31). Server sets it, client reads it; a server from before this change reads as "no label". Stubs regenerated with the command below; round-trip test `test_grpc_detector_labels.py`. |
 
 ## Context
 

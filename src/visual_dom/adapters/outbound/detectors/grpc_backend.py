@@ -101,6 +101,9 @@ class GrpcDetectorBackend(DetectorBackend):
                 visual_type=d.visual_type,
                 confidence=d.confidence,
                 text=d.text if d.HasField("text") else None,
+                # captions ride in their own field (ADR-016); a server built
+                # before 2026-10-31 never sets it, which reads as "no label"
+                label=d.label if d.HasField("label") else None,
                 interactable=d.interactable if d.HasField("interactable") else None,
                 source=d.source or "grpc",
             )
