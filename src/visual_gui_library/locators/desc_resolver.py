@@ -43,7 +43,17 @@ ROLE_WORDS = {
     "link": {"link", "text", "statictext"},
     "image": {"image", "icon"},
     "tab": {"tab", "button"},
-    "menu": {"menu", "button"},
+    # A menu, tree or list entry parses as a button or as plain text; "radio"
+    # is a checkbox to the parser. Without these, "General tree item" counted
+    # "tree" and "item" as part of the name, and an element reading "General"
+    # scored a third of the overlap: on real applications the lexical tier
+    # answered 4 of 130 tree-item and 2 of 164 list-item steps, handing them
+    # to the small model (ADR-022, history 1.9).
+    "menu": {"menu", "button", "text", "statictext"},
+    "item": {"button", "text", "statictext", "label"},
+    "tree": {"button", "text", "statictext", "label"},
+    "list": {"button", "text", "statictext", "label"},
+    "radio": {"checkbox", "radiobutton"},
 }
 
 # Positional words -> predicate over normalized center (cx, cy in [0,1]).
@@ -223,10 +233,13 @@ def lexical_rank(
             elem_tokens = set(_tokens(fields))
             if elem_tokens:
                 hits = sum(1 for t in name_tokens if t in elem_tokens)
-                # substring bonus catches "setting" vs "settings"
+                # substring bonus catches "setting" vs "settings"; a number is
+                # never part of another number ("100" is not "1001", the OCR of
+                # a field reading 100 that passed "100% button" - ADR-022 1.9)
                 subs = sum(
                     1 for t in name_tokens
-                    if t not in elem_tokens and any(t in e for e in elem_tokens)
+                    if t not in elem_tokens and not t.isdigit()
+                    and any(t in e for e in elem_tokens)
                 )
                 overlap = (hits + 0.7 * subs) / len(name_tokens)
                 name_score = 2.0 * overlap

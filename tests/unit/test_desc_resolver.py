@@ -285,3 +285,46 @@ def test_bare_position_word_before_a_role_is_a_caption_only_when_the_screen_has_
     without = _dom(_btn("E1", "Save", x=0), _btn("E2", "Cancel", x=90))
     elem, info = DescriptionResolver(without, tiers=["lexical"]).resolve("left button")
     assert elem is not None and elem["id"] == "E1"
+
+
+def _text(eid, text, y):
+    return {"id": eid, "role": "staticText", "visual_type": "text", "text": text,
+            "bounds": [0, y, 40, y + 8]}
+
+
+def test_entry_role_words_are_roles_not_names():
+    # real-application set, lexical run 1: "General tree item" scored a third
+    # of the overlap because "tree" and "item" counted as name words
+    from visual_gui_library.locators.desc_resolver import parse_description
+    for desc in ("General tree item", "Editing list item", "File menu item",
+                 "Auto radio button"):
+        name_tokens, naming, roles, _ = parse_description(desc)
+        assert len(naming) == 1, (desc, naming)
+        assert roles, desc
+    tree = _dom(_text("E1", "General", 10), _text("E2", "Editor", 30),
+                _btn("E3", "Cancel", x=60))
+    elem, info = DescriptionResolver(tree, tiers=["lexical"]).resolve("General tree item")
+    assert elem is not None and elem["id"] == "E1" and info["tier"] == "lexical"
+    radio = _dom({"id": "E1", "role": "button", "visual_type": "checkbox", "text": "Auto",
+                  "bounds": [0, 0, 30, 10]}, _btn("E2", "Close", x=60))
+    elem, _ = DescriptionResolver(radio, tiers=["lexical"]).resolve("Auto radio button")
+    assert elem is not None and elem["id"] == "E1"
+
+
+def test_entry_role_word_does_not_resolve_an_absent_caption():
+    # the role is "which kind", never "which one": an absent name still declines
+    tree = _dom(_text("E1", "General", 10), _text("E2", "Editor", 30))
+    elem, _ = DescriptionResolver(tree, tiers=["lexical"]).resolve("Shortcuts tree item")
+    assert elem is None
+
+
+def test_a_number_is_not_part_of_another_number():
+    # real-application set: a saturation field reading 100, OCR'd as "1001",
+    # passed the absent "100% button" through the substring bonus
+    dom = _dom(_btn("E1", "1001"), _btn("E2", "Cancel", x=60))
+    elem, _ = DescriptionResolver(dom, tiers=["lexical"]).resolve("100% button")
+    assert elem is None
+    # words keep their substring bonus ("setting" -> "Settings")
+    dom = _dom(_btn("E1", "Settings"), _btn("E2", "Cancel", x=60))
+    elem, _ = DescriptionResolver(dom, tiers=["lexical"]).resolve("setting button")
+    assert elem is not None and elem["id"] == "E1"
