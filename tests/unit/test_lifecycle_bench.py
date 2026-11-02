@@ -226,8 +226,8 @@ def _desc_executor(tiers, **kw):
 
 def test_desc_executor_scores_like_the_other_columns(tmp_path):
     _FakeResolver.made = 0
-    ex = _desc_executor(["lexical", "slm"])
-    assert ex.name == "vizdom-modular+desc[lexical+slm]"
+    ex = _desc_executor(["lexical", "slm"], verify="chain")
+    assert ex.name == "vizdom-modular+desc[lexical+slm][verify=chain]"
     payload = run_benchmark(_DESC_MANIFEST, [ex], out_dir=str(tmp_path))
     s = payload["results"][ex.name]["summary"]
     assert (s["action_hit_rate"], s["verify_accuracy"], s["false_pass_rate"]) == (1.0, 1.0, 0.0)
@@ -240,6 +240,48 @@ def test_desc_executor_scores_like_the_other_columns(tmp_path):
     # one resolver per step: the verify step must not be answered from the
     # action step's cached resolution
     assert _FakeResolver.made == 3
+
+
+def test_desc_verify_follows_the_assertion_keyword_by_default(tmp_path):
+    """Visual Should Exist desc=... matches through ElementFinder, lexical only:
+    a verify the model would pass is not passed (real-application set, the
+    chain's four SLM false passes - ADR-022 1.9). Clicks still use the chain."""
+    _FakeResolver.made = 0
+    ex = _desc_executor(["lexical", "slm"])
+    assert ex.name == "vizdom-modular+desc[lexical+slm]" and ex.verify == "keyword"
+    manifest = json.loads(json.dumps(_DESC_MANIFEST))
+    # an absent caption the fake model would happily "find"
+    manifest["steps"][2]["description"] = "x button"
+    manifest["steps"][2]["expect"] = "PASSED"
+    manifest["steps"].append({"id": "v3", "state": "s", "kind": "verify",
+                              "locator": 'text="Zylophone"', "description": "Zylophone button",
+                              "instruction": "", "expect": "FAILED",
+                              "target_id": None, "target_bounds": None})
+    payload = run_benchmark(manifest, [ex], out_dir=str(tmp_path))
+    rows = {r["step"]: r for r in payload["results"][ex.name]["steps"]}
+    assert rows["a1"]["detail"].startswith("tier=slm")          # the click: the chain
+    assert rows["v1"]["outcome"] == "PASSED"                     # lexical: "x button" reads x
+    assert rows["v1"]["detail"] == "tier=lexical verify=keyword"
+    assert rows["v3"]["outcome"] == "FAILED" and rows["v3"]["correct"]
+    assert _FakeResolver.made == 1                               # only the click built one
+    assert payload["results"][ex.name]["summary"]["cost"]["verify"] == "keyword"
+    with pytest.raises(ValueError, match="verify"):
+        VizDomDescExecutor(detector="modular", verify="model")
+
+
+def test_pinned_model_column_keeps_verifying_through_its_model():
+    """desc[slm] / desc[vlm] are the head-to-head with the grounders: their
+    verify steps measure the model, and their names mean what they meant."""
+    for tiers in (["slm"], ["vlm"]):
+        ex = VizDomDescExecutor(detector="modular", tiers=tiers)
+        assert ex.verify == "chain"
+        assert ex.name == f"vizdom-modular+desc[{tiers[0]}]"
+    # every chain that starts with lexical is a production chain
+    for tiers in (["lexical"], ["lexical", "slm"], ["lexical", "vlm"]):
+        assert VizDomDescExecutor(detector="modular", tiers=tiers).verify == "keyword"
+    # an explicit choice against the default is visible in the name
+    assert VizDomDescExecutor(detector="modular", tiers=["slm"],
+                              verify="keyword").name == "vizdom-modular+desc[slm][verify=keyword]"
 
 
 def test_vizdom_executor_dumps_every_parsed_dom(tmp_path, monkeypatch):
@@ -290,8 +332,10 @@ def test_desc_executor_turns_unavailable_tier_into_an_error(tmp_path):
     """A dead Ollama must not score as a column of misses whose negative
     verifies all 'pass' (bench review, 2026-10-27): the step errors, and a
     column where every step errored is marked FAILED and exits 1."""
+    # verify="chain": every step goes to the model tiers (with the keyword
+    # default the verify steps never need Ollama and would not error)
     ex = VizDomDescExecutor(detector="modular", tiers=["lexical", "slm"],
-                            resolver_factory=_OllamaDownResolver)
+                            resolver_factory=_OllamaDownResolver, verify="chain")
     ex._dom_cache["s"] = {"image_size": {"width": 100, "height": 50}, "elements": []}
     with pytest.raises(RuntimeError, match="slm unavailable"):
         ex.run_step({"id": "s", "image": "none.png"}, _DESC_MANIFEST["steps"][0])

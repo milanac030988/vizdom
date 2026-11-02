@@ -255,7 +255,22 @@ class VizDomDescExecutor(VizDomExecutor):
     A FRESH resolver per step, deliberately: the production per-screen cache
     would answer the verify step from the action step's result (same
     description), and here every step must be its own measurement.
+
+    Verify steps of a production chain (one that starts with the lexical
+    tier) follow the library's assertion keywords (``verify="keyword"``):
+    ``Visual Should Exist  desc=...`` matches through `ElementFinder`, which
+    runs the lexical tier only - no model ever decides an existence check in
+    production. Until 2026-11-02 such columns sent verify steps through the
+    whole chain (``verify="chain"``, kept to reproduce older runs); on the
+    real-application set that made four false passes the keywords cannot
+    make (ADR-022, history 1.9). A column that pins a model tier alone
+    (``["slm"]``, ``["vlm"]``) is the head-to-head with the grounders and
+    keeps ``chain``: its verify steps measure that model, as before. The
+    column name carries ``[verify=...]`` only when the mode differs from
+    this default, so existing column names keep their meaning.
     """
+
+    VERIFY_MODES = ("keyword", "chain")
 
     TIERS = ("lexical", "slm", "vlm")
     DEFAULT_TIERS = ("lexical", "slm")          # VizDomConfig.grounding default
@@ -268,14 +283,22 @@ class VizDomDescExecutor(VizDomExecutor):
     def __init__(self, detector: str, tiers=DEFAULT_TIERS, backend: str = "ollama",
                  model: str = DEFAULT_MODEL, vision_model: str = DEFAULT_VISION_MODEL,
                  host: str = DEFAULT_HOST, ocr: str = "easyocr",
-                 resolver_factory=None, overrides=None, suffix=""):
+                 resolver_factory=None, overrides=None, suffix="",
+                 verify: str = None):
         super().__init__(detector, ocr, overrides=overrides, suffix=suffix)
         self.tiers = [t.strip() for t in tiers if t.strip()]
         unknown = [t for t in self.tiers if t not in self.TIERS]
         if not self.tiers or unknown:
             raise ValueError(f"grounding tiers must be a non-empty subset of "
                              f"{list(self.TIERS)}, got {list(tiers)!r}")
+        default = "keyword" if self.tiers[0] == "lexical" else "chain"
+        verify = verify or default
+        if verify not in self.VERIFY_MODES:
+            raise ValueError(f"verify must be one of {list(self.VERIFY_MODES)}, got {verify!r}")
+        self.verify = verify
         self.name = f"vizdom-{detector}{suffix}+desc[{'+'.join(self.tiers)}]"
+        if verify != default:
+            self.name += f"[verify={verify}]"
         self.backend, self.model, self.vision_model, self.host = \
             backend, model, vision_model, host
         # tests inject a factory(dom, screenshot) -> resolver; production builds
@@ -334,6 +357,8 @@ class VizDomDescExecutor(VizDomExecutor):
             raise RuntimeError("step has no 'description' - regenerate the manifest "
                                "(python -m visual_dom.evaluation.lifecycle.generate)")
         dom = self._dom_for(state)                 # parse once per state, as above
+        if step["kind"] != "action" and self.verify == "keyword":
+            return self._verify_like_keyword(dom, description)
         resolver = self._resolver(state, dom)      # fresh per step (no cache)
         t0 = time.perf_counter()
         elem, info = resolver.resolve(description)
@@ -361,9 +386,25 @@ class VizDomDescExecutor(VizDomExecutor):
         verdict = "PASSED" if elem is not None else "FAILED"
         return {"outcome": verdict, "latency": latency, "detail": detail}
 
+    def _verify_like_keyword(self, dom, description):
+        """``Visual Should Exist  desc=...``: the finder's lexical match, no model."""
+        from visual_gui_library.locators.locator import (
+            ElementFinder,
+            Locator,
+            LocatorStrategy,
+        )
+        t0 = time.perf_counter()
+        found = ElementFinder(dom).find([Locator(LocatorStrategy.DESC, description)])
+        latency = time.perf_counter() - t0
+        tier = "lexical" if found else "none"
+        self._tier_counts[tier] += 1
+        return {"outcome": "PASSED" if found else "FAILED", "latency": latency,
+                "detail": f"tier={tier} verify=keyword"}
+
     def cost_summary(self):
         base = super().cost_summary()
-        base.update({"tiers": list(self.tiers),
+        base.update({"verify": self.verify,
+                     "tiers": list(self.tiers),
                      "resolved_by_tier": dict(self._tier_counts),
                      "grounding": {"backend": self.backend, "model": self.model,
                                    "vision_model": self.vision_model}})
@@ -543,6 +584,10 @@ def main():
     g.add_argument("--grounding-tiers", default=",".join(VizDomDescExecutor.DEFAULT_TIERS),
                    help="comma list from lexical,slm,vlm - the chain, in order; "
                         "pin one tier (e.g. vlm) for a per-tier column")
+    g.add_argument("--desc-verify", choices=VizDomDescExecutor.VERIFY_MODES, default=None,
+                   help="verify steps as the assertion keywords do (lexical only; default "
+                        "for chains that start with lexical) or through the chain (default "
+                        "for a pinned model tier; production chains before 2026-11-02)")
     g.add_argument("--grounding-backend", default="ollama", help="ollama | openai")
     g.add_argument("--grounding-model", default=VizDomDescExecutor.DEFAULT_MODEL,
                    help="text model for the slm tier")
@@ -565,7 +610,7 @@ def main():
                     tiers=args.grounding_tiers.split(","),
                     backend=args.grounding_backend, model=args.grounding_model,
                     vision_model=args.grounding_vision_model,
-                    host=args.grounding_host)
+                    host=args.grounding_host, verify=args.desc_verify)
                 ok, reason = ex.available()
                 if not ok:
                     raise SystemExit(f"{ex.name} is not runnable here: {reason}")
