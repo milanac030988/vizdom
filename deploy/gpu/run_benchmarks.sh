@@ -85,7 +85,11 @@ OLLAMA="${VIZDOM_OLLAMA_HOST:-http://localhost:11434}"
 GMODEL="${VIZDOM_GROUNDING_MODEL:-qwen2.5:3b}"
 GVISION="${VIZDOM_GROUNDING_VISION_MODEL:-qwen2.5vl:3b}"
 # the ablation's refiner=on and +desc columns go through Ollama as well
-desc_wanted=0; for c in $DESC_COLUMNS ablation; do wanted "$c" && desc_wanted=1; done
+# (and the real-application set's rw-desc* columns further down)
+desc_wanted=0
+for c in $DESC_COLUMNS ablation rw-desc rw-desc-slm rw-desc-vlm rw-desc-vlm-chain; do
+    wanted "$c" && desc_wanted=1
+done
 # The server's own log goes into the tarball: runs 4-6 each lost a block of
 # VLM calls to "Ollama error: 500" and the log that would have said why was
 # sent to /dev/null (prefetch.sh writes to the same file when it starts the
@@ -144,7 +148,8 @@ aria_offload() {
         *)    [ "$VRAM_GB" -ge 40 ] ;;
     esac
 }
-[ "$VRAM_GB" -ge 70 ] || aria_offload || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular $DESC_COLUMNS ablation elam-7b ui-tars-1.5-7b parity}"
+RW_COLUMNS="rw-vizdom-uied rw-vizdom-omniparser rw-vizdom-modular rw-desc rw-desc-slm rw-desc-vlm rw-desc-vlm-chain rw-elam-7b rw-ui-tars-1.5-7b"
+[ "$VRAM_GB" -ge 70 ] || aria_offload || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular $DESC_COLUMNS ablation elam-7b ui-tars-1.5-7b parity $RW_COLUMNS}"
 if [ -x .venv-legacy/bin/python ]; then
     LEGACY=".venv-legacy/bin/python -m visual_dom.evaluation.lifecycle.runner"
 else
@@ -158,24 +163,66 @@ run_column aria-ui            $LEGACY --manifest "$MANIFEST" --executors aria-ui
 # --- ADR-027: parity + captioner combos on this GPU ------------------------
 run_column parity             python "deploy/gpu/parity_on_box.py" "$OUT/parity.txt"
 
-# --- one table with every column that produced a result --------------------
+# --- the real-application set (lifecycle-realworld-v1) ---------------------
+# 46 screens of 8 desktop applications, UIA ground truth, negatives taken
+# from other screens of the same application (benchmarks/lifecycle-realworld-
+# v1/README.md). The columns that answer the paper's question on real
+# screens: the text= parsers, the desc= chains, and the three grounders on
+# the same 92 plausible negatives. Own SUBDIRECTORY, for the reason the
+# ablation has one: its columns carry the main columns' names, and in the
+# run dir their rows would replace the synthetic rows in summary.md. Select
+# with ONLY="rw-..." (e.g. a rental for this set alone:
+#   ONLY="rw-vizdom-uied rw-vizdom-omniparser rw-vizdom-modular rw-desc rw-desc-slm rw-desc-vlm rw-desc-vlm-chain rw-elam-7b rw-ui-tars-1.5-7b rw-aria-ui"
+# ). About 2.5 h on an A6000-class card with the grounders, ~25 min without.
+RW_MANIFEST="benchmarks/lifecycle-realworld-v1/steps.json"
+RW_OUT="$OUT/realworld"
+mkdir -p "$RW_OUT"
+rw_column() {   # rw_column <name> <runner...>: run_column into the rw dir
+    local name="$1"; shift
+    OUT="$RW_OUT" run_column "$name" "$@"
+}
+RW="$RUN --manifest $RW_MANIFEST --out-dir $RW_OUT"
+rw_column rw-vizdom-uied       $RW --executors vizdom-uied
+rw_column rw-vizdom-omniparser $RW --executors vizdom-omniparser
+rw_column rw-vizdom-modular    $RW --executors vizdom-modular
+if curl -fsS "$OLLAMA/api/tags" >/dev/null 2>&1; then
+    RW_DESC="$RW --executors vizdom-modular+desc --grounding-host $OLLAMA
+             --grounding-model $GMODEL --grounding-vision-model $GVISION"
+    rw_column rw-desc           $RW_DESC --grounding-tiers lexical,slm
+    rw_column rw-desc-slm       $RW_DESC --grounding-tiers slm
+    rw_column rw-desc-vlm       $RW_DESC --grounding-tiers vlm
+    rw_column rw-desc-vlm-chain $RW_DESC --grounding-tiers lexical,vlm
+else
+    echo "rw desc= columns: SKIPPED - Ollama not reachable at $OLLAMA"
+fi
+rw_column rw-elam-7b         $LEGACY --manifest "$RW_MANIFEST" --executors elam-7b        $QUANT --out-dir "$RW_OUT"
+rw_column rw-ui-tars-1.5-7b  $RUN    --manifest "$RW_MANIFEST" --executors ui-tars-1.5-7b $QUANT --out-dir "$RW_OUT"
+rw_column rw-aria-ui         $LEGACY --manifest "$RW_MANIFEST" --executors aria-ui        $QUANT --out-dir "$RW_OUT"
+
+# --- one table per set with every column that produced a result -----------
+summarize() {   # summarize <run dir>: summary.md of the latest row per executor
+    local dir="$1"
 {
-    echo "# $(basename "$OUT")"; echo; cat "$OUT/gpu.txt"; echo
+    echo "# $(basename "$OUT")$([ "$dir" != "$OUT" ] && echo " - $(basename "$dir")")"
+    echo; cat "$OUT/gpu.txt"; echo
     echo "| executor | action-hit | verify acc | false-pass | median step (s) | cost |"
     echo "|---|---|---|---|---|---|"
     # One row per executor, the LATEST one: an ONLY= rerun into the same dir
     # writes a second <stamp>.md for that column and the old row (possibly a
     # FAILED one) must not stay in the table. awk, not tail: the runner's .md
     # has no trailing newline, so tail glued the rows onto one line.
-    for md in $(ls "$OUT"/*_*.md 2>/dev/null | sort); do
+    for md in $(ls "$dir"/*_*.md 2>/dev/null | sort); do
         awk 'NR > 2' "$md"
     done | awk -F'|' '{
         k = $2
         if (!(k in row)) order[++n] = k
         row[k] = $0
     } END { for (i = 1; i <= n; i++) print row[order[i]] }'
-} > "$OUT/summary.md"
-echo; cat "$OUT/summary.md"
+} > "$dir/summary.md"
+echo; cat "$dir/summary.md"
+}
+summarize "$OUT"
+summarize "$RW_OUT"
 
 [ -f "$OLLAMA_LOG" ] && cp "$OLLAMA_LOG" "$OUT/ollama-serve.log"
 tar czf "$OUT.tar.gz" -C "$(dirname "$OUT")" "$(basename "$OUT")"

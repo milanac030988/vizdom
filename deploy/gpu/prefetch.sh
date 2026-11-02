@@ -26,7 +26,10 @@ cd "$(dirname "$0")/../.."
 VRAM_GB=$(python -c "import torch;print(int(torch.cuda.get_device_properties(0).total_memory/1e9))")
 echo "GPU VRAM: ${VRAM_GB} GB"
 [ -z "${ONLY:-}" ] || echo "ONLY=${ONLY}: fetching just what those columns need"
-want() { [ -z "${ONLY:-}" ] || [[ " ${ONLY} " == *" $1 "* ]]; }
+# A real-application column (rw-elam-7b, ...) needs what its synthetic
+# namesake needs: without the rw- match, ONLY="rw-elam-7b" fetched nothing
+# and the column failed on the rented box.
+want() { [ -z "${ONLY:-}" ] || [[ " ${ONLY} " == *" $1 "* ]] || [[ " ${ONLY} " == *" rw-$1 "* ]]; }
 # The ablation column runs the modular detector (OmniParser stage 1) and two
 # Ollama-backed columns, so it needs both downloads like the vizdom-/desc
 # columns do (review, 2026-10-28: ONLY="ablation" fetched neither, and the

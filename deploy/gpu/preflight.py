@@ -42,6 +42,16 @@ def main():
     image = cv2.imread(images[0])
     print(f"preflight image: {images[0]} ({image.shape[1]}x{image.shape[0]})  "
           f"[{sys.executable}]")
+    # The real-application set (run_benchmarks.sh, rw- columns) reads its
+    # screens from data/realworld; a clone from before 6bbed97 has none.
+    rw = "benchmarks/lifecycle-realworld-v1/steps.json"
+    if os.path.exists(rw):
+        import json
+        states = json.load(open(rw, encoding="utf-8"))["states"]
+        missing = [s["image"] for s in states if not os.path.exists(s["image"])]
+        print(f"real-world set: {len(states) - len(missing)}/{len(states)} screens present"
+              + (f" - MISSING e.g. {missing[0]}" if missing else ""))
+        assert not missing, "real-world screens missing: pull develop (data/realworld)"
 
     import torch
     vram_gb = int(torch.cuda.get_device_properties(0).total_memory / 1e9) \

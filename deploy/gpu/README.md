@@ -167,6 +167,37 @@ in the step's `detail` (`no confident match (lexical: tie at 3.00 between 2
 candidates ...; vlm returned out-of-range mark 37)`), so a column of misses
 can be diagnosed from the tarball alone.
 
+### Run 8: the real-application set (`rw-` columns, 2026-11-02)
+
+`benchmarks/lifecycle-realworld-v1`: 46 screens of 8 desktop applications
+with UI Automation ground truth and negatives taken from *other screens of
+the same application* (`Export` where only `Import` is shown) — see its
+README. Laptop figures exist for the VizDOM columns (`text=` 0 of 92 false
+passes, `desc=` 0 of 92 after ADR-022 1.9); what only a GPU gives is the
+**grounders on the same plausible negatives**, the comparison the paper
+needs. The sweep runs the set into `<run dir>/realworld/` with its own
+`summary.md`; the columns are named `rw-...`. A rental for this set alone,
+about 2.5 h on a 48 GB card (Aria-UI needs 80 GB and is skipped below it):
+
+```bash
+tmux new -s bench
+git clone https://github.com/milanac030988/vizdom.git && cd vizdom && git checkout develop
+export ONLY="rw-vizdom-uied rw-vizdom-omniparser rw-vizdom-modular rw-desc rw-desc-slm rw-desc-vlm rw-desc-vlm-chain rw-elam-7b rw-ui-tars-1.5-7b rw-aria-ui"
+bash deploy/gpu/setup.sh
+bash deploy/gpu/prefetch.sh              # an rw- column fetches what its synthetic namesake needs
+PYTHONPATH=src USE_TF=0 .venv/bin/python deploy/gpu/preflight.py --pipeline --grounding \
+    --grounders elam-7b,ui-tars-1.5-7b
+#   want:  real-world set: 46/46 screens present
+bash deploy/gpu/run_benchmarks.sh
+```
+
+Since ADR-022 1.9 the verify steps of a production `desc=` chain
+(`lexical,slm`, `lexical,vlm`, and the ablation's `+desc`) are scored the way
+the assertion keywords score them — lexical only — so on a re-run of the
+synthetic set those verify figures move (0.973 → about 0.970 for the chain);
+the pinned `slm` / `vlm` columns, the `text=` columns and the grounders are
+unchanged. `--desc-verify chain` reproduces the old scoring.
+
 ### Aria-UI on a 48 GB card: offload mode (experimental)
 
 The clean path for Aria-UI is an 80 GB card. The opt-in alternative is
