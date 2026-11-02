@@ -1,0 +1,492 @@
+{
+ "image_size": {
+  "width": 744,
+  "height": 892
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    744,
+    892
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E28"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    572,
+    1,
+    629,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    629,
+    1,
+    686,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "0 | O"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    686,
+    1,
+    743,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    188,
+    11,
+    233,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Expand search box",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "Q | Q"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    6,
+    9,
+    56,
+    54
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Back",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "< | <"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    56,
+    9,
+    106,
+    54
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open Navigation",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    32,
+    51,
+    404,
+    105
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Bluetooth & devices",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Bluetooth & devices > | Bluetooth & devices > | Bluetooth & devices >"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    405,
+    55,
+    514,
+    101
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Mouse",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Mouse | Mouse | Mouse"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    108,
+    156,
+    281,
+    180
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Primary mouse button",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    520,
+    143,
+    693,
+    193
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E12"
+   ]
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    540,
+    155,
+    640,
+    179
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Left",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "Left | Left | Left"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    108,
+    246,
+    273,
+    270
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Mouse pointer speed",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    353,
+    237,
+    688,
+    278
+   ],
+   "confidence": 1.0,
+   "uia_type": "Slider",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    108,
+    336,
+    308,
+    360
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Enhance pointer precision",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    598,
+    323,
+    688,
+    374
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Enhance pointer precision",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "on | on | On",
+   "review": "name not printed"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    34,
+    432,
+    709,
+    823
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E18",
+    "E19",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26"
+   ]
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    54,
+    497,
+    286,
+    521
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Roll the mouse wheel to scroll",
+   "parent_id": "E17"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    444,
+    484,
+    693,
+    534
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E17",
+   "children_ids": [
+    "E20"
+   ]
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    464,
+    497,
+    640,
+    520
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Multiple lines at a time",
+   "role_word": "list item",
+   "parent_id": "E19",
+   "printed": "Multiple lines at a time | Multiple lines at a time | Multiple lines at a time"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    54,
+    588,
+    231,
+    612
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Lines to scroll at a time",
+   "parent_id": "E17"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    353,
+    579,
+    688,
+    620
+   ],
+   "confidence": 1.0,
+   "uia_type": "Slider",
+   "visual_type": "block",
+   "parent_id": "E17"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    54,
+    678,
+    435,
+    702
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Scroll inactive windows when hovering over them",
+   "parent_id": "E17"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    598,
+    664,
+    688,
+    715
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Scroll inactive windows when hovering over them",
+   "role_word": "button",
+   "parent_id": "E17",
+   "printed": "on | on | On",
+   "review": "name not printed"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    54,
+    768,
+    194,
+    792
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Scrolling direction",
+   "parent_id": "E17"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    414,
+    756,
+    693,
+    805
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E17",
+   "children_ids": [
+    "E27"
+   ]
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    434,
+    768,
+    640,
+    792
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Down motion scrolls down",
+   "role_word": "list item",
+   "parent_id": "E26",
+   "printed": "Down motion scrolls down | Down motion scrolls down | Down motion scrolls down"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    34,
+    863,
+    709,
+    891
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  }
+ ],
+ "all_names": [
+  "Accessibility mouse settings",
+  "Additional mouse settings",
+  "Back",
+  "Bluetooth & devices",
+  "Change how cursor moves over display boundaries",
+  "Close Settings",
+  "Double click speed, hide while typing, click lock",
+  "Down motion scrolls down",
+  "Enhance pointer precision",
+  "Expand search box",
+  "Left",
+  "Lines to scroll at a time",
+  "Maximize Settings",
+  "Minimize Settings",
+  "Mouse",
+  "Mouse pointer and touch",
+  "Mouse pointer speed",
+  "Multiple displays",
+  "Multiple lines at a time",
+  "Open Navigation",
+  "PointStick Settings",
+  "PointStick settings",
+  "Pointer size and color",
+  "Primary mouse button",
+  "Related settings",
+  "Roll the mouse wheel to scroll",
+  "Scroll inactive windows when hovering over them",
+  "Scrolling",
+  "Scrolling direction",
+  "Settings",
+  "System",
+  "Vertical"
+ ],
+ "source": "uia",
+ "window_title": "Settings"
+}

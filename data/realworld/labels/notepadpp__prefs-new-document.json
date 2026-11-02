@@ -1,0 +1,819 @@
+{
+ "image_size": {
+  "width": 1017,
+  "height": 509
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    1017,
+    509
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32",
+    "E33",
+    "E34",
+    "E35",
+    "E36",
+    "E37",
+    "E38",
+    "E39",
+    "E41",
+    "E42",
+    "E44",
+    "E45",
+    "E46"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    21,
+    60,
+    192,
+    76
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "General",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "General"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    21,
+    76,
+    192,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Toolbar",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Toolbar"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    21,
+    92,
+    192,
+    108
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Tab Bar",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Tab Bar"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    21,
+    108,
+    192,
+    124
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Editing 1",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Editing 1"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    21,
+    124,
+    192,
+    140
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Editing 2",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Editing 2"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    21,
+    140,
+    192,
+    156
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Dark Mode",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Dark Mode"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    21,
+    156,
+    192,
+    172
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Margins/Border/Edge",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Margins/Border/Edge"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    21,
+    172,
+    192,
+    188
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "New Document",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "New Document"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    21,
+    188,
+    192,
+    204
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Default Directory",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Default Directory"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    21,
+    204,
+    192,
+    220
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Recent Files History",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Recent Files History"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    21,
+    220,
+    192,
+    236
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "File Association",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "File Association"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    21,
+    236,
+    192,
+    252
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Language",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Language"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    21,
+    252,
+    192,
+    268
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Indentation",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Indentation"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    21,
+    268,
+    192,
+    284
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Highlighting",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Highlighting"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    21,
+    284,
+    192,
+    300
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Print",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Print"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    21,
+    300,
+    192,
+    316
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Searching",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Searching"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    21,
+    316,
+    192,
+    332
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Backup",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Backup"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    21,
+    332,
+    192,
+    348
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Auto-Completion",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Auto-Completion"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    21,
+    348,
+    192,
+    364
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Multi-Instance & Date",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Multi-Instance & Date"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    21,
+    364,
+    192,
+    380
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Delimiter",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Delimiter"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    21,
+    380,
+    192,
+    396
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Performance",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Performance"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    21,
+    396,
+    192,
+    412
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Cloud & Link",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Cloud & Link"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    21,
+    412,
+    192,
+    428
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Search Engine",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Search Engine"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    21,
+    428,
+    192,
+    444
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "MISC.",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "MISC."
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    561,
+    468,
+    649,
+    496
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Close"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    228,
+    74,
+    970,
+    422
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    304,
+    116,
+    530,
+    274
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    316,
+    154,
+    436,
+    172
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Windows (CR LF)",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "O Windows (CR LF)"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    316,
+    186,
+    388,
+    204
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Unix (LF)",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "©) Unix (LF)"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    316,
+    218,
+    424,
+    236
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Macintosh (CR)",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "©) Macintosh (CR)"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    608,
+    114,
+    914,
+    358
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    626,
+    136,
+    675,
+    154
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "ANSI",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "©) ANSI"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    626,
+    164,
+    682,
+    182
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "UTF-8",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "C) UTF-8 | C) UTF-8 | UTF-8"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    643,
+    188,
+    815,
+    206
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Apply to opened ANSI files",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Apply to opened ANSI files"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    626,
+    216,
+    740,
+    234
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "UTF-8 with BOM",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "(.) UTF-8 with BOM"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    626,
+    248,
+    810,
+    266
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "UTF-16 Big Endian with BOM",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "C.) UTF-16 Big Endian with BOM"
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    626,
+    280,
+    820,
+    298
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "UTF-16 Little Endian with BOM",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "(_) UTF-16 Little Endian with BOM"
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    652,
+    308,
+    827,
+    332
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E40"
+   ]
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    807,
+    309,
+    826,
+    331
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E39",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    230,
+    308,
+    365,
+    324
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Default language:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    374,
+    304,
+    549,
+    328
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E43"
+   ]
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    529,
+    305,
+    548,
+    327
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E42",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E44",
+   "bounds": [
+    242,
+    362,
+    556,
+    380
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Always open a new document in addition at startup",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|_| Always open a new document in addition at startup"
+  },
+  {
+   "id": "E45",
+   "bounds": [
+    242,
+    388,
+    552,
+    406
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Use the first line of document as untitled tab name",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|_| Use the first line of document as untitled tab name"
+  },
+  {
+   "id": "E46",
+   "bounds": [
+    973,
+    1,
+    1017,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  }
+ ],
+ "all_names": [
+  "ANSI",
+  "Always open a new document in addition at startup",
+  "Apply to opened ANSI files",
+  "Auto-Completion",
+  "Backup",
+  "Close",
+  "Cloud & Link",
+  "Dark Mode",
+  "Default Directory",
+  "Default language:",
+  "Delimiter",
+  "Editing 1",
+  "Editing 2",
+  "Encoding",
+  "File Association",
+  "Format (Line ending)",
+  "General",
+  "Highlighting",
+  "Indentation",
+  "Language",
+  "MISC.",
+  "Macintosh (CR)",
+  "Margins/Border/Edge",
+  "Multi-Instance & Date",
+  "New Document",
+  "Open",
+  "Performance",
+  "Preferences",
+  "Print",
+  "Recent Files History",
+  "Search Engine",
+  "Searching",
+  "Tab Bar",
+  "Toolbar",
+  "UTF-16 Big Endian with BOM",
+  "UTF-16 Little Endian with BOM",
+  "UTF-8",
+  "UTF-8 with BOM",
+  "Unix (LF)",
+  "Use the first line of document as untitled tab name",
+  "Windows (CR LF)"
+ ],
+ "source": "uia",
+ "window_title": "Preferences"
+}

@@ -1,0 +1,1907 @@
+{
+ "image_size": {
+  "width": 1484,
+  "height": 872
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    1484,
+    872
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E22",
+    "E28",
+    "E32",
+    "E33",
+    "E35",
+    "E36",
+    "E41",
+    "E43",
+    "E45",
+    "E49",
+    "E53",
+    "E57",
+    "E58",
+    "E59",
+    "E61",
+    "E62",
+    "E63",
+    "E64",
+    "E65",
+    "E66",
+    "E67",
+    "E68",
+    "E69",
+    "E70"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    1312,
+    1,
+    1369,
+    43
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    1369,
+    1,
+    1427,
+    43
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "O | O"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    1426,
+    1,
+    1484,
+    43
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x ’"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    44,
+    0,
+    90,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "File",
+   "parent_id": "E1",
+   "printed": "File | “Eile | “Eile",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    89,
+    0,
+    137,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Edit",
+   "parent_id": "E1",
+   "printed": "Edit | Edit | Edit",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    136,
+    0,
+    222,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Selection",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Selection | Selection | Selection"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    221,
+    0,
+    276,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "View",
+   "parent_id": "E1",
+   "printed": "View | View | View",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    275,
+    0,
+    317,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Go",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Go | Go | Go"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    316,
+    0,
+    365,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "icon",
+   "ocr_text": "More",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "-“-*"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    419,
+    8,
+    447,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Go Back (Alt+LeftArrow)",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "a | a"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    451,
+    8,
+    480,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Go Forward (Alt+RightArrow)",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "= | ="
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    492,
+    8,
+    1057,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "vizdom_demo",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "vizdom_demo | vizdom_demo | vizdom_demo"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    1181,
+    0,
+    1306,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E15",
+    "E16",
+    "E18",
+    "E20"
+   ]
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    1181,
+    8,
+    1209,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Customize Layout...",
+   "review": "icon-only?",
+   "parent_id": "E14",
+   "printed": "08 | 08"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    1213,
+    8,
+    1241,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Toggle Primary Side Bar (Ctrl+B)",
+   "review": "icon-only?",
+   "parent_id": "E14",
+   "children_ids": [
+    "E17"
+   ],
+   "printed": "Oo | I"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    1217,
+    11,
+    1238,
+    32
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E16"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    1246,
+    8,
+    1274,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Toggle Panel (Ctrl+J)",
+   "review": "icon-only?",
+   "parent_id": "E14",
+   "children_ids": [
+    "E19"
+   ],
+   "printed": "=) | ="
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    1249,
+    11,
+    1270,
+    32
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E18"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    1278,
+    8,
+    1306,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Toggle Secondary Side Bar (Ctrl+Alt+B)",
+   "review": "icon-only?",
+   "parent_id": "E14",
+   "children_ids": [
+    "E21"
+   ],
+   "printed": "O | a"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    1282,
+    11,
+    1303,
+    32
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E20"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    10,
+    48,
+    56,
+    314
+   ],
+   "confidence": 1.0,
+   "uia_type": "Tab",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27"
+   ]
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    10,
+    48,
+    56,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "icon",
+   "ocr_text": "Explorer (Ctrl+Shift+E)",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "(i | (i | (a"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    10,
+    103,
+    56,
+    149
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "icon",
+   "ocr_text": "Search (Ctrl+Shift+F)",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "Q | Q"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    10,
+    158,
+    56,
+    204
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "icon",
+   "ocr_text": "Source Control (Ctrl+Shift+G)",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "fs | 19"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    10,
+    213,
+    56,
+    259
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "icon",
+   "ocr_text": "Run and Debug (Ctrl+Shift+D)",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "rag | rag | rag"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    10,
+    268,
+    56,
+    314
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "icon",
+   "ocr_text": "Extensions (Ctrl+Shift+X)",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "ES | ES"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    10,
+    727,
+    56,
+    828
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E29",
+    "E31"
+   ]
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    10,
+    727,
+    56,
+    773
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Accounts",
+   "review": "icon-only?",
+   "parent_id": "E28",
+   "children_ids": [
+    "E30"
+   ],
+   "printed": "© | ©"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    18,
+    734,
+    49,
+    765
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E29"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    18,
+    789,
+    49,
+    820
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E28"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    77,
+    44,
+    309,
+    85
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Explorer",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    314,
+    44,
+    430,
+    85
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E34"
+   ]
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    402,
+    51,
+    430,
+    79
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Views and More Actions...",
+   "review": "icon-only?",
+   "parent_id": "E33",
+   "printed": ""
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    67,
+    84,
+    429,
+    120
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Explorer Section: vizdom_demo",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Y vizdom_demo | Y vizdom_demo | Y vizdom_demo",
+   "review": "name not printed"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    62,
+    119,
+    434,
+    756
+   ],
+   "confidence": 1.0,
+   "uia_type": "Tree",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E37",
+    "E39"
+   ]
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    67,
+    119,
+    429,
+    148
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "icon",
+   "ocr_text": "inventory.py",
+   "role_word": "tree item",
+   "parent_id": "E36",
+   "children_ids": [
+    "E38"
+   ],
+   "printed": "® invent ~*~ r€ttIngs | ® invent ~*~ r€ttIngs | >\n\n®@ invent\n\nettings",
+   "review": "name not printed"
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    77,
+    119,
+    429,
+    148
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E37"
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    67,
+    147,
+    429,
+    175
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "icon",
+   "ocr_text": "README.md",
+   "role_word": "tree item",
+   "parent_id": "E36",
+   "children_ids": [
+    "E40"
+   ],
+   "printed": "@ READR  —————SsS | @ READR  —————SsS | @ READ!",
+   "review": "name not printed"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    77,
+    147,
+    429,
+    175
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E39"
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    67,
+    755,
+    429,
+    791
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Outline Section",
+   "role_word": "button",
+   "parent_id": "E1",
+   "children_ids": [
+    "E42"
+   ],
+   "printed": "> Outline | > Outline | > Outline",
+   "review": "name not printed"
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    97,
+    755,
+    148,
+    791
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Outline",
+   "parent_id": "E41"
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    67,
+    790,
+    429,
+    826
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Timeline Section",
+   "role_word": "button",
+   "parent_id": "E1",
+   "children_ids": [
+    "E44"
+   ],
+   "printed": "> Timeline | > Timeline | > Timeline",
+   "review": "name not printed"
+  },
+  {
+   "id": "E44",
+   "bounds": [
+    97,
+    790,
+    156,
+    826
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Timeline",
+   "parent_id": "E43"
+  },
+  {
+   "id": "E45",
+   "bounds": [
+    442,
+    44,
+    607,
+    85
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "inventory.py",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "children_ids": [
+    "E46",
+    "E47"
+   ],
+   "printed": "® inventory.py X | ® inventory.py X | ® inventory.py X"
+  },
+  {
+   "id": "E46",
+   "bounds": [
+    449,
+    49,
+    566,
+    80
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E47",
+   "bounds": [
+    570,
+    45,
+    601,
+    84
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E45",
+   "children_ids": [
+    "E48"
+   ]
+  },
+  {
+   "id": "E48",
+   "bounds": [
+    572,
+    52,
+    598,
+    78
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close (Ctrl+F4)",
+   "review": "icon-only?",
+   "parent_id": "E47",
+   "printed": "x | x"
+  },
+  {
+   "id": "E49",
+   "bounds": [
+    1042,
+    44,
+    1103,
+    85
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E50",
+    "E51"
+   ]
+  },
+  {
+   "id": "E50",
+   "bounds": [
+    1042,
+    51,
+    1070,
+    79
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Split Editor Right (Ctrl+\\) [Alt] Split Editor Down",
+   "review": "icon-only?",
+   "parent_id": "E49",
+   "printed": "an | (D"
+  },
+  {
+   "id": "E51",
+   "bounds": [
+    1075,
+    51,
+    1103,
+    79
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More Actions...",
+   "review": "icon-only?",
+   "parent_id": "E49",
+   "children_ids": [
+    "E52"
+   ],
+   "printed": ""
+  },
+  {
+   "id": "E52",
+   "bounds": [
+    1078,
+    54,
+    1099,
+    75
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E51"
+  },
+  {
+   "id": "E53",
+   "bounds": [
+    442,
+    86,
+    588,
+    114
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "icon",
+   "ocr_text": "inventory.py",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E54"
+   ],
+   "printed": "__ ® inventon.ov_ | __ ® inventon.ov_",
+   "review": "name not printed"
+  },
+  {
+   "id": "E54",
+   "bounds": [
+    462,
+    86,
+    578,
+    114
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E53",
+   "children_ids": [
+    "E55",
+    "E56"
+   ]
+  },
+  {
+   "id": "E55",
+   "bounds": [
+    462,
+    87,
+    487,
+    111
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E54"
+  },
+  {
+   "id": "E56",
+   "bounds": [
+    489,
+    88,
+    578,
+    110
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "inventory.py",
+   "parent_id": "E54"
+  },
+  {
+   "id": "E57",
+   "bounds": [
+    442,
+    113,
+    1108,
+    832
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E58",
+   "bounds": [
+    1267,
+    44,
+    1413,
+    85
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E59",
+   "bounds": [
+    1412,
+    51,
+    1440,
+    79
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize Secondary Side Bar",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "children_ids": [
+    "E60"
+   ],
+   "printed": "ia)\ntJ | ua | ia)\n\ntJ"
+  },
+  {
+   "id": "E60",
+   "bounds": [
+    1416,
+    54,
+    1437,
+    75
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E59"
+  },
+  {
+   "id": "E61",
+   "bounds": [
+    1445,
+    51,
+    1473,
+    79
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Hide Secondary Side Bar (Ctrl+Alt+B)",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  },
+  {
+   "id": "E62",
+   "bounds": [
+    8,
+    837,
+    46,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E63",
+   "bounds": [
+    46,
+    837,
+    135,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E64",
+   "bounds": [
+    1438,
+    837,
+    1476,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E65",
+   "bounds": [
+    1371,
+    837,
+    1439,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E66",
+   "bounds": [
+    1319,
+    837,
+    1372,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E67",
+   "bounds": [
+    1259,
+    837,
+    1320,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E68",
+   "bounds": [
+    1178,
+    837,
+    1260,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E69",
+   "bounds": [
+    1089,
+    837,
+    1179,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E70",
+   "bounds": [
+    149,
+    104,
+    1336,
+    768
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E71",
+    "E72",
+    "E73",
+    "E74",
+    "E76",
+    "E77",
+    "E78",
+    "E79",
+    "E81",
+    "E84",
+    "E85",
+    "E95",
+    "E96",
+    "E99",
+    "E103",
+    "E107"
+   ]
+  },
+  {
+   "id": "E71",
+   "bounds": [
+    166,
+    117,
+    182,
+    133
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E70"
+  },
+  {
+   "id": "E72",
+   "bounds": [
+    1193,
+    112,
+    1221,
+    140
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open Settings (JSON)",
+   "review": "icon-only?",
+   "parent_id": "E70",
+   "printed": "0 | 0"
+  },
+  {
+   "id": "E73",
+   "bounds": [
+    1231,
+    112,
+    1260,
+    140
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open Modal Editor in Main Window",
+   "review": "icon-only?",
+   "parent_id": "E70",
+   "printed": "Cr | Cr | Cr"
+  },
+  {
+   "id": "E74",
+   "bounds": [
+    1264,
+    112,
+    1292,
+    140
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize Modal Editor",
+   "review": "icon-only?",
+   "parent_id": "E70",
+   "children_ids": [
+    "E75"
+   ],
+   "printed": "ia)\ntJ | us | ia)\n\ntJ"
+  },
+  {
+   "id": "E75",
+   "bounds": [
+    1268,
+    115,
+    1288,
+    136
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E74"
+  },
+  {
+   "id": "E76",
+   "bounds": [
+    1296,
+    112,
+    1325,
+    140
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close Modal Editor (Escape)",
+   "review": "icon-only?",
+   "parent_id": "E70",
+   "printed": "x | x"
+  },
+  {
+   "id": "E77",
+   "bounds": [
+    188,
+    169,
+    297,
+    191
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Search settings",
+   "parent_id": "E70"
+  },
+  {
+   "id": "E78",
+   "bounds": [
+    1247,
+    166,
+    1275,
+    194
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Clear Settings Search Input",
+   "review": "icon-only?",
+   "parent_id": "E70",
+   "printed": "x= | = | —"
+  },
+  {
+   "id": "E79",
+   "bounds": [
+    1275,
+    166,
+    1303,
+    194
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Filter Settings",
+   "review": "icon-only?",
+   "parent_id": "E70",
+   "children_ids": [
+    "E80"
+   ],
+   "printed": "Y | i"
+  },
+  {
+   "id": "E80",
+   "bounds": [
+    1278,
+    170,
+    1299,
+    191
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E79"
+  },
+  {
+   "id": "E81",
+   "bounds": [
+    180,
+    208,
+    1114,
+    237
+   ],
+   "confidence": 1.0,
+   "uia_type": "Tab",
+   "visual_type": "block",
+   "parent_id": "E70",
+   "children_ids": [
+    "E82",
+    "E83"
+   ]
+  },
+  {
+   "id": "E82",
+   "bounds": [
+    180,
+    208,
+    234,
+    237
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "User",
+   "role_word": "tab",
+   "parent_id": "E81",
+   "printed": "User | User | User"
+  },
+  {
+   "id": "E83",
+   "bounds": [
+    233,
+    208,
+    335,
+    237
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Workspace",
+   "role_word": "tab",
+   "parent_id": "E81",
+   "printed": "Workspace | Workspace | Workspace"
+  },
+  {
+   "id": "E84",
+   "bounds": [
+    1113,
+    208,
+    1304,
+    241
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Backup and Sync Settings",
+   "role_word": "button",
+   "parent_id": "E70",
+   "printed": "Backup and Sync Settings | Backup and Sync Settings | Backup and Sync Settings"
+  },
+  {
+   "id": "E85",
+   "bounds": [
+    180,
+    258,
+    401,
+    757
+   ],
+   "confidence": 1.0,
+   "uia_type": "Tree",
+   "visual_type": "block",
+   "parent_id": "E70",
+   "children_ids": [
+    "E86",
+    "E87",
+    "E88",
+    "E89",
+    "E90",
+    "E91",
+    "E92",
+    "E93",
+    "E94"
+   ]
+  },
+  {
+   "id": "E86",
+   "bounds": [
+    180,
+    258,
+    401,
+    286
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Commonly Used, group",
+   "role_word": "tree item",
+   "parent_id": "E85",
+   "printed": "Commonly Used | Commonly Used | Commonly Used"
+  },
+  {
+   "id": "E87",
+   "bounds": [
+    180,
+    285,
+    401,
+    314
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Text Editor, group",
+   "role_word": "tree item",
+   "parent_id": "E85",
+   "printed": "> Text Editor | > Text Editor | > Text Editor"
+  },
+  {
+   "id": "E88",
+   "bounds": [
+    180,
+    313,
+    401,
+    341
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Workbench, group",
+   "role_word": "tree item",
+   "parent_id": "E85",
+   "printed": "> Workbench | > Workbench | > Workbench"
+  },
+  {
+   "id": "E89",
+   "bounds": [
+    180,
+    340,
+    401,
+    369
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "icon",
+   "ocr_text": "Window, group",
+   "role_word": "tree item",
+   "parent_id": "E85",
+   "printed": "> Window | > Window | > Window",
+   "review": "name not printed"
+  },
+  {
+   "id": "E90",
+   "bounds": [
+    180,
+    368,
+    401,
+    396
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "icon",
+   "ocr_text": "Chat, group",
+   "role_word": "tree item",
+   "parent_id": "E85",
+   "printed": "> Chat | > Chat | > Chat",
+   "review": "name not printed"
+  },
+  {
+   "id": "E91",
+   "bounds": [
+    180,
+    395,
+    401,
+    424
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "icon",
+   "ocr_text": "Features, group",
+   "role_word": "tree item",
+   "parent_id": "E85",
+   "printed": "> Features | > Features | > Features",
+   "review": "name not printed"
+  },
+  {
+   "id": "E92",
+   "bounds": [
+    180,
+    423,
+    401,
+    451
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Application, group",
+   "role_word": "tree item",
+   "parent_id": "E85",
+   "printed": "> Application | > Application | > Application"
+  },
+  {
+   "id": "E93",
+   "bounds": [
+    180,
+    450,
+    401,
+    479
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "icon",
+   "ocr_text": "Security, group",
+   "role_word": "tree item",
+   "parent_id": "E85",
+   "printed": "> Security | > Security | > Security",
+   "review": "name not printed"
+  },
+  {
+   "id": "E94",
+   "bounds": [
+    180,
+    478,
+    401,
+    506
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Extensions, group",
+   "role_word": "tree item",
+   "parent_id": "E85",
+   "printed": "> Extensions | > Extensions | > Extensions"
+  },
+  {
+   "id": "E95",
+   "bounds": [
+    400,
+    258,
+    1334,
+    311
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Commonly Used",
+   "role_word": "tree item",
+   "parent_id": "E70",
+   "printed": "Commonly Used | Commonly Used | Commonly Used"
+  },
+  {
+   "id": "E96",
+   "bounds": [
+    400,
+    310,
+    1334,
+    445
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Editor Font Size. Controls the font size in pixels.",
+   "role_word": "tree item",
+   "parent_id": "E70",
+   "children_ids": [
+    "E97",
+    "E98"
+   ],
+   "printed": "Editor: Font Size\nControls the font size in pixels.\n14 | on = size in pixels. | Editor: Font Size\n\nControls the font size in pixels.\n\n14"
+  },
+  {
+   "id": "E97",
+   "bounds": [
+    448,
+    389,
+    697,
+    422
+   ],
+   "confidence": 1.0,
+   "uia_type": "Spinner",
+   "visual_type": "block",
+   "parent_id": "E96"
+  },
+  {
+   "id": "E98",
+   "bounds": [
+    402,
+    320,
+    431,
+    349
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More Actions... (Shift+F9)",
+   "review": "icon-only?",
+   "parent_id": "E96",
+   "printed": ""
+  },
+  {
+   "id": "E99",
+   "bounds": [
+    400,
+    444,
+    1334,
+    566
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly.",
+   "role_word": "tree item",
+   "parent_id": "E70",
+   "children_ids": [
+    "E100",
+    "E101",
+    "E102"
+   ],
+   "printed": "Editor: Format On Save\n( Format a file on save. A formatter must be available and the editor must not be shutting down. When Files: Auto\nSave is set to afterDelay , the file will only be formatted when saved explicitly. | se ikon At fle wil only be formatted when saved expicity, | Editor: Format On Save\n\n( Format a file on save. A formatter must be available and the editor must not be shutting down. When Files: Auto\n\nSave is set to afterDelay , the file will only be formatted when saved explicitly."
+  },
+  {
+   "id": "E100",
+   "bounds": [
+    447,
+    488,
+    471,
+    511
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "icon",
+   "ocr_text": "editor.formatOnSave",
+   "review": "icon-only?",
+   "parent_id": "E99",
+   "printed": "| | | | | | | |"
+  },
+  {
+   "id": "E101",
+   "bounds": [
+    481,
+    488,
+    1284,
+    533
+   ],
+   "confidence": 1.0,
+   "uia_type": "Hyperlink",
+   "visual_type": "icon",
+   "ocr_text": "Files: Auto Save",
+   "role_word": "link",
+   "parent_id": "E99",
+   "printed": "Format a file on save. A formatter must be available and the editor must not be shutting down. When Files: Autc\nSave is setto afterDelay, the file will only be formatted when saved explicitly. | eT a Oe | Format a file on save. A formatter must be available and the editor must not be shutting down. When Files: Autc\n\nSave is setto afterDelay, the file will only be formatted when saved explicitly.",
+   "review": "name not printed"
+  },
+  {
+   "id": "E102",
+   "bounds": [
+    402,
+    454,
+    431,
+    482
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More Actions... (Shift+F9)",
+   "review": "icon-only?",
+   "parent_id": "E99",
+   "printed": ""
+  },
+  {
+   "id": "E103",
+   "bounds": [
+    400,
+    565,
+    1334,
+    699
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Files Auto Save. Controls auto save of editors that have unsaved changes.",
+   "role_word": "tree item",
+   "parent_id": "E70",
+   "children_ids": [
+    "E104",
+    "E105",
+    "E106"
+   ],
+   "printed": "Files: Auto Save\nControls auto save of editors that have unsaved changes.\noff v | — of editors that have unsaved ~ | Files: Auto Save\n\nControls auto save of editors that have unsaved changes.\n\noff\n\nVv"
+  },
+  {
+   "id": "E104",
+   "bounds": [
+    512,
+    609,
+    581,
+    632
+   ],
+   "confidence": 1.0,
+   "uia_type": "Hyperlink",
+   "visual_type": "button",
+   "ocr_text": "auto save",
+   "role_word": "link",
+   "parent_id": "E103",
+   "printed": "auto Save | auto Save | auto Save"
+  },
+  {
+   "id": "E105",
+   "bounds": [
+    447,
+    643,
+    848,
+    676
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E103"
+  },
+  {
+   "id": "E106",
+   "bounds": [
+    402,
+    575,
+    431,
+    604
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More Actions... (Shift+F9)",
+   "review": "icon-only?",
+   "parent_id": "E103",
+   "printed": ""
+  },
+  {
+   "id": "E107",
+   "bounds": [
+    400,
+    698,
+    1334,
+    854
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "icon",
+   "ocr_text": "Editor Default Formatter. Defines a default formatter which takes precedence over all other formatter settings. Must be the identifier of an extension contributing a formatter.",
+   "role_word": "tree item",
+   "parent_id": "E70",
+   "children_ids": [
+    "E108"
+   ],
+   "printed": "Editor: Default Formatter\nNafinac a dofault farmattar wusthich talbac nraradancra aver all athar farmattar cattinac RAiict ho tha idantifior af an | a 2 ane wsthich tabac nracadanca nver all athaor farmattar cattinac KAict ho tha idantifiar af an | Editor: Default Formatter\n\nNafinac a dofault farmattar wusthich talbac nraradancra aver all athar farmattar cattinac RAiict ho tha idantifior af an",
+   "review": "name not printed"
+  },
+  {
+   "id": "E108",
+   "bounds": [
+    402,
+    708,
+    431,
+    736
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More Actions... (Shift+F9)",
+   "review": "icon-only?",
+   "parent_id": "E107",
+   "printed": ""
+  }
+ ],
+ "all_names": [
+  "Accounts",
+  "Active View Switcher",
+  "Application, group",
+  "Backup and Sync Settings",
+  "C:\\Users\\Public\\Documents\\vizdom_demo\\README.md",
+  "C:\\Users\\Public\\Documents\\vizdom_demo\\inventory.py",
+  "CRLF",
+  "Chat actions",
+  "Chat, group",
+  "Clear Settings Search Input",
+  "Close",
+  "Close (Ctrl+F4)",
+  "Close Modal Editor (Escape)",
+  "Commonly Used",
+  "Commonly Used, group",
+  "Customize Layout...",
+  "Edit",
+  "Editor Default Formatter. Defines a default formatter which takes precedence over all other formatter settings. Must be the identifier of an extension contributing a formatter.",
+  "Editor Font Size. Controls the font size in pixels.",
+  "Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly.",
+  "Editor actions",
+  "Explorer",
+  "Explorer (Ctrl+Shift+E)",
+  "Explorer Section: vizdom_demo",
+  "Explorer actions",
+  "Extensions (Ctrl+Shift+X)",
+  "Extensions, group",
+  "Features, group",
+  "File",
+  "Files Auto Save. Controls auto save of editors that have unsaved changes.",
+  "Files Explorer",
+  "Files: Auto Save",
+  "Filter Settings",
+  "Go",
+  "Go Back (Alt+LeftArrow)",
+  "Go Forward (Alt+RightArrow)",
+  "Hide Secondary Side Bar (Ctrl+Alt+B)",
+  "Ln 1, Col 1",
+  "Manage",
+  "Maximize",
+  "Maximize Modal Editor",
+  "Maximize Secondary Side Bar",
+  "Minimize",
+  "More",
+  "More Actions...",
+  "More Actions... (Shift+F9)",
+  "No Problems",
+  "Notifications",
+  "Open Modal Editor in Main Window",
+  "Open Settings (JSON)",
+  "Outline",
+  "Outline Section",
+  "Python",
+  "README.md",
+  "Run and Debug (Ctrl+Shift+D)",
+  "Search (Ctrl+Shift+F)",
+  "Search settings",
+  "Security, group",
+  "Selection",
+  "Settings",
+  "Settings Switcher",
+  "Settings Table of Contents",
+  "Source Control (Ctrl+Shift+G)",
+  "Spaces: 4",
+  "Split Editor Right (Ctrl+\\) [Alt] Split Editor Down",
+  "Tab actions",
+  "Text Editor, group",
+  "The editor is not accessible at this time. To enable screen reader optimized mode, use Shift+Alt+F1",
+  "Timeline",
+  "Timeline Section",
+  "Title actions",
+  "Toggle Panel (Ctrl+J)",
+  "Toggle Primary Side Bar (Ctrl+B)",
+  "Toggle Secondary Side Bar (Ctrl+Alt+B)",
+  "UTF-8",
+  "User",
+  "View",
+  "Views and More Actions...",
+  "Window, group",
+  "Workbench, group",
+  "Workspace",
+  "auto save",
+  "editor.defaultFormatter",
+  "editor.fontSize",
+  "editor.formatOnSave",
+  "files.autoSave",
+  "inventory.py",
+  "inventory.py - vizdom_demo - Visual Studio Code",
+  "inventory.py, Editor Group 1",
+  "remote",
+  "vizdom_demo",
+  "",
+  "inventory.py",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  ""
+ ],
+ "source": "uia",
+ "window_title": "inventory.py - vizdom_demo - Visual Studio Code"
+}

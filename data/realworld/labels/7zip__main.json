@@ -1,0 +1,736 @@
+{
+ "image_size": {
+  "width": 859,
+  "height": 652
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    859,
+    652
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E17",
+    "E20",
+    "E23",
+    "E26",
+    "E29",
+    "E32",
+    "E33",
+    "E34",
+    "E35",
+    "E36",
+    "E37"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    2,
+    52,
+    44,
+    93
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Add",
+   "parent_id": "E1",
+   "printed": "op\nAdd",
+   "role_word": "button"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    43,
+    52,
+    85,
+    93
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Extract",
+   "parent_id": "E1",
+   "printed": "=\nExtract",
+   "role_word": "button"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    85,
+    52,
+    127,
+    93
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Test",
+   "parent_id": "E1",
+   "printed": "Vv\nTest",
+   "role_word": "button"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    126,
+    52,
+    168,
+    93
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Copy",
+   "parent_id": "E1",
+   "printed": "12>\nCopy",
+   "role_word": "button"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    168,
+    52,
+    210,
+    93
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Move",
+   "parent_id": "E1",
+   "printed": "=>\nMove",
+   "role_word": "button"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    210,
+    52,
+    252,
+    93
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Delete",
+   "parent_id": "E1",
+   "printed": "x\nDelete",
+   "role_word": "button"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    251,
+    52,
+    293,
+    93
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Info",
+   "parent_id": "E1",
+   "printed": "ii\nInfo",
+   "role_word": "button"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    3,
+    121,
+    857,
+    142
+   ],
+   "confidence": 1.0,
+   "uia_type": "Header",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ]
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    3,
+    121,
+    131,
+    142
+   ],
+   "confidence": 1.0,
+   "uia_type": "HeaderItem",
+   "visual_type": "block",
+   "parent_id": "E9"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    131,
+    121,
+    211,
+    142
+   ],
+   "confidence": 1.0,
+   "uia_type": "HeaderItem",
+   "visual_type": "block",
+   "parent_id": "E9"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    211,
+    121,
+    291,
+    142
+   ],
+   "confidence": 1.0,
+   "uia_type": "HeaderItem",
+   "visual_type": "block",
+   "parent_id": "E9"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    291,
+    121,
+    371,
+    142
+   ],
+   "confidence": 1.0,
+   "uia_type": "HeaderItem",
+   "visual_type": "block",
+   "parent_id": "E9"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    371,
+    121,
+    451,
+    142
+   ],
+   "confidence": 1.0,
+   "uia_type": "HeaderItem",
+   "visual_type": "block",
+   "parent_id": "E9"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    451,
+    121,
+    531,
+    142
+   ],
+   "confidence": 1.0,
+   "uia_type": "HeaderItem",
+   "visual_type": "block",
+   "parent_id": "E9"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    531,
+    121,
+    611,
+    142
+   ],
+   "confidence": 1.0,
+   "uia_type": "HeaderItem",
+   "visual_type": "block",
+   "parent_id": "E9"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    3,
+    142,
+    611,
+    161
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "4K",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E18",
+    "E19"
+   ],
+   "printed": "mmi4k | 2024-04-01... 2024-04-01..."
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    211,
+    142,
+    291,
+    161
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2024-04-01 14:34",
+   "parent_id": "E17"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    291,
+    142,
+    371,
+    161
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2024-04-01 14:26",
+   "parent_id": "E17"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    3,
+    161,
+    611,
+    180
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Screen",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E21",
+    "E22"
+   ],
+   "printed": "\"Screen 2024-04-01... 2024-04-01..."
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    211,
+    161,
+    291,
+    180
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2024-04-01 14:26",
+   "parent_id": "E20"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    291,
+    161,
+    371,
+    180
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2024-04-01 14:26",
+   "parent_id": "E20"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    3,
+    180,
+    611,
+    199
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "touchkeyboard",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E24",
+    "E25"
+   ],
+   "printed": "“7 touchkeyboard 2024-04-01... 2024-04-01..."
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    211,
+    180,
+    291,
+    199
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2024-04-01 14:26",
+   "parent_id": "E23"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    291,
+    180,
+    371,
+    199
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2024-04-01 14:26",
+   "parent_id": "E23"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    3,
+    199,
+    611,
+    218
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Wallpaper",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E27",
+    "E28"
+   ],
+   "printed": "™) Wallpaper 2026-03-14... 2024-04-01..."
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    211,
+    199,
+    291,
+    218
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2026-03-14 14:36",
+   "parent_id": "E26"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    291,
+    199,
+    371,
+    218
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2024-04-01 14:26",
+   "parent_id": "E26"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    28,
+    96,
+    858,
+    119
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E30",
+    "E31"
+   ]
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    50,
+    99,
+    839,
+    115
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E29"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    842,
+    97,
+    857,
+    119
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E29",
+   "printed": "v | v"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    2,
+    630,
+    178,
+    652
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "0 / 4 object(s) selected",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    2,
+    7,
+    24,
+    29
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    718,
+    1,
+    765,
+    31
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    765,
+    1,
+    811,
+    31
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "O | o"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    811,
+    1,
+    858,
+    31
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x » | x »"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    2,
+    30,
+    859,
+    49
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E38",
+    "E39",
+    "E40",
+    "E41",
+    "E42",
+    "E43"
+   ]
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    2,
+    30,
+    35,
+    49
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "File",
+   "role_word": "menu item",
+   "parent_id": "E37",
+   "printed": "File"
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    34,
+    30,
+    69,
+    49
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Edit",
+   "role_word": "menu item",
+   "parent_id": "E37",
+   "printed": "Edit"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    70,
+    30,
+    110,
+    49
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "View",
+   "role_word": "menu item",
+   "parent_id": "E37",
+   "printed": "View"
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    110,
+    30,
+    171,
+    49
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Favorites",
+   "role_word": "menu item",
+   "parent_id": "E37",
+   "printed": "Favorites"
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    170,
+    30,
+    212,
+    49
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Tools",
+   "role_word": "menu item",
+   "parent_id": "E37",
+   "printed": "Tools"
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    213,
+    30,
+    253,
+    49
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Help",
+   "role_word": "menu item",
+   "parent_id": "E37",
+   "printed": "Help"
+  }
+ ],
+ "all_names": [
+  "0 / 4 object(s) selected",
+  "2024-04-01 14:26",
+  "2024-04-01 14:34",
+  "2026-03-14 14:36",
+  "4K",
+  "Add",
+  "Application",
+  "C:\\Windows\\Web\\",
+  "Close",
+  "Comment",
+  "Copy",
+  "Created",
+  "Delete",
+  "Edit",
+  "Extract",
+  "Favorites",
+  "File",
+  "Files",
+  "Folders",
+  "Header Control",
+  "Help",
+  "Info",
+  "Maximize",
+  "Minimize",
+  "Modified",
+  "Move",
+  "Name",
+  "Open",
+  "Screen",
+  "Size",
+  "System",
+  "Test",
+  "Tools",
+  "View",
+  "Wallpaper",
+  "touchkeyboard"
+ ],
+ "source": "uia",
+ "window_title": "C:\\Windows\\Web\\"
+}

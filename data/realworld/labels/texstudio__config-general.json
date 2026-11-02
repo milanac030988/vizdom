@@ -1,0 +1,625 @@
+{
+ "image_size": {
+  "width": 1380,
+  "height": 817
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    1,
+    31,
+    1379,
+    816
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E14",
+    "E16",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32",
+    "E33",
+    "E34",
+    "E35",
+    "E36"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    1,
+    8,
+    23,
+    30
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    1240,
+    1,
+    1287,
+    31
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    1287,
+    1,
+    1333,
+    31
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "O | o"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    1333,
+    1,
+    1380,
+    31
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    273,
+    40,
+    1370,
+    234
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13"
+   ]
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    283,
+    91,
+    354,
+    113
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Color Scheme:",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    363,
+    150,
+    1341,
+    166
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    283,
+    63,
+    354,
+    85
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Style:",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    283,
+    202,
+    354,
+    224
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Language:",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    283,
+    147,
+    354,
+    169
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Font:",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    283,
+    175,
+    354,
+    196
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Font Size:",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    283,
+    119,
+    354,
+    141
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Icon Theme:",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    273,
+    240,
+    1370,
+    291
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E15"
+   ]
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    283,
+    263,
+    437,
+    281
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Check LaTeX Configuration",
+   "role_word": "checkbox",
+   "parent_id": "E14",
+   "printed": "Check LaTeX Configuration"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    273,
+    297,
+    1370,
+    381
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21"
+   ]
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    554,
+    348,
+    629,
+    371
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Check Now",
+   "role_word": "button",
+   "parent_id": "E16",
+   "printed": "Check Now"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    441,
+    348,
+    548,
+    371
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "10/14/2017 10:56 AM",
+   "parent_id": "E16"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    283,
+    348,
+    435,
+    371
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Last Checked:",
+   "parent_id": "E16"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    283,
+    322,
+    433,
+    340
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Automatically check every",
+   "role_word": "checkbox",
+   "parent_id": "E16",
+   "printed": "|) Automatically check every"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    964,
+    320,
+    1031,
+    342
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Update Level:",
+   "parent_id": "E16"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    12,
+    42,
+    262,
+    78
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "General",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "TXxs General"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    12,
+    78,
+    262,
+    114
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Commands",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "*\nslo Commands"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    12,
+    114,
+    262,
+    150
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Build",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "- Build"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    12,
+    150,
+    262,
+    186
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Shortcuts",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "“= Shortcuts"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    12,
+    186,
+    262,
+    222
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Editor",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": ". Li Editor"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    12,
+    222,
+    262,
+    258
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Syntax Highlighting",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "> Syntax Highlighting"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    12,
+    258,
+    262,
+    294
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Completion",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "‘s Completion"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    12,
+    294,
+    262,
+    330
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Language Checking",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "* ] Language Checking"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    12,
+    330,
+    262,
+    366
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Preview",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "‘) Preview"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    12,
+    366,
+    262,
+    402
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Internal PDF Viewer",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "a) Internal PDF Viewer"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    12,
+    402,
+    262,
+    438
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "SVN/GIT",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "SVN SVN/GIT"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    10,
+    750,
+    264,
+    770
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    10,
+    782,
+    152,
+    800
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show Advanced Options",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|) Show Advanced Options"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    1214,
+    780,
+    1289,
+    803
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "OK"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    1295,
+    780,
+    1370,
+    803
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel"
+  }
+ ],
+ "all_names": [
+  "10/14/2017 10:56 AM",
+  "Appearance",
+  "Automatically check every",
+  "Build",
+  "Cancel",
+  "Check LaTeX Configuration",
+  "Check Now",
+  "Close",
+  "Color Scheme:",
+  "Commands",
+  "Completion",
+  "Configure TeXstudio",
+  "Editor",
+  "Font Size:",
+  "Font:",
+  "General",
+  "Icon Theme:",
+  "Internal PDF Viewer",
+  "Language Checking",
+  "Language:",
+  "Last Checked:",
+  "Maximize",
+  "Minimize",
+  "OK",
+  "Preview",
+  "SVN/GIT",
+  "Shortcuts",
+  "Show Advanced Options",
+  "Startup",
+  "Style:",
+  "Syntax Highlighting",
+  "System",
+  "Update",
+  "Update Level:"
+ ],
+ "source": "uia",
+ "window_title": "Configure TeXstudio"
+}

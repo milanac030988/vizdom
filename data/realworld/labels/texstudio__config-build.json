@@ -1,0 +1,564 @@
+{
+ "image_size": {
+  "width": 1380,
+  "height": 817
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    1,
+    31,
+    1379,
+    816
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E17",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32",
+    "E33"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    1,
+    8,
+    23,
+    30
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    1240,
+    1,
+    1287,
+    31
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    1287,
+    1,
+    1333,
+    31
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "O | o"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    1333,
+    1,
+    1380,
+    31
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    273,
+    40,
+    1370,
+    402
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16"
+   ]
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    293,
+    78,
+    355,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Build & View",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    420,
+    74,
+    1282,
+    96
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    293,
+    104,
+    374,
+    118
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Default Compiler",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    420,
+    100,
+    1282,
+    122
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    293,
+    130,
+    364,
+    144
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Default Viewer",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    420,
+    126,
+    1282,
+    148
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    293,
+    156,
+    349,
+    170
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "PDF Viewer",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    420,
+    152,
+    1282,
+    174
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    293,
+    182,
+    414,
+    196
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Default Bibliography Tool",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    420,
+    178,
+    1282,
+    200
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E6"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    273,
+    408,
+    1370,
+    770
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E18"
+   ]
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    293,
+    441,
+    368,
+    465
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Add",
+   "role_word": "button",
+   "parent_id": "E17",
+   "printed": "+ Add"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    12,
+    42,
+    262,
+    78
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "General",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "*\nTXS General"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    12,
+    78,
+    262,
+    114
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Commands",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "*\nslo Commands"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    12,
+    114,
+    262,
+    150
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Build",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "=. Build"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    12,
+    150,
+    262,
+    186
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Shortcuts",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "“= Shortcuts"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    12,
+    186,
+    262,
+    222
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Editor",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": ". Li Editor"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    12,
+    222,
+    262,
+    258
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Syntax Highlighting",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "> Syntax Highlighting"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    12,
+    258,
+    262,
+    294
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Completion",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "‘s Completion"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    12,
+    294,
+    262,
+    330
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Language Checking",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "* ] Language Checking"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    12,
+    330,
+    262,
+    366
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Preview",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "‘) Preview"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    12,
+    366,
+    262,
+    402
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Internal PDF Viewer",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "a) Internal PDF Viewer"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    12,
+    402,
+    262,
+    438
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "SVN/GIT",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "SVN SVN/GIT"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    10,
+    750,
+    264,
+    770
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    10,
+    782,
+    152,
+    800
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show Advanced Options",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|) Show Advanced Options"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    1214,
+    780,
+    1289,
+    803
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "OK"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    1295,
+    780,
+    1370,
+    803
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel"
+  }
+ ],
+ "all_names": [
+  "Add",
+  "Build",
+  "Build & View",
+  "Cancel",
+  "Close",
+  "Commands",
+  "Completion",
+  "Configure TeXstudio",
+  "Default Bibliography Tool",
+  "Default Compiler",
+  "Default Viewer",
+  "Editor",
+  "General",
+  "Internal PDF Viewer",
+  "Language Checking",
+  "Maximize",
+  "Meta Commands",
+  "Minimize",
+  "OK",
+  "PDF Viewer",
+  "Preview",
+  "SVN/GIT",
+  "Shortcuts",
+  "Show Advanced Options",
+  "Syntax Highlighting",
+  "System",
+  "User Commands"
+ ],
+ "source": "uia",
+ "window_title": "Configure TeXstudio"
+}

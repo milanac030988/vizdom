@@ -1,0 +1,159 @@
+{
+ "image_size": {
+  "width": 257,
+  "height": 282
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    257,
+    282
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    141,
+    243,
+    243,
+    269
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "[OK |"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    26,
+    243,
+    128,
+    269
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "www.7-zip.org",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "www.7-zip.org"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    13,
+    38,
+    101,
+    88
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    13,
+    112,
+    243,
+    125
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "7-Zip 26.03 (x64)",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    13,
+    132,
+    243,
+    145
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2026-09-03",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    13,
+    153,
+    243,
+    166
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Copyright (c) 1999-2026 Igor Pavlov",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    13,
+    174,
+    243,
+    241
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "7-Zip is free software",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    223,
+    1,
+    257,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  }
+ ],
+ "all_names": [
+  "2026-09-03",
+  "7-Zip 26.03 (x64)",
+  "7-Zip is free software",
+  "About 7-Zip",
+  "Close",
+  "Copyright (c) 1999-2026 Igor Pavlov",
+  "OK",
+  "www.7-zip.org"
+ ],
+ "source": "uia",
+ "window_title": "About 7-Zip"
+}

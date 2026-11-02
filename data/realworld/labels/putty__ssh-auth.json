@@ -1,0 +1,922 @@
+{
+ "image_size": {
+  "width": 602,
+  "height": 543
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    602,
+    543
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E38",
+    "E39",
+    "E40",
+    "E41",
+    "E42",
+    "E43",
+    "E44",
+    "E45",
+    "E46",
+    "E47",
+    "E48",
+    "E49",
+    "E50",
+    "E51"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    361,
+    508,
+    471,
+    536
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Open",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Open"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    477,
+    508,
+    589,
+    536
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    13,
+    508,
+    123,
+    536
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "About",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "About"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    129,
+    508,
+    239,
+    536
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Help",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Help"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    7,
+    44,
+    197,
+    64
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Category:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    7,
+    64,
+    197,
+    502
+   ],
+   "confidence": 1.0,
+   "uia_type": "Tree",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E8",
+    "E14",
+    "E15",
+    "E19",
+    "E25"
+   ]
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    174,
+    66,
+    195,
+    500
+   ],
+   "confidence": 1.0,
+   "uia_type": "ScrollBar",
+   "visual_type": "block",
+   "parent_id": "E7",
+   "children_ids": [
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13"
+   ]
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    174,
+    66,
+    195,
+    87
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Line up",
+   "review": "icon-only?",
+   "parent_id": "E8",
+   "printed": ","
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    174,
+    87,
+    195,
+    101
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page up",
+   "review": "icon-only?",
+   "parent_id": "E8",
+   "printed": "."
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    174,
+    101,
+    195,
+    425
+   ],
+   "confidence": 1.0,
+   "uia_type": "Thumb",
+   "visual_type": "block",
+   "parent_id": "E8"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    174,
+    425,
+    195,
+    479
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page down",
+   "role_word": "button",
+   "parent_id": "E8",
+   "printed": "",
+   "review": "name not printed"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    174,
+    479,
+    195,
+    500
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Line down",
+   "review": "icon-only?",
+   "parent_id": "E8",
+   "printed": ","
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    50,
+    66,
+    103,
+    84
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Logging",
+   "role_word": "tree item",
+   "parent_id": "E7",
+   "printed": "Logging"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    31,
+    84,
+    88,
+    102
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Terminal",
+   "role_word": "tree item",
+   "parent_id": "E7",
+   "children_ids": [
+    "E16",
+    "E17",
+    "E18"
+   ],
+   "printed": "Terminal"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    50,
+    102,
+    113,
+    120
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Keyboard",
+   "role_word": "tree item",
+   "parent_id": "E15",
+   "printed": "Keyboard"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    50,
+    120,
+    77,
+    138
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Bell",
+   "parent_id": "E15",
+   "printed": "Bell",
+   "role_word": "tree item"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    50,
+    138,
+    107,
+    156
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Features",
+   "role_word": "tree item",
+   "parent_id": "E15",
+   "printed": "Features"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    31,
+    156,
+    83,
+    174
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Window",
+   "role_word": "tree item",
+   "parent_id": "E7",
+   "children_ids": [
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24"
+   ],
+   "printed": "Window"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    50,
+    174,
+    129,
+    192
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Appearance",
+   "role_word": "tree item",
+   "parent_id": "E19",
+   "printed": "Appearance"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    50,
+    192,
+    115,
+    210
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Behaviour",
+   "role_word": "tree item",
+   "parent_id": "E19",
+   "printed": "Behaviour"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    50,
+    210,
+    121,
+    228
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Translation",
+   "role_word": "tree item",
+   "parent_id": "E19",
+   "printed": "Translation"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    50,
+    228,
+    110,
+    246
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Selection",
+   "role_word": "tree item",
+   "parent_id": "E19",
+   "printed": "Selection"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    50,
+    246,
+    100,
+    264
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Colours",
+   "role_word": "tree item",
+   "parent_id": "E19",
+   "printed": "Colours"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    31,
+    264,
+    102,
+    282
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Connection",
+   "role_word": "tree item",
+   "parent_id": "E7",
+   "children_ids": [
+    "E26",
+    "E27",
+    "E28"
+   ],
+   "printed": "Connection"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    50,
+    282,
+    83,
+    300
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Data",
+   "role_word": "tree item",
+   "parent_id": "E25",
+   "printed": "Data"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    50,
+    300,
+    88,
+    318
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Proxy",
+   "role_word": "tree item",
+   "parent_id": "E25",
+   "printed": "Proxy"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    50,
+    318,
+    82,
+    336
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "SSH",
+   "role_word": "tree item",
+   "parent_id": "E25",
+   "children_ids": [
+    "E29",
+    "E30",
+    "E31",
+    "E32",
+    "E33",
+    "E34",
+    "E35",
+    "E36",
+    "E37"
+   ],
+   "printed": "SSH"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    69,
+    336,
+    95,
+    354
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Kex",
+   "parent_id": "E28",
+   "printed": "Kex",
+   "role_word": "tree item"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    69,
+    354,
+    133,
+    372
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Host keys",
+   "role_word": "tree item",
+   "parent_id": "E28",
+   "printed": "Host keys"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    69,
+    372,
+    112,
+    390
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Cipher",
+   "role_word": "tree item",
+   "parent_id": "E28",
+   "printed": "Cipher"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    69,
+    390,
+    99,
+    408
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Auth",
+   "role_word": "tree item",
+   "parent_id": "E28",
+   "printed": "Auth"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    69,
+    408,
+    100,
+    426
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "TTY",
+   "role_word": "tree item",
+   "parent_id": "E28",
+   "printed": "TTY"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    69,
+    426,
+    95,
+    444
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "X11",
+   "parent_id": "E28",
+   "printed": "X11",
+   "role_word": "tree item"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    69,
+    444,
+    121,
+    462
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Tunnels",
+   "role_word": "tree item",
+   "parent_id": "E28",
+   "printed": "Tunnels"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    69,
+    462,
+    104,
+    480
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Bugs",
+   "role_word": "tree item",
+   "parent_id": "E28",
+   "printed": "Bugs"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    69,
+    480,
+    137,
+    498
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "More bugs",
+   "role_word": "tree item",
+   "parent_id": "E28",
+   "printed": "More bugs"
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    207,
+    64,
+    589,
+    88
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    221,
+    102,
+    575,
+    118
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Display pre-authentication banner (SSH-2 only)",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Display pre-authentication banner (SSH-2 only)"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    221,
+    124,
+    575,
+    140
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Bypass authentication entirely (SSH-2 only)",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "| |Bypass authentication entirely (SSH-2 only)"
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    221,
+    146,
+    575,
+    162
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Disconnect if authentication succeeds trivially",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "| | Disconnect if authentication succeeds trivially"
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    221,
+    202,
+    575,
+    218
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Attempt authentication using Pageant",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Attempt authentication using Pageant"
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    221,
+    224,
+    575,
+    240
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Attempt TIS or CryptoCard auth (SSH-1)",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "| |Attempt TIS or CryptoCard auth (SSH-1)"
+  },
+  {
+   "id": "E44",
+   "bounds": [
+    221,
+    246,
+    575,
+    262
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Attempt \"keyboard-interactive\" auth (SSH-2)",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Attempt \"keyboard-interactive” auth (SSH-2)"
+  },
+  {
+   "id": "E45",
+   "bounds": [
+    207,
+    178,
+    589,
+    270
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E46",
+   "bounds": [
+    221,
+    302,
+    575,
+    318
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Allow agent forwarding",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "| | Allow agent forwarding"
+  },
+  {
+   "id": "E47",
+   "bounds": [
+    221,
+    324,
+    575,
+    340
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Allow attempted changes of username in SSH-2",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "| | Allow attempted changes of username in SSH-2"
+  },
+  {
+   "id": "E48",
+   "bounds": [
+    207,
+    278,
+    589,
+    348
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E49",
+   "bounds": [
+    1,
+    9,
+    29,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E50",
+   "bounds": [
+    482,
+    1,
+    542,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Context help",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "? | ?",
+   "review": "name not printed"
+  },
+  {
+   "id": "E51",
+   "bounds": [
+    542,
+    1,
+    602,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "x | x ’",
+   "review": "name not printed"
+  }
+ ],
+ "all_names": [
+  "About",
+  "Allow agent forwarding",
+  "Allow attempted changes of username in SSH-2",
+  "Appearance",
+  "Attempt \"keyboard-interactive\" auth (SSH-2)",
+  "Attempt TIS or CryptoCard auth (SSH-1)",
+  "Attempt authentication using Pageant",
+  "Auth",
+  "Authentication methods",
+  "Behaviour",
+  "Bell",
+  "Bugs",
+  "Bypass authentication entirely (SSH-2 only)",
+  "Cancel",
+  "Category:",
+  "Cipher",
+  "Close",
+  "Colours",
+  "Connection",
+  "Context help",
+  "Data",
+  "Disconnect if authentication succeeds trivially",
+  "Display pre-authentication banner (SSH-2 only)",
+  "Features",
+  "Help",
+  "Host keys",
+  "Kex",
+  "Keyboard",
+  "Line down",
+  "Line up",
+  "Logging",
+  "More bugs",
+  "Open",
+  "Other authentication-related options",
+  "Page down",
+  "Page up",
+  "Position",
+  "Proxy",
+  "PuTTY Configuration",
+  "Rlogin",
+  "SSH",
+  "SUPDUP",
+  "Selection",
+  "Serial",
+  "Session",
+  "System",
+  "TTY",
+  "Telnet",
+  "Terminal",
+  "Translation",
+  "Tunnels",
+  "Vertical",
+  "Window",
+  "X11"
+ ],
+ "source": "uia",
+ "window_title": "PuTTY Configuration"
+}

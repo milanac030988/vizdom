@@ -1,0 +1,532 @@
+{
+ "image_size": {
+  "width": 744,
+  "height": 892
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    744,
+    892
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E14",
+    "E16",
+    "E17",
+    "E18",
+    "E23",
+    "E27",
+    "E30"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    572,
+    1,
+    629,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    629,
+    1,
+    686,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "0 | O"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    686,
+    1,
+    743,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    188,
+    11,
+    233,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Expand search box",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "Q | Q"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    6,
+    9,
+    56,
+    54
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Back",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "< | <"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    56,
+    9,
+    106,
+    54
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open Navigation",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    32,
+    51,
+    352,
+    105
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Time & language",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Time & language > | Time & language > | Time & language >"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    353,
+    55,
+    543,
+    101
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Date & time",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Date & time | Date & time | Date & time"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    34,
+    130,
+    249,
+    196
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2:36 AM",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    34,
+    196,
+    249,
+    220
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "‎Monday, ‎November ‎2, ‎2026",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    48,
+    235,
+    343,
+    282
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E13"
+   ]
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    93,
+    262,
+    343,
+    282
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "(UTC+07:00) Bangkok, Hanoi, Jakarta",
+   "parent_id": "E12"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    376,
+    221,
+    549,
+    297
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Region",
+   "role_word": "button",
+   "parent_id": "E1",
+   "children_ids": [
+    "E15"
+   ],
+   "printed": "® Region\nUnited States | @ ja | Region\n\n@\n\nUnited States"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    435,
+    262,
+    525,
+    282
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "United States",
+   "parent_id": "E14"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    54,
+    336,
+    74,
+    356
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Informational icon",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    93,
+    334,
+    543,
+    358
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Some of these settings are managed by your organization.",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    34,
+    385,
+    709,
+    537
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E19",
+    "E20",
+    "E21"
+   ]
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    658,
+    409,
+    698,
+    449
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Show more settings",
+   "review": "icon-only?",
+   "parent_id": "E18",
+   "printed": "“N | “N"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    108,
+    492,
+    187,
+    515
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Time zone",
+   "parent_id": "E18"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    300,
+    479,
+    657,
+    529
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E18",
+   "children_ids": [
+    "E22"
+   ]
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    320,
+    491,
+    603,
+    515
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "(UTC+07:00) Bangkok, Hanoi, Jakarta",
+   "role_word": "list item",
+   "parent_id": "E21",
+   "printed": "(UTC+07:00) Bangkok, Hanoi, Jakarte | (UTC+07:00) Bangkok, Hanoi, Jakarte | (UTC+07:00) Bangkok, Hanoi, Jakarte"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    34,
+    541,
+    709,
+    693
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E24",
+    "E25"
+   ]
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    658,
+    565,
+    698,
+    605
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Show more settings",
+   "review": "icon-only?",
+   "parent_id": "E23",
+   "printed": "“N | “N"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    35,
+    629,
+    708,
+    692
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E23",
+   "children_ids": [
+    "E26"
+   ]
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    489,
+    640,
+    652,
+    679
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Change",
+   "role_word": "button",
+   "parent_id": "E25",
+   "printed": "Change | Change | Change"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    34,
+    696,
+    709,
+    797
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E28",
+    "E29"
+   ]
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    108,
+    738,
+    507,
+    778
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Turn this off to hide your time and date information on the taskbar",
+   "parent_id": "E27"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    658,
+    725,
+    698,
+    765
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Show more settings",
+   "review": "icon-only?",
+   "parent_id": "E27",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    34,
+    800,
+    709,
+    885
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  }
+ ],
+ "all_names": [
+  "(UTC+07:00) Bangkok, Hanoi, Jakarta",
+  "2:36 AM",
+  "Additional settings",
+  "Back",
+  "Change",
+  "Change the date and time format",
+  "Close Settings",
+  "Date & time",
+  "Don't show additional calendars",
+  "Expand search box",
+  "Informational icon",
+  "Language & region",
+  "Last successful time synchronization: ‎10/‎31/‎2026 4:51:17 PM",
+  "Maximize Settings",
+  "Minimize Settings",
+  "Open Navigation",
+  "Region",
+  "Related links",
+  "Set the date and time manually",
+  "Set time automatically",
+  "Set time zone automatically",
+  "Settings",
+  "Show additional calendars in the taskbar",
+  "Show more settings",
+  "Show time and date in the System tray",
+  "Show time in Notification Center",
+  "Some of these settings are managed by your organization.",
+  "Sync now",
+  "System",
+  "Time & language",
+  "Time zone",
+  "Turn this off to hide your time and date information on the taskbar",
+  "United States",
+  "Vertical",
+  "Windows and some apps format dates and time based on your region",
+  "‎Monday, ‎November ‎2, ‎2026"
+ ],
+ "source": "uia",
+ "window_title": "Settings"
+}

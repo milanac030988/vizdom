@@ -1,0 +1,627 @@
+{
+ "image_size": {
+  "width": 1017,
+  "height": 509
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    1017,
+    509
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E30",
+    "E31",
+    "E32",
+    "E33",
+    "E34",
+    "E35"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    21,
+    60,
+    192,
+    76
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "General",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "General | General | General"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    21,
+    76,
+    192,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Toolbar",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Toolbar"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    21,
+    92,
+    192,
+    108
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Tab Bar",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Tab Bar"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    21,
+    108,
+    192,
+    124
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Editing 1",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Editing 1"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    21,
+    124,
+    192,
+    140
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Editing 2",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Editing 2"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    21,
+    140,
+    192,
+    156
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Dark Mode",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Dark Mode"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    21,
+    156,
+    192,
+    172
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Margins/Border/Edge",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Margins/Border/Edge"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    21,
+    172,
+    192,
+    188
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "New Document",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "New Document"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    21,
+    188,
+    192,
+    204
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Default Directory",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Default Directory"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    21,
+    204,
+    192,
+    220
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Recent Files History",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Recent Files History"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    21,
+    220,
+    192,
+    236
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "File Association",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "File Association"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    21,
+    236,
+    192,
+    252
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Language",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Language"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    21,
+    252,
+    192,
+    268
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Indentation",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Indentation"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    21,
+    268,
+    192,
+    284
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Highlighting",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Highlighting"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    21,
+    284,
+    192,
+    300
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Print",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Print"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    21,
+    300,
+    192,
+    316
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Searching",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Searching"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    21,
+    316,
+    192,
+    332
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Backup",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Backup"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    21,
+    332,
+    192,
+    348
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Auto-Completion",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Auto-Completion"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    21,
+    348,
+    192,
+    364
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Multi-Instance & Date",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Multi-Instance & Date"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    21,
+    364,
+    192,
+    380
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Delimiter",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Delimiter"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    21,
+    380,
+    192,
+    396
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Performance",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Performance"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    21,
+    396,
+    192,
+    412
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Cloud & Link",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Cloud & Link"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    21,
+    412,
+    192,
+    428
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Search Engine",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Search Engine"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    21,
+    428,
+    192,
+    444
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "MISC.",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "MISC."
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    561,
+    468,
+    649,
+    496
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Close"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    437,
+    102,
+    763,
+    174
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    494,
+    130,
+    713,
+    154
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E29"
+   ]
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    693,
+    131,
+    712,
+    153
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E28",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    437,
+    194,
+    763,
+    282
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    447,
+    218,
+    664,
+    236
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Hide (use Alt or F10 key to toggle)",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|_| Hide (use Alt or F10 key to toggle)"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    447,
+    248,
+    626,
+    266
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Hide right shortcuts ＋ ▼ ✕",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|_}Hide right shortcuts + W x"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    437,
+    302,
+    763,
+    370
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    447,
+    330,
+    493,
+    348
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Hide",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|} Hide"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    973,
+    1,
+    1017,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  }
+ ],
+ "all_names": [
+  "Auto-Completion",
+  "Backup",
+  "Close",
+  "Cloud & Link",
+  "Dark Mode",
+  "Default Directory",
+  "Delimiter",
+  "Editing 1",
+  "Editing 2",
+  "File Association",
+  "General",
+  "Hide",
+  "Hide (use Alt or F10 key to toggle)",
+  "Hide right shortcuts ＋ ▼ ✕",
+  "Highlighting",
+  "Indentation",
+  "Language",
+  "Localization",
+  "MISC.",
+  "Margins/Border/Edge",
+  "Menu",
+  "Multi-Instance & Date",
+  "New Document",
+  "Open",
+  "Performance",
+  "Preferences",
+  "Print",
+  "Recent Files History",
+  "Search Engine",
+  "Searching",
+  "Status Bar",
+  "Tab Bar",
+  "Toolbar"
+ ],
+ "source": "uia",
+ "window_title": "Preferences"
+}

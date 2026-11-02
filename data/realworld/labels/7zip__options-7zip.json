@@ -1,0 +1,669 @@
+{
+ "image_size": {
+  "width": 526,
+  "height": 564
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    526,
+    564
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E10",
+    "E11",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32",
+    "E33",
+    "E34",
+    "E35",
+    "E36",
+    "E37"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    23,
+    65,
+    503,
+    81
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Integrate 7-Zip to shell context menu",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "@ integrate 7-Zip to shell context menu"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    23,
+    87,
+    503,
+    103
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Integrate 7-Zip to shell context menu (32-bit)",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "@ integrate 7-Zip to shell context menu (32-bit)"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    23,
+    110,
+    503,
+    126
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Cascaded context menu",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "© Cascaded context menu"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    23,
+    132,
+    503,
+    148
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Icons in context menu",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "-_}Icons in context menu"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    23,
+    154,
+    503,
+    170
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Eliminate duplication of root folder",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "®) Eliminate duplication of root folder"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    23,
+    177,
+    343,
+    190
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Propagate Zone.Id stream:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    343,
+    174,
+    503,
+    193
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E9"
+   ]
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    487,
+    174,
+    502,
+    192
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E8",
+   "printed": "v | v"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    23,
+    199,
+    503,
+    212
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Context menu items:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    23,
+    218,
+    503,
+    512
+   ],
+   "confidence": 1.0,
+   "uia_type": "List",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25"
+   ]
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    25,
+    220,
+    223,
+    236
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Open archive",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "@ Open archive"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    25,
+    236,
+    223,
+    252
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Open archive >",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "(_) Open archive >"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    25,
+    252,
+    223,
+    268
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Extract files...",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "(_) Extract files..."
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    25,
+    268,
+    223,
+    284
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Extract Here",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "@ Extract Here"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    25,
+    284,
+    223,
+    300
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Extract to <Folder>",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "@ Extract to <Folder>"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    25,
+    300,
+    223,
+    316
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Test archive",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "(_) Testarchive"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    25,
+    316,
+    223,
+    332
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Add to archive...",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "@ Add to archive..."
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    25,
+    332,
+    223,
+    348
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Add to <Archive>.7z",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "(_) Add to <Archive>.7z"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    25,
+    348,
+    223,
+    364
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Add to <Archive>.zip",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "@ Add to <Archive> zip"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    25,
+    364,
+    223,
+    380
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Compress and email...",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "(_) Compress and email..."
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    25,
+    380,
+    223,
+    396
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Compress to <Archive>.7z and email",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "(_) Compress to <Archive>.7z and email"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    25,
+    396,
+    223,
+    412
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Compress to <Archive>.zip and email",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "@ Compress to <Archive> zip and email"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    25,
+    412,
+    223,
+    428
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "CRC SHA >",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "{_] CRC SHA>"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    25,
+    428,
+    223,
+    444
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "7-Zip > CRC SHA >",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "printed": "(_) 7-Zip > CRC SHA>"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    180,
+    535,
+    260,
+    557
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "[ oK"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    266,
+    535,
+    346,
+    557
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    353,
+    535,
+    433,
+    557
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Apply",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Apply"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    439,
+    535,
+    519,
+    557
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Help",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Help"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    9,
+    34,
+    55,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "System",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "System"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    54,
+    34,
+    92,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "7-Zip",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "7-Zip"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    93,
+    34,
+    139,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Folders",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Folders"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    139,
+    34,
+    177,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Editor",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Editor"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    178,
+    34,
+    226,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Settings",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Settings"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    226,
+    34,
+    284,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Language",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Language"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    432,
+    1,
+    479,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Context help",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "? | ?",
+   "review": "name not printed"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    479,
+    1,
+    526,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "x | x",
+   "review": "name not printed"
+  }
+ ],
+ "all_names": [
+  "7-Zip",
+  "7-Zip > CRC SHA >",
+  "Add to <Archive>.7z",
+  "Add to <Archive>.zip",
+  "Add to archive...",
+  "Apply",
+  "CRC SHA >",
+  "Cancel",
+  "Cascaded context menu",
+  "Close",
+  "Compress and email...",
+  "Compress to <Archive>.7z and email",
+  "Compress to <Archive>.zip and email",
+  "Context help",
+  "Context menu items:",
+  "Editor",
+  "Eliminate duplication of root folder",
+  "Extract Here",
+  "Extract files...",
+  "Extract to <Folder>",
+  "Folders",
+  "Help",
+  "Icons in context menu",
+  "Integrate 7-Zip to shell context menu",
+  "Integrate 7-Zip to shell context menu (32-bit)",
+  "Language",
+  "OK",
+  "Open",
+  "Open archive",
+  "Open archive >",
+  "Options",
+  "Propagate Zone.Id stream:",
+  "Settings",
+  "System",
+  "Test archive"
+ ],
+ "source": "uia",
+ "window_title": "Options"
+}

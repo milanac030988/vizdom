@@ -1,0 +1,553 @@
+{
+ "image_size": {
+  "width": 1518,
+  "height": 806
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    1518,
+    806
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    3,
+    124,
+    1515,
+    774
+   ],
+   "confidence": 1.0,
+   "uia_type": "Pane",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    1,
+    92,
+    1517,
+    776
+   ],
+   "confidence": 1.0,
+   "uia_type": "Tab",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E4"
+   ]
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    3,
+    94,
+    206,
+    122
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "vizdom_sample.txt",
+   "role_word": "tab",
+   "parent_id": "E3",
+   "printed": "[= vizdom_sampletxt # £9"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    1,
+    778,
+    571,
+    805
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Normal text file",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    573,
+    778,
+    846,
+    805
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "length: 119    lines: 7",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    848,
+    778,
+    1171,
+    805
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Ln: 1    Col: 1    Pos: 1",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    1173,
+    778,
+    1309,
+    805
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Windows (CR LF)",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    1311,
+    778,
+    1459,
+    805
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "UTF-8",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    1461,
+    778,
+    1497,
+    805
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "INS",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    1,
+    9,
+    29,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    1339,
+    1,
+    1399,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "=",
+   "review": "name not printed"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    1399,
+    1,
+    1458,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "0 | O"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    1458,
+    1,
+    1518,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "x | x ’",
+   "review": "name not printed"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    1,
+    38,
+    1517,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31"
+   ]
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    1,
+    38,
+    42,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "File",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "File"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    42,
+    38,
+    86,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Edit",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "Edit"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    86,
+    38,
+    148,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Search",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "Search"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    148,
+    38,
+    198,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "View",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "View"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    198,
+    38,
+    278,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Encoding",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "Encoding"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    278,
+    38,
+    361,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Language",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "Language"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    361,
+    38,
+    432,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Settings",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "Settings"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    432,
+    38,
+    485,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Tools",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "Tools"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    485,
+    38,
+    545,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Macro",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "Macro"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    545,
+    38,
+    588,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Run",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "Run"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    588,
+    38,
+    653,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Plugins",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "Plugins"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    653,
+    38,
+    726,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Window",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "Window"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    726,
+    38,
+    751,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "icon",
+   "ocr_text": "?",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "? | ?",
+   "review": "name not printed"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    1423,
+    38,
+    1456,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "icon",
+   "ocr_text": "＋",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "+ | +",
+   "review": "name not printed"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    1456,
+    38,
+    1487,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "icon",
+   "ocr_text": "▼",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "Vv | Vv",
+   "review": "name not printed"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    1487,
+    38,
+    1517,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "icon",
+   "ocr_text": "✕",
+   "role_word": "menu item",
+   "parent_id": "E15",
+   "printed": "x | x",
+   "review": "name not printed"
+  }
+ ],
+ "all_names": [
+  "?",
+  "Application",
+  "C:\\Users\\Public\\Documents\\vizdom_sample.txt - Notepad++",
+  "Close",
+  "Edit",
+  "Encoding",
+  "File",
+  "INS",
+  "Inventory report\r\n\r\nItem      Qty   Location\r\nValve A   12    Shelf 3\r\nPump B     4    Shelf 7\r\nSensor C  30    Bin 2",
+  "Language",
+  "Ln: 1    Col: 1    Pos: 1",
+  "Macro",
+  "Maximize",
+  "Minimize",
+  "Normal text file",
+  "Plugins",
+  "Run",
+  "Search",
+  "Settings",
+  "System",
+  "Tab",
+  "Tools",
+  "UTF-8",
+  "View",
+  "Window",
+  "Windows (CR LF)",
+  "length: 119    lines: 7",
+  "vizdom_sample.txt",
+  "▼",
+  "✕",
+  "＋"
+ ],
+ "source": "uia",
+ "window_title": "C:\\Users\\Public\\Documents\\vizdom_sample.txt - Notepad++"
+}

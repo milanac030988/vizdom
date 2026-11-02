@@ -1,0 +1,349 @@
+{
+ "image_size": {
+  "width": 744,
+  "height": 892
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    744,
+    892
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    281,
+    432,
+    356,
+    482
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E3"
+   ]
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    286,
+    434,
+    351,
+    471
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolTip",
+   "visual_type": "block",
+   "parent_id": "E2"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    572,
+    1,
+    629,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    629,
+    1,
+    686,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "0 | O"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    686,
+    1,
+    743,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    188,
+    11,
+    233,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Expand search box",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "Q | Q"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    6,
+    9,
+    56,
+    54
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Back",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "< | <"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    56,
+    9,
+    106,
+    54
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open Navigation",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    32,
+    51,
+    281,
+    105
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Accessibility",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Accessibility > | Accessibility > | Accessibility >"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    282,
+    55,
+    416,
+    101
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Text size",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Text size | Text size | Text size"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    54,
+    143,
+    687,
+    177
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Text size preview",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    54,
+    177,
+    687,
+    372
+   ],
+   "confidence": 1.0,
+   "uia_type": "Pane",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    108,
+    414,
+    172,
+    438
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Text size",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    108,
+    438,
+    503,
+    458
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Text size that appears throughout Windows and your apps",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    306,
+    476,
+    482,
+    517
+   ],
+   "confidence": 1.0,
+   "uia_type": "Slider",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    525,
+    473,
+    688,
+    513
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Apply",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Apply | Apply | Apply"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    34,
+    571,
+    709,
+    691
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E19"
+   ]
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    34,
+    605,
+    709,
+    691
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E18",
+   "children_ids": [
+    "E20"
+   ]
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    108,
+    651,
+    428,
+    671
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Monitors, brightness, night light, display profile",
+   "parent_id": "E19"
+  }
+ ],
+ "all_names": [
+  "100%",
+  "Accessibility",
+  "Apply",
+  "Back",
+  "Close Settings",
+  "Display",
+  "Expand search box",
+  "Maximize Settings",
+  "Minimize Settings",
+  "Monitors, brightness, night light, display profile",
+  "Open Navigation",
+  "Popup",
+  "PopupHost",
+  "Related settings",
+  "Settings",
+  "System",
+  "Text size",
+  "Text size preview",
+  "Text size that appears throughout Windows and your apps",
+  "The size of these words will change as you adjust the slider. Changes you make here will apply to most of the text on your device."
+ ],
+ "source": "uia",
+ "window_title": "Settings"
+}

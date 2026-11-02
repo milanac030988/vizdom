@@ -1,0 +1,626 @@
+{
+ "image_size": {
+  "width": 721,
+  "height": 434
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    721,
+    434
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E5",
+    "E6",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E35"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    3,
+    82,
+    131,
+    98
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Find what:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    134,
+    78,
+    431,
+    104
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E4"
+   ]
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    411,
+    79,
+    430,
+    103
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E3",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    3,
+    118,
+    131,
+    134
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Replace with:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    134,
+    114,
+    431,
+    140
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E7"
+   ]
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    411,
+    115,
+    430,
+    139
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E6",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    438,
+    92,
+    480,
+    126
+   ],
+   "confidence": 1.0,
+   "uia_type": "SplitButton",
+   "visual_type": "icon",
+   "ocr_text": "⇅",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Tl \\~ | Tl \\~ | Tl lw",
+   "review": "name not printed"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    22,
+    194,
+    151,
+    212
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Backward direction",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|_| Backward direction"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    22,
+    218,
+    175,
+    236
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Match whole word only",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Y ) Match whole word only"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    22,
+    242,
+    107,
+    260
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Match case",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|_| Match case"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    22,
+    266,
+    118,
+    284
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Wrap around",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|) Wrap around"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    12,
+    300,
+    362,
+    396
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    22,
+    324,
+    84,
+    342
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Normal",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "©) Normal"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    22,
+    348,
+    207,
+    366
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Extended (\\n, \\r, \\t, \\0, \\x...)",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "O Extended (\\n, \\r, \\t, \\O, \\x...)"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    22,
+    372,
+    152,
+    390
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Regular expression",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "C.) Regular expression"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    164,
+    372,
+    289,
+    390
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": ". matches newline",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "__|. matches newline"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    333,
+    154,
+    419,
+    172
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "In selection",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "_jIn selection"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    522,
+    78,
+    681,
+    106
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Find Next",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Find Next"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    522,
+    150,
+    681,
+    178
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Replace All",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Replace All"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    522,
+    186,
+    681,
+    228
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Replace All in All Opened Documents",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Replace All in All Opened\nDocuments"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    522,
+    236,
+    681,
+    264
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Close"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    497,
+    300,
+    596,
+    318
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Transparency",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Transparency"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    522,
+    324,
+    630,
+    342
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "On losing focus",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "O on losing focus"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    522,
+    348,
+    583,
+    366
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Always",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "C) Always"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    522,
+    376,
+    616,
+    381
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page left",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "re | re",
+   "review": "name not printed"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    616,
+    372,
+    623,
+    386
+   ],
+   "confidence": 1.0,
+   "uia_type": "Thumb",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    623,
+    376,
+    659,
+    381
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page right",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "ld | ld",
+   "review": "name not printed"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    688,
+    374,
+    716,
+    402
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "˄",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "A | A",
+   "review": "name not printed"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    1,
+    38,
+    720,
+    432
+   ],
+   "confidence": 1.0,
+   "uia_type": "Tab",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E31",
+    "E32",
+    "E33",
+    "E34"
+   ]
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    3,
+    40,
+    57,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Find",
+   "role_word": "tab",
+   "parent_id": "E30",
+   "printed": "Find"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    115,
+    40,
+    194,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Find in Files",
+   "role_word": "tab",
+   "parent_id": "E30",
+   "printed": "Find in Files"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    194,
+    40,
+    294,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Find in Projects",
+   "role_word": "tab",
+   "parent_id": "E30",
+   "printed": "Find in Projects"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    294,
+    40,
+    348,
+    62
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Mark",
+   "role_word": "tab",
+   "parent_id": "E30",
+   "printed": "Mark"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    677,
+    1,
+    721,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  }
+ ],
+ "all_names": [
+  ". matches newline",
+  "Always",
+  "Backward direction",
+  "Close",
+  "Extended (\\n, \\r, \\t, \\0, \\x...)",
+  "Find",
+  "Find Next",
+  "Find in Files",
+  "Find in Projects",
+  "Find what:",
+  "In selection",
+  "Mark",
+  "Match case",
+  "Match whole word only",
+  "Normal",
+  "On losing focus",
+  "Open",
+  "Page left",
+  "Page right",
+  "Position",
+  "Regular expression",
+  "Replace",
+  "Replace All",
+  "Replace All in All Opened Documents",
+  "Replace with:",
+  "Search Mode",
+  "Tab",
+  "Transparency",
+  "Wrap around",
+  "˄",
+  "⇅"
+ ],
+ "source": "uia",
+ "window_title": "Replace"
+}

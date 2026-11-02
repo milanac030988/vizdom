@@ -1,0 +1,1207 @@
+{
+ "image_size": {
+  "width": 1377,
+  "height": 901
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    1,
+    0,
+    1376,
+    900
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E19",
+    "E25",
+    "E40"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    1,
+    0,
+    1376,
+    4
+   ],
+   "confidence": 1.0,
+   "uia_type": "Pane",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    1,
+    9,
+    29,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    1292,
+    9,
+    1320,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": ")"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    1320,
+    9,
+    1348,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "‘\nA | >"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    1348,
+    9,
+    1376,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "4\n. | <"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    1,
+    0,
+    1376,
+    55
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E8",
+    "E16",
+    "E17",
+    "E18"
+   ]
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    1,
+    0,
+    370,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E7",
+   "children_ids": [
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15"
+   ]
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    1,
+    0,
+    38,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "File",
+   "parent_id": "E8",
+   "printed": "File | File | File",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    38,
+    0,
+    79,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Edit",
+   "parent_id": "E8",
+   "printed": "Edit | Edit | Edit",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    79,
+    0,
+    125,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "View",
+   "role_word": "menu item",
+   "parent_id": "E8",
+   "printed": "View | View | View"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    125,
+    0,
+    187,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "History",
+   "role_word": "menu item",
+   "parent_id": "E8",
+   "printed": "History | History | History"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    187,
+    0,
+    275,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Bookmarks",
+   "role_word": "menu item",
+   "parent_id": "E8",
+   "printed": "Bookmarks | Bookmarks | Bookmarks"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    275,
+    0,
+    324,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Tools",
+   "role_word": "menu item",
+   "parent_id": "E8",
+   "printed": "Tools | Tools | Tools"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    324,
+    0,
+    370,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Help",
+   "role_word": "menu item",
+   "parent_id": "E8",
+   "printed": "Help | Help | Help"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    1205,
+    0,
+    1262,
+    55
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "role_word": "button",
+   "parent_id": "E7",
+   "printed": "—",
+   "review": "name not printed"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    1262,
+    0,
+    1319,
+    55
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "role_word": "button",
+   "parent_id": "E7",
+   "printed": "Oo | O",
+   "review": "name not printed"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    1319,
+    0,
+    1376,
+    55
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E7",
+   "printed": "x | x",
+   "review": "name not printed"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    1,
+    55,
+    1376,
+    110
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E20",
+    "E21",
+    "E23",
+    "E24"
+   ]
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    51,
+    55,
+    101,
+    110
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Firefox View",
+   "role_word": "button",
+   "parent_id": "E19",
+   "printed": "5 | 5",
+   "review": "name not printed"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    107,
+    55,
+    388,
+    110
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Settings",
+   "role_word": "tab",
+   "parent_id": "E19",
+   "children_ids": [
+    "E22"
+   ],
+   "printed": "£53 Settings x | £53 Settings x | £53 Settings"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    358,
+    68,
+    381,
+    98
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close tab",
+   "review": "icon-only?",
+   "parent_id": "E21",
+   "printed": "x | x"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    388,
+    55,
+    438,
+    110
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open a new tab (Ctrl+T)",
+   "role_word": "button",
+   "parent_id": "E19",
+   "printed": "— | —",
+   "review": "name not printed"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    1105,
+    55,
+    1155,
+    110
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "List all tabs",
+   "role_word": "button",
+   "parent_id": "E19",
+   "printed": "Vv | Vv",
+   "review": "name not printed"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    1,
+    110,
+    1376,
+    160
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E33",
+    "E35",
+    "E36",
+    "E37",
+    "E38",
+    "E39"
+   ]
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    1,
+    110,
+    54,
+    160
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Back",
+   "role_word": "button",
+   "parent_id": "E25",
+   "printed": "& | &",
+   "review": "name not printed"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    54,
+    110,
+    99,
+    160
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Forward",
+   "role_word": "button",
+   "parent_id": "E25",
+   "printed": "> | >",
+   "review": "name not printed"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    99,
+    110,
+    144,
+    160
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Reload",
+   "role_word": "button",
+   "parent_id": "E25",
+   "printed": "C | C",
+   "review": "name not printed"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    144,
+    110,
+    189,
+    160
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Home",
+   "role_word": "button",
+   "parent_id": "E25",
+   "printed": "fo) | (a)",
+   "review": "name not printed"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    254,
+    118,
+    350,
+    152
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "View site information",
+   "role_word": "button",
+   "parent_id": "E25",
+   "children_ids": [
+    "E31",
+    "E32"
+   ],
+   "printed": "© Firefox | © Firefox | © Firefox",
+   "review": "name not printed"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    264,
+    125,
+    284,
+    145
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E30"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    284,
+    124,
+    340,
+    147
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E30"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    358,
+    124,
+    888,
+    147
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E25",
+   "children_ids": [
+    "E34"
+   ]
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    358,
+    124,
+    554,
+    147
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "about:preferences#search",
+   "parent_id": "E33"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    888,
+    118,
+    922,
+    152
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Bookmark this page (Ctrl+D)",
+   "review": "icon-only?",
+   "parent_id": "E25",
+   "printed": "Ww | LS"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    940,
+    118,
+    998,
+    152
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Pick a Search Engine",
+   "role_word": "button",
+   "parent_id": "E25",
+   "printed": "© - | © - | © -",
+   "review": "name not printed"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    1006,
+    124,
+    1213,
+    147
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E25"
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    1279,
+    110,
+    1324,
+    160
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Extensions",
+   "role_word": "button",
+   "parent_id": "E25",
+   "printed": "2 | 2]",
+   "review": "name not printed"
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    1324,
+    110,
+    1376,
+    160
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Firefox",
+   "role_word": "button",
+   "parent_id": "E25",
+   "printed": "—_—",
+   "review": "name not printed"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    1,
+    161,
+    1376,
+    900
+   ],
+   "confidence": 1.0,
+   "uia_type": "Document",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E41",
+    "E42",
+    "E43",
+    "E44",
+    "E45",
+    "E46",
+    "E47",
+    "E48",
+    "E49",
+    "E50",
+    "E51",
+    "E52",
+    "E53",
+    "E54",
+    "E55",
+    "E56",
+    "E57",
+    "E58",
+    "E59",
+    "E61",
+    "E63",
+    "E65"
+   ]
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    51,
+    297,
+    349,
+    341
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Account and sync",
+   "role_word": "tab",
+   "parent_id": "E40",
+   "printed": "© Account and sync | | © Account and sync | | © Account and sync"
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    51,
+    345,
+    349,
+    389
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Home and startup",
+   "role_word": "tab",
+   "parent_id": "E40",
+   "printed": "(a) Home and startup | | (a) Home and startup | | (a) Home and startup"
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    51,
+    394,
+    349,
+    437
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Search",
+   "role_word": "tab",
+   "parent_id": "E40",
+   "printed": "| Q. Search | | | Q. Search | | Q. Search"
+  },
+  {
+   "id": "E44",
+   "bounds": [
+    51,
+    442,
+    349,
+    486
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Privacy and security",
+   "role_word": "tab",
+   "parent_id": "E40",
+   "printed": "& Privacy and security | | & Privacy and security | | & Privacy and security"
+  },
+  {
+   "id": "E45",
+   "bounds": [
+    51,
+    491,
+    349,
+    534
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Passwords and autofill",
+   "role_word": "tab",
+   "parent_id": "E40",
+   "printed": "O+ Passwords and autofill | | O+ Passwords and autofill | | O+ Passwords and autofill"
+  },
+  {
+   "id": "E46",
+   "bounds": [
+    51,
+    539,
+    349,
+    583
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Appearance",
+   "role_word": "tab",
+   "parent_id": "E40",
+   "printed": "© Appearance | | © Appearance | | © Appearance"
+  },
+  {
+   "id": "E47",
+   "bounds": [
+    51,
+    587,
+    349,
+    631
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Downloads",
+   "role_word": "tab",
+   "parent_id": "E40",
+   "printed": "% Downloads | | % Downloads | | ee\n\nv\n\nDownloads"
+  },
+  {
+   "id": "E48",
+   "bounds": [
+    51,
+    636,
+    349,
+    680
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Tabs and browsing",
+   "role_word": "tab",
+   "parent_id": "E40",
+   "printed": "® Tabs and browsing | | ® Tabs and browsing | | ® Tabs and browsing"
+  },
+  {
+   "id": "E49",
+   "bounds": [
+    51,
+    709,
+    349,
+    752
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Accessibility",
+   "role_word": "tab",
+   "parent_id": "E40",
+   "printed": "@ Accessibility | @ Accessibility | @ Accessibility"
+  },
+  {
+   "id": "E50",
+   "bounds": [
+    51,
+    757,
+    349,
+    801
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Languages",
+   "role_word": "tab",
+   "parent_id": "E40",
+   "printed": "Xa Languages | Xa Languages | Xa Languages"
+  },
+  {
+   "id": "E51",
+   "bounds": [
+    51,
+    806,
+    349,
+    849
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "AI controls",
+   "role_word": "tab",
+   "parent_id": "E40",
+   "printed": "<> Al controls | <> Al controls | > Al controls"
+  },
+  {
+   "id": "E52",
+   "bounds": [
+    51,
+    854,
+    349,
+    898
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Permissions and data",
+   "role_word": "tab",
+   "parent_id": "E40",
+   "printed": "o£ Permissions and data | o£ Permissions and data | o—\n\n-_O\n\nPermissions and data"
+  },
+  {
+   "id": "E53",
+   "bounds": [
+    396,
+    242,
+    1149,
+    302
+   ],
+   "confidence": 1.0,
+   "uia_type": "Hyperlink",
+   "visual_type": "button",
+   "ocr_text": "Your browser is being managed by your organization.",
+   "role_word": "link",
+   "parent_id": "E40",
+   "printed": "£1 Your browser is being managed by your organization. G4 | £1 Your browser is being managed by your organization. G4 | £1 Your browser is being managed by your organization.\n\nG"
+  },
+  {
+   "id": "E54",
+   "bounds": [
+    395,
+    312,
+    1150,
+    352
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E40"
+  },
+  {
+   "id": "E55",
+   "bounds": [
+    413,
+    382,
+    1133,
+    410
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Same settings, new look!",
+   "parent_id": "E40"
+  },
+  {
+   "id": "E56",
+   "bounds": [
+    413,
+    419,
+    1106,
+    494
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "We reorganized this page so it’s easier to scan and explore. Your personal settings haven’t changed, and everything’s still here. Tip: use search to jump straight to what you need.",
+   "parent_id": "E40"
+  },
+  {
+   "id": "E57",
+   "bounds": [
+    413,
+    504,
+    500,
+    544
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Got it",
+   "role_word": "button",
+   "parent_id": "E40",
+   "printed": "Got it | : Got it | Got it"
+  },
+  {
+   "id": "E58",
+   "bounds": [
+    427,
+    588,
+    510,
+    625
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Search",
+   "parent_id": "E40"
+  },
+  {
+   "id": "E59",
+   "bounds": [
+    427,
+    684,
+    1119,
+    705
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E40",
+   "children_ids": [
+    "E60"
+   ]
+  },
+  {
+   "id": "E60",
+   "bounds": [
+    427,
+    677,
+    636,
+    705
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Default search engine",
+   "parent_id": "E59"
+  },
+  {
+   "id": "E61",
+   "bounds": [
+    428,
+    725,
+    707,
+    765
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E40",
+   "children_ids": [
+    "E62"
+   ]
+  },
+  {
+   "id": "E62",
+   "bounds": [
+    476,
+    733,
+    537,
+    758
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Google",
+   "parent_id": "E61"
+  },
+  {
+   "id": "E63",
+   "bounds": [
+    427,
+    853,
+    1119,
+    874
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E40",
+   "children_ids": [
+    "E64"
+   ]
+  },
+  {
+   "id": "E64",
+   "bounds": [
+    427,
+    846,
+    675,
+    874
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Additional search engines",
+   "parent_id": "E63"
+  },
+  {
+   "id": "E65",
+   "bounds": [
+    427,
+    879,
+    1018,
+    901
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Choose which search engines and shortcuts appear in your address bar.",
+   "parent_id": "E40"
+  }
+ ],
+ "all_names": [
+  "AI controls",
+  "About Firefox",
+  "Accessibility",
+  "Account and sync",
+  "Actions @actions, >",
+  "Add Shortcut",
+  "Add search engine",
+  "Add-ons for Firefox",
+  "Additional search engines",
+  "Address Bar",
+  "Appearance",
+  "Application",
+  "Back",
+  "Bing",
+  "Bookmark this page (Ctrl+D)",
+  "Bookmarks",
+  "Bookmarks @bookmarks, *",
+  "Browser tabs",
+  "Browsing history",
+  "Choose which search engines and shortcuts appear in your address bar.",
+  "Choose which suggestions display in your address bar",
+  "Close",
+  "Close tab",
+  "Customize",
+  "Default search engine",
+  "Delete search engine",
+  "Downloads",
+  "DuckDuckGo",
+  "Ecosia at Bosch",
+  "Edit",
+  "Edit search engine",
+  "Enable search engine",
+  "EnterpriseSearch",
+  "Extensions",
+  "Extensions and themes",
+  "File",
+  "Find in Settings",
+  "Firefox",
+  "Firefox Labs",
+  "Firefox View",
+  "Firefox support",
+  "Forward",
+  "Google",
+  "Got it",
+  "Help",
+  "History",
+  "History @history, ^",
+  "Home",
+  "Home and startup",
+  "Languages",
+  "Learn more",
+  "List all tabs",
+  "Maximize",
+  "Menu Bar",
+  "MetaGER",
+  "Minimize",
+  "More from Mozilla",
+  "Mozilla Firefox",
+  "Navigation",
+  "New Tab",
+  "Non Client Input Sink Window",
+  "Open a new tab (Ctrl+T)",
+  "Open context menu for Add-ons for Firefox",
+  "Open context menu for Reddit",
+  "Open context menu for Wikipedia",
+  "Open context menu for YouTube",
+  "Open tabs",
+  "Passwords and autofill",
+  "Permissions and data",
+  "Perplexity",
+  "Pick a Search Engine",
+  "Privacy and security",
+  "Quick actions",
+  "Recent searches",
+  "Reddit",
+  "Reload",
+  "Reorder Bing using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown",
+  "Reorder Bing using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown Bing @bing Edit search engine Enable search engine",
+  "Reorder DuckDuckGo using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown",
+  "Reorder DuckDuckGo using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown DuckDuckGo @duckduckgo, @ddg Edit search engine Enable search engine",
+  "Reorder Ecosia at Bosch using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown",
+  "Reorder Ecosia at Bosch using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown Ecosia at Bosch Edit search engine Delete search engine",
+  "Reorder EnterpriseSearch using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown",
+  "Reorder EnterpriseSearch using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown EnterpriseSearch es Edit search engine Delete search engine",
+  "Reorder Google using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown",
+  "Reorder Google using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown Google @google Edit search engine Enable search engine",
+  "Reorder MetaGER using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown",
+  "Reorder MetaGER using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown MetaGER Edit search engine Delete search engine",
+  "Reorder Perplexity using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown",
+  "Reorder Perplexity using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown Perplexity @perplexity Edit search engine Enable search engine",
+  "Reorder Wikipedia (en) using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown",
+  "Reorder Wikipedia (en) using Ctrl+Shift+ArrowUp or Ctrl+Shift+ArrowDown Wikipedia (en) @wikipedia Edit search engine Enable search engine",
+  "Same settings, new look!",
+  "Search",
+  "Search engine suggestions",
+  "Search suggestions in private windows",
+  "Search the web",
+  "Search with Google or enter address",
+  "Settings",
+  "Settings — Mozilla Firefox",
+  "Shortcuts",
+  "Show search suggestions",
+  "Show search suggestions before browsing history in address bar results",
+  "Show search suggestions in address bar results",
+  "Suggest search engines to use",
+  "System",
+  "Tabs @tabs, %",
+  "Tabs and browsing",
+  "Tools",
+  "Trending search suggestions",
+  "View",
+  "View site information",
+  "We reorganized this page so it’s easier to scan and explore. Your personal settings haven’t changed, and everything’s still here. Tip: use search to jump straight to what you need.",
+  "Wikipedia",
+  "Wikipedia (en)",
+  "YouTube",
+  "Your browser is being managed by your organization.",
+  "about:preferences#search"
+ ],
+ "source": "uia",
+ "window_title": "Settings — Mozilla Firefox"
+}

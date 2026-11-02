@@ -1,0 +1,2733 @@
+{
+ "image_size": {
+  "width": 1484,
+  "height": 872
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    1484,
+    872
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E22",
+    "E28",
+    "E32",
+    "E33",
+    "E36",
+    "E37",
+    "E38",
+    "E40",
+    "E42",
+    "E44",
+    "E113",
+    "E115",
+    "E139",
+    "E143",
+    "E147",
+    "E151",
+    "E152",
+    "E153",
+    "E155",
+    "E156",
+    "E157",
+    "E158",
+    "E159",
+    "E160",
+    "E161",
+    "E162",
+    "E163"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    1312,
+    1,
+    1369,
+    43
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    1369,
+    1,
+    1427,
+    43
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "O | O"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    1426,
+    1,
+    1484,
+    43
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | X z"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    44,
+    0,
+    90,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "File",
+   "parent_id": "E1",
+   "printed": "File | File | File",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    89,
+    0,
+    137,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Edit",
+   "parent_id": "E1",
+   "printed": "Edit | Edit | Edit",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    136,
+    0,
+    222,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Selection",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Selection | Selection | Selection"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    221,
+    0,
+    276,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "View",
+   "parent_id": "E1",
+   "printed": "View | View | View",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    275,
+    0,
+    317,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Go",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Go | Go | Go"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    316,
+    0,
+    365,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "icon",
+   "ocr_text": "More",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": ""
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    419,
+    8,
+    447,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Go Back (Alt+LeftArrow)",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "— | —"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    451,
+    8,
+    480,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Go Forward (Alt+RightArrow)",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "— | —"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    492,
+    8,
+    1057,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "vizdom_demo",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "vizdom_demo | vizdom_demo | vizdom_demo"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    1181,
+    0,
+    1306,
+    44
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E15",
+    "E16",
+    "E18",
+    "E20"
+   ]
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    1181,
+    8,
+    1209,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Customize Layout...",
+   "review": "icon-only?",
+   "parent_id": "E14",
+   "printed": "08 | 08"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    1213,
+    8,
+    1241,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Toggle Primary Side Bar (Ctrl+B)",
+   "review": "icon-only?",
+   "parent_id": "E14",
+   "children_ids": [
+    "E17"
+   ],
+   "printed": "Oo | i"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    1217,
+    11,
+    1238,
+    32
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E16"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    1246,
+    8,
+    1274,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Toggle Panel (Ctrl+J)",
+   "review": "icon-only?",
+   "parent_id": "E14",
+   "children_ids": [
+    "E19"
+   ],
+   "printed": "=) | ="
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    1249,
+    11,
+    1270,
+    32
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E18"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    1278,
+    8,
+    1306,
+    36
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Toggle Secondary Side Bar (Ctrl+Alt+B)",
+   "review": "icon-only?",
+   "parent_id": "E14",
+   "children_ids": [
+    "E21"
+   ],
+   "printed": "O | a"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    1282,
+    11,
+    1303,
+    32
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E20"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    10,
+    48,
+    56,
+    314
+   ],
+   "confidence": 1.0,
+   "uia_type": "Tab",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27"
+   ]
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    10,
+    48,
+    56,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "icon",
+   "ocr_text": "Explorer (Ctrl+Shift+E)",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "(7 | (7 | (i"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    10,
+    103,
+    56,
+    149
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "icon",
+   "ocr_text": "Search (Ctrl+Shift+F)",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "Q | Q"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    10,
+    158,
+    56,
+    204
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "icon",
+   "ocr_text": "Source Control (Ctrl+Shift+G)",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "ts | 19"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    10,
+    213,
+    56,
+    259
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "icon",
+   "ocr_text": "Run and Debug (Ctrl+Shift+D)",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "rag | rag | rag"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    10,
+    268,
+    56,
+    314
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "icon",
+   "ocr_text": "Extensions (Ctrl+Shift+X)",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "ES | ES"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    10,
+    727,
+    56,
+    828
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E29",
+    "E31"
+   ]
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    10,
+    727,
+    56,
+    773
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Accounts",
+   "review": "icon-only?",
+   "parent_id": "E28",
+   "children_ids": [
+    "E30"
+   ],
+   "printed": "© | ©"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    18,
+    734,
+    49,
+    765
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E29"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    18,
+    789,
+    49,
+    820
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E28"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    77,
+    44,
+    309,
+    85
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Extensions",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    314,
+    44,
+    430,
+    85
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E34",
+    "E35"
+   ]
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    370,
+    51,
+    398,
+    79
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Refresh",
+   "review": "icon-only?",
+   "parent_id": "E33",
+   "printed": "CG | CG"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    402,
+    51,
+    430,
+    79
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Views and More Actions...",
+   "review": "icon-only?",
+   "parent_id": "E33",
+   "printed": ""
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    80,
+    94,
+    319,
+    117
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Search Extensions in Marketplace",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    368,
+    92,
+    397,
+    120
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Clear Extensions Search Results",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "xs | = | x="
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    396,
+    92,
+    424,
+    120
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Filter Extensions...",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "children_ids": [
+    "E39"
+   ],
+   "printed": "Y | 4"
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    400,
+    95,
+    420,
+    116
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E38"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    67,
+    136,
+    429,
+    171
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Installed Section",
+   "role_word": "button",
+   "parent_id": "E1",
+   "children_ids": [
+    "E41"
+   ],
+   "printed": "Installed O | Installed O | v Installed",
+   "review": "name not printed"
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    97,
+    136,
+    155,
+    171
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Installed",
+   "parent_id": "E40"
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    67,
+    171,
+    429,
+    206
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Popular Section",
+   "role_word": "button",
+   "parent_id": "E1",
+   "children_ids": [
+    "E43"
+   ],
+   "printed": "Y Popular | Y Popular | Y Popular",
+   "review": "name not printed"
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    97,
+    171,
+    150,
+    206
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Popular",
+   "parent_id": "E42"
+  },
+  {
+   "id": "E44",
+   "bounds": [
+    62,
+    206,
+    434,
+    641
+   ],
+   "confidence": 1.0,
+   "uia_type": "List",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E45",
+    "E59",
+    "E72",
+    "E85",
+    "E100"
+   ]
+  },
+  {
+   "id": "E45",
+   "bounds": [
+    67,
+    206,
+    429,
+    296
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "icon",
+   "ocr_text": "Python, 2026.10.0, Verified Publisher Microsoft, Python language support with extension access points for IntelliSense (Pylance), Debugging (Python Debugger), linting, formatting, refactoring, unit tests, and more. , Rated 4.21 out of 5 stars by 632 users",
+   "role_word": "list item",
+   "parent_id": "E44",
+   "children_ids": [
+    "E46",
+    "E47",
+    "E48",
+    "E49",
+    "E50",
+    "E51",
+    "E52",
+    "E53",
+    "E54",
+    "E55",
+    "E56",
+    "E57"
+   ],
+   "printed": "a Python Ce 243.6M fe |\n-) Python language support with exte...\n| Microsoft “Install |W | ‘eo rn ns a | Ce 243.6M fe |\n\nPython\n\nPython language support with exte...\n\n‘@\n\n| Microsoft\n\n“Install |W",
+   "review": "name not printed"
+  },
+  {
+   "id": "E46",
+   "bounds": [
+    69,
+    208,
+    85,
+    224
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E47",
+   "bounds": [
+    69,
+    208,
+    85,
+    224
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E48",
+   "bounds": [
+    152,
+    212,
+    205,
+    235
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Python",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E49",
+   "bounds": [
+    311,
+    213,
+    332,
+    234
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E50",
+   "bounds": [
+    334,
+    214,
+    380,
+    233
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "243.6M",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E51",
+   "bounds": [
+    386,
+    213,
+    407,
+    234
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E52",
+   "bounds": [
+    409,
+    214,
+    417,
+    232
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "4",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E53",
+   "bounds": [
+    152,
+    236,
+    415,
+    259
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Python language support with extension access points for IntelliSense (Pylance), Debugging (Python Debugger), linting, formatting, refactoring, unit tests, and more.",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E54",
+   "bounds": [
+    152,
+    265,
+    172,
+    286
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E55",
+   "bounds": [
+    173,
+    266,
+    234,
+    285
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Microsoft",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E56",
+   "bounds": [
+    349,
+    266,
+    399,
+    288
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Install",
+   "role_word": "button",
+   "parent_id": "E45",
+   "printed": "Install | Install | Install"
+  },
+  {
+   "id": "E57",
+   "bounds": [
+    400,
+    266,
+    422,
+    288
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More Actions...",
+   "review": "icon-only?",
+   "parent_id": "E45",
+   "children_ids": [
+    "E58"
+   ],
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E58",
+   "bounds": [
+    400,
+    267,
+    421,
+    287
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E57"
+  },
+  {
+   "id": "E59",
+   "bounds": [
+    67,
+    296,
+    429,
+    386
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "icon",
+   "ocr_text": "Pylance, 2026.4.1, Verified Publisher Microsoft, A performant, feature-rich language server for Python in VS Code , Rated 2.95 out of 5 stars by 286 users",
+   "role_word": "list item",
+   "parent_id": "E44",
+   "children_ids": [
+    "E60",
+    "E61",
+    "E62",
+    "E63",
+    "E64",
+    "E65",
+    "E66",
+    "E67",
+    "E68",
+    "E69",
+    "E70"
+   ],
+   "printed": "o Pylance €@210.3M fe\n-) A performant, feature-rich languag...\n| Microsoft “Install |W | ‘2 xa featu ee | Pylance\n\n€@210.3M fe\n\nA performant, feature-rich languag...\n\n‘@\n\n| Microsoft\n\n“Install |",
+   "review": "name not printed"
+  },
+  {
+   "id": "E60",
+   "bounds": [
+    69,
+    298,
+    85,
+    314
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E59"
+  },
+  {
+   "id": "E61",
+   "bounds": [
+    152,
+    302,
+    209,
+    325
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Pylance",
+   "parent_id": "E59"
+  },
+  {
+   "id": "E62",
+   "bounds": [
+    311,
+    303,
+    332,
+    324
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E59"
+  },
+  {
+   "id": "E63",
+   "bounds": [
+    334,
+    304,
+    380,
+    323
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "210.3M",
+   "parent_id": "E59"
+  },
+  {
+   "id": "E64",
+   "bounds": [
+    386,
+    303,
+    407,
+    324
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E59"
+  },
+  {
+   "id": "E65",
+   "bounds": [
+    409,
+    304,
+    417,
+    322
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "3",
+   "parent_id": "E59"
+  },
+  {
+   "id": "E66",
+   "bounds": [
+    152,
+    326,
+    414,
+    349
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "A performant, feature-rich language server for Python in VS Code",
+   "parent_id": "E59"
+  },
+  {
+   "id": "E67",
+   "bounds": [
+    152,
+    355,
+    172,
+    376
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E59"
+  },
+  {
+   "id": "E68",
+   "bounds": [
+    173,
+    356,
+    234,
+    375
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Microsoft",
+   "parent_id": "E59"
+  },
+  {
+   "id": "E69",
+   "bounds": [
+    349,
+    356,
+    399,
+    378
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Install",
+   "role_word": "button",
+   "parent_id": "E59",
+   "printed": "Install | Install | Install"
+  },
+  {
+   "id": "E70",
+   "bounds": [
+    400,
+    356,
+    422,
+    378
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More Actions...",
+   "review": "icon-only?",
+   "parent_id": "E59",
+   "children_ids": [
+    "E71"
+   ],
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E71",
+   "bounds": [
+    400,
+    357,
+    421,
+    377
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E70"
+  },
+  {
+   "id": "E72",
+   "bounds": [
+    67,
+    386,
+    429,
+    476
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "icon",
+   "ocr_text": "Python Debugger, 2026.6.0, Verified Publisher Microsoft, Python Debugger extension using debugpy. , Rated 4.71 out of 5 stars by 17 users",
+   "role_word": "list item",
+   "parent_id": "E44",
+   "children_ids": [
+    "E73",
+    "E74",
+    "E75",
+    "E76",
+    "E77",
+    "E78",
+    "E79",
+    "E80",
+    "E81",
+    "E82",
+    "E83"
+   ],
+   "printed": "a Python Debugger <@149M Y4.s\n-) Python Debugger extension using ...\n| Microsoft “Install |W | ‘@ sna an | 6 149M fe 4s\n\nPython Debugger\n\nPython Debugger extension using ...\n\n‘@\n\n| Microsoft\n\n“Install |",
+   "review": "name not printed"
+  },
+  {
+   "id": "E73",
+   "bounds": [
+    69,
+    388,
+    85,
+    404
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E72"
+  },
+  {
+   "id": "E74",
+   "bounds": [
+    152,
+    392,
+    283,
+    415
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Python Debugger",
+   "parent_id": "E72"
+  },
+  {
+   "id": "E75",
+   "bounds": [
+    312,
+    393,
+    333,
+    414
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E72"
+  },
+  {
+   "id": "E76",
+   "bounds": [
+    334,
+    394,
+    370,
+    413
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "149M",
+   "parent_id": "E72"
+  },
+  {
+   "id": "E77",
+   "bounds": [
+    376,
+    393,
+    397,
+    414
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E72"
+  },
+  {
+   "id": "E78",
+   "bounds": [
+    399,
+    394,
+    417,
+    412
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "4.5",
+   "parent_id": "E72"
+  },
+  {
+   "id": "E79",
+   "bounds": [
+    152,
+    416,
+    412,
+    439
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Python Debugger extension using debugpy.",
+   "parent_id": "E72"
+  },
+  {
+   "id": "E80",
+   "bounds": [
+    152,
+    445,
+    172,
+    466
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E72"
+  },
+  {
+   "id": "E81",
+   "bounds": [
+    173,
+    446,
+    234,
+    465
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Microsoft",
+   "parent_id": "E72"
+  },
+  {
+   "id": "E82",
+   "bounds": [
+    349,
+    446,
+    399,
+    468
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Install",
+   "role_word": "button",
+   "parent_id": "E72",
+   "printed": "Install | Install | Install"
+  },
+  {
+   "id": "E83",
+   "bounds": [
+    400,
+    446,
+    422,
+    468
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More Actions...",
+   "review": "icon-only?",
+   "parent_id": "E72",
+   "children_ids": [
+    "E84"
+   ],
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E84",
+   "bounds": [
+    400,
+    447,
+    421,
+    467
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E83"
+  },
+  {
+   "id": "E85",
+   "bounds": [
+    67,
+    476,
+    429,
+    566
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "icon",
+   "ocr_text": "Jupyter, 2025.9.1, Verified Publisher Microsoft, Jupyter notebook support, interactive programming and computing that supports Intellisense, debugging and more. , Rated 2.64 out of 5 stars by 371 users",
+   "role_word": "list item",
+   "parent_id": "E44",
+   "children_ids": [
+    "E86",
+    "E87",
+    "E88",
+    "E89",
+    "E90",
+    "E91",
+    "E92",
+    "E93",
+    "E94",
+    "E95",
+    "E96",
+    "E97",
+    "E98"
+   ],
+   "printed": "o Jupyter €@110.9M fe 2.5\nJupyter notebook support, interacti...\n4 2 Microsoft “Install |W | s bere “oe oe ue | =)\n\nJupyter\n\n€@110.9M fe 2.5\n\nJupyter notebook support, interacti...\n\n2 Microsoft\n\n“Install |",
+   "review": "name not printed"
+  },
+  {
+   "id": "E86",
+   "bounds": [
+    69,
+    478,
+    85,
+    494
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E85"
+  },
+  {
+   "id": "E87",
+   "bounds": [
+    69,
+    478,
+    85,
+    494
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E85"
+  },
+  {
+   "id": "E88",
+   "bounds": [
+    85,
+    532,
+    93,
+    549
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "4",
+   "parent_id": "E85"
+  },
+  {
+   "id": "E89",
+   "bounds": [
+    152,
+    482,
+    207,
+    505
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Jupyter",
+   "parent_id": "E85"
+  },
+  {
+   "id": "E90",
+   "bounds": [
+    301,
+    483,
+    322,
+    504
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E85"
+  },
+  {
+   "id": "E91",
+   "bounds": [
+    324,
+    484,
+    370,
+    503
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "110.9M",
+   "parent_id": "E85"
+  },
+  {
+   "id": "E92",
+   "bounds": [
+    376,
+    483,
+    397,
+    504
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E85"
+  },
+  {
+   "id": "E93",
+   "bounds": [
+    399,
+    484,
+    417,
+    502
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2.5",
+   "parent_id": "E85"
+  },
+  {
+   "id": "E94",
+   "bounds": [
+    152,
+    506,
+    417,
+    529
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Jupyter notebook support, interactive programming and computing that supports Intellisense, debugging and more.",
+   "parent_id": "E85"
+  },
+  {
+   "id": "E95",
+   "bounds": [
+    152,
+    535,
+    172,
+    556
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E85"
+  },
+  {
+   "id": "E96",
+   "bounds": [
+    173,
+    536,
+    234,
+    555
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Microsoft",
+   "parent_id": "E85"
+  },
+  {
+   "id": "E97",
+   "bounds": [
+    349,
+    536,
+    399,
+    558
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Install",
+   "role_word": "button",
+   "parent_id": "E85",
+   "printed": "Install | Install | Install"
+  },
+  {
+   "id": "E98",
+   "bounds": [
+    400,
+    536,
+    422,
+    558
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More Actions...",
+   "review": "icon-only?",
+   "parent_id": "E85",
+   "children_ids": [
+    "E99"
+   ],
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E99",
+   "bounds": [
+    400,
+    537,
+    421,
+    557
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E98"
+  },
+  {
+   "id": "E100",
+   "bounds": [
+    67,
+    566,
+    429,
+    656
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "icon",
+   "ocr_text": "C/C++, 1.34.4, Verified Publisher Microsoft, C/C++ IntelliSense, debugging, and code browsing. , Rated 3.42 out of 5 stars by 605 users",
+   "role_word": "list item",
+   "parent_id": "E44",
+   "children_ids": [
+    "E101",
+    "E102",
+    "E103",
+    "E104",
+    "E105",
+    "E106",
+    "E107",
+    "E108",
+    "E109",
+    "E110",
+    "E111"
+   ],
+   "printed": "o C/C++ €@ 106.4M wf 3.5\nC/C++ Intellisense, debugging, an...\nry] Microsoft freee!\n\n— oe > | . alive a | =)\n\nC/C++\n\n€@ 106.4M wf 3.5\n\nC/C++ Intellisense, debugging, an...\n\n&% Microsoft\n\n“Inctall |\n\n>",
+   "review": "name not printed"
+  },
+  {
+   "id": "E101",
+   "bounds": [
+    69,
+    568,
+    85,
+    584
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E100"
+  },
+  {
+   "id": "E102",
+   "bounds": [
+    152,
+    572,
+    202,
+    595
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "C/C++",
+   "parent_id": "E100"
+  },
+  {
+   "id": "E103",
+   "bounds": [
+    301,
+    573,
+    322,
+    594
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E100"
+  },
+  {
+   "id": "E104",
+   "bounds": [
+    324,
+    574,
+    370,
+    593
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "106.4M",
+   "parent_id": "E100"
+  },
+  {
+   "id": "E105",
+   "bounds": [
+    376,
+    573,
+    397,
+    594
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E100"
+  },
+  {
+   "id": "E106",
+   "bounds": [
+    399,
+    574,
+    417,
+    592
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "3.5",
+   "parent_id": "E100"
+  },
+  {
+   "id": "E107",
+   "bounds": [
+    152,
+    596,
+    411,
+    619
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "C/C++ IntelliSense, debugging, and code browsing.",
+   "parent_id": "E100"
+  },
+  {
+   "id": "E108",
+   "bounds": [
+    152,
+    625,
+    172,
+    646
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E100"
+  },
+  {
+   "id": "E109",
+   "bounds": [
+    173,
+    626,
+    234,
+    645
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Microsoft",
+   "parent_id": "E100"
+  },
+  {
+   "id": "E110",
+   "bounds": [
+    349,
+    626,
+    399,
+    648
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Install",
+   "role_word": "button",
+   "parent_id": "E100",
+   "printed": "Inctall | Inctall | Inctall"
+  },
+  {
+   "id": "E111",
+   "bounds": [
+    400,
+    626,
+    422,
+    648
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More Actions...",
+   "review": "icon-only?",
+   "parent_id": "E100",
+   "children_ids": [
+    "E112"
+   ],
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E112",
+   "bounds": [
+    400,
+    627,
+    421,
+    647
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E111"
+  },
+  {
+   "id": "E113",
+   "bounds": [
+    67,
+    640,
+    429,
+    676
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Recommended Section",
+   "role_word": "button",
+   "parent_id": "E1",
+   "children_ids": [
+    "E114"
+   ],
+   "printed": "vv Recommended @ | vv Recommended @ | vv Recommended",
+   "review": "name not printed"
+  },
+  {
+   "id": "E114",
+   "bounds": [
+    97,
+    640,
+    200,
+    676
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Recommended",
+   "parent_id": "E113"
+  },
+  {
+   "id": "E115",
+   "bounds": [
+    62,
+    675,
+    434,
+    826
+   ],
+   "confidence": 1.0,
+   "uia_type": "List",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E116",
+    "E130"
+   ]
+  },
+  {
+   "id": "E116",
+   "bounds": [
+    67,
+    675,
+    429,
+    766
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "icon",
+   "ocr_text": "Python, 2026.10.0, Verified Publisher Microsoft, Python language support with extension access points for IntelliSense (Pylance), Debugging (Python Debugger), linting, formatting, refactoring, unit tests, and more. , Rated 4.21 out of 5 stars by 632 users",
+   "role_word": "list item",
+   "parent_id": "E115",
+   "children_ids": [
+    "E117",
+    "E118",
+    "E119",
+    "E120",
+    "E121",
+    "E122",
+    "E123",
+    "E124",
+    "E125",
+    "E126",
+    "E127",
+    "E128"
+   ],
+   "printed": "o Python Ce 243.6M fe\n-) Python language support with exte...\n| Microsoft “Install |W | ‘eo ren ns ane | Python\n\nCe 243.6M fe\n\nPython language support with exte...\n\n‘@\n\n| Microsoft\n\nInstall |",
+   "review": "name not printed"
+  },
+  {
+   "id": "E117",
+   "bounds": [
+    69,
+    677,
+    85,
+    693
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E116"
+  },
+  {
+   "id": "E118",
+   "bounds": [
+    69,
+    677,
+    85,
+    693
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E116"
+  },
+  {
+   "id": "E119",
+   "bounds": [
+    152,
+    681,
+    205,
+    704
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Python",
+   "parent_id": "E116"
+  },
+  {
+   "id": "E120",
+   "bounds": [
+    311,
+    683,
+    332,
+    703
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E116"
+  },
+  {
+   "id": "E121",
+   "bounds": [
+    334,
+    683,
+    380,
+    702
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "243.6M",
+   "parent_id": "E116"
+  },
+  {
+   "id": "E122",
+   "bounds": [
+    386,
+    683,
+    407,
+    703
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E116"
+  },
+  {
+   "id": "E123",
+   "bounds": [
+    409,
+    683,
+    417,
+    701
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "4",
+   "parent_id": "E116"
+  },
+  {
+   "id": "E124",
+   "bounds": [
+    152,
+    705,
+    415,
+    728
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Python language support with extension access points for IntelliSense (Pylance), Debugging (Python Debugger), linting, formatting, refactoring, unit tests, and more.",
+   "parent_id": "E116"
+  },
+  {
+   "id": "E125",
+   "bounds": [
+    152,
+    735,
+    172,
+    755
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E116"
+  },
+  {
+   "id": "E126",
+   "bounds": [
+    173,
+    736,
+    234,
+    754
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Microsoft",
+   "parent_id": "E116"
+  },
+  {
+   "id": "E127",
+   "bounds": [
+    349,
+    735,
+    399,
+    758
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Install",
+   "role_word": "button",
+   "parent_id": "E116",
+   "printed": "Install | Install | Install"
+  },
+  {
+   "id": "E128",
+   "bounds": [
+    400,
+    735,
+    422,
+    758
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More Actions...",
+   "review": "icon-only?",
+   "parent_id": "E116",
+   "children_ids": [
+    "E129"
+   ],
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E129",
+   "bounds": [
+    400,
+    736,
+    421,
+    757
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E128"
+  },
+  {
+   "id": "E130",
+   "bounds": [
+    67,
+    765,
+    429,
+    856
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "icon",
+   "ocr_text": "Container Tools, 2.5.3, Verified Publisher Microsoft, Makes it easy to create, manage, and debug containerized applications. , Rated 3.86 out of 5 stars by 21 users",
+   "role_word": "list item",
+   "parent_id": "E115",
+   "children_ids": [
+    "E131",
+    "E132",
+    "E133",
+    "E134",
+    "E135",
+    "E136",
+    "E137",
+    "E138"
+   ],
+   "printed": "w Container Tools €@19.3M fe4\nial Makes it easy to create, manage, a...\nNn fi n | w\n\nContainer Tools\n\n6 19.3M fe\n\nial Makes it easy to create, manage, a...\n\nNn fi n",
+   "review": "name not printed"
+  },
+  {
+   "id": "E131",
+   "bounds": [
+    69,
+    767,
+    85,
+    783
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E130"
+  },
+  {
+   "id": "E132",
+   "bounds": [
+    152,
+    771,
+    267,
+    794
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Container Tools",
+   "parent_id": "E130"
+  },
+  {
+   "id": "E133",
+   "bounds": [
+    319,
+    773,
+    340,
+    793
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E130"
+  },
+  {
+   "id": "E134",
+   "bounds": [
+    341,
+    773,
+    380,
+    792
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "19.3M",
+   "parent_id": "E130"
+  },
+  {
+   "id": "E135",
+   "bounds": [
+    386,
+    773,
+    407,
+    793
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E130"
+  },
+  {
+   "id": "E136",
+   "bounds": [
+    409,
+    773,
+    417,
+    791
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "4",
+   "parent_id": "E130"
+  },
+  {
+   "id": "E137",
+   "bounds": [
+    152,
+    795,
+    410,
+    818
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Makes it easy to create, manage, and debug containerized applications.",
+   "parent_id": "E130"
+  },
+  {
+   "id": "E138",
+   "bounds": [
+    152,
+    825,
+    172,
+    845
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E130"
+  },
+  {
+   "id": "E139",
+   "bounds": [
+    442,
+    44,
+    607,
+    85
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "inventory.py",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "children_ids": [
+    "E140",
+    "E141"
+   ],
+   "printed": "® inventory.py X | ® inventory.py X | ® inventory.py X"
+  },
+  {
+   "id": "E140",
+   "bounds": [
+    449,
+    49,
+    566,
+    80
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E139"
+  },
+  {
+   "id": "E141",
+   "bounds": [
+    570,
+    45,
+    601,
+    84
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E139",
+   "children_ids": [
+    "E142"
+   ]
+  },
+  {
+   "id": "E142",
+   "bounds": [
+    572,
+    52,
+    598,
+    78
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close (Ctrl+F4)",
+   "review": "icon-only?",
+   "parent_id": "E141",
+   "printed": "x | x"
+  },
+  {
+   "id": "E143",
+   "bounds": [
+    1042,
+    44,
+    1103,
+    85
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E144",
+    "E145"
+   ]
+  },
+  {
+   "id": "E144",
+   "bounds": [
+    1042,
+    51,
+    1070,
+    79
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Split Editor Right (Ctrl+\\) [Alt] Split Editor Down",
+   "review": "icon-only?",
+   "parent_id": "E143",
+   "printed": "an | (D"
+  },
+  {
+   "id": "E145",
+   "bounds": [
+    1075,
+    51,
+    1103,
+    79
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More Actions...",
+   "review": "icon-only?",
+   "parent_id": "E143",
+   "children_ids": [
+    "E146"
+   ],
+   "printed": ""
+  },
+  {
+   "id": "E146",
+   "bounds": [
+    1078,
+    54,
+    1099,
+    75
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E145"
+  },
+  {
+   "id": "E147",
+   "bounds": [
+    442,
+    86,
+    588,
+    114
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "inventory.py",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E148"
+   ],
+   "printed": "® inventory.py | ® inventory.py | ® inventory.py"
+  },
+  {
+   "id": "E148",
+   "bounds": [
+    462,
+    86,
+    578,
+    114
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E147",
+   "children_ids": [
+    "E149",
+    "E150"
+   ]
+  },
+  {
+   "id": "E149",
+   "bounds": [
+    462,
+    87,
+    487,
+    111
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E148"
+  },
+  {
+   "id": "E150",
+   "bounds": [
+    489,
+    88,
+    578,
+    110
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "inventory.py",
+   "parent_id": "E148"
+  },
+  {
+   "id": "E151",
+   "bounds": [
+    442,
+    113,
+    1108,
+    832
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E152",
+   "bounds": [
+    1267,
+    44,
+    1413,
+    85
+   ],
+   "confidence": 1.0,
+   "uia_type": "ToolBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E153",
+   "bounds": [
+    1412,
+    51,
+    1440,
+    79
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize Secondary Side Bar",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "children_ids": [
+    "E154"
+   ],
+   "printed": "rq\noe) | ua | rq\n\nta"
+  },
+  {
+   "id": "E154",
+   "bounds": [
+    1416,
+    54,
+    1437,
+    75
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "",
+   "parent_id": "E153"
+  },
+  {
+   "id": "E155",
+   "bounds": [
+    1445,
+    51,
+    1473,
+    79
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Hide Secondary Side Bar (Ctrl+Alt+B)",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  },
+  {
+   "id": "E156",
+   "bounds": [
+    8,
+    837,
+    46,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E157",
+   "bounds": [
+    46,
+    837,
+    135,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E158",
+   "bounds": [
+    1438,
+    837,
+    1476,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E159",
+   "bounds": [
+    1371,
+    837,
+    1439,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E160",
+   "bounds": [
+    1319,
+    837,
+    1372,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E161",
+   "bounds": [
+    1259,
+    837,
+    1320,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E162",
+   "bounds": [
+    1178,
+    837,
+    1260,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E163",
+   "bounds": [
+    1089,
+    837,
+    1179,
+    868
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  }
+ ],
+ "all_names": [
+  "106.4M",
+  "110.9M",
+  "123624 extensions found in the Popular section.",
+  "149M",
+  "19.3M",
+  "2.5",
+  "210.3M",
+  "243.6M",
+  "3",
+  "3.5",
+  "4",
+  "4.5",
+  "A performant, feature-rich language server for Python in VS Code",
+  "Accounts",
+  "Active View Switcher",
+  "C/C++",
+  "C/C++ IntelliSense, debugging, and code browsing.",
+  "C/C++, 1.34.4, Verified Publisher Microsoft, C/C++ IntelliSense, debugging, and code browsing. , Rated 3.42 out of 5 stars by 605 users",
+  "C:\\Users\\Public\\Documents\\vizdom_demo\\inventory.py",
+  "CRLF",
+  "Chat actions",
+  "Clear Extensions Search Results",
+  "Close",
+  "Close (Ctrl+F4)",
+  "Container Tools",
+  "Container Tools, 2.5.3, Verified Publisher Microsoft, Makes it easy to create, manage, and debug containerized applications. , Rated 3.86 out of 5 stars by 21 users",
+  "Customize Layout...",
+  "Edit",
+  "Editor actions",
+  "Explorer (Ctrl+Shift+E)",
+  "Extensions",
+  "Extensions (Ctrl+Shift+X)",
+  "Extensions actions",
+  "File",
+  "Filter Extensions...",
+  "Go",
+  "Go Back (Alt+LeftArrow)",
+  "Go Forward (Alt+RightArrow)",
+  "Hide Secondary Side Bar (Ctrl+Alt+B)",
+  "Install",
+  "Installed",
+  "Installed Section",
+  "Installed actions",
+  "Jupyter",
+  "Jupyter notebook support, interactive programming and computing that supports Intellisense, debugging and more.",
+  "Jupyter, 2025.9.1, Verified Publisher Microsoft, Jupyter notebook support, interactive programming and computing that supports Intellisense, debugging and more. , Rated 2.64 out of 5 stars by 371 users",
+  "Ln 1, Col 1",
+  "Makes it easy to create, manage, and debug containerized applications.",
+  "Manage",
+  "Maximize",
+  "Maximize Secondary Side Bar",
+  "Microsoft",
+  "Minimize",
+  "More",
+  "More Actions...",
+  "No Problems",
+  "No extensions found.",
+  "Notifications",
+  "Popular",
+  "Popular Section",
+  "Popular actions",
+  "Pylance",
+  "Pylance, 2026.4.1, Verified Publisher Microsoft, A performant, feature-rich language server for Python in VS Code , Rated 2.95 out of 5 stars by 286 users",
+  "Python",
+  "Python Debugger",
+  "Python Debugger extension using debugpy.",
+  "Python Debugger, 2026.6.0, Verified Publisher Microsoft, Python Debugger extension using debugpy. , Rated 4.71 out of 5 stars by 17 users",
+  "Python language support with extension access points for IntelliSense (Pylance), Debugging (Python Debugger), linting, formatting, refactoring, unit tests, and more.",
+  "Python, 2026.10.0, Verified Publisher Microsoft, Python language support with extension access points for IntelliSense (Pylance), Debugging (Python Debugger), linting, formatting, refactoring, unit tests, and more. , Rated 4.21 out of 5 stars by 632 users",
+  "Recommended",
+  "Recommended Section",
+  "Recommended actions",
+  "Refresh",
+  "Run and Debug (Ctrl+Shift+D)",
+  "Search (Ctrl+Shift+F)",
+  "Search Extensions in Marketplace",
+  "Selection",
+  "Source Control (Ctrl+Shift+G)",
+  "Spaces: 4",
+  "Split Editor Right (Ctrl+\\) [Alt] Split Editor Down",
+  "Tab actions",
+  "The editor is not accessible at this time. To enable screen reader optimized mode, use Shift+Alt+F1",
+  "Title actions",
+  "Toggle Panel (Ctrl+J)",
+  "Toggle Primary Side Bar (Ctrl+B)",
+  "Toggle Secondary Side Bar (Ctrl+Alt+B)",
+  "UTF-8",
+  "View",
+  "Views and More Actions...",
+  "inventory.py",
+  "inventory.py - vizdom_demo - Visual Studio Code",
+  "remote",
+  "vizdom_demo",
+  "",
+  "inventory.py",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  ""
+ ],
+ "source": "uia",
+ "window_title": "inventory.py - vizdom_demo - Visual Studio Code"
+}

@@ -1,0 +1,665 @@
+{
+ "image_size": {
+  "width": 744,
+  "height": 892
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    744,
+    892
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E12",
+    "E13",
+    "E18",
+    "E23",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E34",
+    "E36"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    572,
+    1,
+    629,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    629,
+    1,
+    686,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "0 | O"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    686,
+    1,
+    743,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    188,
+    11,
+    233,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Expand search box",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "Q | Q"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    6,
+    9,
+    56,
+    54
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Back",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "< | <"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    56,
+    9,
+    106,
+    54
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open Navigation",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    32,
+    51,
+    200,
+    105
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "System",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "System > | System > | System >"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    201,
+    55,
+    458,
+    101
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Power & battery",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Power & battery | Power & battery | Power & battery"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    374,
+    148,
+    399,
+    173
+   ],
+   "confidence": 1.0,
+   "uia_type": "ProgressBar",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E11"
+   ]
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    374,
+    148,
+    399,
+    173
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E10"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    34,
+    124,
+    171,
+    218
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Your battery is charging. The remaining battery life is 95%",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    34,
+    249,
+    709,
+    369
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E14",
+    "E15",
+    "E16",
+    "E17"
+   ]
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    108,
+    268,
+    306,
+    292
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Energy recommendations",
+   "parent_id": "E13"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    108,
+    292,
+    550,
+    312
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Lower your carbon footprint by applying these recommendations",
+   "parent_id": "E13"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    108,
+    327,
+    153,
+    351
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2 of 9 applied",
+   "parent_id": "E13"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    166,
+    335,
+    354,
+    343
+   ],
+   "confidence": 1.0,
+   "uia_type": "ProgressBar",
+   "visual_type": "block",
+   "parent_id": "E13"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    34,
+    373,
+    709,
+    459
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E19",
+    "E20",
+    "E21",
+    "E22"
+   ]
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    108,
+    394,
+    206,
+    418
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Power Mode",
+   "parent_id": "E18"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    108,
+    419,
+    512,
+    439
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Optimize your device based on power use and performance",
+   "parent_id": "E18"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    582,
+    404,
+    652,
+    428
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Balanced",
+   "parent_id": "E18"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    658,
+    396,
+    698,
+    436
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Show more settings",
+   "review": "icon-only?",
+   "parent_id": "E18",
+   "printed": ""
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    34,
+    463,
+    709,
+    549
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E24",
+    "E25"
+   ]
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    108,
+    509,
+    558,
+    529
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Choose what happens when your device is idle for a specified time",
+   "parent_id": "E23"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    658,
+    485,
+    698,
+    524
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Show more settings",
+   "review": "icon-only?",
+   "parent_id": "E23",
+   "printed": "_"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    108,
+    574,
+    255,
+    598
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Battery percentage",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    108,
+    598,
+    366,
+    618
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Display battery percentage on taskbar",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    598,
+    571,
+    688,
+    622
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Battery percentage",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "a",
+   "review": "name not printed"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    34,
+    643,
+    709,
+    744
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E30",
+    "E31",
+    "E32",
+    "E33"
+   ]
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    108,
+    663,
+    206,
+    687
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Energy saver",
+   "parent_id": "E29"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    108,
+    687,
+    484,
+    727
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Reduce power consumption and increase battery life by limiting some background activities",
+   "parent_id": "E29"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    542,
+    684,
+    652,
+    704
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Turns on at 30%",
+   "parent_id": "E29"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    658,
+    673,
+    698,
+    713
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Show more settings",
+   "review": "icon-only?",
+   "parent_id": "E29",
+   "printed": ""
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    34,
+    748,
+    709,
+    834
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E35"
+   ]
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    658,
+    772,
+    698,
+    812
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Show more settings",
+   "review": "icon-only?",
+   "parent_id": "E34",
+   "printed": ""
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    34,
+    838,
+    709,
+    891
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E37",
+    "E39"
+   ]
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    35,
+    838,
+    652,
+    890
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E36",
+   "children_ids": [
+    "E38"
+   ]
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    108,
+    883,
+    625,
+    890
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Choose what happens when you interact with your device's physical controls",
+   "parent_id": "E37"
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    658,
+    860,
+    698,
+    890
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Show more settings",
+   "review": "icon-only?",
+   "parent_id": "E36",
+   "printed": "a"
+  }
+ ],
+ "all_names": [
+  "2 of 9",
+  "2 of 9 applied",
+  "Back",
+  "Balanced",
+  "Battery percentage",
+  "Battery usage",
+  "Busy",
+  "Choose what happens when you interact with your device's physical controls",
+  "Choose what happens when your device is idle for a specified time",
+  "Close Settings",
+  "Display battery percentage on taskbar",
+  "Energy recommendations",
+  "Energy recommendationsLower your carbon footprint by applying these recommendations2 of 9 applied",
+  "Energy saver",
+  "Energy saver, Turns on at 30%",
+  "Expand search box",
+  "Lid, power & sleep",
+  "Lid, power & sleep button controls",
+  "Lower your carbon footprint by applying these recommendations",
+  "Maximize Settings",
+  "Minimize Settings",
+  "Open Navigation",
+  "Optimize your device based on power use and performance",
+  "Power & battery",
+  "Power Mode",
+  "Power Mode, Balanced",
+  "Reduce power consumption and increase battery life by limiting some background activities",
+  "Screen, sleep, & hibernate timeouts",
+  "Settings",
+  "Show more settings",
+  "System",
+  "Turns on at 30%",
+  "Vertical",
+  "Your battery is charging. The remaining battery life is 95%"
+ ],
+ "source": "uia",
+ "window_title": "Settings"
+}

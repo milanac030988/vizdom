@@ -1,0 +1,509 @@
+{
+ "image_size": {
+  "width": 526,
+  "height": 564
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    526,
+    564
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    23,
+    65,
+    503,
+    81
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show \"..\" item",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "-_)Show \".” item"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    23,
+    87,
+    503,
+    103
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show real file icons",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "__) Show real file icons"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    23,
+    110,
+    503,
+    126
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Full row select",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "_) Eull row select"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    23,
+    132,
+    503,
+    148
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show grid lines",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|} Show grid lines"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    23,
+    154,
+    503,
+    170
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Single-click to open an item",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": ") Single-click to open an item"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    23,
+    177,
+    503,
+    193
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Alternative selection mode",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "__] Alternative selection mode"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    23,
+    212,
+    503,
+    228
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show system menu",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "__}Show system menu"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    23,
+    247,
+    503,
+    263
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Use large memory pages",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "(_}Use large memory pages"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    23,
+    282,
+    503,
+    295
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Maximum amount of RAM memory usage allowed to unpack archives:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    39,
+    303,
+    68,
+    319
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "icon",
+   "ocr_text": ":",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "i): | i):",
+   "review": "name not printed"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    71,
+    302,
+    135,
+    321
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    134,
+    302,
+    152,
+    321
+   ],
+   "confidence": 1.0,
+   "uia_type": "Spinner",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E14",
+    "E15"
+   ]
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    134,
+    302,
+    152,
+    312
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More",
+   "role_word": "button",
+   "parent_id": "E13",
+   "printed": "ra | ra | ra",
+   "review": "name not printed"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    134,
+    311,
+    152,
+    321
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Less",
+   "role_word": "button",
+   "parent_id": "E13",
+   "printed": "a4 | a4 | a4",
+   "review": "name not printed"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    164,
+    305,
+    490,
+    318
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "GB / 31 GB (RAM)",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    180,
+    535,
+    260,
+    557
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "[ oK"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    266,
+    535,
+    346,
+    557
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    353,
+    535,
+    433,
+    557
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Apply",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Apply"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    439,
+    535,
+    519,
+    557
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Help",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Help"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    9,
+    34,
+    55,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "System",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "System"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    54,
+    34,
+    92,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "7-Zip",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "7-Zip"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    93,
+    34,
+    139,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Folders",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Folders"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    139,
+    34,
+    177,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Editor",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Editor"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    178,
+    34,
+    226,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Settings",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Settings"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    226,
+    34,
+    284,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Language",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Language"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    432,
+    1,
+    479,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Context help",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "? | ?",
+   "review": "name not printed"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    479,
+    1,
+    526,
+    26
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "x | x",
+   "review": "name not printed"
+  }
+ ],
+ "all_names": [
+  "4",
+  "7-Zip",
+  ":",
+  "Alternative selection mode",
+  "Apply",
+  "Cancel",
+  "Close",
+  "Context help",
+  "Editor",
+  "Folders",
+  "Full row select",
+  "GB / 31 GB (RAM)",
+  "Help",
+  "Language",
+  "Less",
+  "Maximum amount of RAM memory usage allowed to unpack archives:",
+  "More",
+  "OK",
+  "Options",
+  "Settings",
+  "Show \"..\" item",
+  "Show grid lines",
+  "Show real file icons",
+  "Show system menu",
+  "Single-click to open an item",
+  "System",
+  "Use large memory pages"
+ ],
+ "source": "uia",
+ "window_title": "Options"
+}

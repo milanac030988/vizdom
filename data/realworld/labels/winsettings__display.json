@@ -1,0 +1,554 @@
+{
+ "image_size": {
+  "width": 744,
+  "height": 892
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    744,
+    892
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E16",
+    "E17",
+    "E19",
+    "E22"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    572,
+    1,
+    629,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    629,
+    1,
+    686,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "0 | O"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    686,
+    1,
+    743,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    188,
+    11,
+    233,
+    51
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Expand search box",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "Q | Q"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    6,
+    9,
+    56,
+    54
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Back",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "< | <"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    56,
+    9,
+    106,
+    54
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open Navigation",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    32,
+    51,
+    200,
+    105
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "System",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "System > | System > | System >"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    201,
+    55,
+    317,
+    101
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Display",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Display | Display | Display"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    34,
+    124,
+    709,
+    148
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Select a display to change the settings for it. Drag displays to rearrange them.",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    35,
+    159,
+    708,
+    409
+   ],
+   "confidence": 1.0,
+   "uia_type": "Custom",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E12",
+    "E14"
+   ]
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    370,
+    207,
+    634,
+    357
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "icon",
+   "ocr_text": "Display 1",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "children_ids": [
+    "E13"
+   ],
+   "printed": "1 | 1",
+   "review": "name not printed"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    496,
+    259,
+    510,
+    306
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "1",
+   "parent_id": "E12"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    102,
+    207,
+    366,
+    357
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "icon",
+   "ocr_text": "Display 2",
+   "role_word": "list item",
+   "parent_id": "E11",
+   "children_ids": [
+    "E15"
+   ],
+   "printed": "2 | 2",
+   "review": "name not printed"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    225,
+    259,
+    244,
+    306
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "2",
+   "parent_id": "E14"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    241,
+    418,
+    403,
+    458
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Identify",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Identify | Identify | Identify"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    423,
+    413,
+    661,
+    463
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E18"
+   ]
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    443,
+    425,
+    608,
+    449
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Extend these displays",
+   "role_word": "list item",
+   "parent_id": "E17",
+   "printed": "Extend these displays | Extend these displays | Extend these displays"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    34,
+    483,
+    709,
+    569
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E20",
+    "E21"
+   ]
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    108,
+    529,
+    433,
+    549
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Choose the presentation mode for your displays",
+   "parent_id": "E19"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    658,
+    506,
+    698,
+    546
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Show more settings",
+   "review": "icon-only?",
+   "parent_id": "E19",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    34,
+    609,
+    709,
+    891
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E23",
+    "E27",
+    "E29"
+   ]
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    34,
+    643,
+    709,
+    728
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E22",
+   "children_ids": [
+    "E24"
+   ]
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    658,
+    666,
+    698,
+    706
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Show more settings",
+   "review": "icon-only?",
+   "parent_id": "E23",
+   "children_ids": [
+    "E25"
+   ],
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    35,
+    643,
+    653,
+    727
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E24",
+   "children_ids": [
+    "E26"
+   ]
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    108,
+    688,
+    389,
+    708
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Change brightness for the built-in display",
+   "parent_id": "E25"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    34,
+    733,
+    709,
+    820
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E22",
+   "children_ids": [
+    "E28"
+   ]
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    108,
+    778,
+    394,
+    798
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Use warmer colors to help block blue light",
+   "parent_id": "E27"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    34,
+    824,
+    709,
+    890
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E22",
+   "children_ids": [
+    "E30"
+   ]
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    108,
+    870,
+    412,
+    890
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Determine how colors appear on your screen",
+   "parent_id": "E29"
+  }
+ ],
+ "all_names": [
+  "1",
+  "125% (Recommended)",
+  "1920 × 1080 (Recommended)",
+  "2",
+  "Add a subtle color overlay to make your screen more comfortable to view",
+  "Adjust the resolution to fit your connected display",
+  "Advanced display",
+  "Back",
+  "Brightness",
+  "Brightness & color",
+  "Brightness, Brightness",
+  "Change brightness for the built-in display",
+  "Change the size of text, apps, and other items",
+  "Choose the presentation mode for your displays",
+  "Close Settings",
+  "Color profile",
+  "Determine how colors appear on your screen",
+  "Display",
+  "Display 1",
+  "Display 2",
+  "Display information, refresh rate",
+  "Display orientation",
+  "Display resolution",
+  "Expand search box",
+  "Extend these displays",
+  "Graphics",
+  "HDR",
+  "Identify",
+  "Landscape",
+  "Maximize Settings",
+  "Minimize Settings",
+  "Monitor layout",
+  "More about HDR",
+  "Multiple displays",
+  "Night light",
+  "Open Navigation",
+  "Position of on-screen indicators",
+  "Related settings",
+  "Scale",
+  "Scale & layout",
+  "Screen tint",
+  "Select a display to change the settings for it. Drag displays to rearrange them.",
+  "Settings",
+  "Show more settings",
+  "Some apps won’t respond to scaling changes until you close and reopen them.",
+  "System",
+  "Use warmer colors to help block blue light",
+  "Vertical",
+  "Volume, brightness and other controls will appear in this location"
+ ],
+ "source": "uia",
+ "window_title": "Settings"
+}

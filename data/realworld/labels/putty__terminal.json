@@ -1,0 +1,935 @@
+{
+ "image_size": {
+  "width": 602,
+  "height": 543
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    602,
+    543
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32",
+    "E33",
+    "E34",
+    "E35",
+    "E36",
+    "E37",
+    "E38",
+    "E39",
+    "E40",
+    "E41",
+    "E42",
+    "E43",
+    "E44",
+    "E45",
+    "E46",
+    "E47",
+    "E48",
+    "E50",
+    "E51",
+    "E52",
+    "E53"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    361,
+    508,
+    471,
+    536
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Open",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Open"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    477,
+    508,
+    589,
+    536
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    13,
+    508,
+    123,
+    536
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "About",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "About"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    129,
+    508,
+    239,
+    536
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Help",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Help"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    7,
+    44,
+    197,
+    64
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Category:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    7,
+    64,
+    197,
+    502
+   ],
+   "confidence": 1.0,
+   "uia_type": "Tree",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E8",
+    "E10",
+    "E14",
+    "E20"
+   ]
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    31,
+    66,
+    84,
+    84
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Session",
+   "role_word": "tree item",
+   "parent_id": "E7",
+   "children_ids": [
+    "E9"
+   ],
+   "printed": "Session"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    50,
+    84,
+    103,
+    102
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Logging",
+   "role_word": "tree item",
+   "parent_id": "E8",
+   "printed": "Logging"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    31,
+    102,
+    88,
+    120
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Terminal",
+   "role_word": "tree item",
+   "parent_id": "E7",
+   "children_ids": [
+    "E11",
+    "E12",
+    "E13"
+   ],
+   "printed": "Terminal"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    50,
+    120,
+    113,
+    138
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Keyboard",
+   "role_word": "tree item",
+   "parent_id": "E10",
+   "printed": "Keyboard"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    50,
+    138,
+    77,
+    156
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Bell",
+   "parent_id": "E10",
+   "printed": "Bell",
+   "role_word": "tree item"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    50,
+    156,
+    107,
+    174
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Features",
+   "role_word": "tree item",
+   "parent_id": "E10",
+   "printed": "Features"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    31,
+    174,
+    83,
+    192
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Window",
+   "role_word": "tree item",
+   "parent_id": "E7",
+   "children_ids": [
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19"
+   ],
+   "printed": "Window"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    50,
+    192,
+    129,
+    210
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Appearance",
+   "role_word": "tree item",
+   "parent_id": "E14",
+   "printed": "Appearance"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    50,
+    210,
+    115,
+    228
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Behaviour",
+   "role_word": "tree item",
+   "parent_id": "E14",
+   "printed": "Behaviour"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    50,
+    228,
+    121,
+    246
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Translation",
+   "role_word": "tree item",
+   "parent_id": "E14",
+   "printed": "Translation"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    50,
+    246,
+    110,
+    264
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Selection",
+   "role_word": "tree item",
+   "parent_id": "E14",
+   "printed": "Selection"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    50,
+    264,
+    100,
+    282
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Colours",
+   "role_word": "tree item",
+   "parent_id": "E14",
+   "printed": "Colours"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    31,
+    282,
+    102,
+    300
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Connection",
+   "role_word": "tree item",
+   "parent_id": "E7",
+   "children_ids": [
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27"
+   ],
+   "printed": "Connection"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    50,
+    300,
+    83,
+    318
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Data",
+   "role_word": "tree item",
+   "parent_id": "E20",
+   "printed": "Data"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    50,
+    318,
+    88,
+    336
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Proxy",
+   "role_word": "tree item",
+   "parent_id": "E20",
+   "printed": "Proxy"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    50,
+    336,
+    82,
+    354
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "SSH",
+   "role_word": "tree item",
+   "parent_id": "E20",
+   "printed": "SSH"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    50,
+    354,
+    89,
+    372
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Serial",
+   "role_word": "tree item",
+   "parent_id": "E20",
+   "printed": "Serial"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    50,
+    372,
+    92,
+    390
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Telnet",
+   "role_word": "tree item",
+   "parent_id": "E20",
+   "printed": "Telnet"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    50,
+    390,
+    93,
+    408
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Rlogin",
+   "role_word": "tree item",
+   "parent_id": "E20",
+   "printed": "Rlogin"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    50,
+    408,
+    111,
+    426
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "SUPDUP",
+   "role_word": "tree item",
+   "parent_id": "E20",
+   "printed": "SUPDUP"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    207,
+    64,
+    589,
+    88
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    221,
+    118,
+    575,
+    134
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Auto wrap mode initially on",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Auto wrap mode initially on"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    221,
+    140,
+    575,
+    156
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "DEC Origin Mode initially on",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "| | DEC Origin Mode initially on"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    221,
+    162,
+    575,
+    178
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Implicit CR in every LF",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "| |Implicit CR in every LF"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    221,
+    184,
+    575,
+    200
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Implicit LF in every CR",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "| |Implicit LE in every CR"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    221,
+    206,
+    575,
+    222
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Use background colour to erase screen",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Use background colour to erase screen"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    221,
+    228,
+    575,
+    244
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Enable blinking text",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "| | Enable blinking text"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    221,
+    250,
+    575,
+    266
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Answerback to ^E:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    221,
+    268,
+    575,
+    292
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    207,
+    94,
+    589,
+    300
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    221,
+    332,
+    575,
+    348
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Local echo:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    221,
+    350,
+    335,
+    366
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Auto",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "O Auto"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    341,
+    350,
+    455,
+    366
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Force on",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "( ) Force on"
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    461,
+    350,
+    569,
+    366
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Force off",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "( ) Force off"
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    221,
+    372,
+    575,
+    388
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Local line editing:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    221,
+    390,
+    335,
+    406
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Auto",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "O Auto"
+  },
+  {
+   "id": "E44",
+   "bounds": [
+    341,
+    390,
+    455,
+    406
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Force on",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "( ) Force on"
+  },
+  {
+   "id": "E45",
+   "bounds": [
+    461,
+    390,
+    569,
+    406
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Force off",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "( ) Force off"
+  },
+  {
+   "id": "E46",
+   "bounds": [
+    207,
+    308,
+    589,
+    414
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E47",
+   "bounds": [
+    221,
+    446,
+    575,
+    462
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Printer to send ANSI printer output to:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E48",
+   "bounds": [
+    221,
+    464,
+    575,
+    488
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E49"
+   ]
+  },
+  {
+   "id": "E49",
+   "bounds": [
+    555,
+    465,
+    574,
+    487
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E48",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E50",
+   "bounds": [
+    207,
+    422,
+    589,
+    496
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E51",
+   "bounds": [
+    1,
+    9,
+    29,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E52",
+   "bounds": [
+    482,
+    1,
+    542,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Context help",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "? | ?",
+   "review": "name not printed"
+  },
+  {
+   "id": "E53",
+   "bounds": [
+    542,
+    1,
+    602,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "x | x ’",
+   "review": "name not printed"
+  }
+ ],
+ "all_names": [
+  "About",
+  "Answerback to ^E:",
+  "Appearance",
+  "Auto",
+  "Auto wrap mode initially on",
+  "Behaviour",
+  "Bell",
+  "Cancel",
+  "Category:",
+  "Close",
+  "Colours",
+  "Connection",
+  "Context help",
+  "DEC Origin Mode initially on",
+  "Data",
+  "Enable blinking text",
+  "Features",
+  "Force off",
+  "Force on",
+  "Help",
+  "Implicit CR in every LF",
+  "Implicit LF in every CR",
+  "Keyboard",
+  "Line discipline options",
+  "Local echo:",
+  "Local line editing:",
+  "Logging",
+  "Open",
+  "Printer to send ANSI printer output to:",
+  "Proxy",
+  "PuTTY Configuration",
+  "Remote-controlled printing",
+  "Rlogin",
+  "SSH",
+  "SUPDUP",
+  "Selection",
+  "Serial",
+  "Session",
+  "Set various terminal options",
+  "System",
+  "Telnet",
+  "Terminal",
+  "Translation",
+  "Use background colour to erase screen",
+  "Window"
+ ],
+ "source": "uia",
+ "window_title": "PuTTY Configuration"
+}

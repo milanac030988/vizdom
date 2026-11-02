@@ -1,0 +1,1188 @@
+{
+ "image_size": {
+  "width": 960,
+  "height": 815
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    1,
+    31,
+    959,
+    814
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32",
+    "E33",
+    "E34",
+    "E35",
+    "E36",
+    "E37",
+    "E38",
+    "E39",
+    "E40",
+    "E41",
+    "E42",
+    "E43",
+    "E44",
+    "E45",
+    "E46",
+    "E47",
+    "E48",
+    "E49",
+    "E50",
+    "E51",
+    "E52",
+    "E53",
+    "E54",
+    "E55",
+    "E56",
+    "E57",
+    "E58",
+    "E59",
+    "E60",
+    "E61",
+    "E62",
+    "E63",
+    "E64"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    1,
+    8,
+    23,
+    30
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    820,
+    1,
+    867,
+    31
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    867,
+    1,
+    913,
+    31
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "O | o"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    913,
+    1,
+    960,
+    31
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    25,
+    96,
+    281,
+    110
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Structure",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    285,
+    563,
+    959,
+    785
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    287,
+    540,
+    557,
+    561
+   ],
+   "confidence": 1.0,
+   "uia_type": "Tab",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E9",
+    "E10",
+    "E11"
+   ]
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    358,
+    540,
+    400,
+    561
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Log",
+   "role_word": "tab",
+   "parent_id": "E8",
+   "printed": "Log"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    400,
+    540,
+    462,
+    561
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Preview",
+   "role_word": "tab",
+   "parent_id": "E8",
+   "printed": "Preview"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    462,
+    540,
+    557,
+    561
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Search Results",
+   "role_word": "tab",
+   "parent_id": "E8",
+   "printed": "Search Results"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    287,
+    98,
+    310,
+    120
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Go Back",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "-_ | -_"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    287,
+    120,
+    310,
+    142
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Go Forward",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—> | —>"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    287,
+    148,
+    310,
+    170
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Boldface - \\textbf",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "B"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    287,
+    170,
+    310,
+    192
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Italics - \\textit",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "I | I"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    287,
+    192,
+    310,
+    214
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Underline - \\underline",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "U | U"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    287,
+    214,
+    310,
+    236
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "\\begin{flushleft}",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    287,
+    236,
+    310,
+    258
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "\\begin{center}",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    287,
+    258,
+    310,
+    280
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "\\begin{flushright}",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "="
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    287,
+    286,
+    310,
+    308
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "New line - \\\\",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "=|"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    287,
+    314,
+    310,
+    336
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Inline math - $$",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "tx | tx | tx"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    287,
+    336,
+    310,
+    358
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Subscript - _{}",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "X, | X, | X,"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    287,
+    358,
+    310,
+    380
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Superscript - ^{}",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x? | x? | x?"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    287,
+    380,
+    310,
+    402
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Fraction - \\frac{}{}",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "5 | 5"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    287,
+    402,
+    310,
+    424
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Fraction - \\dfrac{}{}",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "+ | x"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    287,
+    424,
+    310,
+    446
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Square Root - \\sqrt{}",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "v2 | v2"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    1,
+    31,
+    52,
+    63
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "File",
+   "parent_id": "E1",
+   "printed": "File",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    52,
+    31,
+    105,
+    63
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Edit",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Edit"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    105,
+    31,
+    167,
+    63
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Idefix",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Idefix"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    167,
+    31,
+    226,
+    63
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Tools",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Tools"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    226,
+    31,
+    289,
+    63
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "LaTeX",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "LaTeX"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    289,
+    31,
+    348,
+    63
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Math",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Math"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    348,
+    31,
+    420,
+    63
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Wizards",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Wizards"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    420,
+    31,
+    514,
+    63
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Bibliography",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Bibliography"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    514,
+    31,
+    583,
+    63
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Macros",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Macros"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    583,
+    31,
+    640,
+    63
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "View",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "View"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    640,
+    31,
+    712,
+    63
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Options",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Options"
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    712,
+    31,
+    768,
+    63
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Help",
+   "role_word": "menu item",
+   "parent_id": "E1",
+   "printed": "Help"
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    11,
+    66,
+    40,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "New",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "(4 | (4"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    40,
+    66,
+    69,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "Q) | Q) | Q)"
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    69,
+    66,
+    98,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Save",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "fm"
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    98,
+    66,
+    127,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "R | R | R"
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    139,
+    66,
+    168,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Undo",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "» | »"
+  },
+  {
+   "id": "E44",
+   "bounds": [
+    168,
+    66,
+    197,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Redo",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "Ce | Ce"
+  },
+  {
+   "id": "E45",
+   "bounds": [
+    197,
+    66,
+    226,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Copy",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "(0 | (0 | (0"
+  },
+  {
+   "id": "E46",
+   "bounds": [
+    226,
+    66,
+    255,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Cut",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "DS | DS | DS"
+  },
+  {
+   "id": "E47",
+   "bounds": [
+    255,
+    66,
+    284,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Paste",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "(0 | (0 | (0"
+  },
+  {
+   "id": "E48",
+   "bounds": [
+    296,
+    66,
+    325,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Build & View",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "b> | b>"
+  },
+  {
+   "id": "E49",
+   "bounds": [
+    325,
+    66,
+    354,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Compile",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "> | >"
+  },
+  {
+   "id": "E50",
+   "bounds": [
+    354,
+    66,
+    383,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Stop Compile",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "| | |"
+  },
+  {
+   "id": "E51",
+   "bounds": [
+    383,
+    66,
+    412,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "View",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "[a | [a"
+  },
+  {
+   "id": "E52",
+   "bounds": [
+    412,
+    66,
+    441,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "View Log",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "‘a | ‘a | ‘a"
+  },
+  {
+   "id": "E53",
+   "bounds": [
+    453,
+    66,
+    512,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "\\left(",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "\\left("
+  },
+  {
+   "id": "E54",
+   "bounds": [
+    518,
+    66,
+    585,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "\\right)",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "\\right)"
+  },
+  {
+   "id": "E55",
+   "bounds": [
+    597,
+    66,
+    704,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "part",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "part"
+  },
+  {
+   "id": "E56",
+   "bounds": [
+    710,
+    66,
+    782,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "label",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "label"
+  },
+  {
+   "id": "E57",
+   "bounds": [
+    810,
+    66,
+    839,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Add Row",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "fy | faa"
+  },
+  {
+   "id": "E58",
+   "bounds": [
+    863,
+    66,
+    892,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Jump to previous difference",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "&"
+  },
+  {
+   "id": "E59",
+   "bounds": [
+    916,
+    66,
+    945,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "\\alert{}",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—— |\n\nA="
+  },
+  {
+   "id": "E60",
+   "bounds": [
+    577,
+    788,
+    593,
+    812
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E61",
+   "bounds": [
+    599,
+    790,
+    662,
+    810
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "en_US",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "en_US |"
+  },
+  {
+   "id": "E62",
+   "bounds": [
+    668,
+    790,
+    732,
+    810
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Encoding",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Encoding"
+  },
+  {
+   "id": "E63",
+   "bounds": [
+    781,
+    788,
+    837,
+    812
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Automatic",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E64",
+   "bounds": [
+    738,
+    788,
+    775,
+    812
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Ready",
+   "parent_id": "E1"
+  }
+ ],
+ "all_names": [
+  "Add Row",
+  "Asymptote Commands",
+  "Automatic",
+  "Beamer Commands",
+  "Bibliography",
+  "Boldface - \\textbf",
+  "Bookmarks",
+  "Build & View",
+  "Close",
+  "Compile",
+  "Copy",
+  "Cut",
+  "Date Modified",
+  "Edit",
+  "Encoding",
+  "Exact Sequences",
+  "Favorites",
+  "File",
+  "Files",
+  "Fraction - \\dfrac{}{}",
+  "Fraction - \\frac{}{}",
+  "General (Asymptote)",
+  "General (MetaPost)",
+  "General (PSTricks)",
+  "General (TikZ)",
+  "Go Back",
+  "Go Forward",
+  "Help",
+  "Idefix",
+  "Inline math - $$",
+  "Italics - \\textit",
+  "Jump to previous difference",
+  "LaTeX",
+  "Left",
+  "Left/Right Brackets",
+  "Log",
+  "Macros",
+  "Math",
+  "Maximize",
+  "Messages",
+  "MetaPost Commands",
+  "Minimize",
+  "Most Used",
+  "Name",
+  "New",
+  "New Beamer Slides",
+  "New line - \\\\",
+  "Open",
+  "Operators",
+  "Options",
+  "PSTricks Commands",
+  "Paste",
+  "Preview",
+  "Ready",
+  "Redo",
+  "Save",
+  "Search Results",
+  "Size",
+  "Square Root - \\sqrt{}",
+  "Stop Compile",
+  "Structure",
+  "Subscript - _{}",
+  "Superscript - ^{}",
+  "Symbols",
+  "System",
+  "TOC",
+  "TeXstudio",
+  "TikZ Commands",
+  "Tools",
+  "Type",
+  "Underline - \\underline",
+  "Undo",
+  "View",
+  "View Log",
+  "Wizards",
+  "XY Commands",
+  "\\SpecialCoor",
+  "\\alert{}",
+  "\\begin{asydef} \\end{asydef}",
+  "\\begin{asy} \\end{asy}",
+  "\\begin{center}",
+  "\\begin{flushleft}",
+  "\\begin{flushright}",
+  "\\begin{pspicture}(x0,y0)(x1,y1) \\end{pspicture}",
+  "\\begin{scope}[options] \\end{scope}",
+  "\\begin{tikzpicture}[options] \\end{tikzpicture}",
+  "\\foreach  in {}",
+  "\\left(",
+  "\\left[",
+  "\\left{",
+  "\\psset{xunit=1cm,yunit=1cm}",
+  "\\right)",
+  "__pycache__",
+  "beginfig(); endfig;",
+  "begingraph(); endgraph;",
+  "common.py",
+  "empty",
+  "empty slide",
+  "en_US",
+  "extra_beginfig(); extra_endfig;",
+  "label",
+  "long",
+  "part",
+  "short",
+  "slide with enumerate",
+  "slide with itemize",
+  "usepackage();"
+ ],
+ "source": "uia",
+ "window_title": "TeXstudio"
+}

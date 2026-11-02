@@ -1,0 +1,1055 @@
+{
+ "image_size": {
+  "width": 1017,
+  "height": 509
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    1017,
+    509
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32",
+    "E35",
+    "E36",
+    "E37",
+    "E38",
+    "E40",
+    "E41",
+    "E45",
+    "E46",
+    "E47",
+    "E48",
+    "E49",
+    "E50",
+    "E51",
+    "E52",
+    "E53",
+    "E54",
+    "E55",
+    "E56",
+    "E57",
+    "E58",
+    "E59",
+    "E60"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    21,
+    60,
+    192,
+    76
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "General",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "General"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    21,
+    76,
+    192,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Toolbar",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Toolbar"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    21,
+    92,
+    192,
+    108
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Tab Bar",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Tab Bar"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    21,
+    108,
+    192,
+    124
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Editing 1",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Editing 1 | Editing 1 | Editing 1"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    21,
+    124,
+    192,
+    140
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Editing 2",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Editing 2"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    21,
+    140,
+    192,
+    156
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Dark Mode",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Dark Mode"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    21,
+    156,
+    192,
+    172
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Margins/Border/Edge",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Margins/Border/Edge"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    21,
+    172,
+    192,
+    188
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "New Document",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "New Document"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    21,
+    188,
+    192,
+    204
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Default Directory",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Default Directory"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    21,
+    204,
+    192,
+    220
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Recent Files History",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Recent Files History"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    21,
+    220,
+    192,
+    236
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "File Association",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "File Association"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    21,
+    236,
+    192,
+    252
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Language",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Language"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    21,
+    252,
+    192,
+    268
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Indentation",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Indentation"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    21,
+    268,
+    192,
+    284
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Highlighting",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Highlighting"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    21,
+    284,
+    192,
+    300
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Print",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Print"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    21,
+    300,
+    192,
+    316
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Searching",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Searching"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    21,
+    316,
+    192,
+    332
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Backup",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Backup"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    21,
+    332,
+    192,
+    348
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Auto-Completion",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Auto-Completion"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    21,
+    348,
+    192,
+    364
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Multi-Instance & Date",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Multi-Instance & Date"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    21,
+    364,
+    192,
+    380
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Delimiter",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Delimiter"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    21,
+    380,
+    192,
+    396
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Performance",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Performance"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    21,
+    396,
+    192,
+    412
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Cloud & Link",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Cloud & Link"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    21,
+    412,
+    192,
+    428
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Search Engine",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "Search Engine"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    21,
+    428,
+    192,
+    444
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "MISC.",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "printed": "MISC."
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    561,
+    468,
+    649,
+    496
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Close"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    221,
+    64,
+    484,
+    212
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    232,
+    90,
+    282,
+    108
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "None",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "©) None"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    232,
+    120,
+    372,
+    138
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Highlight Background",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "O Highlight Background"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    232,
+    150,
+    290,
+    168
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Frame",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "C) Frame"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    255,
+    178,
+    320,
+    194
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Width:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    321,
+    176,
+    421,
+    202
+   ],
+   "confidence": 1.0,
+   "uia_type": "Slider",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E33",
+    "E34"
+   ]
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    329,
+    178,
+    340,
+    198
+   ],
+   "confidence": 1.0,
+   "uia_type": "Thumb",
+   "visual_type": "block",
+   "parent_id": "E32"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    340,
+    185,
+    413,
+    190
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page right",
+   "role_word": "button",
+   "parent_id": "E32",
+   "printed": "7 | 7",
+   "review": "name not printed"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    424,
+    178,
+    445,
+    194
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "1",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    221,
+    224,
+    484,
+    318
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    255,
+    256,
+    320,
+    272
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Width:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    330,
+    252,
+    400,
+    276
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E39"
+   ]
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    380,
+    253,
+    399,
+    275
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E38",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    227,
+    286,
+    320,
+    302
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Blink rate:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    344,
+    284,
+    444,
+    310
+   ],
+   "confidence": 1.0,
+   "uia_type": "Slider",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E42",
+    "E43",
+    "E44"
+   ]
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    352,
+    293,
+    368,
+    298
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page left",
+   "role_word": "button",
+   "parent_id": "E41",
+   "printed": "= | =",
+   "review": "name not printed"
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    368,
+    286,
+    379,
+    306
+   ],
+   "confidence": 1.0,
+   "uia_type": "Thumb",
+   "visual_type": "block",
+   "parent_id": "E41"
+  },
+  {
+   "id": "E44",
+   "bounds": [
+    379,
+    293,
+    436,
+    298
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page right",
+   "role_word": "button",
+   "parent_id": "E41",
+   "printed": "nn | nn",
+   "review": "name not printed"
+  },
+  {
+   "id": "E45",
+   "bounds": [
+    447,
+    286,
+    468,
+    302
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "S",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E46",
+   "bounds": [
+    321,
+    286,
+    342,
+    302
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "F",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E47",
+   "bounds": [
+    221,
+    330,
+    484,
+    448
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E48",
+   "bounds": [
+    232,
+    356,
+    293,
+    374
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Default",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "C) Default"
+  },
+  {
+   "id": "E49",
+   "bounds": [
+    232,
+    386,
+    295,
+    404
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Aligned",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "O Aligned"
+  },
+  {
+   "id": "E50",
+   "bounds": [
+    232,
+    416,
+    289,
+    434
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Indent",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "C) Indent"
+  },
+  {
+   "id": "E51",
+   "bounds": [
+    505,
+    84,
+    636,
+    102
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Enable smooth font",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|] Enable smooth font"
+  },
+  {
+   "id": "E52",
+   "bounds": [
+    505,
+    114,
+    640,
+    132
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Enable virtual space",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|] Enable virtual space"
+  },
+  {
+   "id": "E53",
+   "bounds": [
+    505,
+    144,
+    859,
+    162
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Make current level folding/unfolding commands toggleable",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "| _] Make current level folding/unfolding commands toggleable"
+  },
+  {
+   "id": "E54",
+   "bounds": [
+    505,
+    174,
+    816,
+    192
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Keep selection when right-click outside of selection",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "| _}Keep selection when right-click outside of selection"
+  },
+  {
+   "id": "E55",
+   "bounds": [
+    505,
+    204,
+    747,
+    222
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Enable Copy/Cut Line without selection",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Enable Copy/Cut Line without selection"
+  },
+  {
+   "id": "E56",
+   "bounds": [
+    505,
+    234,
+    792,
+    252
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Apply custom color to selected text foreground",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|] Apply custom color to selected text foreground"
+  },
+  {
+   "id": "E57",
+   "bounds": [
+    505,
+    264,
+    708,
+    282
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Enable scrolling beyond last line",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|] Enable scrolling beyond last line"
+  },
+  {
+   "id": "E58",
+   "bounds": [
+    505,
+    294,
+    850,
+    312
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Disable advanced scrolling feature due to touchpad issue",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|_| Disable advanced scrolling feature due to touchpad issue"
+  },
+  {
+   "id": "E59",
+   "bounds": [
+    505,
+    324,
+    730,
+    342
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Disable selected text drag-and-drop",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|_| Disable selected text drag-and-drop"
+  },
+  {
+   "id": "E60",
+   "bounds": [
+    973,
+    1,
+    1017,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  }
+ ],
+ "all_names": [
+  "1",
+  "Aligned",
+  "Apply custom color to selected text foreground",
+  "Auto-Completion",
+  "Backup",
+  "Blink rate:",
+  "Caret Settings",
+  "Close",
+  "Cloud & Link",
+  "Current Line Indicator",
+  "Dark Mode",
+  "Default",
+  "Default Directory",
+  "Delimiter",
+  "Disable advanced scrolling feature due to touchpad issue",
+  "Disable selected text drag-and-drop",
+  "Editing 1",
+  "Editing 2",
+  "Enable Copy/Cut Line without selection",
+  "Enable scrolling beyond last line",
+  "Enable smooth font",
+  "Enable virtual space",
+  "F",
+  "File Association",
+  "Frame",
+  "General",
+  "Highlight Background",
+  "Highlighting",
+  "Indent",
+  "Indentation",
+  "Keep selection when right-click outside of selection",
+  "Language",
+  "Line Wrap",
+  "MISC.",
+  "Make current level folding/unfolding commands toggleable",
+  "Margins/Border/Edge",
+  "Multi-Instance & Date",
+  "New Document",
+  "None",
+  "Open",
+  "Page left",
+  "Page right",
+  "Performance",
+  "Position",
+  "Preferences",
+  "Print",
+  "Recent Files History",
+  "S",
+  "Search Engine",
+  "Searching",
+  "Tab Bar",
+  "Toolbar",
+  "Width:"
+ ],
+ "source": "uia",
+ "window_title": "Preferences"
+}

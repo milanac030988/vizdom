@@ -1,0 +1,1111 @@
+{
+ "image_size": {
+  "width": 905,
+  "height": 830
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    905,
+    830
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E25",
+    "E26",
+    "E30",
+    "E31",
+    "E42",
+    "E44",
+    "E46",
+    "E49",
+    "E51",
+    "E53",
+    "E54",
+    "E55",
+    "E56",
+    "E57",
+    "E58",
+    "E59",
+    "E60",
+    "E61",
+    "E62"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    312,
+    95,
+    860,
+    263
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    324,
+    120,
+    675,
+    145
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show overlays and context menu only in explorer",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|} Show overlays and context menu only in explorer"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    324,
+    152,
+    675,
+    177
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Unversioned files mark parent folder as modified",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|} Unversioned files mark parent folder as modified"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    324,
+    187,
+    665,
+    212
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show status of subrepositories in parent folders",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|_} Show status of subrepositories in parent folders"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    324,
+    225,
+    846,
+    248
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Disable status cache for elevated processes",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|_) Disable status cache for elevated processes"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    312,
+    272,
+    860,
+    327
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    324,
+    295,
+    400,
+    320
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Default",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "O Default"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    454,
+    295,
+    579,
+    320
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Shell Extended",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "C) Shell Extended"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    618,
+    295,
+    677,
+    320
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Shell",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "CO) Shell"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    750,
+    295,
+    813,
+    320
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "None",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "©) None"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    312,
+    332,
+    860,
+    485
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    324,
+    362,
+    454,
+    387
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Drives A: and B:",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "'_) Drives A: and B:"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    324,
+    390,
+    469,
+    415
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Removable drives",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|) Removable drives"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    324,
+    417,
+    450,
+    442
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Network drives",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|) Network drives"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    324,
+    450,
+    429,
+    475
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Fixed drives",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Fixed drives"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    620,
+    362,
+    706,
+    387
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "CD-ROM",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|) CD-ROM"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    620,
+    417,
+    722,
+    442
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "RAM drives",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|) RAM drives"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    620,
+    445,
+    751,
+    470
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Unknown drives",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|) Unknown drives"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    324,
+    507,
+    514,
+    527
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Exclude paths:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    522,
+    490,
+    860,
+    545
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E22"
+   ]
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    837,
+    492,
+    858,
+    543
+   ],
+   "confidence": 1.0,
+   "uia_type": "ScrollBar",
+   "visual_type": "block",
+   "parent_id": "E21",
+   "children_ids": [
+    "E23",
+    "E24"
+   ]
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    837,
+    492,
+    858,
+    513
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Line up",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "a | a"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    837,
+    522,
+    858,
+    543
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Line down",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "v | v"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    324,
+    572,
+    514,
+    592
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Include paths:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    522,
+    552,
+    860,
+    607
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E27"
+   ]
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    837,
+    554,
+    858,
+    605
+   ],
+   "confidence": 1.0,
+   "uia_type": "ScrollBar",
+   "visual_type": "block",
+   "parent_id": "E26",
+   "children_ids": [
+    "E28",
+    "E29"
+   ]
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    837,
+    554,
+    858,
+    575
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Line up",
+   "review": "icon-only?",
+   "parent_id": "E27",
+   "printed": "a | a"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    837,
+    584,
+    858,
+    605
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Line down",
+   "review": "icon-only?",
+   "parent_id": "E27",
+   "printed": "v | v"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    324,
+    620,
+    860,
+    645
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show excluded folders as normal",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Show excluded folders as normal"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    60,
+    50,
+    115,
+    72
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "General",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E32",
+    "E33",
+    "E34",
+    "E35",
+    "E36",
+    "E37",
+    "E38",
+    "E39",
+    "E40",
+    "E41"
+   ],
+   "printed": "General"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    83,
+    72,
+    179,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Context Menu",
+   "role_word": "tree item",
+   "parent_id": "E31",
+   "printed": "Context Menu"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    83,
+    94,
+    191,
+    116
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Context Menu 2",
+   "role_word": "tree item",
+   "parent_id": "E31",
+   "printed": "Context Menu 2"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    83,
+    116,
+    264,
+    138
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Windows 11 Context Menu",
+   "role_word": "tree item",
+   "parent_id": "E31",
+   "printed": "Windows 11 Context Menu"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    83,
+    138,
+    150,
+    160
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Dialogs 1",
+   "role_word": "tree item",
+   "parent_id": "E31",
+   "printed": "Dialogs 1"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    83,
+    160,
+    150,
+    182
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Dialogs 2",
+   "role_word": "tree item",
+   "parent_id": "E31",
+   "printed": "Dialogs 2"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    83,
+    182,
+    150,
+    204
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Dialogs 3",
+   "role_word": "tree item",
+   "parent_id": "E31",
+   "printed": "Dialogs 3"
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    83,
+    204,
+    141,
+    226
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Colors 1",
+   "role_word": "tree item",
+   "parent_id": "E31",
+   "printed": "Colors 1"
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    83,
+    226,
+    141,
+    248
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Colors 2",
+   "role_word": "tree item",
+   "parent_id": "E31",
+   "printed": "Colors 2"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    83,
+    248,
+    141,
+    270
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Colors 3",
+   "role_word": "tree item",
+   "parent_id": "E31",
+   "printed": "Colors 3"
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    83,
+    270,
+    203,
+    292
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Alternative editor",
+   "role_word": "tree item",
+   "parent_id": "E31",
+   "printed": "Alternative editor"
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    60,
+    292,
+    83,
+    314
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Git",
+   "parent_id": "E1",
+   "children_ids": [
+    "E43"
+   ],
+   "printed": "Git",
+   "role_word": "tree item"
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    83,
+    314,
+    155,
+    336
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Credential",
+   "role_word": "tree item",
+   "parent_id": "E42",
+   "printed": "Credential"
+  },
+  {
+   "id": "E44",
+   "bounds": [
+    60,
+    336,
+    148,
+    358
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Hook Scripts",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E45"
+   ],
+   "printed": "Hook Scripts"
+  },
+  {
+   "id": "E45",
+   "bounds": [
+    83,
+    358,
+    247,
+    380
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Issue Tracker Integration",
+   "role_word": "tree item",
+   "parent_id": "E44",
+   "printed": "Issue Tracker Integration"
+  },
+  {
+   "id": "E46",
+   "bounds": [
+    60,
+    380,
+    152,
+    402
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Icon Overlays",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E47",
+    "E48"
+   ],
+   "printed": "Icon Overlays"
+  },
+  {
+   "id": "E47",
+   "bounds": [
+    83,
+    402,
+    140,
+    424
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Icon Set",
+   "role_word": "tree item",
+   "parent_id": "E46",
+   "printed": "Icon Set"
+  },
+  {
+   "id": "E48",
+   "bounds": [
+    83,
+    424,
+    200,
+    446
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Overlay Handlers",
+   "role_word": "tree item",
+   "parent_id": "E46",
+   "printed": "Overlay Handlers"
+  },
+  {
+   "id": "E49",
+   "bounds": [
+    60,
+    446,
+    120,
+    468
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Network",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E50"
+   ],
+   "printed": "Network"
+  },
+  {
+   "id": "E50",
+   "bounds": [
+    83,
+    468,
+    124,
+    490
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Email",
+   "role_word": "tree item",
+   "parent_id": "E49",
+   "printed": "Email"
+  },
+  {
+   "id": "E51",
+   "bounds": [
+    60,
+    490,
+    138,
+    512
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Diff Viewer",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E52"
+   ],
+   "printed": "Diff Viewer"
+  },
+  {
+   "id": "E52",
+   "bounds": [
+    83,
+    512,
+    163,
+    534
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Merge Tool",
+   "role_word": "tree item",
+   "parent_id": "E51",
+   "printed": "Merge Tool"
+  },
+  {
+   "id": "E53",
+   "bounds": [
+    60,
+    534,
+    140,
+    556
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Saved Data",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "printed": "Saved Data"
+  },
+  {
+   "id": "E54",
+   "bounds": [
+    60,
+    556,
+    178,
+    578
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "TortoiseGitBlame",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "printed": "TortoiseGitBlame"
+  },
+  {
+   "id": "E55",
+   "bounds": [
+    60,
+    578,
+    171,
+    600
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "TortoiseGitUDiff",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "printed": "TortoiseGitUDiff"
+  },
+  {
+   "id": "E56",
+   "bounds": [
+    60,
+    600,
+    130,
+    622
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Advanced",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "printed": "Advanced"
+  },
+  {
+   "id": "E57",
+   "bounds": [
+    472,
+    784,
+    572,
+    819
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "OK | OK | OK"
+  },
+  {
+   "id": "E58",
+   "bounds": [
+    580,
+    784,
+    680,
+    819
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel"
+  },
+  {
+   "id": "E59",
+   "bounds": [
+    688,
+    784,
+    788,
+    819
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Apply",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Apply"
+  },
+  {
+   "id": "E60",
+   "bounds": [
+    796,
+    784,
+    896,
+    819
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Help",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Help"
+  },
+  {
+   "id": "E61",
+   "bounds": [
+    284,
+    48,
+    896,
+    774
+   ],
+   "confidence": 1.0,
+   "uia_type": "Pane",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E62",
+   "bounds": [
+    861,
+    1,
+    905,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x ’"
+  }
+ ],
+ "all_names": [
+  "Advanced",
+  "Alternative editor",
+  "Apply",
+  "CD-ROM",
+  "Cancel",
+  "Close",
+  "Colors 1",
+  "Colors 2",
+  "Colors 3",
+  "Context Menu",
+  "Context Menu 2",
+  "Credential",
+  "Default",
+  "Dialogs 1",
+  "Dialogs 2",
+  "Dialogs 3",
+  "Diff Viewer",
+  "Disable status cache for elevated processes",
+  "Drive Types",
+  "Drives A: and B:",
+  "Email",
+  "Exclude paths:",
+  "Fixed drives",
+  "General",
+  "Git",
+  "Help",
+  "Hook Scripts",
+  "Icon Overlays",
+  "Icon Set",
+  "Include paths:",
+  "Issue Tracker Integration",
+  "Line down",
+  "Line up",
+  "Merge Tool",
+  "Network",
+  "Network drives",
+  "None",
+  "OK",
+  "Overlay Handlers",
+  "Page Frame",
+  "RAM drives",
+  "Removable drives",
+  "Saved Data",
+  "Settings - TortoiseGit",
+  "Shell",
+  "Shell Extended",
+  "Show excluded folders as normal",
+  "Show overlays and context menu only in explorer",
+  "Show status of subrepositories in parent folders",
+  "Status cache",
+  "TortoiseGitBlame",
+  "TortoiseGitUDiff",
+  "Unknown drives",
+  "Unversioned files mark parent folder as modified",
+  "Vertical",
+  "Windows 11 Context Menu"
+ ],
+ "source": "uia",
+ "window_title": "Settings - TortoiseGit"
+}

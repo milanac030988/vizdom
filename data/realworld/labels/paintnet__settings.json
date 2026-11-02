@@ -1,0 +1,808 @@
+{
+ "image_size": {
+  "width": 1902,
+  "height": 1010
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    1902,
+    1010
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E11",
+    "E13",
+    "E15",
+    "E17",
+    "E19",
+    "E21",
+    "E23",
+    "E25",
+    "E27",
+    "E29",
+    "E31",
+    "E33",
+    "E35",
+    "E36",
+    "E37",
+    "E38",
+    "E44"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    1730,
+    1,
+    1787,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    1787,
+    1,
+    1844,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "0 | O"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    1844,
+    1,
+    1901,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    628,
+    11,
+    1273,
+    52
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    6,
+    9,
+    56,
+    54
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Back",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "< | <"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    7,
+    62,
+    367,
+    156
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cuong Nguyen Huynh Tri ugc1hc@bosch.com",
+   "role_word": "button",
+   "parent_id": "E1",
+   "children_ids": [
+    "E8",
+    "E9",
+    "E10"
+   ],
+   "printed": "— EN\n” Cuong Nguyen Huynh Tri\nae ugcihc@bosch.com"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    21,
+    71,
+    96,
+    146
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E7"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    111,
+    86,
+    312,
+    110
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Cuong Nguyen Huynh Tri",
+   "parent_id": "E7"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    111,
+    110,
+    312,
+    130
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "ugc1hc@bosch.com",
+   "parent_id": "E7"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    21,
+    181,
+    370,
+    226
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Home",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E12"
+   ],
+   "printed": "ran Home"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    34,
+    191,
+    59,
+    216
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E11"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    21,
+    231,
+    370,
+    276
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "System",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E14"
+   ],
+   "printed": "M™® system"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    34,
+    241,
+    59,
+    266
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E13"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    21,
+    281,
+    370,
+    326
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Bluetooth & devices",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E16"
+   ],
+   "printed": "% Bluetooth & devices"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    34,
+    291,
+    59,
+    316
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E15"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    21,
+    331,
+    370,
+    376
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Network & internet",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E18"
+   ],
+   "printed": "= > Network & internet"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    34,
+    341,
+    59,
+    366
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E17"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    21,
+    381,
+    370,
+    426
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Personalization",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E20"
+   ],
+   "printed": "PA Personalization"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    34,
+    391,
+    59,
+    416
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E19"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    21,
+    431,
+    370,
+    476
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Apps",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E22"
+   ],
+   "printed": "®S Apps"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    34,
+    441,
+    59,
+    466
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E21"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    21,
+    481,
+    370,
+    526
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Accounts",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E24"
+   ],
+   "printed": "Lal\ne» Accounts"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    34,
+    491,
+    59,
+    516
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E23"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    21,
+    531,
+    370,
+    576
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Time & language",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E26"
+   ],
+   "printed": "@ Time & language"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    34,
+    541,
+    59,
+    566
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E25"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    21,
+    581,
+    370,
+    626
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Gaming",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E28"
+   ],
+   "printed": "@ Gaming"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    34,
+    591,
+    59,
+    616
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E27"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    21,
+    631,
+    370,
+    676
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Accessibility",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E30"
+   ],
+   "printed": "X Accessibility"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    34,
+    641,
+    59,
+    666
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E29"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    21,
+    681,
+    370,
+    726
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Privacy & security",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E32"
+   ],
+   "printed": "e Privacy & security"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    34,
+    691,
+    59,
+    716
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E31"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    21,
+    731,
+    370,
+    776
+   ],
+   "confidence": 1.0,
+   "uia_type": "ListItem",
+   "visual_type": "button",
+   "ocr_text": "Windows Update",
+   "role_word": "list item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E34"
+   ],
+   "printed": "@ Windows Update"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    34,
+    741,
+    59,
+    766
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E33"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    514,
+    65,
+    874,
+    119
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Network & internet",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Network & internet >"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    874,
+    69,
+    965,
+    116
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Proxy",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Proxy"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    514,
+    139,
+    1764,
+    163
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Use a proxy server for Ethernet or Wi-Fi connections. These settings don’t apply to VPN connections.",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    514,
+    203,
+    1764,
+    414
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E39",
+    "E40",
+    "E41"
+   ]
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    535,
+    269,
+    759,
+    293
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Automatically detect settings",
+   "parent_id": "E38"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    1653,
+    256,
+    1742,
+    307
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Automatically detect settings",
+   "role_word": "button",
+   "parent_id": "E38",
+   "printed": "On | On | On",
+   "review": "name not printed"
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    514,
+    329,
+    1764,
+    414
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E38",
+   "children_ids": [
+    "E42",
+    "E43"
+   ]
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    535,
+    374,
+    556,
+    394
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Off",
+   "parent_id": "E41"
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    1580,
+    353,
+    1743,
+    393
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Set up",
+   "role_word": "button",
+   "parent_id": "E41",
+   "printed": "Set up"
+  },
+  {
+   "id": "E44",
+   "bounds": [
+    514,
+    455,
+    1764,
+    575
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E45"
+   ]
+  },
+  {
+   "id": "E45",
+   "bounds": [
+    514,
+    489,
+    1764,
+    575
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E44",
+   "children_ids": [
+    "E46",
+    "E47"
+   ]
+  },
+  {
+   "id": "E46",
+   "bounds": [
+    535,
+    535,
+    556,
+    555
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Off",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E47",
+   "bounds": [
+    1580,
+    513,
+    1743,
+    553
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Set up",
+   "role_word": "button",
+   "parent_id": "E45",
+   "printed": "Set up"
+  }
+ ],
+ "all_names": [
+  "Accessibility",
+  "Accounts",
+  "Apps",
+  "Automatic proxy setup",
+  "Automatically detect settings",
+  "Back",
+  "Bluetooth & devices",
+  "Close Settings",
+  "Cuong Nguyen Huynh Tri",
+  "Cuong Nguyen Huynh Tri ugc1hc@bosch.com",
+  "Gaming",
+  "Home",
+  "Manual proxy setup",
+  "Maximize Settings",
+  "Minimize Settings",
+  "Network & internet",
+  "Off",
+  "Personalization",
+  "Privacy & security",
+  "Proxy",
+  "Search box, Find a setting",
+  "Set up",
+  "Settings",
+  "System",
+  "Time & language",
+  "Use a proxy server",
+  "Use a proxy server for Ethernet or Wi-Fi connections. These settings don’t apply to VPN connections.",
+  "Use setup script",
+  "User profile picture",
+  "Windows Update",
+  "ugc1hc@bosch.com"
+ ],
+ "source": "uia",
+ "window_title": "Settings"
+}

@@ -1,0 +1,1198 @@
+{
+ "image_size": {
+  "width": 905,
+  "height": 830
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    905,
+    830
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E7",
+    "E8",
+    "E10",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E33",
+    "E34",
+    "E35",
+    "E36",
+    "E37",
+    "E48",
+    "E50",
+    "E52",
+    "E55",
+    "E57",
+    "E59",
+    "E60",
+    "E61",
+    "E62",
+    "E63",
+    "E64",
+    "E65",
+    "E66",
+    "E67",
+    "E68"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    302,
+    95,
+    876,
+    743
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    316,
+    127,
+    596,
+    147
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Default limitation of log messages:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    794,
+    122,
+    856,
+    155
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    600,
+    122,
+    784,
+    150
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E6"
+   ]
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    764,
+    123,
+    783,
+    149
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E5",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    316,
+    162,
+    500,
+    195
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Font for log messages:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    502,
+    162,
+    784,
+    190
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E9"
+   ]
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    764,
+    163,
+    783,
+    189
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E8",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    794,
+    165,
+    856,
+    193
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E11",
+    "E12"
+   ]
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    797,
+    168,
+    832,
+    190
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E10"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    836,
+    166,
+    855,
+    192
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E10",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    316,
+    207,
+    607,
+    232
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Short date/time format in log messages",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Short date/time format in log messages"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    316,
+    240,
+    481,
+    265
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Relative Times in log",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|} Relative Times in log"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    628,
+    240,
+    812,
+    265
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show asterisk log prefix",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Show asterisk log prefix"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    316,
+    272,
+    553,
+    297
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Use system locale for date/time",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Use system locale for date/time"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    316,
+    305,
+    747,
+    330
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Can double-click in log list to compare with previous revision",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|} Can double-click in log list to compare with previous revision"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    316,
+    337,
+    489,
+    362
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Abbreviate renamings",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|} Abbreviate renamings"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    628,
+    337,
+    793,
+    362
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Symbolize ref names",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|} Symbolize ref names"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    316,
+    370,
+    456,
+    395
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Enable log cache",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Enable log cache"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    316,
+    402,
+    448,
+    427
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Enable Gravatar",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|) Enable Gravatar"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    478,
+    400,
+    856,
+    429
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E23",
+    "E24"
+   ]
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    482,
+    404,
+    832,
+    424
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E22"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    836,
+    401,
+    855,
+    428
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    316,
+    435,
+    585,
+    460
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Draw tag/branch labels on right side",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|} Draw tag/branch labels on right side"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    316,
+    467,
+    651,
+    492
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Display subject and body of commit messages",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|} Display subject and body of commit messages"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    316,
+    500,
+    551,
+    525
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Display branch revision number",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "_} Display branch revision number"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    316,
+    535,
+    860,
+    725
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    326,
+    567,
+    491,
+    592
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show describe in log",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|_} Show describe in log"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    326,
+    605,
+    494,
+    625
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Describe Strategy",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    502,
+    600,
+    732,
+    628
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E32"
+   ]
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    712,
+    601,
+    731,
+    627
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E31",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    326,
+    647,
+    494,
+    667
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Abbreviated size",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    502,
+    640,
+    582,
+    675
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    616,
+    645,
+    810,
+    670
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Always show long format",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "_} Always show long format"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    326,
+    687,
+    505,
+    712
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Only follow first parent",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "|} Only follow first parent"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    60,
+    50,
+    115,
+    72
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "General",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E38",
+    "E39",
+    "E40",
+    "E41",
+    "E42",
+    "E43",
+    "E44",
+    "E45",
+    "E46",
+    "E47"
+   ],
+   "printed": "General"
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    83,
+    72,
+    179,
+    94
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Context Menu",
+   "role_word": "tree item",
+   "parent_id": "E37",
+   "printed": "Context Menu"
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    83,
+    94,
+    191,
+    116
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Context Menu 2",
+   "role_word": "tree item",
+   "parent_id": "E37",
+   "printed": "Context Menu 2"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    83,
+    116,
+    264,
+    138
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Windows 11 Context Menu",
+   "role_word": "tree item",
+   "parent_id": "E37",
+   "printed": "Windows 11 Context Menu"
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    83,
+    138,
+    150,
+    160
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Dialogs 1",
+   "role_word": "tree item",
+   "parent_id": "E37",
+   "printed": "Dialogs 1"
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    83,
+    160,
+    150,
+    182
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Dialogs 2",
+   "role_word": "tree item",
+   "parent_id": "E37",
+   "printed": "Dialogs 2"
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    83,
+    182,
+    150,
+    204
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Dialogs 3",
+   "role_word": "tree item",
+   "parent_id": "E37",
+   "printed": "Dialogs 3"
+  },
+  {
+   "id": "E44",
+   "bounds": [
+    83,
+    204,
+    141,
+    226
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Colors 1",
+   "role_word": "tree item",
+   "parent_id": "E37",
+   "printed": "Colors 1"
+  },
+  {
+   "id": "E45",
+   "bounds": [
+    83,
+    226,
+    141,
+    248
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Colors 2",
+   "role_word": "tree item",
+   "parent_id": "E37",
+   "printed": "Colors 2"
+  },
+  {
+   "id": "E46",
+   "bounds": [
+    83,
+    248,
+    141,
+    270
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Colors 3",
+   "role_word": "tree item",
+   "parent_id": "E37",
+   "printed": "Colors 3"
+  },
+  {
+   "id": "E47",
+   "bounds": [
+    83,
+    270,
+    203,
+    292
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Alternative editor",
+   "role_word": "tree item",
+   "parent_id": "E37",
+   "printed": "Alternative editor"
+  },
+  {
+   "id": "E48",
+   "bounds": [
+    60,
+    292,
+    83,
+    314
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Git",
+   "parent_id": "E1",
+   "children_ids": [
+    "E49"
+   ],
+   "printed": "Git",
+   "role_word": "tree item"
+  },
+  {
+   "id": "E49",
+   "bounds": [
+    83,
+    314,
+    155,
+    336
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Credential",
+   "role_word": "tree item",
+   "parent_id": "E48",
+   "printed": "Credential"
+  },
+  {
+   "id": "E50",
+   "bounds": [
+    60,
+    336,
+    148,
+    358
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Hook Scripts",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E51"
+   ],
+   "printed": "Hook Scripts"
+  },
+  {
+   "id": "E51",
+   "bounds": [
+    83,
+    358,
+    247,
+    380
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Issue Tracker Integration",
+   "role_word": "tree item",
+   "parent_id": "E50",
+   "printed": "Issue Tracker Integration"
+  },
+  {
+   "id": "E52",
+   "bounds": [
+    60,
+    380,
+    152,
+    402
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Icon Overlays",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E53",
+    "E54"
+   ],
+   "printed": "Icon Overlays"
+  },
+  {
+   "id": "E53",
+   "bounds": [
+    83,
+    402,
+    140,
+    424
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Icon Set",
+   "role_word": "tree item",
+   "parent_id": "E52",
+   "printed": "Icon Set"
+  },
+  {
+   "id": "E54",
+   "bounds": [
+    83,
+    424,
+    200,
+    446
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Overlay Handlers",
+   "role_word": "tree item",
+   "parent_id": "E52",
+   "printed": "Overlay Handlers"
+  },
+  {
+   "id": "E55",
+   "bounds": [
+    60,
+    446,
+    120,
+    468
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Network",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E56"
+   ],
+   "printed": "Network"
+  },
+  {
+   "id": "E56",
+   "bounds": [
+    83,
+    468,
+    124,
+    490
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Email",
+   "role_word": "tree item",
+   "parent_id": "E55",
+   "printed": "Email"
+  },
+  {
+   "id": "E57",
+   "bounds": [
+    60,
+    490,
+    138,
+    512
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Diff Viewer",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "children_ids": [
+    "E58"
+   ],
+   "printed": "Diff Viewer"
+  },
+  {
+   "id": "E58",
+   "bounds": [
+    83,
+    512,
+    163,
+    534
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Merge Tool",
+   "role_word": "tree item",
+   "parent_id": "E57",
+   "printed": "Merge Tool"
+  },
+  {
+   "id": "E59",
+   "bounds": [
+    60,
+    534,
+    140,
+    556
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Saved Data",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "printed": "Saved Data"
+  },
+  {
+   "id": "E60",
+   "bounds": [
+    60,
+    556,
+    178,
+    578
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "TortoiseGitBlame",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "printed": "TortoiseGitBlame"
+  },
+  {
+   "id": "E61",
+   "bounds": [
+    60,
+    578,
+    171,
+    600
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "TortoiseGitUDiff",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "printed": "TortoiseGitUDiff"
+  },
+  {
+   "id": "E62",
+   "bounds": [
+    60,
+    600,
+    130,
+    622
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Advanced",
+   "role_word": "tree item",
+   "parent_id": "E1",
+   "printed": "Advanced"
+  },
+  {
+   "id": "E63",
+   "bounds": [
+    472,
+    784,
+    572,
+    819
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "OK | OK | OK"
+  },
+  {
+   "id": "E64",
+   "bounds": [
+    580,
+    784,
+    680,
+    819
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel"
+  },
+  {
+   "id": "E65",
+   "bounds": [
+    688,
+    784,
+    788,
+    819
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Apply",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Apply"
+  },
+  {
+   "id": "E66",
+   "bounds": [
+    796,
+    784,
+    896,
+    819
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Help",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Help"
+  },
+  {
+   "id": "E67",
+   "bounds": [
+    284,
+    48,
+    896,
+    774
+   ],
+   "confidence": 1.0,
+   "uia_type": "Pane",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E68",
+   "bounds": [
+    861,
+    1,
+    905,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x ’"
+  }
+ ],
+ "all_names": [
+  "Abbreviate renamings",
+  "Abbreviated size",
+  "Advanced",
+  "Alternative editor",
+  "Always show long format",
+  "Apply",
+  "Can double-click in log list to compare with previous revision",
+  "Cancel",
+  "Close",
+  "Colors 1",
+  "Colors 2",
+  "Colors 3",
+  "Context Menu",
+  "Context Menu 2",
+  "Credential",
+  "Default limitation of log messages:",
+  "Describe",
+  "Describe Strategy",
+  "Dialogs 1",
+  "Dialogs 2",
+  "Dialogs 3",
+  "Diff Viewer",
+  "Display branch revision number",
+  "Display subject and body of commit messages",
+  "Draw tag/branch labels on right side",
+  "Email",
+  "Enable Gravatar",
+  "Enable log cache",
+  "Font for log messages:",
+  "General",
+  "Git",
+  "Help",
+  "Hook Scripts",
+  "Icon Overlays",
+  "Icon Set",
+  "Issue Tracker Integration",
+  "Log messages",
+  "Merge Tool",
+  "Network",
+  "OK",
+  "Only follow first parent",
+  "Open",
+  "Overlay Handlers",
+  "Page Frame",
+  "Relative Times in log",
+  "Saved Data",
+  "Settings - TortoiseGit",
+  "Short date/time format in log messages",
+  "Show asterisk log prefix",
+  "Show describe in log",
+  "Symbolize ref names",
+  "TortoiseGitBlame",
+  "TortoiseGitUDiff",
+  "Use system locale for date/time",
+  "Windows 11 Context Menu"
+ ],
+ "source": "uia",
+ "window_title": "Settings - TortoiseGit"
+}
