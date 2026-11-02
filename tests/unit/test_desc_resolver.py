@@ -179,6 +179,30 @@ def test_model_answer_outside_the_described_position_is_rejected(monkeypatch):
     assert "slm picked E4 outside the described position (conf=0.95: close)" in info["reason"]
 
 
+def test_model_answer_without_the_named_number_is_rejected(monkeypatch):
+    """Run-7 DOMs, '1 button' on a pager the parser had not read: with digits
+    out of the substring bonus the shortlist held only role-matched buttons
+    and the SLM picked 'Add New'. A number has no paraphrase."""
+    dom = _dom(_btn("E2", "Add New"), _btn("E3", "Export", x=20),
+               _text("E15", "+1.234 567 890", 50), _text("E33", "1,234", 70))
+    r = DescriptionResolver(dom, tiers=["lexical", "slm"])
+    monkeypatch.setattr(r, "_resolve_slm",
+                        lambda description, candidates: (dom["elements"][0], "conf=1.00: a button"))
+    elem, info = r.resolve("1 button")
+    assert elem is None and info["tier"] is None
+    assert "slm picked E2 without the named number(s) 1 (conf=1.00: a button)" in info["reason"]
+
+
+def test_model_answer_carrying_the_named_number_is_kept(monkeypatch):
+    dom = _dom(_btn("E2", "Add New"), _btn("E9", "Page 2", x=20), _btn("E10", "Page 2", x=40))
+    r = DescriptionResolver(dom, tiers=["lexical", "slm"])
+    monkeypatch.setattr(r, "_resolve_slm",
+                        lambda description, candidates: (dom["elements"][1], "conf=0.90: page two"))
+    elem, info = r.resolve("page 2 button")
+    assert elem["id"] == "E9" and info["tier"] == "slm"
+    assert DescriptionResolver._named_numbers("the 100% zoom button at the top") == ["100"]
+
+
 def test_lexical_does_not_resolve_positional_nonsense():
     """'top left Purple Elephant button': position + role used to score 2.0 on
     their own and resolve the top-left button confidently - a false pass with

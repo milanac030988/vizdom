@@ -385,10 +385,12 @@ class DescriptionResolver:
         # answer that lands outside the described position is rejected.
         in_place = self._position_predicate(description, pool)
         candidates = self._shortlist(ranked, pool, in_place)
+        numbers = self._named_numbers(description)
 
         if "slm" in self.tiers:
             elem, reason = self._resolve_slm(description, candidates)
             elem, reason = self._enforce_position("slm", elem, reason, in_place)
+            elem, reason = self._enforce_numbers("slm", elem, reason, numbers)
             if elem is not None:
                 return elem, {"tier": "slm", "reason": reason,
                               "candidates": [e.get("id") for e in candidates[:5]]}
@@ -400,6 +402,7 @@ class DescriptionResolver:
             else:
                 elem, reason = self._resolve_vlm(description, candidates)
                 elem, reason = self._enforce_position("vlm", elem, reason, in_place)
+                elem, reason = self._enforce_numbers("vlm", elem, reason, numbers)
                 if elem is not None:
                     return elem, {"tier": "vlm", "reason": reason,
                                   "candidates": [e.get("id") for e in candidates[:5]]}
@@ -467,6 +470,29 @@ class DescriptionResolver:
         if elem is not None and in_place is not None and not in_place(elem):
             return None, (f"{tier} picked {elem.get('id')} outside the described "
                           f"position ({reason})")
+        return elem, reason
+
+    @staticmethod
+    def _named_numbers(description: str) -> List[str]:
+        """The numbers a description names ("Page 2 button" -> ["2"])."""
+        return [t for t in parse_description(description)[1] if t.isdigit()]
+
+    @staticmethod
+    def _enforce_numbers(tier: str, elem, reason: str, numbers: List[str]):
+        """A number has no paraphrase: a model answer that does not carry
+        every number the description names is a miss. Once digits stopped
+        earning the substring bonus (ADR-022 1.9), the shortlist for "1
+        button" on a pager the parser had not read was padded with the
+        screen's role-matched buttons instead of numeric cells, and the 3B
+        model picked "Add New" where it used to decline (lifecycle run-7
+        DOMs, 4 steps)."""
+        if elem is None or not numbers:
+            return elem, reason
+        have = element_tokens([elem])
+        missing = [n for n in numbers if n not in have]
+        if missing:
+            return None, (f"{tier} picked {elem.get('id')} without the named "
+                          f"number(s) {', '.join(missing)} ({reason})")
         return elem, reason
 
     @staticmethod
