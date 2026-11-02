@@ -10,15 +10,34 @@
 \geometry{margin=2.5cm}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{array}        % ragged-right p{} columns in the drivers table
 \usepackage{amssymb}      % \checkmark in the defect-comparison table
 \usepackage{caption}
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage[hidelinks]{hyperref}
 \usepackage{float}
+\usepackage{tikz}         % the frame of the two cover pages (Mẫu 1, Mẫu 2)
+\usetikzlibrary{calc}
 
 \graphicspath{{figures/}}
 \newcommand{\code}[1]{\texttt{#1}}
+
+% Front matter per the University of Science (VNU-HCM) master's project forms
+% ("Hướng dẫn trình bày TLTK và biểu mẫu trình bày đồ án ThS", 2022):
+% Mẫu 1 outer cover, Mẫu 2 inner cover, Mẫu 3 declaration, Mẫu 4a/4b
+% information pages; references in IEEE style (engineering disciplines).
+\newcommand{\pt}[1]{\fontsize{#1}{1.25\dimexpr#1\relax}\selectfont}
+\newcommand{\thesistitle}{VizDOM: Generating a Visual DOM from GUI Screenshots
+  for Platform-Independent Test Automation}
+\newcommand{\thesistitleVI}{VizDOM: Sinh Visual DOM từ ảnh chụp màn hình GUI phục vụ
+  tự động hóa kiểm thử độc lập nền tảng}
+\newcommand{\coverframe}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \draw[line width=0.8pt]
+      ($(current page.north west) + (1.7cm, -1.7cm)$) rectangle
+      ($(current page.south east) + (-1.7cm, 1.7cm)$);
+  \end{tikzpicture}}
 \setlength{\parskip}{0.4em}
 \setlength{\parindent}{0pt}
 \setlength{\tabcolsep}{4pt}
@@ -32,7 +51,200 @@ for Platform-Independent Test Automation}}
 \date{2026}
 
 \begin{document}
-\maketitle
+
+% ---------------------------------------------------------------------
+% Mẫu 1: outer cover (printed on the hard cover)
+% ---------------------------------------------------------------------
+\begin{titlepage}
+\coverframe
+\centering
+\vspace*{0.6cm}
+{\pt{14pt} ĐẠI HỌC QUỐC GIA TP. HCM\par}
+{\pt{14pt}\bfseries TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN\par}
+\vspace{3.2cm}
+{\pt{14pt}\bfseries NGUYỄN HUỲNH TRÍ CƯƠNG\par}
+\vspace{3cm}
+\parbox{0.88\textwidth}{\centering\pt{16pt}\bfseries\MakeUppercase{\thesistitle}}\par
+\vfill
+{\pt{14pt}\bfseries ĐỒ ÁN THẠC SĨ\par}
+\vfill
+{\pt{12pt} TP. Hồ Chí Minh -- Năm 2026\par}
+\vspace*{0.4cm}
+\end{titlepage}
+
+% ---------------------------------------------------------------------
+% Mẫu 2: inner cover
+% ---------------------------------------------------------------------
+\begin{titlepage}
+\coverframe
+\centering
+\vspace*{0.6cm}
+{\pt{13pt} ĐẠI HỌC QUỐC GIA TP. HCM\par}
+{\pt{13pt}\bfseries TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN\par}
+\vspace{2.5cm}
+{\pt{14pt} NGUYỄN HUỲNH TRÍ CƯƠNG\par}
+\vspace{2.2cm}
+\parbox{0.88\textwidth}{\centering\pt{16pt}\bfseries\MakeUppercase{\thesistitle}}\par
+\vspace{2.2cm}
+{\pt{13pt}
+\begin{tabular}{@{}l@{\hspace{0.5em}}l@{}}
+Ngành: & Khoa học Máy tính\\
+Mã số ngành: & 8480101
+\end{tabular}\par}
+\vspace{3cm}
+{\pt{13pt}
+\begin{minipage}{0.75\textwidth}
+NGƯỜI HƯỚNG DẪN KHOA HỌC\\[0.4em]
+\hspace*{1.5em}HDC: PGS. TS. Nguyễn Văn Vũ
+\end{minipage}\par}
+\vfill
+{\pt{12pt} TP. Hồ Chí Minh -- Năm 2026\par}
+\vspace*{0.4cm}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+% ---------------------------------------------------------------------
+% Mẫu 3: declaration
+% ---------------------------------------------------------------------
+\section*{\centering LỜI CAM ĐOAN}
+\addcontentsline{toc}{section}{Lời cam đoan (Declaration)}
+\vspace{1em}
+{\setlength{\parindent}{1.5em}\setlength{\parskip}{0.8em}
+\indent Tôi cam đoan đồ án thạc sĩ ngành Khoa học Máy tính, với đề tài
+``\thesistitle'', là công trình do Tôi thực hiện dưới sự hướng dẫn của
+PGS. TS. Nguyễn Văn Vũ.
+
+Những kết quả nghiên cứu của đồ án hoàn toàn trung thực và chính xác.\par}
+
+\vspace{2.5em}
+\hfill
+\begin{minipage}{0.6\textwidth}
+\centering
+TP. Hồ Chí Minh, ngày \ldots\ tháng \ldots\ năm 2026\\[0.4em]
+Học viên cao học\\
+(Ký tên, ghi họ tên)\\[4em]
+Nguyễn Huỳnh Trí Cương
+\end{minipage}
+\newpage
+
+% ---------------------------------------------------------------------
+% Mẫu 4a: project information page (Vietnamese)
+% ---------------------------------------------------------------------
+\begin{center}
+{\large\bfseries TRANG THÔNG TIN ĐỒ ÁN}
+\end{center}
+\addcontentsline{toc}{section}{Trang thông tin đồ án}
+
+\begin{tabular}{@{}p{0.34\textwidth}@{}p{0.64\textwidth}@{}}
+Tên đề tài đồ án: & \thesistitleVI\\
+Ngành: & Khoa học Máy tính\\
+Mã số ngành: & 8480101\\
+Họ tên học viên cao học: & Nguyễn Huỳnh Trí Cương\\
+Khóa đào tạo: & 2023\\
+Người hướng dẫn khoa học: & PGS. TS. Nguyễn Văn Vũ\\
+Cơ sở đào tạo: & Trường Đại học Khoa học Tự nhiên, ĐHQG.HCM
+\end{tabular}
+
+\textbf{1. TÓM TẮT NỘI DUNG ĐỒ ÁN}
+
+Tự động hóa kiểm thử GUI dựa vào cây trợ năng của nền tảng (UI Automator, Windows
+UIA, DOM của web) để định vị phần tử, nhưng giao diện tự vẽ (Qt/QML, OpenGL), HMI
+nhúng/công nghiệp và màn hình quan sát qua camera không có cây này. Đồ án xây dựng
+VizDOM, hệ thống dựng lại một DOM tương tự UI Automator trực tiếp từ ảnh chụp màn
+hình bằng cách kết hợp thị giác máy tính cổ điển, mô hình grounding thị giác và một
+mô hình ngôn ngữ/thị giác nhỏ. Hệ thống có kiến trúc lục giác (ports and adapters),
+trong đó ba thao tác với ứng dụng cần kiểm thử --- chụp màn hình, phát hiện phần tử,
+điều khiển đầu vào --- là các chiến lược có thể thay thế, chạy trong tiến trình hoặc
+dưới dạng dịch vụ gRPC từ xa. Một thư viện Robot Framework đưa DOM vào kiểm thử thực
+tế. Đồ án được đánh giá bằng một benchmark vòng đời hợp nhất (click và kiểm tra trên
+cùng các trạng thái màn hình) so với ba mô hình grounding end-to-end.
+
+\textbf{2. NHỮNG KẾT QUẢ MỚI CỦA ĐỒ ÁN}
+\begin{itemize}[leftmargin=1.4em, itemsep=0.2em]
+  \item Hệ thống VizDOM hoạt động: DOM được sinh từ ảnh chụp màn hình, truy vấn bằng
+        locator thuộc tính (\code{text=}) hoặc mô tả ngôn ngữ (\code{desc=}); triển
+        khai được từ một tiến trình đến chụp bằng camera và điều khiển bằng cánh tay
+        robot mà không thay đổi lõi.
+  \item Trên benchmark vòng đời, các mô hình grounding (Aria-UI, ELAM-7B,
+        UI-TARS-1.5-7B) click chính xác hơn VizDOM (0,93--0,96 so với 0,88) nhưng
+        xác nhận nhầm 60--88 trên 88 phần tử không tồn tại; VizDOM không xác nhận
+        nhầm phần tử nào và có chi phí mỗi bước thấp hơn 15--39 lần.
+  \item Với tầng ngôn ngữ \code{desc=} (chấm điểm từ vựng, mô hình 3B làm trọng tài),
+        VizDOM click tốt hơn cả hai mô hình 7B (0,958), kiểm tra tốt nhất (0,973) và
+        không xác nhận nhầm phần tử nào trong 88 phần tử vắng mặt.
+  \item Nhận định: với vai trò bộ kiểm chứng (test oracle), một DOM đã phân giải có
+        thể trả lời ``không có'', điều mà mô hình grounding --- luôn trả về một điểm
+        --- không làm được.
+\end{itemize}
+
+\textbf{3. CÁC ỨNG DỤNG/ KHẢ NĂNG ỨNG DỤNG TRONG THỰC TIỄN HAY NHỮNG VẤN ĐỀ CẦN TIẾP TỤC NGHIÊN CỨU}
+
+Ứng dụng: kiểm thử tự động cho giao diện tự vẽ, HMI nhúng và công nghiệp, và các
+hệ thống chỉ quan sát được qua camera, thông qua thư viện Robot Framework. Hướng
+nghiên cứu tiếp: benchmark trên tập dữ liệu thực có gán nhãn lớn hơn; giảm phân mảnh
+phần tử trên giao diện có theme; nhãn vắng mặt khó hơn (có nghĩa nhưng không có trên
+màn hình); tích hợp mô hình grounding chuyên dụng làm backend tầng 2 của \code{desc=};
+bảo mật dịch vụ (xác thực, TLS) và cơ chế plugin qua entry point.
+\newpage
+
+% ---------------------------------------------------------------------
+% Mẫu 4b: project information page (English)
+% ---------------------------------------------------------------------
+\begin{center}
+{\large\bfseries PROJECT INFORMATION}
+\end{center}
+\addcontentsline{toc}{section}{Project information}
+
+\begin{tabular}{@{}p{0.34\textwidth}@{}p{0.64\textwidth}@{}}
+Thesis title: & \thesistitle\\
+Speciality: & Computer Science\\
+Code: & 8480101\\
+Name of Master Student: & Nguyen Huynh Tri Cuong\\
+Academic year: & 2023\\
+Supervisor: & Assoc.\ Prof.\ Dr.\ Nguyen Van Vu\\
+At: & VNUHCM -- University of Science
+\end{tabular}
+
+\textbf{1. SUMMARY}
+
+GUI test automation locates elements through the platform accessibility tree
+(UI Automator, Windows UIA, the web DOM), which custom-rendered UIs (Qt/QML,
+OpenGL), embedded and industrial HMIs, and screens observed through a camera do not
+provide. This project builds VizDOM, a system that reconstructs a UI-Automator-like
+DOM directly from a screenshot by composing classical computer vision, a vision
+grounding model and a small language/vision model. Its hexagonal (ports and
+adapters) architecture makes the three ways a system touches the application under
+test --- capture, detect, actuate --- pluggable strategies that run in-process or as
+remote gRPC services; a Robot Framework library puts the DOM to work in real tests.
+The system is evaluated on a unified lifecycle benchmark (clicks and checks on the
+same screen states) against three end-to-end grounding models.
+
+\textbf{2. NOVELTY OF THESIS}
+\begin{itemize}[leftmargin=1.4em, itemsep=0.2em]
+  \item A working screenshot-to-DOM system queried by property (\code{text=}) or by
+        description (\code{desc=}), deployable from a single process to camera
+        capture with robot-arm actuation without changing its core.
+  \item On the lifecycle benchmark the grounding models (Aria-UI, ELAM-7B,
+        UI-TARS-1.5-7B) click more accurately than VizDOM (0.93--0.96 against 0.88)
+        but pass 60--88 of 88 absent targets; VizDOM passes none and costs 15--39
+        times less per step.
+  \item With its \code{desc=} language tier (lexical scoring, a 3B model as
+        tie-breaker) VizDOM clicks better than both 7B grounders (0.958), verifies
+        best (0.973) and passes none of the 88 absent targets.
+  \item As a test oracle, a resolved DOM can answer ``not there'', which a grounding
+        model --- it always returns a point --- cannot.
+\end{itemize}
+
+\textbf{3. APPLICATIONS/ APPLICABILITY/ PERSPECTIVE}
+
+Applications: automated testing of custom-rendered UIs, embedded and industrial
+HMIs, and systems observable only through a camera, through the Robot Framework
+library. Perspective: a larger labelled real-world benchmark; less
+over-segmentation on themed UIs; harder (plausible but absent) negatives; a
+dedicated grounding model as an alternative Tier-2 backend of \code{desc=};
+service hardening (authentication, TLS) and entry-point plugin discovery.
+\newpage
 
 \begin{abstract}
 \noindent
@@ -61,6 +273,7 @@ novel learning algorithm.
 \newpage
 \tableofcontents
 \newpage
+\pagenumbering{arabic}
 
 % =====================================================================
 \section{Introduction}
@@ -387,6 +600,67 @@ pluggable and reports recall per element type rather than a single headline scor
 \label{sec:arch}
 % =====================================================================
 
+\subsection{Architecture drivers and quality goals}
+\label{sec:drivers}
+The architecture was derived from ranked drivers rather than chosen first and
+justified afterwards. Because VizDOM is a greenfield project whose stated purpose
+is to work across detectors, devices, and machines, \emph{modifiability} and
+\emph{deployability} rank above raw accuracy; for a fixed single-platform product
+the order would be reversed. Two constraints of the development environment bound
+the solution: the system must work \emph{offline} (a corporate proxy blocks public
+hosts, so models, dependencies, and documentation are vendored), and it must be
+distributable \emph{without containers} or orchestrators. Each goal is stated as a
+measurable scenario, so it can be verified rather than asserted
+(Table~\ref{tab:drivers}).
+
+\begin{table}[htbp]
+  \centering
+  \caption{Ranked architecture drivers, each with the response measure that serves
+  as its acceptance test and the result obtained.}
+  \label{tab:drivers}
+  \small
+  \begin{tabular}{@{}c >{\raggedright\arraybackslash}p{0.15\linewidth}
+                     >{\raggedright\arraybackslash}p{0.38\linewidth}
+                     >{\raggedright\arraybackslash}p{0.33\linewidth}@{}}
+    \toprule
+    Rank & Driver & Response measure & Status \\
+    \midrule
+    1 & Modifiability &
+      A new detector, capture source, or actuator is one new file and a registry
+      entry, with \textbf{zero core edits}; at least two implementations per port. &
+      Met: 5 detector, 5 capture, and 3 actuator adapters (each count includes its
+      gRPC client). \\
+    2 & Deployability &
+      Moving a port to another machine is a \textbf{configuration-only} change
+      (strategy name and host:port); the end-to-end round trip succeeds. &
+      Met: remote capture is pixel-identical to local; actuator coordinate
+      mapping is exact. \\
+    3 & Testability &
+      The full pipeline and the Robot Framework keywords run with \textbf{no GPU and
+      no network}. &
+      Met: the test suite runs on a CPU-only laptop. \\
+    4 & Accuracy &
+      Detection F1 $\geq$ 0.80 and mean IoU $\geq$ 0.60 on a labelled benchmark. &
+      Partly met: mIoU 0.67--0.68 meets the target; best pooled F1 0.58 does not
+      (Section~\ref{sec:eval}). \\
+    5 & Performance &
+      A heavy model loads \textbf{once} per service lifetime; later requests pay
+      inference only. &
+      Met (verified functionally). \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The drivers conflict in two places, and the same mechanism resolves both.
+\emph{Accuracy vs.\ testability:} the most accurate detector needs a GPU and about
+1\,GB of weights, which conflicts with running on a laptop. \emph{Deployability
+vs.\ simplicity:} remote services add moving parts to every run. Making each of
+detection, capture, and actuation a \emph{port} with interchangeable adapters lets a
+CPU baseline serve the laptop case and a remote GPU service serve the accurate one,
+and keeps the remote transport optional so the simple case pays nothing. The
+remainder of this section describes that design; the trade-offs it accepts are
+discussed in Section~\ref{sec:tradeoffs}.
+
 \subsection{Hexagonal ports and adapters}
 VizDOM is structured as a hexagonal architecture (Figure~\ref{fig:arch}). A pure,
 local domain core (pipeline orchestration, reading-order and merge logic, coarse
@@ -434,6 +708,23 @@ in-process adapter with no server, while the \code{grpc} strategy is selected on
 when the port lives on another machine. A representative distributed configuration
 is: \emph{capture on the device $\rightarrow$ detect on a GPU host $\rightarrow$
 actuate on the SUT / robot-arm controller $\rightarrow$ orchestrate on the client}.
+Figure~\ref{fig:archoverview} shows the two deployments side by side: every
+adapter in the test-runner process, or the same adapter behind a service on
+another machine. Moving a port between the two changes one value in the session
+configuration (e.g.\ detector \code{"modular"} becomes \code{"grpc"}, which runs
+that same modular backend on the GPU host); the domain core and the application
+under test are untouched.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{Architecture_Overview.png}
+  \caption{One hexagon, two deployments. Left: inside the test-runner process, the
+  driving adapters call the domain core, whose five ports are each filled by an
+  adapter chosen by name. Right: the coloured adapters have a gRPC (or, for the
+  refiner, HTTP) twin that reaches a detector service on a GPU host, or capture and
+  actuator services on the machine under test. OCR always stays in-process.}
+  \label{fig:archoverview}
+\end{figure}
 
 \subsection{Coordinate contract for actuation}
 Detection yields coordinates in image pixels, but where an action lands depends on
@@ -445,12 +736,13 @@ calibration homography from image pixels to physical servo coordinates. This kee
 the orchestrator and the network protocol independent of any device's resolution.
 
 \subsection{Architectural decisions and trade-offs}
+\label{sec:tradeoffs}
 \paragraph{Ports and adapters over a layered monolith.} The domain core depends only
 on abstract ports, not on concrete detectors, capture sources, or actuators. This
 hexagonal style is chosen for testability (the core runs with no I/O) and
 substitutability (backends swap without touching business logic); the accepted cost
 is the indirection of an interface and a registry per port, judged worthwhile
-because substitutability is the project's primary quality goal.
+because modifiability is the project's top-ranked driver (Table~\ref{tab:drivers}).
 
 \paragraph{A microservice-oriented decomposition.} The ports are not merely internal
 seams: each of \emph{detector}, \emph{capture}, and \emph{actuator} is a first-class
@@ -1352,7 +1644,9 @@ benchmark; integrating a dedicated grounder as an alternative Tier-2 backend of 
 \code{desc=} locator, where grounding pays; and hardening the services with
 authentication/TLS and setuptools entry-point plugin discovery.
 
-\bibliographystyle{plain}
+% IEEE style: the guideline's choice for the engineering disciplines;
+% numbered in order of first citation.
+\bibliographystyle{IEEEtran}
 \bibliography{references}
 
 \end{document}
