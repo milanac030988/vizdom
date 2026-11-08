@@ -182,7 +182,7 @@ about 2.5 h on a 48 GB card (Aria-UI needs 80 GB and is skipped below it):
 ```bash
 tmux new -s bench
 git clone https://github.com/milanac030988/vizdom.git && cd vizdom && git checkout develop
-export ONLY="rw-vizdom-uied rw-vizdom-omniparser rw-vizdom-modular rw-desc rw-desc-slm rw-desc-vlm rw-desc-vlm-chain rw-elam-7b rw-ui-tars-1.5-7b rw-aria-ui"
+export ONLY="vizdom-modular-desc vizdom-modular-desc-verify-chain vizdom-modular-desc-vlm7-chain rw-vizdom-uied rw-vizdom-omniparser rw-vizdom-modular rw-desc rw-desc-verify-chain rw-desc-slm rw-desc-vlm rw-desc-vlm-chain rw-desc-vlm7-chain rw-elam-7b rw-ui-tars-1.5-7b rw-aria-ui"
 bash deploy/gpu/setup.sh
 bash deploy/gpu/prefetch.sh              # an rw- column fetches what its synthetic namesake needs
 PYTHONPATH=src USE_TF=0 .venv/bin/python deploy/gpu/preflight.py --pipeline --grounding \
@@ -196,7 +196,19 @@ Since ADR-022 1.9 the verify steps of a production `desc=` chain
 the assertion keywords score them — lexical only — so on a re-run of the
 synthetic set those verify figures move (0.973 → about 0.970 for the chain);
 the pinned `slm` / `vlm` columns, the `text=` columns and the grounders are
-unchanged. `--desc-verify chain` reproduces the old scoring.
+unchanged. `--desc-verify chain` reproduces the old scoring, and the sweep
+runs it as its own column on both sets (`vizdom-modular-desc-verify-chain`,
+`rw-desc-verify-chain`; row name `...+desc[lexical+slm][verify=chain]`), so a
+run 8 shows run 7's figures and the new default side by side.
+
+The `-desc-vlm7-chain` columns run the production `lexical,vlm` chain with
+`qwen2.5vl:7b` (`VIZDOM_GROUNDING_VISION_MODEL_BIG`; prefetch pulls it,
+~6 GB): the 3B model loops on Set-of-Mark prompts (runs 4-6). A non-default
+model is part of the row name (`...+desc[lexical+vlm][vlm=qwen2.5vl:7b]`).
+Preflight checks only the default models; the 7B pull is in the prefetch log.
+The `ONLY` above also takes three synthetic columns (the production chain,
+its `verify=chain` twin and the 7B chain, ~15 min): the twin should repeat
+run 7's 0.958 / 0.973 / 0 under the ADR-022 1.10 number guard.
 
 ### Aria-UI on a 48 GB card: offload mode (experimental)
 

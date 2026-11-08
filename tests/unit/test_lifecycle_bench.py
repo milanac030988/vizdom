@@ -284,6 +284,19 @@ def test_pinned_model_column_keeps_verifying_through_its_model():
                               verify="keyword").name == "vizdom-modular+desc[slm][verify=keyword]"
 
 
+def test_a_non_default_model_is_its_own_column():
+    """Two vision models in one run dir must not share a summary row."""
+    big = VizDomDescExecutor(detector="modular", tiers=["lexical", "vlm"],
+                             vision_model="qwen2.5vl:7b")
+    assert big.name == "vizdom-modular+desc[lexical+vlm][vlm=qwen2.5vl:7b]"
+    # a model the chain never calls does not rename it
+    assert VizDomDescExecutor(detector="modular", tiers=["lexical", "slm"],
+                              vision_model="qwen2.5vl:7b").name == \
+        "vizdom-modular+desc[lexical+slm]"
+    assert VizDomDescExecutor(detector="modular", tiers=["slm"], model="qwen2.5:7b").name == \
+        "vizdom-modular+desc[slm][slm=qwen2.5:7b]"
+
+
 def test_vizdom_executor_dumps_every_parsed_dom(tmp_path, monkeypatch):
     """The parsed DOM of each state lands in <out>/<stamp>-doms/<executor>/,
     so a miss can be diagnosed from the DOM the step saw (run 4's false pass

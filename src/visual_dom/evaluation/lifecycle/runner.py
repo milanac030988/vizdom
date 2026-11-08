@@ -299,6 +299,13 @@ class VizDomDescExecutor(VizDomExecutor):
         self.name = f"vizdom-{detector}{suffix}+desc[{'+'.join(self.tiers)}]"
         if verify != default:
             self.name += f"[verify={verify}]"
+        # a non-default model is a different column: two vision models in one
+        # run dir would otherwise share a name and one row would replace the
+        # other in summary.md (run 8 compares qwen2.5vl:3b with :7b)
+        if "slm" in self.tiers and model != self.DEFAULT_MODEL:
+            self.name += f"[slm={model}]"
+        if "vlm" in self.tiers and vision_model != self.DEFAULT_VISION_MODEL:
+            self.name += f"[vlm={vision_model}]"
         self.backend, self.model, self.vision_model, self.host = \
             backend, model, vision_model, host
         # tests inject a factory(dom, screenshot) -> resolver; production builds

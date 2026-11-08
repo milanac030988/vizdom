@@ -80,14 +80,23 @@ run_column vizdom-modular     $RUN --manifest "$MANIFEST" --executors vizdom-mod
 # without the lexical shortlist in front fewer than half the targets are among
 # them. The -vlm-chain column runs the vision tier the way production does,
 # behind the lexical scoring; -desc-vlm is kept for the comparison.
-DESC_COLUMNS="vizdom-modular-desc vizdom-modular-desc-slm vizdom-modular-desc-vlm vizdom-modular-desc-vlm-chain"
+# Run 8 adds two columns per set:
+#  -desc-verify-chain  the production chain with the verify scoring of runs
+#                      4-7 (ADR-022 1.9 moved it to the assertion keywords),
+#                      so run 7's 0.958 / 0.973 / 0 can be reproduced beside
+#                      the new default row;
+#  -desc-vlm7-chain    lexical -> vlm with a 7B vision model: qwen2.5vl:3b
+#                      loops ("8888...") on Set-of-Mark prompts (runs 4-6).
+#                      The model is in the column name, so both rows survive.
+DESC_COLUMNS="vizdom-modular-desc vizdom-modular-desc-verify-chain vizdom-modular-desc-slm vizdom-modular-desc-vlm vizdom-modular-desc-vlm-chain vizdom-modular-desc-vlm7-chain"
 OLLAMA="${VIZDOM_OLLAMA_HOST:-http://localhost:11434}"
 GMODEL="${VIZDOM_GROUNDING_MODEL:-qwen2.5:3b}"
 GVISION="${VIZDOM_GROUNDING_VISION_MODEL:-qwen2.5vl:3b}"
+GVISION_BIG="${VIZDOM_GROUNDING_VISION_MODEL_BIG:-qwen2.5vl:7b}"
 # the ablation's refiner=on and +desc columns go through Ollama as well
 # (and the real-application set's rw-desc* columns further down)
 desc_wanted=0
-for c in $DESC_COLUMNS ablation rw-desc rw-desc-slm rw-desc-vlm rw-desc-vlm-chain; do
+for c in $DESC_COLUMNS ablation rw-desc rw-desc-verify-chain rw-desc-slm rw-desc-vlm rw-desc-vlm-chain rw-desc-vlm7-chain; do
     wanted "$c" && desc_wanted=1
 done
 # The server's own log goes into the tarball: runs 4-6 each lost a block of
@@ -103,9 +112,11 @@ if [ "$desc_wanted" -eq 1 ]; then
         DESC="$RUN --manifest $MANIFEST --executors vizdom-modular+desc --out-dir $OUT
               --grounding-host $OLLAMA --grounding-model $GMODEL --grounding-vision-model $GVISION"
         run_column vizdom-modular-desc     $DESC --grounding-tiers lexical,slm
+        run_column vizdom-modular-desc-verify-chain $DESC --grounding-tiers lexical,slm --desc-verify chain
         run_column vizdom-modular-desc-slm $DESC --grounding-tiers slm
         run_column vizdom-modular-desc-vlm $DESC --grounding-tiers vlm
         run_column vizdom-modular-desc-vlm-chain $DESC --grounding-tiers lexical,vlm
+        run_column vizdom-modular-desc-vlm7-chain $DESC --grounding-tiers lexical,vlm --grounding-vision-model "$GVISION_BIG"
     else
         echo "desc= columns: SKIPPED - Ollama not reachable at $OLLAMA (prefetch.sh installs it and pulls $GMODEL + $GVISION)"
     fi
@@ -148,7 +159,7 @@ aria_offload() {
         *)    [ "$VRAM_GB" -ge 40 ] ;;
     esac
 }
-RW_COLUMNS="rw-vizdom-uied rw-vizdom-omniparser rw-vizdom-modular rw-desc rw-desc-slm rw-desc-vlm rw-desc-vlm-chain rw-elam-7b rw-ui-tars-1.5-7b"
+RW_COLUMNS="rw-vizdom-uied rw-vizdom-omniparser rw-vizdom-modular rw-desc rw-desc-verify-chain rw-desc-slm rw-desc-vlm rw-desc-vlm-chain rw-desc-vlm7-chain rw-elam-7b rw-ui-tars-1.5-7b"
 [ "$VRAM_GB" -ge 70 ] || aria_offload || ONLY="${ONLY:-vizdom-uied vizdom-omniparser vizdom-modular $DESC_COLUMNS ablation elam-7b ui-tars-1.5-7b parity $RW_COLUMNS}"
 if [ -x .venv-legacy/bin/python ]; then
     LEGACY=".venv-legacy/bin/python -m visual_dom.evaluation.lifecycle.runner"
@@ -172,7 +183,7 @@ run_column parity             python "deploy/gpu/parity_on_box.py" "$OUT/parity.
 # ablation has one: its columns carry the main columns' names, and in the
 # run dir their rows would replace the synthetic rows in summary.md. Select
 # with ONLY="rw-..." (e.g. a rental for this set alone:
-#   ONLY="rw-vizdom-uied rw-vizdom-omniparser rw-vizdom-modular rw-desc rw-desc-slm rw-desc-vlm rw-desc-vlm-chain rw-elam-7b rw-ui-tars-1.5-7b rw-aria-ui"
+#   ONLY="rw-vizdom-uied rw-vizdom-omniparser rw-vizdom-modular rw-desc rw-desc-verify-chain rw-desc-slm rw-desc-vlm rw-desc-vlm-chain rw-desc-vlm7-chain rw-elam-7b rw-ui-tars-1.5-7b rw-aria-ui"
 # ). About 2.5 h on an A6000-class card with the grounders, ~25 min without.
 RW_MANIFEST="benchmarks/lifecycle-realworld-v1/steps.json"
 RW_OUT="$OUT/realworld"
@@ -189,9 +200,11 @@ if curl -fsS "$OLLAMA/api/tags" >/dev/null 2>&1; then
     RW_DESC="$RW --executors vizdom-modular+desc --grounding-host $OLLAMA
              --grounding-model $GMODEL --grounding-vision-model $GVISION"
     rw_column rw-desc           $RW_DESC --grounding-tiers lexical,slm
+    rw_column rw-desc-verify-chain $RW_DESC --grounding-tiers lexical,slm --desc-verify chain
     rw_column rw-desc-slm       $RW_DESC --grounding-tiers slm
     rw_column rw-desc-vlm       $RW_DESC --grounding-tiers vlm
     rw_column rw-desc-vlm-chain $RW_DESC --grounding-tiers lexical,vlm
+    rw_column rw-desc-vlm7-chain $RW_DESC --grounding-tiers lexical,vlm --grounding-vision-model "$GVISION_BIG"
 else
     echo "rw desc= columns: SKIPPED - Ollama not reachable at $OLLAMA"
 fi
