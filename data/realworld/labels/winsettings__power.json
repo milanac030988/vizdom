@@ -25,16 +25,15 @@
     "E8",
     "E9",
     "E10",
-    "E12",
-    "E13",
-    "E18",
-    "E23",
+    "E11",
+    "E16",
+    "E21",
+    "E24",
+    "E25",
     "E26",
     "E27",
-    "E28",
-    "E29",
-    "E34",
-    "E36"
+    "E32",
+    "E34"
    ]
   },
   {
@@ -83,7 +82,7 @@
    "ocr_text": "Close Settings",
    "review": "icon-only?",
    "parent_id": "E1",
-   "printed": "x | x"
+   "printed": "x | x :"
   },
   {
    "id": "E5",
@@ -168,35 +167,6 @@
   {
    "id": "E10",
    "bounds": [
-    374,
-    148,
-    399,
-    173
-   ],
-   "confidence": 1.0,
-   "uia_type": "ProgressBar",
-   "visual_type": "block",
-   "parent_id": "E1",
-   "children_ids": [
-    "E11"
-   ]
-  },
-  {
-   "id": "E11",
-   "bounds": [
-    374,
-    148,
-    399,
-    173
-   ],
-   "confidence": 1.0,
-   "uia_type": "Image",
-   "visual_type": "icon",
-   "parent_id": "E10"
-  },
-  {
-   "id": "E12",
-   "bounds": [
     34,
     124,
     171,
@@ -205,11 +175,11 @@
    "confidence": 1.0,
    "uia_type": "Text",
    "visual_type": "text",
-   "ocr_text": "Your battery is charging. The remaining battery life is 95%",
+   "ocr_text": "Your battery is charging. The remaining battery life is 99%",
    "parent_id": "E1"
   },
   {
-   "id": "E13",
+   "id": "E11",
    "bounds": [
     34,
     249,
@@ -221,14 +191,14 @@
    "visual_type": "block",
    "parent_id": "E1",
    "children_ids": [
+    "E12",
+    "E13",
     "E14",
-    "E15",
-    "E16",
-    "E17"
+    "E15"
    ]
   },
   {
-   "id": "E14",
+   "id": "E12",
    "bounds": [
     108,
     268,
@@ -239,10 +209,10 @@
    "uia_type": "Text",
    "visual_type": "text",
    "ocr_text": "Energy recommendations",
-   "parent_id": "E13"
+   "parent_id": "E11"
   },
   {
-   "id": "E15",
+   "id": "E13",
    "bounds": [
     108,
     292,
@@ -253,10 +223,10 @@
    "uia_type": "Text",
    "visual_type": "text",
    "ocr_text": "Lower your carbon footprint by applying these recommendations",
-   "parent_id": "E13"
+   "parent_id": "E11"
   },
   {
-   "id": "E16",
+   "id": "E14",
    "bounds": [
     108,
     327,
@@ -267,10 +237,10 @@
    "uia_type": "Text",
    "visual_type": "text",
    "ocr_text": "2 of 9 applied",
-   "parent_id": "E13"
+   "parent_id": "E11"
   },
   {
-   "id": "E17",
+   "id": "E15",
    "bounds": [
     166,
     335,
@@ -280,10 +250,10 @@
    "confidence": 1.0,
    "uia_type": "ProgressBar",
    "visual_type": "block",
-   "parent_id": "E13"
+   "parent_id": "E11"
   },
   {
-   "id": "E18",
+   "id": "E16",
    "bounds": [
     34,
     373,
@@ -295,14 +265,14 @@
    "visual_type": "block",
    "parent_id": "E1",
    "children_ids": [
+    "E17",
+    "E18",
     "E19",
-    "E20",
-    "E21",
-    "E22"
+    "E20"
    ]
   },
   {
-   "id": "E19",
+   "id": "E17",
    "bounds": [
     108,
     394,
@@ -313,10 +283,10 @@
    "uia_type": "Text",
    "visual_type": "text",
    "ocr_text": "Power Mode",
-   "parent_id": "E18"
+   "parent_id": "E16"
   },
   {
-   "id": "E20",
+   "id": "E18",
    "bounds": [
     108,
     419,
@@ -327,10 +297,10 @@
    "uia_type": "Text",
    "visual_type": "text",
    "ocr_text": "Optimize your device based on power use and performance",
-   "parent_id": "E18"
+   "parent_id": "E16"
   },
   {
-   "id": "E21",
+   "id": "E19",
    "bounds": [
     582,
     404,
@@ -341,10 +311,10 @@
    "uia_type": "Text",
    "visual_type": "text",
    "ocr_text": "Balanced",
-   "parent_id": "E18"
+   "parent_id": "E16"
   },
   {
-   "id": "E22",
+   "id": "E20",
    "bounds": [
     658,
     396,
@@ -356,11 +326,11 @@
    "visual_type": "icon",
    "ocr_text": "Show more settings",
    "review": "icon-only?",
-   "parent_id": "E18",
-   "printed": ""
+   "parent_id": "E16",
+   "printed": "Vv | Vv"
   },
   {
-   "id": "E23",
+   "id": "E21",
    "bounds": [
     34,
     463,
@@ -372,12 +342,12 @@
    "visual_type": "block",
    "parent_id": "E1",
    "children_ids": [
-    "E24",
-    "E25"
+    "E22",
+    "E23"
    ]
   },
   {
-   "id": "E24",
+   "id": "E22",
    "bounds": [
     108,
     509,
@@ -388,10 +358,10 @@
    "uia_type": "Text",
    "visual_type": "text",
    "ocr_text": "Choose what happens when your device is idle for a specified time",
-   "parent_id": "E23"
+   "parent_id": "E21"
   },
   {
-   "id": "E25",
+   "id": "E23",
    "bounds": [
     658,
     485,
@@ -403,11 +373,11 @@
    "visual_type": "icon",
    "ocr_text": "Show more settings",
    "review": "icon-only?",
-   "parent_id": "E23",
-   "printed": "_"
+   "parent_id": "E21",
+   "printed": "Vv | Vv"
   },
   {
-   "id": "E26",
+   "id": "E24",
    "bounds": [
     108,
     574,
@@ -421,7 +391,7 @@
    "parent_id": "E1"
   },
   {
-   "id": "E27",
+   "id": "E25",
    "bounds": [
     108,
     598,
@@ -435,7 +405,7 @@
    "parent_id": "E1"
   },
   {
-   "id": "E28",
+   "id": "E26",
    "bounds": [
     598,
     571,
@@ -448,11 +418,11 @@
    "ocr_text": "Battery percentage",
    "role_word": "button",
    "parent_id": "E1",
-   "printed": "a",
+   "printed": "of @ | of @ | of @",
    "review": "name not printed"
   },
   {
-   "id": "E29",
+   "id": "E27",
    "bounds": [
     34,
     643,
@@ -464,14 +434,14 @@
    "visual_type": "block",
    "parent_id": "E1",
    "children_ids": [
+    "E28",
+    "E29",
     "E30",
-    "E31",
-    "E32",
-    "E33"
+    "E31"
    ]
   },
   {
-   "id": "E30",
+   "id": "E28",
    "bounds": [
     108,
     663,
@@ -482,10 +452,10 @@
    "uia_type": "Text",
    "visual_type": "text",
    "ocr_text": "Energy saver",
-   "parent_id": "E29"
+   "parent_id": "E27"
   },
   {
-   "id": "E31",
+   "id": "E29",
    "bounds": [
     108,
     687,
@@ -496,10 +466,10 @@
    "uia_type": "Text",
    "visual_type": "text",
    "ocr_text": "Reduce power consumption and increase battery life by limiting some background activities",
-   "parent_id": "E29"
+   "parent_id": "E27"
   },
   {
-   "id": "E32",
+   "id": "E30",
    "bounds": [
     542,
     684,
@@ -510,10 +480,10 @@
    "uia_type": "Text",
    "visual_type": "text",
    "ocr_text": "Turns on at 30%",
-   "parent_id": "E29"
+   "parent_id": "E27"
   },
   {
-   "id": "E33",
+   "id": "E31",
    "bounds": [
     658,
     673,
@@ -525,11 +495,11 @@
    "visual_type": "icon",
    "ocr_text": "Show more settings",
    "review": "icon-only?",
-   "parent_id": "E29",
-   "printed": ""
+   "parent_id": "E27",
+   "printed": "Vv | Vv"
   },
   {
-   "id": "E34",
+   "id": "E32",
    "bounds": [
     34,
     748,
@@ -541,11 +511,11 @@
    "visual_type": "block",
    "parent_id": "E1",
    "children_ids": [
-    "E35"
+    "E33"
    ]
   },
   {
-   "id": "E35",
+   "id": "E33",
    "bounds": [
     658,
     772,
@@ -557,11 +527,11 @@
    "visual_type": "icon",
    "ocr_text": "Show more settings",
    "review": "icon-only?",
-   "parent_id": "E34",
-   "printed": ""
+   "parent_id": "E32",
+   "printed": "Vv | Vv"
   },
   {
-   "id": "E36",
+   "id": "E34",
    "bounds": [
     34,
     838,
@@ -573,12 +543,12 @@
    "visual_type": "block",
    "parent_id": "E1",
    "children_ids": [
-    "E37",
-    "E39"
+    "E35",
+    "E37"
    ]
   },
   {
-   "id": "E37",
+   "id": "E35",
    "bounds": [
     35,
     838,
@@ -588,13 +558,13 @@
    "confidence": 1.0,
    "uia_type": "Group",
    "visual_type": "block",
-   "parent_id": "E36",
+   "parent_id": "E34",
    "children_ids": [
-    "E38"
+    "E36"
    ]
   },
   {
-   "id": "E38",
+   "id": "E36",
    "bounds": [
     108,
     883,
@@ -605,10 +575,10 @@
    "uia_type": "Text",
    "visual_type": "text",
    "ocr_text": "Choose what happens when you interact with your device's physical controls",
-   "parent_id": "E37"
+   "parent_id": "E35"
   },
   {
-   "id": "E39",
+   "id": "E37",
    "bounds": [
     658,
     860,
@@ -620,8 +590,8 @@
    "visual_type": "icon",
    "ocr_text": "Show more settings",
    "review": "icon-only?",
-   "parent_id": "E36",
-   "printed": "a"
+   "parent_id": "E34",
+   "printed": "Vv | Vv"
   }
  ],
  "all_names": [
@@ -631,7 +601,6 @@
   "Balanced",
   "Battery percentage",
   "Battery usage",
-  "Busy",
   "Choose what happens when you interact with your device's physical controls",
   "Choose what happens when your device is idle for a specified time",
   "Close Settings",
@@ -658,7 +627,7 @@
   "System",
   "Turns on at 30%",
   "Vertical",
-  "Your battery is charging. The remaining battery life is 95%"
+  "Your battery is charging. The remaining battery life is 99%"
  ],
  "source": "uia",
  "window_title": "Settings"

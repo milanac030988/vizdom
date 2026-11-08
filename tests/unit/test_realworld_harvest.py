@@ -12,11 +12,13 @@ import pytest
 
 from visual_dom.evaluation.lifecycle.generate import generate_steps
 from visual_dom.evaluation.lifecycle.harvest import (
+    check_painted,
     confirm_printed,
     looks_icon_only,
     name_is_printed,
     review_sheet,
     uia_to_gt,
+    unpainted,
 )
 
 CLIENT = (100, 200, 400, 300)          # x, y, w, h on the screen
@@ -116,6 +118,36 @@ def test_guessed_icon_only_is_restored_when_its_name_is_printed():
     assert (bell["visual_type"], bell["role_word"]) == ("button", "tree item")
     assert "review" not in bell
     assert bold["visual_type"] == "icon" and bold["review"] == "icon-only?"
+
+
+def _painted_gt(n_blank, n_drawn):
+    """n_drawn text boxes over a drawn stripe, n_blank over flat background."""
+    image = np.full((400, 200, 3), 30, np.uint8)
+    els = []
+    for i in range(n_blank + n_drawn):
+        y = 10 + 30 * i
+        if i >= n_blank:
+            image[y + 5:y + 15, 15:80] = 230
+        els.append({"id": f"E{i + 1}", "bounds": [10, y, 90, y + 20],
+                    "visual_type": "text", "ocr_text": f"label {i}"})
+    els.append({"id": "B", "bounds": [0, 0, 200, 400], "visual_type": "block"})
+    return {"elements": els}, image
+
+
+def test_a_page_still_loading_is_refused():
+    # Windows Settings mid-load: the UIA tree is complete, the screen is not
+    gt, image = _painted_gt(n_blank=6, n_drawn=4)
+    assert len(unpainted(gt, image)) == 6
+    with pytest.raises(RuntimeError, match="still loading"):
+        check_painted(gt, image)
+
+
+def test_a_few_flat_boxes_are_tolerated():
+    # a collapsed label or a scroll-bar arrow is blank on a drawn page
+    gt, image = _painted_gt(n_blank=2, n_drawn=10)
+    check_painted(gt, image)
+    gt, image = _painted_gt(n_blank=0, n_drawn=5)
+    assert unpainted(gt, image) == []
 
 
 def _state(root, sid, captions, extra_names=()):

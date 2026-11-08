@@ -255,6 +255,39 @@ def confirm_printed(gt, image, read):
     return gt
 
 
+def unpainted(gt, image, min_std=4.0):
+    """
+    Ids of the named elements whose box is one flat colour on the screenshot.
+
+    A page that is still loading (Windows Settings shows a spinner) already
+    has its full UIA tree, so every element is labelled while the screen
+    shows none of them; the before/after comparison cannot see it because
+    the blank page does not change. A few flat boxes are normal (a collapsed
+    label, a scroll-bar arrow); most of them mean the page is not drawn.
+    """
+    ids = []
+    for e in gt["elements"]:
+        if not e.get("ocr_text") or e["visual_type"] == "block":
+            continue
+        x0, y0, x1, y1 = e["bounds"]
+        crop = image[y0:y1, x0:x1]
+        if crop.size and float(crop.std()) < min_std:
+            ids.append(e["id"])
+    return ids
+
+
+def check_painted(gt, image, max_share=0.3, min_count=3):
+    """Refuse a capture whose labels mostly point at blank screen."""
+    named = sum(1 for e in gt["elements"]
+                if e.get("ocr_text") and e["visual_type"] != "block")
+    blank = unpainted(gt, image)
+    if named and len(blank) >= min_count and len(blank) >= max_share * named:
+        raise RuntimeError(
+            f"{len(blank)} of {named} labelled elements are blank on the screenshot "
+            f"({', '.join(blank[:6])}...) - the page is probably still loading; "
+            "wait until it is drawn and capture again (--delay)")
+
+
 def recheck_printed(root=DEFAULT_ROOT, read=None):
     """Re-read every demoted element of every saved state with the current
     reader and restore the ones whose name is now found. Returns the ids of
@@ -406,6 +439,7 @@ def capture_state(title, app, state, root=DEFAULT_ROOT, delay=0.0, check_printed
 
     h, wd = before.shape[:2]
     gt = uia_to_gt(nodes, (origin[0], origin[1], wd, h), (wd, h))
+    check_painted(gt, before)
     if read:
         confirm_printed(gt, before, read)
     else:
