@@ -1,5 +1,5 @@
 # Build the VizDOM reports to PDF with XeLaTeX.
-#   powershell -ExecutionPolicy Bypass -File build.ps1                    # builds all four
+#   powershell -ExecutionPolicy Bypass -File build.ps1                    # builds all (thesis + internship report)
 #   powershell -ExecutionPolicy Bypass -File build.ps1 vizdom_report_en   # builds one
 #
 # Same tool resolution as build.bat: MiKTeX's xelatex.exe / bibtex.exe /
@@ -38,7 +38,7 @@ function Run([string[]]$cmd, [string[]]$toolArgs) {
 
 Run @("initexmf") @("--set-config-value=[MPM]AutoInstall=1") | Out-Null
 
-$docs = if ($doc -eq "all") { @("vizdom_report_en", "vizdom_report_vi", "vizdom_architecture_en", "vizdom_architecture_vi") } else { @($doc) }
+$docs = if ($doc -eq "all") { @("vizdom_report_en", "vizdom_report_vi", "vizdom_architecture_en", "vizdom_architecture_vi", "baocao_thuctap") } else { @($doc) }
 $failed = @()
 
 foreach ($d in $docs) {
