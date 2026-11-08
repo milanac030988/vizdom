@@ -210,6 +210,18 @@ The `ONLY` above also takes three synthetic columns (the production chain,
 its `verify=chain` twin and the 7B chain, ~15 min): the twin should repeat
 run 7's 0.958 / 0.973 / 0 under the ADR-022 1.10 number guard.
 
+Reading the tarball (unpacked next to itself on first use): one table per
+set with false passes split by negative kind, each column step by step
+against run 7 and the laptop baseline, the 3B/7B and keyword/chain twins,
+action-hit per application, and every false pass with its explanation.
+
+```bash
+PYTHONPATH=src python -m visual_dom.evaluation.lifecycle.compare \
+    benchmarks/results/gpu-<stamp>.tar.gz \
+    --ref benchmarks/results/gpu-20261028_120820 \
+    --ref benchmarks/results/realworld_local --out run8.md
+```
+
 ### Aria-UI on a 48 GB card: offload mode (experimental)
 
 The clean path for Aria-UI is an 80 GB card. The opt-in alternative is
