@@ -37,7 +37,9 @@ applications**, with two changes:
    The whole window is captured (title bar and Win32 menu bar included),
    clipped to the monitor's work area so the taskbar never enters a
    screenshot. The capture is refused when the window changed while its tree
-   was read. Look at every screenshot once: a modal (a first-run welcome or
+   was read, and when most labelled boxes are blank on the screenshot - a page
+   still loading has its full UIA tree before it is drawn (Windows Settings,
+   2026-11-08; wait and use `--delay`). Look at every screenshot once: a modal (a first-run welcome or
    sign-in dialog) leaves the controls behind it in the tree, and those
    states must be recaptured with the modal dismissed.
    `--delay 5` gives time to open a menu by hand. Use ids
@@ -89,6 +91,33 @@ applications**, with two changes:
   Tesseract does not find printed inside its box. The OCR reading is stored as
   `printed`, shown on the review sheet, and only proposes: the reviewer
   decides.
+
+## Results
+
+998 steps over 46 states of 9 applications: 453 clicks, 545 verifications,
+92 negatives (mostly same-app). False passes are counted over the 92
+negatives. Every row names its host and commit; read a run with
+`python -m visual_dom.evaluation.lifecycle.compare` (deploy/gpu/README.md).
+
+| Column | Host, commit | Action-hit | Verify acc | False passes |
+|---|---|---|---|---|
+| `text=` vizdom-uied | laptop, `0fe5ce3` (2026-11-09) | 0.777 | 0.877 | 0 / 92 |
+| `text=` vizdom-modular | laptop, `19f800d` (2026-11-09) | 0.795 | 0.879 | 0 / 92 |
+| `desc=` lexical → slm (keyword verify) | laptop, `19f800d` (2026-11-09) | 0.792 | 0.826 | 0 / 92 |
+| `desc=` lexical → slm, before ADR-022 1.9 | laptop (2026-11-02) | 0.645 | 0.798 | 6 / 92 |
+| `text=` vizdom-omniparser | run 8 | *pending* | | |
+| `desc=` lexical → slm, `verify=chain` | run 8 | *pending* | | |
+| `desc=` slm / vlm pinned | run 8 | *pending* | | |
+| `desc=` lexical → vlm, 3B / 7B | run 8 | *pending* | | |
+| ELAM-7B | run 8 | *pending* | | |
+| UI-TARS-1.5-7B | run 8 | *pending* | | |
+
+Laptop result files: `benchmarks/results/realworld_local/20261109_051530`
+(uied), `_052030` (modular), `_052807` (desc), local and not committed. The
+1.9 fixes were derived from this set, so the 2026-11-02 row is reported
+beside the fixed one; applications captured after them are the held-out
+check. `19f800d` differs from `0fe5ce3` only by the comparison tool, so the three
+rows share one pipeline. The `id=` answer fix (ADR-022 1.11) came after run 8's commit.
 
 ## Threats to state in the results
 

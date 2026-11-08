@@ -1557,6 +1557,12 @@ the three runs do settle is the ADR-022 tier order: the vision tier stays opt-in
 a Set-of-Mark prompt with a null option must not sit in a chain used for
 verification.
 
+% TODO run 8: \subsubsection{Real applications} - the lifecycle-realworld-v1
+% table (46 states, 9 apps, 998 steps, 92 same-app negatives): laptop rows from
+% benchmarks/lifecycle-realworld-v1/README.md (text= 0.795/0.879/0, desc=
+% 0.792/0.826/0) and the run-8 grounder rows; state the tuning-on-this-set
+% caveat (ADR-022 1.9) and, once captured, the held-out applications.
+
 \subsection{Efficiency considerations}
 Efficiency is analysed along three axes. The lifecycle benchmark
 (Section~\ref{sec:lifecycle}) was run on rented GPUs, so the per-step figures below

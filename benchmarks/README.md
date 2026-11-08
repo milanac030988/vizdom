@@ -624,9 +624,19 @@ chain on the same footing as the `text=` rows: 4.2 s load, 44 parses at
 against the grounders' 2.79–4.24 s median step on that host that night
 (UI-TARS 1 433 s, ELAM 2 110 s for the same 514 steps).
 
+### Real applications: `lifecycle-realworld-v1` (laptop 2026-11-09; run 8 pending)
+
+The same schema on 46 screenshots of 9 desktop applications, UI Automation
+ground truth, negatives taken from other screens of the same application
+(`lifecycle-realworld-v1/README.md`, results table there). On the laptop,
+`text=` 0.795 / 0.879 and `desc=` 0.792 / 0.826, **0 of 92** false passes
+each. Run 8 adds the grounders on the same negatives:
+<!-- run 8: grounder rows, the 3B/7B vision chain and the verify=chain twin go here -->
+
 ### Planned extensions (in priority order)
 
-1. **Real-application states** in the same schema (the headline caveat).
+1. ~~**Real-application states** in the same schema (the headline caveat).~~
+   Started: `lifecycle-realworld-v1`, above; held-out applications next.
 2. **Defect injection**: mutate a state (shift a button, change a caption) and
    measure whether the suite *catches* it — mutation testing for GUI
    automation; the false-pass machinery already supports it.
