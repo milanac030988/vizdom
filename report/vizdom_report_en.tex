@@ -230,8 +230,14 @@ same screen states) against three end-to-end grounding models.
         but pass 60--88 of 88 absent targets; VizDOM passes none and costs 15--39
         times less per step.
   \item With its \code{desc=} language tier (lexical scoring, a 3B model as
-        tie-breaker) VizDOM clicks better than both 7B grounders (0.958), verifies
-        best (0.973) and passes none of the 88 absent targets.
+        tie-breaker) VizDOM clicks level with both 7B grounders (0.958 against
+        0.930--0.944, not a significant difference on 213 clicks), verifies best
+        (0.97 against 0.70--0.80) and passes none of the 88 absent targets.
+  \item On 46 screens of nine real applications, with absent targets taken from
+        other screens of the same application, VizDOM still passes none of 92,
+        while ELAM-7B passes 91 and UI-TARS 53. There the CPU-only chain clicks
+        below ELAM (0.795 against 0.857), and with a 7B vision model behind the
+        lexical tier it is level (0.861).
   \item As a test oracle, a resolved DOM can answer ``not there'', which a grounding
         model --- it always returns a point --- cannot.
 \end{itemize}
@@ -1428,7 +1434,10 @@ decoding.
   at 0.822 / 0.883 / 0.883 action-hit and 0.934 verify, and the chain at 0.934 / 0.964;
   every column gained six or seven hits and lost none, 499--501 of 514 steps identical.
   The grounder columns reproduced bit for bit on the run-3 card twice and were not rerun;
-  their per-step cost is that host's.}
+  their per-step cost is that host's. Every \code{desc=} verify figure here scores the
+  verify step through the whole chain, as runs 3--7 did; since ADR-022 revision~1.9 the
+  production chain scores it by the lexical tier alone, which gives 0.958 / 0.970 / 0.000
+  on these steps (run 8, 2026-11-08; the chain-scored twin repeated run 7 on all 514).}
   \label{tab:lifecycle}
   \begin{tabular}{@{}p{3.4cm}p{2.5cm}cccp{2.6cm}@{}}
     \toprule
@@ -1577,46 +1586,66 @@ column on the same card (Table~\ref{tab:lifecycle-realworld}).
 
 \begin{table}[htbp]
 \centering
-\caption{Lifecycle benchmark on real applications (998 steps, 92 same-application
-negatives; run~8)}
+\caption{Lifecycle benchmark on real applications (run~8): 453 clicks and 545
+verifications, of which 453 target a present element and 92 an absent one taken from
+another screen of the same application. Balanced is the mean of the two verify rates;
+an executor that gives the same answer on every step scores 0.5.}
 \label{tab:lifecycle-realworld}
-\begin{tabular}{lccc}
+\small
+\begin{tabular}{@{}lccccc@{}}
 \toprule
-Executor & Action-hit & Verify acc. & False passes \\
+Executor & Action-hit & Present$\rightarrow$pass & Absent$\rightarrow$fail & Balanced & False passes \\
 \midrule
-VizDOM \code{text=}, UIED & 0.779 & 0.877 & 0 / 92 \\
-VizDOM \code{text=}, modular & 0.797 & 0.879 & 0 / 92 \\
-VizDOM \code{text=}, OmniParser & 0.808 & 0.883 & 0 / 92 \\
-VizDOM \code{desc=} lexical$\rightarrow$SLM (production) & 0.795 & 0.826 & 0 / 92 \\
-\quad same, chain-scored verification & 0.790 & 0.883 & 1 / 92 \\
-VizDOM \code{desc=} lexical$\rightarrow$VLM 3B & 0.850 & 0.826 & 0 / 92 \\
-VizDOM \code{desc=} lexical$\rightarrow$VLM 7B & \textbf{0.861} & 0.826 & 0 / 92 \\
-VizDOM \code{desc=} SLM only & 0.494 & 0.732 & 10 / 92 \\
-VizDOM \code{desc=} VLM 3B only & 0.108 & 0.655 & 35 / 92 \\
-ELAM-7B & 0.857 & 0.833 & 91 / 92 \\
-UI-TARS-1.5-7B & 0.821 & 0.903 & 53 / 92 \\
+VizDOM \code{text=}, UIED & 0.779 & 0.852 & 1.000 & 0.926 & 0 / 92 \\
+VizDOM \code{text=}, modular & 0.797 & 0.854 & 1.000 & 0.927 & 0 / 92 \\
+VizDOM \code{text=}, OmniParser & 0.808 & 0.859 & 1.000 & 0.929 & 0 / 92 \\
+\code{desc=} lexical$\rightarrow$SLM (production) & 0.795 & 0.790 & 1.000 & 0.895 & 0 / 92 \\
+\quad chain-scored verification & 0.790 & 0.861 & 0.989 & 0.925 & 1 / 92 \\
+\code{desc=} lexical$\rightarrow$VLM 3B & 0.850 & 0.790 & 1.000 & 0.895 & 0 / 92 \\
+\code{desc=} lexical$\rightarrow$VLM 7B & 0.861 & 0.790 & 1.000 & 0.895 & 0 / 92 \\
+\code{desc=} SLM only & 0.494 & 0.700 & 0.891 & 0.796 & 10 / 92 \\
+\code{desc=} VLM 3B only$^\ast$ & 0.108 & 0.715 & 0.359 & 0.537 & 35 / 92 \\
+ELAM-7B & 0.857 & 1.000 & 0.011 & 0.505 & 91 / 92 \\
+UI-TARS-1.5-7B & 0.821 & 1.000 & 0.424 & 0.712 & 53 / 92 \\
 \bottomrule
 \end{tabular}
+
+\smallskip
+\footnotesize $^\ast$242 of its steps ended on the model server's token-repeat guard
+and count as errors, not as answers.
 \end{table}
 
 The result that matters for a test oracle is the last column. The negatives here are
 not invented words: they are captions that do exist elsewhere in the same application,
 so a nearest-looking element is always available. On them the grounders behave as they
-did on the synthetic set. ELAM-7B accepts 91 of the 92 absent targets and UI-TARS 53. Their verification accuracy is therefore not comparable with VizDOM's.
-ELAM's 0.833 is close to answering ``present'' on every step, and UI-TARS's higher
-0.903 comes with a false pass on more than half of the negatives. Every lexical-first
-VizDOM chain passes none of them. The real screens also cost all executors action
-accuracy compared with the synthetic set. VizDOM's floor is still the OCR: a caption
-that is not read cannot be matched, and VS Code's icon-only activity bar is the weakest
-application for every VizDOM row (8--18 of 24 clicks). Behind the lexical shortlist, the
-vision tier recovers part of that floor. With \code{qwen2.5vl:7b} the chain reaches
-0.861, the best action-hit of the table, still with no false pass. The 3B model reaches
-0.850; the 7B model is better on 11 steps and worse on 6. Pinned alone, the model tiers fail as they
-did on the synthetic set. Scoring verification through the whole chain, as runs~3--7 did,
-gains 33 verify steps and loses four, but it also produces the set's only VizDOM false
-pass: the text model takes a ``Tab Bar'' element for an absent ``Mark tab''. Verification
-in production is therefore scored by the lexical tier alone, the way the assertion
-keywords use it (ADR-022, revision~1.9).
+did on the synthetic set. ELAM-7B accepts 91 of the 92 absent targets and UI-TARS 53.
+Both pass every present element, so their verification is close to answering
+``present'' on every step: ELAM's balanced accuracy, 0.505, is a coin flip's, and
+UI-TARS reaches 0.712. Every lexical-first VizDOM chain passes none of the absent
+targets, which bounds its false-pass rate at 4.0\,\% (95\,\% Wilson interval), and
+reaches a balanced accuracy of 0.895 in production and 0.93 with \code{text=}. Its
+weakness is the other half: production fails 95 of the 453 present elements, a false
+alarm a tester has to look at. Both differences are significant in an exact paired
+McNemar test on the shared steps ($p<0.001$ each way).
+
+The real screens also cost every executor action accuracy compared with the synthetic
+set. With 453 click steps, the 95\,\% interval of an action-hit is about $\pm$0.04, so
+the paired test decides which differences count. The CPU-only production chain (0.795)
+is significantly behind ELAM-7B (0.857, $p=0.012$) and level with UI-TARS (0.821,
+$p=0.35$). VizDOM's floor is still the OCR: a caption that is not read cannot be
+matched, and VS Code's icon-only activity bar is the weakest application for every
+VizDOM row (8--18 of 24 clicks). Behind the lexical shortlist, the vision tier recovers
+part of that floor. With \code{qwen2.5vl:7b} the chain reaches 0.861, level with both
+grounders ($p=0.92$ against ELAM, $p=0.11$ against UI-TARS), still with no false pass.
+The 3B model reaches 0.850; the 7B model is better on 11 steps and worse on 6, which is
+not significant ($p=0.33$). Pinned alone, the model tiers fail as they did on the
+synthetic set. Scoring verification through the whole chain, as runs~3--7 did,
+gains 33 verify steps and loses four ($p<0.001$), which raises the balanced accuracy
+from 0.895 to 0.925, but it also produces the set's only VizDOM false pass: the text
+model takes a ``Tab Bar'' element for an absent ``Mark tab''. Verification in production
+is nevertheless scored by the lexical tier alone, the way the assertion keywords use it
+(ADR-022, revision~1.9). This is a deliberate priority, not the higher score: a false
+alarm stops a test and is looked at, while a false pass lets a defect through unseen.
 
 The run also checks reproducibility. The laptop measurements of the same commit
 agree with the rented card on 997 of 998 steps for UIED and 981 for the modular
@@ -1705,13 +1734,17 @@ accurately than VizDOM (0.93--0.96 against 0.88) but pass 60--88 of 88 absent
 targets, whereas VizDOM passes none by construction and costs 15--39 times less per
 step --- the testing-specific result this project set out to measure. With its own
 language tier switched on (\code{desc=}, lexical scoring with a 3B model as
-tie-breaker) VizDOM clicks better than both 7B grounders (0.958), verifies best (0.973)
-and passes none of the 88 absent targets, at a fifth of a millisecond of resolution per
-step. Future work
+tie-breaker) VizDOM clicks level with both 7B grounders (0.958 against 0.930--0.944,
+not significant in a paired test), verifies best (0.97) and passes none of the 88 absent
+targets, at a fifth of a millisecond of resolution per step. On real applications, with
+absent targets taken from other screens of the same application, the separation grows:
+VizDOM passes none of 92, ELAM-7B 91 and UI-TARS 53, while on clicks the CPU-only chain
+is behind ELAM (0.795 against 0.857) and the chain with a 7B vision model is level
+with it (0.861). Future work
 includes: completing the quantitative benchmark on a larger labelled dataset;
-reducing over-segmentation on themed real-world UIs; harder negatives
-(plausible-but-absent labels) and real-application states for the lifecycle
-benchmark; integrating a dedicated grounder as an alternative Tier-2 backend of the
+reducing over-segmentation on themed real-world UIs; held-out real applications for the
+lifecycle benchmark, captured after the fixes this set prompted; raising the share of
+present elements the production chain confirms (79\,\% on real screens); integrating a dedicated grounder as an alternative Tier-2 backend of the
 \code{desc=} locator, where grounding pays; and hardening the services with
 authentication/TLS and setuptools entry-point plugin discovery.
 

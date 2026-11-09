@@ -247,7 +247,8 @@ Interpretation, column by column:
   by 5–6 (0.944 / 0.930), and all three by 11–14 over UIED-VizDOM. With the
   second OCR engine in place (run 7) the gap is 4.6 points to Aria-UI and
   1.4–2.8 to UI-TARS and ELAM for the `text=` rows, and the `desc=` chain
-  (0.958) is above both 7B grounders. Our misses are resolution misses: the
+  (0.958) is level with both 7B grounders (paired McNemar on the 213 clicks:
+  p = 0.21 against ELAM, 0.66 against UI-TARS). Our misses are resolution misses: the
   locator finds 0 or 2+ matches on a fragmented or merged element (run 7's
   18 modular misses: the `Search...` placeholder whose dots OCR drops ×8,
   repeated table digits ×4, `APAC\USER01` ×3, three others); the grounders
@@ -395,7 +396,10 @@ What the rows say:
   OCR engine now reads), one loss (`form_sidebar_0015` *admin*), 499 of 514
   steps identical to run 6, still 0 of 88 negatives passed, the lexical tier
   now answering 408 steps and the SLM called on 106. On the same host that
-  is above UI-TARS (0.944) and ELAM (0.930) on action-hit as well.
+  is level with UI-TARS (0.944) and ELAM (0.930) on action-hit (the
+  difference is 3-6 steps of 213, not significant: McNemar p = 0.66 and
+  0.21); on verification it is far ahead (balanced accuracy 0.981 against
+  0.659 and 0.504).
 - **The lexical tier does the work; the SLM is a rarely consulted
   tie-breaker.** 398 of 514 steps are answered without a model, at 0.2 ms.
   The SLM is called on the remaining 116 (the 88 negatives plus 28 positives
@@ -645,8 +649,12 @@ puts the grounders on the same 998 steps:
 
 On plausible negatives the grounders stop being oracles: ELAM accepts 91
 of the 92 captions that belong to another screen of the same application,
-UI-TARS 53. Every lexical-first VizDOM chain passes none, and the 7B vision
-chain also clicks best. The laptop rows reproduce (uied 997 / 998 steps
+UI-TARS 53. Every lexical-first VizDOM chain passes none (at most 4.0 %,
+95 % Wilson bound). Balanced verify accuracy (mean of present → pass and
+absent → fail): production 0.895, ELAM 0.505, UI-TARS 0.712. On clicks the
+7B vision chain is level with both grounders (paired McNemar p = 0.92 and
+0.11); the CPU-only production chain is behind ELAM (p = 0.012) and level
+with UI-TARS (p = 0.35). The laptop rows reproduce (uied 997 / 998 steps
 identical, modular 981). The `verify=chain` twin repeats run 7's synthetic
 row on all 514 steps on this different card, and on the real set its
 extra verify hits come with the set's only VizDOM false pass, so keyword

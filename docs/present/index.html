@@ -1042,8 +1042,8 @@ body.notes-on .slide.active .notes{display:block}
           88 of 88, ELAM 86, UI-TARS 60. VizDOM passes <strong>none</strong> with <code>text=</code>; the
           exactly-one resolution contract guarantees it <em>by construction</em>. Its 13 verify errors are
           the other way round (an OCR-unreadable caption reported FAILED), the cheap failure. With its own
-          language tier (<code>desc="Save button"</code>) VizDOM beats both 7B grounders' action-hit, 0.958,
-          verifies best of the table and passes <strong>none</strong> of the 88 — the SLM is consulted on
+          language tier (<code>desc="Save button"</code>) VizDOM matches the 7B grounders' action-hit (0.958 against 0.930–0.944,
+          not a significant difference), verifies far better and passes <strong>none</strong> of the 88 — the SLM is consulted on
           106 steps only. Per step, the DOM costs well under 0.2&nbsp;s against 1.6–4.2&nbsp;s. The best
           clicker is the worst oracle.</p>
         <p class="small dim">VizDOM rows: run 7, RTX A6000 48 GB, commit c6b8e72, 2026-10-28, the first

@@ -442,7 +442,7 @@ Reading the numbers: the grounders click slightly better than VizDOM resolving
 exact text, and every one of them passes absent targets (60 to 88 of 88); VizDOM
 passes none, which the exactly-one resolution contract guarantees by
 construction, and keeps that property with its language tier switched on (the
-`desc=` row, above both 7B grounders on action-hit: a 3B text model consulted
+`desc=` row, level with both 7B grounders on action-hit (paired McNemar p = 0.21 / 0.66): a 3B text model consulted
 on the 106 steps the deterministic scoring cannot settle, over a short candidate
 list with a null it takes). Its verify errors are false fails on OCR-unreadable
 captions. Every result file is

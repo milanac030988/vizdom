@@ -134,11 +134,21 @@ What the run shows:
   deterministic across Ollama builds).
 - **Only the lexical-first chains keep 0 false passes on real screens.**
   The grounders accept almost every same-app negative: ELAM-7B 91 of 92,
-  UI-TARS 53 of 92. Their verify accuracy is therefore not comparable to
-  the VizDOM rows: ELAM's 0.833 is mostly a "yes" to everything.
-- **The 7B vision chain clicks best** (0.861, above ELAM's 0.857 and
-  UI-TARS's 0.821) with no false pass; the 3B one is 0.850. Of the 998
-  steps, 7B is better on 11 and worse on 6.
+  UI-TARS 53 of 92. Their plain verify accuracy is therefore not comparable
+  to the VizDOM rows: ELAM's 0.833 is mostly a "yes" to everything.
+- **The 7B vision chain is level with the grounders on clicks** (0.861,
+  ELAM 0.857, UI-TARS 0.821; paired McNemar p = 0.92 and 0.11) with no
+  false pass; the 3B one is 0.850. Of the 998 steps, 7B is better on 11 and
+  worse on 6 (p = 0.33, not significant). The production lexical → slm chain
+  is significantly behind ELAM on clicks (0.795, p = 0.012) and level with
+  UI-TARS (p = 0.35).
+- **Balanced verify accuracy**, the mean of present → pass and absent →
+  fail, is the fair verify figure here: production 0.895, `text=` 0.926-0.929,
+  ELAM 0.505 (a coin flip: it passes all 453 present elements and 91 of 92
+  absent ones), UI-TARS 0.712. On present elements alone the grounders are
+  significantly better (production fails 95 of 453), on absent ones VizDOM
+  is (p < 0.001 both ways). 0 false passes of 92 bounds the rate at 4.0 %
+  (95 % Wilson upper limit).
 - **Keyword verify stays the default.** `verify=chain` gains 33 verify steps
   and loses 4, and buys them with the set's only VizDOM false pass: the SLM
   took a "Tab Bar" element for the absent "Mark tab"
