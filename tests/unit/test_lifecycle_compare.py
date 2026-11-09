@@ -9,10 +9,12 @@ from visual_dom.evaluation.lifecycle.compare import (
     diff,
     load_sets,
     match_key,
+    mcnemar,
     model_twins,
     report,
     summarize,
     unpack,
+    wilson,
 )
 
 DESC = "vizdom-modular+desc[lexical+slm]"
@@ -107,6 +109,46 @@ def test_report_from_a_tarball_against_a_reference(tmp_path):
     assert "action-hit per application" in text and "| app |" in text
     # the detail's '|' would break the Markdown table
     assert "tier=slm picked / E9" in text
+
+
+def test_wilson_bounds_zero_of_n_and_stays_in_range():
+    lo, hi = wilson(0, 92)
+    assert lo == 0.0 and abs(hi - 0.0401) < 0.0005      # 0 false passes of 92
+    lo, hi = wilson(360, 453)                            # action-hit 0.795
+    assert abs(lo - 0.755) < 0.002 and abs(hi - 0.829) < 0.002
+    assert wilson(5, 5)[1] == 1.0 and wilson(0, 0) == (None, None)
+
+
+def _steps(oks, kind="action"):
+    return [{"step": f"s{i}", "kind": kind, "hit": ok, "correct": ok} for i, ok in enumerate(oks)]
+
+
+def test_mcnemar_counts_only_discordant_steps():
+    # 6 steps only a got right, 1 only b, 3 both: p = 2 * P(X <= 1 | n=7) = 16/128
+    a = _steps([True] * 6 + [False] + [True] * 3)
+    b = _steps([False] * 6 + [True] + [True] * 3)
+    only_a, only_b, p = mcnemar(a, b)
+    assert (only_a, only_b) == (6, 1) and abs(p - 0.125) < 1e-9
+    assert mcnemar(a, a)[2] == 1.0
+    # steps the other run did not score are ignored
+    assert mcnemar(a, b[:5])[:2] == (5, 0)
+
+
+def test_summary_splits_verify_into_present_and_absent():
+    manifest = {"p1": {"expect": "PASSED"}, "p2": {"expect": "PASSED"},
+                "n1": {"expect": "FAILED", "negative_kind": "same-app"}}
+    yes_to_all = {"steps": [
+        {"step": "p1", "kind": "verify", "correct": True},
+        {"step": "p2", "kind": "verify", "correct": True},
+        {"step": "n1", "kind": "verify", "correct": False, "false_pass": True}]}
+    s = summarize(yes_to_all, manifest)
+    assert s["present_pass"] == 1.0 and s["absent_fail"] == 0.0 and s["balanced"] == 0.5
+    assert s["false_passes"] == 1 and s["fp_ci"][0] > 0
+    # an errored negative is not a false pass, and not in its interval
+    errored = {"steps": yes_to_all["steps"][:2] + [
+        {"step": "n1", "kind": "verify", "correct": False, "detail": "error: timeout"}]}
+    s = summarize(errored, manifest)
+    assert s["false_passes"] == 0 and s["fp_ci"][0] == 0.0 and s["absent_fail"] == 0.0
 
 
 def test_unpack_renames_folders_windows_cannot_create(tmp_path):

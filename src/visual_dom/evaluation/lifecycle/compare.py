@@ -27,6 +27,7 @@ not say so, so their ``...+desc[lexical+slm]`` row pairs with a later
 
 import argparse
 import json
+import math
 import re
 import shutil
 import tarfile
@@ -123,11 +124,48 @@ def same_outcome(a, b):
     return a.get("outcome") == b.get("outcome") and step_ok(a) == step_ok(b)
 
 
+def wilson(k, n, z=1.96):
+    """95 % Wilson score interval of k successes in n; (None, None) for n=0.
+    Unlike the normal approximation it stays inside [0, 1] and gives a
+    usable upper bound for 0 of n (0 false passes of 92 -> at most 4.0 %)."""
+    if not n:
+        return None, None
+    p = k / n
+    centre = (p + z * z / (2 * n)) / (1 + z * z / n)
+    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / (1 + z * z / n)
+    return max(0.0, centre - half), min(1.0, centre + half)
+
+
+def mcnemar(a_rows, b_rows):
+    """Exact two-sided McNemar test of two executors on the steps both
+    scored: (only a right, only b right, p). Steps both got right or both
+    got wrong carry no information about which is better."""
+    b = {r["step"]: step_ok(r) for r in b_rows}
+    only_a = only_b = 0
+    for r in a_rows:
+        if r["step"] not in b:
+            continue
+        ok_a, ok_b = step_ok(r), b[r["step"]]
+        only_a += ok_a and not ok_b
+        only_b += ok_b and not ok_a
+    n = only_a + only_b
+    if n == 0:
+        return only_a, only_b, 1.0
+    tail = sum(math.comb(n, i) for i in range(min(only_a, only_b) + 1)) / 2 ** n
+    return only_a, only_b, min(1.0, 2 * tail)
+
+
 def summarize(result, manifest):
     rows = result["steps"]
     acts = [r for r in rows if r["kind"] == "action"]
     vers = [r for r in rows if r["kind"] != "action"]
     negs = [r for r in vers if manifest and manifest.get(r["step"], {}).get("expect") == "FAILED"]
+    poss = [r for r in vers if manifest and manifest.get(r["step"], {}).get("expect") != "FAILED"]
+    # the two halves of verify accuracy: an executor that answers "present"
+    # to everything scores 100 % on the first and 0 % on the second, and its
+    # balanced accuracy is a coin flip's
+    present_pass = sum(step_ok(r) for r in poss) / len(poss) if poss else None
+    absent_fail = sum(step_ok(r) for r in negs) / len(negs) if negs else None
     fp = Counter()
     for r in vers:
         if r.get("false_pass"):
@@ -136,9 +174,18 @@ def summarize(result, manifest):
     neg_kinds = Counter((manifest or {}).get(r["step"], {}).get("negative_kind", "nonsense")
                         for r in negs)
     errors = sum(1 for r in rows if str(r.get("detail", "")).startswith("error:"))
+    hits = sum(step_ok(r) for r in acts)
     return {
-        "action_hit": sum(step_ok(r) for r in acts) / len(acts) if acts else None,
+        "action_hit": hits / len(acts) if acts else None,
+        "action_ci": wilson(hits, len(acts)),
         "actions": len(acts),
+        "present_pass": present_pass,
+        "absent_fail": absent_fail,
+        "balanced": (present_pass + absent_fail) / 2
+                    if present_pass is not None and absent_fail is not None else None,
+        # a negative can also end in an error, which is neither correct nor
+        # a false pass - the interval is of the false passes themselves
+        "fp_ci": wilson(sum(fp.values()), len(negs)),
         "verify_acc": sum(step_ok(r) for r in vers) / len(vers) if vers else None,
         "verifies": len(vers),
         "false_passes": sum(fp.values()),
@@ -204,6 +251,10 @@ def _pct(x):
     return "-" if x is None else f"{x:.3f}"
 
 
+def _p(p):
+    return "<0.001" if p < 0.001 else f"{p:.3f}"
+
+
 def _ids(ids, n=8):
     return ", ".join(ids[:n]) + (f" (+{len(ids) - n})" if len(ids) > n else "")
 
@@ -238,6 +289,55 @@ def report(new_dir, ref_dirs=(), manifest_root="benchmarks"):
                        f"{s['errors']} | {tiers} |")
         out.append("")
 
+        # the verify split and the 95 % intervals (needs the manifest)
+        if manifest is not None:
+            out += ["### verify split and 95 % intervals", "",
+                    "Present → pass and absent → fail are the two halves of verify "
+                    "accuracy; balanced accuracy is their mean (0.5 for an executor "
+                    "that answers the same on every step). Intervals are Wilson.", "",
+                    "| executor | action-hit [95 % CI] | present → pass | absent → fail | "
+                    "balanced | false-pass rate [95 % CI] |",
+                    "|---|---|---|---|---|---|"]
+            for n, s in sums.items():
+                lo, hi = s["action_ci"]
+                flo, fhi = s["fp_ci"]
+                rate = s["false_passes"] / s["negatives"] if s["negatives"] else None
+                out.append(f"| {n} | {_pct(s['action_hit'])} [{_pct(lo)}, {_pct(hi)}] | "
+                           f"{_pct(s['present_pass'])} | {_pct(s['absent_fail'])} | "
+                           f"{_pct(s['balanced'])} | {_pct(rate)} [{_pct(flo)}, {_pct(fhi)}] |")
+            out.append("")
+
+        # paired tests: every VizDOM row against every grounder row
+        grounders = [n for n in execs if not n.startswith("vizdom")]
+        ours = [n for n in execs if n.startswith("vizdom")]
+        if grounders and ours:
+            # verify steps split as in the table above: pooled, an executor
+            # that says "present" to everything wins on the many positives
+            def expect(r):
+                return (manifest or {}).get(r["step"], {}).get("expect")
+            kinds = [("clicks", lambda r: r["kind"] == "action")]
+            if manifest is not None:
+                kinds += [("present", lambda r: r["kind"] != "action" and expect(r) != "FAILED"),
+                          ("absent", lambda r: r["kind"] != "action" and expect(r) == "FAILED")]
+            else:
+                kinds += [("verifies", lambda r: r["kind"] != "action")]
+            out += ["### paired against the grounders (exact McNemar)", "",
+                    "Counts are steps only the VizDOM row / only the grounder got right; "
+                    "p < 0.05 means the difference is unlikely to be chance.", "",
+                    "| VizDOM row | grounder | "
+                    + " | ".join(f"{k}: ours / theirs | p" for k, _ in kinds) + " |",
+                    "|---|---|" + "---|---|" * len(kinds)]
+            for n in ours:
+                for g in grounders:
+                    cells = []
+                    for _, kind_ok in kinds:
+                        a = [r for r in execs[n]["steps"] if kind_ok(r)]
+                        b = [r for r in execs[g]["steps"] if kind_ok(r)]
+                        oa, ob, p = mcnemar(a, b)
+                        cells += [f"{oa} / {ob}", _p(p)]
+                    out.append(f"| {n} | {g} | " + " | ".join(cells) + " |")
+            out.append("")
+
         # against the reference runs
         for ref_name, ref_sets in refs:
             ref = ref_sets.get(bench)
@@ -263,12 +363,13 @@ def report(new_dir, ref_dirs=(), manifest_root="benchmarks"):
         twins = model_twins(set(execs))
         if twins:
             out += ["### twins in this run (same chain, other model or verify scoring)", "",
-                    "| base | variant | identical | variant better | variant worse |",
-                    "|---|---|---|---|---|"]
+                    "| base | variant | identical | variant better | variant worse | p (McNemar) |",
+                    "|---|---|---|---|---|---|"]
             for base, var in twins:
                 same, gains, losses = diff(execs[var], execs[base])
+                p = mcnemar(execs[var]["steps"], execs[base]["steps"])[2]
                 out.append(f"| {base} | {var} | {same}/{len(execs[var]['steps'])} | "
-                           f"+{len(gains)} | -{len(losses)} |")
+                           f"+{len(gains)} | -{len(losses)} | {_p(p)} |")
             out.append("")
 
         # per application (real-world set)
