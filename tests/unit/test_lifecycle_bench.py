@@ -429,3 +429,14 @@ def test_runner_marks_all_errored_column_failed_not_zero(tmp_path):
     assert row.count("|") == 7, "a '|' in the error text must not add a cell"
     payload = json.loads(next(tmp_path.glob("*.json")).read_text(encoding="utf-8"))
     assert payload["results"]["boom"]["summary"]["all_steps_errored"] is True
+
+
+def test_elam_verdict_follows_the_official_rule_failed_first():
+    from visual_dom.evaluation.lifecycle.grounders import elam_verdict
+    # the reasoning mentions PASSED after the FAILED conclusion: the official
+    # AutomotiveUI-Bench-4K script scores FAILED (the old last-word rule said PASSED)
+    assert elam_verdict("The button is absent, so FAILED. It would have PASSED if shown.") == "FAILED"
+    assert elam_verdict("The condition is not met.") == "FAILED"
+    assert elam_verdict("Shown at <point x=\"10\" y=\"20\">. PASSED") == "PASSED"
+    assert elam_verdict("The condition is met.") == "PASSED"
+    assert elam_verdict("<point x=\"10\" y=\"20\">") is None

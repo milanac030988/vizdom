@@ -169,15 +169,30 @@ class ElamGrounder(Grounder):
 
     def judge(self, image_bgr, statement):
         prompt = self._VERIFY_TMPL.format(request=statement)
-        # "Think step by step" precedes the verdict: leave room for it.
-        text = self._timed(lambda: self._run(image_bgr, prompt, max_new_tokens=512))
-        upper = text.upper()
-        # The reasoning may mention both words; the conclusion is the last one.
-        p, f = upper.rfind("PASSED"), upper.rfind("FAILED")
-        if p < 0 and f < 0:
+        # "Think step by step" precedes the verdict: leave room for it. 2048 is
+        # the model card's own budget; a cut-off answer loses its verdict.
+        text = self._timed(lambda: self._run(image_bgr, prompt, max_new_tokens=2048))
+        self.last_text = text           # kept in the step detail for re-scoring
+        verdict = elam_verdict(text)
+        if verdict is None:
             log.info("ELAM produced no verdict for %r: %s", statement, text[:120])
-            return None
-        return "PASSED" if p > f else "FAILED"
+        return verdict
+
+
+def elam_verdict(text):
+    """
+    ELAM's answer to a verify prompt, scored exactly as the official
+    AutomotiveUI-Bench-4K evaluation does: FAILED (or "is not met") anywhere
+    wins, then PASSED (or "is met"); None when neither appears. Until
+    2026-11-09 the last of the two words won, which is more lenient to a
+    PASSED - the official rule is used so that ELAM's false passes cannot be
+    blamed on our parsing.
+    """
+    if "FAILED" in text or "is not met" in text:
+        return "FAILED"
+    if "PASSED" in text or "is met" in text:
+        return "PASSED"
+    return None
 
 
 class UiTarsGrounder(Grounder):

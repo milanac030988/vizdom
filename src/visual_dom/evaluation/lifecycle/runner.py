@@ -435,9 +435,13 @@ class GrounderExecutor:
             point = self.grounder.ground(image, step["instruction"])
             return {"outcome": point, "latency": self.grounder.last_latency,
                     "detail": "grounded" if point else "no point"}
+        self.grounder.last_text = None
         verdict = self.grounder.judge(image, step["instruction"])
+        # a grounder's raw answer is kept so a verdict rule can be re-scored
+        # later without another GPU run (ELAM, 2026-11-09)
+        raw = getattr(self.grounder, "last_text", None)
         return {"outcome": verdict, "latency": self.grounder.last_latency,
-                "detail": "judged"}
+                "detail": "judged" + (f" raw={raw!r}" if raw else "")}
 
     def cost_summary(self):
         return {"inferences": self._inferences}
