@@ -109,6 +109,17 @@ def test_report_from_a_tarball_against_a_reference(tmp_path):
     assert "tier=slm picked / E9" in text
 
 
+def test_unpack_renames_folders_windows_cannot_create(tmp_path):
+    tgz = tmp_path / "gpu-x.tar.gz"
+    payload = tmp_path / "p.json"
+    payload.write_text("{}")
+    with tarfile.open(tgz, "w:gz") as tar:
+        tar.add(payload, arcname="gpu-x/s-doms/m_desc[lexical_vlm][vlm=qwen2.5vl:7b]/a.json")
+    run = unpack(tgz)
+    assert (run / "s-doms" / "m_desc[lexical_vlm][vlm=qwen2.5vl_7b]" / "a.json").is_file()
+    assert not (tmp_path / "gpu-x.unpacking").exists()
+
+
 def test_unpack_refuses_member_paths_outside_the_run(tmp_path):
     evil = tmp_path / "x.tar.gz"
     payload = tmp_path / "p.txt"

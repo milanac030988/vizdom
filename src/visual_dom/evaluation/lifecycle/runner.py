@@ -31,6 +31,7 @@ next to the result file, so a step can be diagnosed from the DOM it saw.
 
 import json
 import os
+import re
 import statistics
 import subprocess
 import time
@@ -481,7 +482,10 @@ def run_benchmark(manifest, executors, limit_states=None, out_dir="benchmarks/re
     for ex in executors:
         if hasattr(ex, "dom_dump_dir"):
             # keep the parsed DOMs next to the result file (one dir per executor)
-            ex.dom_dump_dir = out / f"{stamp}-doms" / ex.name.replace("+", "_")
+            # "+" and a model tag's ":" ([vlm=qwen2.5vl:7b]) are not folder
+            # characters everywhere; Windows refuses ":" outright
+            ex.dom_dump_dir = (out / f"{stamp}-doms"
+                               / re.sub(r'[+<>:"\\|?*]', "_", ex.name))
         rows, agg = [], defaultdict(list)
         log.info("Executor %s: %d steps over %d states",
                  ex.name, len(step_list), len({s['state'] for s in step_list}))

@@ -28,11 +28,13 @@ not say so, so their ``...+desc[lexical+slm]`` row pairs with a later
 import argparse
 import json
 import re
+import shutil
 import tarfile
 from collections import Counter, defaultdict
 from pathlib import Path
 
 _SUFFIX = re.compile(r"\[(verify|vlm|slm)=([^\]]+)\]")
+_UNSAFE_FS = re.compile(r'[<>:"\\|?*]')
 
 
 # --------------------------------------------------------------------------- #
@@ -49,12 +51,24 @@ def unpack(path):
     target = path.with_name(path.name[:-len(".tar.gz")])
     if not target.is_dir():
         with tarfile.open(path) as tar:
-            names = tar.getnames()
+            members = tar.getmembers()
             # the sweep tars "<run dir name>/..." - refuse anything that
             # would land outside it
-            if any(n.startswith(("/", "..")) or ".." in Path(n).parts for n in names):
+            if any(m.name.startswith(("/", "..")) or ".." in Path(m.name).parts
+                   for m in members):
                 raise ValueError(f"{path}: unsafe member paths")
-            tar.extractall(path.parent)
+            # a Linux box may name a DOM folder "...[vlm=qwen2.5vl:7b]",
+            # which Windows cannot create (run 8)
+            for m in members:
+                m.name = "/".join(_UNSAFE_FS.sub("_", p) for p in m.name.split("/"))
+            # unpack beside the target and rename, so a failed unpack never
+            # leaves a half run dir that the next call would take as done
+            tmp = path.with_name(target.name + ".unpacking")
+            if tmp.exists():
+                shutil.rmtree(tmp)
+            tar.extractall(tmp, members=members)
+            (tmp / target.name).rename(target)
+            shutil.rmtree(tmp)
     return target
 
 
