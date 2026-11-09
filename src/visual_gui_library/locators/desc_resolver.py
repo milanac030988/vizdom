@@ -69,6 +69,10 @@ POSITION_WORDS = {
 
 _WORD_RE = re.compile(r"[a-z0-9]+")
 
+#: added when a field reads exactly the described name; equal to
+#: `lexical_confident`'s default margin, so it only ever breaks a tie
+EXACT_NAME_BONUS = 0.5
+
 # Function words that never name an element. Only used to decide whether a
 # description names something (see `lexical_rank`); they still take part in
 # the overlap so that existing scores do not move.
@@ -200,6 +204,7 @@ def lexical_rank(
     Score every element against a description. Pure and deterministic.
 
     Score = 2.0 * name-token overlap (label/text/hint)
+          + 0.5 if one of those fields reads exactly the name
           + 1.0 * role-word match (role/visual_type)
           + 0.5 * positional-word match.
 
@@ -243,6 +248,18 @@ def lexical_rank(
                 )
                 overlap = (hits + 0.7 * subs) / len(name_tokens)
                 name_score = 2.0 * overlap
+                # A field that reads EXACTLY the name (same words, same order)
+                # breaks the tie with one that merely contains them: "Display"
+                # vs "Select a display to change", "Find" vs "Find in Files".
+                # Overlap alone scored both 2.0 and the margin refused to
+                # choose (95 present verifies missed on the real-application
+                # set, run 8). Worth the margin and no more; it cannot lift a
+                # partial match over the floor (ADR-022 1.13).
+                if naming and any(
+                    _tokens(str(elem.get(k) or "")) == name_tokens
+                    for k in ("label", "text", "hint")
+                ):
+                    name_score += EXACT_NAME_BONUS
 
         kind_score = 0.0
 

@@ -41,7 +41,39 @@ def test_lexical_reports_tie_between_repeated_captions():
     r = DescriptionResolver(_dom(_btn("E1", "1"), _btn("E2", "1", x=50)), tiers=["lexical"])
     elem, info = r.resolve("1 button")
     assert elem is None
-    assert "lexical: tie at 3.00 between 2 candidates" in info["reason"]
+    # both read exactly "1", so both take the exact-name bonus: still a tie
+    assert "lexical: tie at 3.50 between 2 candidates" in info["reason"]
+
+
+def _txt(eid, text, x=0):
+    return {"id": eid, "role": "staticText", "visual_type": "text", "text": text,
+            "bounds": [x, 0, x + 10, 10]}
+
+
+def test_exact_text_breaks_a_tie_with_a_longer_caption():
+    # run 8, Windows Settings: "Display" against "Select a display to change"
+    # both scored 2.0 and the margin refused to choose (ADR-022 1.13)
+    r = DescriptionResolver(_dom(_txt("E1", "Select a display to change"),
+                                 _txt("E2", "Display", x=50)), tiers=["lexical"])
+    elem, info = r.resolve("Display button")
+    assert elem["id"] == "E2" and info["tier"] == "lexical"
+
+
+def test_exact_text_needs_the_same_word_order():
+    # PuTTY: "Implicit LF in every CR" must not take the bonus from the
+    # caption that holds the same words in another order
+    r = DescriptionResolver(_dom(_txt("E1", "Implicit CR in every LF"),
+                                 _txt("E2", "Implicit LE in every CR", x=50)),
+                            tiers=["lexical"])
+    elem, _ = r.resolve("Implicit LF in every CR checkbox")
+    assert elem is None or elem["id"] != "E1"
+
+
+def test_exact_text_bonus_cannot_lift_a_partial_match_over_the_floor():
+    # the bonus needs the whole name, so an absent caption stays absent
+    r = DescriptionResolver(_dom(_txt("E1", "Import")), tiers=["lexical"])
+    elem, _ = r.resolve("Export button")
+    assert elem is None
 
 
 def test_every_tier_leaves_its_own_verdict(monkeypatch):
@@ -174,7 +206,8 @@ def test_slm_prefixed_answers_are_still_validated(monkeypatch):
 def test_confident_answers_are_unchanged():
     r = DescriptionResolver(_dom(_btn("E1", "Save"), _btn("E2", "Cancel", x=50)), tiers=["lexical"])
     elem, info = r.resolve("save button")
-    assert elem["id"] == "E1" and info["tier"] == "lexical" and info["reason"] == "score=3.00"
+    # 2.0 overlap + 0.5 exact name ("Save") + 1.0 role
+    assert elem["id"] == "E1" and info["tier"] == "lexical" and info["reason"] == "score=3.50"
 
 
 # -- position words (review, 2026-10-28) --------------------------------------
