@@ -137,6 +137,40 @@ def test_slm_prompt_offers_null_plainly_without_an_explanatory_rule(monkeypatch)
     assert "role alone" not in p and "clearly corresponds" not in p
 
 
+def _slm_answer(monkeypatch, r, reply):
+    class _Advisor:
+        def _call_llm(self, prompt, image_b64=None):
+            return reply
+    monkeypatch.setattr(r, "_make_advisor", lambda model: _Advisor())
+
+
+def test_slm_answer_with_the_rows_id_prefix_is_read(monkeypatch):
+    # real-world baseline 2026-11-09, winsettings__power: two 'Power & battery'
+    # candidates tie, qwen2.5:3b answers "id=E38" (the table row's prefix) and
+    # the resolver threw the right answer away as an unknown id
+    dom = _dom(_btn("E37", "Power & battery"), _btn("E38", "Power & battery", x=50))
+    for reply in ('{"id": "id=E38", "confidence": 0.9, "reason": "x"}',
+                  '{"id": "ID: E38", "confidence": 0.9, "reason": "x"}'):
+        r = DescriptionResolver(dom, tiers=["slm"])
+        _slm_answer(monkeypatch, r, reply)
+        elem, info = r.resolve("Power & battery button")
+        assert elem is not None and elem["id"] == "E38", info["reason"]
+
+
+def test_slm_prefixed_answers_are_still_validated(monkeypatch):
+    dom = _dom(_btn("E1", "Save"), _btn("E2", "Cancel", x=50))
+    # an id that is not in the DOM stays rejected; "id=null" is a decline
+    for reply, verdict in (('{"id": "id=E99", "confidence": 0.9}', "slm returned unknown id 'E99'"),
+                           ('{"id": "id=null", "confidence": 0.9}', "slm not confident (0.90)")):
+        r = DescriptionResolver(dom, tiers=["slm"])
+        _slm_answer(monkeypatch, r, reply)
+        elem, info = r.resolve("frobnicate button")
+        assert elem is None and verdict in info["reason"]
+    # the prefix is stripped only at the start: an id that merely contains it
+    # is not rewritten
+    assert DescriptionResolver._parse_id_json('{"id": "grid=E1", "confidence": 1}')[0] == "grid=E1"
+
+
 def test_confident_answers_are_unchanged():
     r = DescriptionResolver(_dom(_btn("E1", "Save"), _btn("E2", "Cancel", x=50)), tiers=["lexical"])
     elem, info = r.resolve("save button")

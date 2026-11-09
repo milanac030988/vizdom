@@ -648,8 +648,15 @@ class DescriptionResolver:
         except json.JSONDecodeError:
             return None
         elem_id = data.get("id")
-        if isinstance(elem_id, str) and elem_id.lower() in ("null", "none", ""):
-            elem_id = None
+        if isinstance(elem_id, str):
+            # the table rows read "id=E38 role=button ..."; a small model
+            # sometimes copies the row's prefix into the answer ("id=E38"),
+            # which was rejected as an unknown id (real-world baseline,
+            # 2026-11-09). Only that exact prefix: the id must still be in
+            # the DOM, and every guard still runs on the element.
+            elem_id = re.sub(r"^\s*id\s*[=:]\s*", "", elem_id, flags=re.I).strip()
+            if elem_id.lower() in ("null", "none", ""):
+                elem_id = None
         try:
             conf = float(data.get("confidence", 0.0))
         except (TypeError, ValueError):
