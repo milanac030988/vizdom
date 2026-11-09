@@ -1,0 +1,482 @@
+{
+ "image_size": {
+  "width": 530,
+  "height": 556
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    530,
+    556
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    27,
+    85,
+    503,
+    227
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    39,
+    105,
+    317,
+    133
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Switch primary and secondary buttons",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "__) Switch primary and secondary buttons | __) Switch primary and secondary buttons | __) Switch primary and secondary buttons"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    39,
+    137,
+    349,
+    211
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Select this check box to make the button on the right the one you use for primary functions such as selecting and dragging.",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    27,
+    229,
+    503,
+    361
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    103,
+    309,
+    195,
+    327
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Slow",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    295,
+    309,
+    325,
+    325
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Fast",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    39,
+    309,
+    103,
+    327
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Speed:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    139,
+    309,
+    295,
+    341
+   ],
+   "confidence": 1.0,
+   "uia_type": "Slider",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E10",
+    "E11",
+    "E12"
+   ]
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    149,
+    319,
+    222,
+    324
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page left",
+   "role_word": "button",
+   "parent_id": "E9",
+   "printed": "in | in",
+   "review": "name not printed"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    222,
+    311,
+    237,
+    335
+   ],
+   "confidence": 1.0,
+   "uia_type": "Thumb",
+   "visual_type": "block",
+   "parent_id": "E9"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    237,
+    319,
+    285,
+    324
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page right",
+   "role_word": "button",
+   "parent_id": "E9",
+   "printed": "ld | ld",
+   "review": "name not printed"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    39,
+    249,
+    355,
+    299
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Double-click the folder to test your setting. If the folder does not open or close, try using a slower setting.",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    409,
+    271,
+    487,
+    345
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    27,
+    363,
+    503,
+    493
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    39,
+    387,
+    183,
+    407
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Turn on ClickLock",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "| Turn on ClickLock | | Turn on ClickLock | | Turn on ClickLock"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    39,
+    417,
+    473,
+    467
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Enables you to highlight or drag without holding down the mouse button. To set, briefly press the mouse button. To release, click the mouse button again.",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    361,
+    383,
+    487,
+    411
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Settings...",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Settings... | Settings... | Settings..."
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    205,
+    519,
+    305,
+    547
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "OK | OK | OK"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    313,
+    519,
+    413,
+    547
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel | Cancel | Cancel"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    421,
+    519,
+    521,
+    547
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Apply",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Apply | Apply | Apply"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    11,
+    48,
+    67,
+    69
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Buttons",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Buttons | Buttons | Buttons"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    67,
+    48,
+    128,
+    69
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Pointers",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Pointers | Pointers | Pointers"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    128,
+    48,
+    231,
+    69
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Pointer Options",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Pointer Options | Pointer Options | Pointer Options"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    231,
+    48,
+    282,
+    69
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Wheel",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Wheel | Wheel | Wheel"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    282,
+    48,
+    353,
+    69
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Hardware",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Hardware | Hardware | Hardware"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    1,
+    9,
+    29,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    486,
+    1,
+    530,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x '"
+  }
+ ],
+ "all_names": [
+  "Apply",
+  "Button configuration",
+  "Buttons",
+  "Cancel",
+  "ClickLock",
+  "Close",
+  "Double-click speed",
+  "Double-click the folder to test your setting. If the folder does not open or close, try using a slower setting.",
+  "Enables you to highlight or drag without holding down the mouse button. To set, briefly press the mouse button. To release, click the mouse button again.",
+  "Fast",
+  "Hardware",
+  "Mouse Properties",
+  "OK",
+  "Page left",
+  "Page right",
+  "Pointer Options",
+  "Pointers",
+  "Position",
+  "Select this check box to make the button on the right the one you use for primary functions such as selecting and dragging.",
+  "Settings...",
+  "Slow",
+  "Speed:",
+  "Switch primary and secondary buttons",
+  "System",
+  "Turn on ClickLock",
+  "Wheel"
+ ],
+ "source": "uia",
+ "window_title": "Mouse Properties"
+}

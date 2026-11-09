@@ -1,0 +1,985 @@
+{
+ "image_size": {
+  "width": 902,
+  "height": 617
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    902,
+    617
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E34",
+    "E36",
+    "E38",
+    "E40",
+    "E42",
+    "E44",
+    "E45",
+    "E47",
+    "E48",
+    "E49",
+    "E50",
+    "E51",
+    "E52",
+    "E53",
+    "E54",
+    "E55",
+    "E56",
+    "E57",
+    "E58",
+    "E59"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    1,
+    38,
+    901,
+    616
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    1,
+    38,
+    901,
+    616
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E16",
+    "E17",
+    "E19",
+    "E20"
+   ]
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    282,
+    128,
+    620,
+    152
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Resize",
+   "parent_id": "E3"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    282,
+    172,
+    432,
+    212
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Percentage",
+   "role_word": "radio button",
+   "parent_id": "E3",
+   "printed": "Percentage | Percentage | Percentage"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    445,
+    172,
+    595,
+    212
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Pixels",
+   "role_word": "radio button",
+   "parent_id": "E3",
+   "printed": "~) Pixels | ~) Pixels | ~) Pixels"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    282,
+    232,
+    426,
+    256
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Horizontal",
+   "parent_id": "E3"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    282,
+    266,
+    426,
+    307
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E3"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    433,
+    269,
+    468,
+    304
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maintain aspect ratio",
+   "review": "icon-only?",
+   "parent_id": "E3",
+   "printed": "oo | oo | oo"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    476,
+    232,
+    620,
+    256
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Vertical",
+   "parent_id": "E3"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    476,
+    266,
+    620,
+    307
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E3"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    282,
+    327,
+    620,
+    351
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Skew",
+   "parent_id": "E3"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    282,
+    371,
+    446,
+    394
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Horizontal",
+   "parent_id": "E3"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    282,
+    404,
+    446,
+    445
+   ],
+   "confidence": 1.0,
+   "uia_type": "Spinner",
+   "visual_type": "block",
+   "parent_id": "E3",
+   "children_ids": [
+    "E15"
+   ]
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    282,
+    404,
+    446,
+    445
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E14"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    456,
+    371,
+    620,
+    394
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Vertical",
+   "parent_id": "E3"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    456,
+    404,
+    620,
+    445
+   ],
+   "confidence": 1.0,
+   "uia_type": "Spinner",
+   "visual_type": "block",
+   "parent_id": "E3",
+   "children_ids": [
+    "E18"
+   ]
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    456,
+    404,
+    620,
+    445
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E17"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    282,
+    534,
+    446,
+    574
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E3",
+   "printed": "OK | OK | OK"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    456,
+    534,
+    620,
+    574
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E3",
+   "printed": "Cancel | Cancel | Cancel"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    6,
+    43,
+    58,
+    83
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "File",
+   "parent_id": "E1",
+   "printed": "File | File | File",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    68,
+    43,
+    123,
+    83
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Edit",
+   "parent_id": "E1",
+   "printed": "Edit | Edit | Edit",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    133,
+    43,
+    195,
+    83
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "View",
+   "parent_id": "E1",
+   "printed": "View | View | View",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    211,
+    43,
+    251,
+    83
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Save",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "io"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    267,
+    43,
+    307,
+    83
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Share",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "ee"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    323,
+    43,
+    363,
+    83
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Undo",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "ee"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    373,
+    43,
+    413,
+    83
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Redo",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "——"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    771,
+    43,
+    811,
+    83
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "What's new",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "oJ | a"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    816,
+    43,
+    856,
+    83
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Account",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": ""
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    856,
+    43,
+    896,
+    83
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "3 | 6"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    1,
+    94,
+    94,
+    220
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E32"
+   ]
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    22,
+    111,
+    72,
+    178
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "icon",
+   "ocr_text": "Select",
+   "role_word": "radio button",
+   "parent_id": "E31",
+   "children_ids": [
+    "E33"
+   ],
+   "printed": "oe |\n' 1\n' 1\n|\nVv | oe |\n\n|",
+   "review": "name not printed"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    32,
+    119,
+    61,
+    149
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E32"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    94,
+    94,
+    168,
+    220
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E35"
+   ]
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    116,
+    122,
+    146,
+    152
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E34"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    168,
+    94,
+    241,
+    220
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E37"
+   ]
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    189,
+    122,
+    219,
+    152
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E36"
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    241,
+    94,
+    325,
+    220
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E39"
+   ]
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    268,
+    119,
+    298,
+    149
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E38"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    325,
+    94,
+    405,
+    220
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E41"
+   ]
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    350,
+    122,
+    380,
+    152
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E40"
+  },
+  {
+   "id": "E42",
+   "bounds": [
+    420,
+    116,
+    464,
+    215
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E43"
+   ]
+  },
+  {
+   "id": "E43",
+   "bounds": [
+    427,
+    122,
+    457,
+    152
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E42"
+  },
+  {
+   "id": "E44",
+   "bounds": [
+    479,
+    94,
+    560,
+    220
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E45",
+   "bounds": [
+    560,
+    94,
+    641,
+    220
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E46"
+   ]
+  },
+  {
+   "id": "E46",
+   "bounds": [
+    586,
+    130,
+    616,
+    160
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E45"
+  },
+  {
+   "id": "E47",
+   "bounds": [
+    869,
+    193,
+    896,
+    219
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Toolbar options",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E48",
+   "bounds": [
+    343,
+    347,
+    558,
+    447
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E49",
+   "bounds": [
+    21,
+    303,
+    62,
+    527
+   ],
+   "confidence": 1.0,
+   "uia_type": "Slider",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E50",
+   "bounds": [
+    81,
+    301,
+    122,
+    527
+   ],
+   "confidence": 1.0,
+   "uia_type": "Slider",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E51",
+   "bounds": [
+    461,
+    577,
+    508,
+    609
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Fit to window",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "Be"
+  },
+  {
+   "id": "E52",
+   "bounds": [
+    513,
+    570,
+    638,
+    616
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E53",
+   "bounds": [
+    643,
+    580,
+    683,
+    605
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Zoom out",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Q | Q",
+   "review": "name not printed"
+  },
+  {
+   "id": "E54",
+   "bounds": [
+    688,
+    573,
+    851,
+    614
+   ],
+   "confidence": 1.0,
+   "uia_type": "Slider",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E55",
+   "bounds": [
+    856,
+    580,
+    896,
+    605
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Zoom in",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Q | Q",
+   "review": "name not printed"
+  },
+  {
+   "id": "E56",
+   "bounds": [
+    1,
+    9,
+    29,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E57",
+   "bounds": [
+    723,
+    1,
+    783,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "=",
+   "review": "name not printed"
+  },
+  {
+   "id": "E58",
+   "bounds": [
+    783,
+    1,
+    842,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "a) | O"
+  },
+  {
+   "id": "E59",
+   "bounds": [
+    842,
+    1,
+    902,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "x | x",
+   "review": "name not printed"
+  }
+ ],
+ "all_names": [
+  "Brushes",
+  "Cancel",
+  "Close",
+  "Colors",
+  "Copilot",
+  "Edit",
+  "File",
+  "Fit to window",
+  "Horizontal",
+  "Horizontal Minimum-89 Maximum89",
+  "Image",
+  "Layers",
+  "Maintain aspect ratio",
+  "Maximize",
+  "Minimize",
+  "OK",
+  "Opacity",
+  "Open settings",
+  "Percentage",
+  "Pixels",
+  "Popup",
+  "Redo",
+  "Resize",
+  "Resize and Skew",
+  "Save",
+  "Select",
+  "Selection",
+  "Shapes",
+  "Share",
+  "Account",
+  "Size",
+  "Skew",
+  "System",
+  "Toolbar options",
+  "Tools",
+  "Undo",
+  "Untitled - Paint",
+  "Using Brush tool on Canvas",
+  "Vertical",
+  "Vertical Minimum-89 Maximum89",
+  "View",
+  "What's new",
+  "Zoom",
+  "Zoom in",
+  "Zoom out"
+ ],
+ "source": "uia",
+ "window_title": "Untitled - Paint"
+}

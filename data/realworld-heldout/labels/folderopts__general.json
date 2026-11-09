@@ -1,0 +1,480 @@
+{
+ "image_size": {
+  "width": 510,
+  "height": 602
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    510,
+    602
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    29,
+    95,
+    467,
+    139
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Open File Explorer to:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    175,
+    89,
+    467,
+    115
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E4"
+   ]
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    447,
+    90,
+    466,
+    114
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E3",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    29,
+    119,
+    467,
+    195
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    97,
+    139,
+    453,
+    157
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Open each folder in the same window",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "[) Open each folder in the same window | [) Open each folder in the same window | [) Open each folder in the same window"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    97,
+    165,
+    453,
+    183
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Open each folder in its own window",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "~ ) Open each folder in its own window | ~ ) Open each folder in its own window | ~ ) Open each folder in its own window"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    29,
+    209,
+    467,
+    329
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    97,
+    233,
+    445,
+    251
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Single-click to open an item (point to select)",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "— ) Single-click to open an item (point to select) | — ) Single-click to open an item (point to select) | — ) Single-click to open an item (point to select)"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    97,
+    299,
+    453,
+    317
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Double-click to open an item (single-click to select)",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "C) Double-click to open an item (single-click to select) | C) Double-click to open an item (single-click to select) | C) Double-click to open an item (single-click to select)"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    123,
+    255,
+    453,
+    273
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Underline icon titles consistent with my browser",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "' Underline icon titles consistent with my browser | ' Underline icon titles consistent with my browser | ' Underline icon titles consistent with my browser"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    123,
+    277,
+    453,
+    295
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Underline icon titles only when I point at them",
+   "role_word": "radio button",
+   "parent_id": "E1",
+   "printed": "~) Underline icon titles only when | point atthem | ~) Underline icon titles only when | point atthem | ~) Underline icon titles only when | point atthem"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    29,
+    343,
+    467,
+    519
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    97,
+    363,
+    453,
+    381
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show recently used files",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Show recently used files | Show recently used files | Show recently used files"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    97,
+    389,
+    453,
+    407
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show frequently used folders",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Show frequently used folders | Show frequently used folders | Show frequently used folders"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    97,
+    415,
+    453,
+    433
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Show recommended section",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Show recommended section | Show recommended section | Show recommended section"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    97,
+    441,
+    453,
+    471
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Include account-based insights, recent, favorite, and recommended files",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Include account-based insights, recent, favorite, and\nrecommended files | Include account based insights, recent, favorite, and | Include account-based insights, recent, favorite, and\n\nrecommended files"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    97,
+    481,
+    453,
+    499
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Clear File Explorer history",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    363,
+    481,
+    447,
+    509
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Clear",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Clear | Clear | Clear"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    323,
+    519,
+    467,
+    547
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Restore Defaults",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Restore Defaults | Restore Defaults | Restore Defaults"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    185,
+    565,
+    285,
+    593
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "OK | OK | OK"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    293,
+    565,
+    393,
+    593
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel | Cancel | Cancel"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    401,
+    565,
+    501,
+    593
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Apply",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Apply | Apply | Apply"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    12,
+    49,
+    78,
+    72
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "General",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "General | General | General"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    78,
+    49,
+    132,
+    72
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "View",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "View | View | View"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    132,
+    49,
+    193,
+    72
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Search",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Search | Search | Search"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    466,
+    1,
+    510,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x '"
+  }
+ ],
+ "all_names": [
+  "Apply",
+  "Browse folders",
+  "Cancel",
+  "Clear",
+  "Clear File Explorer history",
+  "Click items as follows",
+  "Close",
+  "Double-click to open an item (single-click to select)",
+  "File Explorer Options",
+  "General",
+  "Include account-based insights, recent, favorite, and recommended files",
+  "OK",
+  "Open",
+  "Open File Explorer to:",
+  "Open each folder in its own window",
+  "Open each folder in the same window",
+  "Privacy",
+  "Restore Defaults",
+  "Search",
+  "Show frequently used folders",
+  "Show recently used files",
+  "Show recommended section",
+  "Single-click to open an item (point to select)",
+  "Underline icon titles consistent with my browser",
+  "Underline icon titles only when I point at them",
+  "View"
+ ],
+ "source": "uia",
+ "window_title": "File Explorer Options"
+}

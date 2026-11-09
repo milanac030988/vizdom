@@ -1,0 +1,3062 @@
+{
+ "benchmark": "lifecycle-realworld-heldout-v1",
+ "seed": 42,
+ "states": [
+  {
+   "id": "charmap__advanced",
+   "image": "data/realworld-heldout/images/charmap__advanced.png",
+   "gt": "data/realworld-heldout/labels/charmap__advanced.json",
+   "image_size": {
+    "width": 556,
+    "height": 713
+   }
+  },
+  {
+   "id": "charmap__main",
+   "image": "data/realworld-heldout/images/charmap__main.png",
+   "gt": "data/realworld-heldout/labels/charmap__main.json",
+   "image_size": {
+    "width": 556,
+    "height": 528
+   }
+  },
+  {
+   "id": "folderopts__general",
+   "image": "data/realworld-heldout/images/folderopts__general.png",
+   "gt": "data/realworld-heldout/labels/folderopts__general.json",
+   "image_size": {
+    "width": 510,
+    "height": 602
+   }
+  },
+  {
+   "id": "folderopts__search",
+   "image": "data/realworld-heldout/images/folderopts__search.png",
+   "gt": "data/realworld-heldout/labels/folderopts__search.json",
+   "image_size": {
+    "width": 510,
+    "height": 602
+   }
+  },
+  {
+   "id": "folderopts__view",
+   "image": "data/realworld-heldout/images/folderopts__view.png",
+   "gt": "data/realworld-heldout/labels/folderopts__view.json",
+   "image_size": {
+    "width": 510,
+    "height": 602
+   }
+  },
+  {
+   "id": "mouseprops__buttons",
+   "image": "data/realworld-heldout/images/mouseprops__buttons.png",
+   "gt": "data/realworld-heldout/labels/mouseprops__buttons.json",
+   "image_size": {
+    "width": 530,
+    "height": 556
+   }
+  },
+  {
+   "id": "mouseprops__pointer-options",
+   "image": "data/realworld-heldout/images/mouseprops__pointer-options.png",
+   "gt": "data/realworld-heldout/labels/mouseprops__pointer-options.json",
+   "image_size": {
+    "width": 530,
+    "height": 556
+   }
+  },
+  {
+   "id": "mouseprops__wheel",
+   "image": "data/realworld-heldout/images/mouseprops__wheel.png",
+   "gt": "data/realworld-heldout/labels/mouseprops__wheel.json",
+   "image_size": {
+    "width": 530,
+    "height": 556
+   }
+  },
+  {
+   "id": "notepad__find",
+   "image": "data/realworld-heldout/images/notepad__find.png",
+   "gt": "data/realworld-heldout/labels/notepad__find.json",
+   "image_size": {
+    "width": 1906,
+    "height": 1013
+   }
+  },
+  {
+   "id": "notepad__main",
+   "image": "data/realworld-heldout/images/notepad__main.png",
+   "gt": "data/realworld-heldout/labels/notepad__main.json",
+   "image_size": {
+    "width": 1906,
+    "height": 1013
+   }
+  },
+  {
+   "id": "notepad__settings",
+   "image": "data/realworld-heldout/images/notepad__settings.png",
+   "gt": "data/realworld-heldout/labels/notepad__settings.json",
+   "image_size": {
+    "width": 1906,
+    "height": 1013
+   }
+  },
+  {
+   "id": "paint__main",
+   "image": "data/realworld-heldout/images/paint__main.png",
+   "gt": "data/realworld-heldout/labels/paint__main.json",
+   "image_size": {
+    "width": 902,
+    "height": 617
+   }
+  },
+  {
+   "id": "paint__properties",
+   "image": "data/realworld-heldout/images/paint__properties.png",
+   "gt": "data/realworld-heldout/labels/paint__properties.json",
+   "image_size": {
+    "width": 902,
+    "height": 617
+   }
+  },
+  {
+   "id": "paint__resize",
+   "image": "data/realworld-heldout/images/paint__resize.png",
+   "gt": "data/realworld-heldout/labels/paint__resize.json",
+   "image_size": {
+    "width": 902,
+    "height": 617
+   }
+  }
+ ],
+ "steps": [
+  {
+   "id": "charmap__advanced/act/E5",
+   "state": "charmap__advanced",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Select\"",
+   "instruction": "click the 'Select' button",
+   "description": "Select button",
+   "target_id": "E5",
+   "target_bounds": [
+    358,
+    418,
+    446,
+    446
+   ]
+  },
+  {
+   "id": "charmap__advanced/verify/E5",
+   "state": "charmap__advanced",
+   "kind": "verify",
+   "locator": "text=\"Select\"",
+   "instruction": "the 'Select' button is visible",
+   "description": "Select button",
+   "expect": "PASSED",
+   "target_id": "E5",
+   "target_bounds": [
+    358,
+    418,
+    446,
+    446
+   ]
+  },
+  {
+   "id": "charmap__advanced/act/E6",
+   "state": "charmap__advanced",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Copy\"",
+   "instruction": "click the 'Copy' button",
+   "description": "Copy button",
+   "target_id": "E6",
+   "target_bounds": [
+    453,
+    418,
+    541,
+    446
+   ]
+  },
+  {
+   "id": "charmap__advanced/verify/E6",
+   "state": "charmap__advanced",
+   "kind": "verify",
+   "locator": "text=\"Copy\"",
+   "instruction": "the 'Copy' button is visible",
+   "description": "Copy button",
+   "expect": "PASSED",
+   "target_id": "E6",
+   "target_bounds": [
+    453,
+    418,
+    541,
+    446
+   ]
+  },
+  {
+   "id": "charmap__advanced/act/E7",
+   "state": "charmap__advanced",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Advanced view\"",
+   "instruction": "click the 'Advanced view' checkbox",
+   "description": "Advanced view checkbox",
+   "target_id": "E7",
+   "target_bounds": [
+    13,
+    472,
+    237,
+    496
+   ]
+  },
+  {
+   "id": "charmap__advanced/verify/E7",
+   "state": "charmap__advanced",
+   "kind": "verify",
+   "locator": "text=\"Advanced view\"",
+   "instruction": "the 'Advanced view' checkbox is visible",
+   "description": "Advanced view checkbox",
+   "expect": "PASSED",
+   "target_id": "E7",
+   "target_bounds": [
+    13,
+    472,
+    237,
+    496
+   ]
+  },
+  {
+   "id": "charmap__advanced/act/E18",
+   "state": "charmap__advanced",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Search\"",
+   "instruction": "click the 'Search' button",
+   "description": "Search button",
+   "target_id": "E18",
+   "target_bounds": [
+    414,
+    616,
+    502,
+    644
+   ]
+  },
+  {
+   "id": "charmap__advanced/verify/E18",
+   "state": "charmap__advanced",
+   "kind": "verify",
+   "locator": "text=\"Search\"",
+   "instruction": "the 'Search' button is visible",
+   "description": "Search button",
+   "expect": "PASSED",
+   "target_id": "E18",
+   "target_bounds": [
+    414,
+    616,
+    502,
+    644
+   ]
+  },
+  {
+   "id": "charmap__advanced/act/E24",
+   "state": "charmap__advanced",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Help\"",
+   "instruction": "click the 'Help' link",
+   "description": "Help link",
+   "target_id": "E24",
+   "target_bounds": [
+    456,
+    50,
+    544,
+    78
+   ]
+  },
+  {
+   "id": "charmap__advanced/verify/E24",
+   "state": "charmap__advanced",
+   "kind": "verify",
+   "locator": "text=\"Help\"",
+   "instruction": "the 'Help' link is visible",
+   "description": "Help link",
+   "expect": "PASSED",
+   "target_id": "E24",
+   "target_bounds": [
+    456,
+    50,
+    544,
+    78
+   ]
+  },
+  {
+   "id": "charmap__advanced/verify-neg/Frobnicate",
+   "state": "charmap__advanced",
+   "kind": "verify",
+   "locator": "text=\"Frobnicate\"",
+   "instruction": "the 'Frobnicate' button is visible",
+   "description": "Frobnicate button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "nonsense"
+  },
+  {
+   "id": "charmap__advanced/verify-neg/Purple_Elephant",
+   "state": "charmap__advanced",
+   "kind": "verify",
+   "locator": "text=\"Purple Elephant\"",
+   "instruction": "the 'Purple Elephant' button is visible",
+   "description": "Purple Elephant button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "nonsense"
+  },
+  {
+   "id": "charmap__main/verify-neg/Search",
+   "state": "charmap__main",
+   "kind": "verify",
+   "locator": "text=\"Search\"",
+   "instruction": "the 'Search' button is visible",
+   "description": "Search button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "charmap__main/verify-neg/Zylophone",
+   "state": "charmap__main",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "description": "Zylophone button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "nonsense"
+  },
+  {
+   "id": "folderopts__general/act/E6",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Open each folder in the same window\"",
+   "instruction": "click the 'Open each folder in the same window' radio button",
+   "description": "Open each folder in the same window radio button",
+   "target_id": "E6",
+   "target_bounds": [
+    97,
+    139,
+    453,
+    157
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E6",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Open each folder in the same window\"",
+   "instruction": "the 'Open each folder in the same window' radio button is visible",
+   "description": "Open each folder in the same window radio button",
+   "expect": "PASSED",
+   "target_id": "E6",
+   "target_bounds": [
+    97,
+    139,
+    453,
+    157
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E7",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Open each folder in its own window\"",
+   "instruction": "click the 'Open each folder in its own window' radio button",
+   "description": "Open each folder in its own window radio button",
+   "target_id": "E7",
+   "target_bounds": [
+    97,
+    165,
+    453,
+    183
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E7",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Open each folder in its own window\"",
+   "instruction": "the 'Open each folder in its own window' radio button is visible",
+   "description": "Open each folder in its own window radio button",
+   "expect": "PASSED",
+   "target_id": "E7",
+   "target_bounds": [
+    97,
+    165,
+    453,
+    183
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E9",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Single-click to open an item (point to select)\"",
+   "instruction": "click the 'Single-click to open an item (point to select)' radio button",
+   "description": "Single-click to open an item (point to select) radio button",
+   "target_id": "E9",
+   "target_bounds": [
+    97,
+    233,
+    445,
+    251
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E9",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Single-click to open an item (point to select)\"",
+   "instruction": "the 'Single-click to open an item (point to select)' radio button is visible",
+   "description": "Single-click to open an item (point to select) radio button",
+   "expect": "PASSED",
+   "target_id": "E9",
+   "target_bounds": [
+    97,
+    233,
+    445,
+    251
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E10",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Double-click to open an item (single-click to select)\"",
+   "instruction": "click the 'Double-click to open an item (single-click to select)' radio button",
+   "description": "Double-click to open an item (single-click to select) radio button",
+   "target_id": "E10",
+   "target_bounds": [
+    97,
+    299,
+    453,
+    317
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E10",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Double-click to open an item (single-click to select)\"",
+   "instruction": "the 'Double-click to open an item (single-click to select)' radio button is visible",
+   "description": "Double-click to open an item (single-click to select) radio button",
+   "expect": "PASSED",
+   "target_id": "E10",
+   "target_bounds": [
+    97,
+    299,
+    453,
+    317
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E11",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Underline icon titles consistent with my browser\"",
+   "instruction": "click the 'Underline icon titles consistent with my browser' radio button",
+   "description": "Underline icon titles consistent with my browser radio button",
+   "target_id": "E11",
+   "target_bounds": [
+    123,
+    255,
+    453,
+    273
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E11",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Underline icon titles consistent with my browser\"",
+   "instruction": "the 'Underline icon titles consistent with my browser' radio button is visible",
+   "description": "Underline icon titles consistent with my browser radio button",
+   "expect": "PASSED",
+   "target_id": "E11",
+   "target_bounds": [
+    123,
+    255,
+    453,
+    273
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E12",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Underline icon titles only when I point at them\"",
+   "instruction": "click the 'Underline icon titles only when I point at them' radio button",
+   "description": "Underline icon titles only when I point at them radio button",
+   "target_id": "E12",
+   "target_bounds": [
+    123,
+    277,
+    453,
+    295
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E12",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Underline icon titles only when I point at them\"",
+   "instruction": "the 'Underline icon titles only when I point at them' radio button is visible",
+   "description": "Underline icon titles only when I point at them radio button",
+   "expect": "PASSED",
+   "target_id": "E12",
+   "target_bounds": [
+    123,
+    277,
+    453,
+    295
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E14",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Show recently used files\"",
+   "instruction": "click the 'Show recently used files' checkbox",
+   "description": "Show recently used files checkbox",
+   "target_id": "E14",
+   "target_bounds": [
+    97,
+    363,
+    453,
+    381
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E14",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Show recently used files\"",
+   "instruction": "the 'Show recently used files' checkbox is visible",
+   "description": "Show recently used files checkbox",
+   "expect": "PASSED",
+   "target_id": "E14",
+   "target_bounds": [
+    97,
+    363,
+    453,
+    381
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E15",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Show frequently used folders\"",
+   "instruction": "click the 'Show frequently used folders' checkbox",
+   "description": "Show frequently used folders checkbox",
+   "target_id": "E15",
+   "target_bounds": [
+    97,
+    389,
+    453,
+    407
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E15",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Show frequently used folders\"",
+   "instruction": "the 'Show frequently used folders' checkbox is visible",
+   "description": "Show frequently used folders checkbox",
+   "expect": "PASSED",
+   "target_id": "E15",
+   "target_bounds": [
+    97,
+    389,
+    453,
+    407
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E16",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Show recommended section\"",
+   "instruction": "click the 'Show recommended section' checkbox",
+   "description": "Show recommended section checkbox",
+   "target_id": "E16",
+   "target_bounds": [
+    97,
+    415,
+    453,
+    433
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E16",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Show recommended section\"",
+   "instruction": "the 'Show recommended section' checkbox is visible",
+   "description": "Show recommended section checkbox",
+   "expect": "PASSED",
+   "target_id": "E16",
+   "target_bounds": [
+    97,
+    415,
+    453,
+    433
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E17",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Include account-based insights, recent, favorite, and recommended files\"",
+   "instruction": "click the 'Include account-based insights, recent, favorite, and recommended files' checkbox",
+   "description": "Include account-based insights, recent, favorite, and recommended files checkbox",
+   "target_id": "E17",
+   "target_bounds": [
+    97,
+    441,
+    453,
+    471
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E17",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Include account-based insights, recent, favorite, and recommended files\"",
+   "instruction": "the 'Include account-based insights, recent, favorite, and recommended files' checkbox is visible",
+   "description": "Include account-based insights, recent, favorite, and recommended files checkbox",
+   "expect": "PASSED",
+   "target_id": "E17",
+   "target_bounds": [
+    97,
+    441,
+    453,
+    471
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E19",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Clear\"",
+   "instruction": "click the 'Clear' button",
+   "description": "Clear button",
+   "target_id": "E19",
+   "target_bounds": [
+    363,
+    481,
+    447,
+    509
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E19",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Clear\"",
+   "instruction": "the 'Clear' button is visible",
+   "description": "Clear button",
+   "expect": "PASSED",
+   "target_id": "E19",
+   "target_bounds": [
+    363,
+    481,
+    447,
+    509
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E20",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Restore Defaults\"",
+   "instruction": "click the 'Restore Defaults' button",
+   "description": "Restore Defaults button",
+   "target_id": "E20",
+   "target_bounds": [
+    323,
+    519,
+    467,
+    547
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E20",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Restore Defaults\"",
+   "instruction": "the 'Restore Defaults' button is visible",
+   "description": "Restore Defaults button",
+   "expect": "PASSED",
+   "target_id": "E20",
+   "target_bounds": [
+    323,
+    519,
+    467,
+    547
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E21",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"OK\"",
+   "instruction": "click the 'OK' button",
+   "description": "OK button",
+   "target_id": "E21",
+   "target_bounds": [
+    185,
+    565,
+    285,
+    593
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E21",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"OK\"",
+   "instruction": "the 'OK' button is visible",
+   "description": "OK button",
+   "expect": "PASSED",
+   "target_id": "E21",
+   "target_bounds": [
+    185,
+    565,
+    285,
+    593
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E22",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "description": "Cancel button",
+   "target_id": "E22",
+   "target_bounds": [
+    293,
+    565,
+    393,
+    593
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E22",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "description": "Cancel button",
+   "expect": "PASSED",
+   "target_id": "E22",
+   "target_bounds": [
+    293,
+    565,
+    393,
+    593
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E23",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Apply\"",
+   "instruction": "click the 'Apply' button",
+   "description": "Apply button",
+   "target_id": "E23",
+   "target_bounds": [
+    401,
+    565,
+    501,
+    593
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E23",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Apply\"",
+   "instruction": "the 'Apply' button is visible",
+   "description": "Apply button",
+   "expect": "PASSED",
+   "target_id": "E23",
+   "target_bounds": [
+    401,
+    565,
+    501,
+    593
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E24",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"General\"",
+   "instruction": "click the 'General' tab",
+   "description": "General tab",
+   "target_id": "E24",
+   "target_bounds": [
+    12,
+    49,
+    78,
+    72
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E24",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"General\"",
+   "instruction": "the 'General' tab is visible",
+   "description": "General tab",
+   "expect": "PASSED",
+   "target_id": "E24",
+   "target_bounds": [
+    12,
+    49,
+    78,
+    72
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E25",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"View\"",
+   "instruction": "click the 'View' tab",
+   "description": "View tab",
+   "target_id": "E25",
+   "target_bounds": [
+    78,
+    49,
+    132,
+    72
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E25",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"View\"",
+   "instruction": "the 'View' tab is visible",
+   "description": "View tab",
+   "expect": "PASSED",
+   "target_id": "E25",
+   "target_bounds": [
+    78,
+    49,
+    132,
+    72
+   ]
+  },
+  {
+   "id": "folderopts__general/act/E26",
+   "state": "folderopts__general",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Search\"",
+   "instruction": "click the 'Search' tab",
+   "description": "Search tab",
+   "target_id": "E26",
+   "target_bounds": [
+    132,
+    49,
+    193,
+    72
+   ]
+  },
+  {
+   "id": "folderopts__general/verify/E26",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Search\"",
+   "instruction": "the 'Search' tab is visible",
+   "description": "Search tab",
+   "expect": "PASSED",
+   "target_id": "E26",
+   "target_bounds": [
+    132,
+    49,
+    193,
+    72
+   ]
+  },
+  {
+   "id": "folderopts__general/verify-neg/Display_the_full_path_in_the_title_bar",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Display the full path in the title bar\"",
+   "instruction": "the 'Display the full path in the title bar' tree item is visible",
+   "description": "Display the full path in the title bar tree item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "folderopts__general/verify-neg/Display_file_size_information_in_folder_tips",
+   "state": "folderopts__general",
+   "kind": "verify",
+   "locator": "text=\"Display file size information in folder tips\"",
+   "instruction": "the 'Display file size information in folder tips' tree item is visible",
+   "description": "Display file size information in folder tips tree item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "folderopts__search/act/E3",
+   "state": "folderopts__search",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Don’t use the index when searching in file folders for system files (searches might take longer)\"",
+   "instruction": "click the 'Don’t use the index when searching in file folders for system files (searches might take longer)' checkbox",
+   "description": "Don’t use the index when searching in file folders for system files (searches might take longer) checkbox",
+   "target_id": "E3",
+   "target_bounds": [
+    55,
+    113,
+    455,
+    153
+   ]
+  },
+  {
+   "id": "folderopts__search/verify/E3",
+   "state": "folderopts__search",
+   "kind": "verify",
+   "locator": "text=\"Don’t use the index when searching in file folders for system files (searches might take longer)\"",
+   "instruction": "the 'Don’t use the index when searching in file folders for system files (searches might take longer)' checkbox is visible",
+   "description": "Don’t use the index when searching in file folders for system files (searches might take longer) checkbox",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    55,
+    113,
+    455,
+    153
+   ]
+  },
+  {
+   "id": "folderopts__search/act/E5",
+   "state": "folderopts__search",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Include system directories\"",
+   "instruction": "click the 'Include system directories' checkbox",
+   "description": "Include system directories checkbox",
+   "target_id": "E5",
+   "target_bounds": [
+    55,
+    199,
+    455,
+    219
+   ]
+  },
+  {
+   "id": "folderopts__search/verify/E5",
+   "state": "folderopts__search",
+   "kind": "verify",
+   "locator": "text=\"Include system directories\"",
+   "instruction": "the 'Include system directories' checkbox is visible",
+   "description": "Include system directories checkbox",
+   "expect": "PASSED",
+   "target_id": "E5",
+   "target_bounds": [
+    55,
+    199,
+    455,
+    219
+   ]
+  },
+  {
+   "id": "folderopts__search/act/E6",
+   "state": "folderopts__search",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Include compressed files (ZIP, CAB...)\"",
+   "instruction": "click the 'Include compressed files (ZIP, CAB...)' checkbox",
+   "description": "Include compressed files (ZIP, CAB...) checkbox",
+   "target_id": "E6",
+   "target_bounds": [
+    55,
+    221,
+    455,
+    241
+   ]
+  },
+  {
+   "id": "folderopts__search/verify/E6",
+   "state": "folderopts__search",
+   "kind": "verify",
+   "locator": "text=\"Include compressed files (ZIP, CAB...)\"",
+   "instruction": "the 'Include compressed files (ZIP, CAB...)' checkbox is visible",
+   "description": "Include compressed files (ZIP, CAB...) checkbox",
+   "expect": "PASSED",
+   "target_id": "E6",
+   "target_bounds": [
+    55,
+    221,
+    455,
+    241
+   ]
+  },
+  {
+   "id": "folderopts__search/act/E7",
+   "state": "folderopts__search",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Always search file names and contents (this might take several minutes)\"",
+   "instruction": "click the 'Always search file names and contents (this might take several minutes)' checkbox",
+   "description": "Always search file names and contents (this might take several minutes) checkbox",
+   "target_id": "E7",
+   "target_bounds": [
+    55,
+    243,
+    455,
+    283
+   ]
+  },
+  {
+   "id": "folderopts__search/verify/E7",
+   "state": "folderopts__search",
+   "kind": "verify",
+   "locator": "text=\"Always search file names and contents (this might take several minutes)\"",
+   "instruction": "the 'Always search file names and contents (this might take several minutes)' checkbox is visible",
+   "description": "Always search file names and contents (this might take several minutes) checkbox",
+   "expect": "PASSED",
+   "target_id": "E7",
+   "target_bounds": [
+    55,
+    243,
+    455,
+    283
+   ]
+  },
+  {
+   "id": "folderopts__search/verify-neg/Underline_icon_titles_only_when_I_point_at_them",
+   "state": "folderopts__search",
+   "kind": "verify",
+   "locator": "text=\"Underline icon titles only when I point at them\"",
+   "instruction": "the 'Underline icon titles only when I point at them' radio button is visible",
+   "description": "Underline icon titles only when I point at them radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "folderopts__search/verify-neg/Display_file_size_information_in_folder_tips",
+   "state": "folderopts__search",
+   "kind": "verify",
+   "locator": "text=\"Display file size information in folder tips\"",
+   "instruction": "the 'Display file size information in folder tips' tree item is visible",
+   "description": "Display file size information in folder tips tree item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "folderopts__view/act/E3",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Apply to Folders\"",
+   "instruction": "click the 'Apply to Folders' button",
+   "description": "Apply to Folders button",
+   "target_id": "E3",
+   "target_bounds": [
+    127,
+    145,
+    281,
+    175
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E3",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Apply to Folders\"",
+   "instruction": "the 'Apply to Folders' button is visible",
+   "description": "Apply to Folders button",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    127,
+    145,
+    281,
+    175
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E4",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Reset Folders\"",
+   "instruction": "click the 'Reset Folders' button",
+   "description": "Reset Folders button",
+   "target_id": "E4",
+   "target_bounds": [
+    301,
+    145,
+    455,
+    175
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E4",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Reset Folders\"",
+   "instruction": "the 'Reset Folders' button is visible",
+   "description": "Reset Folders button",
+   "expect": "PASSED",
+   "target_id": "E4",
+   "target_bounds": [
+    301,
+    145,
+    455,
+    175
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E12",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Files and Folders\"",
+   "instruction": "click the 'Files and Folders' tree item",
+   "description": "Files and Folders tree item",
+   "target_id": "E12",
+   "target_bounds": [
+    59,
+    237,
+    167,
+    255
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E12",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Files and Folders\"",
+   "instruction": "the 'Files and Folders' tree item is visible",
+   "description": "Files and Folders tree item",
+   "expect": "PASSED",
+   "target_id": "E12",
+   "target_bounds": [
+    59,
+    237,
+    167,
+    255
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E13",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Always show icons, never thumbnails\"",
+   "instruction": "click the 'Always show icons, never thumbnails' tree item",
+   "description": "Always show icons, never thumbnails tree item",
+   "target_id": "E13",
+   "target_bounds": [
+    78,
+    255,
+    301,
+    273
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E13",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Always show icons, never thumbnails\"",
+   "instruction": "the 'Always show icons, never thumbnails' tree item is visible",
+   "description": "Always show icons, never thumbnails tree item",
+   "expect": "PASSED",
+   "target_id": "E13",
+   "target_bounds": [
+    78,
+    255,
+    301,
+    273
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E14",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Decrease space between items (compact view)\"",
+   "instruction": "click the 'Decrease space between items (compact view)' tree item",
+   "description": "Decrease space between items (compact view) tree item",
+   "target_id": "E14",
+   "target_bounds": [
+    78,
+    273,
+    365,
+    291
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E14",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Decrease space between items (compact view)\"",
+   "instruction": "the 'Decrease space between items (compact view)' tree item is visible",
+   "description": "Decrease space between items (compact view) tree item",
+   "expect": "PASSED",
+   "target_id": "E14",
+   "target_bounds": [
+    78,
+    273,
+    365,
+    291
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E15",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Display file icon on thumbnails\"",
+   "instruction": "click the 'Display file icon on thumbnails' tree item",
+   "description": "Display file icon on thumbnails tree item",
+   "target_id": "E15",
+   "target_bounds": [
+    78,
+    291,
+    261,
+    309
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E15",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Display file icon on thumbnails\"",
+   "instruction": "the 'Display file icon on thumbnails' tree item is visible",
+   "description": "Display file icon on thumbnails tree item",
+   "expect": "PASSED",
+   "target_id": "E15",
+   "target_bounds": [
+    78,
+    291,
+    261,
+    309
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E16",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Display file size information in folder tips\"",
+   "instruction": "click the 'Display file size information in folder tips' tree item",
+   "description": "Display file size information in folder tips tree item",
+   "target_id": "E16",
+   "target_bounds": [
+    78,
+    309,
+    317,
+    327
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E16",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Display file size information in folder tips\"",
+   "instruction": "the 'Display file size information in folder tips' tree item is visible",
+   "description": "Display file size information in folder tips tree item",
+   "expect": "PASSED",
+   "target_id": "E16",
+   "target_bounds": [
+    78,
+    309,
+    317,
+    327
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E17",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Display the full path in the title bar\"",
+   "instruction": "click the 'Display the full path in the title bar' tree item",
+   "description": "Display the full path in the title bar tree item",
+   "target_id": "E17",
+   "target_bounds": [
+    78,
+    327,
+    277,
+    345
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E17",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Display the full path in the title bar\"",
+   "instruction": "the 'Display the full path in the title bar' tree item is visible",
+   "description": "Display the full path in the title bar tree item",
+   "expect": "PASSED",
+   "target_id": "E17",
+   "target_bounds": [
+    78,
+    327,
+    277,
+    345
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E18",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Hidden files and folders\"",
+   "instruction": "click the 'Hidden files and folders' tree item",
+   "description": "Hidden files and folders tree item",
+   "target_id": "E18",
+   "target_bounds": [
+    78,
+    345,
+    223,
+    363
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E18",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Hidden files and folders\"",
+   "instruction": "the 'Hidden files and folders' tree item is visible",
+   "description": "Hidden files and folders tree item",
+   "expect": "PASSED",
+   "target_id": "E18",
+   "target_bounds": [
+    78,
+    345,
+    223,
+    363
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E19",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Don't show hidden files, folders, or drives\"",
+   "instruction": "click the 'Don't show hidden files, folders, or drives' radio button",
+   "description": "Don't show hidden files, folders, or drives radio button",
+   "target_id": "E19",
+   "target_bounds": [
+    97,
+    363,
+    342,
+    381
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E19",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Don't show hidden files, folders, or drives\"",
+   "instruction": "the 'Don't show hidden files, folders, or drives' radio button is visible",
+   "description": "Don't show hidden files, folders, or drives radio button",
+   "expect": "PASSED",
+   "target_id": "E19",
+   "target_bounds": [
+    97,
+    363,
+    342,
+    381
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E20",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Show hidden files, folders, and drives\"",
+   "instruction": "click the 'Show hidden files, folders, and drives' radio button",
+   "description": "Show hidden files, folders, and drives radio button",
+   "target_id": "E20",
+   "target_bounds": [
+    97,
+    381,
+    321,
+    399
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E20",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Show hidden files, folders, and drives\"",
+   "instruction": "the 'Show hidden files, folders, and drives' radio button is visible",
+   "description": "Show hidden files, folders, and drives radio button",
+   "expect": "PASSED",
+   "target_id": "E20",
+   "target_bounds": [
+    97,
+    381,
+    321,
+    399
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E21",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Hide empty drives\"",
+   "instruction": "click the 'Hide empty drives' tree item",
+   "description": "Hide empty drives tree item",
+   "target_id": "E21",
+   "target_bounds": [
+    78,
+    399,
+    191,
+    417
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E21",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Hide empty drives\"",
+   "instruction": "the 'Hide empty drives' tree item is visible",
+   "description": "Hide empty drives tree item",
+   "expect": "PASSED",
+   "target_id": "E21",
+   "target_bounds": [
+    78,
+    399,
+    191,
+    417
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E22",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Hide extensions for known file types\"",
+   "instruction": "click the 'Hide extensions for known file types' tree item",
+   "description": "Hide extensions for known file types tree item",
+   "target_id": "E22",
+   "target_bounds": [
+    78,
+    417,
+    293,
+    435
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E22",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Hide extensions for known file types\"",
+   "instruction": "the 'Hide extensions for known file types' tree item is visible",
+   "description": "Hide extensions for known file types tree item",
+   "expect": "PASSED",
+   "target_id": "E22",
+   "target_bounds": [
+    78,
+    417,
+    293,
+    435
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E23",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Hide folder merge conflicts\"",
+   "instruction": "click the 'Hide folder merge conflicts' tree item",
+   "description": "Hide folder merge conflicts tree item",
+   "target_id": "E23",
+   "target_bounds": [
+    78,
+    435,
+    241,
+    453
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E23",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Hide folder merge conflicts\"",
+   "instruction": "the 'Hide folder merge conflicts' tree item is visible",
+   "description": "Hide folder merge conflicts tree item",
+   "expect": "PASSED",
+   "target_id": "E23",
+   "target_bounds": [
+    78,
+    435,
+    241,
+    453
+   ]
+  },
+  {
+   "id": "folderopts__view/act/E24",
+   "state": "folderopts__view",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Hide protected operating system files (Recommended)\"",
+   "instruction": "click the 'Hide protected operating system files (Recommended)' tree item",
+   "description": "Hide protected operating system files (Recommended) tree item",
+   "target_id": "E24",
+   "target_bounds": [
+    78,
+    453,
+    409,
+    471
+   ]
+  },
+  {
+   "id": "folderopts__view/verify/E24",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Hide protected operating system files (Recommended)\"",
+   "instruction": "the 'Hide protected operating system files (Recommended)' tree item is visible",
+   "description": "Hide protected operating system files (Recommended) tree item",
+   "expect": "PASSED",
+   "target_id": "E24",
+   "target_bounds": [
+    78,
+    453,
+    409,
+    471
+   ]
+  },
+  {
+   "id": "folderopts__view/verify-neg/Single-click_to_open_an_item_(point_to_select)",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Single-click to open an item (point to select)\"",
+   "instruction": "the 'Single-click to open an item (point to select)' radio button is visible",
+   "description": "Single-click to open an item (point to select) radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "folderopts__view/verify-neg/Underline_icon_titles_consistent_with_my_browser",
+   "state": "folderopts__view",
+   "kind": "verify",
+   "locator": "text=\"Underline icon titles consistent with my browser\"",
+   "instruction": "the 'Underline icon titles consistent with my browser' radio button is visible",
+   "description": "Underline icon titles consistent with my browser radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "mouseprops__buttons/act/E3",
+   "state": "mouseprops__buttons",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Switch primary and secondary buttons\"",
+   "instruction": "click the 'Switch primary and secondary buttons' checkbox",
+   "description": "Switch primary and secondary buttons checkbox",
+   "target_id": "E3",
+   "target_bounds": [
+    39,
+    105,
+    317,
+    133
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/verify/E3",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"Switch primary and secondary buttons\"",
+   "instruction": "the 'Switch primary and secondary buttons' checkbox is visible",
+   "description": "Switch primary and secondary buttons checkbox",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    39,
+    105,
+    317,
+    133
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/act/E16",
+   "state": "mouseprops__buttons",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Turn on ClickLock\"",
+   "instruction": "click the 'Turn on ClickLock' checkbox",
+   "description": "Turn on ClickLock checkbox",
+   "target_id": "E16",
+   "target_bounds": [
+    39,
+    387,
+    183,
+    407
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/verify/E16",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"Turn on ClickLock\"",
+   "instruction": "the 'Turn on ClickLock' checkbox is visible",
+   "description": "Turn on ClickLock checkbox",
+   "expect": "PASSED",
+   "target_id": "E16",
+   "target_bounds": [
+    39,
+    387,
+    183,
+    407
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/act/E18",
+   "state": "mouseprops__buttons",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Settings...\"",
+   "instruction": "click the 'Settings...' button",
+   "description": "Settings... button",
+   "target_id": "E18",
+   "target_bounds": [
+    361,
+    383,
+    487,
+    411
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/verify/E18",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"Settings...\"",
+   "instruction": "the 'Settings...' button is visible",
+   "description": "Settings... button",
+   "expect": "PASSED",
+   "target_id": "E18",
+   "target_bounds": [
+    361,
+    383,
+    487,
+    411
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/act/E19",
+   "state": "mouseprops__buttons",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"OK\"",
+   "instruction": "click the 'OK' button",
+   "description": "OK button",
+   "target_id": "E19",
+   "target_bounds": [
+    205,
+    519,
+    305,
+    547
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/verify/E19",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"OK\"",
+   "instruction": "the 'OK' button is visible",
+   "description": "OK button",
+   "expect": "PASSED",
+   "target_id": "E19",
+   "target_bounds": [
+    205,
+    519,
+    305,
+    547
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/act/E20",
+   "state": "mouseprops__buttons",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "description": "Cancel button",
+   "target_id": "E20",
+   "target_bounds": [
+    313,
+    519,
+    413,
+    547
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/verify/E20",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "description": "Cancel button",
+   "expect": "PASSED",
+   "target_id": "E20",
+   "target_bounds": [
+    313,
+    519,
+    413,
+    547
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/act/E21",
+   "state": "mouseprops__buttons",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Apply\"",
+   "instruction": "click the 'Apply' button",
+   "description": "Apply button",
+   "target_id": "E21",
+   "target_bounds": [
+    421,
+    519,
+    521,
+    547
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/verify/E21",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"Apply\"",
+   "instruction": "the 'Apply' button is visible",
+   "description": "Apply button",
+   "expect": "PASSED",
+   "target_id": "E21",
+   "target_bounds": [
+    421,
+    519,
+    521,
+    547
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/act/E22",
+   "state": "mouseprops__buttons",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Buttons\"",
+   "instruction": "click the 'Buttons' tab",
+   "description": "Buttons tab",
+   "target_id": "E22",
+   "target_bounds": [
+    11,
+    48,
+    67,
+    69
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/verify/E22",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"Buttons\"",
+   "instruction": "the 'Buttons' tab is visible",
+   "description": "Buttons tab",
+   "expect": "PASSED",
+   "target_id": "E22",
+   "target_bounds": [
+    11,
+    48,
+    67,
+    69
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/act/E23",
+   "state": "mouseprops__buttons",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Pointers\"",
+   "instruction": "click the 'Pointers' tab",
+   "description": "Pointers tab",
+   "target_id": "E23",
+   "target_bounds": [
+    67,
+    48,
+    128,
+    69
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/verify/E23",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"Pointers\"",
+   "instruction": "the 'Pointers' tab is visible",
+   "description": "Pointers tab",
+   "expect": "PASSED",
+   "target_id": "E23",
+   "target_bounds": [
+    67,
+    48,
+    128,
+    69
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/act/E24",
+   "state": "mouseprops__buttons",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Pointer Options\"",
+   "instruction": "click the 'Pointer Options' tab",
+   "description": "Pointer Options tab",
+   "target_id": "E24",
+   "target_bounds": [
+    128,
+    48,
+    231,
+    69
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/verify/E24",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"Pointer Options\"",
+   "instruction": "the 'Pointer Options' tab is visible",
+   "description": "Pointer Options tab",
+   "expect": "PASSED",
+   "target_id": "E24",
+   "target_bounds": [
+    128,
+    48,
+    231,
+    69
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/act/E25",
+   "state": "mouseprops__buttons",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Wheel\"",
+   "instruction": "click the 'Wheel' tab",
+   "description": "Wheel tab",
+   "target_id": "E25",
+   "target_bounds": [
+    231,
+    48,
+    282,
+    69
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/verify/E25",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"Wheel\"",
+   "instruction": "the 'Wheel' tab is visible",
+   "description": "Wheel tab",
+   "expect": "PASSED",
+   "target_id": "E25",
+   "target_bounds": [
+    231,
+    48,
+    282,
+    69
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/act/E26",
+   "state": "mouseprops__buttons",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Hardware\"",
+   "instruction": "click the 'Hardware' tab",
+   "description": "Hardware tab",
+   "target_id": "E26",
+   "target_bounds": [
+    282,
+    48,
+    353,
+    69
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/verify/E26",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"Hardware\"",
+   "instruction": "the 'Hardware' tab is visible",
+   "description": "Hardware tab",
+   "expect": "PASSED",
+   "target_id": "E26",
+   "target_bounds": [
+    282,
+    48,
+    353,
+    69
+   ]
+  },
+  {
+   "id": "mouseprops__buttons/verify-neg/One_screen_at_a_time",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"One screen at a time\"",
+   "instruction": "the 'One screen at a time' radio button is visible",
+   "description": "One screen at a time radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "mouseprops__buttons/verify-neg/Automatically_move_pointer_to_the_default_button_in_a_dialog_box",
+   "state": "mouseprops__buttons",
+   "kind": "verify",
+   "locator": "text=\"Automatically move pointer to the default button in a dialog box\"",
+   "instruction": "the 'Automatically move pointer to the default button in a dialog box' checkbox is visible",
+   "description": "Automatically move pointer to the default button in a dialog box checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "mouseprops__pointer-options/act/E11",
+   "state": "mouseprops__pointer-options",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Enhance pointer precision\"",
+   "instruction": "click the 'Enhance pointer precision' checkbox",
+   "description": "Enhance pointer precision checkbox",
+   "target_id": "E11",
+   "target_bounds": [
+    97,
+    177,
+    399,
+    197
+   ]
+  },
+  {
+   "id": "mouseprops__pointer-options/verify/E11",
+   "state": "mouseprops__pointer-options",
+   "kind": "verify",
+   "locator": "text=\"Enhance pointer precision\"",
+   "instruction": "the 'Enhance pointer precision' checkbox is visible",
+   "description": "Enhance pointer precision checkbox",
+   "expect": "PASSED",
+   "target_id": "E11",
+   "target_bounds": [
+    97,
+    177,
+    399,
+    197
+   ]
+  },
+  {
+   "id": "mouseprops__pointer-options/act/E13",
+   "state": "mouseprops__pointer-options",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Automatically move pointer to the default button in a dialog box\"",
+   "instruction": "click the 'Automatically move pointer to the default button in a dialog box' checkbox",
+   "description": "Automatically move pointer to the default button in a dialog box checkbox",
+   "target_id": "E13",
+   "target_bounds": [
+    97,
+    237,
+    461,
+    271
+   ]
+  },
+  {
+   "id": "mouseprops__pointer-options/verify/E13",
+   "state": "mouseprops__pointer-options",
+   "kind": "verify",
+   "locator": "text=\"Automatically move pointer to the default button in a dialog box\"",
+   "instruction": "the 'Automatically move pointer to the default button in a dialog box' checkbox is visible",
+   "description": "Automatically move pointer to the default button in a dialog box checkbox",
+   "expect": "PASSED",
+   "target_id": "E13",
+   "target_bounds": [
+    97,
+    237,
+    461,
+    271
+   ]
+  },
+  {
+   "id": "mouseprops__pointer-options/act/E16",
+   "state": "mouseprops__pointer-options",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Display pointer trails\"",
+   "instruction": "click the 'Display pointer trails' checkbox",
+   "description": "Display pointer trails checkbox",
+   "target_id": "E16",
+   "target_bounds": [
+    97,
+    323,
+    481,
+    349
+   ]
+  },
+  {
+   "id": "mouseprops__pointer-options/verify/E16",
+   "state": "mouseprops__pointer-options",
+   "kind": "verify",
+   "locator": "text=\"Display pointer trails\"",
+   "instruction": "the 'Display pointer trails' checkbox is visible",
+   "description": "Display pointer trails checkbox",
+   "expect": "PASSED",
+   "target_id": "E16",
+   "target_bounds": [
+    97,
+    323,
+    481,
+    349
+   ]
+  },
+  {
+   "id": "mouseprops__pointer-options/act/E25",
+   "state": "mouseprops__pointer-options",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Hide pointer while typing\"",
+   "instruction": "click the 'Hide pointer while typing' checkbox",
+   "description": "Hide pointer while typing checkbox",
+   "target_id": "E25",
+   "target_bounds": [
+    97,
+    401,
+    445,
+    421
+   ]
+  },
+  {
+   "id": "mouseprops__pointer-options/verify/E25",
+   "state": "mouseprops__pointer-options",
+   "kind": "verify",
+   "locator": "text=\"Hide pointer while typing\"",
+   "instruction": "the 'Hide pointer while typing' checkbox is visible",
+   "description": "Hide pointer while typing checkbox",
+   "expect": "PASSED",
+   "target_id": "E25",
+   "target_bounds": [
+    97,
+    401,
+    445,
+    421
+   ]
+  },
+  {
+   "id": "mouseprops__pointer-options/verify-neg/Turn_on_ClickLock",
+   "state": "mouseprops__pointer-options",
+   "kind": "verify",
+   "locator": "text=\"Turn on ClickLock\"",
+   "instruction": "the 'Turn on ClickLock' checkbox is visible",
+   "description": "Turn on ClickLock checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "mouseprops__pointer-options/verify-neg/One_screen_at_a_time",
+   "state": "mouseprops__pointer-options",
+   "kind": "verify",
+   "locator": "text=\"One screen at a time\"",
+   "instruction": "the 'One screen at a time' radio button is visible",
+   "description": "One screen at a time radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "mouseprops__wheel/act/E5",
+   "state": "mouseprops__wheel",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"The following number of lines at a time:\"",
+   "instruction": "click the 'The following number of lines at a time:' radio button",
+   "description": "The following number of lines at a time: radio button",
+   "target_id": "E5",
+   "target_bounds": [
+    97,
+    145,
+    487,
+    165
+   ]
+  },
+  {
+   "id": "mouseprops__wheel/verify/E5",
+   "state": "mouseprops__wheel",
+   "kind": "verify",
+   "locator": "text=\"The following number of lines at a time:\"",
+   "instruction": "the 'The following number of lines at a time:' radio button is visible",
+   "description": "The following number of lines at a time: radio button",
+   "expect": "PASSED",
+   "target_id": "E5",
+   "target_bounds": [
+    97,
+    145,
+    487,
+    165
+   ]
+  },
+  {
+   "id": "mouseprops__wheel/act/E6",
+   "state": "mouseprops__wheel",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"One screen at a time\"",
+   "instruction": "click the 'One screen at a time' radio button",
+   "description": "One screen at a time radio button",
+   "target_id": "E6",
+   "target_bounds": [
+    97,
+    207,
+    491,
+    227
+   ]
+  },
+  {
+   "id": "mouseprops__wheel/verify/E6",
+   "state": "mouseprops__wheel",
+   "kind": "verify",
+   "locator": "text=\"One screen at a time\"",
+   "instruction": "the 'One screen at a time' radio button is visible",
+   "description": "One screen at a time radio button",
+   "expect": "PASSED",
+   "target_id": "E6",
+   "target_bounds": [
+    97,
+    207,
+    491,
+    227
+   ]
+  },
+  {
+   "id": "mouseprops__wheel/verify-neg/Automatically_move_pointer_to_the_default_button_in_a_dialog_box",
+   "state": "mouseprops__wheel",
+   "kind": "verify",
+   "locator": "text=\"Automatically move pointer to the default button in a dialog box\"",
+   "instruction": "the 'Automatically move pointer to the default button in a dialog box' checkbox is visible",
+   "description": "Automatically move pointer to the default button in a dialog box checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "mouseprops__wheel/verify-neg/Turn_on_ClickLock",
+   "state": "mouseprops__wheel",
+   "kind": "verify",
+   "locator": "text=\"Turn on ClickLock\"",
+   "instruction": "the 'Turn on ClickLock' checkbox is visible",
+   "description": "Turn on ClickLock checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "notepad__find/act/E8",
+   "state": "notepad__find",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"The quick brown fox jumps over the. Modified.\"",
+   "instruction": "click the 'The quick brown fox jumps over the. Modified.' tab",
+   "description": "The quick brown fox jumps over the. Modified. tab",
+   "target_id": "E8",
+   "target_bounds": [
+    56,
+    12,
+    363,
+    52
+   ]
+  },
+  {
+   "id": "notepad__find/verify/E8",
+   "state": "notepad__find",
+   "kind": "verify",
+   "locator": "text=\"The quick brown fox jumps over the. Modified.\"",
+   "instruction": "the 'The quick brown fox jumps over the. Modified.' tab is visible",
+   "description": "The quick brown fox jumps over the. Modified. tab",
+   "expect": "PASSED",
+   "target_id": "E8",
+   "target_bounds": [
+    56,
+    12,
+    363,
+    52
+   ]
+  },
+  {
+   "id": "notepad__find/act/E11",
+   "state": "notepad__find",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"File\"",
+   "instruction": "click the 'File' menu item",
+   "description": "File menu item",
+   "target_id": "E11",
+   "target_bounds": [
+    6,
+    52,
+    58,
+    92
+   ]
+  },
+  {
+   "id": "notepad__find/verify/E11",
+   "state": "notepad__find",
+   "kind": "verify",
+   "locator": "text=\"File\"",
+   "instruction": "the 'File' menu item is visible",
+   "description": "File menu item",
+   "expect": "PASSED",
+   "target_id": "E11",
+   "target_bounds": [
+    6,
+    52,
+    58,
+    92
+   ]
+  },
+  {
+   "id": "notepad__find/act/E12",
+   "state": "notepad__find",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Edit\"",
+   "instruction": "click the 'Edit' menu item",
+   "description": "Edit menu item",
+   "target_id": "E12",
+   "target_bounds": [
+    68,
+    52,
+    123,
+    92
+   ]
+  },
+  {
+   "id": "notepad__find/verify/E12",
+   "state": "notepad__find",
+   "kind": "verify",
+   "locator": "text=\"Edit\"",
+   "instruction": "the 'Edit' menu item is visible",
+   "description": "Edit menu item",
+   "expect": "PASSED",
+   "target_id": "E12",
+   "target_bounds": [
+    68,
+    52,
+    123,
+    92
+   ]
+  },
+  {
+   "id": "notepad__find/act/E13",
+   "state": "notepad__find",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"View\"",
+   "instruction": "click the 'View' menu item",
+   "description": "View menu item",
+   "target_id": "E13",
+   "target_bounds": [
+    133,
+    52,
+    195,
+    92
+   ]
+  },
+  {
+   "id": "notepad__find/verify/E13",
+   "state": "notepad__find",
+   "kind": "verify",
+   "locator": "text=\"View\"",
+   "instruction": "the 'View' menu item is visible",
+   "description": "View menu item",
+   "expect": "PASSED",
+   "target_id": "E13",
+   "target_bounds": [
+    133,
+    52,
+    195,
+    92
+   ]
+  },
+  {
+   "id": "notepad__find/verify-neg/Microsoft_Privacy_Statement",
+   "state": "notepad__find",
+   "kind": "verify",
+   "locator": "text=\"Microsoft Privacy Statement\"",
+   "instruction": "the 'Microsoft Privacy Statement' link is visible",
+   "description": "Microsoft Privacy Statement link",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "notepad__find/verify-neg/When_Notepad_starts",
+   "state": "notepad__find",
+   "kind": "verify",
+   "locator": "text=\"When Notepad starts\"",
+   "instruction": "the 'When Notepad starts' button is visible",
+   "description": "When Notepad starts button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "notepad__main/verify-neg/Third-Party_Software_Acknowledgments",
+   "state": "notepad__main",
+   "kind": "verify",
+   "locator": "text=\"Third-Party Software Acknowledgments\"",
+   "instruction": "the 'Third-Party Software Acknowledgments' link is visible",
+   "description": "Third-Party Software Acknowledgments link",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "notepad__main/verify-neg/App_theme",
+   "state": "notepad__main",
+   "kind": "verify",
+   "locator": "text=\"App theme\"",
+   "instruction": "the 'App theme' button is visible",
+   "description": "App theme button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "notepad__settings/act/E4",
+   "state": "notepad__settings",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"App theme\"",
+   "instruction": "click the 'App theme' button",
+   "description": "App theme button",
+   "target_id": "E4",
+   "target_bounds": [
+    66,
+    223,
+    1450,
+    307
+   ]
+  },
+  {
+   "id": "notepad__settings/verify/E4",
+   "state": "notepad__settings",
+   "kind": "verify",
+   "locator": "text=\"App theme\"",
+   "instruction": "the 'App theme' button is visible",
+   "description": "App theme button",
+   "expect": "PASSED",
+   "target_id": "E4",
+   "target_bounds": [
+    66,
+    223,
+    1450,
+    307
+   ]
+  },
+  {
+   "id": "notepad__settings/act/E7",
+   "state": "notepad__settings",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Font\"",
+   "instruction": "click the 'Font' button",
+   "description": "Font button",
+   "target_id": "E7",
+   "target_bounds": [
+    66,
+    362,
+    1450,
+    447
+   ]
+  },
+  {
+   "id": "notepad__settings/verify/E7",
+   "state": "notepad__settings",
+   "kind": "verify",
+   "locator": "text=\"Font\"",
+   "instruction": "the 'Font' button is visible",
+   "description": "Font button",
+   "expect": "PASSED",
+   "target_id": "E7",
+   "target_bounds": [
+    66,
+    362,
+    1450,
+    447
+   ]
+  },
+  {
+   "id": "notepad__settings/act/E16",
+   "state": "notepad__settings",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"When Notepad starts\"",
+   "instruction": "click the 'When Notepad starts' button",
+   "description": "When Notepad starts button",
+   "target_id": "E16",
+   "target_bounds": [
+    66,
+    771,
+    1450,
+    855
+   ]
+  },
+  {
+   "id": "notepad__settings/verify/E16",
+   "state": "notepad__settings",
+   "kind": "verify",
+   "locator": "text=\"When Notepad starts\"",
+   "instruction": "the 'When Notepad starts' button is visible",
+   "description": "When Notepad starts button",
+   "expect": "PASSED",
+   "target_id": "E16",
+   "target_bounds": [
+    66,
+    771,
+    1450,
+    855
+   ]
+  },
+  {
+   "id": "notepad__settings/act/E22",
+   "state": "notepad__settings",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Microsoft Software License Terms\"",
+   "instruction": "click the 'Microsoft Software License Terms' link",
+   "description": "Microsoft Software License Terms link",
+   "target_id": "E22",
+   "target_bounds": [
+    1505,
+    285,
+    1791,
+    325
+   ]
+  },
+  {
+   "id": "notepad__settings/verify/E22",
+   "state": "notepad__settings",
+   "kind": "verify",
+   "locator": "text=\"Microsoft Software License Terms\"",
+   "instruction": "the 'Microsoft Software License Terms' link is visible",
+   "description": "Microsoft Software License Terms link",
+   "expect": "PASSED",
+   "target_id": "E22",
+   "target_bounds": [
+    1505,
+    285,
+    1791,
+    325
+   ]
+  },
+  {
+   "id": "notepad__settings/act/E23",
+   "state": "notepad__settings",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Microsoft Services Agreement\"",
+   "instruction": "click the 'Microsoft Services Agreement' link",
+   "description": "Microsoft Services Agreement link",
+   "target_id": "E23",
+   "target_bounds": [
+    1505,
+    328,
+    1766,
+    368
+   ]
+  },
+  {
+   "id": "notepad__settings/verify/E23",
+   "state": "notepad__settings",
+   "kind": "verify",
+   "locator": "text=\"Microsoft Services Agreement\"",
+   "instruction": "the 'Microsoft Services Agreement' link is visible",
+   "description": "Microsoft Services Agreement link",
+   "expect": "PASSED",
+   "target_id": "E23",
+   "target_bounds": [
+    1505,
+    328,
+    1766,
+    368
+   ]
+  },
+  {
+   "id": "notepad__settings/act/E24",
+   "state": "notepad__settings",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Microsoft Privacy Statement\"",
+   "instruction": "click the 'Microsoft Privacy Statement' link",
+   "description": "Microsoft Privacy Statement link",
+   "target_id": "E24",
+   "target_bounds": [
+    1505,
+    370,
+    1751,
+    410
+   ]
+  },
+  {
+   "id": "notepad__settings/verify/E24",
+   "state": "notepad__settings",
+   "kind": "verify",
+   "locator": "text=\"Microsoft Privacy Statement\"",
+   "instruction": "the 'Microsoft Privacy Statement' link is visible",
+   "description": "Microsoft Privacy Statement link",
+   "expect": "PASSED",
+   "target_id": "E24",
+   "target_bounds": [
+    1505,
+    370,
+    1751,
+    410
+   ]
+  },
+  {
+   "id": "notepad__settings/act/E25",
+   "state": "notepad__settings",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Third-Party Software Acknowledgments\"",
+   "instruction": "click the 'Third-Party Software Acknowledgments' link",
+   "description": "Third-Party Software Acknowledgments link",
+   "target_id": "E25",
+   "target_bounds": [
+    1505,
+    413,
+    1840,
+    452
+   ]
+  },
+  {
+   "id": "notepad__settings/verify/E25",
+   "state": "notepad__settings",
+   "kind": "verify",
+   "locator": "text=\"Third-Party Software Acknowledgments\"",
+   "instruction": "the 'Third-Party Software Acknowledgments' link is visible",
+   "description": "Third-Party Software Acknowledgments link",
+   "expect": "PASSED",
+   "target_id": "E25",
+   "target_bounds": [
+    1505,
+    413,
+    1840,
+    452
+   ]
+  },
+  {
+   "id": "notepad__settings/act/E26",
+   "state": "notepad__settings",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Send feedback\"",
+   "instruction": "click the 'Send feedback' button",
+   "description": "Send feedback button",
+   "target_id": "E26",
+   "target_bounds": [
+    1520,
+    473,
+    1670,
+    513
+   ]
+  },
+  {
+   "id": "notepad__settings/verify/E26",
+   "state": "notepad__settings",
+   "kind": "verify",
+   "locator": "text=\"Send feedback\"",
+   "instruction": "the 'Send feedback' button is visible",
+   "description": "Send feedback button",
+   "expect": "PASSED",
+   "target_id": "E26",
+   "target_bounds": [
+    1520,
+    473,
+    1670,
+    513
+   ]
+  },
+  {
+   "id": "notepad__settings/act/E27",
+   "state": "notepad__settings",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Help\"",
+   "instruction": "click the 'Help' button",
+   "description": "Help button",
+   "target_id": "E27",
+   "target_bounds": [
+    1520,
+    533,
+    1670,
+    572
+   ]
+  },
+  {
+   "id": "notepad__settings/verify/E27",
+   "state": "notepad__settings",
+   "kind": "verify",
+   "locator": "text=\"Help\"",
+   "instruction": "the 'Help' button is visible",
+   "description": "Help button",
+   "expect": "PASSED",
+   "target_id": "E27",
+   "target_bounds": [
+    1520,
+    533,
+    1670,
+    572
+   ]
+  },
+  {
+   "id": "notepad__settings/verify-neg/View",
+   "state": "notepad__settings",
+   "kind": "verify",
+   "locator": "text=\"View\"",
+   "instruction": "the 'View' menu item is visible",
+   "description": "View menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "notepad__settings/verify-neg/Edit",
+   "state": "notepad__settings",
+   "kind": "verify",
+   "locator": "text=\"Edit\"",
+   "instruction": "the 'Edit' menu item is visible",
+   "description": "Edit menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "paint__main/act/E2",
+   "state": "paint__main",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"File\"",
+   "instruction": "click the 'File' menu item",
+   "description": "File menu item",
+   "target_id": "E2",
+   "target_bounds": [
+    6,
+    43,
+    58,
+    83
+   ]
+  },
+  {
+   "id": "paint__main/verify/E2",
+   "state": "paint__main",
+   "kind": "verify",
+   "locator": "text=\"File\"",
+   "instruction": "the 'File' menu item is visible",
+   "description": "File menu item",
+   "expect": "PASSED",
+   "target_id": "E2",
+   "target_bounds": [
+    6,
+    43,
+    58,
+    83
+   ]
+  },
+  {
+   "id": "paint__main/act/E3",
+   "state": "paint__main",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Edit\"",
+   "instruction": "click the 'Edit' menu item",
+   "description": "Edit menu item",
+   "target_id": "E3",
+   "target_bounds": [
+    68,
+    43,
+    123,
+    83
+   ]
+  },
+  {
+   "id": "paint__main/verify/E3",
+   "state": "paint__main",
+   "kind": "verify",
+   "locator": "text=\"Edit\"",
+   "instruction": "the 'Edit' menu item is visible",
+   "description": "Edit menu item",
+   "expect": "PASSED",
+   "target_id": "E3",
+   "target_bounds": [
+    68,
+    43,
+    123,
+    83
+   ]
+  },
+  {
+   "id": "paint__main/act/E4",
+   "state": "paint__main",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"View\"",
+   "instruction": "click the 'View' menu item",
+   "description": "View menu item",
+   "target_id": "E4",
+   "target_bounds": [
+    133,
+    43,
+    195,
+    83
+   ]
+  },
+  {
+   "id": "paint__main/verify/E4",
+   "state": "paint__main",
+   "kind": "verify",
+   "locator": "text=\"View\"",
+   "instruction": "the 'View' menu item is visible",
+   "description": "View menu item",
+   "expect": "PASSED",
+   "target_id": "E4",
+   "target_bounds": [
+    133,
+    43,
+    195,
+    83
+   ]
+  },
+  {
+   "id": "paint__main/verify-neg/Pixels",
+   "state": "paint__main",
+   "kind": "verify",
+   "locator": "text=\"Pixels\"",
+   "instruction": "the 'Pixels' radio button is visible",
+   "description": "Pixels radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "paint__main/verify-neg/Percentage",
+   "state": "paint__main",
+   "kind": "verify",
+   "locator": "text=\"Percentage\"",
+   "instruction": "the 'Percentage' radio button is visible",
+   "description": "Percentage radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "paint__properties/act/E12",
+   "state": "paint__properties",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Inches\"",
+   "instruction": "click the 'Inches' radio button",
+   "description": "Inches radio button",
+   "target_id": "E12",
+   "target_bounds": [
+    142,
+    391,
+    292,
+    431
+   ]
+  },
+  {
+   "id": "paint__properties/verify/E12",
+   "state": "paint__properties",
+   "kind": "verify",
+   "locator": "text=\"Inches\"",
+   "instruction": "the 'Inches' radio button is visible",
+   "description": "Inches radio button",
+   "expect": "PASSED",
+   "target_id": "E12",
+   "target_bounds": [
+    142,
+    391,
+    292,
+    431
+   ]
+  },
+  {
+   "id": "paint__properties/act/E13",
+   "state": "paint__properties",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Centimeters\"",
+   "instruction": "click the 'Centimeters' radio button",
+   "description": "Centimeters radio button",
+   "target_id": "E13",
+   "target_bounds": [
+    142,
+    441,
+    292,
+    481
+   ]
+  },
+  {
+   "id": "paint__properties/verify/E13",
+   "state": "paint__properties",
+   "kind": "verify",
+   "locator": "text=\"Centimeters\"",
+   "instruction": "the 'Centimeters' radio button is visible",
+   "description": "Centimeters radio button",
+   "expect": "PASSED",
+   "target_id": "E13",
+   "target_bounds": [
+    142,
+    441,
+    292,
+    481
+   ]
+  },
+  {
+   "id": "paint__properties/act/E14",
+   "state": "paint__properties",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"OK\"",
+   "instruction": "click the 'OK' button",
+   "description": "OK button",
+   "target_id": "E14",
+   "target_bounds": [
+    141,
+    544,
+    446,
+    584
+   ]
+  },
+  {
+   "id": "paint__properties/verify/E14",
+   "state": "paint__properties",
+   "kind": "verify",
+   "locator": "text=\"OK\"",
+   "instruction": "the 'OK' button is visible",
+   "description": "OK button",
+   "expect": "PASSED",
+   "target_id": "E14",
+   "target_bounds": [
+    141,
+    544,
+    446,
+    584
+   ]
+  },
+  {
+   "id": "paint__properties/act/E15",
+   "state": "paint__properties",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Cancel\"",
+   "instruction": "click the 'Cancel' button",
+   "description": "Cancel button",
+   "target_id": "E15",
+   "target_bounds": [
+    456,
+    544,
+    761,
+    584
+   ]
+  },
+  {
+   "id": "paint__properties/verify/E15",
+   "state": "paint__properties",
+   "kind": "verify",
+   "locator": "text=\"Cancel\"",
+   "instruction": "the 'Cancel' button is visible",
+   "description": "Cancel button",
+   "expect": "PASSED",
+   "target_id": "E15",
+   "target_bounds": [
+    456,
+    544,
+    761,
+    584
+   ]
+  },
+  {
+   "id": "paint__properties/verify-neg/Percentage",
+   "state": "paint__properties",
+   "kind": "verify",
+   "locator": "text=\"Percentage\"",
+   "instruction": "the 'Percentage' radio button is visible",
+   "description": "Percentage radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "paint__properties/verify-neg/Zylophone",
+   "state": "paint__properties",
+   "kind": "verify",
+   "locator": "text=\"Zylophone\"",
+   "instruction": "the 'Zylophone' button is visible",
+   "description": "Zylophone button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "nonsense"
+  },
+  {
+   "id": "paint__resize/act/E5",
+   "state": "paint__resize",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Percentage\"",
+   "instruction": "click the 'Percentage' radio button",
+   "description": "Percentage radio button",
+   "target_id": "E5",
+   "target_bounds": [
+    282,
+    172,
+    432,
+    212
+   ]
+  },
+  {
+   "id": "paint__resize/verify/E5",
+   "state": "paint__resize",
+   "kind": "verify",
+   "locator": "text=\"Percentage\"",
+   "instruction": "the 'Percentage' radio button is visible",
+   "description": "Percentage radio button",
+   "expect": "PASSED",
+   "target_id": "E5",
+   "target_bounds": [
+    282,
+    172,
+    432,
+    212
+   ]
+  },
+  {
+   "id": "paint__resize/act/E6",
+   "state": "paint__resize",
+   "kind": "action",
+   "action": "click",
+   "locator": "text=\"Pixels\"",
+   "instruction": "click the 'Pixels' radio button",
+   "description": "Pixels radio button",
+   "target_id": "E6",
+   "target_bounds": [
+    445,
+    172,
+    595,
+    212
+   ]
+  },
+  {
+   "id": "paint__resize/verify/E6",
+   "state": "paint__resize",
+   "kind": "verify",
+   "locator": "text=\"Pixels\"",
+   "instruction": "the 'Pixels' radio button is visible",
+   "description": "Pixels radio button",
+   "expect": "PASSED",
+   "target_id": "E6",
+   "target_bounds": [
+    445,
+    172,
+    595,
+    212
+   ]
+  },
+  {
+   "id": "paint__resize/verify-neg/Inches",
+   "state": "paint__resize",
+   "kind": "verify",
+   "locator": "text=\"Inches\"",
+   "instruction": "the 'Inches' radio button is visible",
+   "description": "Inches radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  },
+  {
+   "id": "paint__resize/verify-neg/Centimeters",
+   "state": "paint__resize",
+   "kind": "verify",
+   "locator": "text=\"Centimeters\"",
+   "instruction": "the 'Centimeters' radio button is visible",
+   "description": "Centimeters radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "same-app"
+  }
+ ]
+}

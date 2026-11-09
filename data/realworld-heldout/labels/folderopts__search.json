@@ -1,0 +1,273 @@
+{
+ "image_size": {
+  "width": 510,
+  "height": 602
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    510,
+    602
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    29,
+    89,
+    477,
+    163
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    55,
+    113,
+    455,
+    153
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Don’t use the index when searching in file folders for system files (searches might take longer)",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "__|Don'tuse the index when searching in file folders for system files\n(searches might take longer) | _) Coates in file folders for system files | __|Don'tuse the index when searching in file folders for system files\n\n(searches might take longer)"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    29,
+    177,
+    477,
+    295
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    55,
+    199,
+    455,
+    219
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Include system directories",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Include system directories | Include system directories | Include system directories"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    55,
+    221,
+    455,
+    241
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Include compressed files (ZIP, CAB...)",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "_ |Include compressed files (ZIP, CAB...) | _ |Include compressed files (ZIP, CAB...) | _ |Include compressed files (ZIP. CAB..."
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    55,
+    243,
+    455,
+    283
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Always search file names and contents (this might take several minutes)",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "_) Always search file names and contents (this might take several\nminutes) | _) eres file names and contents (this might take several | __}|Always search file names and contents (this might take several\n\nminutes)"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    337,
+    305,
+    477,
+    333
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Restore Defaults",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Restore Defaults | Restore Defaults | Restore Defaults"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    185,
+    565,
+    285,
+    593
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "OK | | OK | OK"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    293,
+    565,
+    393,
+    593
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel | Cancel | Cancel"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    401,
+    565,
+    501,
+    593
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Apply",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Apply | Apply | Apply"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    12,
+    49,
+    78,
+    72
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "General",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "General | General | General"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    78,
+    49,
+    132,
+    72
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "View",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "View | View | View"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    132,
+    49,
+    193,
+    72
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Search",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Search , | Search , | Search ,"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    466,
+    1,
+    510,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x '"
+  }
+ ],
+ "all_names": [
+  "Always search file names and contents (this might take several minutes)",
+  "Apply",
+  "Cancel",
+  "Close",
+  "Don’t use the index when searching in file folders for system files (searches might take longer)",
+  "File Explorer Options",
+  "General",
+  "How to search",
+  "Include compressed files (ZIP, CAB...)",
+  "Include system directories",
+  "OK",
+  "Restore Defaults",
+  "Search",
+  "View",
+  "When searching non-indexed locations"
+ ],
+ "source": "uia",
+ "window_title": "File Explorer Options"
+}

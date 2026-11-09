@@ -105,6 +105,7 @@ negatives. Every row names its host and commit; read a run with
 | `text=` vizdom-modular | laptop, `19f800d` (2026-11-09) | 0.795 | 0.879 | 0 / 92 |
 | `desc=` lexical → slm (keyword verify) | laptop, `19f800d` (2026-11-09) | 0.792 | 0.826 | 0 / 92 |
 | `desc=` lexical → slm, before ADR-022 1.9 | laptop (2026-11-02) | 0.645 | 0.798 | 6 / 92 |
+| `desc=` lexical → slm + exact-name bonus and `id=` fix (1.11, 1.13; tuned on this set) | laptop, code of `48ad68d` (2026-11-09) | 0.834 | 0.881 | 0 / 92 |
 | `text=` vizdom-uied | run 8, `0fe5ce3` | 0.779 | 0.877 | 0 / 92 |
 | `text=` vizdom-omniparser | run 8, `0fe5ce3` | 0.808 | 0.883 | 0 / 92 |
 | `text=` vizdom-modular | run 8, `0fe5ce3` | 0.797 | 0.879 | 0 / 92 |
@@ -122,7 +123,8 @@ Run 8 is `gpu-20261108_221541` (RTX PRO 5000 Blackwell 48 GB, Tesseract
 `benchmarks/results/realworld_local/20261109_051530` (uied), `_052030`
 (modular), `_052807` (desc), local and not committed. The 1.9 fixes were
 derived from this set, so the 2026-11-02 row is reported beside the fixed
-one; applications captured after them are the held-out check. `19f800d`
+one; applications captured after them are the held-out check
+(`../lifecycle-realworld-heldout-v1`, see below). `19f800d`
 differs from `0fe5ce3` only by the comparison tool, so laptop and run-8 rows
 share one pipeline. The `id=` answer fix (ADR-022 1.11) came after run 8's
 commit.
@@ -160,6 +162,16 @@ What the run shows:
   VS Code (22/24) and Settings, worst on PuTTY (31/72); the VizDOM rows are
   weakest on VS Code (8-18 of 24), whose icon-only activity bar the text
   locator cannot name.
+- **After the exact-name bonus** (laptop, `20261109_144106`) the CPU chain
+  gains 18 clicks over run 8's production row and loses none: 0.834, level
+  with ELAM (paired McNemar p = 0.38) and UI-TARS (p = 0.66), still 0 of 92
+  false passes. The bonus was found on this set, so this row is tuned on it.
+- **Held-out check** (2026-11-10, `../lifecycle-realworld-heldout-v1`, 14
+  states of 5 applications not in this set, laptop): the same chain clicks
+  0.815 (66/81, Wilson 0.72–0.88) and verifies 0.890, so the click and
+  verify figures generalise; but it passed 1 of 28 negatives, a stop-word
+  plus role-word match described in that README. Reported, not fixed. Across
+  both sets: 1 of 120 for the chain, 0 of 120 for `text=`.
 
 ## Threats to state in the results
 

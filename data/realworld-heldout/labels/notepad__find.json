@@ -1,0 +1,734 @@
+{
+ "image_size": {
+  "width": 1906,
+  "height": 1013
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    1906,
+    1013
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E8",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32",
+    "E33",
+    "E34",
+    "E35",
+    "E36",
+    "E37",
+    "E38",
+    "E39",
+    "E40",
+    "E41"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    1,
+    93,
+    1905,
+    972
+   ],
+   "confidence": 1.0,
+   "uia_type": "Document",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E3"
+   ]
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    1884,
+    93,
+    1905,
+    972
+   ],
+   "confidence": 1.0,
+   "uia_type": "ScrollBar",
+   "visual_type": "block",
+   "parent_id": "E2",
+   "children_ids": [
+    "E4",
+    "E5",
+    "E6",
+    "E7"
+   ]
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    1884,
+    93,
+    1905,
+    114
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Line up",
+   "review": "icon-only?",
+   "parent_id": "E3",
+   "printed": ""
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    1884,
+    114,
+    1905,
+    180
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page up",
+   "role_word": "button",
+   "parent_id": "E3",
+   "printed": "",
+   "review": "name not printed"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    1884,
+    180,
+    1905,
+    950
+   ],
+   "confidence": 1.0,
+   "uia_type": "Thumb",
+   "visual_type": "block",
+   "parent_id": "E3"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    1884,
+    951,
+    1905,
+    972
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Line down",
+   "review": "icon-only?",
+   "parent_id": "E3",
+   "printed": ""
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    56,
+    12,
+    363,
+    52
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "The quick brown fox jumps over the. Modified.",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "children_ids": [
+    "E9"
+   ],
+   "printed": "The quick brown fox jumps overth @ | The quick brown fox jumps overth @ | The quick brown fox jumps overth @"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    72,
+    22,
+    312,
+    41
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "The quick brown fox jumps over the",
+   "parent_id": "E8"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    367,
+    19,
+    407,
+    49
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Add New Tab",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "ob | ob"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    6,
+    52,
+    58,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "File",
+   "parent_id": "E1",
+   "printed": "File | File | File",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    68,
+    52,
+    123,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "Edit",
+   "parent_id": "E1",
+   "printed": "Edit | Edit | Edit",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    133,
+    52,
+    195,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuItem",
+   "visual_type": "button",
+   "ocr_text": "View",
+   "parent_id": "E1",
+   "printed": "View | View | View",
+   "role_word": "menu item"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    746,
+    52,
+    817,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Headings",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "H1 ¥ | H1 ¥ | H1",
+   "review": "name not printed"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    817,
+    52,
+    888,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Lists",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "<= vv\n— | — | —\n\n—\n\n—",
+   "review": "name not printed"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    888,
+    52,
+    928,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Bold (Ctrl+B)",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "B"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    928,
+    52,
+    968,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Italic (Ctrl+I)",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "va | va"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    968,
+    52,
+    1008,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Strikethrough (Ctrl+Shift+X)",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "S | S"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    1008,
+    52,
+    1048,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Link (Ctrl+K)",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "@ | @ | @"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    1048,
+    52,
+    1119,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Table",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "BY | BY | By",
+   "review": "name not printed"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    1119,
+    52,
+    1159,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Clear formatting (Ctrl+Space)",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "AS | AS | AS"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    1695,
+    52,
+    1766,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Writing tools",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "43 v | 43 v | Yr",
+   "review": "name not printed"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    1771,
+    53,
+    1808,
+    91
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "What's new",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "a | a"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    1813,
+    52,
+    1851,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "User avatar",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "& | &"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    1856,
+    52,
+    1894,
+    92
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Settings",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "3 | £3"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    21,
+    982,
+    106,
+    1002
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Line 1,\nColumn 45",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    132,
+    982,
+    222,
+    1002
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "44 characters",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    385,
+    972,
+    463,
+    1012
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Plain text",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    1441,
+    982,
+    1480,
+    1002
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Zoom",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    1526,
+    982,
+    1640,
+    1002
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Windows (CRLF)",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    1736,
+    982,
+    1781,
+    1002
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "UTF-8",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    426,
+    120,
+    464,
+    157
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open replace options",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "a | a"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    478,
+    119,
+    1279,
+    159
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    1291,
+    120,
+    1329,
+    157
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Search down",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "NV, | NV,"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    1342,
+    120,
+    1380,
+    157
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Search up",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "“Ss | “Ss"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    1392,
+    120,
+    1430,
+    157
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "More options",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "—o-\noOo | oOo"
+  },
+  {
+   "id": "E37",
+   "bounds": [
+    1442,
+    120,
+    1480,
+    157
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Exit Find and Replace",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x"
+  },
+  {
+   "id": "E38",
+   "bounds": [
+    2,
+    9,
+    30,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E39",
+   "bounds": [
+    1727,
+    1,
+    1787,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "—t",
+   "review": "name not printed"
+  },
+  {
+   "id": "E40",
+   "bounds": [
+    1787,
+    1,
+    1846,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "0 | O"
+  },
+  {
+   "id": "E41",
+   "bounds": [
+    1846,
+    1,
+    1906,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "xX | xX",
+   "review": "name not printed"
+  }
+ ],
+ "all_names": [
+  "*The quick brown fox jumps over the - Notepad",
+  "44 characters",
+  "Add New Tab",
+  "Bold (Ctrl+B)",
+  "Clear formatting (Ctrl+Space)",
+  "Close",
+  "Edit",
+  "Exit Find and Replace",
+  "File",
+  "Find",
+  "Headings",
+  "Italic (Ctrl+I)",
+  "Line 1,\nColumn 45",
+  "Line down",
+  "Line up",
+  "Link (Ctrl+K)",
+  "Lists",
+  "Local AI model must complete downloading to use this feature while signed out.",
+  "Maximize",
+  "Minimize",
+  "More options",
+  "Open replace options",
+  "Page down",
+  "Page up",
+  "Plain text",
+  "Popup",
+  "Position",
+  "Search down",
+  "Search up",
+  "Settings",
+  "Strikethrough (Ctrl+Shift+X)",
+  "System",
+  "Table",
+  "Text editor",
+  "The quick brown fox jumps over the",
+  "The quick brown fox jumps over the. Modified.",
+  "UTF-8",
+  "User avatar",
+  "Vertical",
+  "View",
+  "What's new",
+  "Windows (CRLF)",
+  "Writing tools",
+  "Zoom"
+ ],
+ "source": "uia",
+ "window_title": "The quick brown fox jumps over the - Notepad"
+}

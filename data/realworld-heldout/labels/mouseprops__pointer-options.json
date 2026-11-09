@@ -1,0 +1,607 @@
+{
+ "image_size": {
+  "width": 530,
+  "height": 556
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    530,
+    556
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32",
+    "E33",
+    "E34",
+    "E35",
+    "E36"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    27,
+    83,
+    503,
+    205
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    39,
+    105,
+    79,
+    145
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    97,
+    109,
+    337,
+    125
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Select a pointer speed:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    97,
+    143,
+    131,
+    161
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Slow",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    299,
+    143,
+    331,
+    161
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Fast",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    135,
+    135,
+    295,
+    167
+   ],
+   "confidence": 1.0,
+   "uia_type": "Slider",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E8",
+    "E9",
+    "E10"
+   ]
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    145,
+    145,
+    208,
+    150
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page left",
+   "role_word": "button",
+   "parent_id": "E7",
+   "printed": "an | an",
+   "review": "name not printed"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    208,
+    137,
+    223,
+    161
+   ],
+   "confidence": 1.0,
+   "uia_type": "Thumb",
+   "visual_type": "block",
+   "parent_id": "E7"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    223,
+    145,
+    285,
+    150
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page right",
+   "role_word": "button",
+   "parent_id": "E7",
+   "printed": "on | on",
+   "review": "name not printed"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    97,
+    177,
+    399,
+    197
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Enhance pointer precision",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Enhance pointer precision | Enhance pointer precision | Enhance pointer precision"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    27,
+    213,
+    503,
+    289
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    97,
+    237,
+    461,
+    271
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Automatically move pointer to the default button in a dialog box",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "_|Automatically move pointer to the default button in a dialog\nbox | _) ae move pointer to the default button in a dialog | _|Automatically move pointer to the default button in a dialog\n\nbox"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    39,
+    237,
+    79,
+    277
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    27,
+    297,
+    503,
+    493
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    97,
+    323,
+    481,
+    349
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Display pointer trails",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "__) Display pointer trails | __) Display pointer trails | __) Display pointer trails"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    39,
+    321,
+    79,
+    361
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    97,
+    357,
+    131,
+    375
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Short",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    299,
+    357,
+    339,
+    373
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Long",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    135,
+    349,
+    295,
+    381
+   ],
+   "confidence": 1.0,
+   "uia_type": "Slider",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E21",
+    "E22"
+   ]
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    145,
+    359,
+    270,
+    364
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page left",
+   "role_word": "button",
+   "parent_id": "E20",
+   "printed": "eae aaa | eae aaa",
+   "review": "name not printed"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    270,
+    351,
+    285,
+    375
+   ],
+   "confidence": 1.0,
+   "uia_type": "Thumb",
+   "visual_type": "block",
+   "parent_id": "E20"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    39,
+    391,
+    79,
+    431
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    43,
+    441,
+    83,
+    481
+   ],
+   "confidence": 1.0,
+   "uia_type": "Image",
+   "visual_type": "icon",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    97,
+    401,
+    445,
+    421
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Hide pointer while typing",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Hide pointer while typing | Hide pointer while typing | Hide pointer while typing"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    97,
+    451,
+    489,
+    471
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "icon",
+   "ocr_text": "Show location of pointer when I press the CTRL key",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "_ | Show location of pointer when | press the CTRL key | _ | Show location of pointer when | press the CTRL key | _ | Show location of pointer when | press the CTRL key",
+   "review": "name not printed"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    205,
+    519,
+    305,
+    547
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "OK | OK | OK"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    313,
+    519,
+    413,
+    547
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel | Cancel | Cancel"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    421,
+    519,
+    521,
+    547
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Apply",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Apply | Apply | Apply"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    11,
+    48,
+    67,
+    69
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Buttons",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Buttons | Buttons | Buttons"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    67,
+    48,
+    128,
+    69
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Pointers",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Pointers | Pointers | Pointers"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    128,
+    48,
+    231,
+    69
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Pointer Options",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Pointer Options | Pointer Options | Pointer Options"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    231,
+    48,
+    282,
+    69
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Wheel",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Wheel | Wheel | Wheel"
+  },
+  {
+   "id": "E34",
+   "bounds": [
+    282,
+    48,
+    353,
+    69
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Hardware",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Hardware | Hardware | Hardware"
+  },
+  {
+   "id": "E35",
+   "bounds": [
+    1,
+    9,
+    29,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E36",
+   "bounds": [
+    486,
+    1,
+    530,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x '"
+  }
+ ],
+ "all_names": [
+  "Apply",
+  "Automatically move pointer to the default button in a dialog box",
+  "Buttons",
+  "Cancel",
+  "Close",
+  "Display pointer trails",
+  "Enhance pointer precision",
+  "Fast",
+  "Hardware",
+  "Hide pointer while typing",
+  "Long",
+  "Motion",
+  "Mouse Properties",
+  "OK",
+  "Page left",
+  "Page right",
+  "Pointer Options",
+  "Pointers",
+  "Position",
+  "Select a pointer speed:",
+  "Short",
+  "Show location of pointer when I press the CTRL key",
+  "Slow",
+  "Snap To",
+  "System",
+  "Visibility",
+  "Wheel"
+ ],
+ "source": "uia",
+ "window_title": "Mouse Properties"
+}

@@ -1,0 +1,543 @@
+{
+ "image_size": {
+  "width": 556,
+  "height": 713
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    556,
+    713
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    27,
+    98,
+    510,
+    411
+   ],
+   "confidence": 1.0,
+   "uia_type": "Pane",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    13,
+    418,
+    153,
+    466
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Characters to copy :",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    159,
+    418,
+    352,
+    450
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    358,
+    418,
+    446,
+    446
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Select",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Select | Select | Select"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    453,
+    418,
+    541,
+    446
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Copy",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Copy | Copy | Copy"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    13,
+    472,
+    237,
+    496
+   ],
+   "confidence": 1.0,
+   "uia_type": "CheckBox",
+   "visual_type": "checkbox",
+   "ocr_text": "Advanced view",
+   "role_word": "checkbox",
+   "parent_id": "E1",
+   "printed": "Advanced view:"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    13,
+    518,
+    158,
+    542
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Character set :",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    159,
+    508,
+    395,
+    538
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E10"
+   ]
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    375,
+    509,
+    394,
+    537
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E9",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    400,
+    510,
+    488,
+    558
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Go to Unicode :",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    495,
+    508,
+    539,
+    536
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    13,
+    564,
+    158,
+    588
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Group by :",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    159,
+    558,
+    395,
+    588
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E15"
+   ]
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    375,
+    559,
+    394,
+    587
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E14",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    13,
+    614,
+    158,
+    638
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Search for :",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    159,
+    608,
+    395,
+    636
+   ],
+   "confidence": 1.0,
+   "uia_type": "Edit",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    414,
+    616,
+    502,
+    644
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Search",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Search | Search | Search"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    13,
+    644,
+    158,
+    692
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Selected Character :",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    159,
+    640,
+    395,
+    688
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "U+0021: Exclamation Mark",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    13,
+    52,
+    74,
+    76
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Font :",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    75,
+    50,
+    450,
+    80
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E23"
+   ]
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    430,
+    51,
+    449,
+    79
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Open",
+   "review": "icon-only?",
+   "parent_id": "E22",
+   "printed": "Vv | Vv"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    456,
+    50,
+    544,
+    78
+   ],
+   "confidence": 1.0,
+   "uia_type": "Hyperlink",
+   "visual_type": "button",
+   "ocr_text": "Help",
+   "role_word": "link",
+   "parent_id": "E1",
+   "printed": "Help | Help | Help"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    511,
+    99,
+    535,
+    120
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Line up",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": ","
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    511,
+    120,
+    535,
+    141
+   ],
+   "confidence": 1.0,
+   "uia_type": "Thumb",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    511,
+    141,
+    535,
+    389
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page down",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "",
+   "review": "name not printed"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    511,
+    389,
+    535,
+    410
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Line down",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": ","
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    1,
+    9,
+    29,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    377,
+    1,
+    437,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "=",
+   "review": "name not printed"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    437,
+    1,
+    496,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "0 | a"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    496,
+    1,
+    556,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "x | x '",
+   "review": "name not printed"
+  }
+ ],
+ "all_names": [
+  "Advanced view",
+  "Character Grid",
+  "Character Map",
+  "Character set :",
+  "Characters to copy :",
+  "Close",
+  "Copy",
+  "Font :",
+  "Go to Unicode :",
+  "Group by :",
+  "Help",
+  "Line down",
+  "Line up",
+  "Maximize",
+  "Minimize",
+  "Open",
+  "Page down",
+  "Position",
+  "Search",
+  "Search for :",
+  "Select",
+  "Selected Character :",
+  "System",
+  "U+0021: Exclamation Mark"
+ ],
+ "source": "uia",
+ "window_title": "Character Map"
+}

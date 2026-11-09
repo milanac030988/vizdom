@@ -72,7 +72,64 @@ python -m visual_dom.evaluation.lifecycle.runner --manifest benchmarks/lifecycle
     --executors vizdom-modular --out-dir benchmarks/results/heldout_local
 ```
 
+## Capture (2026-11-10)
+
+14 states of the five applications in the table above, captured at commit
+`8db4f2c` (scorer constants as in ADR-022 1.13): `charmap` main / advanced,
+`mouseprops` buttons / pointer-options / wheel, `folderopts` general / view /
+search (the window is titled "File Explorer Options" on Windows 11),
+`notepad` main / find / settings, `paint` main / resize / properties.
+190 steps: 81 clicks, 109 verifications, 28 same-app negatives.
+
+Edits made for privacy, before any run:
+
+- **Paint** exposes the account button as "Signed in as <full name>" and
+  draws the account photo. In the three `paint__*` labels that element is
+  renamed `Account` (it was an icon with no step either way) and the photo is
+  painted over with the toolbar colour.
+- **Notepad** restores the user's previous session; the states were captured
+  in a separate new window holding only the sentence "The quick brown fox
+  jumps over the lazy dog." and closed without saving.
+
 ## Results
 
-None yet. Report the rows beside those of the main set, with the number of
-screens and applications, and say that the set is small.
+Laptop, commit `8db4f2c`, files `benchmarks/results/heldout_local/20261110_000129`
+(modular) and `_000352` (desc), local and not committed. Beside them the same
+chain on the main set at the same scorer (laptop, `20261109_144106`), which
+is the set the scorer was tuned on.
+
+| Column | Set | Action-hit | Present → pass | Absent → fail | Verify acc | False passes |
+|---|---|---|---|---|---|---|
+| `text=` vizdom-modular | held-out, 14 states / 5 apps | 0.765 (62/81) | 0.778 | 28/28 | 0.835 | 0 / 28 |
+| `desc=` lexical → slm (keyword verify) | held-out, 14 states / 5 apps | 0.815 (66/81) | 0.864 | 27/28 | 0.890 | **1 / 28** |
+| `desc=` lexical → slm (keyword verify) | main, 46 states / 9 apps (tuned) | 0.834 | 0.857 | 92/92 | 0.881 | 0 / 92 |
+
+The set is small: 81 clicks give a 95 % Wilson interval of 0.72–0.88 for
+the chain's 0.815, so the 0.02 drop from the main set is well inside the
+noise, and verification did not drop at all (present → pass 0.864 against
+0.857). **The click and verify figures generalise to applications the scorer
+has not seen; the zero false passes do not, quite.**
+
+**The false pass** (`folderopts__view`, "Single-click to open an item (point
+to select) radio button", a caption of the General tab): the lexical tier
+accepted the static sentence "You can apply this view (such as Details or
+Icons) to all" at 1.68, over the 1.5 floor and exactly the 0.5 margin above
+the next candidate. Two known weaknesses add up:
+
+1. **A role word inside the caption.** "item" is a role word since ADR-022
+   1.9 (tree and list items) and admits static text, so "open an item" earned
+   the full role credit (+1.0) on a plain text element and lost "item" from
+   the name tokens.
+2. **Stop words in the overlap.** Of the eight name tokens only "to" (twice)
+   and "an" (as a substring of "can") match: 2.7 / 8 × 2 = 0.68, without a
+   single naming word in common.
+
+This is the near-miss limit of the audit
+(`../lifecycle-realworld-v1/AUDIT.md`) in a new form: the negative shares no
+naming word with the screen, only function words and a role word. Per this
+set's rule it is reported and **not fixed**. The candidate fix (overlap over
+naming words only, and a role word that is part of the caption does not
+score) waits for the next set of held-out screens to be judged.
+
+Across both sets the chain passed 1 of 120 absent targets (95 % Wilson upper
+limit 4.6 %); `text=` passed 0 of 120 (3.1 %).

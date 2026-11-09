@@ -1,0 +1,615 @@
+{
+ "image_size": {
+  "width": 510,
+  "height": 602
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    510,
+    602
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32",
+    "E33"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    35,
+    85,
+    475,
+    195
+   ],
+   "confidence": 1.0,
+   "uia_type": "Group",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    127,
+    145,
+    281,
+    175
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Apply to Folders",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Apply to Folders | Apply to Folders | Apply to Folders"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    301,
+    145,
+    455,
+    175
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Reset Folders",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Reset Folders | Reset Folders | Reset Folders"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    35,
+    215,
+    251,
+    231
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Advanced settings:",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    35,
+    235,
+    475,
+    475
+   ],
+   "confidence": 1.0,
+   "uia_type": "Tree",
+   "visual_type": "block",
+   "parent_id": "E1",
+   "children_ids": [
+    "E7",
+    "E12"
+   ]
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    452,
+    237,
+    473,
+    473
+   ],
+   "confidence": 1.0,
+   "uia_type": "ScrollBar",
+   "visual_type": "block",
+   "parent_id": "E6",
+   "children_ids": [
+    "E8",
+    "E9",
+    "E10",
+    "E11"
+   ]
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    452,
+    237,
+    473,
+    258
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Line up",
+   "review": "icon-only?",
+   "parent_id": "E7",
+   "printed": ","
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    452,
+    258,
+    473,
+    334
+   ],
+   "confidence": 1.0,
+   "uia_type": "Thumb",
+   "visual_type": "block",
+   "parent_id": "E7"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    452,
+    334,
+    473,
+    452
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Page down",
+   "role_word": "button",
+   "parent_id": "E7",
+   "printed": "",
+   "review": "name not printed"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    452,
+    452,
+    473,
+    473
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Line down",
+   "review": "icon-only?",
+   "parent_id": "E7",
+   "printed": ","
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    59,
+    237,
+    167,
+    255
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Files and Folders",
+   "role_word": "tree item",
+   "parent_id": "E6",
+   "children_ids": [
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E21",
+    "E22",
+    "E23",
+    "E24"
+   ],
+   "printed": "Files and Folders | Files and Folders | Files and Folders"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    78,
+    255,
+    301,
+    273
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Always show icons, never thumbnails",
+   "role_word": "tree item",
+   "parent_id": "E12",
+   "printed": "Always show icons, never thumbnails | Always show icons, never thumbnails | Always show icons, never thumbnails"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    78,
+    273,
+    365,
+    291
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Decrease space between items (compact view)",
+   "role_word": "tree item",
+   "parent_id": "E12",
+   "printed": "Decrease space between items (compact view) | Decrease space between items (compact view) | Decrease space between items (compact view)"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    78,
+    291,
+    261,
+    309
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Display file icon on thumbnails",
+   "role_word": "tree item",
+   "parent_id": "E12",
+   "printed": "Display file icon on thumbnails | Display file icon on thumbnails | Display file icon on thumbnails"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    78,
+    309,
+    317,
+    327
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Display file size information in folder tips",
+   "role_word": "tree item",
+   "parent_id": "E12",
+   "printed": "Display file size information in folder tips | Display file size information in folder tips | Display file size information in folder tips"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    78,
+    327,
+    277,
+    345
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Display the full path in the title bar",
+   "role_word": "tree item",
+   "parent_id": "E12",
+   "printed": "Display the full path in the title bar | Display the full path in the title bar | Display the full path in the title bar"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    78,
+    345,
+    223,
+    363
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Hidden files and folders",
+   "role_word": "tree item",
+   "parent_id": "E12",
+   "children_ids": [
+    "E19",
+    "E20"
+   ],
+   "printed": "Hidden files and folders | Hidden files and folders | Hidden files and folders"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    97,
+    363,
+    342,
+    381
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Don't show hidden files, folders, or drives",
+   "role_word": "radio button",
+   "parent_id": "E18",
+   "printed": "Don't show hidden files. folders. or drives | Don't show hidden files. folders. or drives | Don't show hidden files. folders. or drives"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    97,
+    381,
+    321,
+    399
+   ],
+   "confidence": 1.0,
+   "uia_type": "RadioButton",
+   "visual_type": "checkbox",
+   "ocr_text": "Show hidden files, folders, and drives",
+   "role_word": "radio button",
+   "parent_id": "E18",
+   "printed": "Show hidden files, folders. and drives | Show hidden files, folders. and drives | Show hidden files, folders. and drives"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    78,
+    399,
+    191,
+    417
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Hide empty drives",
+   "role_word": "tree item",
+   "parent_id": "E12",
+   "printed": "Hide empty drives | Hide empty drives | Hide empty drives"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    78,
+    417,
+    293,
+    435
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Hide extensions for known file types",
+   "role_word": "tree item",
+   "parent_id": "E12",
+   "printed": "Hide extensions for known file types | Hide extensions for known file types | Hide extensions for known file types"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    78,
+    435,
+    241,
+    453
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Hide folder merge conflicts",
+   "role_word": "tree item",
+   "parent_id": "E12",
+   "printed": "Hide folder merge conflicts | Hide folder merge conflicts | Hide folder merge conflicts"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    78,
+    453,
+    409,
+    471
+   ],
+   "confidence": 1.0,
+   "uia_type": "TreeItem",
+   "visual_type": "button",
+   "ocr_text": "Hide protected operating system files (Recommended)",
+   "role_word": "tree item",
+   "parent_id": "E12",
+   "printed": "Hide protected operating system files (Recommended) | Hide protected operating system files (Recommended) | Hide protected operating system files (Recommended)"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    335,
+    495,
+    475,
+    523
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Restore Defaults",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Restore Defaults | Restore Defaults | Restore Defaults"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    127,
+    103,
+    465,
+    143
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "You can apply this view (such as Details or Icons) to all folders of this type.",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    185,
+    565,
+    285,
+    593
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "OK",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "OK | OK | OK"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    293,
+    565,
+    393,
+    593
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Cancel",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Cancel | Cancel | Cancel"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    401,
+    565,
+    501,
+    593
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Apply",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Apply | Apply | Apply"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    12,
+    49,
+    78,
+    72
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "General",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "General | General | General"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    78,
+    49,
+    132,
+    72
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "View",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "View | View | View"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    132,
+    49,
+    193,
+    72
+   ],
+   "confidence": 1.0,
+   "uia_type": "TabItem",
+   "visual_type": "button",
+   "ocr_text": "Search",
+   "role_word": "tab",
+   "parent_id": "E1",
+   "printed": "Search | Search | Search"
+  },
+  {
+   "id": "E33",
+   "bounds": [
+    466,
+    1,
+    510,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "x | x '"
+  }
+ ],
+ "all_names": [
+  "Advanced settings:",
+  "Always show availability status",
+  "Always show icons, never thumbnails",
+  "Apply",
+  "Apply to Folders",
+  "Automatically type into the Search Box",
+  "Cancel",
+  "Close",
+  "Decrease space between items (compact view)",
+  "Display file icon on thumbnails",
+  "Display file size information in folder tips",
+  "Display the full path in the title bar",
+  "Don't show hidden files, folders, or drives",
+  "Expand to open folder",
+  "File Explorer Options",
+  "Files and Folders",
+  "Folder views",
+  "General",
+  "Hidden files and folders",
+  "Hide empty drives",
+  "Hide extensions for known file types",
+  "Hide folder merge conflicts",
+  "Hide protected operating system files (Recommended)",
+  "Launch folder windows in a separate process",
+  "Line down",
+  "Line up",
+  "Navigation pane",
+  "OK",
+  "Page down",
+  "Position",
+  "Reset Folders",
+  "Restore Defaults",
+  "Restore previous folder windows at logon",
+  "Search",
+  "Select the typed item in the view",
+  "Show Network",
+  "Show This PC",
+  "Show all folders",
+  "Show drive letters",
+  "Show encrypted or compressed NTFS files in color",
+  "Show hidden files, folders, and drives",
+  "Show libraries",
+  "Show pop-up description for folder and desktop items",
+  "Show preview handlers in preview pane",
+  "Show status bar",
+  "Show sync provider notifications",
+  "Use Sharing Wizard (Recommended)",
+  "Use check boxes to select items",
+  "Vertical",
+  "View",
+  "When typing into list view",
+  "You can apply this view (such as Details or Icons) to all folders of this type."
+ ],
+ "source": "uia",
+ "window_title": "File Explorer Options"
+}

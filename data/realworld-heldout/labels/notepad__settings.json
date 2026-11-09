@@ -1,0 +1,558 @@
+{
+ "image_size": {
+  "width": 1906,
+  "height": 1013
+ },
+ "elements": [
+  {
+   "id": "E1",
+   "bounds": [
+    0,
+    0,
+    1906,
+    1013
+   ],
+   "confidence": 1.0,
+   "uia_type": "Window",
+   "visual_type": "block",
+   "children_ids": [
+    "E2",
+    "E3",
+    "E4",
+    "E6",
+    "E7",
+    "E8",
+    "E9",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20",
+    "E21",
+    "E22",
+    "E23",
+    "E24",
+    "E25",
+    "E26",
+    "E27",
+    "E28",
+    "E29",
+    "E30",
+    "E31",
+    "E32"
+   ]
+  },
+  {
+   "id": "E2",
+   "bounds": [
+    66,
+    87,
+    253,
+    154
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Settings",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E3",
+   "bounds": [
+    66,
+    184,
+    1450,
+    208
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Appearance",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E4",
+   "bounds": [
+    66,
+    223,
+    1450,
+    307
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "App theme",
+   "role_word": "button",
+   "parent_id": "E1",
+   "children_ids": [
+    "E5"
+   ],
+   "printed": "App theme ¥\nSelect which app theme to display | ae} sa app theme to display ~ | App theme\n\nSelect which app theme to display"
+  },
+  {
+   "id": "E5",
+   "bounds": [
+    127,
+    267,
+    359,
+    287
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Select which app theme to display",
+   "parent_id": "E4"
+  },
+  {
+   "id": "E6",
+   "bounds": [
+    66,
+    323,
+    1450,
+    347
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Text Formatting",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E7",
+   "bounds": [
+    66,
+    362,
+    1450,
+    447
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Font",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "AN Font wy | AN Font wy | AN Font"
+  },
+  {
+   "id": "E8",
+   "bounds": [
+    127,
+    473,
+    213,
+    497
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Word wrap",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E9",
+   "bounds": [
+    127,
+    497,
+    348,
+    517
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Fit text within window by default",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E10",
+   "bounds": [
+    1343,
+    470,
+    1433,
+    520
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Word wrap",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "2 On | 2 On | 2 or",
+   "review": "name not printed"
+  },
+  {
+   "id": "E11",
+   "bounds": [
+    66,
+    542,
+    1450,
+    627
+   ],
+   "confidence": 1.0,
+   "uia_type": "Pane",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E12",
+   "bounds": [
+    66,
+    642,
+    1450,
+    666
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Opening Notepad",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E13",
+   "bounds": [
+    127,
+    702,
+    230,
+    726
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Opening files",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E14",
+   "bounds": [
+    127,
+    726,
+    371,
+    746
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Choose where your files are opened",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E15",
+   "bounds": [
+    1224,
+    699,
+    1439,
+    749
+   ],
+   "confidence": 1.0,
+   "uia_type": "ComboBox",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E16",
+   "bounds": [
+    66,
+    771,
+    1450,
+    855
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "When Notepad starts",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "© When Notepad starts “A | © When Notepad starts “A | © When Notepad starts"
+  },
+  {
+   "id": "E17",
+   "bounds": [
+    66,
+    860,
+    1450,
+    945
+   ],
+   "confidence": 1.0,
+   "uia_type": "Pane",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E18",
+   "bounds": [
+    66,
+    960,
+    1450,
+    984
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Spelling",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E19",
+   "bounds": [
+    66,
+    999,
+    1450,
+    1011
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Spell check",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "",
+   "review": "name not printed"
+  },
+  {
+   "id": "E20",
+   "bounds": [
+    1520,
+    184,
+    1840,
+    208
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "About this app",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E21",
+   "bounds": [
+    1520,
+    218,
+    1808,
+    265
+   ],
+   "confidence": 1.0,
+   "uia_type": "Text",
+   "visual_type": "text",
+   "ocr_text": "Windows Notepad 11.2607.14.0\r\n© 2026 Microsoft. All rights reserved.",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E22",
+   "bounds": [
+    1505,
+    285,
+    1791,
+    325
+   ],
+   "confidence": 1.0,
+   "uia_type": "Hyperlink",
+   "visual_type": "button",
+   "ocr_text": "Microsoft Software License Terms",
+   "role_word": "link",
+   "parent_id": "E1",
+   "printed": "Microsoft Software License Terms | Microsoft Software License Terms | Microsoft Software License Terms"
+  },
+  {
+   "id": "E23",
+   "bounds": [
+    1505,
+    328,
+    1766,
+    368
+   ],
+   "confidence": 1.0,
+   "uia_type": "Hyperlink",
+   "visual_type": "button",
+   "ocr_text": "Microsoft Services Agreement",
+   "role_word": "link",
+   "parent_id": "E1",
+   "printed": "Microsoft Services Agreement | Microsoft Services Agreement | Microsoft Services Agreement"
+  },
+  {
+   "id": "E24",
+   "bounds": [
+    1505,
+    370,
+    1751,
+    410
+   ],
+   "confidence": 1.0,
+   "uia_type": "Hyperlink",
+   "visual_type": "button",
+   "ocr_text": "Microsoft Privacy Statement",
+   "role_word": "link",
+   "parent_id": "E1",
+   "printed": "Microsoft Privacy Statement | Microsoft Privacy Statement | Microsoft Privacy Statement"
+  },
+  {
+   "id": "E25",
+   "bounds": [
+    1505,
+    413,
+    1840,
+    452
+   ],
+   "confidence": 1.0,
+   "uia_type": "Hyperlink",
+   "visual_type": "button",
+   "ocr_text": "Third-Party Software Acknowledgments",
+   "role_word": "link",
+   "parent_id": "E1",
+   "printed": "Third-Party Software Acknowledgments | Third-Party Software Acknowledgments | Third-Party Software Acknowledgments"
+  },
+  {
+   "id": "E26",
+   "bounds": [
+    1520,
+    473,
+    1670,
+    513
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Send feedback",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Send feedback | Send feedback | Send feedback"
+  },
+  {
+   "id": "E27",
+   "bounds": [
+    1520,
+    533,
+    1670,
+    572
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "button",
+   "ocr_text": "Help",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "Help | Help | Help"
+  },
+  {
+   "id": "E28",
+   "bounds": [
+    7,
+    12,
+    45,
+    42
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Back",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "< | <"
+  },
+  {
+   "id": "E29",
+   "bounds": [
+    2,
+    9,
+    30,
+    37
+   ],
+   "confidence": 1.0,
+   "uia_type": "MenuBar",
+   "visual_type": "block",
+   "parent_id": "E1"
+  },
+  {
+   "id": "E30",
+   "bounds": [
+    1727,
+    1,
+    1787,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Minimize",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "=",
+   "review": "name not printed"
+  },
+  {
+   "id": "E31",
+   "bounds": [
+    1787,
+    1,
+    1846,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Maximize",
+   "review": "icon-only?",
+   "parent_id": "E1",
+   "printed": "a) | O"
+  },
+  {
+   "id": "E32",
+   "bounds": [
+    1846,
+    1,
+    1906,
+    38
+   ],
+   "confidence": 1.0,
+   "uia_type": "Button",
+   "visual_type": "icon",
+   "ocr_text": "Close",
+   "role_word": "button",
+   "parent_id": "E1",
+   "printed": "x | x",
+   "review": "name not printed"
+  }
+ ],
+ "all_names": [
+  "*The quick brown fox jumps over the - Notepad",
+  "About this app",
+  "Advanced Features",
+  "App theme",
+  "Appearance",
+  "Autocorrect",
+  "Back",
+  "Choose where your files are opened",
+  "Close",
+  "Fit text within window by default",
+  "Font",
+  "Formatting",
+  "Help",
+  "Maximize",
+  "Microsoft Privacy Statement",
+  "Microsoft Services Agreement",
+  "Microsoft Software License Terms",
+  "Minimize",
+  "Opening Notepad",
+  "Opening files",
+  "Recent Files",
+  "Select which app theme to display",
+  "Send feedback",
+  "Settings",
+  "Spell check",
+  "Spelling",
+  "System",
+  "Text Formatting",
+  "Third-Party Software Acknowledgments",
+  "Typos are automatically corrected when spell check is turned on",
+  "Vertical",
+  "When Notepad starts",
+  "Windows Notepad 11.2607.14.0\r\n© 2026 Microsoft. All rights reserved.",
+  "Word wrap",
+  "Writing tools"
+ ],
+ "source": "uia",
+ "window_title": "The quick brown fox jumps over the - Notepad"
+}
