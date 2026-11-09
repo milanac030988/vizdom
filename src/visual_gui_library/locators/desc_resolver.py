@@ -321,13 +321,13 @@ class DescriptionResolver:
         tiers: Optional[List[str]] = None,
         backend: str = "ollama",
         model: str = "qwen2.5:3b",
-        vision_model: str = "qwen2.5-vl:3b",
+        vision_model: str = "qwen2.5vl:7b",
         host: str = "http://localhost:11434",
     ):
         self.dom = dom
         self.elements = dom.get("elements", [])
         self.screenshot = screenshot
-        self.tiers = list(tiers) if tiers else ["lexical", "slm"]
+        self.tiers = list(tiers) if tiers else ["lexical", "vlm"]   # GroundingConfig default
         self.backend = backend
         self.model = model
         self.vision_model = vision_model

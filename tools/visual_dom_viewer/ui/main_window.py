@@ -993,7 +993,7 @@ class VisualDOMViewerWindow(TryLocatorMixin, QMainWindow):
         self._slm_model_combo.addItems([
             "qwen2.5:3b",       # Text-only (fast, retype only)
             "minicpm-v",        # VLM (best for UI, ~5.5GB)
-            "qwen2.5-vl:3b",   # VLM (small, ~2.4GB)
+            "qwen2.5vl:3b",    # VLM (small; the Ollama tag has no dash)
             "llava:7b",         # VLM (general purpose)
         ])
         self._slm_model_combo.setToolTip("SLM model (vision models can see the screenshot)")

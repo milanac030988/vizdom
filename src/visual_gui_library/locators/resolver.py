@@ -81,7 +81,7 @@ def default_desc_resolver_factory(dom: Dict[str, Any], screenshot=None,
                 tiers=(list(g.tiers) if g else None),
                 backend=(g.backend if g else "ollama"),
                 model=(g.model if g else "qwen2.5:3b"),
-                vision_model=(g.vision_model if g else "qwen2.5-vl:3b"),
+                vision_model=(g.vision_model if g else "qwen2.5vl:7b"),
                 host=(g.host if g else "http://localhost:11434"),
             )
         return cache["resolver"]

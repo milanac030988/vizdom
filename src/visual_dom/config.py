@@ -164,12 +164,16 @@ class ActuatorConfig:
 class GroundingConfig:
     """desc= locator resolution (ADR-022): tiered natural-language grounding."""
     # Escalation chain, tried in order. "lexical" is model-free and always safe;
-    # "slm" needs the text model below (Ollama/OpenAI); "vlm" additionally needs
-    # a vision model and is off by default (least deterministic).
-    tiers: List[str] = field(default_factory=lambda: ["lexical", "slm"])
+    # "slm" needs the text model below (Ollama/OpenAI); "vlm" needs the vision
+    # model and a GPU. Default since 2026-11-09 (ADR-022 1.13): lexical -> 7B
+    # vision, the chain that clicks level with the 7B grounders on real
+    # applications (run 8: 0.861, 0 false passes). Without a GPU use
+    # ["lexical", "slm"] (CPU, 0.795 on the same set).
+    tiers: List[str] = field(default_factory=lambda: ["lexical", "vlm"])
     backend: str = "ollama"               # ollama | openai
     model: str = "qwen2.5:3b"             # text model for the slm tier
-    vision_model: str = "qwen2.5-vl:3b"   # vision model for the vlm tier
+    # Ollama's tag has no dash; the old default "qwen2.5-vl:3b" 404'd on pull
+    vision_model: str = "qwen2.5vl:7b"    # vision model for the vlm tier
     host: str = "http://localhost:11434"
 
 
@@ -327,7 +331,7 @@ _FIELD_HELP: Dict[str, str] = {
     "actuator.target": "host:port of a running actuator gRPC service (when strategy == grpc)",
     "actuator.window_title": "app to raise for input; null = inherit capture.window_title (ADR-021)",
     "grounding": "desc= locator resolution (ADR-022): tiered natural-language grounding",
-    "grounding.tiers": "escalation order; lexical (no model) | slm (text LM over DOM) | vlm (Set-of-Mark over image, opt-in)",
+    "grounding.tiers": "escalation order; lexical (no model) | slm (text LM over DOM, CPU) | vlm (Set-of-Mark over image, GPU); default [lexical, vlm], use [lexical, slm] without a GPU",
     "detector.use_gpu": 'run the detector on CUDA when available (OmniParser/YOLO); UIED is CPU-only',
     "detector.yolo_model_path": 'path to trained YOLO weights (required for backend=yolo/hybrid)',
     "detector.omniparser_icon_caption_path": 'null = auto-resolve from models/omniparser/icon_caption_florence',

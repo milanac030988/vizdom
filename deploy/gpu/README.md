@@ -161,8 +161,10 @@ starts the server if needed and **skips** the three columns when it is not
 reachable. Override the models with `VIZDOM_GROUNDING_MODEL` /
 `VIZDOM_GROUNDING_VISION_MODEL` (both scripts read them; e.g. `qwen2.5vl:7b`
 on a big card — then quote the size with the number). Note the Ollama tag is
-`qwen2.5vl` (no dash); the project config default `qwen2.5-vl:3b` is the HF
-name and does not pull. Since run 4 a miss records every tier's own verdict
+`qwen2.5vl` (no dash); the project config default was the HF name
+`qwen2.5-vl:3b`, which does not pull, until 2026-11-09 (now `qwen2.5vl:7b`;
+the runner's own default stays `qwen2.5vl:3b` so column names keep their
+meaning). Since run 4 a miss records every tier's own verdict
 in the step's `detail` (`no confident match (lexical: tie at 3.00 between 2
 candidates ...; vlm returned out-of-range mark 37)`), so a column of misses
 can be diagnosed from the tarball alone.

@@ -27,6 +27,7 @@ log = get_logger(__name__)
 VISION_MODELS = {
     "minicpm-v", "llava", "llava:7b", "llava:13b",
     "qwen2.5-vl", "qwen2.5-vl:3b", "qwen2.5-vl:7b",
+    "qwen2.5vl", "qwen2.5vl:3b", "qwen2.5vl:7b",     # Ollama library tags
     "llava-phi3", "bakllava", "moondream",
 }
 

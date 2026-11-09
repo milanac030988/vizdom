@@ -299,10 +299,10 @@ described here".
 
 | Parameter | Type | Default | Meaning |
 |---|---|---|---|
-| `tiers` | list of str | `['lexical', 'slm']` | escalation order; lexical (no model) \| slm (text LM over DOM) \| vlm (Set-of-Mark over image, opt-in) |
+| `tiers` | list of str | `['lexical', 'vlm']` | escalation order; lexical (no model) \| slm (text LM over DOM, CPU) \| vlm (Set-of-Mark over image, GPU); default [lexical, vlm], use [lexical, slm] without a GPU |
 | `backend` | str | `"ollama"` | ollama \| openai (for the slm/vlm tiers) |
 | `model` | str | `"qwen2.5:3b"` | text model for the slm tier |
-| `vision_model` | str | `"qwen2.5-vl:3b"` | vision model for the vlm (Set-of-Mark) tier |
+| `vision_model` | str | `"qwen2.5vl:7b"` | vision model for the vlm (Set-of-Mark) tier |
 | `host` | str | `"http://localhost:11434"` | backend endpoint for the grounding tiers |
 
 ### `output` — DOM compilation options

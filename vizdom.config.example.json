@@ -30,7 +30,7 @@
     "actuator.target": "host:port of a running actuator gRPC service (when strategy == grpc)",
     "actuator.window_title": "app to raise for input; null = inherit capture.window_title (ADR-021)",
     "grounding": "desc= locator resolution (ADR-022): tiered natural-language grounding",
-    "grounding.tiers": "escalation order; lexical (no model) | slm (text LM over DOM) | vlm (Set-of-Mark over image, opt-in)",
+    "grounding.tiers": "escalation order; lexical (no model) | slm (text LM over DOM, CPU) | vlm (Set-of-Mark over image, GPU); default [lexical, vlm], use [lexical, slm] without a GPU",
     "detector.use_gpu": "run the detector on CUDA when available (OmniParser/YOLO); UIED is CPU-only",
     "detector.yolo_model_path": "path to trained YOLO weights (required for backend=yolo/hybrid)",
     "detector.omniparser_icon_caption_path": "null = auto-resolve from models/omniparser/icon_caption_florence",
@@ -120,11 +120,11 @@
   "grounding": {
     "tiers": [
       "lexical",
-      "slm"
+      "vlm"
     ],
     "backend": "ollama",
     "model": "qwen2.5:3b",
-    "vision_model": "qwen2.5-vl:3b",
+    "vision_model": "qwen2.5vl:7b",
     "host": "http://localhost:11434"
   },
   "output": {

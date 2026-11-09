@@ -372,9 +372,18 @@ match:
    against the DOM's `label`/`text`/`hint`;
 2. **slm** — a small text LM (Ollama, default `qwen2.5:3b`) picks the element from
    a compact DOM table; handles paraphrase ("magnifier" → *Search*);
-3. **vlm** (opt-in) — Set-of-Mark grounding: candidate boxes are numbered on the
-   screenshot and a vision model picks the number, so the answer is always a real
-   DOM element.
+3. **vlm** — Set-of-Mark grounding: candidate boxes are numbered on the
+   screenshot and a vision model (default `qwen2.5vl:7b`, needs a GPU) picks the
+   number, so the answer is always a real DOM element.
+
+The default chain is **lexical → vlm** (ADR-022 1.13): on real applications it
+clicks level with the 7B grounders. Verification (`Visual Should Exist`) stays
+on the lexical tier, so no model ever judges whether an element is absent.
+Without a GPU use the CPU chain:
+
+```json
+"grounding": { "tiers": ["lexical", "slm"] }
+```
 
 Positional words ("top right") are enforced **geometrically**, never left to the
 model. Ambiguity fails loudly with the candidate list instead of guessing. Tune it
