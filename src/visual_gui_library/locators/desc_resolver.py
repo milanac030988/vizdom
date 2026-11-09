@@ -16,8 +16,34 @@ temperature 0, and every resolution records which tier answered.
 from __future__ import annotations
 
 import json
+import logging
 import re
 from typing import Any, Dict, List, Optional, Tuple
+
+log = logging.getLogger(__name__)
+
+# (tier, model, host) triples already reported as unusable in this process.
+_UNAVAILABLE_WARNED: set = set()
+
+
+def _warn_unavailable(tier: str, model: str, host: str, exc: Exception) -> None:
+    """Say once that a configured model tier could not be used.
+
+    The chain is built to fall through to the next tier when a model server
+    is down, so a run keeps going - and so a missing model used to cost
+    resolutions without a word anywhere but each step's own reason. One
+    warning per tier, model and host per process; the step reason still
+    carries every occurrence.
+    """
+    key = (tier, model, host)
+    if key in _UNAVAILABLE_WARNED:
+        return
+    _UNAVAILABLE_WARNED.add(key)
+    log.warning(
+        "desc= tier '%s' (%s at %s) could not be used: %s. The chain continues "
+        "without it, so descriptions that needed this tier end as 'no confident "
+        "match'. Start the model server, or take the tier out of grounding.tiers. "
+        "(Reported once.)", tier, model, host, " ".join(str(exc).split())[:200])
 
 # ---------------------------------------------------------------------------
 # Tier 0 - lexical scoring
@@ -581,6 +607,7 @@ class DescriptionResolver:
             advisor = self._make_advisor(self.model)
             response = advisor._call_llm(prompt)
         except Exception as exc:  # noqa: BLE001 - service down is a soft failure
+            _warn_unavailable("slm", self.model, self.host, exc)
             return None, f"slm unavailable: {exc}"
 
         parsed = self._parse_id_json(response)
@@ -636,6 +663,7 @@ class DescriptionResolver:
             advisor = self._make_advisor(self.vision_model)
             response = advisor._call_llm(prompt, image_b64=image_b64)
         except Exception as exc:  # noqa: BLE001
+            _warn_unavailable("vlm", self.vision_model, self.host, exc)
             return None, f"vlm unavailable: {exc}"
 
         m = re.search(r'"number"\s*:\s*(\d+|null)', response or "")

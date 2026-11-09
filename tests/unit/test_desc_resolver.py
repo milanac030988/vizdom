@@ -419,3 +419,36 @@ def test_a_number_is_not_part_of_another_number():
     dom = _dom(_btn("E1", "Settings"), _btn("E2", "Cancel", x=60))
     elem, _ = DescriptionResolver(dom, tiers=["lexical"]).resolve("setting button")
     assert elem is not None and elem["id"] == "E1"
+
+
+# -- an unreachable model tier is said once (defense audit, 2026-11-09) -------
+
+def test_unreachable_model_tier_warns_once_and_the_chain_goes_on(monkeypatch, caplog):
+    """A missing model server made the chain fall through in silence: the
+    only trace was each step's own reason. One warning per tier, model and
+    host; the reason still carries every occurrence."""
+    import logging
+    from visual_gui_library.locators import desc_resolver as dr
+    monkeypatch.setattr(dr, "_UNAVAILABLE_WARNED", set())
+    dom = _dom(_btn("E1", "Save"), _btn("E2", "Open", x=50))
+    with caplog.at_level(logging.WARNING, logger=dr.__name__):
+        for _ in range(3):
+            r = DescriptionResolver(dom, tiers=["lexical", "slm"], host="http://127.0.0.1:9")
+            elem, info = r.resolve("frobnicate button")
+            assert elem is None and "slm unavailable:" in info["reason"]
+    warnings = [x for x in caplog.records if "could not be used" in x.getMessage()]
+    assert len(warnings) == 1
+    assert "tier 'slm'" in warnings[0].getMessage() and "127.0.0.1:9" in warnings[0].getMessage()
+    # another host is another report
+    with caplog.at_level(logging.WARNING, logger=dr.__name__):
+        DescriptionResolver(dom, tiers=["slm"], host="http://127.0.0.1:10").resolve("frobnicate button")
+    assert len([x for x in caplog.records if "could not be used" in x.getMessage()]) == 2
+
+
+def test_a_reachable_chain_never_warns(monkeypatch, caplog):
+    import logging
+    from visual_gui_library.locators import desc_resolver as dr
+    monkeypatch.setattr(dr, "_UNAVAILABLE_WARNED", set())
+    with caplog.at_level(logging.WARNING, logger=dr.__name__):
+        elem, _ = DescriptionResolver(_dom(_btn("E1", "Save")), tiers=["lexical"]).resolve("Save button")
+    assert elem is not None and not caplog.records
