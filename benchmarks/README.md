@@ -624,14 +624,34 @@ chain on the same footing as the `text=` rows: 4.2 s load, 44 parses at
 against the grounders' 2.79–4.24 s median step on that host that night
 (UI-TARS 1 433 s, ELAM 2 110 s for the same 514 steps).
 
-### Real applications: `lifecycle-realworld-v1` (laptop 2026-11-09; run 8 pending)
+### Real applications: `lifecycle-realworld-v1` (laptop 2026-11-09; run 8 2026-11-08)
 
 The same schema on 46 screenshots of 9 desktop applications, UI Automation
 ground truth, negatives taken from other screens of the same application
-(`lifecycle-realworld-v1/README.md`, results table there). On the laptop,
-`text=` 0.795 / 0.879 and `desc=` 0.792 / 0.826, **0 of 92** false passes
-each. Run 8 adds the grounders on the same negatives:
-<!-- run 8: grounder rows, the 3B/7B vision chain and the verify=chain twin go here -->
+(`lifecycle-realworld-v1/README.md`, full table and per-application split
+there). Run 8 (`gpu-20261108_221541`, RTX PRO 5000 Blackwell, `0fe5ce3`)
+puts the grounders on the same 998 steps:
+
+| Column | Action-hit | Verify acc | False passes |
+|---|---|---|---|
+| `text=` vizdom-modular | 0.797 | 0.879 | 0 / 92 |
+| `text=` vizdom-omniparser | 0.808 | 0.883 | 0 / 92 |
+| `desc=` lexical → slm (production, keyword verify) | 0.795 | 0.826 | 0 / 92 |
+| `desc=` lexical → slm, `verify=chain` | 0.790 | 0.883 | 1 / 92 |
+| `desc=` lexical → vlm, qwen2.5vl:3b | 0.850 | 0.826 | 0 / 92 |
+| `desc=` lexical → vlm, qwen2.5vl:7b | **0.861** | 0.826 | 0 / 92 |
+| ELAM-7B | 0.857 | 0.833 | 91 / 92 |
+| UI-TARS-1.5-7B | 0.821 | 0.903 | 53 / 92 |
+
+On plausible negatives the grounders stop being oracles: ELAM accepts 91
+of the 92 captions that belong to another screen of the same application,
+UI-TARS 53. Every lexical-first VizDOM chain passes none, and the 7B vision
+chain also clicks best. The laptop rows reproduce (uied 997 / 998 steps
+identical, modular 981). The `verify=chain` twin repeats run 7's synthetic
+row on all 514 steps on this different card, and on the real set its
+extra verify hits come with the set's only VizDOM false pass, so keyword
+verify stays the default. Caveat: the 1.9 fixes were derived from this set;
+held-out applications are still to be captured.
 
 ### Planned extensions (in priority order)
 

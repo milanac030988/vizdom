@@ -105,19 +105,51 @@ negatives. Every row names its host and commit; read a run with
 | `text=` vizdom-modular | laptop, `19f800d` (2026-11-09) | 0.795 | 0.879 | 0 / 92 |
 | `desc=` lexical → slm (keyword verify) | laptop, `19f800d` (2026-11-09) | 0.792 | 0.826 | 0 / 92 |
 | `desc=` lexical → slm, before ADR-022 1.9 | laptop (2026-11-02) | 0.645 | 0.798 | 6 / 92 |
-| `text=` vizdom-omniparser | run 8 | *pending* | | |
-| `desc=` lexical → slm, `verify=chain` | run 8 | *pending* | | |
-| `desc=` slm / vlm pinned | run 8 | *pending* | | |
-| `desc=` lexical → vlm, 3B / 7B | run 8 | *pending* | | |
-| ELAM-7B | run 8 | *pending* | | |
-| UI-TARS-1.5-7B | run 8 | *pending* | | |
+| `text=` vizdom-uied | run 8, `0fe5ce3` | 0.779 | 0.877 | 0 / 92 |
+| `text=` vizdom-omniparser | run 8, `0fe5ce3` | 0.808 | 0.883 | 0 / 92 |
+| `text=` vizdom-modular | run 8, `0fe5ce3` | 0.797 | 0.879 | 0 / 92 |
+| `desc=` lexical → slm (keyword verify) | run 8, `0fe5ce3` | 0.795 | 0.826 | 0 / 92 |
+| `desc=` lexical → slm, `verify=chain` | run 8, `0fe5ce3` | 0.790 | 0.883 | 1 / 92 |
+| `desc=` slm pinned | run 8, `0fe5ce3` | 0.494 | 0.732 | 10 / 92 |
+| `desc=` vlm pinned (3B) | run 8, `0fe5ce3` | 0.108 | 0.655 | 35 / 92 |
+| `desc=` lexical → vlm, 3B | run 8, `0fe5ce3` | 0.850 | 0.826 | 0 / 92 |
+| `desc=` lexical → vlm, 7B | run 8, `0fe5ce3` | **0.861** | 0.826 | 0 / 92 |
+| ELAM-7B | run 8, `0fe5ce3` | 0.857 | 0.833 | 91 / 92 |
+| UI-TARS-1.5-7B | run 8, `0fe5ce3` | 0.821 | 0.903 | 53 / 92 |
 
-Laptop result files: `benchmarks/results/realworld_local/20261109_051530`
-(uied), `_052030` (modular), `_052807` (desc), local and not committed. The
-1.9 fixes were derived from this set, so the 2026-11-02 row is reported
-beside the fixed one; applications captured after them are the held-out
-check. `19f800d` differs from `0fe5ce3` only by the comparison tool, so the three
-rows share one pipeline. The `id=` answer fix (ADR-022 1.11) came after run 8's commit.
+Run 8 is `gpu-20261108_221541` (RTX PRO 5000 Blackwell 48 GB, Tesseract
+5.3.4); every run-8 row ran on that one card. Laptop result files:
+`benchmarks/results/realworld_local/20261109_051530` (uied), `_052030`
+(modular), `_052807` (desc), local and not committed. The 1.9 fixes were
+derived from this set, so the 2026-11-02 row is reported beside the fixed
+one; applications captured after them are the held-out check. `19f800d`
+differs from `0fe5ce3` only by the comparison tool, so laptop and run-8 rows
+share one pipeline. The `id=` answer fix (ADR-022 1.11) came after run 8's
+commit.
+
+What the run shows:
+
+- **Reproducible across hosts.** uied on the laptop and on the rental agree
+  on 997 of 998 steps, modular on 981; desc= on 973 (the SLM is not
+  deterministic across Ollama builds).
+- **Only the lexical-first chains keep 0 false passes on real screens.**
+  The grounders accept almost every same-app negative: ELAM-7B 91 of 92,
+  UI-TARS 53 of 92. Their verify accuracy is therefore not comparable to
+  the VizDOM rows: ELAM's 0.833 is mostly a "yes" to everything.
+- **The 7B vision chain clicks best** (0.861, above ELAM's 0.857 and
+  UI-TARS's 0.821) with no false pass; the 3B one is 0.850. Of the 998
+  steps, 7B is better on 11 and worse on 6.
+- **Keyword verify stays the default.** `verify=chain` gains 33 verify steps
+  and loses 4, and buys them with the set's only VizDOM false pass: the SLM
+  took a "Tab Bar" element for the absent "Mark tab"
+  (`notepadpp__prefs-editing`).
+- **A tier alone is not a locator.** Pinned SLM 0.494 with 10 false passes;
+  pinned qwen2.5vl:3b 0.108 with 35, and 242 of its steps ended on Ollama's
+  token-repeat guard (the 3B looping already seen in run 6).
+- **Per application** (`compare` prints the table): UI-TARS is best on
+  VS Code (22/24) and Settings, worst on PuTTY (31/72); the VizDOM rows are
+  weakest on VS Code (8-18 of 24), whose icon-only activity bar the text
+  locator cannot name.
 
 ## Threats to state in the results
 

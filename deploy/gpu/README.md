@@ -169,7 +169,7 @@ can be diagnosed from the tarball alone.
 
 ### Run 8: the real-application set (`rw-` columns, 2026-11-02)
 
-`benchmarks/lifecycle-realworld-v1`: 46 screens of 8 desktop applications
+`benchmarks/lifecycle-realworld-v1`: 46 screens of 9 desktop applications
 with UI Automation ground truth and negatives taken from *other screens of
 the same application* (`Export` where only `Import` is shown) — see its
 README. Laptop figures exist for the VizDOM columns (`text=` 0 of 92 false
@@ -177,7 +177,12 @@ passes, `desc=` 0 of 92 after ADR-022 1.9); what only a GPU gives is the
 **grounders on the same plausible negatives**, the comparison the paper
 needs. The sweep runs the set into `<run dir>/realworld/` with its own
 `summary.md`; the columns are named `rw-...`. A rental for this set alone,
-about 2.5 h on a 48 GB card (Aria-UI needs 80 GB and is skipped below it):
+about 2.5 h on a 48 GB card (Aria-UI needs 80 GB and is skipped below it).
+Measured on run 8 (RTX PRO 5000 Blackwell, `gpu-20261108_221541`): 2 h 14 min
+of columns, of which ELAM-7B alone took 81 min (4.8 s a step on the larger
+real screenshots) and UI-TARS 18 min; every VizDOM column took 1-6 min. The
+runner logs nothing per step, so a grounder column looks stalled; check
+`nvidia-smi`, not the log. The commands:
 
 ```bash
 tmux new -s bench

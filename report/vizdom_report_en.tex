@@ -1557,11 +1557,76 @@ the three runs do settle is the ADR-022 tier order: the vision tier stays opt-in
 a Set-of-Mark prompt with a null option must not sit in a chain used for
 verification.
 
-% TODO run 8: \subsubsection{Real applications} - the lifecycle-realworld-v1
-% table (46 states, 9 apps, 998 steps, 92 same-app negatives): laptop rows from
-% benchmarks/lifecycle-realworld-v1/README.md (text= 0.795/0.879/0, desc=
-% 0.792/0.826/0) and the run-8 grounder rows; state the tuning-on-this-set
-% caveat (ADR-022 1.9) and, once captured, the held-out applications.
+\subsubsection{Real applications}
+\label{sec:lifecycle-realworld}
+The synthetic states are generated, and their negatives are invented words. A second
+set, \code{lifecycle-realworld-v1}, applies the same step schema, runner and scoring to
+46 screenshots of nine real desktop applications (7-Zip, Firefox, Notepad++,
+Paint.NET, PuTTY, TeXstudio, TortoiseGit, VS Code and Windows Settings), across
+Win32, Qt, WinUI, Electron and custom toolkits. The ground truth is the Windows UI
+Automation tree, read at the moment of the capture; the executors still see only the
+screenshot. Each state's two negatives are captions from \emph{another screen of the
+same application} (``Export'' where only ``Import'' is shown), so a locator that
+answers with the nearest-looking element is caught. The set has 998 steps: 453 clicks
+and 545 verifications, 92 of them negatives. Every state was reviewed by hand. One
+state was recaptured, because its page had not been drawn yet when its tree was
+read; the harvester now refuses such a capture.
+
+The eighth run (RTX PRO 5000 Blackwell, commit \code{0fe5ce3}, 2026-11-08) ran every
+column on the same card (Table~\ref{tab:lifecycle-realworld}).
+
+\begin{table}[htbp]
+\centering
+\caption{Lifecycle benchmark on real applications (998 steps, 92 same-application
+negatives; run~8)}
+\label{tab:lifecycle-realworld}
+\begin{tabular}{lccc}
+\toprule
+Executor & Action-hit & Verify acc. & False passes \\
+\midrule
+VizDOM \code{text=}, UIED & 0.779 & 0.877 & 0 / 92 \\
+VizDOM \code{text=}, modular & 0.797 & 0.879 & 0 / 92 \\
+VizDOM \code{text=}, OmniParser & 0.808 & 0.883 & 0 / 92 \\
+VizDOM \code{desc=} lexical$\rightarrow$SLM (production) & 0.795 & 0.826 & 0 / 92 \\
+\quad same, chain-scored verification & 0.790 & 0.883 & 1 / 92 \\
+VizDOM \code{desc=} lexical$\rightarrow$VLM 3B & 0.850 & 0.826 & 0 / 92 \\
+VizDOM \code{desc=} lexical$\rightarrow$VLM 7B & \textbf{0.861} & 0.826 & 0 / 92 \\
+VizDOM \code{desc=} SLM only & 0.494 & 0.732 & 10 / 92 \\
+VizDOM \code{desc=} VLM 3B only & 0.108 & 0.655 & 35 / 92 \\
+ELAM-7B & 0.857 & 0.833 & 91 / 92 \\
+UI-TARS-1.5-7B & 0.821 & 0.903 & 53 / 92 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The result that matters for a test oracle is the last column. The negatives here are
+not invented words: they are captions that do exist elsewhere in the same application,
+so a nearest-looking element is always available. On them the grounders behave as they
+did on the synthetic set. ELAM-7B accepts 91 of the 92 absent targets and UI-TARS 53. Their verification accuracy is therefore not comparable with VizDOM's.
+ELAM's 0.833 is close to answering ``present'' on every step, and UI-TARS's higher
+0.903 comes with a false pass on more than half of the negatives. Every lexical-first
+VizDOM chain passes none of them. The real screens also cost all executors action
+accuracy compared with the synthetic set. VizDOM's floor is still the OCR: a caption
+that is not read cannot be matched, and VS Code's icon-only activity bar is the weakest
+application for every VizDOM row (8--18 of 24 clicks). Behind the lexical shortlist, the
+vision tier recovers part of that floor. With \code{qwen2.5vl:7b} the chain reaches
+0.861, the best action-hit of the table, still with no false pass. The 3B model reaches
+0.850; the 7B model is better on 11 steps and worse on 6. Pinned alone, the model tiers fail as they
+did on the synthetic set. Scoring verification through the whole chain, as runs~3--7 did,
+gains 33 verify steps and loses four, but it also produces the set's only VizDOM false
+pass: the text model takes a ``Tab Bar'' element for an absent ``Mark tab''. Verification
+in production is therefore scored by the lexical tier alone, the way the assertion
+keywords use it (ADR-022, revision~1.9).
+
+The run also checks reproducibility. The laptop measurements of the same commit
+agree with the rented card on 997 of 998 steps for UIED and 981 for the modular
+parser. On the synthetic set, the chain-scored twin repeats run~7, made on another
+card model, on all 514 steps. Two caveats apply. The lexical fixes of ADR-022
+revision~1.9 were derived from this set's first measurement, so it is not a held-out
+test of them; applications captured after those fixes are the held-out check, and they
+are still to be captured. And UI Automation has no elements for owner-drawn surfaces
+(Win32 toolbars, canvases), so this set under-represents exactly the surfaces VizDOM
+targets. The synthetic set covers those.
 
 \subsection{Efficiency considerations}
 Efficiency is analysed along three axes. The lifecycle benchmark
