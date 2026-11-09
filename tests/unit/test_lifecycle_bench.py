@@ -440,3 +440,102 @@ def test_elam_verdict_follows_the_official_rule_failed_first():
     assert elam_verdict("Shown at <point x=\"10\" y=\"20\">. PASSED") == "PASSED"
     assert elam_verdict("The condition is met.") == "PASSED"
     assert elam_verdict("<point x=\"10\" y=\"20\">") is None
+
+
+def test_runner_can_rerun_one_step_kind_only(tmp_path):
+    """--kinds verify: a grounder whose verdict rule changed reruns its verify
+    steps; the clicks are the earlier run's (run 9)."""
+    class _Yes:
+        name = "yes"
+
+        def __init__(self):
+            self.seen = []
+
+        def run_step(self, state, step):
+            self.seen.append(step["id"])
+            return {"outcome": "PASSED", "latency": 0.0, "detail": ""}
+
+        def cost_summary(self):
+            return {}
+
+    manifest = {
+        "benchmark": "unit",
+        "states": [{"id": "s", "image": "none.png", "gt": "none.json"}],
+        "steps": [
+            {"id": "a1", "state": "s", "kind": "action", "locator": "text=x",
+             "instruction": "click x", "target_id": "E1", "target_bounds": [0, 0, 10, 10]},
+            {"id": "v1", "state": "s", "kind": "verify", "locator": "text=x",
+             "instruction": "x is visible", "expect": "PASSED"},
+            {"id": "v2", "state": "s", "kind": "verify", "locator": "text=y",
+             "instruction": "y is visible", "expect": "FAILED"},
+        ],
+    }
+    ex = _Yes()
+    payload = run_benchmark(manifest, [ex], out_dir=str(tmp_path), kinds=["verify"])
+    assert ex.seen == ["v1", "v2"]
+    s = payload["results"]["yes"]["summary"]
+    assert (s["actions"], s["action_hit_rate"], s["verifies"]) == (0, None, 2)
+    assert s["false_pass_rate"] == 0.5 and payload["kinds"] == ["verify"]
+    with pytest.raises(SystemExit, match="no such step kind"):
+        run_benchmark(manifest, [ex], out_dir=str(tmp_path), kinds=["verfy"])
+
+
+def test_yes_no_verdict_reads_the_first_yes_or_no_word():
+    from visual_dom.evaluation.lifecycle.grounders import yesno_verdict
+    assert yesno_verdict("Yes") == "PASSED"
+    assert yesno_verdict(" no.") == "FAILED"
+    assert yesno_verdict("No, the button is not shown; yes would be wrong") == "FAILED"
+    assert yesno_verdict("The answer is yes") == "PASSED"
+    assert yesno_verdict("not shown, nor a note") is None, "whole words only"
+    assert yesno_verdict("click(start_box='(10,20)')") is None
+    assert yesno_verdict("nothing") is None
+    assert yesno_verdict("") is None and yesno_verdict(None) is None
+
+
+def test_ui_tars_yes_no_asks_the_statement_and_keeps_the_proxy_row_apart(monkeypatch):
+    """The plain adapter's verdict is 'grounding returned a point'; the
+    [verify=yesno] executor puts the statement itself to the same weights."""
+    import numpy as np
+
+    from visual_dom.evaluation.lifecycle.grounders import (
+        GROUNDERS, UiTarsGrounder, UiTarsYesNoGrounder)
+    from visual_dom.evaluation.lifecycle.runner import GrounderExecutor, split_specs
+
+    assert GROUNDERS["ui-tars-1.5-7b"] is UiTarsGrounder
+    assert GROUNDERS["ui-tars-1.5-7b[verify=yesno]"] is UiTarsYesNoGrounder
+    assert split_specs("elam-7b,ui-tars-1.5-7b[verify=yesno]") == [
+        "elam-7b", "ui-tars-1.5-7b[verify=yesno]"]
+
+    asked = []
+
+    def scripted(replies):
+        def chat(image, prompt, max_new_tokens):
+            asked.append(prompt)
+            return replies.pop(0), {}
+        return chat
+
+    image = np.zeros((40, 80, 3), dtype=np.uint8)
+    statement = "the 'Save As' button is visible"
+    point = "click(start_box='(10,20)')"
+
+    proxy = UiTarsGrounder()
+    proxy._chat = scripted([point, "I cannot find it"])
+    assert proxy.judge(image, statement) == "PASSED"      # any point is a pass
+    assert "click the 'Save As' element" in asked[-1]
+    assert proxy.judge(image, statement) == "FAILED"
+
+    yesno = UiTarsYesNoGrounder()
+    yesno._chat = scripted(["No", "Yes.", point, point])
+    assert yesno.judge(image, statement) == "FAILED" and yesno.last_text == "No"
+    assert statement in asked[-1] and "yes or no" in asked[-1]
+    assert yesno.judge(image, statement) == "PASSED"
+    assert yesno.judge(image, statement) is None, "a point is not an answer to the question"
+    assert yesno.ground(image, "click the 'Save As' button") == (10, 20)   # clicks unchanged
+
+    # the raw answer travels into the step detail, so the rule can be re-scored
+    import cv2
+    monkeypatch.setattr(cv2, "imread", lambda path: image)
+    yesno._chat = scripted(["No"])
+    r = GrounderExecutor(yesno).run_step(
+        {"image": "x.png"}, {"id": "v", "kind": "verify", "instruction": statement})
+    assert r["outcome"] == "FAILED" and "raw='No'" in r["detail"]

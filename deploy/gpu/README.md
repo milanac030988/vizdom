@@ -229,6 +229,66 @@ PYTHONPATH=src python -m visual_dom.evaluation.lifecycle.compare \
     --ref benchmarks/results/realworld_local --out run8.md
 ```
 
+### Run 9: what the audit could not measure offline (`run9.sh`, 2026-11-09)
+
+The audit of the evidence (`benchmarks/lifecycle-realworld-v1/AUDIT.md`)
+recomputes everything it can from saved result files. Four things need a
+card, and `deploy/gpu/run9.sh` is a sweep of its own for them (it reruns half
+of some columns, which the full sweep never does):
+
+| Columns | Set, result dir | What they answer |
+|---|---|---|
+| `rw-elam-7b`, `syn-elam-7b` | main sets, verify steps only | ELAM's verdicts under the official FAILED-first rule; the raw answer is kept in each step's `detail`, so the rule can be re-scored without another rental |
+| `rw-ui-tars-1.5-7b`, `rw-ui-tars-yesno`, `syn-ui-tars-yesno` | main sets, verify steps only | UI-TARS asked the statement as a yes/no question (`ui-tars-1.5-7b[verify=yesno]`) beside the proxy "any point is a pass", on one card |
+| `nm-vizdom-modular`, `nm-desc`, `nm-desc-vlm7-verify-chain`, `nm-ui-tars-1.5-7b`, `nm-ui-tars-yesno`, `nm-elam-7b` | `lifecycle-realworld-nearmiss-v1`, `nearmiss/` | every column on the 168 near-miss negatives (`Save` where only `Save As` is shown); the `verify-chain` row is the pre-1.9 scoring, where the model tier may vouch |
+| `ho-vizdom-modular`, `ho-desc`, `ho-desc-vlm7-chain`, `ho-ui-tars-1.5-7b`, `ho-ui-tars-yesno`, `ho-elam-7b` | `lifecycle-realworld-heldout-v1`, `heldout/` | screens of applications no constant was looked at on; skipped when that manifest is not in the clone (capture recipe in its README) |
+| `rw-vizdom-modular`, `rw-desc`, `rw-desc-vlm7-chain`, `syn-desc`, `syn-desc-vlm7-chain` | main sets | the VizDOM rows end to end at this commit (run 8's rows predate the exact-name bonus) |
+
+`--kinds verify` on the runner runs the verify steps only: a grounder's
+clicks do not depend on its verdict rule, so they stay run 8's. Such a row
+shows action-hit `None (0)`. About 2.5 h of columns on a 48 GB card, of which
+ELAM is 1 h 45 min (5.4 s a verify step on real screens, run 8); the cheap
+columns run first and ELAM last. A 24 GB card is enough (no Aria-UI).
+
+```bash
+tmux new -s bench
+git clone https://github.com/milanac030988/vizdom.git && cd vizdom && git checkout develop
+bash deploy/gpu/setup.sh
+ONLY="vizdom-modular vizdom-modular-desc elam-7b ui-tars-1.5-7b" bash deploy/gpu/prefetch.sh
+#   inline, NOT exported: OmniParser, both 7B grounders, Ollama with the 3B pair and qwen2.5vl:7b
+PYTHONPATH=src USE_TF=0 .venv/bin/python deploy/gpu/preflight.py --pipeline --grounding \
+    --grounders "ui-tars-1.5-7b[verify=yesno]"
+#   want:  ui-tars-1.5-7b[verify=yesno] OK  ground -> (x, y) ..., yes/no -> real: 'Yes', nonsense: 'No'
+#   a FAIL here means the model does not answer the question with a word: run the
+#   sweep anyway with RUN9_ONLY naming the other columns, and say so in the report
+PYTHONPATH=src USE_TF=0 .venv-legacy/bin/python deploy/gpu/preflight.py --grounders elam-7b
+bash deploy/gpu/run9.sh
+```
+
+Columns are selected with `RUN9_ONLY="nm-elam-7b rw-elam-7b"` (and `OUT_DIR`
+for a rerun into an existing run dir), not `ONLY`: `prefetch.sh` reads `ONLY`
+with the full sweep's column names. Copy the tarball back as usual; `compare`
+reads `nearmiss/` and `heldout/` like `realworld/`, pairs the yes/no row with
+the proxy row as twins, and takes run 8 as the reference:
+
+```bash
+PYTHONPATH=src python -m visual_dom.evaluation.lifecycle.compare \
+    benchmarks/results/gpu-<stamp>.tar.gz \
+    --ref benchmarks/results/gpu-20261108_221541 --out run9.md
+PYTHONPATH=src python -m visual_dom.evaluation.lifecycle.audit \
+    --run benchmarks/results/gpu-<stamp> --benchmark lifecycle-realworld-nearmiss-v1 \
+    --out run9-nearmiss-audit.md       # clustered intervals by screen and application
+```
+
+Give both tools `--out`: their tables contain characters a Windows console
+in cp1252 cannot print.
+
+Reading the yes/no row: UI-TARS has no verdict output and was not trained to
+answer this prompt, so the row is reported beside the proxy row, never
+instead of it. An answer that is neither word is scored as no verdict (wrong
+on a present caption, not a false pass on an absent one) and its text is in
+the step's `detail`.
+
 ### Aria-UI on a 48 GB card: offload mode (experimental)
 
 The clean path for Aria-UI is an 80 GB card. The opt-in alternative is

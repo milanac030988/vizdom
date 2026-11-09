@@ -246,24 +246,26 @@ class UiTarsGrounder(Grounder):
         self._processor = AutoProcessor.from_pretrained(path)
         self._model = Qwen2_5_VLForConditionalGeneration.from_pretrained(path, **kwargs)
 
+    def _chat(self, image_bgr, prompt: str, max_new_tokens: int):
+        """One image + one user turn; returns (reply text, processor inputs)."""
+        self._ensure()
+        pil = self._to_pil(image_bgr)
+        messages = [{"role": "user", "content": [
+            {"type": "image", "image": pil},
+            {"type": "text", "text": prompt},
+        ]}]
+        text = self._processor.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True)
+        inputs = self._processor(text=[text], images=[pil], return_tensors="pt")
+        inputs = inputs.to(self._model.device)
+        out = self._model.generate(**inputs, max_new_tokens=max_new_tokens)
+        reply = self._processor.batch_decode(
+            out[:, inputs["input_ids"].shape[1]:], skip_special_tokens=True)[0]
+        return reply, inputs
+
     def ground(self, image_bgr, instruction):
-        def run():
-            self._ensure()
-            pil = self._to_pil(image_bgr)
-            messages = [{"role": "user", "content": [
-                {"type": "image", "image": pil},
-                {"type": "text",
-                 "text": self.GROUNDING_PROMPT.format(instruction=instruction)},
-            ]}]
-            text = self._processor.apply_chat_template(
-                messages, tokenize=False, add_generation_prompt=True)
-            inputs = self._processor(text=[text], images=[pil], return_tensors="pt")
-            inputs = inputs.to(self._model.device)
-            out = self._model.generate(**inputs, max_new_tokens=64)
-            reply = self._processor.batch_decode(
-                out[:, inputs["input_ids"].shape[1]:], skip_special_tokens=True)[0]
-            return reply, inputs
-        (reply, inputs) = self._timed(run)
+        (reply, inputs) = self._timed(lambda: self._chat(
+            image_bgr, self.GROUNDING_PROMPT.format(instruction=instruction), 64))
         m = self._BOX.search(reply)
         if not m:
             log.info("UI-TARS produced no box for %r: %s", instruction, reply[:120])
@@ -288,6 +290,44 @@ class UiTarsGrounder(Grounder):
         subject = m.group(1) if m else statement
         point = self.ground(image_bgr, f"click the '{subject}' element")
         return "PASSED" if point is not None else "FAILED"
+
+
+class UiTarsYesNoGrounder(UiTarsGrounder):
+    """
+    UI-TARS-1.5-7B with the verify step asked as a question.
+
+    The plain adapter's verdict is a proxy (PASSED iff grounding returned a
+    point) and a grounding model nearly always returns a point, so its false
+    passes can be blamed on the proxy rather than on the model. Here the same
+    weights get the statement itself and one word to answer with. Clicks are
+    unchanged (inherited); the raw answer is kept for re-scoring. Still not a
+    mode the model was trained for - UI-TARS has no verdict output - so the
+    row is reported beside the proxy row, not instead of it.
+    """
+
+    name = "ui-tars-1.5-7b[verify=yesno]"
+
+    VERIFY_PROMPT = (
+        "Look at the screenshot and decide whether this statement is true: "
+        "{statement}. Answer with exactly one word: yes or no.")
+
+    def judge(self, image_bgr, statement):
+        reply, _ = self._timed(lambda: self._chat(
+            image_bgr, self.VERIFY_PROMPT.format(statement=statement), 8))
+        self.last_text = reply
+        verdict = yesno_verdict(reply)
+        if verdict is None:
+            log.info("UI-TARS gave no yes/no for %r: %s", statement, reply[:120])
+        return verdict
+
+
+def yesno_verdict(text):
+    """PASSED / FAILED from the first "yes" or "no" word of an answer ("No.",
+    "The answer is yes"); None when it has neither (a click action, prose)."""
+    m = re.search(r"\b(yes|no)\b", text or "", re.IGNORECASE)
+    if not m:
+        return None
+    return "PASSED" if m.group(1).lower() == "yes" else "FAILED"
 
 
 class AriaUiGrounder(Grounder):
@@ -474,4 +514,5 @@ class AriaUiGrounder(Grounder):
         return "PASSED" if point is not None else "FAILED"
 
 
-GROUNDERS = {cls.name: cls for cls in (ElamGrounder, UiTarsGrounder, AriaUiGrounder)}
+GROUNDERS = {cls.name: cls for cls in (ElamGrounder, UiTarsGrounder, UiTarsYesNoGrounder,
+                                       AriaUiGrounder)}

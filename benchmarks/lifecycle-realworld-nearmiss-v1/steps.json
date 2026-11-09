@@ -1,0 +1,2343 @@
+{
+ "benchmark": "lifecycle-realworld-nearmiss-v1",
+ "source": "lifecycle-realworld-v1",
+ "seed": 42,
+ "negative_kinds": [
+  "sibling"
+ ],
+ "states": [
+  {
+   "id": "7zip__about",
+   "image": "data/realworld/images/7zip__about.png",
+   "gt": "data/realworld/labels/7zip__about.json",
+   "image_size": {
+    "width": 257,
+    "height": 282
+   }
+  },
+  {
+   "id": "7zip__main",
+   "image": "data/realworld/images/7zip__main.png",
+   "gt": "data/realworld/labels/7zip__main.json",
+   "image_size": {
+    "width": 859,
+    "height": 652
+   }
+  },
+  {
+   "id": "7zip__options-7zip",
+   "image": "data/realworld/images/7zip__options-7zip.png",
+   "gt": "data/realworld/labels/7zip__options-7zip.json",
+   "image_size": {
+    "width": 526,
+    "height": 564
+   }
+  },
+  {
+   "id": "7zip__options-editor",
+   "image": "data/realworld/images/7zip__options-editor.png",
+   "gt": "data/realworld/labels/7zip__options-editor.json",
+   "image_size": {
+    "width": 526,
+    "height": 564
+   }
+  },
+  {
+   "id": "7zip__options-folders",
+   "image": "data/realworld/images/7zip__options-folders.png",
+   "gt": "data/realworld/labels/7zip__options-folders.json",
+   "image_size": {
+    "width": 526,
+    "height": 564
+   }
+  },
+  {
+   "id": "7zip__options-settings",
+   "image": "data/realworld/images/7zip__options-settings.png",
+   "gt": "data/realworld/labels/7zip__options-settings.json",
+   "image_size": {
+    "width": 526,
+    "height": 564
+   }
+  },
+  {
+   "id": "notepadpp__find",
+   "image": "data/realworld/images/notepadpp__find.png",
+   "gt": "data/realworld/labels/notepadpp__find.json",
+   "image_size": {
+    "width": 721,
+    "height": 434
+   }
+  },
+  {
+   "id": "notepadpp__main",
+   "image": "data/realworld/images/notepadpp__main.png",
+   "gt": "data/realworld/labels/notepadpp__main.json",
+   "image_size": {
+    "width": 1518,
+    "height": 806
+   }
+  },
+  {
+   "id": "notepadpp__prefs-editing",
+   "image": "data/realworld/images/notepadpp__prefs-editing.png",
+   "gt": "data/realworld/labels/notepadpp__prefs-editing.json",
+   "image_size": {
+    "width": 1017,
+    "height": 509
+   }
+  },
+  {
+   "id": "notepadpp__prefs-general",
+   "image": "data/realworld/images/notepadpp__prefs-general.png",
+   "gt": "data/realworld/labels/notepadpp__prefs-general.json",
+   "image_size": {
+    "width": 1017,
+    "height": 509
+   }
+  },
+  {
+   "id": "notepadpp__prefs-new-document",
+   "image": "data/realworld/images/notepadpp__prefs-new-document.png",
+   "gt": "data/realworld/labels/notepadpp__prefs-new-document.json",
+   "image_size": {
+    "width": 1017,
+    "height": 509
+   }
+  },
+  {
+   "id": "notepadpp__replace",
+   "image": "data/realworld/images/notepadpp__replace.png",
+   "gt": "data/realworld/labels/notepadpp__replace.json",
+   "image_size": {
+    "width": 721,
+    "height": 434
+   }
+  },
+  {
+   "id": "putty__connection-data",
+   "image": "data/realworld/images/putty__connection-data.png",
+   "gt": "data/realworld/labels/putty__connection-data.json",
+   "image_size": {
+    "width": 602,
+    "height": 543
+   }
+  },
+  {
+   "id": "putty__session",
+   "image": "data/realworld/images/putty__session.png",
+   "gt": "data/realworld/labels/putty__session.json",
+   "image_size": {
+    "width": 602,
+    "height": 543
+   }
+  },
+  {
+   "id": "putty__ssh-auth",
+   "image": "data/realworld/images/putty__ssh-auth.png",
+   "gt": "data/realworld/labels/putty__ssh-auth.json",
+   "image_size": {
+    "width": 602,
+    "height": 543
+   }
+  },
+  {
+   "id": "putty__terminal",
+   "image": "data/realworld/images/putty__terminal.png",
+   "gt": "data/realworld/labels/putty__terminal.json",
+   "image_size": {
+    "width": 602,
+    "height": 543
+   }
+  },
+  {
+   "id": "putty__window-appearance",
+   "image": "data/realworld/images/putty__window-appearance.png",
+   "gt": "data/realworld/labels/putty__window-appearance.json",
+   "image_size": {
+    "width": 602,
+    "height": 543
+   }
+  },
+  {
+   "id": "texstudio__config-build",
+   "image": "data/realworld/images/texstudio__config-build.png",
+   "gt": "data/realworld/labels/texstudio__config-build.json",
+   "image_size": {
+    "width": 1380,
+    "height": 817
+   }
+  },
+  {
+   "id": "texstudio__config-completion",
+   "image": "data/realworld/images/texstudio__config-completion.png",
+   "gt": "data/realworld/labels/texstudio__config-completion.json",
+   "image_size": {
+    "width": 1380,
+    "height": 817
+   }
+  },
+  {
+   "id": "texstudio__config-editor",
+   "image": "data/realworld/images/texstudio__config-editor.png",
+   "gt": "data/realworld/labels/texstudio__config-editor.json",
+   "image_size": {
+    "width": 1380,
+    "height": 817
+   }
+  },
+  {
+   "id": "texstudio__config-general",
+   "image": "data/realworld/images/texstudio__config-general.png",
+   "gt": "data/realworld/labels/texstudio__config-general.json",
+   "image_size": {
+    "width": 1380,
+    "height": 817
+   }
+  },
+  {
+   "id": "texstudio__main",
+   "image": "data/realworld/images/texstudio__main.png",
+   "gt": "data/realworld/labels/texstudio__main.json",
+   "image_size": {
+    "width": 960,
+    "height": 815
+   }
+  },
+  {
+   "id": "tortoisegit__colors1",
+   "image": "data/realworld/images/tortoisegit__colors1.png",
+   "gt": "data/realworld/labels/tortoisegit__colors1.json",
+   "image_size": {
+    "width": 905,
+    "height": 830
+   }
+  },
+  {
+   "id": "tortoisegit__context-menu",
+   "image": "data/realworld/images/tortoisegit__context-menu.png",
+   "gt": "data/realworld/labels/tortoisegit__context-menu.json",
+   "image_size": {
+    "width": 905,
+    "height": 830
+   }
+  },
+  {
+   "id": "tortoisegit__dialogs1",
+   "image": "data/realworld/images/tortoisegit__dialogs1.png",
+   "gt": "data/realworld/labels/tortoisegit__dialogs1.json",
+   "image_size": {
+    "width": 905,
+    "height": 830
+   }
+  },
+  {
+   "id": "tortoisegit__general",
+   "image": "data/realworld/images/tortoisegit__general.png",
+   "gt": "data/realworld/labels/tortoisegit__general.json",
+   "image_size": {
+    "width": 905,
+    "height": 830
+   }
+  },
+  {
+   "id": "tortoisegit__icon-overlays",
+   "image": "data/realworld/images/tortoisegit__icon-overlays.png",
+   "gt": "data/realworld/labels/tortoisegit__icon-overlays.json",
+   "image_size": {
+    "width": 905,
+    "height": 830
+   }
+  },
+  {
+   "id": "vscode__editor",
+   "image": "data/realworld/images/vscode__editor.png",
+   "gt": "data/realworld/labels/vscode__editor.json",
+   "image_size": {
+    "width": 1484,
+    "height": 872
+   }
+  },
+  {
+   "id": "vscode__extensions",
+   "image": "data/realworld/images/vscode__extensions.png",
+   "gt": "data/realworld/labels/vscode__extensions.json",
+   "image_size": {
+    "width": 1484,
+    "height": 872
+   }
+  },
+  {
+   "id": "vscode__search",
+   "image": "data/realworld/images/vscode__search.png",
+   "gt": "data/realworld/labels/vscode__search.json",
+   "image_size": {
+    "width": 1484,
+    "height": 872
+   }
+  },
+  {
+   "id": "vscode__source-control",
+   "image": "data/realworld/images/vscode__source-control.png",
+   "gt": "data/realworld/labels/vscode__source-control.json",
+   "image_size": {
+    "width": 1484,
+    "height": 872
+   }
+  },
+  {
+   "id": "winsettings__accessibility-text",
+   "image": "data/realworld/images/winsettings__accessibility-text.png",
+   "gt": "data/realworld/labels/winsettings__accessibility-text.json",
+   "image_size": {
+    "width": 744,
+    "height": 892
+   }
+  },
+  {
+   "id": "winsettings__display",
+   "image": "data/realworld/images/winsettings__display.png",
+   "gt": "data/realworld/labels/winsettings__display.json",
+   "image_size": {
+    "width": 744,
+    "height": 892
+   }
+  },
+  {
+   "id": "winsettings__mouse",
+   "image": "data/realworld/images/winsettings__mouse.png",
+   "gt": "data/realworld/labels/winsettings__mouse.json",
+   "image_size": {
+    "width": 744,
+    "height": 892
+   }
+  },
+  {
+   "id": "winsettings__power",
+   "image": "data/realworld/images/winsettings__power.png",
+   "gt": "data/realworld/labels/winsettings__power.json",
+   "image_size": {
+    "width": 744,
+    "height": 892
+   }
+  }
+ ],
+ "steps": [
+  {
+   "id": "7zip__about/near-miss/7-Zip",
+   "state": "7zip__about",
+   "kind": "verify",
+   "locator": "text=\"7-Zip\"",
+   "instruction": "the '7-Zip' tab is visible",
+   "description": "7-Zip tab",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__main/near-miss/Add_to_<Archive>.7z",
+   "state": "7zip__main",
+   "kind": "verify",
+   "locator": "text=\"Add to <Archive>.7z\"",
+   "instruction": "the 'Add to <Archive>.7z' list item is visible",
+   "description": "Add to <Archive>.7z list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__main/near-miss/Add_to_<Archive>.zip",
+   "state": "7zip__main",
+   "kind": "verify",
+   "locator": "text=\"Add to <Archive>.zip\"",
+   "instruction": "the 'Add to <Archive>.zip' list item is visible",
+   "description": "Add to <Archive>.zip list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__main/near-miss/Add_to_archive...",
+   "state": "7zip__main",
+   "kind": "verify",
+   "locator": "text=\"Add to archive...\"",
+   "instruction": "the 'Add to archive...' list item is visible",
+   "description": "Add to archive... list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__main/near-miss/Extract_Here",
+   "state": "7zip__main",
+   "kind": "verify",
+   "locator": "text=\"Extract Here\"",
+   "instruction": "the 'Extract Here' list item is visible",
+   "description": "Extract Here list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__main/near-miss/Extract_files...",
+   "state": "7zip__main",
+   "kind": "verify",
+   "locator": "text=\"Extract files...\"",
+   "instruction": "the 'Extract files...' list item is visible",
+   "description": "Extract files... list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__main/near-miss/Extract_to_<Folder>",
+   "state": "7zip__main",
+   "kind": "verify",
+   "locator": "text=\"Extract to <Folder>\"",
+   "instruction": "the 'Extract to <Folder>' list item is visible",
+   "description": "Extract to <Folder> list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__main/near-miss/Open_archive",
+   "state": "7zip__main",
+   "kind": "verify",
+   "locator": "text=\"Open archive\"",
+   "instruction": "the 'Open archive' list item is visible",
+   "description": "Open archive list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__main/near-miss/Show_real_file_icons",
+   "state": "7zip__main",
+   "kind": "verify",
+   "locator": "text=\"Show real file icons\"",
+   "instruction": "the 'Show real file icons' checkbox is visible",
+   "description": "Show real file icons checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__main/near-miss/Show_system_menu",
+   "state": "7zip__main",
+   "kind": "verify",
+   "locator": "text=\"Show system menu\"",
+   "instruction": "the 'Show system menu' checkbox is visible",
+   "description": "Show system menu checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__main/near-miss/Single-click_to_open_an_item",
+   "state": "7zip__main",
+   "kind": "verify",
+   "locator": "text=\"Single-click to open an item\"",
+   "instruction": "the 'Single-click to open an item' checkbox is visible",
+   "description": "Single-click to open an item checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__main/near-miss/System_temp_folder",
+   "state": "7zip__main",
+   "kind": "verify",
+   "locator": "text=\"System temp folder\"",
+   "instruction": "the 'System temp folder' radio button is visible",
+   "description": "System temp folder radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__main/near-miss/Test_archive",
+   "state": "7zip__main",
+   "kind": "verify",
+   "locator": "text=\"Test archive\"",
+   "instruction": "the 'Test archive' list item is visible",
+   "description": "Test archive list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-7zip/near-miss/Add",
+   "state": "7zip__options-7zip",
+   "kind": "verify",
+   "locator": "text=\"Add\"",
+   "instruction": "the 'Add' button is visible",
+   "description": "Add button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-7zip/near-miss/Extract",
+   "state": "7zip__options-7zip",
+   "kind": "verify",
+   "locator": "text=\"Extract\"",
+   "instruction": "the 'Extract' button is visible",
+   "description": "Extract button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-7zip/near-miss/Show_system_menu",
+   "state": "7zip__options-7zip",
+   "kind": "verify",
+   "locator": "text=\"Show system menu\"",
+   "instruction": "the 'Show system menu' checkbox is visible",
+   "description": "Show system menu checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-7zip/near-miss/Single-click_to_open_an_item",
+   "state": "7zip__options-7zip",
+   "kind": "verify",
+   "locator": "text=\"Single-click to open an item\"",
+   "instruction": "the 'Single-click to open an item' checkbox is visible",
+   "description": "Single-click to open an item checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-7zip/near-miss/System_temp_folder",
+   "state": "7zip__options-7zip",
+   "kind": "verify",
+   "locator": "text=\"System temp folder\"",
+   "instruction": "the 'System temp folder' radio button is visible",
+   "description": "System temp folder radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-7zip/near-miss/Test",
+   "state": "7zip__options-7zip",
+   "kind": "verify",
+   "locator": "text=\"Test\"",
+   "instruction": "the 'Test' button is visible",
+   "description": "Test button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-7zip/near-miss/www.7-zip.org",
+   "state": "7zip__options-7zip",
+   "kind": "verify",
+   "locator": "text=\"www.7-zip.org\"",
+   "instruction": "the 'www.7-zip.org' button is visible",
+   "description": "www.7-zip.org button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-editor/near-miss/7-Zip_>_CRC_SHA_>",
+   "state": "7zip__options-editor",
+   "kind": "verify",
+   "locator": "text=\"7-Zip > CRC SHA >\"",
+   "instruction": "the '7-Zip > CRC SHA >' list item is visible",
+   "description": "7-Zip > CRC SHA > list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-editor/near-miss/Integrate_7-Zip_to_shell_context_menu",
+   "state": "7zip__options-editor",
+   "kind": "verify",
+   "locator": "text=\"Integrate 7-Zip to shell context menu\"",
+   "instruction": "the 'Integrate 7-Zip to shell context menu' checkbox is visible",
+   "description": "Integrate 7-Zip to shell context menu checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-editor/near-miss/Integrate_7-Zip_to_shell_context_menu_(32-bit)",
+   "state": "7zip__options-editor",
+   "kind": "verify",
+   "locator": "text=\"Integrate 7-Zip to shell context menu (32-bit)\"",
+   "instruction": "the 'Integrate 7-Zip to shell context menu (32-bit)' checkbox is visible",
+   "description": "Integrate 7-Zip to shell context menu (32-bit) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-editor/near-miss/Show_system_menu",
+   "state": "7zip__options-editor",
+   "kind": "verify",
+   "locator": "text=\"Show system menu\"",
+   "instruction": "the 'Show system menu' checkbox is visible",
+   "description": "Show system menu checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-editor/near-miss/System_temp_folder",
+   "state": "7zip__options-editor",
+   "kind": "verify",
+   "locator": "text=\"System temp folder\"",
+   "instruction": "the 'System temp folder' radio button is visible",
+   "description": "System temp folder radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-editor/near-miss/www.7-zip.org",
+   "state": "7zip__options-editor",
+   "kind": "verify",
+   "locator": "text=\"www.7-zip.org\"",
+   "instruction": "the 'www.7-zip.org' button is visible",
+   "description": "www.7-zip.org button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-folders/near-miss/7-Zip_>_CRC_SHA_>",
+   "state": "7zip__options-folders",
+   "kind": "verify",
+   "locator": "text=\"7-Zip > CRC SHA >\"",
+   "instruction": "the '7-Zip > CRC SHA >' list item is visible",
+   "description": "7-Zip > CRC SHA > list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-folders/near-miss/Integrate_7-Zip_to_shell_context_menu",
+   "state": "7zip__options-folders",
+   "kind": "verify",
+   "locator": "text=\"Integrate 7-Zip to shell context menu\"",
+   "instruction": "the 'Integrate 7-Zip to shell context menu' checkbox is visible",
+   "description": "Integrate 7-Zip to shell context menu checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-folders/near-miss/Integrate_7-Zip_to_shell_context_menu_(32-bit)",
+   "state": "7zip__options-folders",
+   "kind": "verify",
+   "locator": "text=\"Integrate 7-Zip to shell context menu (32-bit)\"",
+   "instruction": "the 'Integrate 7-Zip to shell context menu (32-bit)' checkbox is visible",
+   "description": "Integrate 7-Zip to shell context menu (32-bit) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-folders/near-miss/Show_system_menu",
+   "state": "7zip__options-folders",
+   "kind": "verify",
+   "locator": "text=\"Show system menu\"",
+   "instruction": "the 'Show system menu' checkbox is visible",
+   "description": "Show system menu checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-folders/near-miss/www.7-zip.org",
+   "state": "7zip__options-folders",
+   "kind": "verify",
+   "locator": "text=\"www.7-zip.org\"",
+   "instruction": "the 'www.7-zip.org' button is visible",
+   "description": "www.7-zip.org button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-settings/near-miss/7-Zip_>_CRC_SHA_>",
+   "state": "7zip__options-settings",
+   "kind": "verify",
+   "locator": "text=\"7-Zip > CRC SHA >\"",
+   "instruction": "the '7-Zip > CRC SHA >' list item is visible",
+   "description": "7-Zip > CRC SHA > list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-settings/near-miss/File",
+   "state": "7zip__options-settings",
+   "kind": "verify",
+   "locator": "text=\"File\"",
+   "instruction": "the 'File' menu item is visible",
+   "description": "File menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-settings/near-miss/Integrate_7-Zip_to_shell_context_menu",
+   "state": "7zip__options-settings",
+   "kind": "verify",
+   "locator": "text=\"Integrate 7-Zip to shell context menu\"",
+   "instruction": "the 'Integrate 7-Zip to shell context menu' checkbox is visible",
+   "description": "Integrate 7-Zip to shell context menu checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-settings/near-miss/Integrate_7-Zip_to_shell_context_menu_(32-bit)",
+   "state": "7zip__options-settings",
+   "kind": "verify",
+   "locator": "text=\"Integrate 7-Zip to shell context menu (32-bit)\"",
+   "instruction": "the 'Integrate 7-Zip to shell context menu (32-bit)' checkbox is visible",
+   "description": "Integrate 7-Zip to shell context menu (32-bit) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-settings/near-miss/System_temp_folder",
+   "state": "7zip__options-settings",
+   "kind": "verify",
+   "locator": "text=\"System temp folder\"",
+   "instruction": "the 'System temp folder' radio button is visible",
+   "description": "System temp folder radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "7zip__options-settings/near-miss/www.7-zip.org",
+   "state": "7zip__options-settings",
+   "kind": "verify",
+   "locator": "text=\"www.7-zip.org\"",
+   "instruction": "the 'www.7-zip.org' button is visible",
+   "description": "www.7-zip.org button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__find/near-miss/Always_open_a_new_document_in_addition_at_startup",
+   "state": "notepadpp__find",
+   "kind": "verify",
+   "locator": "text=\"Always open a new document in addition at startup\"",
+   "instruction": "the 'Always open a new document in addition at startup' checkbox is visible",
+   "description": "Always open a new document in addition at startup checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__find/near-miss/Replace_All",
+   "state": "notepadpp__find",
+   "kind": "verify",
+   "locator": "text=\"Replace All\"",
+   "instruction": "the 'Replace All' button is visible",
+   "description": "Replace All button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__find/near-miss/Replace_All_in_All_Opened_Documents",
+   "state": "notepadpp__find",
+   "kind": "verify",
+   "locator": "text=\"Replace All in All Opened Documents\"",
+   "instruction": "the 'Replace All in All Opened Documents' button is visible",
+   "description": "Replace All in All Opened Documents button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__find/near-miss/Search",
+   "state": "notepadpp__find",
+   "kind": "verify",
+   "locator": "text=\"Search\"",
+   "instruction": "the 'Search' menu item is visible",
+   "description": "Search menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__find/near-miss/Tab_Bar",
+   "state": "notepadpp__find",
+   "kind": "verify",
+   "locator": "text=\"Tab Bar\"",
+   "instruction": "the 'Tab Bar' list item is visible",
+   "description": "Tab Bar list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__find/near-miss/Use_the_first_line_of_document_as_untitled_tab_name",
+   "state": "notepadpp__find",
+   "kind": "verify",
+   "locator": "text=\"Use the first line of document as untitled tab name\"",
+   "instruction": "the 'Use the first line of document as untitled tab name' checkbox is visible",
+   "description": "Use the first line of document as untitled tab name checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__main/near-miss/File_Association",
+   "state": "notepadpp__main",
+   "kind": "verify",
+   "locator": "text=\"File Association\"",
+   "instruction": "the 'File Association' list item is visible",
+   "description": "File Association list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__main/near-miss/Normal",
+   "state": "notepadpp__main",
+   "kind": "verify",
+   "locator": "text=\"Normal\"",
+   "instruction": "the 'Normal' radio button is visible",
+   "description": "Normal radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__main/near-miss/Search_Engine",
+   "state": "notepadpp__main",
+   "kind": "verify",
+   "locator": "text=\"Search Engine\"",
+   "instruction": "the 'Search Engine' list item is visible",
+   "description": "Search Engine list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__main/near-miss/Tab_Bar",
+   "state": "notepadpp__main",
+   "kind": "verify",
+   "locator": "text=\"Tab Bar\"",
+   "instruction": "the 'Tab Bar' list item is visible",
+   "description": "Tab Bar list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__main/near-miss/UTF-8_with_BOM",
+   "state": "notepadpp__main",
+   "kind": "verify",
+   "locator": "text=\"UTF-8 with BOM\"",
+   "instruction": "the 'UTF-8 with BOM' radio button is visible",
+   "description": "UTF-8 with BOM radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__main/near-miss/Use_the_first_line_of_document_as_untitled_tab_name",
+   "state": "notepadpp__main",
+   "kind": "verify",
+   "locator": "text=\"Use the first line of document as untitled tab name\"",
+   "instruction": "the 'Use the first line of document as untitled tab name' checkbox is visible",
+   "description": "Use the first line of document as untitled tab name checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__prefs-editing/near-miss/Always_open_a_new_document_in_addition_at_startup",
+   "state": "notepadpp__prefs-editing",
+   "kind": "verify",
+   "locator": "text=\"Always open a new document in addition at startup\"",
+   "instruction": "the 'Always open a new document in addition at startup' checkbox is visible",
+   "description": "Always open a new document in addition at startup checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__prefs-editing/near-miss/File",
+   "state": "notepadpp__prefs-editing",
+   "kind": "verify",
+   "locator": "text=\"File\"",
+   "instruction": "the 'File' menu item is visible",
+   "description": "File menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__prefs-editing/near-miss/Search",
+   "state": "notepadpp__prefs-editing",
+   "kind": "verify",
+   "locator": "text=\"Search\"",
+   "instruction": "the 'Search' menu item is visible",
+   "description": "Search menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__prefs-editing/near-miss/Settings",
+   "state": "notepadpp__prefs-editing",
+   "kind": "verify",
+   "locator": "text=\"Settings\"",
+   "instruction": "the 'Settings' menu item is visible",
+   "description": "Settings menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__prefs-general/near-miss/Always_open_a_new_document_in_addition_at_startup",
+   "state": "notepadpp__prefs-general",
+   "kind": "verify",
+   "locator": "text=\"Always open a new document in addition at startup\"",
+   "instruction": "the 'Always open a new document in addition at startup' checkbox is visible",
+   "description": "Always open a new document in addition at startup checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__prefs-general/near-miss/Default",
+   "state": "notepadpp__prefs-general",
+   "kind": "verify",
+   "locator": "text=\"Default\"",
+   "instruction": "the 'Default' radio button is visible",
+   "description": "Default radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__prefs-general/near-miss/File",
+   "state": "notepadpp__prefs-general",
+   "kind": "verify",
+   "locator": "text=\"File\"",
+   "instruction": "the 'File' menu item is visible",
+   "description": "File menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__prefs-general/near-miss/Search",
+   "state": "notepadpp__prefs-general",
+   "kind": "verify",
+   "locator": "text=\"Search\"",
+   "instruction": "the 'Search' menu item is visible",
+   "description": "Search menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__prefs-new-document/near-miss/Always",
+   "state": "notepadpp__prefs-new-document",
+   "kind": "verify",
+   "locator": "text=\"Always\"",
+   "instruction": "the 'Always' radio button is visible",
+   "description": "Always radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__prefs-new-document/near-miss/Default",
+   "state": "notepadpp__prefs-new-document",
+   "kind": "verify",
+   "locator": "text=\"Default\"",
+   "instruction": "the 'Default' radio button is visible",
+   "description": "Default radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__prefs-new-document/near-miss/File",
+   "state": "notepadpp__prefs-new-document",
+   "kind": "verify",
+   "locator": "text=\"File\"",
+   "instruction": "the 'File' menu item is visible",
+   "description": "File menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__prefs-new-document/near-miss/Search",
+   "state": "notepadpp__prefs-new-document",
+   "kind": "verify",
+   "locator": "text=\"Search\"",
+   "instruction": "the 'Search' menu item is visible",
+   "description": "Search menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__replace/near-miss/Always_open_a_new_document_in_addition_at_startup",
+   "state": "notepadpp__replace",
+   "kind": "verify",
+   "locator": "text=\"Always open a new document in addition at startup\"",
+   "instruction": "the 'Always open a new document in addition at startup' checkbox is visible",
+   "description": "Always open a new document in addition at startup checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__replace/near-miss/Find_All_in_All_Opened_Documents",
+   "state": "notepadpp__replace",
+   "kind": "verify",
+   "locator": "text=\"Find All in All Opened Documents\"",
+   "instruction": "the 'Find All in All Opened Documents' button is visible",
+   "description": "Find All in All Opened Documents button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__replace/near-miss/Find_All_in_Current_Document",
+   "state": "notepadpp__replace",
+   "kind": "verify",
+   "locator": "text=\"Find All in Current Document\"",
+   "instruction": "the 'Find All in Current Document' button is visible",
+   "description": "Find All in Current Document button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__replace/near-miss/Search",
+   "state": "notepadpp__replace",
+   "kind": "verify",
+   "locator": "text=\"Search\"",
+   "instruction": "the 'Search' menu item is visible",
+   "description": "Search menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__replace/near-miss/Tab_Bar",
+   "state": "notepadpp__replace",
+   "kind": "verify",
+   "locator": "text=\"Tab Bar\"",
+   "instruction": "the 'Tab Bar' list item is visible",
+   "description": "Tab Bar list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "notepadpp__replace/near-miss/Use_the_first_line_of_document_as_untitled_tab_name",
+   "state": "notepadpp__replace",
+   "kind": "verify",
+   "locator": "text=\"Use the first line of document as untitled tab name\"",
+   "instruction": "the 'Use the first line of document as untitled tab name' checkbox is visible",
+   "description": "Use the first line of document as untitled tab name checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__connection-data/near-miss/Allow_attempted_changes_of_username_in_SSH-2",
+   "state": "putty__connection-data",
+   "kind": "verify",
+   "locator": "text=\"Allow attempted changes of username in SSH-2\"",
+   "instruction": "the 'Allow attempted changes of username in SSH-2' checkbox is visible",
+   "description": "Allow attempted changes of username in SSH-2 checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__connection-data/near-miss/Allow_selection_of_variable-pitch_fonts",
+   "state": "putty__connection-data",
+   "kind": "verify",
+   "locator": "text=\"Allow selection of variable-pitch fonts\"",
+   "instruction": "the 'Allow selection of variable-pitch fonts' checkbox is visible",
+   "description": "Allow selection of variable-pitch fonts checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__connection-data/near-miss/Attempt_\"keyboard-interactive\"_auth_(SSH-2)",
+   "state": "putty__connection-data",
+   "kind": "verify",
+   "locator": "text=\"Attempt \"keyboard-interactive\" auth (SSH-2)\"",
+   "instruction": "the 'Attempt \"keyboard-interactive\" auth (SSH-2)' checkbox is visible",
+   "description": "Attempt \"keyboard-interactive\" auth (SSH-2) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__connection-data/near-miss/Attempt_TIS_or_CryptoCard_auth_(SSH-1)",
+   "state": "putty__connection-data",
+   "kind": "verify",
+   "locator": "text=\"Attempt TIS or CryptoCard auth (SSH-1)\"",
+   "instruction": "the 'Attempt TIS or CryptoCard auth (SSH-1)' checkbox is visible",
+   "description": "Attempt TIS or CryptoCard auth (SSH-1) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__connection-data/near-miss/Bypass_authentication_entirely_(SSH-2_only)",
+   "state": "putty__connection-data",
+   "kind": "verify",
+   "locator": "text=\"Bypass authentication entirely (SSH-2 only)\"",
+   "instruction": "the 'Bypass authentication entirely (SSH-2 only)' checkbox is visible",
+   "description": "Bypass authentication entirely (SSH-2 only) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__connection-data/near-miss/Display_pre-authentication_banner_(SSH-2_only)",
+   "state": "putty__connection-data",
+   "kind": "verify",
+   "locator": "text=\"Display pre-authentication banner (SSH-2 only)\"",
+   "instruction": "the 'Display pre-authentication banner (SSH-2 only)' checkbox is visible",
+   "description": "Display pre-authentication banner (SSH-2 only) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__connection-data/near-miss/Hide_mouse_pointer_when_typing_in_window",
+   "state": "putty__connection-data",
+   "kind": "verify",
+   "locator": "text=\"Hide mouse pointer when typing in window\"",
+   "instruction": "the 'Hide mouse pointer when typing in window' checkbox is visible",
+   "description": "Hide mouse pointer when typing in window checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__session/near-miss/Allow_attempted_changes_of_username_in_SSH-2",
+   "state": "putty__session",
+   "kind": "verify",
+   "locator": "text=\"Allow attempted changes of username in SSH-2\"",
+   "instruction": "the 'Allow attempted changes of username in SSH-2' checkbox is visible",
+   "description": "Allow attempted changes of username in SSH-2 checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__session/near-miss/Allow_selection_of_variable-pitch_fonts",
+   "state": "putty__session",
+   "kind": "verify",
+   "locator": "text=\"Allow selection of variable-pitch fonts\"",
+   "instruction": "the 'Allow selection of variable-pitch fonts' checkbox is visible",
+   "description": "Allow selection of variable-pitch fonts checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__session/near-miss/Attempt_\"keyboard-interactive\"_auth_(SSH-2)",
+   "state": "putty__session",
+   "kind": "verify",
+   "locator": "text=\"Attempt \"keyboard-interactive\" auth (SSH-2)\"",
+   "instruction": "the 'Attempt \"keyboard-interactive\" auth (SSH-2)' checkbox is visible",
+   "description": "Attempt \"keyboard-interactive\" auth (SSH-2) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__session/near-miss/Attempt_TIS_or_CryptoCard_auth_(SSH-1)",
+   "state": "putty__session",
+   "kind": "verify",
+   "locator": "text=\"Attempt TIS or CryptoCard auth (SSH-1)\"",
+   "instruction": "the 'Attempt TIS or CryptoCard auth (SSH-1)' checkbox is visible",
+   "description": "Attempt TIS or CryptoCard auth (SSH-1) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__session/near-miss/Bypass_authentication_entirely_(SSH-2_only)",
+   "state": "putty__session",
+   "kind": "verify",
+   "locator": "text=\"Bypass authentication entirely (SSH-2 only)\"",
+   "instruction": "the 'Bypass authentication entirely (SSH-2 only)' checkbox is visible",
+   "description": "Bypass authentication entirely (SSH-2 only) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__session/near-miss/Default",
+   "state": "putty__session",
+   "kind": "verify",
+   "locator": "text=\"Default\"",
+   "instruction": "the 'Default' radio button is visible",
+   "description": "Default radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__session/near-miss/Display_pre-authentication_banner_(SSH-2_only)",
+   "state": "putty__session",
+   "kind": "verify",
+   "locator": "text=\"Display pre-authentication banner (SSH-2 only)\"",
+   "instruction": "the 'Display pre-authentication banner (SSH-2 only)' checkbox is visible",
+   "description": "Display pre-authentication banner (SSH-2 only) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__session/near-miss/Hide_mouse_pointer_when_typing_in_window",
+   "state": "putty__session",
+   "kind": "verify",
+   "locator": "text=\"Hide mouse pointer when typing in window\"",
+   "instruction": "the 'Hide mouse pointer when typing in window' checkbox is visible",
+   "description": "Hide mouse pointer when typing in window checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__session/near-miss/Use_system_username_(ugc1hc)",
+   "state": "putty__session",
+   "kind": "verify",
+   "locator": "text=\"Use system username (ugc1hc)\"",
+   "instruction": "the 'Use system username (ugc1hc)' radio button is visible",
+   "description": "Use system username (ugc1hc) radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__ssh-auth/near-miss/Allow_selection_of_variable-pitch_fonts",
+   "state": "putty__ssh-auth",
+   "kind": "verify",
+   "locator": "text=\"Allow selection of variable-pitch fonts\"",
+   "instruction": "the 'Allow selection of variable-pitch fonts' checkbox is visible",
+   "description": "Allow selection of variable-pitch fonts checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__ssh-auth/near-miss/Hide_mouse_pointer_when_typing_in_window",
+   "state": "putty__ssh-auth",
+   "kind": "verify",
+   "locator": "text=\"Hide mouse pointer when typing in window\"",
+   "instruction": "the 'Hide mouse pointer when typing in window' checkbox is visible",
+   "description": "Hide mouse pointer when typing in window checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__ssh-auth/near-miss/Other:",
+   "state": "putty__ssh-auth",
+   "kind": "verify",
+   "locator": "text=\"Other:\"",
+   "instruction": "the 'Other:' radio button is visible",
+   "description": "Other: radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__ssh-auth/near-miss/Use_system_username_(ugc1hc)",
+   "state": "putty__ssh-auth",
+   "kind": "verify",
+   "locator": "text=\"Use system username (ugc1hc)\"",
+   "instruction": "the 'Use system username (ugc1hc)' radio button is visible",
+   "description": "Use system username (ugc1hc) radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__ssh-auth/near-miss/Vertical_line",
+   "state": "putty__ssh-auth",
+   "kind": "verify",
+   "locator": "text=\"Vertical line\"",
+   "instruction": "the 'Vertical line' radio button is visible",
+   "description": "Vertical line radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__terminal/near-miss/Allow_attempted_changes_of_username_in_SSH-2",
+   "state": "putty__terminal",
+   "kind": "verify",
+   "locator": "text=\"Allow attempted changes of username in SSH-2\"",
+   "instruction": "the 'Allow attempted changes of username in SSH-2' checkbox is visible",
+   "description": "Allow attempted changes of username in SSH-2 checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__terminal/near-miss/Allow_selection_of_variable-pitch_fonts",
+   "state": "putty__terminal",
+   "kind": "verify",
+   "locator": "text=\"Allow selection of variable-pitch fonts\"",
+   "instruction": "the 'Allow selection of variable-pitch fonts' checkbox is visible",
+   "description": "Allow selection of variable-pitch fonts checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__terminal/near-miss/Attempt_\"keyboard-interactive\"_auth_(SSH-2)",
+   "state": "putty__terminal",
+   "kind": "verify",
+   "locator": "text=\"Attempt \"keyboard-interactive\" auth (SSH-2)\"",
+   "instruction": "the 'Attempt \"keyboard-interactive\" auth (SSH-2)' checkbox is visible",
+   "description": "Attempt \"keyboard-interactive\" auth (SSH-2) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__terminal/near-miss/Attempt_TIS_or_CryptoCard_auth_(SSH-1)",
+   "state": "putty__terminal",
+   "kind": "verify",
+   "locator": "text=\"Attempt TIS or CryptoCard auth (SSH-1)\"",
+   "instruction": "the 'Attempt TIS or CryptoCard auth (SSH-1)' checkbox is visible",
+   "description": "Attempt TIS or CryptoCard auth (SSH-1) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__terminal/near-miss/Bypass_authentication_entirely_(SSH-2_only)",
+   "state": "putty__terminal",
+   "kind": "verify",
+   "locator": "text=\"Bypass authentication entirely (SSH-2 only)\"",
+   "instruction": "the 'Bypass authentication entirely (SSH-2 only)' checkbox is visible",
+   "description": "Bypass authentication entirely (SSH-2 only) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__terminal/near-miss/Display_pre-authentication_banner_(SSH-2_only)",
+   "state": "putty__terminal",
+   "kind": "verify",
+   "locator": "text=\"Display pre-authentication banner (SSH-2 only)\"",
+   "instruction": "the 'Display pre-authentication banner (SSH-2 only)' checkbox is visible",
+   "description": "Display pre-authentication banner (SSH-2 only) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__terminal/near-miss/Hide_mouse_pointer_when_typing_in_window",
+   "state": "putty__terminal",
+   "kind": "verify",
+   "locator": "text=\"Hide mouse pointer when typing in window\"",
+   "instruction": "the 'Hide mouse pointer when typing in window' checkbox is visible",
+   "description": "Hide mouse pointer when typing in window checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__terminal/near-miss/Use_system_username_(ugc1hc)",
+   "state": "putty__terminal",
+   "kind": "verify",
+   "locator": "text=\"Use system username (ugc1hc)\"",
+   "instruction": "the 'Use system username (ugc1hc)' radio button is visible",
+   "description": "Use system username (ugc1hc) radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__window-appearance/near-miss/Allow_attempted_changes_of_username_in_SSH-2",
+   "state": "putty__window-appearance",
+   "kind": "verify",
+   "locator": "text=\"Allow attempted changes of username in SSH-2\"",
+   "instruction": "the 'Allow attempted changes of username in SSH-2' checkbox is visible",
+   "description": "Allow attempted changes of username in SSH-2 checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__window-appearance/near-miss/Attempt_\"keyboard-interactive\"_auth_(SSH-2)",
+   "state": "putty__window-appearance",
+   "kind": "verify",
+   "locator": "text=\"Attempt \"keyboard-interactive\" auth (SSH-2)\"",
+   "instruction": "the 'Attempt \"keyboard-interactive\" auth (SSH-2)' checkbox is visible",
+   "description": "Attempt \"keyboard-interactive\" auth (SSH-2) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__window-appearance/near-miss/Attempt_TIS_or_CryptoCard_auth_(SSH-1)",
+   "state": "putty__window-appearance",
+   "kind": "verify",
+   "locator": "text=\"Attempt TIS or CryptoCard auth (SSH-1)\"",
+   "instruction": "the 'Attempt TIS or CryptoCard auth (SSH-1)' checkbox is visible",
+   "description": "Attempt TIS or CryptoCard auth (SSH-1) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__window-appearance/near-miss/Bypass_authentication_entirely_(SSH-2_only)",
+   "state": "putty__window-appearance",
+   "kind": "verify",
+   "locator": "text=\"Bypass authentication entirely (SSH-2 only)\"",
+   "instruction": "the 'Bypass authentication entirely (SSH-2 only)' checkbox is visible",
+   "description": "Bypass authentication entirely (SSH-2 only) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__window-appearance/near-miss/Default_Settings",
+   "state": "putty__window-appearance",
+   "kind": "verify",
+   "locator": "text=\"Default Settings\"",
+   "instruction": "the 'Default Settings' list item is visible",
+   "description": "Default Settings list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__window-appearance/near-miss/Display_pre-authentication_banner_(SSH-2_only)",
+   "state": "putty__window-appearance",
+   "kind": "verify",
+   "locator": "text=\"Display pre-authentication banner (SSH-2 only)\"",
+   "instruction": "the 'Display pre-authentication banner (SSH-2 only)' checkbox is visible",
+   "description": "Display pre-authentication banner (SSH-2 only) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "putty__window-appearance/near-miss/Use_system_username_(ugc1hc)",
+   "state": "putty__window-appearance",
+   "kind": "verify",
+   "locator": "text=\"Use system username (ugc1hc)\"",
+   "instruction": "the 'Use system username (ugc1hc)' radio button is visible",
+   "description": "Use system username (ugc1hc) radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-build/near-miss/Auto_Replace_Latex-Commands",
+   "state": "texstudio__config-build",
+   "kind": "verify",
+   "locator": "text=\"Auto Replace Latex-Commands\"",
+   "instruction": "the 'Auto Replace Latex-Commands' checkbox is visible",
+   "description": "Auto Replace Latex-Commands checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-build/near-miss/Automatically_start_completer_when_typing_LaTeX-Commands",
+   "state": "texstudio__config-build",
+   "kind": "verify",
+   "locator": "text=\"Automatically start completer when typing LaTeX-Commands\"",
+   "instruction": "the 'Automatically start completer when typing LaTeX-Commands' checkbox is visible",
+   "description": "Automatically start completer when typing LaTeX-Commands checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-build/near-miss/Bibliography",
+   "state": "texstudio__config-build",
+   "kind": "verify",
+   "locator": "text=\"Bibliography\"",
+   "instruction": "the 'Bibliography' menu item is visible",
+   "description": "Bibliography menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-build/near-miss/Options",
+   "state": "texstudio__config-build",
+   "kind": "verify",
+   "locator": "text=\"Options\"",
+   "instruction": "the 'Options' menu item is visible",
+   "description": "Options menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-build/near-miss/Syntax",
+   "state": "texstudio__config-build",
+   "kind": "verify",
+   "locator": "text=\"Syntax\"",
+   "instruction": "the 'Syntax' checkbox is visible",
+   "description": "Syntax checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-build/near-miss/ToolTip-Preview",
+   "state": "texstudio__config-build",
+   "kind": "verify",
+   "locator": "text=\"ToolTip-Preview\"",
+   "instruction": "the 'ToolTip-Preview' checkbox is visible",
+   "description": "ToolTip-Preview checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-completion/near-miss/Help",
+   "state": "texstudio__config-completion",
+   "kind": "verify",
+   "locator": "text=\"Help\"",
+   "instruction": "the 'Help' menu item is visible",
+   "description": "Help menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-completion/near-miss/LaTeX",
+   "state": "texstudio__config-completion",
+   "kind": "verify",
+   "locator": "text=\"LaTeX\"",
+   "instruction": "the 'LaTeX' menu item is visible",
+   "description": "LaTeX menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-completion/near-miss/Math",
+   "state": "texstudio__config-completion",
+   "kind": "verify",
+   "locator": "text=\"Math\"",
+   "instruction": "the 'Math' menu item is visible",
+   "description": "Math menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-completion/near-miss/Options",
+   "state": "texstudio__config-completion",
+   "kind": "verify",
+   "locator": "text=\"Options\"",
+   "instruction": "the 'Options' menu item is visible",
+   "description": "Options menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-completion/near-miss/Syntax",
+   "state": "texstudio__config-completion",
+   "kind": "verify",
+   "locator": "text=\"Syntax\"",
+   "instruction": "the 'Syntax' checkbox is visible",
+   "description": "Syntax checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-editor/near-miss/Auto_Replace_Latex-Commands",
+   "state": "texstudio__config-editor",
+   "kind": "verify",
+   "locator": "text=\"Auto Replace Latex-Commands\"",
+   "instruction": "the 'Auto Replace Latex-Commands' checkbox is visible",
+   "description": "Auto Replace Latex-Commands checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-editor/near-miss/Automatically_start_completer_when_typing_LaTeX-Commands",
+   "state": "texstudio__config-editor",
+   "kind": "verify",
+   "locator": "text=\"Automatically start completer when typing LaTeX-Commands\"",
+   "instruction": "the 'Automatically start completer when typing LaTeX-Commands' checkbox is visible",
+   "description": "Automatically start completer when typing LaTeX-Commands checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-editor/near-miss/Encoding",
+   "state": "texstudio__config-editor",
+   "kind": "verify",
+   "locator": "text=\"Encoding\"",
+   "instruction": "the 'Encoding' button is visible",
+   "description": "Encoding button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-editor/near-miss/LaTeX",
+   "state": "texstudio__config-editor",
+   "kind": "verify",
+   "locator": "text=\"LaTeX\"",
+   "instruction": "the 'LaTeX' menu item is visible",
+   "description": "LaTeX menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-editor/near-miss/Options",
+   "state": "texstudio__config-editor",
+   "kind": "verify",
+   "locator": "text=\"Options\"",
+   "instruction": "the 'Options' menu item is visible",
+   "description": "Options menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-editor/near-miss/ToolTip-Preview",
+   "state": "texstudio__config-editor",
+   "kind": "verify",
+   "locator": "text=\"ToolTip-Preview\"",
+   "instruction": "the 'ToolTip-Preview' checkbox is visible",
+   "description": "ToolTip-Preview checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-general/near-miss/Auto_Replace_Latex-Commands",
+   "state": "texstudio__config-general",
+   "kind": "verify",
+   "locator": "text=\"Auto Replace Latex-Commands\"",
+   "instruction": "the 'Auto Replace Latex-Commands' checkbox is visible",
+   "description": "Auto Replace Latex-Commands checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-general/near-miss/Automatically_start_completer_when_typing_LaTeX-Commands",
+   "state": "texstudio__config-general",
+   "kind": "verify",
+   "locator": "text=\"Automatically start completer when typing LaTeX-Commands\"",
+   "instruction": "the 'Automatically start completer when typing LaTeX-Commands' checkbox is visible",
+   "description": "Automatically start completer when typing LaTeX-Commands checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-general/near-miss/LaTeX",
+   "state": "texstudio__config-general",
+   "kind": "verify",
+   "locator": "text=\"LaTeX\"",
+   "instruction": "the 'LaTeX' menu item is visible",
+   "description": "LaTeX menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-general/near-miss/Options",
+   "state": "texstudio__config-general",
+   "kind": "verify",
+   "locator": "text=\"Options\"",
+   "instruction": "the 'Options' menu item is visible",
+   "description": "Options menu item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-general/near-miss/Syntax",
+   "state": "texstudio__config-general",
+   "kind": "verify",
+   "locator": "text=\"Syntax\"",
+   "instruction": "the 'Syntax' checkbox is visible",
+   "description": "Syntax checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__config-general/near-miss/ToolTip-Preview",
+   "state": "texstudio__config-general",
+   "kind": "verify",
+   "locator": "text=\"ToolTip-Preview\"",
+   "instruction": "the 'ToolTip-Preview' checkbox is visible",
+   "description": "ToolTip-Preview checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/Add",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"Add\"",
+   "instruction": "the 'Add' button is visible",
+   "description": "Add button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/Analyze_LaTeX_(%_!TeX_encoding,_inputenc,_inputenx)",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"Analyze LaTeX (% !TeX encoding, inputenc, inputenx)\"",
+   "instruction": "the 'Analyze LaTeX (% !TeX encoding, inputenc, inputenx)' checkbox is visible",
+   "description": "Analyze LaTeX (% !TeX encoding, inputenc, inputenx) checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/Auto_Insert_Math_Delimiters_where_needed",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"Auto Insert Math Delimiters where needed\"",
+   "instruction": "the 'Auto Insert Math Delimiters where needed' checkbox is visible",
+   "description": "Auto Insert Math Delimiters where needed checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/Auto_Replace_Latex-Commands",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"Auto Replace Latex-Commands\"",
+   "instruction": "the 'Auto Replace Latex-Commands' checkbox is visible",
+   "description": "Auto Replace Latex-Commands checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/Automatically_start_completer_when_typing_LaTeX-Commands",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"Automatically start completer when typing LaTeX-Commands\"",
+   "instruction": "the 'Automatically start completer when typing LaTeX-Commands' checkbox is visible",
+   "description": "Automatically start completer when typing LaTeX-Commands checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/Build",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"Build\"",
+   "instruction": "the 'Build' list item is visible",
+   "description": "Build list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/Check_LaTeX_Configuration",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"Check LaTeX Configuration\"",
+   "instruction": "the 'Check LaTeX Configuration' checkbox is visible",
+   "description": "Check LaTeX Configuration checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/Commands",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"Commands\"",
+   "instruction": "the 'Commands' list item is visible",
+   "description": "Commands list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/General",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"General\"",
+   "instruction": "the 'General' list item is visible",
+   "description": "General list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/Remove_Trailing_Whitespace_on_Save",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"Remove Trailing Whitespace on Save\"",
+   "instruction": "the 'Remove Trailing Whitespace on Save' checkbox is visible",
+   "description": "Remove Trailing Whitespace on Save checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/Show_Advanced_Options",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"Show Advanced Options\"",
+   "instruction": "the 'Show Advanced Options' checkbox is visible",
+   "description": "Show Advanced Options checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/ToolTip-Help",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"ToolTip-Help\"",
+   "instruction": "the 'ToolTip-Help' checkbox is visible",
+   "description": "ToolTip-Help checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "texstudio__main/near-miss/ToolTip-Preview",
+   "state": "texstudio__main",
+   "kind": "verify",
+   "locator": "text=\"ToolTip-Preview\"",
+   "instruction": "the 'ToolTip-Preview' checkbox is visible",
+   "description": "ToolTip-Preview checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__colors1/near-miss/Default",
+   "state": "tortoisegit__colors1",
+   "kind": "verify",
+   "locator": "text=\"Default\"",
+   "instruction": "the 'Default' radio button is visible",
+   "description": "Default radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__colors1/near-miss/Enable_drag_context_menu",
+   "state": "tortoisegit__colors1",
+   "kind": "verify",
+   "locator": "text=\"Enable drag context menu\"",
+   "instruction": "the 'Enable drag context menu' checkbox is visible",
+   "description": "Enable drag context menu checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__colors1/near-miss/Network_drives",
+   "state": "tortoisegit__colors1",
+   "kind": "verify",
+   "locator": "text=\"Network drives\"",
+   "instruction": "the 'Network drives' checkbox is visible",
+   "description": "Network drives checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__colors1/near-miss/Show_overlays_and_context_menu_only_in_explorer",
+   "state": "tortoisegit__colors1",
+   "kind": "verify",
+   "locator": "text=\"Show overlays and context menu only in explorer\"",
+   "instruction": "the 'Show overlays and context menu only in explorer' checkbox is visible",
+   "description": "Show overlays and context menu only in explorer checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__context-menu/near-miss/Default",
+   "state": "tortoisegit__context-menu",
+   "kind": "verify",
+   "locator": "text=\"Default\"",
+   "instruction": "the 'Default' radio button is visible",
+   "description": "Default radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__context-menu/near-miss/Display_subject_and_body_of_commit_messages",
+   "state": "tortoisegit__context-menu",
+   "kind": "verify",
+   "locator": "text=\"Display subject and body of commit messages\"",
+   "instruction": "the 'Display subject and body of commit messages' checkbox is visible",
+   "description": "Display subject and body of commit messages checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__context-menu/near-miss/Network_drives",
+   "state": "tortoisegit__context-menu",
+   "kind": "verify",
+   "locator": "text=\"Network drives\"",
+   "instruction": "the 'Network drives' checkbox is visible",
+   "description": "Network drives checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__context-menu/near-miss/Show_overlays_and_context_menu_only_in_explorer",
+   "state": "tortoisegit__context-menu",
+   "kind": "verify",
+   "locator": "text=\"Show overlays and context menu only in explorer\"",
+   "instruction": "the 'Show overlays and context menu only in explorer' checkbox is visible",
+   "description": "Show overlays and context menu only in explorer checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__dialogs1/near-miss/Commit...",
+   "state": "tortoisegit__dialogs1",
+   "kind": "verify",
+   "locator": "text=\"Commit...\"",
+   "instruction": "the 'Commit...' list item is visible",
+   "description": "Commit... list item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__dialogs1/near-miss/Default",
+   "state": "tortoisegit__dialogs1",
+   "kind": "verify",
+   "locator": "text=\"Default\"",
+   "instruction": "the 'Default' radio button is visible",
+   "description": "Default radio button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__dialogs1/near-miss/Enable_drag_context_menu",
+   "state": "tortoisegit__dialogs1",
+   "kind": "verify",
+   "locator": "text=\"Enable drag context menu\"",
+   "instruction": "the 'Enable drag context menu' checkbox is visible",
+   "description": "Enable drag context menu checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__dialogs1/near-miss/Network_drives",
+   "state": "tortoisegit__dialogs1",
+   "kind": "verify",
+   "locator": "text=\"Network drives\"",
+   "instruction": "the 'Network drives' checkbox is visible",
+   "description": "Network drives checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__dialogs1/near-miss/Show_overlays_and_context_menu_only_in_explorer",
+   "state": "tortoisegit__dialogs1",
+   "kind": "verify",
+   "locator": "text=\"Show overlays and context menu only in explorer\"",
+   "instruction": "the 'Show overlays and context menu only in explorer' checkbox is visible",
+   "description": "Show overlays and context menu only in explorer checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__general/near-miss/Enable_drag_context_menu",
+   "state": "tortoisegit__general",
+   "kind": "verify",
+   "locator": "text=\"Enable drag context menu\"",
+   "instruction": "the 'Enable drag context menu' checkbox is visible",
+   "description": "Enable drag context menu checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__general/near-miss/Network_drives",
+   "state": "tortoisegit__general",
+   "kind": "verify",
+   "locator": "text=\"Network drives\"",
+   "instruction": "the 'Network drives' checkbox is visible",
+   "description": "Network drives checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__general/near-miss/Show_overlays_and_context_menu_only_in_explorer",
+   "state": "tortoisegit__general",
+   "kind": "verify",
+   "locator": "text=\"Show overlays and context menu only in explorer\"",
+   "instruction": "the 'Show overlays and context menu only in explorer' checkbox is visible",
+   "description": "Show overlays and context menu only in explorer checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__icon-overlays/near-miss/Enable_drag_context_menu",
+   "state": "tortoisegit__icon-overlays",
+   "kind": "verify",
+   "locator": "text=\"Enable drag context menu\"",
+   "instruction": "the 'Enable drag context menu' checkbox is visible",
+   "description": "Enable drag context menu checkbox",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "tortoisegit__icon-overlays/near-miss/Restore_Default",
+   "state": "tortoisegit__icon-overlays",
+   "kind": "verify",
+   "locator": "text=\"Restore Default\"",
+   "instruction": "the 'Restore Default' button is visible",
+   "description": "Restore Default button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "vscode__editor/near-miss/Editor_Format_On_Save._Format_a_file_on_save._A_formatter_must_be_available_and_the_editor_must_not_be_shutting_down._When_\"Files:_Auto_Save\"_is_set_to_afterDelay,_the_file_will_only_be_formatted_when_saved_explicitly.",
+   "state": "vscode__editor",
+   "kind": "verify",
+   "locator": "text=\"Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly.\"",
+   "instruction": "the 'Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly.' tree item is visible",
+   "description": "Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly. tree item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "vscode__extensions/near-miss/Editor_Format_On_Save._Format_a_file_on_save._A_formatter_must_be_available_and_the_editor_must_not_be_shutting_down._When_\"Files:_Auto_Save\"_is_set_to_afterDelay,_the_file_will_only_be_formatted_when_saved_explicitly.",
+   "state": "vscode__extensions",
+   "kind": "verify",
+   "locator": "text=\"Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly.\"",
+   "instruction": "the 'Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly.' tree item is visible",
+   "description": "Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly. tree item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "vscode__extensions/near-miss/Extensions,_group",
+   "state": "vscode__extensions",
+   "kind": "verify",
+   "locator": "text=\"Extensions, group\"",
+   "instruction": "the 'Extensions, group' tree item is visible",
+   "description": "Extensions, group tree item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "vscode__search/near-miss/Editor_Format_On_Save._Format_a_file_on_save._A_formatter_must_be_available_and_the_editor_must_not_be_shutting_down._When_\"Files:_Auto_Save\"_is_set_to_afterDelay,_the_file_will_only_be_formatted_when_saved_explicitly.",
+   "state": "vscode__search",
+   "kind": "verify",
+   "locator": "text=\"Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly.\"",
+   "instruction": "the 'Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly.' tree item is visible",
+   "description": "Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly. tree item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "vscode__source-control/near-miss/Editor_Format_On_Save._Format_a_file_on_save._A_formatter_must_be_available_and_the_editor_must_not_be_shutting_down._When_\"Files:_Auto_Save\"_is_set_to_afterDelay,_the_file_will_only_be_formatted_when_saved_explicitly.",
+   "state": "vscode__source-control",
+   "kind": "verify",
+   "locator": "text=\"Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly.\"",
+   "instruction": "the 'Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly.' tree item is visible",
+   "description": "Editor Format On Save. Format a file on save. A formatter must be available and the editor must not be shutting down. When \"Files: Auto Save\" is set to afterDelay, the file will only be formatted when saved explicitly. tree item",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "winsettings__accessibility-text/near-miss/Change",
+   "state": "winsettings__accessibility-text",
+   "kind": "verify",
+   "locator": "text=\"Change\"",
+   "instruction": "the 'Change' button is visible",
+   "description": "Change button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "winsettings__display/near-miss/Change",
+   "state": "winsettings__display",
+   "kind": "verify",
+   "locator": "text=\"Change\"",
+   "instruction": "the 'Change' button is visible",
+   "description": "Change button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "winsettings__mouse/near-miss/Accessibility",
+   "state": "winsettings__mouse",
+   "kind": "verify",
+   "locator": "text=\"Accessibility\"",
+   "instruction": "the 'Accessibility' button is visible",
+   "description": "Accessibility button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "winsettings__mouse/near-miss/Change",
+   "state": "winsettings__mouse",
+   "kind": "verify",
+   "locator": "text=\"Change\"",
+   "instruction": "the 'Change' button is visible",
+   "description": "Change button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "winsettings__mouse/near-miss/Display",
+   "state": "winsettings__mouse",
+   "kind": "verify",
+   "locator": "text=\"Display\"",
+   "instruction": "the 'Display' button is visible",
+   "description": "Display button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  },
+  {
+   "id": "winsettings__power/near-miss/Display",
+   "state": "winsettings__power",
+   "kind": "verify",
+   "locator": "text=\"Display\"",
+   "instruction": "the 'Display' button is visible",
+   "description": "Display button",
+   "expect": "FAILED",
+   "target_id": null,
+   "target_bounds": null,
+   "negative_kind": "sibling"
+  }
+ ]
+}

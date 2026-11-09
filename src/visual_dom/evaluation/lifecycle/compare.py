@@ -3,7 +3,8 @@ Compare lifecycle result runs step by step.
 
 A run is a directory of runner result files (``<stamp>.json``), or the
 ``gpu-<stamp>.tar.gz`` a rental produces (unpacked next to itself); a run
-dir with a ``realworld/`` subdirectory holds two sets and both are read.
+dir with a ``realworld/``, ``nearmiss/`` or ``heldout/`` subdirectory holds
+one more set per subdirectory and all are read.
 For every set the tool prints, in Markdown:
 
 * one row per executor: action-hit, verify accuracy, false passes as a
@@ -36,6 +37,9 @@ from pathlib import Path
 
 _SUFFIX = re.compile(r"\[(verify|vlm|slm)=([^\]]+)\]")
 _UNSAFE_FS = re.compile(r'[<>:"\\|?*]')
+#: subdirectories of a run dir that hold one more benchmark set each
+#: (realworld since run 8; nearmiss and heldout since run 9)
+SET_DIRS = ("realworld", "nearmiss", "heldout")
 
 
 # --------------------------------------------------------------------------- #
@@ -78,7 +82,10 @@ def load_sets(run_dir):
     set the latest result file wins (an ONLY= rerun replaces the old row)."""
     run_dir = Path(run_dir)
     sets = defaultdict(dict)
-    for d in (run_dir, run_dir / "realworld"):
+    # the run dir and one directory per further set. Named, not globbed:
+    # ablation/ holds runner files too, and its control columns carry the
+    # main columns' names.
+    for d in [run_dir] + [run_dir / s for s in SET_DIRS]:
         if not d.is_dir():
             continue
         for f in sorted(d.glob("[0-9]*_[0-9]*.json")):
@@ -111,7 +118,12 @@ def verify_mode(name, result):
 
 def match_key(name, result):
     """Executor identity across runs: the name without its verify suffix,
-    plus the verify mode that was actually used."""
+    plus the verify mode that was actually used. Only for desc= rows: a
+    grounder's ``[verify=yesno]`` row asks the model another question, so it
+    is another executor and never pairs with the plain row of an older run
+    (inside one run the two show up as twins)."""
+    if "+desc[" not in name:
+        return name, None
     base = re.sub(r"\[verify=[^\]]+\]", "", name)
     return base, verify_mode(name, result)
 
@@ -375,14 +387,15 @@ def report(new_dir, ref_dirs=(), manifest_root="benchmarks"):
         # per application (real-world set)
         if any("__" in r["step"] for res in execs.values() for r in res["steps"][:1]):
             apps = sorted({a for res in execs.values() for a in by_app(res)})
-            out += ["### action-hit per application", "",
-                    "| executor | " + " | ".join(apps) + " |",
-                    "|---|" + "---|" * len(apps)]
-            for n, res in execs.items():
-                per = by_app(res)
-                out.append(f"| {n} | " + " | ".join(
-                    f"{per[a][0]}/{per[a][1]}" if a in per else "-" for a in apps) + " |")
-            out.append("")
+            if apps:        # none on a set, or in a rerun, of verify steps only
+                out += ["### action-hit per application", "",
+                        "| executor | " + " | ".join(apps) + " |",
+                        "|---|" + "---|" * len(apps)]
+                for n, res in execs.items():
+                    per = by_app(res)
+                    out.append(f"| {n} | " + " | ".join(
+                        f"{per[a][0]}/{per[a][1]}" if a in per else "-" for a in apps) + " |")
+                out.append("")
 
         # every false pass
         fps = [(n, r) for n, res in execs.items() for r in res["steps"] if r.get("false_pass")]

@@ -47,7 +47,7 @@ from pathlib import Path
 import numpy as np
 
 from visual_dom.evaluation.lifecycle.compare import (
-    load_sets, mcnemar, step_ok, unpack, wilson,
+    SET_DIRS, load_sets, mcnemar, step_ok, unpack, wilson,
 )
 
 _WORD = re.compile(r"[a-z0-9]+")
@@ -472,7 +472,7 @@ def scorer_settings(**overrides):
 def load_doms(run_dirs, benchmark, column="vizdom-modular"):
     """{state id: dom} of the newest dump of ``column`` for ``benchmark``."""
     for run in reversed([Path(r) for r in run_dirs]):
-        for base in (run / "realworld", run):
+        for base in [run / s for s in SET_DIRS] + [run]:
             for res in sorted(base.glob("[0-9]*_[0-9]*.json"), reverse=True):
                 data = json.loads(res.read_text(encoding="utf-8"))
                 if data.get("benchmark") != benchmark or column not in data.get("results", {}):
@@ -581,6 +581,42 @@ def near_miss_negatives(labels, steps):
             if len(words) >= 2:
                 add(" ".join(words[:-1]), word, "truncation")
     return out
+
+
+NEAR_MISS_BENCHMARK = "lifecycle-realworld-nearmiss-v1"
+
+
+def near_miss_manifest(data, labels, kinds=("sibling",), benchmark=NEAR_MISS_BENCHMARK):
+    """
+    The near-miss negatives of a real-application manifest as a manifest the
+    runner takes, so that every column - the grounders included - can be
+    measured on them (run 9). Negatives only: a row's present -> pass rate is
+    the one it has on the source set, which shows the same screens.
+    """
+    steps = []
+    for n in near_miss_negatives(labels, data["steps"]):
+        if n["negative_kind"] not in kinds:
+            continue
+        cap = re.match(r'text="(.*)"$', n["locator"]).group(1)
+        word = n["description"][len(cap):].strip()
+        steps.append({"id": n["id"], "state": n["state"], "kind": "verify",
+                      "locator": n["locator"],
+                      "instruction": f"the '{cap}' {word} is visible",   # generate.py's wording
+                      "description": n["description"], "expect": "FAILED",
+                      "target_id": None, "target_bounds": None,
+                      "negative_kind": n["negative_kind"]})
+    used = {s["state"] for s in steps}
+    return {"benchmark": benchmark, "source": data["benchmark"], "seed": data.get("seed"),
+            "negative_kinds": sorted(kinds),
+            "states": [s for s in data["states"] if s["id"] in used], "steps": steps}
+
+
+def _load_labels(data):
+    labels = {}
+    for d in {Path(s["gt"]).parent for s in data["states"]}:
+        for f in d.glob("*.json"):
+            labels[f.stem] = json.loads(f.read_text(encoding="utf-8"))
+    return labels
 
 
 def near_miss_section(labels, steps, doms):
@@ -704,11 +740,8 @@ def audit(run_dirs, benchmark, manifests_root="benchmarks", run_ocr=False, sheet
         out += stats_section(execs, manifest, rows)
     out += negatives_section(manifest_file, run_ocr, sheet)
     labels_dirs = {Path(s["gt"]).parent for s in data["states"]}
-    labels = {}
-    for d in labels_dirs:
-        for f in d.glob("*.json"):
-            labels[f.stem] = json.loads(f.read_text(encoding="utf-8"))
-    real = any("__" in s for s in labels)
+    labels = _load_labels(data)
+    real =any("__" in s for s in labels)
     if real:
         out += filter_section(next(iter(labels_dirs)), manifest)
     doms = load_doms(run_dirs, benchmark)
@@ -724,8 +757,13 @@ def audit(run_dirs, benchmark, manifests_root="benchmarks", run_ocr=False, sheet
 
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    p.add_argument("--run", action="append", required=True,
+    p.add_argument("--run", action="append", default=[],
                    help="run dir or tarball; repeat to merge (a later run's row replaces an earlier one's)")
+    p.add_argument("--near-miss-manifest", metavar="STEPS_JSON",
+                   help="write the near-miss negatives of --benchmark as a runnable manifest and stop "
+                        f"(no --run needed; benchmark name {NEAR_MISS_BENCHMARK})")
+    p.add_argument("--near-miss-kinds", default="sibling",
+                   help="comma list from sibling,truncation for --near-miss-manifest")
     p.add_argument("--benchmark", default="lifecycle-realworld-v1")
     p.add_argument("--manifests", default="benchmarks")
     p.add_argument("--rows", help="comma list of VizDOM rows to quote (default: text= and lexical-first desc=)")
@@ -733,6 +771,17 @@ def main(argv=None):
     p.add_argument("--sheet", help="write the contact sheet of the negatives here (HTML)")
     p.add_argument("--out", help="write the Markdown here instead of stdout")
     a = p.parse_args(argv)
+    if a.near_miss_manifest:
+        data = json.loads((Path(a.manifests) / a.benchmark / "steps.json").read_text(encoding="utf-8"))
+        kinds = tuple(k.strip() for k in a.near_miss_kinds.split(",") if k.strip())
+        m = near_miss_manifest(data, _load_labels(data), kinds)
+        out = Path(a.near_miss_manifest)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(m, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+        print(f"{out}: {len(m['steps'])} negatives on {len(m['states'])} screens")
+        return 0
+    if not a.run:
+        p.error("--run is required (unless --near-miss-manifest is given)")
     text = audit(a.run, a.benchmark, a.manifests, a.ocr, a.sheet,
                  [r.strip() for r in a.rows.split(",")] if a.rows else None)
     if a.out:

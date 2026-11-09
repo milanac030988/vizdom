@@ -272,12 +272,13 @@ def test_runner_cli_accepts_a_combined_column(monkeypatch, tmp_path):
     manifest.write_text(json.dumps({"benchmark": "t", "states": [], "steps": []}), encoding="utf-8")
     seen = {}
     monkeypatch.setattr(runner, "run_benchmark",
-                        lambda m, executors, limit_states=None, out_dir=None: seen.update(n=[e.name for e in executors]))
+                        lambda m, executors, **kw: seen.update(n=[e.name for e in executors], kw=kw))
     monkeypatch.setattr(__import__("sys"), "argv",
                         ["runner", "--manifest", str(manifest),
                          "--executors", "vizdom-modular[roles=off,ocr=plain],vizdom-uied"])
     runner.main()
     assert seen["n"] == ["vizdom-modular[roles=off,ocr=plain]", "vizdom-uied"]
+    assert seen["kw"]["kinds"] is None, "all step kinds unless --kinds says otherwise"
 
 
 def test_a_failed_column_is_recorded_and_the_batch_goes_on(monkeypatch, tmp_path):

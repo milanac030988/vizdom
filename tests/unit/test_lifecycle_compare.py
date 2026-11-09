@@ -170,3 +170,39 @@ def test_unpack_refuses_member_paths_outside_the_run(tmp_path):
         tar.add(payload, arcname="../escape.txt")
     with pytest.raises(ValueError, match="unsafe"):
         unpack(evil)
+
+
+def test_every_named_set_directory_is_read_and_the_ablation_is_not(tmp_path):
+    # run 9 adds nearmiss/ and heldout/ beside realworld/; ablation/ holds
+    # runner files whose control columns carry the main columns' names
+    _write(tmp_path, "20261110_000000", "syn", {"vizdom-modular": _result([_act("a", True)])})
+    _write(tmp_path / "nearmiss", "20261110_000001", "nm", {"elam-7b": _result([])})
+    _write(tmp_path / "heldout", "20261110_000002", "ho", {"elam-7b": _result([])})
+    _write(tmp_path / "ablation", "20261110_000003", "syn",
+           {"vizdom-modular": _result([_act("a", False)])})
+    sets = load_sets(tmp_path)
+    assert set(sets) == {"syn", "nm", "ho"}
+    assert sets["syn"]["vizdom-modular"]["steps"][0]["hit"] is True
+
+
+def test_a_grounders_yes_no_row_is_its_own_executor_across_runs():
+    plain, yesno = "ui-tars-1.5-7b", "ui-tars-1.5-7b[verify=yesno]"
+    assert match_key(yesno, _result([])) != match_key(plain, _result([]))
+    assert (plain, yesno) in model_twins({plain, yesno})
+
+
+def test_report_takes_a_verify_only_rerun(tmp_path):
+    # run 9 reruns only the verify half of a grounder (runner --kinds verify)
+    _write(tmp_path / "realworld", "20261110_000000", "rw", {
+        "vizdom-modular": _result([_act("app__s/act/E1", True),
+                                   _ver("app__s/verify/E1", "PASSED", True)]),
+        "elam-7b": _result([_ver("app__s/verify/E1", "PASSED", True)]),
+    })
+    text = report(tmp_path)
+    assert "| elam-7b | - (0) | 1.000 (1) |" in text
+    assert "| elam-7b | - |" in text, "no clicks: a dash in the per-application table"
+    # a set of verify steps only (the near-miss negatives) has no such table at all
+    _write(tmp_path / "nearmiss", "20261110_000001", "nm", {
+        "elam-7b": _result([_ver("app__s/near-miss/Save", "PASSED", False, false_pass=True)])})
+    nm = report(tmp_path).split("## nm")[1].split("## rw")[0]
+    assert "action-hit per application" not in nm and "app__s/near-miss/Save" in nm

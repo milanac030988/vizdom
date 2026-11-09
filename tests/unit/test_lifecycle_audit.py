@@ -140,3 +140,36 @@ def test_contains_sequence_is_adjacent_and_ordered():
     assert not au.contains_sequence(["save", "the", "as"], ["save", "as"])
     assert not au.contains_sequence(["as", "save"], ["save", "as"])
     assert not au.contains_sequence(["save"], [])
+
+
+def test_near_miss_manifest_is_one_the_runner_takes():
+    data = {"benchmark": "lifecycle-realworld-v1", "seed": 42, "steps": _steps(),
+            "states": [{"id": "app__main", "image": "i/app__main.png", "gt": "l/app__main.json"},
+                       {"id": "app__other", "image": "i/app__other.png", "gt": "l/app__other.json"},
+                       {"id": "app__unused", "image": "i/u.png", "gt": "l/u.json"}]}
+    m = au.near_miss_manifest(data, _labels())
+    assert m["benchmark"] == au.NEAR_MISS_BENCHMARK and m["source"] == "lifecycle-realworld-v1"
+    assert {s["id"] for s in m["states"]} == {"app__main", "app__other"}
+    assert all(s["negative_kind"] == "sibling" for s in m["steps"]), "truncations are opt-in"
+    step = next(s for s in m["steps"] if s["state"] == "app__main")
+    assert step == {"id": "app__main/near-miss/Save", "state": "app__main", "kind": "verify",
+                    "locator": 'text="Save"', "instruction": "the 'Save' button is visible",
+                    "description": "Save button", "expect": "FAILED",
+                    "target_id": None, "target_bounds": None, "negative_kind": "sibling"}
+    both = au.near_miss_manifest(data, _labels(), kinds=("sibling", "truncation"))
+    assert {s["negative_kind"] for s in both["steps"]} == {"sibling", "truncation"}
+    assert au.state_of(step["id"]) == "app__main"
+
+
+def test_the_committed_near_miss_manifest_matches_its_source():
+    import json
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[2]
+    bench = root / "benchmarks"
+    src = json.loads((bench / "lifecycle-realworld-v1" / "steps.json").read_text(encoding="utf-8"))
+    saved = json.loads((bench / au.NEAR_MISS_BENCHMARK / "steps.json").read_text(encoding="utf-8"))
+    labels = {s["id"]: json.loads((root / s["gt"]).read_text(encoding="utf-8"))
+              for s in src["states"]}
+    assert saved == au.near_miss_manifest(src, labels)
+    assert len(saved["steps"]) == 168
+    assert {s["state"] for s in saved["steps"]} <= {s["id"] for s in src["states"]}

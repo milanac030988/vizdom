@@ -103,6 +103,22 @@ def main():
                     raise RuntimeError(f"judge returned {verdict!r}, expected "
                                        "PASSED/FAILED - verdict prompt/parser is off")
                 msg += f", judge -> {verdict}"
+            # The yes/no verdict mode (run 9) asks UI-TARS a question it was
+            # not trained on: a reply that is a click action instead of a word
+            # would give a column of None, so both answers are shown here.
+            if name.endswith("[verify=yesno]"):
+                answers = []
+                for statement in ("a button is visible",
+                                  "the 'Zxqv Wplk' button is visible"):
+                    verdict = grounder.judge(image, statement)
+                    if verdict not in ("PASSED", "FAILED"):
+                        raise RuntimeError(f"judge returned {verdict!r} (raw answer "
+                                           f"{grounder.last_text!r}) - the model does not "
+                                           "answer yes/no to the verify prompt")
+                    answers.append(f"{grounder.last_text!r}")
+                msg += f", yes/no -> real: {answers[0]}, nonsense: {answers[1]}"
+                if answers[0] == answers[1]:
+                    msg += "  (!! same answer to both - read the column with care)"
             print(f"  {name:16} OK    {msg}")
         except Exception as exc:
             failures.append(name)

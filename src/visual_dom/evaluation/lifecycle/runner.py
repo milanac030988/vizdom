@@ -465,12 +465,20 @@ def _score(step, outcome):
     return {"correct": correct, "false_pass": false_pass}
 
 
-def run_benchmark(manifest, executors, limit_states=None, out_dir="benchmarks/results"):
+def run_benchmark(manifest, executors, limit_states=None, out_dir="benchmarks/results",
+                  kinds=None):
     states = {s["id"]: s for s in manifest["states"]}
     step_list = manifest["steps"]
     if limit_states:
         keep = set(list(states)[:limit_states])
         step_list = [s for s in step_list if s["state"] in keep]
+    if kinds:
+        # a rerun of one half only (run 9: the verify steps of a grounder
+        # whose verdict rule changed; its clicks are the earlier run's)
+        unknown = set(kinds) - {s["kind"] for s in manifest["steps"]}
+        if unknown:
+            raise SystemExit(f"--kinds {sorted(unknown)}: no such step kind in the manifest")
+        step_list = [s for s in step_list if s["kind"] in kinds]
 
     try:
         commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"],
@@ -544,6 +552,8 @@ def run_benchmark(manifest, executors, limit_states=None, out_dir="benchmarks/re
         "generated_steps": len(step_list),
         "results": all_results,
     }
+    if kinds:
+        payload["kinds"] = sorted(kinds)
     (out / f"{stamp}.json").write_text(
         json.dumps(payload, indent=1, ensure_ascii=False), encoding="utf-8")
 
@@ -589,8 +599,11 @@ def main():
     parser.add_argument("--executors", default="vizdom-uied",
                         help="comma list: vizdom-uied, vizdom-omniparser, "
                              "vizdom-modular, vizdom-<detector>+desc, "
-                             "elam-7b, ui-tars-1.5-7b, aria-ui")
+                             "elam-7b, ui-tars-1.5-7b, ui-tars-1.5-7b[verify=yesno], aria-ui")
     parser.add_argument("--limit-states", type=int, default=None)
+    parser.add_argument("--kinds", default=None,
+                        help="comma list from action,verify: run only these steps "
+                             "(default: all)")
     parser.add_argument("--no-quantize", action="store_true")
     parser.add_argument("--out-dir", default="benchmarks/results",
                         help="directory for the timestamped result json/md "
@@ -648,8 +661,9 @@ def main():
         print(f"{name}: {reason}")
         executors.append(GrounderExecutor(grounder))
 
+    kinds = [k.strip() for k in args.kinds.split(",") if k.strip()] if args.kinds else None
     run_benchmark(manifest, executors, limit_states=args.limit_states,
-                  out_dir=args.out_dir)
+                  out_dir=args.out_dir, kinds=kinds)
 
 
 if __name__ == "__main__":
