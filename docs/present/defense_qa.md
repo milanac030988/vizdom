@@ -213,3 +213,120 @@ Say it this way: the oracle holds under every wording; hit rate degrades with
 how much of the label the wording keeps; the model tier is what recovers wordy
 descriptions, and when it is wrong it is confidently wrong, which is why the
 tier is a fallback behind a deterministic one and not the path.
+
+## F. Specialist questions (audit of 2026-11-09)
+
+Numbers from `benchmarks/lifecycle-realworld-v1/AUDIT.md`, recomputed from the
+run-8 files with no model. Say the limitation first where there is one.
+
+### Statistics and evaluation design
+
+**F1. Your steps are not independent. Are the intervals and p-values too optimistic?**
+Yes, the step-level ones were. About twenty steps share a screen. With whole
+screens resampled, the intervals widen (modular action-hit 0.797: [0.72, 0.86]
+instead of [0.76, 0.83]) and no conclusion changes. The false-pass difference
+holds with the screen as the unit (p < 0.001) and with the application as the
+unit (p = 0.004, the smallest value nine applications can give). A mixed-effects
+model was not fitted; a cluster bootstrap and a paired cluster permutation test
+are the assumption-free equivalents for 46 screens.
+
+**F2. Eleven columns, many tests, no correction?**
+Two comparisons are primary and were the thesis question from the start: the
+false-pass rate against each grounder. Everything else is secondary and
+Holm-adjusted. After adjustment no click comparison is significant in either
+direction, including the one where ELAM looked better than the CPU chain
+(0.012 raw, 0.15 adjusted). The claim on clicks is "level with".
+
+**F3. You tuned on the test set.**
+Twice, and the thesis says so: the digit rule and the exact-name bonus came from
+this set. Both figures are reported, before (0.795 / 0.826) and after. The
+sensitivity sweep shows why it matters: on the real set the constants sit at an
+edge (floor 1.25 already gives a false pass), on the synthetic set on a plateau.
+Held-out applications are the open item; they are not measured yet.
+
+**F4. Is balanced accuracy the right headline?**
+No, and it is not the headline. The headline is the false-pass rate with its
+interval, with present → pass beside it. A cost table makes the trade explicit:
+with a false pass costing the same as a false fail, UI-TARS is the cheaper
+verifier (0.097 against 0.121 per step); VizDOM is cheaper once a false pass
+costs more than 1.25 false fails for `text=`, 1.8 for `desc=`.
+
+### Benchmark validity
+
+**F5. Your ground truth keeps only captions OCR can read. That favours you.**
+It does, and the size is known: 452 of 1 415 named actionable elements were
+dropped, 321 as icon-only and 131 because the name is not printed (72 % of
+VS Code, 70 % of Windows Settings). The comparison is on captioned controls. On
+icon-only controls a grounder can act and a caption locator cannot; the
+benchmark does not measure that and I do not claim it.
+
+**F6. Are the absent targets really absent?**
+By UIA, by construction. Independently, two OCR engines searched each of the 92
+captions on its own screenshot: one hit, a spin box reading 100 beside its
+arrows that Tesseract read as "100%". There is a contact sheet for a manual
+pass (`data/realworld/negatives_review.html`).
+
+**F7. What about near-miss negatives, "Save" against "Save As"?**
+This is the real limit of the result. The benchmark excludes them by design. I
+built them separately by a rule that does not look at the scorer: 168 real
+captions from the same application that share words with a caption on the
+screen. `text=` passes 39 of them, because it falls back to a substring match,
+and `desc=` passes 45. A strict rule, the element must read exactly the
+caption, passes 1 and 0 and costs 13 points of present → pass. So zero false
+passes holds for absent targets that share no words with a present caption;
+for near misses both locators are partial-match locators. The strict rule is
+the fix, as an explicit assertion mode, after the defense.
+
+**F8. Human-written descriptions on the real set?**
+Not tested. On the synthetic set, hand-written wordings gave 0.90 (terse) and
+0.71 (wordy) with no false pass. The real-set equivalent is future work.
+
+### Fairness to the grounders
+
+**F9. The grounders were never built to verify.**
+Agreed for UI-TARS and Aria-UI: a found point counts as PASSED, which is how a
+test author would have to use them. ELAM has a native verdict and still passes
+91 of 92; its count was scored with a last-word rule and is an upper bound
+until rerun with the official rule. A direct yes/no prompt is the fair
+baseline and is not measured yet. If it narrows the gap, the claim becomes
+"grounders as shipped cannot say no", which is what a tester gets today.
+
+**F10. Could a vision model add recall without adding false passes?**
+Only in a restricted role. If it may propose or confirm a partial candidate,
+the near-miss case above becomes a false pass. If it may only re-read the text
+of the lexical candidate, and the pass still requires the re-read to equal the
+caption exactly, then a false pass needs the model to misread a different
+caption as the target. That is testable on the near-miss set and is not proven.
+
+### Scoring design
+
+**F11. The constants are hand-set and never calibrated.**
+Correct. The sweep is the evidence: one constant moved at a time, no re-tuning.
+Refusing on a tie is a reject option, the standard device of selective
+classification, with a fixed margin instead of a calibrated probability.
+Calibration needs labelled screens the scorer has not seen, which is the same
+held-out set F3 asks for.
+
+**F12. OCR is the ceiling. Why not fuzzy matching?**
+Because fuzzy matching is the near-miss false pass by another name; F7 measures
+what partial matching already costs. The second OCR engine was worth three
+points. A vision fallback is used for clicks only, where a wrong answer is a
+missed click, not a hidden defect.
+
+### Deployment
+
+**F13. A missing vision model silently degrades the chain.**
+In the benchmark it is an error, not a miss. In production the chain falls
+through to the next tier and says so only in the step's reason. A one-time
+warning is the right behaviour and a small change.
+
+**F14. Is the vision tier stable?**
+The 3B model looped on 242 steps when used alone; behind the lexical shortlist
+neither the 3B nor the 7B model produced an error in run 8. One card, one
+Ollama version. Grounder scores move about one point between GPU generations
+even with greedy decoding; VizDOM's lexical columns do not move.
+
+**F15. A GPU by default, CPU in CI?**
+The 432 unit tests run without any model. CI should pin the lexical chain or
+lexical plus the 3B text model; the GPU chain adds 6 points of action-hit and
+nothing to verification, which is lexical on purpose.

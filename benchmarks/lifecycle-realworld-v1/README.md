@@ -175,3 +175,52 @@ What the run shows:
   controls 1–17.
 - **One capture per state.** No variation in theme, scale or window size
   unless captured deliberately as separate states.
+
+## Audit of this evidence (2026-11-09)
+
+`python -m visual_dom.evaluation.lifecycle.audit` recomputes, from the run-8
+files and with no model, how far the numbers above can be trusted; the full
+tables are in [`AUDIT.md`](AUDIT.md) and the same audit of the synthetic set
+in `../lifecycle-synthetic-v1/AUDIT.md`. What it found:
+
+- **Steps are clustered; the conclusions survive it.** About twenty steps
+  share a screen. Cluster-bootstrap intervals over the 46 screens are wider
+  than Wilson (modular action-hit 0.797: [0.719, 0.861] against [0.757,
+  0.831]; UI-TARS 0.821: [0.724, 0.913]). The false-pass comparisons, named
+  as the primary ones, hold with the screen as the unit (p < 0.001) and with
+  the application as the unit (p = 0.004, the smallest value nine
+  applications allow). Every click comparison is non-significant after a
+  Holm adjustment, including the one that was nominally significant (CPU
+  chain against ELAM, McNemar 0.012, by screens 0.025, adjusted 0.15):
+  "level with" is the claim, in both directions.
+- **Zero false passes is zero on 46 screens of 9 applications**, which
+  bounds the share of screens that would show one at 6.3 % (one-sided 95 %),
+  a weaker and more honest statement than "0 of 92".
+- **The 92 absent targets are absent.** Two OCR engines searched every
+  negative caption on its own screenshot: one hit, "100%" read by Tesseract
+  where a spin box shows 100 beside its arrows (Paint.NET, hue/saturation),
+  which is no "100%" control. `data/realworld/negatives_review.html` is the
+  contact sheet for a human pass.
+- **A third of the actionable controls never became a step.** Of 1 415 named
+  actionable UIA elements, 321 are icon-only and 131 have a name that is not
+  printed (VS Code 72 % dropped, Windows Settings 70 %). The comparison is on
+  captioned controls and says nothing about icon-only ones, where a grounder
+  can act and a caption locator cannot.
+- **The constants sit at an edge here, on a plateau on the synthetic set.**
+  One constant moved at a time: floor 1.25 gives 1 false pass and 1.0 gives
+  3; margin 0 gives 6; name weight 2.5, substring 1.0 or role 1.5 give 2
+  each. Stricter values give none. On the synthetic set no value in the
+  same ranges gives any. The shipped values were set by hand, two of them on
+  this set, so screens the scorer has not seen are what would tell tuning
+  from robustness.
+- **Near-miss absent targets are passed, by both locators.** The benchmark's
+  negatives never share a word sequence with a name on their screen
+  (`_absent_here` leaves those out). Built separately, 168 real sibling
+  captions of that kind ("Add" where only "Add to archive" is shown):
+  `text=` passes 39 (it falls back from exact to substring match), `desc=`
+  45. A stricter rule, the matched element must read exactly the caption,
+  passes 1 and 0, and costs 13 points of present → pass (0.857 → 0.726); it
+  is evaluated in the audit only and is not in the product. **The
+  zero-false-pass result is therefore a result for absent targets that do
+  not share words with a present caption**; for the others the locators are
+  partial-match locators and behave as such.
