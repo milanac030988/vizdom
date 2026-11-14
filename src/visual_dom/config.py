@@ -161,6 +161,20 @@ class ActuatorConfig:
 
 
 @dataclass
+class RecapConfig:
+    """Post-action value read-back (ADR-023). Used by the RF client layer."""
+    # Guard for refresh=element: before trusting an element's cached bounds,
+    # compare the band of pixels AROUND them with the screenshot the DOM was
+    # built from. If that band changed (the layout moved, a dialog opened over
+    # the field) or the region reads empty, the keyword re-analyses the whole
+    # screen instead of reading the old box. Off by default: without it the
+    # region read behaves exactly as before.
+    region_guard: bool = False
+    guard_margin_px: int = 24             # width of the compared band
+    guard_tolerance: float = 0.2          # changed share of the band's structure that still passes
+
+
+@dataclass
 class GroundingConfig:
     """desc= locator resolution (ADR-022): tiered natural-language grounding."""
     # Escalation chain, tried in order. "lexical" is model-free and always safe;
@@ -204,6 +218,7 @@ class VizDomConfig:
     filter: FilterConfig = field(default_factory=FilterConfig)
     capture: CaptureConfig = field(default_factory=CaptureConfig)
     actuator: ActuatorConfig = field(default_factory=ActuatorConfig)
+    recap: RecapConfig = field(default_factory=RecapConfig)
     grounding: GroundingConfig = field(default_factory=GroundingConfig)
     output: OutputConfig = field(default_factory=OutputConfig)
 
@@ -330,6 +345,10 @@ _FIELD_HELP: Dict[str, str] = {
     "actuator.strategy": "null=platform default | desktop | android | grpc | <plugin>",
     "actuator.target": "host:port of a running actuator gRPC service (when strategy == grpc)",
     "actuator.window_title": "app to raise for input; null = inherit capture.window_title (ADR-021)",
+    "recap": "post-action value read-back (RF client layer, ADR-023)",
+    "recap.region_guard": "refresh=element checks the pixels around the element against the screenshot the DOM was built from, and re-analyses the whole screen when they changed or the region reads empty; false = read the cached bounds as before",
+    "recap.guard_margin_px": "width in pixels of the band around the element that the guard compares",
+    "recap.guard_tolerance": "0..1; share of the structure in that band (edges and changed pixels) allowed to differ before the guard falls back to a full scan (lower = stricter)",
     "grounding": "desc= locator resolution (ADR-022): tiered natural-language grounding",
     "grounding.tiers": "escalation order; lexical (no model) | slm (text LM over DOM, CPU) | vlm (Set-of-Mark over image, GPU); default [lexical, vlm], use [lexical, slm] without a GPU",
     "detector.use_gpu": 'run the detector on CUDA when available (OmniParser/YOLO); UIED is CPU-only',

@@ -21,6 +21,7 @@ Nguyen Huynh Tri Cuong
 | Date | Version | Description |
 |------|---------|-------------|
 | 2026-07-31 | 1.0 | <code>refresh=none&#124;element&#124;screen</code> on property getters; element-region re-OCR; stale-DOM marking after actions; new `Get Element Value` / `Verify Element Value` keywords (default `refresh=element`). |
+| 2026-11-14 | 1.1 | **Region guard** for `refresh=element`, off by default (`recap.region_guard`, library argument `region_guard`, keyword `Set Region Guard`): the band around the element is compared with the screenshot the DOM was built from; a changed band or an empty read re-analyses the whole screen. Closes the limitation v1.0 deferred. |
 
 ## Context
 
@@ -63,6 +64,61 @@ default for a single property read.
   else. It is for value reads. If the action may have changed *other* elements
   (a Submit button enabling, a dialog appearing), that is what `refresh=screen`
   and the existing waits are for — the keyword docs say so explicitly.
+
+## Region guard (1.1)
+
+`refresh=element` reuses the bounds found by the last dump: the DOM is the
+cache, and a value check costs one grab and one crop OCR. The cache is wrong
+when the layout changed since the dump. Version 1.0 left that to the tester
+(`refresh=screen`). Version 1.1 adds an optional check.
+
+- **What is compared.** The element's own pixels are expected to change, so
+  the check looks at the band around its padded bounds (`guard_margin_px`,
+  default 24): the border neighbourhood, the label, the controls beside it.
+  The reference is the screenshot the DOM was built from.
+- **The measure.** Changed pixels over the band's structure (edge pixels of
+  either image plus the changed ones). A share of the band's area lets a moved
+  one-pixel border disappear in an empty neighbourhood; relative to the
+  structure that is there, the same move is nearly total. Above
+  `guard_tolerance` (default 0.2) the bounds are not trusted. Changes below
+  0.5 % of the band are treated as noise.
+- **Second rule.** A region that reads empty is not a verdict: an emptied field
+  and a field that slid away look the same in the crop. It also triggers the
+  full scan.
+- **Fallback.** One full analysis of the same grab, then the element is read
+  where it is now. An element that is gone fails as any unresolved locator.
+  The new screenshot becomes the reference.
+- **Switch.** Off by default, and with it off the code path is the one of 1.0
+  (`tests/unit/test_region_guard.py` pins both). On through the config, the
+  import argument or `Set Region Guard`. `refresh=screen` forces a full scan
+  for one check either way.
+- **Scope.** Value reads only. Existence and absence checks never use a cached
+  region; they need the whole screen.
+
+Measured on the target elements of the two real-application sets (453 and 81
+elements, simulated changes, band check alone):
+
+| Change | Main set | Held-out set |
+|---|---|---|
+| nothing changed: guard quiet | 453 / 453 | 81 / 81 |
+| only the element's pixels changed: quiet | 453 / 453 | 81 / 81 |
+| JPEG quality 85 capture noise: quiet | 453 / 453 | 81 / 81 |
+| screen shifted 12 px down: tripped | 444 / 453 | 81 / 81 |
+| screen shifted 12 px right: tripped | 431 / 453 | 74 / 81 |
+| screen shifted 40 px down / right: tripped | 453 / 445 | 81 / 77 |
+| a dialog over the element: tripped | 441 / 453 | 76 / 81 |
+
+The check itself takes about 0.3 ms. The misses are elements whose
+neighbourhood is uniform or runs unbroken along the direction of the shift (a
+full-width row moved sideways); a covered element in a blank neighbourhood is
+still caught by the empty-read rule. The guard is therefore a strong check, not
+a proof, and it is not on by default. It has not yet been timed or exercised on
+a live application; the figures above are simulated on saved screenshots.
+
+Limits: a DOM loaded from a file has no screenshot to compare with and is read
+unchecked, with one warning. A field that is legitimately empty costs a full
+scan on every read. A noisy capture (a camera) may trip the guard on every
+read, which is slow but not wrong.
 
 ## Consequences
 

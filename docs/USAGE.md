@@ -351,6 +351,33 @@ read after an action logs a warning naming the fix. Rule of thumb: **`element`**
 to read one value back; **`screen`** when the action may have changed the layout
 or other elements (dialogs, buttons enabling).
 
+**Region guard (optional, off by default).** `refresh=element` trusts the bounds
+found by the last `Dump Visual DOM`. If the window moved, the page scrolled or a
+dialog opened over the field, the old box now covers something else. With the
+guard on, the keyword first compares the pixels *around* the element with the
+screenshot the DOM was built from, and re-analyses the whole screen when they
+changed or when the region reads empty. The element is then read where it is
+now; an element that is gone fails as any unresolved locator does. Each read
+logs whether it used the cached region or a full scan, and why.
+
+```robotframework
+# for the whole session, in the Connect config:
+#   "recap": { "region_guard": true }
+# or at import:
+Library    VisualGuiLibrary    region_guard=True
+# or around a few steps:
+${old}=    Set Region Guard    ${True}
+Verify Element Value    hint=Email    user@example.com
+Set Region Guard    ${old}
+```
+
+The check costs well under a millisecond; a fallback costs one full analysis.
+`refresh=screen` still forces a full scan for a single check, and existence
+checks (`Visual Should Exist`, the waits) never use a cached region. The guard
+compares against a screenshot, so a DOM loaded from a file is read unchecked
+(one warning). It is a strong check and not a proof: an element that slides a
+few pixels along an unbroken line can pass it.
+
 ### Locating by description (`desc=`)
 
 You can also identify an element by *describing* it (ADR-022):

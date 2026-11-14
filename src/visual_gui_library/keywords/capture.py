@@ -15,6 +15,21 @@ log = get_logger(__name__)
 # missing property) apart from "default is None / empty" (-> return it).
 _UNSET = object()
 
+# Region guard (ADR-023 1.1): grey-level difference above which a pixel of the
+# band around an element counts as changed. Wide enough to ignore capture noise
+# and sub-pixel text rendering, narrow enough to see a moved border or label.
+GUARD_PIXEL_DELTA = 30
+# Below this share of the band, changed pixels are treated as noise (a blinking
+# caret that strays over the pad, a few compression artefacts).
+GUARD_NOISE_SHARE = 0.005
+
+
+def _truthy(value) -> bool:
+    """Robot hands arguments over as text: 'False' must not mean on."""
+    if isinstance(value, str):
+        return value.strip().lower() not in ("false", "0", "no", "off", "none", "")
+    return bool(value)
+
 
 class CaptureKeywords:
     """Keywords for screen capture and Visual DOM generation."""
@@ -32,6 +47,14 @@ class CaptureKeywords:
         # (refresh=none) while stale logs a warning. Dump/Load clear it.
         self._dom_stale = False
         self._refresh_ocr = None  # lazy TextDetector for element-region re-OCR
+        # Region guard (ADR-023 1.1), off by default: with it off, refresh=element
+        # reads the cached bounds exactly as before. `Connect` (recap section),
+        # the library's region_guard argument and `Set Region Guard` turn it on.
+        self._region_guard = False
+        self._guard_margin = 24
+        self._guard_tolerance = 0.2
+        self._dom_screenshot = None   # the image the current DOM was built from
+        self._guard_warned_no_reference = False
 
     def _get_capture(self):
         """Get the visual_dom capture strategy - provided by VisualGuiLibrary."""
@@ -125,17 +148,19 @@ class CaptureKeywords:
             self._refresh_ocr = TextDetector(ocr_engine=engine, upscale=True)
         return self._refresh_ocr
 
-    def _refresh_element(self, element: dict, pad: int = 8) -> dict:
+    def _refresh_element(self, element: dict, pad: int = 8, shot=None) -> dict:
         """
-        Element-region recap: re-capture the screen, re-OCR ONLY this element's
-        bounds (+pad), and update the element's text in the cached DOM.
+        Element-region recap: re-capture the screen (or take ``shot``, a grab the
+        caller already made), re-OCR ONLY this element's bounds (+pad), and
+        update the element's text in the cached DOM.
 
         Cheap (no detector / hierarchy rebuild) and typically MORE accurate than
         the full-screen pass, because the small crop gets the OCR upscaling
         treatment. Updates one element only - if the whole layout may have
         changed, use refresh=screen / 'Dump Visual DOM' instead.
         """
-        shot = self._grab_frame()
+        if shot is None:
+            shot = self._grab_frame()
         self._current_screenshot = shot
         h, w = shot.shape[:2]
         x1, y1, x2, y2 = element.get("bounds", [0, 0, 0, 0])
@@ -185,9 +210,128 @@ class CaptureKeywords:
             return self.get_visual_element(locator)
         element = self.get_visual_element(locator)
         if mode == "element":
+            if self._region_guard:
+                return self._refresh_element_guarded(element, locator)
             return self._refresh_element(element)
         self._warn_if_stale(keyword_name)
         return element
+
+    # --- region guard (ADR-023 1.1) ------------------------------------------
+
+    def _region_changed(self, element: dict, shot, pad: int = 8) -> Optional[str]:
+        """
+        Why this element's cached bounds can no longer be trusted on ``shot``, or
+        None when they can.
+
+        The element's own pixels are expected to change (that is the value being
+        read back), so the comparison is made on the band AROUND the padded
+        bounds: its border neighbourhood, its label, the controls next to it.
+        The reference is the screenshot the DOM was built from. A changed band
+        means the element may have moved or been covered; the caller then
+        re-analyses the whole screen, which costs time but never a wrong value.
+
+        The measure is the share of the band's STRUCTURE that changed: changed
+        pixels over (edge pixels of either image, plus the changed ones). A
+        share of the band's area would let a moved one-pixel border or a small
+        label vanish in a mostly empty neighbourhood; relative to the structure
+        that is there, the same move is nearly total.
+        """
+        ref = self._dom_screenshot
+        if ref is None:
+            if not self._guard_warned_no_reference:
+                self._guard_warned_no_reference = True
+                log.warning("region guard: the DOM has no screenshot to compare "
+                            "against (loaded from a file?) - reading the cached "
+                            "bounds unchecked. 'Dump Visual DOM' gives it one.")
+            return None
+        h, w = shot.shape[:2]
+        rh, rw = ref.shape[:2]
+        if (h, w) != (rh, rw):
+            return (f"the capture is now {w}x{h} but the DOM was built from "
+                    f"{rw}x{rh}")
+        x1, y1, x2, y2 = (int(v) for v in element.get("bounds", [0, 0, 0, 0]))
+        ix1, iy1 = max(0, x1 - pad), max(0, y1 - pad)
+        ix2, iy2 = min(w, x2 + pad), min(h, y2 + pad)
+        reach = pad + max(1, int(self._guard_margin))
+        ox1, oy1 = max(0, x1 - reach), max(0, y1 - reach)
+        ox2, oy2 = min(w, x2 + reach), min(h, y2 + reach)
+        if ix2 <= ix1 or iy2 <= iy1:
+            return f"its bounds {element.get('bounds')} lie outside the screen"
+
+        import cv2
+
+        def grey(img):
+            patch = img[oy1:oy2, ox1:ox2]
+            if patch.ndim == 3:
+                patch = cv2.cvtColor(patch, cv2.COLOR_BGR2GRAY)
+            return cv2.GaussianBlur(patch, (3, 3), 0)
+
+        before, after = grey(ref), grey(shot)
+        changed = cv2.absdiff(before, after) > GUARD_PIXEL_DELTA
+        band = np.ones(changed.shape, dtype=bool)
+        band[iy1 - oy1:iy2 - oy1, ix1 - ox1:ix2 - ox1] = False
+        if not band.any():      # the element fills the screen: nothing around it
+            return None
+        n_changed = int(changed[band].sum())
+        if n_changed <= GUARD_NOISE_SHARE * int(band.sum()):
+            return None
+        structure = (cv2.Canny(before, 50, 150) > 0) | (cv2.Canny(after, 50, 150) > 0)
+        share = n_changed / float((structure | changed)[band].sum())
+        if share > self._guard_tolerance:
+            return (f"{share:.0%} of what surrounds it changed since the DOM "
+                    f"was built (limit {self._guard_tolerance:.0%})")
+        return None
+
+    def _refresh_element_guarded(self, element: dict, locator: str) -> dict:
+        """
+        refresh=element with the guard on: read the cached region only when its
+        surroundings still match the DOM's screenshot AND it reads some text;
+        otherwise re-analyse the whole screen (from the same grab) and read the
+        element where it is now. An element that is gone fails as any unresolved
+        locator does.
+        """
+        shot = self._grab_frame()
+        reason = self._region_changed(element, shot)
+        if reason is None:
+            element = self._refresh_element(element, shot=shot)
+            if element.get("text"):
+                log.info(f"region guard: surroundings of {locator} unchanged - "
+                         f"read its cached region only")
+                return element
+            reason = "its region reads empty"
+        log.warning(f"region guard: {reason} - re-analysing the whole screen "
+                    f"for {locator}")
+        self._current_screenshot = shot
+        self.dump_visual_dom(image=shot)
+        return self._refresh_element(self.get_visual_element(locator), shot=shot)
+
+    @keyword("Set Region Guard")
+    def set_region_guard(self, enabled: bool = True) -> bool:
+        """
+        Turn the region guard on or off for this session (ADR-023).
+
+        `Verify Element Value` and `Get Element Value` re-read only the element's
+        own region of the screen (``refresh=element``). That is fast, but it
+        trusts the bounds found by the last `Dump Visual DOM`. With the guard on,
+        the keyword first compares the pixels around the element with the
+        screenshot the DOM was built from. If they changed (the window moved,
+        the page scrolled, a dialog opened over the field) or the region reads
+        empty, it re-analyses the whole screen and reads the element where it is
+        now. With the guard off (the default) the region is read as before.
+
+        Returns the previous setting, so a suite can restore it:
+        | ${old}= | Set Region Guard | ${True} |
+        | Verify Element Value | hint=Email | user@example.com |
+        | Set Region Guard | ${old} |
+
+        The guard can also be enabled for the whole session with
+        ``"recap": {"region_guard": true}`` in the `Connect` config, or
+        ``region_guard=True`` when importing the library. To force a full scan
+        for one check regardless of the guard, pass ``refresh=screen``.
+        """
+        previous = self._region_guard
+        self._region_guard = _truthy(enabled)
+        return previous
 
     @keyword("Connect")
     def connect(self, config: Optional[str] = None) -> dict:
@@ -244,6 +388,14 @@ class CaptureKeywords:
             self._actuator_name = act.strategy
             self._actuator_kwargs = {"target": act.target} if act.target else {}
             self._actuator = None
+
+        # Region guard for refresh=element (ADR-023 1.1). Like the focus options
+        # below, a library argument that already enabled it stays enabled.
+        recap = getattr(cfg, "recap", None)
+        if recap is not None:
+            self._region_guard = bool(recap.region_guard) or self._region_guard
+            self._guard_margin = int(recap.guard_margin_px)
+            self._guard_tolerance = float(recap.guard_tolerance)
 
         # Application targeting (ADR-021). The title is passed to focus_target()
         # per call rather than into the constructor, so it works identically for a
@@ -479,6 +631,7 @@ class CaptureKeywords:
         if self._session is not None:
             dom = self._session.analyze(image, save_path=save_path)
             self._current_dom = dom
+            self._dom_screenshot = image
             self._dom_stale = False
             self._update_finder()
             return dom
@@ -522,6 +675,7 @@ class CaptureKeywords:
                 json.dump(dom, f, indent=2, ensure_ascii=False)
 
         self._current_dom = dom
+        self._dom_screenshot = image
         self._dom_stale = False
         self._update_finder()
 
@@ -562,6 +716,7 @@ class CaptureKeywords:
             dom = json.load(f)
 
         self._current_dom = dom
+        self._dom_screenshot = None   # no image: the region guard cannot compare
         self._dom_stale = False
         self._update_finder()
 

@@ -2,7 +2,7 @@
 Robot Framework keywords for visual GUI automation.
 """
 
-from .capture import CaptureKeywords
+from .capture import CaptureKeywords, _truthy
 from .assertions import AssertionKeywords
 from .actions import ActionKeywords
 
@@ -62,6 +62,7 @@ class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
         focus_before_capture: bool = False,
         window_scope: bool = False,
         screenshot_on_failure: bool = True,
+        region_guard: bool = False,
         **kwargs
     ):
         """
@@ -86,6 +87,11 @@ class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
             screenshot_on_failure: Attach a screenshot to the Robot log whenever a
                 keyword of this library fails (default on). Toggle at runtime with
                 ``Set Screenshot On Failure``.
+            region_guard: Before `Verify Element Value` / `Get Element Value`
+                re-read an element's region, check that its surroundings still
+                match the screenshot the DOM was built from, and re-analyse the
+                whole screen when they do not (ADR-023). Off by default; toggle
+                at runtime with ``Set Region Guard``.
         """
         CaptureKeywords.__init__(self)
         AssertionKeywords.__init__(self)
@@ -109,6 +115,7 @@ class VisualGuiLibrary(CaptureKeywords, AssertionKeywords, ActionKeywords):
         self._actuator_app_title = app_title
         self._focus_before_capture = bool(focus_before_capture)
         self._window_scope = bool(window_scope)
+        self._region_guard = _truthy(region_guard)   # ADR-023 1.1
         # Geometry of the last grab when it was window-scoped (a CaptureFrame), so
         # coordinates measured on the crop map back to the device space.
         self._capture_frame = None

@@ -98,6 +98,7 @@ The template groups options by pipeline stage:
 | `filter` | size / count filters | `min_element_area`, `min_element_size`, `max_elements` |
 | `capture` | acquisition (ADR-018) | `strategy`, `target`, `camera_mode`, `window_title` + `focus_before_capture` + `window_scope` (app targeting, ADR-021) |
 | `actuator` | input delivery (ADR-019) | `strategy` (`desktop`/`android`/`grpc`/plugin), `target` (host:port when `grpc`), `window_title` (ADR-021) |
+| `recap` | value read-back after an action (ADR-023) | `region_guard` (off by default: check an element's surroundings before re-reading only its region, full scan when they changed), `guard_margin_px`, `guard_tolerance` |
 | `grounding` | `desc=` locator resolution (ADR-022) | `tiers` (`lexical`/`slm`/`vlm`, escalation order), `backend`, `model`, `vision_model`, `host` |
 | `output` | DOM compilation | `generate_locators` |
 
@@ -294,6 +295,14 @@ described here".
 | `strategy` | str | `null` | null=platform default \| desktop \| android \| grpc \| <plugin> |
 | `target` | str | `null` | host:port of a running actuator gRPC service (when strategy == grpc) |
 | `window_title` | str | `null` | app to raise for input; null = inherit capture.window_title (ADR-021) |
+
+### `recap` — post-action value read-back (RF client layer, ADR-023)
+
+| Parameter | Type | Default | Meaning |
+|---|---|---|---|
+| `region_guard` | bool | `false` | refresh=element checks the pixels around the element against the screenshot the DOM was built from, and re-analyses the whole screen when they changed or the region reads empty; false = read the cached bounds as before |
+| `guard_margin_px` | int | `24` | width in pixels of the band around the element that the guard compares |
+| `guard_tolerance` | float | `0.2` | 0..1; share of the structure in that band (edges and changed pixels) allowed to differ before the guard falls back to a full scan (lower = stricter) |
 
 ### `grounding` — desc= locator resolution (ADR-022): tiered natural-language grounding
 
