@@ -58,5 +58,27 @@ Offline, from the saved DOMs of run 8 (`AUDIT.md` section 7):
 | `desc=` lexical | 45 / 168 |
 | `desc=` lexical with the exact-name rule (not in the product) | 0 / 168 |
 
-Run 9 (`deploy/gpu/run9.sh`) adds the grounders and the end-to-end VizDOM
-rows; its table goes here.
+Run 9 (`benchmarks/results/gpu-20261109_232648`, commit 4aae87a, RTX PRO
+6000), end to end. Every step expects FAILED, so verify accuracy is the
+absent-to-fail rate; the interval is Wilson over the 168 steps (the audit's
+clustered interval, over 7 applications, is wider):
+
+| Executor | False passes | Rate [95 % CI] | Median step |
+|---|---|---|---|
+| `vizdom-modular` (`text=`) | 39 / 168 | 0.232 [0.175, 0.302] | GPU chain, cached DOM |
+| `vizdom-modular+desc[lexical+slm]` (`desc=`, keyword verify) | 45 / 168 | 0.268 [0.207, 0.339] | |
+| `vizdom-modular+desc[lexical+vlm][verify=chain]` (pre-1.9 scoring) | 81 / 168 | 0.482 [0.408, 0.557] | 0.34 s |
+| `ui-tars-1.5-7b` (point proxy) | 158 / 168 | 0.940 [0.894, 0.967] | 0.48 s |
+| `ui-tars-1.5-7b[verify=yesno]` | 2 / 168 | 0.012 [0.003, 0.042] | 0.31 s |
+| `elam-7b` (official FAILED-first rule) | 168 / 168 | 1.000 [0.978, 1.000] | 3.8 s |
+| `aria-ui` (point proxy) | 137 / 168 | 0.815 [0.750, 0.867] | 2.7 s |
+
+The end-to-end VizDOM rows reproduce the offline audit exactly (39 and 45).
+The two VLM point proxies and ELAM pass nearly every sibling caption: asked
+to point at something, a grounder points at the nearest match. Asked the
+same statement as a yes/no question, UI-TARS answers "no" on 166 of the 168
+(the two "yes" answers: the `Always` radio button in Notepad++'s new-document
+page and the `Extensions, group` tree item in VS Code). On this set the
+yes/no verdict is a stronger verifier than VizDOM's substring `text=` and
+keyword `desc=` rules; the exact-match rules of the audit (1 and 0 of 168)
+would close that gap but are not in the product.
