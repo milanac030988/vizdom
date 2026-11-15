@@ -47,6 +47,64 @@ python scripts/data_prep/generate_synthetic_dataset.py
 | `synthetic_camera/` | ~582 MB | `python scripts/data_prep/augment_camera.py` (perspective/glare/noise augmentation simulating a screen seen through a camera) |
 | `synthetic_claude/`, `synthetic_llm/` | small | `python scripts/data_prep/generate_with_claude.py` |
 
+## One layout for every benchmark set
+
+The lifecycle benchmark reads the same layout whatever the screens are, so a
+new source only needs to be brought into it once:
+
+```
+<root>/images/<app>__<state>.png
+<root>/labels/<app>__<state>.json     # the label format above
+```
+
+`<app>` groups the screens of one application: same-application negatives are
+drawn inside it. Three sources write this layout today:
+
+| Source | Truth comes from | Tool |
+|---|---|---|
+| synthetic screens | the generator | `scripts/data_prep/generate_synthetic_dataset.py` |
+| real desktop applications (`realworld/`, `realworld-heldout/`) | the Windows UI Automation tree | `python -m visual_dom.evaluation.lifecycle.harvest capture` |
+| screens labelled by hand in Label Studio | the annotator's boxes | `python -m visual_dom.evaluation.lifecycle.labelstudio convert` |
+
+Beyond the base format a label file may carry `all_names` (every caption the
+screen shows, so a negative is never drawn from one), and per element
+`ocr_text` (the caption), `role_word`, `parent_id` / `children_ids`, `review`
+(a note for the human pass) and, for imported sets, `origin` and `ls_label`.
+
+### Importing a Label Studio export
+
+```bash
+python -m visual_dom.evaluation.lifecycle.labelstudio convert \
+    --exports <export dir> [<export dir> ...] --images <picture dir> \
+    --out <root> [--ocr] [--origins manual prediction-changed]
+python -m visual_dom.evaluation.lifecycle.generate --labels <root>/labels \
+    --images <root>/images --negatives same-app --dedupe-app \
+    --benchmark <name> --out <root>/steps.json
+python -m visual_dom.evaluation.lifecycle.harvest review --root <root> --steps <root>/steps.json
+```
+
+The converter reads both export shapes (a task list, and one annotation per
+file), keeps the most recent annotation of each picture, maps the classes onto
+`visual_type`, builds the containment tree and writes `<root>/index.json` with
+what was kept, dropped and missing. Three things to know before using such a
+set for a number:
+
+- **Who drew the box.** Each element keeps Label Studio's `origin`: `manual`,
+  `prediction` (a model's proposal the annotator left as it was) or
+  `prediction-changed`. Do not score a detector against proposals of a related
+  detector; `--origins manual prediction-changed` keeps only what a person
+  drew or moved.
+- **Captions are not in the export.** `--ocr` proposes one per text box with
+  Tesseract and marks it `caption_source: "ocr"`. The pipeline can use the same
+  engine, so review the captions on the review sheet before reporting click or
+  verify results on them. Icons get no caption.
+- **Classes outside the format** (separator lines, scroll bars, progress bars)
+  are left out and counted in the index; a `selected` marker becomes a flag on
+  the element under it.
+
+Keep a set that is not yours to publish outside git (`.gitignore`), as its
+`<root>` can live anywhere.
+
 ## Download the published dataset
 
 The **full dataset** — `synthetic/`, `synthetic_camera/`, `synthetic_claude/`,

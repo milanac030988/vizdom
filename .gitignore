@@ -88,6 +88,8 @@ models/omniparser/
 # Camera-augmented dataset (~580MB, reconstructable via scripts/data_prep/augment_camera.py).
 # Keep data/synthetic/ (the labelled benchmark) tracked.
 data/synthetic_camera/
+# Internal automotive HMI screens with Label Studio exports: not for the public repository
+data/da3/
 
 # LaTeX build artifacts (report/). Keep .tex, .bib, and figures/ tracked.
 report/*.aux
