@@ -289,6 +289,43 @@ instead of it. An answer that is neither word is scored as no verdict (wrong
 on a present caption, not a false pass on an absent one) and its text is in
 the step's `detail`.
 
+### Run 10: the ScreenVLM column (`run10.sh`, 2026-11-15)
+
+Another whole-screen parser beside VizDOM (`lifecycle/parsers.py`, results of
+the laptop run in `benchmarks/README.md`). The rental repeats it on a card
+that is not a 6 GB laptop GPU and adds a repeat parse and the detection table.
+
+| Step (`RUN10_ONLY` name) | Result dir | What it answers |
+|---|---|---|
+| `smoke` | `smoke/` | one synthetic screen parses, and at what speed |
+| `ho`, `syn`, `rw`, `nm` | `heldout/`, `synthetic/`, `realworld/`, `nearmiss/` | `screenvlm` and `screenvlm[pick=first]` on the four sets; parsed DOMs in `doms/` |
+| `repeat` | `repeat/` | a second parse of the 14 held-out screens: the same text or not |
+| `vizdom` (only with `SV_WITH_VIZDOM=1`) | the same four dirs | `vizdom-modular` on this card at this commit; needs `setup.sh` and `prefetch.sh` |
+| `detection` | `detection.md` | boxes against the synthetic test labels, VizDOM beside it when its row ran |
+
+The script builds its own environment (`.venv-parser`, transformers 4.55.2)
+and downloads the 0.75 GB checkpoint at a pinned revision, so `setup.sh` is
+not needed without the VizDOM rows. Any card of 8 GB or more; 30 GB of disk
+(120 GB with the VizDOM rows, as `setup.sh` checks). The laptop needed about
+3 h for the three parsed sets at 14 to 17 tokens/s; the time on a rented card
+is not measured yet, the `smoke` step prints the speed before the sweep.
+
+```bash
+tmux new -s run10
+git clone https://github.com/milanac030988/vizdom.git && cd vizdom && git checkout develop
+RUN10_ONLY="smoke" OUT_DIR=benchmarks/results/gpu-run10 bash deploy/gpu/run10.sh
+#   want:  smoke: OK, a result row, and "N tokens/s" well above 14
+OUT_DIR=benchmarks/results/gpu-run10 bash deploy/gpu/run10.sh
+#   with the VizDOM rows on the same card:
+#   bash deploy/gpu/setup.sh && ONLY="vizdom-modular" bash deploy/gpu/prefetch.sh
+#   SV_WITH_VIZDOM=1 OUT_DIR=benchmarks/results/gpu-run10 bash deploy/gpu/run10.sh
+```
+
+A step rerun into the same `OUT_DIR` reuses the DOMs already parsed there.
+The model's output was cut at its 6192-token limit on 22 of 104 screens on
+the laptop (it loops on screens that are not web pages); such a screen costs
+the full limit, which is most of the run time.
+
 ### Aria-UI on a 48 GB card: offload mode (experimental)
 
 The clean path for Aria-UI is an 80 GB card. The opt-in alternative is

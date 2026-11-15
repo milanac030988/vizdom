@@ -599,12 +599,16 @@ def main():
     parser.add_argument("--executors", default="vizdom-uied",
                         help="comma list: vizdom-uied, vizdom-omniparser, "
                              "vizdom-modular, vizdom-<detector>+desc, "
-                             "elam-7b, ui-tars-1.5-7b, ui-tars-1.5-7b[verify=yesno], aria-ui")
+                             "elam-7b, ui-tars-1.5-7b, ui-tars-1.5-7b[verify=yesno], aria-ui, "
+                             "screenvlm, screenvlm[pick=first]")
     parser.add_argument("--limit-states", type=int, default=None)
     parser.add_argument("--kinds", default=None,
                         help="comma list from action,verify: run only these steps "
                              "(default: all)")
     parser.add_argument("--no-quantize", action="store_true")
+    parser.add_argument("--parser-doms", default=None,
+                        help="directory of parsed DOMs for a parser column (screenvlm): "
+                             "read when a state's file is there, written when it is not")
     parser.add_argument("--out-dir", default="benchmarks/results",
                         help="directory for the timestamped result json/md "
                              "(deploy/gpu sweep points each column at one run dir)")
@@ -649,11 +653,15 @@ def main():
                 executors.append(VizDomExecutor(detector=detector, overrides=overrides,
                                                 suffix=suffix))
             continue
+        from .parsers import PARSERS, build_executor
+        if name.split("[", 1)[0] in PARSERS:
+            executors.append(build_executor(name, dom_cache_dir=args.parser_doms))
+            continue
         from .grounders import GROUNDERS
         cls = GROUNDERS.get(name)
         if cls is None:
             raise SystemExit(f"unknown executor {name!r}; choose from "
-                             f"vizdom-<detector> or {sorted(GROUNDERS)}")
+                             f"vizdom-<detector>, {sorted(PARSERS)} or {sorted(GROUNDERS)}")
         grounder = cls(quantize=not args.no_quantize)
         ok, reason = grounder.available()
         if not ok:

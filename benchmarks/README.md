@@ -661,6 +661,72 @@ extra verify hits come with the set's only VizDOM false pass, so keyword
 verify stays the default. Caveat: the 1.9 fixes were derived from this set;
 held-out applications are still to be captured.
 
+### Another screen parser: ScreenVLM (laptop GPU, 2026-11-15)
+
+The grounders above answer one step at a time. ScreenVLM (Gurbuz et al., ICML
+2026; 316 M parameters, trained on the ScreenParse web-page set) is the nearest
+model *in kind*: it turns the whole screenshot into typed, boxed, captioned
+elements, as VizDOM does. It is run under the VizDOM contract
+(`lifecycle/parsers.py`): one parse per state, its output converted to the DOM
+format, every step resolved by the same element finder (`text=`), a click needs
+exactly one match. So the rows differ in the front end only.
+
+Checkpoint `docling-project/ScreenVLM` at revision `78df0cc`, prompt and
+generation settings of the model card (greedy, 6192 new tokens), bfloat16 on an
+RTX A3000 Laptop GPU (6 GB), `transformers` 4.55.2. Class mapping onto the
+seven visual types fixed before the first result.
+
+| Set | Clicks hit | Present → pass | False passes | Parse, mean (s) | Output cut at the token limit |
+|---|---|---|---|---|---|
+| synthetic (44 states) | 123 / 213 = 0.577 | 140 / 213 = 0.657 | 0 / 88 | 79 | 5 of 44 |
+| real-world (46 states) | 25 / 453 = 0.055 | 59 / 453 = 0.130 | 0 / 92 | 143 | 15 of 46 |
+| held-out (14 states) | 17 / 81 = 0.210 | 18 / 81 = 0.222 | 0 / 28 | 57 (12 parses) | 2 of 14 |
+| near-miss (35 states) | - | - | 13 / 168 | (real-world parses) | - |
+
+VizDOM `text=` (modular) on the same steps: synthetic 0.916 clicks, real-world
+0.795 clicks and 0 / 92, near-miss 39 / 168, with a mean parse of about 15 s on
+the laptop CPU.
+
+Reading it:
+
+- **It is a web model.** On desktop windows it often writes a web page that is
+  not there ("Home About Us Our Services Contact Us") or loops on a phrase
+  until the token limit. The authors report the same drop outside web pages.
+  The synthetic screens are web-like and it does far better there. This is a
+  result about transfer, not about the model on its own ground.
+- **Few false passes because little is read.** With 13 % of the present
+  captions found on real applications, there is little for a sibling caption
+  to collide with; 13 / 168 is not evidence of a stricter verify.
+- **The one-match rule is not what holds it back.** `screenvlm[pick=first]`
+  (several matches: take the first) changes 4 synthetic clicks and nothing
+  elsewhere; the misses are captions that are not in its output at all.
+- **Cost.** About 14 tokens/s on this GPU and 1.2 on the CPU; a dense screen
+  is roughly 900 tokens.
+
+Detection on the 44 synthetic test screens (greedy matching, IoU ≥ 0.5, same
+script for both; VizDOM from its saved DOMs of 2026-10-28):
+
+| | Precision | Recall | F1 | mIoU of matches | button | input_field | checkbox | text |
+|---|---|---|---|---|---|---|---|---|
+| VizDOM modular | 0.645 | 0.631 | 0.638 | 0.673 | 1.000 | 0.993 | 0.197 | 0.650 |
+| ScreenVLM | 0.530 | 0.445 | 0.484 | 0.735 | 0.705 | 0.763 | 0.724 | 0.423 |
+
+(Last four columns: recall per labelled type.) ScreenVLM's boxes are tighter
+when it finds an element and it is clearly better on checkboxes; VizDOM finds
+more of the buttons, inputs and text.
+
+```bash
+# needs transformers >= 4.55 (a second environment); --parser-doms keeps the
+# parsed DOMs, so a set is parsed once and re-scored without the model
+python -m visual_dom.evaluation.lifecycle.runner --executors "screenvlm,screenvlm[pick=first]" \
+    --manifest benchmarks/lifecycle-realworld-v1/steps.json \
+    --parser-doms benchmarks/results/screenvlm_local/doms/realworld \
+    --out-dir benchmarks/results/screenvlm_local/realworld
+```
+
+Not done: the comparison in the other direction. ScreenParse publishes one
+935 GB training split and no separate test set.
+
 ### Planned extensions (in priority order)
 
 1. ~~**Real-application states** in the same schema (the headline caveat).~~
