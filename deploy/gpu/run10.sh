@@ -4,15 +4,14 @@
 #
 # ScreenVLM (316 M parameters, trained on the ScreenParse web-page set) is run
 # under the VizDOM contract: one parse per state, steps resolved from the
-# parsed elements by the same element finder (lifecycle/parsers.py). It was
-# first measured on a 6 GB laptop GPU (benchmarks/README.md, 2026-11-15) at
-# about 14 tokens/s. This sweep repeats it on the card the other columns ran
-# on and adds what the laptop run did not have:
+# parsed elements by the same element finder (lifecycle/parsers.py). The
+# sweep runs it on a rented card, as the other columns (results in
+# benchmarks/README.md; about 40 tokens/s on an RTX PRO 5000 48 GB):
 #
 #   1. the four sets (held-out, synthetic, real-application, near-miss), both
 #      column variants, with every parsed DOM kept in the tarball;
 #   2. a second parse of the held-out screens: are two parses of one screen
-#      the same text? (on the laptop the output changed with the precision)
+#      the same text? (the output changes with the precision and the machine)
 #   3. the detection table on the synthetic test screens, next to VizDOM when
 #      its row is run here too;
 #   4. with SV_WITH_VIZDOM=1 and the main environment present (setup.sh,
@@ -42,7 +41,7 @@ export PATH="$HOME/.local/bin:$PATH"
 OUT="${OUT_DIR:-benchmarks/results/gpu-$(date +%Y%m%d_%H%M%S)}"
 OUT="${OUT%/}"
 ONLY="${RUN10_ONLY:-}"
-COLUMNS='screenvlm,screenvlm[pick=first]'
+EXECUTORS='screenvlm,screenvlm[pick=first]'   # not COLUMNS: bash sets that to the terminal width
 REVISION="78df0cc8498bbea1a03eb2816056fc0a76d2f63d"
 mkdir -p "$OUT"
 exec > >(tee -a "$OUT/sweep.log") 2>&1
@@ -91,6 +90,7 @@ echo "=== checkpoint (0.75 GB) ==="
 wanted() { [ -z "$ONLY" ] || [[ " $ONLY " == *" $1 "* ]]; }
 RUN="$PY -m visual_dom.evaluation.lifecycle.runner"
 
+FAILED_STEPS=""
 column() {   # column <name> <result dir> <command...>
     local name="$1" dir="$2"; shift 2
     mkdir -p "$dir"
@@ -101,6 +101,7 @@ column() {   # column <name> <result dir> <command...>
         grep -E "^\| " "$dir/$name.log" | tail -n +3      # the result rows
     else
         echo "$name: FAILED ($((SECONDS - t0))s) - see $dir/$name.log"
+        FAILED_STEPS="$FAILED_STEPS $name"
         grep -m1 -E "Error|error:|FATAL" "$dir/$name.log" || true
     fi
 }
@@ -128,14 +129,14 @@ if wanted smoke; then
     if ! ls "$OUT"/smoke/doms/*.json >/dev/null 2>&1; then
         echo "FATAL: the smoke parse produced nothing - fix this before the sweep"; exit 1
     fi
-    echo "want: a row with action-hit above 0 and a speed well above the laptop's 14 tokens/s"
+    echo "want: a row with action-hit above 0 and a speed near 40 tokens/s (run 10 card)"
 fi
 
 # --- the four sets (short ones first; near-miss reuses the real-world parses)
-wanted ho  && column ho-screenvlm  "$OUT/heldout"   $RUN --manifest "$HO"  --executors "$COLUMNS" --parser-doms "$OUT/doms/heldout"
-wanted syn && column syn-screenvlm "$OUT/synthetic" $RUN --manifest "$SYN" --executors "$COLUMNS" --parser-doms "$OUT/doms/synthetic"
-wanted rw  && column rw-screenvlm  "$OUT/realworld" $RUN --manifest "$RW"  --executors "$COLUMNS" --parser-doms "$OUT/doms/realworld"
-wanted nm  && column nm-screenvlm  "$OUT/nearmiss"  $RUN --manifest "$NM"  --executors "$COLUMNS" --parser-doms "$OUT/doms/realworld"
+wanted ho  && column ho-screenvlm  "$OUT/heldout"   $RUN --manifest "$HO"  --executors "$EXECUTORS" --parser-doms "$OUT/doms/heldout"
+wanted syn && column syn-screenvlm "$OUT/synthetic" $RUN --manifest "$SYN" --executors "$EXECUTORS" --parser-doms "$OUT/doms/synthetic"
+wanted rw  && column rw-screenvlm  "$OUT/realworld" $RUN --manifest "$RW"  --executors "$EXECUTORS" --parser-doms "$OUT/doms/realworld"
+wanted nm  && column nm-screenvlm  "$OUT/nearmiss"  $RUN --manifest "$NM"  --executors "$EXECUTORS" --parser-doms "$OUT/doms/realworld"
 
 # --- are two parses of one screen the same? (held-out, 14 screens) -----------
 if wanted repeat; then
@@ -204,6 +205,7 @@ fi
 } > "$OUT/summary.md"
 echo; cat "$OUT/summary.md"
 
+[ -z "$FAILED_STEPS" ] || { echo; echo "!! FAILED steps:$FAILED_STEPS - rerun them with RUN10_ONLY before destroying the rental"; }
 if tar czf "$OUT.tar.gz" -C "$(dirname "$OUT")" "$(basename "$OUT")"; then
     echo; echo "run 10 complete: $OUT.tar.gz"
     echo "copy it back, verify it opens, then DESTROY THE RENTAL."

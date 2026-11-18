@@ -291,9 +291,9 @@ the step's `detail`.
 
 ### Run 10: the ScreenVLM column (`run10.sh`, 2026-11-15)
 
-Another whole-screen parser beside VizDOM (`lifecycle/parsers.py`, results of
-the laptop run in `benchmarks/README.md`). The rental repeats it on a card
-that is not a 6 GB laptop GPU and adds a repeat parse and the detection table.
+Another whole-screen parser beside VizDOM (`lifecycle/parsers.py`, results in
+`benchmarks/README.md`): the four sets, a repeat parse and the detection table.
+Run on an RTX PRO 5000 Blackwell (48 GB) at commit `7d396f8`.
 
 | Step (`RUN10_ONLY` name) | Result dir | What it answers |
 |---|---|---|
@@ -306,15 +306,15 @@ that is not a 6 GB laptop GPU and adds a repeat parse and the detection table.
 The script builds its own environment (`.venv-parser`, transformers 4.55.2)
 and downloads the 0.75 GB checkpoint at a pinned revision, so `setup.sh` is
 not needed without the VizDOM rows. Any card of 8 GB or more; 30 GB of disk
-(120 GB with the VizDOM rows, as `setup.sh` checks). The laptop needed about
-3 h for the three parsed sets at 14 to 17 tokens/s; the time on a rented card
-is not measured yet, the `smoke` step prints the speed before the sweep.
+(120 GB with the VizDOM rows, as `setup.sh` checks). The three parsed sets
+took about 92 min at 40 tokens/s; the `smoke` step prints the speed before
+the sweep.
 
 ```bash
 tmux new -s run10
 git clone https://github.com/milanac030988/vizdom.git && cd vizdom && git checkout develop
 RUN10_ONLY="smoke" OUT_DIR=benchmarks/results/gpu-run10 bash deploy/gpu/run10.sh
-#   want:  smoke: OK, a result row, and "N tokens/s" well above 14
+#   want:  smoke: OK, a result row, and about 40 tokens/s
 OUT_DIR=benchmarks/results/gpu-run10 bash deploy/gpu/run10.sh
 #   with the VizDOM rows on the same card:
 #   bash deploy/gpu/setup.sh && ONLY="vizdom-modular" bash deploy/gpu/prefetch.sh
@@ -322,9 +322,11 @@ OUT_DIR=benchmarks/results/gpu-run10 bash deploy/gpu/run10.sh
 ```
 
 A step rerun into the same `OUT_DIR` reuses the DOMs already parsed there.
-The model's output was cut at its 6192-token limit on 22 of 104 screens on
-the laptop (it loops on screens that are not web pages); such a screen costs
-the full limit, which is most of the run time.
+The model's output was cut at its 6192-token limit on 28 of 104 screens (it
+loops on screens that are not web pages); such a screen costs the full limit,
+which is most of the run time. The second parse gave the same text on 14 of
+14 held-out screens; on another GPU the text differs, so the scores belong to
+the machine.
 
 ### Aria-UI on a 48 GB card: offload mode (experimental)
 
