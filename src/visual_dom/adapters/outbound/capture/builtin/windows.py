@@ -116,7 +116,8 @@ class WindowsCapture(CaptureStrategy):
         """
         from visual_dom.adapters.outbound import win32_window as w
         try:
-            mons = self._monitors()
+            with w.physical_pixels():
+                mons = self._monitors()
             idx = max(1, int(self._monitor)) - 1
             if idx >= len(mons):
                 return None
@@ -160,18 +161,23 @@ class WindowsCapture(CaptureStrategy):
                         "front, and a crop would show whatever covers it", wanted)
             return None
 
-        rect = w.client_rect_on_screen(hwnd)
-        if not rect:
-            log.warning("Could not read the client rectangle of %r (minimised?)", wanted)
-            return None
+        # Rectangle, monitor list and grab all in physical pixels, even when the
+        # process is only system-DPI aware (w.physical_pixels explains the offset
+        # crop that happens otherwise).
+        with w.physical_pixels():
+            rect = w.client_rect_on_screen(hwnd)
+            if not rect:
+                log.warning("Could not read the client rectangle of %r (minimised?)",
+                            wanted)
+                return None
 
-        # The window may live on any monitor - including one at a negative
-        # coordinate, left of the primary. Grab THAT monitor, not monitor 1.
-        mon = self._monitor_for_rect(rect)
-        if mon is None:
-            log.warning("Window %r is not on any monitor (rect=%s)", wanted, rect)
-            return None
-        frame = self._grab_monitor(mon)
+            # The window may live on any monitor - including one at a negative
+            # coordinate, left of the primary. Grab THAT monitor, not monitor 1.
+            mon = self._monitor_for_rect(rect)
+            if mon is None:
+                log.warning("Window %r is not on any monitor (rect=%s)", wanted, rect)
+                return None
+            frame = self._grab_monitor(mon)
         fh, fw = frame.shape[:2]
 
         # Window rects come from this process's DPI context; the screenshot is in
@@ -261,11 +267,13 @@ class WindowsCapture(CaptureStrategy):
 
     def capture(self) -> np.ndarray:
         import cv2
+        from visual_dom.adapters.outbound import win32_window as w
         # Prefer mss (fast, multi-monitor); fall back to Pillow ImageGrab.
         try:
-            sct = self._sct()
-            mon = sct.monitors[self._monitor]
-            shot = sct.grab(mon)
+            with w.physical_pixels():   # the whole monitor, not a scaled part of it
+                sct = self._sct()
+                mon = sct.monitors[self._monitor]
+                shot = sct.grab(mon)
             arr = np.array(shot)  # BGRA
             return cv2.cvtColor(arr, cv2.COLOR_BGRA2BGR)
         except Exception:

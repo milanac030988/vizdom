@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import threading
 import time
+from contextlib import contextmanager
 from typing import List, Optional, Tuple
 
 from visual_dom.logging_utils import get_logger
@@ -302,6 +303,45 @@ def ensure_process_dpi_aware() -> bool:
         return False
 
 
+@contextmanager
+def physical_pixels():
+    """
+    Run the enclosed Win32 geometry calls (and screen grabs) in physical pixels,
+    whatever DPI awareness the *process* was given.
+
+    `ensure_process_dpi_aware` cannot help once something else claimed awareness
+    first: pyautogui's ``SetProcessDPIAware()`` makes the process *system* aware,
+    and system awareness is fixed to the DPI Windows recorded at sign-in. After a
+    docking change (signed in on a 100% monitor, now on a 125% laptop screen)
+    Windows then scales every rectangle by 96/120, so a window crop lands up and
+    to the left and comes out too small. Seen in the Studio bridge, 2026-11-17.
+
+    The *thread* awareness context (Windows 10 1607+) overrides the process one,
+    so set per-monitor v2 for this block and restore the previous context after.
+    A no-op where the API does not exist.
+    """
+    old = None
+    user32 = None
+    if is_windows():
+        try:
+            import ctypes
+            user32 = ctypes.windll.user32
+            fn = user32.SetThreadDpiAwarenessContext
+            fn.restype = ctypes.c_void_p
+            fn.argtypes = [ctypes.c_void_p]
+            old = fn(ctypes.c_void_p(-4))      # DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2
+        except Exception:  # noqa: BLE001 - older Windows: keep the process context
+            old = None
+    try:
+        yield
+    finally:
+        if old:
+            try:
+                user32.SetThreadDpiAwarenessContext(old)
+            except Exception:  # noqa: BLE001
+                pass
+
+
 def client_rect_on_screen(hwnd: int) -> Optional[Tuple[int, int, int, int]]:
     """
     (x, y, w, h) of a window's **client area** in screen coordinates.
@@ -317,16 +357,17 @@ def client_rect_on_screen(hwnd: int) -> Optional[Tuple[int, int, int, int]]:
         from ctypes import wintypes
         user32, _ = _user32_kernel32()
 
-        rect = wintypes.RECT()
-        if not user32.GetClientRect(hwnd, ctypes.byref(rect)):
-            return None
-        w, h = rect.right - rect.left, rect.bottom - rect.top
-        if w <= 0 or h <= 0:
-            return None
+        with physical_pixels():         # match the screenshot's pixels (see there)
+            rect = wintypes.RECT()
+            if not user32.GetClientRect(hwnd, ctypes.byref(rect)):
+                return None
+            w, h = rect.right - rect.left, rect.bottom - rect.top
+            if w <= 0 or h <= 0:
+                return None
 
-        point = wintypes.POINT(0, 0)
-        if not user32.ClientToScreen(hwnd, ctypes.byref(point)):
-            return None
+            point = wintypes.POINT(0, 0)
+            if not user32.ClientToScreen(hwnd, ctypes.byref(point)):
+                return None
         return int(point.x), int(point.y), int(w), int(h)
     except Exception:
         return None

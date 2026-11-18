@@ -89,19 +89,31 @@ class DesktopActuator(ActuatorStrategy):
         virtual = self._virtual_screen()
         return (virtual[0], virtual[1]) if virtual else (0, 0)
 
+    @staticmethod
+    def _physical():
+        """Mouse positions in physical pixels even in a system-DPI-aware process
+        whose system DPI is stale (see win32_window.physical_pixels)."""
+        import sys
+        if sys.platform.startswith("win"):
+            from visual_dom.adapters.outbound.win32_window import physical_pixels
+            return physical_pixels()
+        from contextlib import nullcontext
+        return nullcontext()
+
     def tap(self, nx, ny, image_size=None, click_type="single"):
         pg = self._pg()
         x, y = self._to_device(nx, ny, image_size)
-        if click_type == "double":
-            pg.doubleClick(x, y)
-        elif click_type == "right":
-            pg.rightClick(x, y)
-        elif click_type == "long":
-            pg.mouseDown(x, y)
-            pg.sleep(1.0)
-            pg.mouseUp(x, y)
-        else:
-            pg.click(x, y)
+        with self._physical():
+            if click_type == "double":
+                pg.doubleClick(x, y)
+            elif click_type == "right":
+                pg.rightClick(x, y)
+            elif click_type == "long":
+                pg.mouseDown(x, y)
+                pg.sleep(1.0)
+                pg.mouseUp(x, y)
+            else:
+                pg.click(x, y)
 
     def type_text(self, text: str) -> None:
         self._pg().typewrite(text, interval=0.02)
@@ -116,7 +128,8 @@ class DesktopActuator(ActuatorStrategy):
     def scroll(self, nx, ny, direction="down", amount=1, image_size=None):
         pg = self._pg()
         x, y = self._to_device(nx, ny, image_size)
-        pg.moveTo(x, y)
+        with self._physical():
+            pg.moveTo(x, y)
         clicks = amount * 3  # ~3 wheel clicks per "page"
         if direction == "up":
             pg.scroll(clicks)
