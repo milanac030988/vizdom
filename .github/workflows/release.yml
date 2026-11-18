@@ -7,7 +7,8 @@ name: Release
 #      that wheel, CPU torch, EasyOCR models and Tesseract, so nothing else needs
 #      to be installed.
 #
-# Push a tag to publish (the tag sets the version of both):
+# Push a tag to publish (the tag sets the version of both); the wheel and the
+# source package also go to PyPI as `vizdom`:
 #   git tag v0.2.0 && git push origin v0.2.0
 # "Run workflow" on the Actions tab builds the same artifacts without a release.
 
@@ -68,7 +69,7 @@ jobs:
           /tmp/check/bin/pip install --quiet "$wheel"
           /tmp/check/bin/python -c "import VisualGuiLibrary, visual_dom, visual_gui_library; print('core ok')"
           # the gRPC stubs need protobuf/grpcio, which come with the grpc extra
-          /tmp/check/bin/pip install --quiet "visual-gui-automation[grpc] @ file://$PWD/$wheel"
+          /tmp/check/bin/pip install --quiet "vizdom[grpc] @ file://$PWD/$wheel"
           /tmp/check/bin/python -c "from visual_dom.generated import detector_pb2, detector_pb2_grpc; print('grpc ok')"
 
       - uses: actions/upload-artifact@v4
@@ -139,3 +140,25 @@ jobs:
         with:
           files: artifacts/*
           generate_release_notes: true
+
+  pypi:
+    name: PyPI (pip install vizdom)
+    # Runs only once the installer has built too: a version can be uploaded to
+    # PyPI only once, so a failed release must not leave half of it published.
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [wheel, studio-windows]
+    runs-on: ubuntu-24.04
+    # Trusted publishing: PyPI accepts this repository's release.yml in the
+    # "pypi" environment, no token or password stored (see the README).
+    environment:
+      name: pypi
+      url: https://pypi.org/project/vizdom/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: python-dist
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@release/v1

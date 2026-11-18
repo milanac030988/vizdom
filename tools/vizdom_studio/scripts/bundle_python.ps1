@@ -12,7 +12,7 @@
 
 .EXAMPLE
   # after: python scripts/gen_protos.py ; uv build --wheel
-  powershell -File tools/vizdom_studio/scripts/bundle_python.ps1 -Wheel dist\visual_gui_automation-0.1.0-py3-none-any.whl
+  powershell -File tools/vizdom_studio/scripts/bundle_python.ps1 -Wheel dist\vizdom-0.1.0-py3-none-any.whl
 
   Needs uv on PATH (https://docs.astral.sh/uv/) and internet access (PyPI, the
   PyTorch CPU index, EasyOCR's model download).
@@ -72,7 +72,7 @@ Run uv @("pip", "install", "--python", $py, "--break-system-packages",
 Step "VizDOM + Robot Framework library from $([IO.Path]::GetFileName($Wheel))"
 $wheelUri = ([Uri]$Wheel).AbsoluteUri
 Run uv @("pip", "install", "--python", $py, "--break-system-packages",
-         "visual-gui-automation[robot,studio] @ $wheelUri")
+         "vizdom[robot,studio] @ $wheelUri")
 
 # --- 3. the code Studio runs that is not in the wheel ----------------------------
 Step "Bridge, Viewer exporters, plugins"

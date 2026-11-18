@@ -7,7 +7,7 @@ DOM — click, type, wait, assert — so you can test applications that expose *
 accessibility tree**: custom-rendered Qt/OpenGL UIs, embedded and industrial
 HMIs, remote desktops, or a screen seen through a camera.
 
-![VizDOM reading the Windows Calculator](docs/img/calculator_dom.png)
+![VizDOM reading the Windows Calculator](https://raw.githubusercontent.com/milanac030988/vizdom/HEAD/docs/img/calculator_dom.png)
 
 *The Windows Calculator as VizDOM sees it, from pixels only: 53 elements, 49 of them
 clickable. The operator keys have no readable label; VizDOM reads the glyph and
@@ -57,14 +57,19 @@ default per-user install location is shown):
 
 ### Option 2 — Python package (Robot Framework library only)
 
-For CI agents and test machines, install the wheel from the release (Python 3.9+):
+For CI agents and test machines, install from [PyPI](https://pypi.org/project/vizdom/)
+(Python 3.9+):
 
 ```bash
 # CPU-only PyTorch first keeps the download small (EasyOCR runs on it)
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 
-pip install "visual-gui-automation[robot] @ https://github.com/milanac030988/vizdom/releases/download/v<version>/visual_gui_automation-<version>-py3-none-any.whl"
+pip install "vizdom[robot]"
 ```
+
+The same wheel is attached to every
+[release](https://github.com/milanac030988/vizdom/releases) for machines without
+access to PyPI.
 
 | Extra | Adds |
 |---|---|
@@ -115,10 +120,10 @@ Clicks resolve against the DOM already parsed; the screen is parsed again only
 when its layout changes. When a keyword fails, the library saves a screenshot of
 the application window at that moment:
 
-![Screenshot saved by a failing step](docs/img/calculator_failure_evidence.png)
+![Screenshot saved by a failing step](https://raw.githubusercontent.com/milanac030988/vizdom/HEAD/docs/img/calculator_failure_evidence.png)
 
 A complete, runnable suite is in
-[`examples/windows_calculator_demo`](examples/windows_calculator_demo/).
+[`examples/windows_calculator_demo`](https://github.com/milanac030988/vizdom/tree/HEAD/examples/windows_calculator_demo/).
 
 ### Python
 
@@ -151,7 +156,7 @@ Studio run detection, capture and input **in process**. Split them up when the
 detector should run on a GPU host, when one warm model should serve many test
 runners, or when the machine under test is a different one from the runner.
 
-![Deployment: test runner, GPU host, machine under test](docs/img/deployment.png)
+![Deployment: test runner, GPU host, machine under test](https://raw.githubusercontent.com/milanac030988/vizdom/HEAD/docs/img/deployment.png)
 
 | Service | Runs on | Start |
 |---|---|---|
@@ -198,7 +203,7 @@ Details: [Using as a Client](https://milanac030988.github.io/vizdom/USAGE/) ·
 
 ## Results
 
-Measured with the lifecycle benchmark in [`benchmarks/`](benchmarks/): each step
+Measured with the lifecycle benchmark in [`benchmarks/`](https://github.com/milanac030988/vizdom/tree/HEAD/benchmarks/): each step
 locates an element, clicks it or checks it, and is scored on the outcome. Some
 steps ask for an element that is **not** on the screen; reporting it as found is
 a *false pass*, the worst failure a test tool can make.
@@ -215,7 +220,7 @@ about 2 s per screen on a 48 GB workstation GPU and about 15 s on a laptop CPU;
 every later lookup on that screen is answered from the DOM in under a millisecond.
 Methodology, per-application results and the other detectors:
 [Evaluation](https://milanac030988.github.io/vizdom/EVALUATION/) and
-[`benchmarks/README.md`](benchmarks/README.md).
+[`benchmarks/README.md`](https://github.com/milanac030988/vizdom/blob/HEAD/benchmarks/README.md).
 
 ---
 
@@ -235,7 +240,7 @@ Methodology, per-application results and the other detectors:
 
 ## Building a release
 
-The [Release workflow](.github/workflows/release.yml) builds both downloads on
+The [Release workflow](https://github.com/milanac030988/vizdom/blob/HEAD/.github/workflows/release.yml) builds both downloads on
 GitHub Actions. Pushing a tag publishes them:
 
 ```bash
@@ -246,9 +251,16 @@ git push origin v0.2.0
 It generates the gRPC stubs, builds the wheel (engine + Robot Framework library),
 then on a Windows runner assembles Python, the wheel, CPU PyTorch, the EasyOCR
 models and Tesseract
-([`tools/vizdom_studio/scripts/bundle_python.ps1`](tools/vizdom_studio/scripts/bundle_python.ps1))
+([`tools/vizdom_studio/scripts/bundle_python.ps1`](https://github.com/milanac030988/vizdom/blob/HEAD/tools/vizdom_studio/scripts/bundle_python.ps1))
 and packs them with Studio into the NSIS installer. Both are attached to the
-GitHub Release. *Run workflow* on the Actions tab builds them without publishing.
+GitHub Release, and once the installer has built, the wheel and source package
+are uploaded to [PyPI](https://pypi.org/project/vizdom/). *Run workflow* on the
+Actions tab builds everything without publishing.
+
+PyPI uses trusted publishing, so no token is stored. One-time setup: on PyPI, add
+a pending publisher (project `vizdom`, owner `milanac030988`, repository `vizdom`,
+workflow `release.yml`, environment `pypi`), and create the `pypi` environment
+under the repository's *Settings → Environments*.
 
 ---
 
@@ -264,7 +276,7 @@ Issues and pull requests are welcome on
 
 ## License
 
-VizDOM is released under the [MIT License](LICENSE).
+VizDOM is released under the [MIT License](https://github.com/milanac030988/vizdom/blob/HEAD/LICENSE).
 
 Third-party components keep their own licenses. The Studio installer bundles
 Python (PSF), PyTorch (BSD-3-Clause), EasyOCR (Apache-2.0), Tesseract
