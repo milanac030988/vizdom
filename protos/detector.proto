@@ -10,6 +10,11 @@ service Detector {
   rpc Detect(DetectRequest) returns (DetectResponse);
   // Liveness/readiness + which backend/model is loaded.
   rpc HealthCheck(HealthRequest) returns (HealthResponse);
+  // Read ONE line of text filling a small image (a value field, a result
+  // display) with the OCR recogniser alone: no element detection, no text
+  // detection. For reading a value back after an action. Added 2026-11-17;
+  // a server built before answers UNIMPLEMENTED.
+  rpc ReadText(ReadTextRequest) returns (ReadTextResponse);
 }
 
 message BBox {
@@ -52,6 +57,21 @@ message DetectResponse {
   string backend = 2;           // e.g. "omniparser"
   string request_id = 3;
   double infer_ms = 4;          // server-side inference time (ms)
+}
+
+message ReadTextRequest {
+  bytes image = 1;              // encoded crop (png / jpeg)
+  string image_format = 2;
+  string allowlist = 3;         // characters allowed, e.g. "0123456789.,-"; empty = any
+  string request_id = 4;
+}
+
+message ReadTextResponse {
+  string text = 1;              // empty when nothing reads
+  double confidence = 2;
+  string engine = 3;            // the OCR engine that read it, e.g. "easyocr"
+  string request_id = 4;
+  double infer_ms = 5;
 }
 
 message HealthRequest {}

@@ -118,3 +118,34 @@ class GrpcDetectorBackend(DetectorBackend):
         log.info("gRPC detect [%s]: %d detections from %s (server %.0f ms)",
                  req_id, len(detections), response.backend, response.infer_ms)
         return detections
+
+    def read_text(self, image: np.ndarray, allowlist: Optional[str] = None) -> str:
+        """
+        One line of text filling ``image`` (a crop), read by the service's OCR
+        recogniser alone - no detection (ReadText, added 2026-11-17). Returns ""
+        when nothing reads. Raises NotImplementedError against a service built
+        before ReadText existed, so the caller can fall back.
+        """
+        import cv2
+        import grpc
+
+        if not hasattr(self._stub, "ReadText"):
+            raise NotImplementedError("detector stubs predate ReadText - regenerate "
+                                      "them (ADR-017, Code generation)")
+        ok, buf = cv2.imencode(".png", image)
+        if not ok:
+            raise RuntimeError("gRPC detector: failed to encode image")
+        req_id = self._next_request_id()
+        request = self._pb2.ReadTextRequest(image=buf.tobytes(), image_format="png",
+                                            allowlist=allowlist or "", request_id=req_id)
+        try:
+            response = self._stub.ReadText(request, timeout=self._timeout)
+        except grpc.RpcError as exc:
+            if exc.code() == grpc.StatusCode.UNIMPLEMENTED:
+                raise NotImplementedError(
+                    f"the detector service at {self._target} has no ReadText - "
+                    f"restart it from current code") from exc
+            raise
+        log.info("gRPC read_text [%s]: %r (%.2f, %s, server %.0f ms)", req_id,
+                 response.text, response.confidence, response.engine, response.infer_ms)
+        return response.text

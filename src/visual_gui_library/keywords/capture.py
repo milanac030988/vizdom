@@ -162,13 +162,31 @@ class CaptureKeywords:
         if shot is None:
             shot = self._grab_frame()
         self._current_screenshot = shot
+        new_text = self._ocr_region(shot, element.get("bounds", [0, 0, 0, 0]), pad,
+                                    what=f"Element bounds {element.get('bounds')}")
+
+        if new_text:
+            element["text"] = new_text
+        else:
+            element.pop("text", None)
+        # The finder's text index is now out of date for this element.
+        if self._current_dom:
+            from ..locators import ElementFinder
+            self._finder = ElementFinder(self._current_dom)
+        return element
+
+    def _ocr_region(self, shot, bounds, pad: int = 0, what: str = "Region") -> str:
+        """
+        The text inside ``bounds`` (+pad) of ``shot``, read with the refresh OCR:
+        the pieces in reading order, joined by single spaces ("" when nothing
+        reads). Shared by the element recap and `Get Region Text`.
+        """
         h, w = shot.shape[:2]
-        x1, y1, x2, y2 = element.get("bounds", [0, 0, 0, 0])
+        x1, y1, x2, y2 = (int(round(float(v))) for v in bounds)
         x1, y1 = max(0, x1 - pad), max(0, y1 - pad)
         x2, y2 = min(w, x2 + pad), min(h, y2 + pad)
         if x2 <= x1 or y2 <= y1:
-            raise ValueError(f"Element bounds {element.get('bounds')} lie outside "
-                             f"the captured screen ({w}x{h}).")
+            raise ValueError(f"{what} lie outside the captured screen ({w}x{h}).")
         crop = shot[y1:y2, x1:x2]
 
         # OCR the crop, escalating the upscale on an empty read: EasyOCR's text
@@ -188,17 +206,90 @@ class CaptureKeywords:
                 break
         # Reading order (top->bottom, left->right), then join the pieces.
         texts.sort(key=lambda t: (t.bounds[1], t.bounds[0]))
-        new_text = " ".join(t.text for t in texts if t.text).strip()
+        return " ".join(t.text for t in texts if t.text).strip()
 
-        if new_text:
-            element["text"] = new_text
+    @staticmethod
+    def _parse_region(region) -> Tuple[int, int, int, int]:
+        """``x1,y1,x2,y2`` as text (also ``bounds(x1,y1,x2,y2)``) or a sequence."""
+        if isinstance(region, str):
+            import re
+            values = re.findall(r"-?\d+(?:\.\d+)?", region)
         else:
-            element.pop("text", None)
-        # The finder's text index is now out of date for this element.
-        if self._current_dom:
-            from ..locators import ElementFinder
-            self._finder = ElementFinder(self._current_dom)
-        return element
+            values = list(region)
+        if len(values) != 4:
+            raise ValueError(f"region must be x1,y1,x2,y2, got {region!r}")
+        x1, y1, x2, y2 = (int(round(float(v))) for v in values)
+        if x2 <= x1 or y2 <= y1:
+            raise ValueError(f"region {region!r} is empty: x2 must exceed x1, y2 y1")
+        return x1, y1, x2, y2
+
+    def _remote_line_reader(self):
+        """The session's detector backend when it can read a line (gRPC ReadText)."""
+        pipeline = getattr(self._session, "_pipeline", None) if self._session else None
+        backend = getattr(pipeline, "_primary_backend", None)
+        return backend if callable(getattr(backend, "read_text", None)) else None
+
+    def _read_line(self, crop, allowlist: Optional[str]) -> Tuple[str, str]:
+        """
+        One line of text filling ``crop`` and who read it: the detector service's
+        recogniser when the session's detector is remote (no model in this
+        process), else the local refresh OCR's line reader. ``("", how)`` when
+        neither reads anything.
+        """
+        remote = self._remote_line_reader()
+        if remote is not None:
+            try:
+                return remote.read_text(crop, allowlist=allowlist), "service"
+            except NotImplementedError as exc:
+                log.warning(f"Get Region Text: {exc}; reading locally instead")
+        ocr = self._get_refresh_ocr()
+        reader = getattr(ocr, "read_line", None)
+        hit = reader(crop, allowlist=allowlist) if callable(reader) else None
+        return (hit[0] if hit else ""), "local"
+
+    @keyword("Get Region Text")
+    def get_region_text(self, region, pad: int = 0, allowlist: Optional[str] = None,
+                        line: bool = True) -> str:
+        """
+        Re-capture the screen and read ONLY ``region`` - the cheapest read-back
+        there is: no element detection, no hierarchy, and the cached DOM is left
+        as it is.
+
+        ``region`` is ``x1,y1,x2,y2`` in the DOM's pixel coordinates (the same
+        space as an element's ``bounds``; also accepted: ``bounds(...)`` or a
+        list). Use it for a value whose box grows, where an element's own bounds
+        would be too tight: a right-aligned result display widens to the left
+        as the number gets longer, so read the whole band it can occupy.
+
+        With ``line=True`` (default) the region is read as ONE line by the OCR
+        recogniser alone - on the detector service when the session's detector
+        is remote (``ReadText``), so this process still loads no model.
+        ``allowlist`` limits the characters (``0123456789.,-`` for a number).
+        If that reads nothing, the region is OCR'd as for ``refresh=element``
+        (ADR-023). ``line=False`` goes straight to that.
+
+        Returns the text, or an empty string when nothing in the region reads.
+
+        Example:
+            | ${band}= | Set Variable | 0,131,521,211 |
+            | ${shown}= | Get Region Text | ${band} | allowlist=0123456789.,- |
+            | Should Be Equal | ${shown} | 27 |
+        """
+        x1, y1, x2, y2 = self._parse_region(region)
+        shot = self._grab_frame()
+        self._current_screenshot = shot
+        if _truthy(line):
+            h, w = shot.shape[:2]
+            p = int(pad)
+            cx1, cy1 = max(0, x1 - p), max(0, y1 - p)
+            cx2, cy2 = min(w, x2 + p), min(h, y2 + p)
+            if cx2 <= cx1 or cy2 <= cy1:
+                raise ValueError(f"Region {region!r} lie outside the captured screen ({w}x{h}).")
+            text, how = self._read_line(shot[cy1:cy2, cx1:cx2], allowlist or None)
+            if text:
+                log.info(f"Get Region Text {region}: {text!r} (one line, {how})")
+                return text
+        return self._ocr_region(shot, (x1, y1, x2, y2), int(pad), what=f"Region {region!r}")
 
     def _resolve_with_refresh(self, locator: str, refresh: str, keyword_name: str) -> dict:
         """Common locator resolution honouring refresh=none|element|screen."""

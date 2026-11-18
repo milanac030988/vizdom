@@ -88,6 +88,48 @@ class DetectorServicer:
         log.info("Detect [%s]: %d detections in %.0f ms", rid, len(dets), infer_ms)
         return resp
 
+    def _line_reader(self):
+        """
+        The OCR engine for ReadText: the backend's own, already loaded, when it
+        is an EasyOCR text stage (the modular backend's); else an EasyOCR
+        TextDetector of our own, loaded on the first request.
+        """
+        reader = getattr(self, "_reader", None)
+        if reader is not None:
+            return reader
+        own = getattr(self._backend, "_text", None)
+        if own is not None and getattr(own, "ocr_engine", None) == "easyocr":
+            reader = own
+        else:
+            from visual_dom.adapters.outbound.ocr.text_detector import TextDetector
+            reader = TextDetector(ocr_engine="easyocr",
+                                  gpu=bool(getattr(self._backend, "use_gpu", False)))
+        self._reader = reader
+        return reader
+
+    def ReadText(self, request, context):
+        rid = request.request_id or "-"
+        image = cv2.imdecode(np.frombuffer(request.image, dtype=np.uint8), cv2.IMREAD_COLOR)
+        if image is None:
+            context.set_code(__import__("grpc").StatusCode.INVALID_ARGUMENT)
+            context.set_details("could not decode image")
+            return self._pb2.ReadTextResponse(request_id=rid)
+        t0 = time.perf_counter()
+        try:
+            reader = self._line_reader()
+            hit = reader.read_line(image, allowlist=request.allowlist or None)
+        except Exception as e:  # never crash the server on one bad request
+            log.error("ReadText [%s] failed: %s", rid, e)
+            context.set_code(__import__("grpc").StatusCode.INTERNAL)
+            context.set_details(str(e))
+            return self._pb2.ReadTextResponse(request_id=rid)
+        infer_ms = (time.perf_counter() - t0) * 1000.0
+        text, conf = hit if hit else ("", 0.0)
+        log.info("ReadText [%s]: %r (%.2f) in %.0f ms", rid, text, conf, infer_ms)
+        return self._pb2.ReadTextResponse(
+            text=text, confidence=conf, engine=getattr(reader, "ocr_engine", ""),
+            request_id=rid, infer_ms=infer_ms)
+
     def HealthCheck(self, request, context):
         return self._pb2.HealthResponse(
             ready=True, backend=self._backend.name,

@@ -72,3 +72,30 @@ def test_stubs_without_label_drop_captions_instead_of_failing(stale_server,
 def test_a_detection_without_label_reads_as_none():
     d = detector_pb2.Detection(text="7")
     assert not d.HasField("label")
+
+
+# --- ReadText (2026-11-17): one line read by the recogniser alone ------------
+
+def test_read_text_answers_with_the_line_reader():
+    import cv2
+    import numpy as np
+    from visual_dom.adapters.inbound.grpc.detector_server import DetectorServicer
+    from visual_dom.generated import detector_pb2 as pb2
+
+    class Reader:
+        ocr_engine = "easyocr"
+
+        def read_line(self, crop, allowlist=None):
+            self.seen = (crop.shape, allowlist)
+            return "27", 0.98
+
+    class Backend:
+        name = "modular"
+        _text = Reader()
+
+    servicer = DetectorServicer(Backend(), pb2)
+    ok, buf = cv2.imencode(".png", np.zeros((40, 120, 3), np.uint8))
+    resp = servicer.ReadText(pb2.ReadTextRequest(image=buf.tobytes(), allowlist="0123456789",
+                                                 request_id="r1"), context=None)
+    assert (resp.text, resp.engine, resp.request_id) == ("27", "easyocr", "r1")
+    assert Backend._text.seen == ((40, 120, 3), "0123456789")

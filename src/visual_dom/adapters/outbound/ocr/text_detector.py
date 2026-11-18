@@ -408,6 +408,48 @@ class TextDetector:
             return None
         return best
 
+    def read_line(self, crop: np.ndarray, allowlist: Optional[str] = None
+                  ) -> Optional[Tuple[str, float]]:
+        """
+        Read ONE line of text that fills ``crop`` - a value field, a result
+        display - with the recogniser alone: ``(text, confidence)`` or None.
+
+        The crop is tightened to its ink first (`tighten_glyph`: the outer
+        margin goes, so a focus frame or the field's border is not read as a
+        stroke), then handed to the recogniser with no text-detection stage.
+        That stage is what costs time and what drops a lone character: on the
+        Windows Calculator's display (2026-11-17) EasyOCR's recogniser read 50
+        of 52 rendered results in ~27 ms, its full detection ~1.5 s, and
+        Tesseract misread "0" as "C" and 7 as "/".
+
+        ``allowlist`` limits the characters (e.g. "0123456789.,-" for a
+        number). easyocr is the engine this is meant for; tesseract reads the
+        patch as a single line (``--psm 7``); any other engine returns None.
+        """
+        patch = self.tighten_glyph(crop)
+        if patch is None:
+            return None
+        self._init_engine()
+        try:
+            if self.ocr_engine == "easyocr":
+                results = self._engine.recognize(patch, detail=1, paragraph=False,
+                                                 allowlist=allowlist or None)
+                best = max(results or [], key=lambda r: r[2], default=None)
+                if best is None or not (best[1] or "").strip():
+                    return None
+                return best[1].strip(), float(best[2])
+            if self.ocr_engine == "tesseract":
+                config = "--psm 7"
+                if allowlist:
+                    config += f" -c tessedit_char_whitelist={allowlist}"
+                text = " ".join(self._engine.image_to_string(patch, config=config)
+                                .replace("|", "").split())
+                return (text, 1.0) if text else None
+        except Exception as exc:  # noqa: BLE001 - an unreadable line is "no read", not a crash
+            log.debug("read_line failed: %s", exc)
+            return None
+        return None
+
     def detect(
         self,
         image: Union[np.ndarray, str],

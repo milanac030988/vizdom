@@ -214,3 +214,76 @@ def test_connect_turns_the_guard_on_from_the_recap_section(monkeypatch):
     # a config that leaves it out does not switch off what the import enabled
     lib.connect({})
     assert lib._region_guard is True
+
+
+# --- Get Region Text: an arbitrary band, no detector, the DOM untouched ------
+
+def test_get_region_text_reads_only_the_band_and_leaves_the_dom_alone():
+    lib = _Lib(_screen(200))
+    before = [dict(e) for e in lib._current_dom["elements"]]
+    lib.screen = _screen(150)
+    # a band wider than the field: the field's own bounds would be too tight
+    assert lib.get_region_text("60,90,300,140") == "v150"
+    assert (lib.grabs, lib.full_scans) == (1, 0)
+    assert lib._current_dom["elements"] == before
+
+
+def test_get_region_text_accepts_bounds_and_lists_and_reads_empty():
+    lib = _Lib(_screen(200))
+    assert lib.get_region_text("bounds(100,100,260,130)") == "v200"
+    assert lib.get_region_text([100, 100, 260, 130]) == "v200"
+    assert lib.get_region_text("300,250,390,290") == ""        # dark: nothing reads
+
+
+@pytest.mark.parametrize("bad", ["1,2,3", "50,50,40,60", "0,0,0,0"])
+def test_get_region_text_rejects_a_malformed_region(bad):
+    lib = _Lib(_screen(200))
+    with pytest.raises(ValueError):
+        lib.get_region_text(bad)
+
+
+def test_get_region_text_outside_the_screen_fails_clearly():
+    lib = _Lib(_screen(200))
+    with pytest.raises(ValueError, match="outside the captured screen"):
+        lib.get_region_text("500,400,600,500")
+
+
+# --- Get Region Text: one line, read by the detector service when remote ----
+
+class _Remote:
+    def __init__(self, text="27", unimplemented=False):
+        self.text, self.unimplemented, self.calls = text, unimplemented, []
+
+    def read_text(self, crop, allowlist=None):
+        self.calls.append((crop.shape, allowlist))
+        if self.unimplemented:
+            raise NotImplementedError("no ReadText")
+        return self.text
+
+
+class _Session:
+    def __init__(self, backend):
+        self._pipeline = type("P", (), {"_primary_backend": backend})()
+
+
+def test_region_text_goes_to_the_service_reader_with_the_allowlist():
+    lib = _Lib(_screen(200))
+    remote = _Remote("27")
+    lib._session = _Session(remote)
+    assert lib.get_region_text("60,90,300,140", allowlist="0123456789.,-") == "27"
+    assert remote.calls == [((50, 240, 3), "0123456789.,-")]
+    assert lib.full_scans == 0
+
+
+def test_an_old_service_falls_back_to_the_local_reading():
+    lib = _Lib(_screen(150))
+    lib._session = _Session(_Remote(unimplemented=True))
+    assert lib.get_region_text("60,90,300,140") == "v150"     # the region OCR
+
+
+def test_line_false_skips_the_line_reader():
+    lib = _Lib(_screen(150))
+    remote = _Remote("27")
+    lib._session = _Session(remote)
+    assert lib.get_region_text("60,90,300,140", line="False") == "v150"
+    assert remote.calls == []
