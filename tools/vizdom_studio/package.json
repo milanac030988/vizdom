@@ -1,7 +1,7 @@
 {
   "name": "vizdom-studio",
   "productName": "VizDOM Studio",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Desktop GUI for VizDOM: capture, analyse, inspect, prove locators and export Robot resources",
   "author": "Nguyen Huynh Tri Cuong",
   "license": "MIT",
