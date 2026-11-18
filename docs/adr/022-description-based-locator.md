@@ -10,11 +10,11 @@ Accepted (Tiers 0–1 implemented and measured, 0.934 / 0.964 / 0.000 on the lif
 
 ## Author
 
-Nguyen Huynh Tri Cuong
+Cuong Nguyen
 
 ## Reviewer
 
-- Nguyen Huynh Tri Cuong
+- Cuong Nguyen
 
 ## History
 

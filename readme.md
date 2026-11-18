@@ -266,7 +266,7 @@ under the repository's *Settings → Environments*.
 
 ## Author
 
-**Nguyen Huynh Tri Cuong** — design and implementation of VizDOM, its Robot
+**Cuong Nguyen** — design and implementation of VizDOM, its Robot
 Framework library and VizDOM Studio.
 
 Issues and pull requests are welcome on

@@ -13,7 +13,7 @@ Features:
 """
 
 __version__ = "0.1.0"
-__author__ = "Nguyen Huynh Tri Cuong"
+__author__ = "Cuong Nguyen"
 
 from .core.model import DOMViewerModel
 from .core.tree import DOMTree, DOMElement

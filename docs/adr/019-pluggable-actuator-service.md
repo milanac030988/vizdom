@@ -10,11 +10,11 @@ Accepted (fully implemented - Phases 1-3)
 
 ## Author
 
-Nguyen Huynh Tri Cuong
+Cuong Nguyen
 
 ## Reviewer
 
-- Nguyen Huynh Tri Cuong
+- Cuong Nguyen
 
 ## History
 

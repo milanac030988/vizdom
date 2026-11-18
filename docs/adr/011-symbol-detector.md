@@ -10,11 +10,11 @@ Accepted (with limitations)
 
 ## Author
 
-Nguyen Huynh Tri Cuong
+Cuong Nguyen
 
 ## Reviewer
 
-- Nguyen Huynh Tri Cuong
+- Cuong Nguyen
 
 ## History
 
