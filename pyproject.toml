@@ -10,7 +10,7 @@ readme = "readme.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}
 authors = [
-    {name = "Your Name", email = "your.email@example.com"}
+    {name = "VizDOM contributors"}
 ]
 keywords = ["gui", "automation", "testing", "robot-framework", "computer-vision"]
 classifiers = [
@@ -102,6 +102,12 @@ annotation = [
 ]
 desktop = [
     "pyautogui>=0.9.54",
+    "mss>=9.0",
+]
+# The local bridge VizDOM Studio talks to (tools/vizdom_bridge).
+studio = [
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
 ]
 viewer = [
     "PyQt5>=5.15.0",
@@ -116,6 +122,11 @@ dev = [
 all = [
     "visual-gui-automation[ocr,llm,desktop,viewer,grpc,docs,dashboard,dev]",
 ]
+# What a test machine needs to run Robot suites locally: UIED + EasyOCR/Tesseract,
+# screen capture and input, and the gRPC client for remote services.
+robot = [
+    "visual-gui-automation[ocr,desktop,grpc]",
+]
 
 [project.scripts]
 # `uv run vizdom-detector -- --backend omniparser ...` (or plain python -m).
@@ -124,9 +135,10 @@ vizdom-capture = "visual_dom.adapters.inbound.grpc.capture_server:main"
 vizdom-actuator = "visual_dom.adapters.inbound.grpc.actuator_server:main"
 
 [project.urls]
-Homepage = "https://github.com/yourusername/visual-gui-automation"
-Documentation = "https://github.com/yourusername/visual-gui-automation#readme"
-Repository = "https://github.com/yourusername/visual-gui-automation.git"
+Homepage = "https://github.com/milanac030988/vizdom"
+Documentation = "https://milanac030988.github.io/vizdom/"
+Repository = "https://github.com/milanac030988/vizdom.git"
+Releases = "https://github.com/milanac030988/vizdom/releases"
 
 [tool.setuptools]
 # Robot Framework entry point: makes `Library    VisualGuiLibrary` importable.

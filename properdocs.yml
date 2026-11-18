@@ -63,7 +63,6 @@ nav:
           - ELAM-7B analysis (EN): discussion/elam-7b-analysis-en.md
           - ELAM-7B analysis (VI): discussion/elam-7b-analysis-vi.md
   - Commands: COMMANDS.md
-  - Thesis Proposal: DeCuong-Thacsi-Updated.md
   - Architecture Decisions:
       - Overview: adr/README.md
       - 001 Visual DOM Architecture: adr/001-visual-dom-architecture.md
