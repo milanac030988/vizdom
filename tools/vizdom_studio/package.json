@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Desktop GUI for VizDOM: capture, analyse, inspect, prove locators and export Robot resources",
   "author": "Nguyen Huynh Tri Cuong",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "main": "./out/main/index.js",
   "scripts": {

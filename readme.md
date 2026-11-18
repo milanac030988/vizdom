@@ -252,6 +252,28 @@ GitHub Release. *Run workflow* on the Actions tab builds them without publishing
 
 ---
 
+## Author
+
+**Nguyen Huynh Tri Cuong** — design and implementation of VizDOM, its Robot
+Framework library and VizDOM Studio.
+
+Issues and pull requests are welcome on
+[GitHub](https://github.com/milanac030988/vizdom/issues).
+
+---
+
+## License
+
+VizDOM is released under the [MIT License](LICENSE).
+
+Third-party components keep their own licenses. The Studio installer bundles
+Python (PSF), PyTorch (BSD-3-Clause), EasyOCR (Apache-2.0), Tesseract
+(Apache-2.0) and Electron (MIT). OmniParser is **AGPL-3.0** and is not
+distributed with VizDOM: `scripts/setup_omniparser.py` fetches it on your
+machine, and its license applies to that use.
+
+---
+
 ## Acknowledgements
 
 VizDOM builds on [UIED](https://github.com/MulongXie/UIED),

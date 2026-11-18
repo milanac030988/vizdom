@@ -10,7 +10,7 @@ readme = "readme.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}
 authors = [
-    {name = "VizDOM contributors"}
+    {name = "Nguyen Huynh Tri Cuong"}
 ]
 keywords = ["gui", "automation", "testing", "robot-framework", "computer-vision"]
 classifiers = [
