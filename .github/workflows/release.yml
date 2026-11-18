@@ -63,8 +63,13 @@ jobs:
       - name: Check the wheel installs and imports
         run: |
           python -m venv /tmp/check
-          /tmp/check/bin/pip install --quiet dist/*.whl
-          /tmp/check/bin/python -c "import VisualGuiLibrary, visual_dom, visual_gui_library; from visual_dom.generated import detector_pb2; print('ok')"
+          wheel=$(ls dist/*.whl)
+          # bare install: the engine and the Robot Framework library import without extras
+          /tmp/check/bin/pip install --quiet "$wheel"
+          /tmp/check/bin/python -c "import VisualGuiLibrary, visual_dom, visual_gui_library; print('core ok')"
+          # the gRPC stubs need protobuf/grpcio, which come with the grpc extra
+          /tmp/check/bin/pip install --quiet "visual-gui-automation[grpc] @ file://$PWD/$wheel"
+          /tmp/check/bin/python -c "from visual_dom.generated import detector_pb2, detector_pb2_grpc; print('grpc ok')"
 
       - uses: actions/upload-artifact@v4
         with:
