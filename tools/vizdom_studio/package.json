@@ -1,0 +1,73 @@
+{
+  "name": "vizdom-studio",
+  "productName": "VizDOM Studio",
+  "version": "0.1.0",
+  "description": "Desktop GUI for VizDOM: capture, analyse, inspect, prove locators and export Robot resources",
+  "author": "Nguyen Huynh Tri Cuong",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
+    "bundle:python": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/bundle_python.ps1",
+    "dist": "electron-vite build && electron-builder --win nsis --publish never"
+  },
+  "build": {
+    "appId": "com.vizdom.studio",
+    "productName": "VizDOM Studio",
+    "artifactName": "VizDOM-Studio-Setup-${version}.${ext}",
+    "directories": {
+      "output": "release",
+      "buildResources": "resources"
+    },
+    "files": [
+      "out/**",
+      "resources/icon.*",
+      "package.json"
+    ],
+    "extraResources": [
+      { "from": "bundle/python", "to": "python", "filter": ["**/*"] },
+      { "from": "bundle/vizdom", "to": "vizdom", "filter": ["**/*"] },
+      { "from": "bundle/easyocr", "to": "easyocr", "filter": ["**/*"] },
+      { "from": "bundle/tesseract", "to": "tesseract", "filter": ["**/*"] }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "resources/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "VizDOM Studio"
+    }
+  },
+  "dependencies": {
+    "clsx": "2.1.1",
+    "cmdk": "1.0.4",
+    "lucide-react": "0.460.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-resizable-panels": "2.1.7",
+    "zustand": "5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "22.9.0",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "4.3.4",
+    "autoprefixer": "10.4.20",
+    "electron": "33.2.0",
+    "electron-builder": "25.1.8",
+    "electron-vite": "2.3.0",
+    "postcss": "8.4.49",
+    "tailwindcss": "3.4.15",
+    "typescript": "5.6.3",
+    "vite": "5.4.11"
+  }
+}

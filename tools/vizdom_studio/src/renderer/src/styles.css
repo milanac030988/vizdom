@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Colour tokens as RGB triplets so Tailwind's /<alpha> modifiers work. */
+:root {
+  --bg: 246 248 250;
+  --panel: 255 255 255;
+  --raised: 240 243 246;
+  --line: 216 222 228;
+  --ink: 31 35 40;
+  --muted: 87 96 106;
+  --faint: 140 149 159;
+  --accent: 79 70 229;
+  --accent-ink: 255 255 255;
+  --ok: 26 127 55;
+  --warn: 191 135 0;
+  --bad: 207 34 46;
+  /* element categories on the canvas */
+  --c-button: 79 70 229;
+  --c-input: 8 145 178;
+  --c-text: 100 116 139;
+  --c-icon: 217 119 6;
+  --c-container: 148 163 184;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: 13 17 23;
+  --panel: 22 27 34;
+  --raised: 33 38 45;
+  --line: 48 54 61;
+  --ink: 230 237 243;
+  --muted: 145 152 161;
+  --faint: 110 118 129;
+  --accent: 129 140 248;
+  --accent-ink: 13 17 23;
+  --ok: 63 185 80;
+  --warn: 210 153 34;
+  --bad: 248 81 73;
+  --c-button: 129 140 248;
+  --c-input: 34 211 238;
+  --c-text: 148 163 184;
+  --c-icon: 251 191 36;
+  --c-container: 100 116 139;
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-bg text-ink font-sans antialiased;
+  font-size: 13px;
+  overflow: hidden;
+  user-select: none;
+}
+
+input,
+textarea,
+.selectable {
+  user-select: text;
+}
+
+.drag {
+  -webkit-app-region: drag;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* Slim scrollbars that follow the theme */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--line));
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--faint));
+  background-clip: content-box;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.checker {
+  background-color: rgb(var(--bg));
+  background-image: radial-gradient(rgb(var(--line) / 0.7) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 1px;
+}
+
+/* cmdk */
+[cmdk-item][data-selected='true'] {
+  background: rgb(var(--accent) / 0.14);
+  color: rgb(var(--ink));
+}
+[cmdk-group-heading] {
+  @apply px-3 pb-1 pt-3 text-[11px] font-medium uppercase tracking-wide text-faint;
+}

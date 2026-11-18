@@ -1,0 +1,8 @@
+node_modules/
+out/
+dist/
+# installer inputs (scripts/bundle_python.ps1) and electron-builder output
+bundle/
+release/
+*.log
+*.tsbuildinfo

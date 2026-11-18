@@ -13,10 +13,12 @@ Outputs (relative to the repository root):
     tools/visual_dom_viewer/resources/vizdom.ico      all sizes, one container
     tools/visual_dom_viewer/resources/vizdom-256.png  press/slides
     docs/img/favicon.png                              docs site (32 px)
+    tools/vizdom_studio/resources/icon.ico, icon.png  VizDOM Studio window
 """
 
 import argparse
 import os
+import shutil
 import struct
 import sys
 from pathlib import Path
@@ -117,6 +119,13 @@ def main() -> int:
     favicon.parent.mkdir(parents=True, exist_ok=True)
     render_icon(32).save(str(favicon), "PNG")
     print(f"wrote {favicon.relative_to(ROOT)}")
+
+    # VizDOM Studio (Electron) loads these as its window / taskbar icon.
+    studio = ROOT / "tools" / "vizdom_studio" / "resources"
+    studio.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(ico, studio / "icon.ico")
+    render_icon(256).save(str(studio / "icon.png"), "PNG")
+    print(f"wrote {(studio / 'icon.ico').relative_to(ROOT)}, icon.png")
 
     if args.preview:
         sheet = resources / "vizdom-sizes.png"
