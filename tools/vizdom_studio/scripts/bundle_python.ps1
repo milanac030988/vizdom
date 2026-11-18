@@ -46,10 +46,17 @@ New-Item -ItemType Directory -Force $bundle | Out-Null
 Step "Python $PythonVersion (uv-managed, relocatable)"
 $pyhome = Join-Path $bundle "_pyhome"
 $env:UV_PYTHON_INSTALL_DIR = $pyhome
-Run uv @("python", "install", $PythonVersion)
-$installed = Get-ChildItem $pyhome -Directory | Where-Object { $_.Name -like "cpython-*" } | Select-Object -First 1
+# --no-bin: no python3.x.exe shim in ~/.local/bin, the build machine stays untouched
+Run uv @("python", "install", "--no-bin", $PythonVersion)
+# uv also creates a minor-version link (cpython-3.12-...) beside the real folder
+# (cpython-3.12.16-...); take the real one, never the link
+$installed = Get-ChildItem $pyhome -Directory |
+  Where-Object { $_.Name -like "cpython-*" -and -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) -and
+                 (Test-Path (Join-Path $_.FullName "python.exe")) } |
+  Select-Object -First 1
 if (-not $installed) { throw "uv did not install a CPython under $pyhome" }
-Move-Item $installed.FullName (Join-Path $bundle "python")
+Write-Host "    using $($installed.Name)"
+Copy-Item $installed.FullName (Join-Path $bundle "python") -Recurse
 Remove-Item $pyhome -Recurse -Force
 Remove-Item Env:\UV_PYTHON_INSTALL_DIR
 $py = Join-Path $bundle "python\python.exe"
