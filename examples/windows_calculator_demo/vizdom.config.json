@@ -1,0 +1,27 @@
+{
+  "_about": "VizDOM session config for the Windows Calculator demo — fully distributed: detector, capture and actuator all run as gRPC services (start them first; see README.md). Replace 'localhost' with the host running each service.",
+
+  "detector": {
+    "backend": "grpc",
+    "grpc_target": "localhost:50051"
+  },
+  "ocr": {
+    "engine": "easyocr"
+  },
+  "_note_focus": "window_title names the app under test (ADR-021). window_scope crops the capture to that window ON THE CAPTURE SERVICE, so the DOM contains only the Calculator - and it works wherever the window is, including a second monitor whose screen coordinates are negative. Set window_scope=false for a whole-screen DOM (then use focus_before_capture=true, or the test's `Bring App To Front`, to make sure the app is visible).",
+  "capture": {
+    "strategy": "grpc",
+    "target": "localhost:50053",
+    "window_title": "Calculator",
+    "window_scope": true
+  },
+  "actuator": {
+    "strategy": "grpc",
+    "target": "localhost:50054"
+  },
+
+  "_note_grounding": "desc= fallbacks in calculator_locators.resource resolve with the model-free lexical tier first; add \"slm\" for paraphrase support (needs Ollama).",
+  "grounding": {
+    "tiers": ["lexical"]
+  }
+}

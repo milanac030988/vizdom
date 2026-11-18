@@ -10,8 +10,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -56,7 +56,7 @@ output/
 results/
 
 # User's own session config (keep the tracked template vizdom.config.example.json)
-vizdom.config.json
+/vizdom.config.json
 
 # Scratch / personal working files (never part of the project)
 tmp/
