@@ -44,7 +44,11 @@
       var fit = Math.min(box.width - 24, (box.height - 24) * f.ratio);
       obj.style.width = Math.max(200, Math.floor(fit * k)) + "px";
     } else {
-      obj.style.width = (100 * k) + "%";
+      // fitted: as wide as the page allows, but never taller than the scroll
+      // area (85vh), so the whole diagram is visible without a scrollbar
+      var maxH = window.innerHeight * 0.85 - 4;
+      var w = Math.min(f.scroll.clientWidth, maxH * f.ratio);
+      obj.style.width = Math.max(200, Math.floor(w * k)) + "px";
     }
     f.pct.textContent = Math.round(100 * k) + "%";
   }
@@ -128,7 +132,9 @@
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && open) setFull(open, false, true);
     });
-    window.addEventListener("resize", function () { if (open) layout(open); });
+    window.addEventListener("resize", function () {
+      for (var i = 0; i < figs.length; i++) layout(figs[i]);
+    });
     window.addEventListener("hashchange", onHash);
   }
 
