@@ -31,7 +31,7 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [014](014-project-restructure.md) | Project Restructure and Repository Setup | Accepted | 2026-03-30 |
 | [015](015-pluggable-detector-backends.md) | Pluggable Detector Backends (UIED / YOLO / OmniParser) | Accepted | 2026-07-24 |
 | [016](016-reading-order-and-labels.md) | Reading-Order Sorting and Element Labels | Accepted | 2026-07-25 |
-| [017](017-distributed-hexagonal-grpc.md) | Distributed Hexagonal Architecture with gRPC Model Services | Proposed | 2026-07-26 |
+| [017](017-distributed-hexagonal-grpc.md) | Distributed Hexagonal Architecture with gRPC Model Services | Accepted (implemented) | 2026-07-26 |
 | [018](018-pluggable-capture-service.md) | Pluggable Screenshot Capture (Strategy + Auto-Discovery + Service) | Accepted | 2026-07-26 |
 | [019](019-pluggable-actuator-service.md) | Pluggable Input Actuation (Strategy + Auto-Discovery + Service) | Accepted | 2026-07-27 |
 | [020](020-client-session-config.md) | Client Session Configuration (`connect` + JSON config) | Accepted | 2026-07-29 |
@@ -41,10 +41,16 @@ An Architecture Decision Record (ADR) captures an important architectural decisi
 | [024](024-multi-locator-fallback-chains.md) | Multi-Locator Fallback Chains (<code>&#124;&#124;</code>) | Accepted | 2026-08-06 |
 | [025](025-session-orchestrator-service.md) | Session Orchestrator Service (forwarding gateway rejected; orchestrator deferred against trigger conditions) | **Proposed** | 2026-08-09 |
 | [026](026-viewer-ui-restructure.md) | Viewer UI — Verb Toolbar, Menu Bar, and Three Tool Windows | Accepted | 2026-08-10 |
-| [027](027-modular-three-stage-detector.md) | Modular Three-Stage Detector (new `modular` strategy beside OmniParser) | **Proposed** | 2026-08-13 |
+| [027](027-modular-three-stage-detector.md) | Modular Three-Stage Detector (new `modular` strategy beside OmniParser) | Proposed (implemented and in use) | 2026-08-13 |
 | [028](028-viewer-try-locator-via-actuator.md) | Viewer "Click via Actuator" on a Shared Locator Resolver | Accepted | 2026-10-12 |
 
 ## Summary
+
+Short summaries of the early decisions (ADR-001 to ADR-014). The later ones are
+listed in the index above; each ADR opens with its own status and history.
+File paths are given as they were when an ADR was written: the early
+`src/visual_dom/cv/...` modules moved to `core/domain/` and `adapters/` in the
+hexagonal restructure (ADR-014, ADR-017).
 
 ### ADR-001: Visual DOM System Architecture
 
@@ -134,7 +140,7 @@ Each analysis creates a timestamped session folder with screenshot, CV result, D
 
 Moved output files to `output/`, created layered requirements files, set up GitHub repo as `vizdom`, updated README.
 
-**Key Decision**: Clean project root, layered requirements, private GitHub repository.
+**Key Decision**: Clean project root, layered requirements, one GitHub repository (private at the time, public since).
 
 ## ADR Lifecycle
 

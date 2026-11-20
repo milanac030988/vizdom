@@ -25,17 +25,17 @@ Cuong Nguyen
 
 ## Context
 
-Testing with the CMST application (Bosch IT Workplace Toolkit, WPF/.NET) revealed two OCR accuracy issues:
+Testing with an internal WPF/.NET desktop application revealed two OCR accuracy issues:
 
 1. **Small text misread**: 12-14px text labels ("IP Address", "MAC Address") were garbled by EasyOCR (e.g., `~ddress`, `Mas; Storaze`, `Untruszed`)
-2. **Low-contrast text invisible**: Gray text on white background (e.g., "APAC\UGC1HC", "HC-C-004CE") detected with confidence <0.15, filtered out
+2. **Low-contrast text invisible**: Gray text on white background (e.g., a domain user name and a machine name such as "DOMAIN\user01", "PC-0042") detected with confidence <0.15, filtered out
 
 Root cause analysis:
 - EasyOCR's CRNN model was trained on larger text; small text at 12px produces unreliable features
-- The Bosch Sans Regular custom font is not in EasyOCR's training distribution
+- The application's custom corporate font is not in EasyOCR's training distribution
 - Gray-on-white contrast ratio is too low for reliable detection
 
-Testing showed Tesseract reads the same regions much more accurately (e.g., "HC-C-004CE" at conf=75) but has weaker text region detection (misses regions that EasyOCR finds).
+Testing showed Tesseract reads the same regions much more accurately (e.g., the machine name at conf=75) but has weaker text region detection (misses regions that EasyOCR finds).
 
 ## Decision
 
@@ -49,7 +49,7 @@ In `TextDetector.detect()`:
 - Bounding boxes scaled back to original coordinates after detection
 - Configurable via `upscale=True/False` parameter
 
-For the CMST screenshot (562px), 12px text becomes ~32px after 2.7x upscale — significantly easier for OCR.
+For that screenshot (562px), 12px text becomes ~32px after 2.7x upscale — significantly easier for OCR.
 
 ### 2. CLAHE Contrast Enhancement
 
@@ -89,13 +89,13 @@ Added OCR dropdown in viewer toolbar:
 
 - **Tesseract as primary engine**: Tested, but misses too many text regions compared to EasyOCR
 - **PaddleOCR**: Not tested extensively yet, could be a good middle ground
-- **Fine-tuning EasyOCR on Bosch Sans**: Possible but requires significant training effort
-- **Fine-tuning Tesseract on Bosch Sans**: Feasible via `tesstrain`, deferred for now
+- **Fine-tuning EasyOCR on the custom font**: Possible but requires significant training effort
+- **Fine-tuning Tesseract on the custom font**: Feasible via `tesstrain`, deferred for now
 
 ## Consequences
 
 ### Positive
-- CMST app: 25/46 → improved text detection on form labels
+- WPF test application: 25/46 → improved text detection on form labels
 - Garbled text reduced: EasyOCR misreads retried by Tesseract
 - Works without any model training — pure preprocessing + dual engine
 - Upscaling is automatic and transparent

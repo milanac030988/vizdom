@@ -1,6 +1,41 @@
-# Setup with uv
+# Setup
 
-This project is installed with [**uv**](https://docs.astral.sh/uv/). One command
+There are three ways to install VizDOM. Pick the first one that fits:
+
+| You want to… | Install |
+|---|---|
+| Use VizDOM Studio on Windows, and run Robot suites on the same machine | **Studio installer** (below) |
+| Run Robot suites on a test machine or in CI | **`pip install "vizdom[robot]"`** (below) |
+| Run the gRPC services, the GPU detector, the Viewer, or change the code | **from source with uv** (§1 onwards) |
+
+**Studio installer (Windows, all-in-one).** Download
+`VizDOM-Studio-Setup-<version>.exe` from the
+[Releases](https://github.com/milanac030988/vizdom/releases) page and run it; no
+administrator rights are needed. It brings Studio, its own Python 3.12 with the
+VizDOM engine and the Robot Framework library, CPU PyTorch, EasyOCR with its
+English models, and Tesseract. Settings, sessions and plugins go to
+`Documents\VizDOM`. Run Robot suites with the Python it installed:
+
+```bat
+"%LOCALAPPDATA%\Programs\VizDOM Studio\resources\python\python.exe" -m robot my_tests\
+```
+
+**Python package.** In any Python 3.9 to 3.12 environment:
+
+```bash
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu   # optional: small CPU-only PyTorch
+pip install "vizdom[robot]"   # library, UIED detector, EasyOCR/Tesseract, desktop capture/input, gRPC clients and services
+```
+
+Tesseract is a separate native install if you want the `tesseract` OCR engine.
+Plugins go into folders named by `VIZDOM_CAPTURE_PLUGINS` /
+`VIZDOM_ACTUATOR_PLUGINS` (see [Writing Plugins](PLUGINS.md)).
+
+---
+
+## From source with uv
+
+The source checkout is installed with [**uv**](https://docs.astral.sh/uv/). One command
 sequence works on **any** machine — uv fetches its own Python, creates the
 environment in the project, and installs the pinned dependency groups from
 `pyproject.toml`. Nothing depends on a pre-existing local Python.
@@ -65,14 +100,11 @@ picks up automatically (see §5).
 ## 3. Install the dependency groups you need
 
 ```bat
-:: minimum: pipeline + Robot Framework library (CPU, classical detector)
-uv pip install -e ".[ocr]"
-
-:: add the gRPC services (detector / capture / actuator)
-uv pip install -e ".[ocr,grpc]"
+:: pipeline + Robot Framework library + desktop capture/input + gRPC services (CPU)
+uv pip install -e ".[robot]"
 
 :: add the learned detector (OmniParser: torch + CUDA, ~2.5 GB download)
-uv pip install -e ".[ocr,grpc,omniparser]"
+uv pip install -e ".[robot,omniparser]"
 
 :: interactive tools and docs
 uv pip install -e ".[viewer,dashboard,docs]"
@@ -81,9 +113,9 @@ uv pip install -e ".[viewer,dashboard,docs]"
 uv pip install -e ".[all]"
 ```
 
-Available groups: `ocr`, `ocr-paddle`, `llm`, `omniparser`, `grpc`, `viewer`,
-`dashboard`, `docs`, `annotation`, `desktop`, `training`, `cv-training`, `dev`,
-`all`.
+Available groups: `robot` (= `ocr` + `desktop` + `grpc`), `ocr`, `ocr-paddle`,
+`desktop`, `grpc`, `llm`, `omniparser`, `studio`, `viewer`, `dashboard`, `docs`,
+`annotation`, `training`, `cv-training`, `dev`, `all`.
 
 **GPU note.** `[tool.uv.sources]` already resolves `torch`/`torchvision` from the
 `pytorch-cu124` index, so a fresh install gets CUDA wheels. Without a GPU, skip
@@ -123,7 +155,7 @@ First hit wins:
 |---|---|---|
 | 1 | `%VIZDOM_PYTHON%` | explicit override — always wins |
 | 2 | `.venv\Scripts\python.exe` (Windows) / `.venv/bin/python` (POSIX) | **the uv environment from §2 — the normal case** |
-| 3 | `D:\Python\python39\python.exe` | the author's workstation (Windows only; legacy, predates uv) |
+| 3 | a fixed legacy path in `python_env.bat` | Windows only; predates uv |
 | 4 | `py -3.9` (Windows) / `python3.12…3.9` (POSIX) | a versioned interpreter |
 | 5 | `python` on PATH | last resort |
 
@@ -173,14 +205,14 @@ point the runner at your own suite: `./run_demo.sh my_suite.robot`.
 :: OmniParser detector backend (repo + weights); see omniparser-setup.md
 uv run python scripts\setup_omniparser.py --install-deps
 
-:: gRPC stubs, if you change protos/*.proto (ADR-017)
-uv run python -m grpc_tools.protoc -I protos ^
-    --python_out=src/visual_dom/generated --grpc_python_out=src/visual_dom/generated ^
-    protos/detector.proto protos/capture.proto protos/actuator.proto
+:: gRPC stubs: once after cloning, and again after editing protos/*.proto (ADR-017)
+uv run python scripts\gen_protos.py
 ```
 
-Generated `*_pb2*.py` files are gitignored — regenerate them after cloning if you
-use the services (`[grpc]` group required).
+The generated `*_pb2*.py` files are gitignored, so a fresh clone has none; the
+services and the `grpc` clients need them (`grpc` group required).
+`gen_protos.py` also rewrites their imports to `visual_dom.generated`, which a
+bare `grpc_tools.protoc` call does not.
 
 ## 7. Alternative — install into an existing interpreter
 
@@ -189,12 +221,11 @@ that you do not want to rebuild), uv can install into it instead of creating
 `.venv`:
 
 ```bat
-uv pip install --python "C:\path\to\python.exe" -e ".[ocr,grpc]"
+uv pip install --python "C:\path\to\python.exe" -e ".[robot]"
 ```
 
 Then point the launchers at it: `set VIZDOM_PYTHON=C:\path\to\python.exe`.
-This is how the author's workstation is set up (candidate 3 above) — it works,
-but §2 is the reproducible path and the one to use on a new machine.
+It works, but §2 is the reproducible path and the one to use on a new machine.
 
 Do **not** mix the two: running `uv venv` in a repo whose launchers you expect to
 use the system interpreter creates exactly the shadowing problem described in §5.

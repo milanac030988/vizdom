@@ -7,7 +7,14 @@ Where our Visual DOM Generator sits among OmniParser, Aria-UI, ELAM-7B and Jedi 
      the ELAM-7B model card (sparks-solutions/ELAM-7B), and the OSWorld-G / Jedi project page
      (*Scaling Computer-Use Grounding via User Interface Decomposition and Synthesis*).
      All reported numbers are from the authors of each system. Statements about our own pipeline reflect the current
-     `D:\Project\MasterProject` repository. This is a decision-support note, not an independent benchmark study.
+     VizDOM repository at the time of writing. This is a decision-support note, not an independent benchmark study.
+
+!!! note "Research note from development"
+    Written in mid-2026 to choose the detection approach, before the public release,
+    and kept for its reasoning. Some statements are out of date: VizDOM is released
+    under the **MIT License**; Ultralytics and OmniParser are only in optional extras or
+    fetched separately and are not distributed with it. Current results are in
+    [Evaluation](../EVALUATION.md).
 
 ## 1. Summary in 60 seconds
 
@@ -162,6 +169,11 @@ The `icon_detect` weights are a YOLOv8 fine-tune, and Ultralytics distributes YO
      The April decision to adopt YOLO already brought AGPL-3.0 into the project. Adopting OmniParser's detector introduces
      **no new licence class** — it is the same obligation we are already under. This materially weakens the
      licence argument against option B.
+
+!!! note "Superseded"
+    The Ultralytics dependency described here was moved into optional extras before
+    the release, and VizDOM is published under MIT. The table below applies only to
+    an installation that adds those extras.
 
 ### 9.3 What AGPL-3.0 requires, by scenario
 

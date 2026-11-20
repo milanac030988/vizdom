@@ -106,7 +106,8 @@ boundary produced the current mapping (**actionable 0.09 -> 0.73 -> 0.87**). Che
 future work. This measures *type* only --- localisation (above) is unchanged.
 
 > Caveat: this is a synthetic, clean benchmark; absolute scores will differ on
-> gradient-heavy real-world UIs. A larger real-world labelled set is the next step.
+> gradient-heavy real-world UIs. The lifecycle benchmark on real applications
+> (below) measures the end-to-end outcome there.
 
 ## Dataset construction & augmentation
 
@@ -137,7 +138,8 @@ itself, in three complementary layers (all under `scripts/data_prep/`):
 
 **What is scored:** only the clean synthetic split (layer 1) is the scored benchmark.
 Layers 2–3 are development / robustness aids that broaden coverage toward real
-deployment; a larger real-world labelled set remains future work.
+deployment. Real applications are covered by a separate lifecycle set,
+`lifecycle-realworld-v1` (see *Real applications* below).
 
 ## Quick Start
 
@@ -449,10 +451,32 @@ captions. Every result file is
 stamped with dataset id + git commit; per-step outcomes and every parsed DOM
 are kept so failures remain attributable to a stage.
 
-Planned extensions: real-application states in the same schema, plausible-but-
-absent negatives (defect injection), human-written descriptions, and a vision
-tier that does not loop (the 3B vision model collapsed on a third of the
-screens in every run; see the benchmark README).
+### Real applications
+
+`benchmarks/lifecycle-realworld-v1` uses the same schema on 46 screenshots of 9
+desktop applications (998 steps). Its ground truth comes from UI Automation, and
+its negatives are captions taken from *other screens of the same application*, so
+an absent element is plausible rather than obviously out of place.
+
+| Column | Clicks on target | Correct verdicts | False passes |
+|---|---|---|---|
+| `text=` VizDOM (`modular` detector) | 0.797 | 0.879 | 0 / 92 |
+| `desc=` lexical → small LM (CPU) | 0.795 | 0.826 | 0 / 92 |
+| `desc=` lexical → 7B vision model (default) | 0.861 | 0.826 | 0 / 92 |
+| ELAM-7B (grounder) | 0.857 | 0.833 | 91 / 92 |
+| UI-TARS-1.5-7B (grounder) | 0.821 | 0.903 | 53 / 92 |
+
+On clicks the 7B vision chain is level with both grounders; on absent elements
+the grounders accept most of the plausible negatives, while no VizDOM chain
+passes any on this set. Per-application results, statistics and the run details are in
+[`benchmarks/README.md`](https://github.com/milanac030988/vizdom/blob/HEAD/benchmarks/README.md).
+
+**Held-out applications.** `benchmarks/lifecycle-realworld-heldout-v1` has 14
+states of 5 applications that played no part in tuning. `text=` clicks on target
+0.765 with 0 / 28 false passes; `desc=` lexical → small LM clicks 0.815 with
+1 / 28 false pass. The click and verdict figures carry over to unseen
+applications; the zero false passes do not quite
+([held-out README](https://github.com/milanac030988/vizdom/blob/HEAD/benchmarks/lifecycle-realworld-heldout-v1/README.md)).
 
 ## Interpreting Results
 

@@ -77,7 +77,7 @@ A gRPC `Capture` service mirroring the detector service (ADR-017):
 Enables the distributed split: capture on the device, detection on a GPU box
 (ADR-017), orchestration on the client — each a strategy/backend selected by name.
 
-Stubs (`capture_pb2*.py`) are generated, not committed (see `rpc/__init__.py`).
+Stubs (`capture_pb2*.py`) are generated, not committed (`python scripts/gen_protos.py` writes them to `src/visual_dom/generated/`).
 
 ## Alternatives Considered
 

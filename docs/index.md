@@ -16,7 +16,7 @@ is needed.
 |---|---|
 | **The application has no accessibility tree.** It is drawn with Qt/QML, OpenGL or a game engine, runs on an industrial HMI, in a remote desktop, or you only see it through a camera. Object-based tools find nothing. | VizDOM reads the **pixels** and rebuilds the structure: buttons, fields, text, their hierarchy and their names. Your test addresses `text=Save` or `role=button`, as if the application had an accessibility API. |
 | **Image-matching and coordinate scripts break** on every theme change, resolution, language or moved button. | Locators describe **what** an element is, not where its pixels are: by text, role, label, relation to another element (`right_of="Name"`) or in plain words (`desc="save button"`). Fallback chains (<code>text=Save &#124;&#124; desc="save button"</code>) keep a test running when a primary locator stops matching. |
-| **Tests pass when they should fail.** An AI agent or a template match always returns *something*, even when the element is not there. | A VizDOM locator must match **exactly one** element, or the step fails. In our benchmark VizDOM reported none of 180 absent elements as present; the 7B grounding models we compared reported 53 to 91 of 92. |
+| **Tests pass when they should fail.** An AI agent or a template match always returns *something*, even when the element is not there. | A VizDOM locator must match **exactly one** element, or the step fails. On our two main benchmark sets VizDOM reported none of 180 absent elements as present (and 1 of 28 on applications it was never tuned on); the 7B grounding models we compared reported 53 to 91 of 92. |
 | **Icons and glyph keys have no text**, so there is nothing to search for. | VizDOM reads glyphs (`+ − × ÷ =`) and names icons from their caption (÷ → `Divide`), so `desc="divide button"` finds them. |
 | **You may not touch the application:** no test build, no injected agent, no hooks into a certified system. | VizDOM only **looks and types**: it captures the screen and sends mouse and keyboard input like a user, from the same machine or over the network. |
 | **The click lands in the wrong window**, or the screenshot shows a dialog that happened to be on top. | Capture can be limited to the **window of the application under test**, which is raised to the front first (`window_scope`, `Bring App To Front`). |
@@ -59,6 +59,17 @@ detector should run on a GPU host, or the application runs on another machine,
 start the matching service there and point the config at it. The test does not
 change:
 
+<div class="vz-fig"><div class="vz-scroll"><img src="img/deployment-distributed.svg" alt="Distributed deployment: test runners, a shared GPU host, and machines under test (a PC, an Android device, a closed device seen by a camera and touched by a robot arm)" style="aspect-ratio:1200/700"></div></div>
+
+Any number of test runners share one GPU host, which loads the model once. The
+capture and actuator services sit next to whatever shows the application: a
+Windows or Linux PC, a PC with an Android device attached, or a camera and a
+robot arm in front of a closed device with no OS access. The robot-arm actuator
+is an example plugin (`plugins/actuator/example_robot_arm.py`); your arm's
+driver fills in its two hardware methods.
+
+The runner's config names the services:
+
 ```json
 {
   "detector": { "backend": "grpc", "grpc_target": "gpu-host:50051" },
@@ -78,11 +89,14 @@ Each service is described in the [System overview](system-overview.md#optional-s
 
 ## Building these docs
 
-This site is built with [ProperDocs](https://properdocs.org) (a MkDocs fork);
-PlantUML diagrams render locally through `tools/plantuml.jar` (Java on the PATH).
-The system overview is generated from `tools/docs_overview/overview_model.py`:
+This site is built with [ProperDocs](https://properdocs.org) (a MkDocs fork).
+PlantUML diagrams render locally through `tools/plantuml.jar`, which is not in
+the repository: download it once (Java and Graphviz must be on the PATH). The
+system overview is generated from `tools/docs_overview/overview_model.py`:
 
 ```bash
+pip install -e ".[docs]"
+curl -fsSL -o tools/plantuml.jar https://github.com/plantuml/plantuml/releases/download/v1.2024.3/plantuml-1.2024.3.jar
 python tools/docs_overview/build_overview.py   # after editing the model
 properdocs serve -f properdocs.yml             # preview at http://localhost:8000
 ```

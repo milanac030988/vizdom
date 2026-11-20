@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" role="img" aria-label="Distributed deployment: any number of test runners hold no model and reach, over one test network and gRPC, a shared GPU host with the detector service and an optional Ollama, and the machines under test. A Windows or Linux PC runs the capture and actuator services next to the application; a PC with an Android device attached runs them with the android strategy over adb; a closed device with no OS access is seen by a camera through the capture service and touched by a robot arm through an actuator plugin. One config file names the targets; the tests do not change." font-family="Segoe UI, system-ui, -apple-system, Arial, sans-serif" font-size="13" fill="#1a202c">
+  <title>VizDOM distributed deployment</title>
+  <defs>
+    <marker id="dpT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a9d8f"/></marker>
+    <marker id="dpR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c8334f"/></marker>
+    <marker id="dpB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3b6fd8"/></marker>
+  </defs>
+  <rect width="1200" height="700" fill="#ffffff"/>
+
+  <!-- ============ test runners ============ -->
+  <rect x="20" y="20" width="300" height="660" rx="12" fill="#f0f9f7" stroke="#2a9d8f" stroke-width="1.5"/>
+  <text x="40" y="48" font-weight="700" font-size="16">Test runners</text>
+  <text x="300" y="48" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#4a5568">any number</text>
+  <text x="40" y="68" font-size="12" fill="#4a5568">no GPU and no model needed</text>
+
+  <rect x="40" y="84" width="260" height="62" rx="8" fill="#fff" stroke="#9fd3cc"/>
+  <text x="54" y="108" font-weight="600">CI agent · robot command</text>
+  <text x="54" y="128" font-size="12" fill="#4a5568">Robot suite + VisualGuiLibrary</text>
+  <rect x="40" y="158" width="260" height="62" rx="8" fill="#fff" stroke="#9fd3cc"/>
+  <text x="54" y="182" font-weight="600">Tester's laptop</text>
+  <text x="54" y="202" font-size="12" fill="#4a5568">VizDOM Studio · Locator Lab</text>
+  <rect x="40" y="232" width="260" height="62" rx="8" fill="#fff" stroke="#9fd3cc"/>
+  <text x="54" y="256" font-weight="600">Your own script</text>
+  <text x="54" y="276" font-family="Consolas, monospace" font-size="12" fill="#4a5568">visual_dom.connect()</text>
+
+  <rect x="40" y="318" width="260" height="180" rx="8" fill="#fff" stroke="#718096" stroke-dasharray="5 4"/>
+  <text x="54" y="342" font-family="Consolas, monospace" font-size="12" font-weight="700">vizdom.config.json</text>
+  <g font-family="Consolas, monospace" font-size="11" fill="#16645b">
+    <text x="54" y="366">"detector": {</text>
+    <text x="54" y="383" xml:space="preserve">  "backend": "grpc",</text>
+    <text x="54" y="400" xml:space="preserve">  "grpc_target": "gpu-host:50051" },</text>
+    <text x="54" y="422">"capture":  { "strategy": "grpc",</text>
+    <text x="54" y="439" xml:space="preserve">  "target": "sut-pc:50053" },</text>
+    <text x="54" y="461">"actuator": { "strategy": "grpc",</text>
+    <text x="54" y="478" xml:space="preserve">  "target": "sut-pc:50054" }</text>
+  </g>
+
+  <text x="40" y="530" font-size="13" font-weight="600" fill="#16645b">Change a target and the same suite</text>
+  <text x="40" y="549" font-size="13" font-weight="600" fill="#16645b">runs against another machine.</text>
+  <text x="40" y="568" font-size="13" font-weight="600" fill="#16645b">The test code does not change.</text>
+  <text x="40" y="604" font-size="12" fill="#4a5568">Without services, detection, capture</text>
+  <text x="40" y="621" font-size="12" fill="#4a5568">and input all run inside the runner.</text>
+  <text x="40" y="650" font-size="12" fill="#4a5568">Sessions and failure screenshots</text>
+  <text x="40" y="667" font-size="12" fill="#4a5568">are saved on the runner.</text>
+
+  <!-- ============ network bus ============ -->
+  <line x1="380" y1="70" x2="380" y2="640" stroke="#2a9d8f" stroke-width="5" stroke-linecap="round"/>
+  <text x="0" y="0" transform="translate(368 470) rotate(-90)" text-anchor="middle" font-size="12" font-weight="600" fill="#16645b">test network · gRPC</text>
+  <line x1="320" y1="189" x2="376" y2="189" stroke="#2a9d8f" stroke-width="2.5"/>
+  <circle cx="380" cy="189" r="5" fill="#2a9d8f"/>
+
+  <g font-size="11" fill="#16645b" text-anchor="middle">
+    <line x1="380" y1="108" x2="456" y2="108" stroke="#2a9d8f" stroke-width="2.5" marker-end="url(#dpT)"/>
+    <text x="418" y="100">Detect</text>
+    <line x1="380" y1="278" x2="456" y2="278" stroke="#2a9d8f" stroke-width="2.5" marker-end="url(#dpT)"/>
+    <text x="418" y="270">Grab · Tap</text>
+    <line x1="380" y1="437" x2="456" y2="437" stroke="#2a9d8f" stroke-width="2.5" marker-end="url(#dpT)"/>
+    <text x="418" y="429">Grab · Tap</text>
+    <line x1="380" y1="608" x2="456" y2="608" stroke="#2a9d8f" stroke-width="2.5" marker-end="url(#dpT)"/>
+    <text x="418" y="600">Grab · Tap</text>
+  </g>
+
+  <!-- ============ GPU host ============ -->
+  <rect x="460" y="20" width="720" height="150" rx="12" fill="#f7fafc" stroke="#a0aec0" stroke-width="1.5"/>
+  <text x="480" y="46" font-weight="700" font-size="15">GPU host</text>
+  <text x="1160" y="46" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#4a5568">one per team · in the lab or rented</text>
+  <rect x="480" y="60" width="330" height="96" rx="8" fill="#fdf3e1" stroke="#c98a12" stroke-width="1.5"/>
+  <text x="496" y="85" font-weight="700">Detector service</text>
+  <text x="794" y="85" text-anchor="end" font-family="Consolas, monospace" font-size="13" fill="#a86b00">:50051</text>
+  <text x="496" y="106" font-size="12" fill="#4a5568">OmniParser · modular · YOLO · UIED</text>
+  <text x="496" y="126" font-size="12" fill="#4a5568">loads the model once, serves every runner</text>
+  <text x="496" y="145" font-size="11" fill="#718096">also runs on a CPU host (UIED, no weights)</text>
+  <rect x="830" y="60" width="330" height="96" rx="8" fill="#f4effc" stroke="#7c5cc4" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="846" y="85" font-weight="700">Ollama <tspan font-weight="400" fill="#4a5568">(optional)</tspan></text>
+  <text x="1144" y="85" text-anchor="end" font-family="Consolas, monospace" font-size="13" fill="#6b4bb0">:11434</text>
+  <text x="846" y="106" font-size="12" fill="#4a5568">a small language model for desc= locators</text>
+  <text x="846" y="126" font-size="12" fill="#4a5568">called by the runner over HTTP</text>
+
+  <!-- ============ Windows / Linux PC ============ -->
+  <rect x="460" y="190" width="720" height="150" rx="12" fill="#f7fafc" stroke="#a0aec0" stroke-width="1.5"/>
+  <text x="480" y="216" font-weight="700" font-size="15">Windows or Linux PC</text>
+  <text x="1160" y="216" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#4a5568">the machine that shows the application</text>
+  <rect x="480" y="230" width="200" height="96" rx="8" fill="#e8f0fe" stroke="#3b6fd8" stroke-width="1.5"/>
+  <text x="494" y="254" font-weight="700">Capture service</text>
+  <text x="668" y="254" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#2c57b0">:50053</text>
+  <text x="494" y="276" font-family="Consolas, monospace" font-size="12" fill="#4a5568">windows · linux</text>
+  <text x="494" y="296" font-size="12" fill="#4a5568">raises the app's window</text>
+  <text x="494" y="313" font-size="12" fill="#4a5568">and crops to it</text>
+  <rect x="694" y="230" width="200" height="96" rx="8" fill="#fde8ec" stroke="#c8334f" stroke-width="1.5"/>
+  <text x="708" y="254" font-weight="700">Actuator service</text>
+  <text x="882" y="254" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#a3253e">:50054</text>
+  <text x="708" y="276" font-family="Consolas, monospace" font-size="12" fill="#4a5568">desktop</text>
+  <text x="708" y="296" font-size="12" fill="#4a5568">mouse clicks, typing,</text>
+  <text x="708" y="313" font-size="12" fill="#4a5568">keys, scrolling</text>
+  <rect x="930" y="230" width="230" height="96" rx="8" fill="#2d3748"/>
+  <text x="946" y="256" font-weight="700" fill="#fff">Application under test</text>
+  <text x="946" y="280" font-size="12" fill="#cbd5e0">seen only as pixels,</text>
+  <text x="946" y="297" font-size="12" fill="#cbd5e0">driven only by input</text>
+  <text x="946" y="316" font-size="12" fill="#9fd3cc">nothing installed in it</text>
+  <line x1="894" y1="278" x2="926" y2="278" stroke="#c8334f" stroke-width="2" marker-end="url(#dpR)"/>
+
+  <!-- ============ Android ============ -->
+  <rect x="460" y="360" width="720" height="140" rx="12" fill="#f7fafc" stroke="#a0aec0" stroke-width="1.5"/>
+  <text x="480" y="386" font-weight="700" font-size="15">PC with an Android device attached</text>
+  <text x="1160" y="386" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#4a5568">USB or Wi-Fi · adb</text>
+  <rect x="480" y="400" width="200" height="84" rx="8" fill="#e8f0fe" stroke="#3b6fd8" stroke-width="1.5"/>
+  <text x="494" y="424" font-weight="700">Capture service</text>
+  <text x="668" y="424" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#2c57b0">:50053</text>
+  <text x="494" y="446" font-family="Consolas, monospace" font-size="12" fill="#4a5568">android</text>
+  <text x="494" y="466" font-size="12" fill="#4a5568">screenshots over adb</text>
+  <rect x="694" y="400" width="200" height="84" rx="8" fill="#fde8ec" stroke="#c8334f" stroke-width="1.5"/>
+  <text x="708" y="424" font-weight="700">Actuator service</text>
+  <text x="882" y="424" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#a3253e">:50054</text>
+  <text x="708" y="446" font-family="Consolas, monospace" font-size="12" fill="#4a5568">android</text>
+  <text x="708" y="466" font-size="12" fill="#4a5568">taps, swipes, text over adb</text>
+  <rect x="930" y="400" width="230" height="84" rx="8" fill="#2d3748"/>
+  <rect x="946" y="412" width="34" height="60" rx="6" fill="none" stroke="#cbd5e0" stroke-width="1.5"/>
+  <line x1="958" y1="466" x2="968" y2="466" stroke="#cbd5e0" stroke-width="1.5"/>
+  <text x="994" y="436" font-weight="700" fill="#fff">Android app</text>
+  <text x="994" y="458" font-size="12" fill="#cbd5e0">phone or emulator</text>
+  <line x1="894" y1="442" x2="926" y2="442" stroke="#c8334f" stroke-width="2" marker-end="url(#dpR)"/>
+
+  <!-- ============ closed device ============ -->
+  <rect x="460" y="520" width="720" height="160" rx="12" fill="#f7fafc" stroke="#a0aec0" stroke-width="1.5"/>
+  <text x="480" y="546" font-weight="700" font-size="15">Closed device · no OS access</text>
+  <text x="1160" y="546" text-anchor="end" font-family="Consolas, monospace" font-size="11" fill="#4a5568">appliance panel · HMI · kiosk</text>
+  <rect x="480" y="560" width="200" height="104" rx="8" fill="#e8f0fe" stroke="#3b6fd8" stroke-width="1.5"/>
+  <text x="494" y="584" font-weight="700">Capture service</text>
+  <text x="668" y="584" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#2c57b0">:50053</text>
+  <text x="494" y="606" font-family="Consolas, monospace" font-size="12" fill="#4a5568">camera</text>
+  <text x="494" y="626" font-size="12" fill="#4a5568">a photo of the screen,</text>
+  <text x="494" y="643" font-size="12" fill="#4a5568">found and warped flat</text>
+  <rect x="694" y="560" width="200" height="104" rx="8" fill="#fde8ec" stroke="#c8334f" stroke-width="1.5"/>
+  <text x="708" y="584" font-weight="700">Actuator service</text>
+  <text x="882" y="584" text-anchor="end" font-family="Consolas, monospace" font-size="12" fill="#a3253e">:50054</text>
+  <text x="708" y="606" font-family="Consolas, monospace" font-size="12" fill="#4a5568">robot-arm plugin</text>
+  <text x="708" y="626" font-size="12" fill="#4a5568">screen pixel → arm XY</text>
+  <text x="708" y="643" font-size="11" fill="#718096">example plugin: your arm's</text>
+  <text x="708" y="657" font-size="11" fill="#718096">driver fills in two methods</text>
+
+  <!-- device drawing -->
+  <rect x="930" y="560" width="230" height="104" rx="8" fill="#fff" stroke="#2d3748" stroke-width="2"/>
+  <rect x="946" y="592" width="140" height="62" rx="5" fill="#2d3748"/>
+  <rect x="956" y="602" width="36" height="18" rx="3" fill="#4a5568"/><text x="974" y="615" text-anchor="middle" font-size="10" fill="#fff">Start</text>
+  <rect x="998" y="602" width="36" height="18" rx="3" fill="#4a5568"/><text x="1016" y="615" text-anchor="middle" font-size="10" fill="#fff">Stop</text>
+  <rect x="1040" y="602" width="36" height="18" rx="3" fill="#4a5568"/><text x="1058" y="615" text-anchor="middle" font-size="10" fill="#fff">Menu</text>
+  <rect x="956" y="628" width="78" height="18" rx="3" fill="#1a202c"/><text x="995" y="641" text-anchor="middle" font-family="Consolas, monospace" font-size="10" fill="#9fd3cc">ready</text>
+  <!-- camera -->
+  <rect x="1098" y="568" width="30" height="20" rx="3" fill="#e8f0fe" stroke="#3b6fd8" stroke-width="1.5"/>
+  <circle cx="1113" cy="578" r="5" fill="none" stroke="#3b6fd8" stroke-width="1.5"/>
+  <g stroke="#3b6fd8" stroke-width="1" stroke-dasharray="3 3"><line x1="1100" y1="588" x2="1086" y2="598"/><line x1="1104" y1="588" x2="1086" y2="650"/></g>
+  <text x="1136" y="583" font-size="10" fill="#2c57b0">cam</text>
+  <!-- arm -->
+  <rect x="1116" y="646" width="30" height="8" rx="2" fill="#fde8ec" stroke="#c8334f"/>
+  <polyline points="1131,646 1131,634 1100,632 1060,626" fill="none" stroke="#c8334f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="1058" cy="625" r="4" fill="#c8334f"/>
+  <text x="1112" y="656" font-size="10" fill="#a3253e" text-anchor="end">arm</text>
+</svg>

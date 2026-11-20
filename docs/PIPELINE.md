@@ -27,6 +27,15 @@ The pipeline consists of **4 main stages** plus an **optional LLM refinement sta
 | 3.5 | LLM Refinement | Small Language Models (Optional) | Refine and fix errors |
 | 4 | DOM Compilation | Deterministic Processing | Generate final JSON with locators |
 
+!!! note "Scope of this page"
+    This page explains the classical path, EasyOCR + UIED, stage by stage. The
+    pipeline has grown since: learned detectors (`omniparser`, the three-stage
+    `modular` detector, `yolo`) replace stage 2 when selected, a symbol reader
+    names glyph and icon keys, labels are attached to fields, and the optional
+    LLM review now runs as stage 8 (`refiner` in the config). The current stage
+    list and every setting are in [Configuration & Sessions](CONFIGURATION.md);
+    the parts and how they connect are in the [System overview](system-overview.md).
+
 ---
 
 ## Stage 1: Text Detection (OCR)
@@ -380,13 +389,12 @@ LLMHierarchyRefiner(
 )
 ```
 
-### Current Status
+### Enabling it
 
-| Feature | Status |
-|---------|--------|
-| Implementation | ✅ Complete |
-| Viewer Integration | ❌ Not integrated |
-| CLI Support | ✅ Available |
+Set `"refiner": { "enabled": true, "backend": "ollama", "model": "qwen2.5:3b" }`
+in `vizdom.config.json`; the library, Studio and the Viewer read the same
+setting ([Configuration & Sessions](CONFIGURATION.md)). From the command line:
+`python scripts/process_gui_image.py screenshot.png --llm ollama`.
 
 ---
 
@@ -617,9 +625,9 @@ DOMCompiler(
 | CV Pipeline | `src/visual_dom/core/domain/pipeline.py` |
 | Text Detector | `src/visual_dom/adapters/outbound/ocr/text_detector.py` |
 | UIED Detector | `src/visual_dom/adapters/outbound/detectors/uied_detection.py` |
-| Hierarchy Builder | `src/visual_dom/hierarchy/coarse_builder.py` |
-| LLM Refiner | `src/visual_dom/hierarchy/llm_refiner.py` |
-| DOM Compiler | `src/visual_dom/compiler/dom_compiler.py` |
+| Hierarchy Builder | `src/visual_dom/core/domain/hierarchy/coarse_builder.py` |
+| LLM Refiner | `src/visual_dom/core/domain/hierarchy/llm_refiner.py` |
+| DOM Compiler | `src/visual_dom/core/domain/compiler/dom_compiler.py` |
 
 ---
 
@@ -627,8 +635,8 @@ DOMCompiler(
 
 ```python
 from visual_dom.core.domain.pipeline import VisualDOMPipeline
-from visual_dom.hierarchy.coarse_builder import CoarseHierarchyBuilder
-from visual_dom.compiler.dom_compiler import DOMCompiler
+from visual_dom.core.domain.hierarchy.coarse_builder import CoarseHierarchyBuilder
+from visual_dom.core.domain.compiler.dom_compiler import DOMCompiler
 
 # Initialize pipeline
 pipeline = VisualDOMPipeline(

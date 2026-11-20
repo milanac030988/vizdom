@@ -50,7 +50,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - System Overview: system-overview.md
-  - Setup (uv): uv-setup.md
+  - Setup: uv-setup.md
   - Configuration & Sessions: CONFIGURATION.md
   - Using as a Client: USAGE.md
   - Writing Plugins: PLUGINS.md
@@ -59,7 +59,6 @@ nav:
   - Algorithms & Improvements: IMPROVEMENTS.md
   - OmniParser Setup: omniparser-setup.md
   - Evaluation: EVALUATION.md
-  - Data Annotation: annotation_workflow.md
   - Research:
       - VLM Study: RESEARCH.md
       - Related Work: related_work.md

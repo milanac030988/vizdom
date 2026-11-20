@@ -1,41 +1,40 @@
 # OmniParser Detector Backend — Setup
 
-This project can use **Microsoft OmniParser** as an alternative element-detection
-backend (alongside the default `uied` and `yolo`). See
+VizDOM can use **Microsoft OmniParser** as its element-detection backend
+(`omniparser`), alone or as stage 1 of the `modular` detector, beside the CPU
+`uied` and `yolo` backends. See
 [ADR-015](adr/015-pluggable-detector-backends.md) for the design and
 [the landscape comparison](discussion/landscape-comparison-en.md) for why.
+It needs a GPU to be fast, so it usually runs on one GPU host as the detector
+service (`vizdom-detector --backend omniparser`).
 
-> **Licensing.** OmniParser's `icon_detect` is **AGPL-3.0** (via Ultralytics/YOLO);
-> `icon_caption` is MIT; the repo is CC-BY-4.0. This project is **already** on AGPL
-> through its existing Ultralytics dependency, so this adds no new licence class —
-> but shipping or network-serving the project with this backend active carries AGPL
-> obligations. For permissive reuse, prefer an Apache-licensed detector instead.
+> **Licensing.** VizDOM itself is MIT. OmniParser's `icon_detect` is **AGPL-3.0**
+> (via Ultralytics/YOLO), `icon_caption` is MIT, and the OmniParser repository is
+> CC-BY-4.0. None of it is distributed with VizDOM: the `omniparser` extra installs
+> Ultralytics and the setup script below fetches OmniParser onto your machine, so
+> the AGPL applies to that installation. Shipping or network-serving it carries
+> AGPL obligations; the `uied` backend avoids them.
 
 ## Quick start
 
-Run the setup script with the **same interpreter the app uses** (the Viewer and
-dashboard run on Python 3.9 at `%VIZDOM_PY%`):
+OmniParser needs a **source checkout** (the setup script and the `third_party/`
+and `models/` folders live in the repository; see [Setup](uv-setup.md)). Install
+the `omniparser` extra, then run the setup script with the **same interpreter the
+detector will use**:
 
 ```bat
-"%VIZDOM_PY%" scripts\setup_omniparser.py --install-deps
+uv pip install -e ".[robot,omniparser]"
+uv run python scripts\setup_omniparser.py --install-deps
 ```
 
-Then launch `start_viewer.bat` and choose **`omniparser`** in the **Det** dropdown.
-No environment variables are needed — the app auto-detects the default paths.
+Then select it: `"detector": { "backend": "omniparser" }` in `vizdom.config.json`,
+the detector setting in the Viewer (*Settings*, `Ctrl+,`), or
+`vizdom-detector --backend omniparser` for the service. No environment variables
+are needed; the default paths are found automatically.
 
-## What the environment already has (Python 3.9)
-
-Checked on this machine:
-
-| Dependency | Status |
-|---|---|
-| torch 2.4.1 + CUDA 12.4 | ✅ present (GPU works) |
-| transformers 4.46 | ✅ present |
-| opencv, numpy, einops, timm, easyocr, Pillow | ✅ present |
-| **ultralytics** | ❌ missing — needed for icon_detect |
-| **supervision** | ❌ missing — needed by OmniParser utils |
-
-So only two packages need installing. `--install-deps` handles them.
+The `omniparser` extra already brings `ultralytics` (for `icon_detect`),
+`supervision` and `huggingface_hub`; `--install-deps` only installs them into an
+environment that was set up without the extra.
 
 ## What the script does
 
@@ -57,21 +56,24 @@ models/omniparser/
 ## Manual setup (if you prefer, or the script fails)
 
 ```bat
-REM 1. deps (into the 3.9 env)
-"%VIZDOM_PY%" -m pip install ultralytics supervision huggingface_hub
+REM 1. deps (into the environment the detector runs in)
+uv pip install ultralytics supervision huggingface_hub
 
 REM 2. clone the repo (provides util.utils)
 git clone --depth 1 https://github.com/microsoft/OmniParser.git third_party\OmniParser
 
 REM 3. weights
-"%VIZDOM_PY%" -c "from huggingface_hub import snapshot_download; snapshot_download('microsoft/OmniParser-v2.0', local_dir='models/omniparser', allow_patterns=['icon_detect/*','icon_caption/*'])"
+uv run python -c "from huggingface_hub import snapshot_download; snapshot_download('microsoft/OmniParser-v2.0', local_dir='models/omniparser', allow_patterns=['icon_detect/*','icon_caption/*'])"
 move models\omniparser\icon_caption models\omniparser\icon_caption_florence
 ```
 
 ## Running it
 
-**Viewer:** `start_viewer.bat` → set **Det** to `omniparser`. If weights/repo are
-missing it prints a warning and falls back to `uied` (never crashes).
+**Service:** `vizdom-detector --backend omniparser --ocr easyocr --port 50051`
+on the GPU host; clients use `"detector": { "backend": "grpc", "grpc_target": "gpu-host:50051" }`.
+
+**Viewer:** `start_viewer.bat` → *Settings* → detector `omniparser`. If weights/repo
+are missing it prints a warning and falls back to `uied` (never crashes).
 
 **CLI:**
 
@@ -108,17 +110,15 @@ interactability and text, on GPU. Two issues had to be worked around:
    Florence-2 runs on torch, so TF is unwanted. `omniparser_backend.py` sets
    `USE_TF=0` / `USE_FLAX=0` at import (before transformers loads) to prevent this.
 
-3. **protobuf pin:** this project uses `protobuf==4.25.5` (satisfies streamlit
-   `>=3.20,<6`). TensorFlow 2.10 is consequently unusable, but it was already in
-   conflict with streamlit before and is not used by this project.
+3. **protobuf pin:** the project constrains `protobuf<6` (streamlit needs
+   `>=3.20,<6`, and the gRPC stubs are generated for it). TensorFlow 2.10 is
+   consequently unusable, but it is not used by this project.
 
-4. **Broken `psutil` in the Roaming user-site** (`%1 is not a valid Win32
-   application`, a 32-bit/64-bit mismatch) shadows a good psutil in the main
-   site-packages. It does not block OmniParser (ultralytics imports fine without
-   it), but if something later needs psutil, remove
-   the per-user copy (`%APPDATA%\Python\Python39\site-packages\psutil`) so the
-   correct build in the interpreter's own `Lib\site-packages` is used.
-   *(Paths in this note are from the author's workstation; adjust to yours.)*
+4. **A broken `psutil` in the per-user site-packages** (`%1 is not a valid Win32
+   application`, a 32-bit/64-bit mismatch) can shadow a good psutil in the
+   interpreter's own site-packages. It does not block OmniParser (ultralytics
+   imports fine without it), but if something later needs psutil, remove the
+   per-user copy under `%APPDATA%\Python\Python3xx\site-packages\psutil`.
 
 ## Version caveat
 
@@ -127,5 +127,5 @@ OmniParser's `util.utils` API and weight layout have drifted across releases
 branch; the stable `main` uses `icon_detect`). If the caption/detector call
 signatures differ from what this integration expects, adjust
 `_parse_content_list` and the `detect()` call in
-`src/visual_dom/cv/detectors/omniparser_backend.py` — the version-sensitive
+`src/visual_dom/adapters/outbound/detectors/omniparser_backend.py` — the version-sensitive
 parts are isolated there on purpose.

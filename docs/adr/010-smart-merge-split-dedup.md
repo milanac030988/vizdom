@@ -109,7 +109,7 @@ columns are step-identical on all 514 steps. Tests:
 ## Consequences
 
 ### Positive
-- CMST app: 1 merged element → 87 individual text elements
+- WPF test application: 1 merged element → 87 individual text elements
 - Calculator: eliminated overlapping button pairs
 - Text-position split works without SLM (fast, deterministic)
 - Priority system ensures elements with text are never suppressed by textless overlaps

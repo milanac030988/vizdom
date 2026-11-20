@@ -2,7 +2,9 @@
 
 ## Status
 
-Proposed
+Accepted (implemented): the detector, capture and actuator services ship as
+`vizdom-detector` / `vizdom-capture` / `vizdom-actuator`, and the `grpc` client
+adapters are selected from the session config.
 
 ## Date
 
@@ -192,16 +194,11 @@ orchestration only when nodes actually come and go.
 
 > The `rpc/` package below became `src/visual_dom/generated/` (stubs) plus
 > `adapters/inbound/grpc/` (servers) in the ADR-014 hexagonal restructure. The
-> current command is:
+> current command runs protoc and qualifies the bare imports protoc emits:
 
 ```bash
-pip install grpcio grpcio-tools
-python -m grpc_tools.protoc -I protos \
-  --python_out=src/visual_dom/generated --grpc_python_out=src/visual_dom/generated \
-  protos/detector.proto protos/capture.proto protos/actuator.proto
-# protoc emits a bare import that breaks inside a package — qualify it:
-sed -i 's/^import detector_pb2 as /from visual_dom.generated import detector_pb2 as /' \
-  src/visual_dom/generated/detector_pb2_grpc.py
+pip install "vizdom[grpc]"      # or the grpc group of a source checkout
+python scripts/gen_protos.py
 ```
 
 **Verified end-to-end (2026-07-26):** with the `uied` backend, client → gRPC

@@ -27,7 +27,7 @@ input_field 0.00→0.99→0.99, checkbox 0.00→0.12→0.55, icon 1.00\*→0.00�
 [Evaluation](EVALUATION.md#improvement-omniparser-type-mapping-before--first-fix--now).
 
 **Code / config.** `_infer_visual_type` in
-`src/visual_dom/cv/detectors/omniparser_backend.py`; no user knobs (heuristic is
+`src/visual_dom/adapters/outbound/detectors/omniparser_backend.py`; no user knobs (heuristic is
 internal), but the backend itself is chosen via `detector.backend`.
 
 ## 2. `text` vs `label` semantics (literal read vs semantic name)

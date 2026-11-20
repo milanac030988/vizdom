@@ -22,7 +22,7 @@ names the key (÷ → `Divide`), so a test can say `desc="divide button"`.*
 
 | | |
 |---|---|
-| **Robot Framework library** | `Library    VisualGuiLibrary` — 28 keywords: `Connect`, `Dump Visual DOM`, `Click Visual`, `Type Text Visual`, `Visual Should Exist`, `Wait Until Visual Appears`, `Verify Element Value`, `Bring App To Front`, … |
+| **Robot Framework library** | `Library    VisualGuiLibrary` — 30 keywords: `Connect`, `Dump Visual DOM`, `Click Visual`, `Type Text Visual`, `Visual Should Exist`, `Wait Until Visual Appears`, `Verify Element Value`, `Bring App To Front`, … |
 | **Locators** | `text=`, `hint=`, `role=`, `id=`, spatial (`within`, `right_of`, `below`, …), plain-language `desc="save button"`, and fallback chains `text=Save \|\| desc="save button"` |
 | **An oracle you can trust** | A locator must resolve to **exactly one** element, or the step fails — an absent element is never reported as found |
 | **VizDOM Studio** | Desktop app (Windows installer): capture an application, inspect its Visual DOM, try a locator live, export a Robot Framework resource, run the services |
@@ -52,7 +52,7 @@ To run Robot suites with the Python the installer brought, call it directly (the
 default per-user install location is shown):
 
 ```bat
-"%LOCALAPPDATA%\Programs\vizdom-studio\resources\python\python.exe" -m robot my_tests\
+"%LOCALAPPDATA%\Programs\VizDOM Studio\resources\python\python.exe" -m robot my_tests\
 ```
 
 ### Option 2 — Python package (Robot Framework library only)
@@ -156,14 +156,20 @@ Studio run detection, capture and input **in process**. Split them up when the
 detector should run on a GPU host, when one warm model should serve many test
 runners, or when the machine under test is a different one from the runner.
 
-![Deployment: test runner, GPU host, machine under test](https://raw.githubusercontent.com/milanac030988/vizdom/HEAD/docs/img/deployment.png)
+![Distributed deployment: test runners, a shared GPU host, and machines under test (a PC, an Android device, a closed device seen by a camera and touched by a robot arm)](https://raw.githubusercontent.com/milanac030988/vizdom/HEAD/docs/img/deployment.png)
+
+Any number of test runners share one GPU host. The capture and actuator
+services sit next to whatever shows the application: a Windows or Linux PC, a
+PC with an Android device attached, or a camera and a robot arm in front of a
+closed device. The robot-arm actuator is an example plugin: the arm's own driver
+fills in its two hardware methods.
 
 | Service | Runs on | Start |
 |---|---|---|
 | **Detector** `:50051` | the GPU host (or any host, on CPU) | `vizdom-detector --backend omniparser --port 50051` |
 | **Capture** `:50053` | the machine showing the application | `vizdom-capture --strategy windows --port 50053` |
 | **Actuator** `:50054` | the machine receiving the clicks | `vizdom-actuator --strategy desktop --port 50054` |
-| **Ollama** `:11434` *(optional)* | the GPU host | a small language model for the `desc=` tiers beyond the lexical one, e.g. `ollama pull qwen2.5:3b` |
+| **Ollama** `:11434` *(optional)* | the GPU host | models for the `desc=` tiers beyond the lexical one: `ollama pull qwen2.5vl:7b` for the default vision tier (GPU), or `ollama pull qwen2.5:3b` for the CPU text tier (`"tiers": ["lexical", "slm"]`) |
 
 Each command comes with the `grpc` extra (or the installer's Python); Studio's
 *Services* page starts and stops the same services on the local machine. Then
@@ -186,9 +192,11 @@ Library    VisualGuiLibrary    capture=grpc    capture_target=sut-host:50053
 
 The test code does not change between a local and a distributed run.
 
-**GPU host.** Install with the `grpc,omniparser` extras, fetch the OmniParser
-weights once with `python scripts/setup_omniparser.py`, and start the detector with
-`--backend omniparser`. The CPU backend (`--backend uied`) needs no weights.
+**GPU host.** The OmniParser detector needs a source checkout: install it with
+`uv pip install -e ".[robot,omniparser]"`, fetch the weights once with
+`python scripts/setup_omniparser.py`, and start the detector with
+`--backend omniparser` ([OmniParser Setup](https://milanac030988.github.io/vizdom/omniparser-setup/)).
+The CPU backend (`--backend uied`) needs no weights and works from the pip package.
 
 > **Security.** The services have **no TLS and no authentication**, and listen on
 > every network interface. The actuator executes the clicks and keystrokes it is
@@ -244,8 +252,8 @@ The [Release workflow](https://github.com/milanac030988/vizdom/blob/HEAD/.github
 GitHub Actions. Pushing a tag publishes them:
 
 ```bash
-git tag v0.2.0
-git push origin v0.2.0
+git tag v0.2.2            # the next version; the packages take their version from the tag
+git push origin v0.2.2
 ```
 
 It generates the gRPC stubs, builds the wheel (engine + Robot Framework library),

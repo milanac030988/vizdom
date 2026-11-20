@@ -2,7 +2,10 @@
 
 ## Status
 
-Proposed
+Proposed, implemented and in use: the `modular` backend ships and is the detector
+behind the published benchmark results. Trigger conditions 2 and 3 (an
+alternative-model win, the hardware decision) are still open, which is why the
+ADR itself is not yet Accepted.
 
 ## Date
 

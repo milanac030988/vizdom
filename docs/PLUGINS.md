@@ -25,6 +25,14 @@ At first use, each registry imports:
    `$VIZDOM_CAPTURE_PLUGINS` / `$VIZDOM_ACTUATOR_PLUGINS` if set, else
    `<repo>/plugins/capture/` and `<repo>/plugins/actuator/`.
 
+Where that folder is depends on how VizDOM was installed:
+
+| Installed with | Plugins folder |
+|---|---|
+| a source checkout | `plugins/capture/`, `plugins/actuator/` in the repository |
+| `pip install "vizdom[robot]"` | any folder you name in `VIZDOM_CAPTURE_PLUGINS` / `VIZDOM_ACTUATOR_PLUGINS` (there is no repository folder) |
+| the VizDOM Studio installer | `Documents\VizDOM\plugins\capture`, `Documents\VizDOM\plugins\actuator` |
+
 Any subclass of the port's base with a unique `name` is registered; you select
 it **by that name** everywhere a built-in name works. Nothing else to wire up.
 
@@ -35,8 +43,8 @@ it **by that name** everywhere a built-in name works. Nothing else to wire up.
 List what was discovered at any time:
 
 ```bash
-python -m visual_dom.adapters.inbound.grpc.capture_server --list
-python -m visual_dom.adapters.inbound.grpc.actuator_server --list
+vizdom-capture --list
+vizdom-actuator --list
 ```
 
 ## A capture plugin, step by step
@@ -166,11 +174,12 @@ Library    VisualGuiLibrary    capture=my-grabber    actuator=my-touch
 ```
 
 ```bat
-start_capture.bat  --strategy my-grabber
-start_actuator.bat --strategy my-touch --kw port=COM7
+vizdom-capture  --strategy my-grabber
+vizdom-actuator --strategy my-touch --kw port=COM7
+:: source checkout: start_capture.bat / start_actuator.bat take the same options
 ```
 
-Running your plugin **as a service** (the `start_*.bat` form) is how it joins a
+Running your plugin **as a service** (the `vizdom-*` commands) is how it joins a
 distributed setup: the service runs on the machine that owns the hardware, and
 clients select `strategy: "grpc"` + its `host:port` — your plugin needs no gRPC
 code of its own.

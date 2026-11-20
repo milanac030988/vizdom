@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted (Tiers 0–1 implemented and measured, 0.934 / 0.964 / 0.000 on the lifecycle benchmark after the shortlist fix; Tier 2 implemented behind config and measured 2026-10-27: not an oracle, stays opt-in)
+Accepted (Tiers 0–1 implemented and measured, 0.934 / 0.964 / 0.000 on the lifecycle benchmark after the shortlist fix; Tier 2 implemented behind config and measured 2026-10-27: not an oracle. Since 1.13 (2026-11-09) the default chain is Tier 0 → Tier 2 with `qwen2.5vl:7b` for locating, while verification stays lexical-only; hosts without a GPU use Tier 0 → Tier 1)
 
 ## Date
 

@@ -177,8 +177,9 @@ Studio and the Viewer open the same folders.
 
 A locator must resolve to **exactly one** element; none or several fails the step,
 so an absent element is never reported as found. `desc=` is resolved in tiers:
-`lexical` (no model), then optionally a small language model (`slm`) or a vision
-model (`vlm`) through [Ollama](#c-ollama).
+`lexical` (no model) first; what it cannot settle goes to a vision model (`vlm`,
+the default, GPU) or a small language model (`slm`, CPU) through
+[Ollama](#c-ollama).
 """,
         "docs": [("Using as a Client: locators", "USAGE.md")],
     },
@@ -228,7 +229,8 @@ Client side: `"capture": {"strategy": "grpc", "target": "sut-host:50053"}`.
         "summary": "Runs the detector on a GPU host, one warm model for every test runner.",
         "body": """
 ```bash
-pip install "vizdom[grpc,omniparser]"
+# source checkout (see OmniParser Setup)
+uv pip install -e ".[robot,omniparser]"
 python scripts/setup_omniparser.py           # model weights, once
 vizdom-detector --backend omniparser --port 50051
 ```
@@ -243,15 +245,18 @@ Client side: `"detector": {"backend": "grpc", "grpc_target": "gpu-host:50051"}`.
         "sub": "Ollama :11434  ·  optional", "box": (610, 615, 225, 70),
         "summary": "Resolves the descriptions the lexical tier cannot, e.g. a paraphrase.",
         "body": """
-Only needed for the `slm` and `vlm` tiers of `desc=`; the default `lexical` tier
-uses no model.
+Needed for the model tiers of `desc=`. The default chain is `lexical` (no model)
+then `vlm`, a 7B vision model that wants a GPU; on a machine without one, use
+`slm`, a 3B text model that runs on a CPU.
 
 ```bash
+ollama pull qwen2.5vl:7b      # vlm tier (default), GPU recommended
 ollama pull qwen2.5:3b        # slm tier, runs on a CPU
-ollama pull qwen2.5vl:7b      # vlm tier, GPU recommended
 ```
 
-Config: `"grounding": {"tiers": ["lexical", "slm"], "host": "http://gpu-host:11434"}`.
+Default: `"grounding": {"tiers": ["lexical", "vlm"], "host": "http://gpu-host:11434"}`;
+CPU only: `"tiers": ["lexical", "slm"]`. `text=`, `role=` and the other locators
+need no model at all.
 """,
         "docs": [("Configuration: grounding", "CONFIGURATION.md")],
     },

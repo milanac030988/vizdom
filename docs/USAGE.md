@@ -48,18 +48,21 @@ on the device under test, and actuation happens wherever the SUT is (ADR-017/018
 
 | Service | Default port | Start command |
 |---|---|---|
-| Detector | 50051 | `python -m visual_dom.adapters.inbound.grpc.detector_server --backend omniparser --port 50051` |
-| Capture | 50053 | `python -m visual_dom.adapters.inbound.grpc.capture_server --strategy windows --port 50053` |
-| Actuator | 50054 | `python -m visual_dom.adapters.inbound.grpc.actuator_server --strategy desktop --port 50054` |
+| Detector | 50051 | `vizdom-detector --backend omniparser --port 50051` |
+| Capture | 50053 | `vizdom-capture --strategy windows --port 50053` |
+| Actuator | 50054 | `vizdom-actuator --strategy desktop --port 50054` |
 
-Launchers wrap these and set `PYTHONPATH`: `start_detector.bat` /
+The `vizdom-*` commands come with `pip install "vizdom[robot]"` (or the `grpc`
+extra) and are the same as `python -m visual_dom.adapters.inbound.grpc.<name>_server`.
+In a source checkout, launchers wrap them and set `PYTHONPATH`: `start_detector.bat` /
 `start_capture.bat` / `start_actuator.bat` on Windows, and the same names with
 `.sh` on Linux and macOS (`./start_detector.sh --backend uied`).
 The detector server also accepts
 `--icon-detect` / `--icon-caption` / `--omniparser-root` / `--yolo-model`
 (OmniParser auto-detects `models/omniparser/` + `third_party/OmniParser`).
 
-Prerequisite (once): `pip install grpcio grpcio-tools`.
+Prerequisite (once): the `grpc` extra, which `vizdom[robot]` includes. In a source
+checkout, also generate the stubs with `python scripts/gen_protos.py`.
 
 ### Starting the services
 
@@ -156,8 +159,11 @@ Coordinates on the actuator port are **normalized** `[0,1]` (resolution-independ
 the service maps them to device pixels.
 
 Both ports accept **user plugins** (a frame grabber, a serial touch-injector, a
-robot arm): drop one file in `plugins/capture/` or `plugins/actuator/` and select
-it by name like any built-in — see **[Writing Plugins](PLUGINS.md)**.
+robot arm): drop one file into the plugins folder and select it by name like any
+built-in. The folder is `plugins/capture/` / `plugins/actuator/` in a source checkout,
+the folders named by `VIZDOM_CAPTURE_PLUGINS` / `VIZDOM_ACTUATOR_PLUGINS` for a pip
+install, and `Documents\VizDOM\plugins\capture` / `...\actuator` for VizDOM Studio —
+see **[Writing Plugins](PLUGINS.md)**.
 
 ## 3. Robot Framework
 

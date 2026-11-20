@@ -6,7 +6,14 @@ An analysis of a VLM-native GUI-testing model and what it means for a CV-first, 
     Facts about ELAM-7B are drawn from its Hugging Face model card
      (`sparks-solutions/ELAM-7B`). Benchmark numbers are the authors' own, reported on the
      *automotive* UI domain. Claims about the Visual DOM pipeline reflect the current state of the
-     `D:\Project\MasterProject` repository. Treat this as a decision-support note, not a verified benchmark study.
+     VizDOM repository at the time of writing. Treat this as a decision-support note, not a verified benchmark study.
+
+!!! note "Research note from development"
+    Written in mid-2026 to choose the detection approach, before the public release,
+    and kept for its reasoning. Some statements are out of date: VizDOM is released
+    under the **MIT License**; Ultralytics and OmniParser are only in optional extras or
+    fetched separately and are not distributed with it. Current results are in
+    [Evaluation](../EVALUATION.md).
 
 ## 1. What ELAM-7B is
 

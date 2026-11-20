@@ -89,7 +89,7 @@ The template groups options by pipeline stage:
 
 | Section | Stage | Key options |
 |---|---|---|
-| `detector` | Stage 2 — element detection | `backend` (`uied`/`yolo`/`omniparser`/`hybrid`), `use_gpu`, `confidence_threshold`, OmniParser weight paths + `omniparser_text_ensemble` |
+| `detector` | Stage 2 — element detection | `backend` (`uied`/`yolo`/`omniparser`/`modular`/`hybrid`/`grpc`), `grpc_target`, `use_gpu`, `confidence_threshold`, OmniParser weight paths + `omniparser_text_ensemble` |
 | `ocr` | Stage 1 — text detection | `engine` (`easyocr`/`paddleocr`/`tesseract`/`none`), `languages` |
 | `refiner` | Stage 8 — SLM/VLM review | `enabled`, `backend`, `model`, `host` |
 | `merge` | **Stage 2.5 — Merge & Deduplicate** | `nms_iou_threshold`, `cross_type_iou`, `duplicate_tolerance_px`, `merge_oversegmented`, `group_fill_ratio_min` |
