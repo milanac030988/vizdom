@@ -1,146 +1,88 @@
-# VizDOM — Visual DOM Generator
+# VizDOM
 
-Turn a GUI **screenshot** into a UIAutomator-like **DOM JSON tree** — element
-bounds, roles, text labels, locators and hierarchy — using Computer Vision plus a
-small LLM/VLM, so GUI test automation works even when no accessibility tree
-exists.
+**GUI test automation from pixels.** VizDOM looks at an application's screen,
+builds a **Visual DOM** of it (every element with its role, text, label and
+locators) and lets a **Robot Framework** test drive the application through
+that DOM. No accessibility tree, test build or agent inside the application
+is needed.
 
----
-
-## Why this project exists
-
-GUI test automation lives or dies on one thing: being able to **find an element**
-on screen and address it reliably. The usual way is the platform's accessibility
-tree (UIAutomator, UIA, the DOM). But a large class of applications expose **no
-usable tree at all**:
-
-- Custom-rendered UIs — Qt/QML, OpenGL, game engines, canvas apps.
-- Embedded / industrial HMIs and kiosk software.
-- Screens seen **through a camera** (a physical device, a capture card) where
-  there is no software API to query at all.
-
-For these, testers fall back to brittle pixel-coordinate scripts that break on the
-first layout change. **VizDOM's premise:** if a human tester can look at the
-screen and know "that's the Login button", a pipeline should be able to
-reconstruct an equivalent structured tree from the pixels alone — and hand it to a
-test framework as if it came from an accessibility API.
-
-This is a master's **applied project**: the contribution is solid engineering that
-composes existing CV/LLM building blocks into a working, extensible, deployable
-system — not a new model or a research claim.
+[Install](uv-setup.md){ .btn } [Your first test](USAGE.md){ .btn } [Deploy the services](#run-it-on-one-machine-or-across-several){ .btn }
 
 ---
 
-## What we have built
+## Sound familiar?
 
-A complete **screenshot → DOM → test-automation** path, plus the architecture to
-run it in the real world.
-
-**The pipeline** (`visual_dom.cv.pipeline`)
-
-- **Pluggable element detectors** behind one interface (ADR-015): traditional CV
-  (**UIED**), **YOLO**, and Microsoft **OmniParser** (YOLO + Florence-2 + OCR).
-  Pick per run; add more without touching the core.
-- **OCR text layer** (EasyOCR / PaddleOCR / Tesseract) with upscaling, and an
-  **ensemble** that feeds our OCR into OmniParser to recover missed text.
-- **Clean-up passes**: merge / split / NMS / dedup, plus a **smart-merge** for
-  over-segmented boxes (guarded by fill-ratio, delimiter and interactable checks).
-- **Reading-order** sorting (row-band, top→bottom / left→right).
-- An optional **SLM/VLM advisor** (via Ollama) that reviews suspicious elements —
-  split, re-type, merge and **label** — with merges gated to safe candidates.
-
-**From detections to a usable DOM**
-
-- **Coarse hierarchy builder** — containment, alignment grouping, label
-  association (ADR-016).
-- **DOM compiler** — roles, flags (clickable/editable/scrollable), multiple
-  **locators**, and human-readable labels, emitted as UIAutomator-like JSON.
-- **Robot Framework Visual Automation Library** — GUI-testing keywords driven by
-  that DOM (the second deliverable).
-
-**Tooling & architecture**
-
-- **Visual DOM Viewer** (PyQt5) to capture, inspect and export; a Streamlit
-  dashboard; and an **evaluation framework** (IoU / precision / recall / F1).
-- **Hexagonal (ports & adapters)** structure with **distributed gRPC services**
-  (ADR-017): run the heavy detector as a warm-model service on a GPU box.
-- **Pluggable capture service** (ADR-018): a `CaptureStrategy` for
-  Windows / Linux / Android / camera, **auto-discovered** user plugins, and a gRPC
-  `Capture` service so screenshots come from **where the app-under-test runs** —
-  wired into both the CLI (`--capture`) and the Viewer
-  (*Tools → Pipeline Settings → Capture source*).
-- **`uv`**-managed environment and this **ProperDocs** site with diagrams rendered
-  offline (behind a corporate proxy, no PlantUML server, no Graphviz).
+| The problem | What VizDOM does about it |
+|---|---|
+| **The application has no accessibility tree.** It is drawn with Qt/QML, OpenGL or a game engine, runs on an industrial HMI, in a remote desktop, or you only see it through a camera. Object-based tools find nothing. | VizDOM reads the **pixels** and rebuilds the structure: buttons, fields, text, their hierarchy and their names. Your test addresses `text=Save` or `role=button`, as if the application had an accessibility API. |
+| **Image-matching and coordinate scripts break** on every theme change, resolution, language or moved button. | Locators describe **what** an element is, not where its pixels are: by text, role, label, relation to another element (`right_of="Name"`) or in plain words (`desc="save button"`). Fallback chains (<code>text=Save &#124;&#124; desc="save button"</code>) keep a test running when a primary locator stops matching. |
+| **Tests pass when they should fail.** An AI agent or a template match always returns *something*, even when the element is not there. | A VizDOM locator must match **exactly one** element, or the step fails. In our benchmark VizDOM reported none of 180 absent elements as present; the 7B grounding models we compared reported 53 to 91 of 92. |
+| **Icons and glyph keys have no text**, so there is nothing to search for. | VizDOM reads glyphs (`+ − × ÷ =`) and names icons from their caption (÷ → `Divide`), so `desc="divide button"` finds them. |
+| **You may not touch the application:** no test build, no injected agent, no hooks into a certified system. | VizDOM only **looks and types**: it captures the screen and sends mouse and keyboard input like a user, from the same machine or over the network. |
+| **The click lands in the wrong window**, or the screenshot shows a dialog that happened to be on top. | Capture can be limited to the **window of the application under test**, which is raised to the front first (`window_scope`, `Bring App To Front`). |
+| **Every test runner would need a GPU**, and every step pays a model call. | A screen is parsed **once**; every click and check after that is a lookup in the DOM, in under a millisecond. The detector can run as **one service on one GPU host** for all test runners, or on a CPU without any model download. |
+| **When a test fails, you cannot see why.** | Every analysis is saved as a session (screenshot + DOM); a failing keyword saves a screenshot of the application window. **VizDOM Studio** shows the DOM and lets you try a locator live before it goes into a test. |
 
 ---
 
-## What we are still improving
+## The system at a glance
 
-Honest status — these are the open edges, roughly in priority order:
+Click any box to see what it does and how to use it. **Full window** shows the
+diagram at full size.
 
-- **Real-world robustness.** Detection and symbol recognition (ADR-011) are strong
-  on clean/synthetic UIs but weaker on gradient-heavy, themed real-world apps.
-  Reducing OmniParser's over-segmentation is ongoing.
-- **Evaluation at scale.** The metrics framework exists; it needs a larger, more
-  representative labelled dataset (synthetic-data generation is in progress) to
-  quantify accuracy and regressions.
-- **Capture service hardening** (ADR-018 follow-ups): setuptools **entry-point**
-  plugin discovery as a second source, and **TLS/auth** on the currently-insecure
-  gRPC channel.
-- **Model choices.** Ongoing comparison of grounding/agent models (OmniParser,
-  Aria-UI, ELAM-7B, Jedi) to decide what best replaces or augments the SLM
-  refinement step — see the [model discussion notes](model-discussion.md).
+<!-- overview:begin (generated by tools/docs_overview/build_overview.py) -->
+<div class="vz-fig"><div class="vz-scroll"><object type="image/svg+xml" data="overview/system.svg" aria-label="VizDOM system overview" style="aspect-ratio:1160/850"></object></div></div>
+<!-- overview:end -->
+
+The same picture with a section per part: **[System overview](system-overview.md)**.
 
 ---
 
-## Get started
+## Start here
 
-Installed with [**uv**](https://docs.astral.sh/uv/), which fetches its own
-Python — no pre-existing local interpreter needed:
+| I want to… | Go to |
+|---|---|
+| Install VizDOM (Studio installer, `pip install "vizdom[robot]"`, or from source) | [Setup](uv-setup.md) |
+| Write my first Robot Framework test | [Using as a Client](USAGE.md) |
+| Choose the detector, OCR, capture and input | [Configuration & Sessions](CONFIGURATION.md) |
+| Add my own capture source or input device | [Writing Plugins](PLUGINS.md) |
+| Use the GPU detector (OmniParser) | [OmniParser Setup](omniparser-setup.md) |
+| Understand how a screenshot becomes a DOM | [CV Pipeline](PIPELINE.md) |
+| See the measured results | [Evaluation](EVALUATION.md) |
+| Know why it is built this way | [Architecture](architecture.md) · [Architecture Decisions](adr/README.md) |
 
-```powershell
-# install uv once per machine (Linux/macOS: curl -LsSf https://astral.sh/uv/install.sh | sh)
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+## Run it on one machine or across several
 
-uv python install 3.12
-uv venv --python 3.12
-uv pip install -e ".[ocr,grpc]"
+On a single machine nothing has to be started: the Robot Framework library and
+Studio run detection, capture and input **inside the test process**. When the
+detector should run on a GPU host, or the application runs on another machine,
+start the matching service there and point the config at it. The test does not
+change:
+
+```json
+{
+  "detector": { "backend": "grpc", "grpc_target": "gpu-host:50051" },
+  "capture":  { "strategy": "grpc", "target": "sut-host:50053" },
+  "actuator": { "strategy": "grpc", "target": "sut-host:50054" }
+}
 ```
 
-The `start_*.bat` launchers pick up the resulting `.venv` automatically. Full
-instructions — dependency groups, GPU notes, interpreter resolution order — in
-**[Setup with uv](uv-setup.md)**.
+!!! warning "Trusted networks only"
+    The services have no TLS and no authentication and listen on every network
+    interface. The actuator executes the clicks and keystrokes it receives. Run
+    them only on an isolated test network.
 
-## Documentation map
+Each service is described in the [System overview](system-overview.md#optional-services).
 
-- **[Architecture](architecture.md)** — system, pipeline, component, class,
-  sequence and hexagonal (ports & adapters) diagrams (rendered inline from the
-  `.puml` sources of record).
-- **[CV Pipeline](PIPELINE.md)** and **[OmniParser Setup](omniparser-setup.md)** —
-  how detection works and how to set up the OmniParser backend.
-- **[Evaluation](EVALUATION.md)** and **[VLM Study](RESEARCH.md)** — the metrics
-  framework and the VLM experiments.
-- **[Model Discussion Notes](model-discussion.md)** — comparisons (OmniParser,
-  Aria-UI, ELAM-7B, Jedi) that shaped the design.
-- **[Architecture Decisions](adr/README.md)** — the full ADR log (001–025).
-
-## Two deliverables
-
-1. **Visual DOM Generator** — the screenshot→DOM pipeline (CV + small LLM/VLM).
-2. **Robot Framework Visual Automation Library** — GUI-testing keywords driven by
-   the DOM.
+---
 
 ## Building these docs
 
-This site is built with [ProperDocs](https://properdocs.org) (a MkDocs fork).
-Diagrams render locally — **no PlantUML server, no Graphviz**:
+This site is built with [ProperDocs](https://properdocs.org) (a MkDocs fork);
+PlantUML diagrams render locally through `tools/plantuml.jar` (Java on the PATH).
+The system overview is generated from `tools/docs_overview/overview_model.py`:
 
 ```bash
-# needs: Java on PATH, and tools/plantuml.jar present
-properdocs serve -f properdocs.yml     # live preview at http://localhost:8000
-properdocs build -f properdocs.yml     # static site/ (gitignored)
+python tools/docs_overview/build_overview.py   # after editing the model
+properdocs serve -f properdocs.yml             # preview at http://localhost:8000
 ```
-
-PlantUML runs via the vendored `tools/plantuml.jar` using the built-in **Smetana**
-layout engine (`!pragma layout smetana`), so no external `dot.exe` is required
-(the `architecture.puml` ports & adapters diagram is the one exception — it uses `dot`).

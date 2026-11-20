@@ -1,0 +1,72 @@
+/* Interactive diagrams (docs/js/vz-overview.js). */
+.vz-fig {
+  border: 1px solid #d6dee8;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  margin: 1em 0 1.6em;
+}
+.vz-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: #f6f8fa;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 13px;
+}
+.vz-title {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  color: #2d3748;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vz-btn {
+  border: 1px solid #cbd5e0;
+  background: #fff;
+  color: #2d3748;
+  border-radius: 6px;
+  padding: 3px 10px;
+  font: inherit;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.vz-btn:hover, .vz-btn:focus-visible { border-color: #2a9d8f; color: #16645b; outline: none; }
+.vz-btn.vz-primary { background: #2a9d8f; border-color: #2a9d8f; color: #fff; }
+.vz-btn.vz-primary:hover, .vz-btn.vz-primary:focus-visible { background: #16645b; color: #fff; }
+.vz-btn[hidden] { display: none; }
+.vz-pct { min-width: 3.2em; text-align: center; color: #4a5568; font-variant-numeric: tabular-nums; }
+.vz-fit { display: none; }
+
+.vz-scroll { overflow: auto; max-height: 85vh; }
+.vz-scroll object, .vz-scroll img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+}
+
+/* full window */
+.vz-fig.vz-full {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+}
+.vz-full .vz-bar { padding: 8px 14px; font-size: 14px; }
+.vz-full .vz-fit { display: inline-block; }
+.vz-full .vz-scroll { flex: 1; max-height: none; padding: 12px; display: flex; }
+.vz-full .vz-scroll object, .vz-full .vz-scroll img { margin: auto; flex: none; }
+html.vz-noscroll, html.vz-noscroll body { overflow: hidden; }
+
+/* The theme keeps table cells on one line, which pushes the second column of a
+   table with sentences in it out of view. Let cells wrap. */
+.rst-content table.docutils td,
+.rst-content table td { white-space: normal; vertical-align: top; }
