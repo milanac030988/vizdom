@@ -55,10 +55,15 @@ default per-user install location is shown):
 "%LOCALAPPDATA%\Programs\VizDOM Studio\resources\python\python.exe" -m robot my_tests\
 ```
 
+Already run your suites with another Python, such as RobotFramework AIO? The
+installer's *Python for Robot Framework* page finds the Pythons on the machine and
+can install the VizDOM Robot Framework library into the one you choose (64-bit
+Python 3.9 to 3.13; pip downloads the dependencies, so it needs network access).
+
 ### Option 2 — Python package (Robot Framework library only)
 
 For CI agents and test machines, install from [PyPI](https://pypi.org/project/vizdom/)
-(Python 3.9+):
+(64-bit Python 3.9 to 3.13):
 
 ```bash
 # CPU-only PyTorch first keeps the download small (EasyOCR runs on it)

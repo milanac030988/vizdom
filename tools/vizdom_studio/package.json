@@ -32,13 +32,15 @@
       { "from": "bundle/python", "to": "python", "filter": ["**/*"] },
       { "from": "bundle/vizdom", "to": "vizdom", "filter": ["**/*"] },
       { "from": "bundle/easyocr", "to": "easyocr", "filter": ["**/*"] },
-      { "from": "bundle/tesseract", "to": "tesseract", "filter": ["**/*"] }
+      { "from": "bundle/tesseract", "to": "tesseract", "filter": ["**/*"] },
+      { "from": "bundle/wheels", "to": "wheels", "filter": ["*.whl"] }
     ],
     "win": {
       "target": "nsis",
       "icon": "resources/icon.ico"
     },
     "nsis": {
+      "include": "resources/installer.nsh",
       "oneClick": false,
       "perMachine": false,
       "allowToChangeInstallationDirectory": true,

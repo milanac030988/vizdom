@@ -20,7 +20,18 @@ English models, and Tesseract. Settings, sessions and plugins go to
 "%LOCALAPPDATA%\Programs\VizDOM Studio\resources\python\python.exe" -m robot my_tests\
 ```
 
-**Python package.** In any Python 3.9 to 3.12 environment:
+…or let the installer add the Robot Framework library to the Python you already
+run your suites with. Its *Python for Robot Framework* page lists the Pythons it
+finds (RobotFramework AIO, every Python the `py` launcher knows, `python` on the
+PATH; *…* picks any other), shows the version and whether VizDOM is installed
+there, and installs the wheel it carries with `pip install "<wheel>[robot]"`.
+pip fetches the dependencies (PyTorch, EasyOCR, about 1 GB) from the package
+index, so this needs network access; packages the environment already has are
+kept when they satisfy VizDOM. A RobotFramework AIO installation is preselected;
+a silent install (`/S`) never changes another Python, and uninstalling Studio
+leaves the packages in place.
+
+**Python package.** In any 64-bit Python 3.9 to 3.13 environment:
 
 ```bash
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu   # optional: small CPU-only PyTorch

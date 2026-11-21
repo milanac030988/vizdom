@@ -77,13 +77,16 @@ omniparser = [
     "timm>=0.9.0",
     "huggingface_hub>=0.24.0",
 ]
-# Remote detector service (ADR-017). Pinned to a protobuf-4-compatible grpc:
-# grpcio-tools >=1.63 pulls protobuf 6, which breaks the streamlit dashboard
-# (needs protobuf<6). Keep protobuf<6 across the whole project.
+# Remote detector service (ADR-017). No upper bounds: the published wheel's stubs
+# are generated with grpcio-tools <1.63 (protobuf 4.25 gencode, see release.yml),
+# which load under newer runtimes (checked with grpcio 1.80 / protobuf 6.33; protobuf 7 is untested, hence <7),
+# so the library installs into an existing environment such as RobotFramework AIO
+# without downgrading its grpc. The source checkout still holds protobuf <6 through
+# [tool.uv] constraint-dependencies below, for the streamlit dashboard.
 grpc = [
-    "grpcio>=1.60,<1.63",
-    "grpcio-tools>=1.60,<1.63",
-    "protobuf<6",
+    "grpcio>=1.60",
+    "grpcio-tools>=1.60",
+    "protobuf>=4.25.1,<7",
 ]
 # Documentation site (ProperDocs = MkDocs fork; offline PlantUML via local jar)
 docs = [

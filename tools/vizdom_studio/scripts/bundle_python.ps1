@@ -9,6 +9,8 @@
     bundle/vizdom/     tools/vizdom_bridge, tools/visual_dom_viewer, plugins/, example config
     bundle/easyocr/    EasyOCR's English models, fetched once so Studio works offline
     bundle/tesseract/  a copy of an installed Tesseract-OCR folder (optional)
+    bundle/wheels/     the VizDOM wheel itself, which the installer can pip-install
+                       into a Python the user already has (resources/installer.nsh)
 
 .EXAMPLE
   # after: python scripts/gen_protos.py ; uv build --wheel
@@ -73,6 +75,13 @@ Step "VizDOM + Robot Framework library from $([IO.Path]::GetFileName($Wheel))"
 $wheelUri = ([Uri]$Wheel).AbsoluteUri
 Run uv @("pip", "install", "--python", $py, "--break-system-packages",
          "vizdom[robot,studio] @ $wheelUri")
+
+# The same wheel, for the installer page that adds the Robot Framework library to
+# a Python of the user's own (resources/installer.nsh)
+Step "Wheel for the user's own Python"
+$wheels = Join-Path $bundle "wheels"
+New-Item -ItemType Directory -Force $wheels | Out-Null
+Copy-Item $Wheel $wheels
 
 # --- 3. the code Studio runs that is not in the wheel ----------------------------
 Step "Bridge, Viewer exporters, plugins"
