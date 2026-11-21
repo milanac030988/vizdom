@@ -7,13 +7,20 @@ name: Release
 #      that wheel, CPU torch, EasyOCR models and Tesseract, so nothing else needs
 #      to be installed.
 #
-# Push a tag to publish (the tag sets the version of both); the wheel and the
-# source package also go to PyPI as `vizdom`:
+# To publish, bump the version (pyproject.toml, tools/vizdom_studio/package.json)
+# and add release-notes/v<version>.md, then push to develop. When that notes file
+# exists and the tag v<version> does not, this workflow builds everything, creates
+# the tag and the GitHub Release (the notes as its text), and uploads the wheel and
+# the source package to PyPI as `vizdom`. Pushing a tag by hand works as before:
 #   git tag v0.2.0 && git push origin v0.2.0
 # "Run workflow" on the Actions tab builds the same artifacts without a release.
 
 on:
   push:
+    branches: [develop]
+    paths:
+      - "release-notes/v*.md"
+      - ".github/workflows/release.yml"
     tags: ["v*"]
   workflow_dispatch:
 
@@ -25,12 +32,58 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  wheel:
-    name: Python wheel (engine + Robot Framework library)
+  plan:
+    name: Release or build only
     runs-on: ubuntu-24.04
     outputs:
-      version: ${{ steps.version.outputs.version }}
-      npm_version: ${{ steps.version.outputs.npm_version }}
+      release: ${{ steps.plan.outputs.release }}
+      tag: ${{ steps.plan.outputs.tag }}
+      version: ${{ steps.plan.outputs.version }}
+      npm_version: ${{ steps.plan.outputs.npm_version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decide
+        id: plan
+        shell: bash
+        run: |
+          release=false
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            # a tag pushed by hand
+            tag="$GITHUB_REF_NAME"; release=true
+          elif [[ "$GITHUB_EVENT_NAME" == push ]]; then
+            # develop: release when the notes for the current version exist and
+            # the version has not been released yet
+            v=$(sed -n 's/^version = "\(.*\)"/\1/p' pyproject.toml)
+            nv=$(node -p "require('./tools/vizdom_studio/package.json').version")
+            tag="v$v"
+            if [[ ! -f "release-notes/$tag.md" ]]; then
+              echo "::notice::No release-notes/$tag.md - build only."
+            elif git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null; then
+              echo "::notice::$tag is already released - build only."
+            elif [[ "$v" != "$nv" ]]; then
+              echo "::error::pyproject.toml says $v but tools/vizdom_studio/package.json says $nv."
+              exit 1
+            else
+              release=true
+            fi
+          fi
+          if [[ "$release" == true ]]; then
+            v="${tag#v}"; nv="$v"
+          else
+            # PEP 440 for the wheel, semver for the installer
+            tag=""; v="0.0.0.dev${GITHUB_RUN_NUMBER}"; nv="0.0.0-dev.${GITHUB_RUN_NUMBER}"
+          fi
+          echo "release=$release" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "npm_version=$nv" >> "$GITHUB_OUTPUT"
+          echo "release=$release tag=$tag version=$v"
+
+  wheel:
+    name: Python wheel (engine + Robot Framework library)
+    needs: plan
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -38,19 +91,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Version from the tag
-        id: version
+      - name: Set the version
         shell: bash
         run: |
-          # PEP 440 for the wheel, semver for the installer
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
-            v="${GITHUB_REF#refs/tags/v}"; nv="$v"
-          else
-            v="0.0.0.dev${GITHUB_RUN_NUMBER}"; nv="0.0.0-dev.${GITHUB_RUN_NUMBER}"
-          fi
-          echo "version=$v" >> "$GITHUB_OUTPUT"
-          echo "npm_version=$nv" >> "$GITHUB_OUTPUT"
-          sed -i "s/^version = \".*\"/version = \"$v\"/" pyproject.toml
+          sed -i "s/^version = \".*\"/version = \"${{ needs.plan.outputs.version }}\"/" pyproject.toml
           grep '^version' pyproject.toml
 
       - name: Generate gRPC stubs
@@ -80,7 +124,7 @@ jobs:
 
   studio-windows:
     name: VizDOM Studio installer (Windows, CPU)
-    needs: wheel
+    needs: [plan, wheel]
     runs-on: windows-2022
     timeout-minutes: 60
     defaults:
@@ -114,7 +158,7 @@ jobs:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"   # unsigned; see the README
         run: |
           npm install --no-audit --no-fund
-          npm version "${{ needs.wheel.outputs.npm_version }}" --no-git-tag-version --allow-same-version
+          npm version "${{ needs.plan.outputs.npm_version }}" --no-git-tag-version --allow-same-version
           npm run dist
 
       - uses: actions/upload-artifact@v4
@@ -125,8 +169,8 @@ jobs:
 
   publish:
     name: GitHub Release
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs: [wheel, studio-windows]
+    if: needs.plan.outputs.release == 'true'
+    needs: [plan, wheel, studio-windows]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -147,11 +191,16 @@ jobs:
         id: notes
         shell: bash
         run: |
-          f="src/release-notes/${GITHUB_REF_NAME}.md"
+          f="src/release-notes/${{ needs.plan.outputs.tag }}.md"
           if [[ -f "$f" ]]; then echo "body_path=$f" >> "$GITHUB_OUTPUT"; fi
 
+      # Creates the tag on this commit when it does not exist yet (a tag made with
+      # the workflow's token does not start this workflow again).
       - uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ needs.plan.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          name: VizDOM ${{ needs.plan.outputs.version }}
           files: artifacts/*
           body_path: ${{ steps.notes.outputs.body_path }}
           generate_release_notes: true
@@ -160,8 +209,8 @@ jobs:
     name: PyPI (pip install vizdom)
     # Runs only once the installer has built too: a version can be uploaded to
     # PyPI only once, so a failed release must not leave half of it published.
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs: [wheel, studio-windows]
+    if: needs.plan.outputs.release == 'true'
+    needs: [plan, wheel, studio-windows]
     runs-on: ubuntu-24.04
     # Trusted publishing: PyPI accepts this repository's release.yml in the
     # "pypi" environment, no token or password stored (see the README).
