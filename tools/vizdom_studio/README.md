@@ -37,9 +37,10 @@ choice is remembered in the app's `prefs.json`.
 
 ## Installer
 
-The all-in-one Windows installer is built by the Release workflow
-(`.github/workflows/release.yml`) on every `v*` tag. To build it by hand
-(needs Node 20+, [uv](https://docs.astral.sh/uv/) and internet access):
+The all-in-one Windows installer, the Linux AppImage and the .deb are built by
+the Release workflow (`.github/workflows/release.yml`) for every release. To
+build the Windows installer by hand (needs Node 20+,
+[uv](https://docs.astral.sh/uv/) and internet access):
 
 ```powershell
 # from the repository root
@@ -51,7 +52,19 @@ npm install
 npm run dist            # -> release/VizDOM-Studio-Setup-<version>.exe
 ```
 
-`bundle_python.ps1` fills `bundle/` (git-ignored), which electron-builder copies
+On Linux (x86-64; the import check needs an X display, hence `xvfb-run` on a
+headless machine):
+
+```bash
+python scripts/gen_protos.py
+uv build --wheel
+xvfb-run -a bash tools/vizdom_studio/scripts/bundle_python.sh dist/vizdom-*.whl
+cd tools/vizdom_studio
+npm install
+npm run dist:linux      # -> release/VizDOM-Studio-<version>-x86_64.AppImage, -amd64.deb
+```
+
+`bundle_python.ps1` (or `bundle_python.sh`) fills `bundle/` (git-ignored), which electron-builder copies
 into the app's `resources/`:
 
 | Folder | Contents |
@@ -59,7 +72,8 @@ into the app's `resources/`:
 | `python/` | relocatable CPython 3.12 with VizDOM, the Robot Framework library (`[robot,studio]` extras) and CPU PyTorch |
 | `vizdom/` | `tools/vizdom_bridge`, `tools/visual_dom_viewer`, `plugins/`, the example config |
 | `easyocr/` | EasyOCR's English models (no download on first use) |
-| `tesseract/` | a copy of `C:\Program Files\Tesseract-OCR`, when installed on the build machine |
+| `tesseract/` | Windows only: a copy of `C:\Program Files\Tesseract-OCR`, when installed on the build machine |
+| `wheels/` | Windows only: the VizDOM wheel, for the installer page that adds the library to another Python |
 
 The installed Studio uses that Python unless `VIZDOM_PYTHON` or Settings names
 another, runs the bridge with `VIZDOM_REPO` = the `vizdom/` folder, and keeps the

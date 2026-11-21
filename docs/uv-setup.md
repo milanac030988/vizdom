@@ -4,7 +4,7 @@ There are three ways to install VizDOM. Pick the first one that fits:
 
 | You want to… | Install |
 |---|---|
-| Use VizDOM Studio on Windows, and run Robot suites on the same machine | **Studio installer** (below) |
+| Use VizDOM Studio on Windows or Linux, and run Robot suites on the same machine | **Studio installer** (below) |
 | Run Robot suites on a test machine or in CI | **`pip install "vizdom[robot]"`** (below) |
 | Run the gRPC services, the GPU detector, the Viewer, or change the code | **from source with uv** (§1 onwards) |
 
@@ -30,6 +30,23 @@ index, so this needs network access; packages the environment already has are
 kept when they satisfy VizDOM. A RobotFramework AIO installation is preselected;
 a silent install (`/S`) never changes another Python, and uninstalling Studio
 leaves the packages in place.
+
+**Studio on Linux** (x86-64, glibc 2.35 or newer, such as Ubuntu 22.04 and
+later). The Releases page also has `VizDOM-Studio-<version>-amd64.deb` and
+`VizDOM-Studio-<version>-x86_64.AppImage`, with the same contents except
+Tesseract: the .deb recommends the distribution's `tesseract-ocr` package, so
+`apt` installs it; with the AppImage, install it yourself (EasyOCR works without
+it). Settings, sessions and plugins go to `~/Documents/VizDOM`.
+
+```bash
+sudo apt install ./VizDOM-Studio-<version>-amd64.deb
+"/opt/VizDOM Studio/resources/python/bin/python3" -m robot my_tests/
+```
+
+Capture and input need an X11 session (on Wayland, log in with *Ubuntu on Xorg*).
+The AppImage needs FUSE 2 (`libfuse2`, on Ubuntu 24.04 `libfuse2t64`); if it
+stops at a sandbox error on Ubuntu 24.04, use the .deb. There is no page that
+installs the library into another Python on Linux: use the Python package below.
 
 **Python package.** In any 64-bit Python 3.9 to 3.13 environment:
 

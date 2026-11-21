@@ -5,7 +5,9 @@ name: Release
 #      (`Library    VisualGuiLibrary`), with the gRPC stubs generated in;
 #   2. VizDOM Studio's all-in-one Windows installer - Studio, its own Python with
 #      that wheel, CPU torch, EasyOCR models and Tesseract, so nothing else needs
-#      to be installed.
+#      to be installed;
+#   3. the same for Linux (x86-64) as an AppImage and a .deb, without Tesseract
+#      (the .deb recommends the distribution's tesseract-ocr package).
 #
 # To publish, bump the version (pyproject.toml, tools/vizdom_studio/package.json)
 # and add release-notes/v<version>.md, then push to develop. When that notes file
@@ -167,10 +169,58 @@ jobs:
           path: tools/vizdom_studio/release/*.exe
           if-no-files-found: error
 
+  studio-linux:
+    name: VizDOM Studio AppImage and .deb (Linux x86-64, CPU)
+    needs: [plan, wheel]
+    # the oldest supported runner: the bundled binaries then run on glibc 2.35 and newer
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: python-dist
+          path: dist
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Virtual display for the bundle's import check (pyautogui needs X)
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+      - name: Bundle Python, VizDOM, OCR models
+        run: xvfb-run -a bash tools/vizdom_studio/scripts/bundle_python.sh "$(ls dist/*.whl | head -1)"
+
+      - name: Build the AppImage and the .deb
+        working-directory: tools/vizdom_studio
+        run: |
+          npm install --no-audit --no-fund
+          npm version "${{ needs.plan.outputs.npm_version }}" --no-git-tag-version --allow-same-version
+          npm run dist:linux
+
+      - name: Check the packaged Python runs from the install tree
+        working-directory: tools/vizdom_studio/release
+        run: |
+          py="linux-unpacked/resources/python/bin/python3"
+          PYTHONPATH=linux-unpacked/resources/vizdom/tools "$py" -c "import VisualGuiLibrary, vizdom_bridge.server, easyocr, robot; print('packaged python ok')"
+          ls -lh *.AppImage *.deb
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: studio-linux
+          path: |
+            tools/vizdom_studio/release/*.AppImage
+            tools/vizdom_studio/release/*.deb
+          if-no-files-found: error
+
   publish:
     name: GitHub Release
     if: needs.plan.outputs.release == 'true'
-    needs: [plan, wheel, studio-windows]
+    needs: [plan, wheel, studio-windows, studio-linux]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -210,7 +260,7 @@ jobs:
     # Runs only once the installer has built too: a version can be uploaded to
     # PyPI only once, so a failed release must not leave half of it published.
     if: needs.plan.outputs.release == 'true'
-    needs: [plan, wheel, studio-windows]
+    needs: [plan, wheel, studio-windows, studio-linux]
     runs-on: ubuntu-24.04
     # Trusted publishing: PyPI accepts this repository's release.yml in the
     # "pypi" environment, no token or password stored (see the README).

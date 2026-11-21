@@ -25,7 +25,7 @@ names the key (÷ → `Divide`), so a test can say `desc="divide button"`.*
 | **Robot Framework library** | `Library    VisualGuiLibrary` — 30 keywords: `Connect`, `Dump Visual DOM`, `Click Visual`, `Type Text Visual`, `Visual Should Exist`, `Wait Until Visual Appears`, `Verify Element Value`, `Bring App To Front`, … |
 | **Locators** | `text=`, `hint=`, `role=`, `id=`, spatial (`within`, `right_of`, `below`, …), plain-language `desc="save button"`, and fallback chains `text=Save \|\| desc="save button"` |
 | **An oracle you can trust** | A locator must resolve to **exactly one** element, or the step fails — an absent element is never reported as found |
-| **VizDOM Studio** | Desktop app (Windows installer): capture an application, inspect its Visual DOM, try a locator live, export a Robot Framework resource, run the services |
+| **VizDOM Studio** | Desktop app (Windows installer, Linux AppImage and .deb): capture an application, inspect its Visual DOM, try a locator live, export a Robot Framework resource, run the services |
 | **Services** | Detector, capture and actuator as gRPC services, so the model runs on one GPU host and the clicks happen on the machine under test |
 | **Platforms** | Capture and input on Windows, Linux (X11) and Android (adb); plugins for anything else (a camera, a robot arm) |
 
@@ -33,7 +33,7 @@ names the key (÷ → `Divide`), so a test can say `desc="divide button"`.*
 
 ## Install
 
-### Option 1 — VizDOM Studio (Windows, all-in-one)
+### Option 1 — VizDOM Studio (Windows or Linux, all-in-one)
 
 Download **`VizDOM-Studio-Setup-<version>.exe`** from
 [Releases](https://github.com/milanac030988/vizdom/releases) and run it. No
@@ -59,6 +59,25 @@ Already run your suites with another Python, such as RobotFramework AIO? The
 installer's *Python for Robot Framework* page finds the Pythons on the machine and
 can install the VizDOM Robot Framework library into the one you choose (64-bit
 Python 3.9 to 3.13; pip downloads the dependencies, so it needs network access).
+
+**On Linux** (x86-64, glibc 2.35 or newer, such as Ubuntu 22.04 and later), the
+same Releases page has **`VizDOM-Studio-<version>-amd64.deb`** and
+**`VizDOM-Studio-<version>-x86_64.AppImage`**, with Studio, its own Python and the
+Robot Framework library, CPU PyTorch and the EasyOCR models. Tesseract is not
+included: the .deb recommends the `tesseract-ocr` package, so `apt` installs it,
+and with the AppImage you install it yourself (EasyOCR works without it).
+
+```bash
+sudo apt install ./VizDOM-Studio-<version>-amd64.deb
+# or: chmod +x VizDOM-Studio-<version>-x86_64.AppImage && ./VizDOM-Studio-<version>-x86_64.AppImage
+
+# Robot suites with the Python the .deb installed
+"/opt/VizDOM Studio/resources/python/bin/python3" -m robot my_tests/
+```
+
+Capture and input need an X11 session (on Wayland, log in with *Ubuntu on Xorg*).
+The AppImage needs FUSE 2 (`sudo apt install libfuse2`, on Ubuntu 24.04
+`libfuse2t64`); if it stops at a sandbox error on Ubuntu 24.04, use the .deb.
 
 ### Option 2 — Python package (Robot Framework library only)
 
@@ -253,22 +272,24 @@ Methodology, per-application results and the other detectors:
 
 ## Building a release
 
-The [Release workflow](https://github.com/milanac030988/vizdom/blob/HEAD/.github/workflows/release.yml) builds both downloads on
-GitHub Actions. Pushing a tag publishes them:
-
-```bash
-git tag v0.2.2            # the next version; the packages take their version from the tag
-git push origin v0.2.2
-```
+The [Release workflow](https://github.com/milanac030988/vizdom/blob/HEAD/.github/workflows/release.yml) builds the downloads on
+GitHub Actions. To publish a version, raise it in `pyproject.toml` and
+`tools/vizdom_studio/package.json`, add `release-notes/v<version>.md` and push to
+`develop`: when the notes for a version not yet released are there, the workflow
+creates the tag and the release itself. Pushing a tag by hand
+(`git tag v0.2.2 && git push origin v0.2.2`) publishes too.
 
 It generates the gRPC stubs, builds the wheel (engine + Robot Framework library),
 then on a Windows runner assembles Python, the wheel, CPU PyTorch, the EasyOCR
 models and Tesseract
 ([`tools/vizdom_studio/scripts/bundle_python.ps1`](https://github.com/milanac030988/vizdom/blob/HEAD/tools/vizdom_studio/scripts/bundle_python.ps1))
-and packs them with Studio into the NSIS installer. Both are attached to the
-GitHub Release, and once the installer has built, the wheel and source package
-are uploaded to [PyPI](https://pypi.org/project/vizdom/). *Run workflow* on the
-Actions tab builds everything without publishing.
+and packs them with Studio into the NSIS installer; on a Linux runner,
+[`bundle_python.sh`](https://github.com/milanac030988/vizdom/blob/HEAD/tools/vizdom_studio/scripts/bundle_python.sh)
+does the same (without Tesseract) for the AppImage and the .deb. All of them are
+attached to the GitHub Release, with the release notes as its text, and once the
+installers have built, the wheel and source package are uploaded to
+[PyPI](https://pypi.org/project/vizdom/). *Run workflow* on the Actions tab builds
+everything without publishing.
 
 PyPI uses trusted publishing, so no token is stored. One-time setup: on PyPI, add
 a pending publisher (project `vizdom`, owner `milanac030988`, repository `vizdom`,
@@ -291,9 +312,9 @@ Issues and pull requests are welcome on
 
 VizDOM is released under the [MIT License](https://github.com/milanac030988/vizdom/blob/HEAD/LICENSE).
 
-Third-party components keep their own licenses. The Studio installer bundles
-Python (PSF), PyTorch (BSD-3-Clause), EasyOCR (Apache-2.0), Tesseract
-(Apache-2.0) and Electron (MIT). OmniParser is **AGPL-3.0** and is not
+Third-party components keep their own licenses. The Studio installers bundle
+Python (PSF), PyTorch (BSD-3-Clause), EasyOCR (Apache-2.0) and Electron (MIT),
+and the Windows installer also Tesseract (Apache-2.0). OmniParser is **AGPL-3.0** and is not
 distributed with VizDOM: `scripts/setup_omniparser.py` fetches it on your
 machine, and its license applies to that use.
 

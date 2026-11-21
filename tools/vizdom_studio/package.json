@@ -13,8 +13,11 @@
     "start": "electron-vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
     "bundle:python": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/bundle_python.ps1",
-    "dist": "electron-vite build && electron-builder --win nsis --publish never"
+    "bundle:python:linux": "bash scripts/bundle_python.sh",
+    "dist": "electron-vite build && electron-builder --win nsis --publish never",
+    "dist:linux": "electron-vite build && electron-builder --linux AppImage deb --publish never"
   },
+  "homepage": "https://github.com/milanac030988/vizdom",
   "build": {
     "appId": "com.vizdom.studio",
     "productName": "VizDOM Studio",
@@ -31,13 +34,27 @@
     "extraResources": [
       { "from": "bundle/python", "to": "python", "filter": ["**/*"] },
       { "from": "bundle/vizdom", "to": "vizdom", "filter": ["**/*"] },
-      { "from": "bundle/easyocr", "to": "easyocr", "filter": ["**/*"] },
-      { "from": "bundle/tesseract", "to": "tesseract", "filter": ["**/*"] },
-      { "from": "bundle/wheels", "to": "wheels", "filter": ["*.whl"] }
+      { "from": "bundle/easyocr", "to": "easyocr", "filter": ["**/*"] }
     ],
     "win": {
       "target": "nsis",
-      "icon": "resources/icon.ico"
+      "icon": "resources/icon.ico",
+      "extraResources": [
+        { "from": "bundle/tesseract", "to": "tesseract", "filter": ["**/*"] },
+        { "from": "bundle/wheels", "to": "wheels", "filter": ["*.whl"] }
+      ]
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "icon": "resources/icon.png",
+      "category": "Development",
+      "executableName": "vizdom-studio",
+      "synopsis": "Visual DOM inspector and Robot Framework locator tool",
+      "maintainer": "Cuong Nguyen <milanac030988@users.noreply.github.com>",
+      "artifactName": "VizDOM-Studio-${version}-${arch}.${ext}"
+    },
+    "deb": {
+      "recommends": ["libappindicator3-1", "tesseract-ocr"]
     },
     "nsis": {
       "include": "resources/installer.nsh",
