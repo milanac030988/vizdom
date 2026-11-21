@@ -136,9 +136,24 @@ jobs:
           path: artifacts
           merge-multiple: true
 
+      # Hand-written notes for the tag (release-notes/<tag>.md), if there are any;
+      # GitHub's generated change list follows them.
+      - uses: actions/checkout@v4
+        with:
+          path: src
+          sparse-checkout: release-notes
+
+      - name: Release notes
+        id: notes
+        shell: bash
+        run: |
+          f="src/release-notes/${GITHUB_REF_NAME}.md"
+          if [[ -f "$f" ]]; then echo "body_path=$f" >> "$GITHUB_OUTPUT"; fi
+
       - uses: softprops/action-gh-release@v2
         with:
           files: artifacts/*
+          body_path: ${{ steps.notes.outputs.body_path }}
           generate_release_notes: true
 
   pypi:
