@@ -13,11 +13,11 @@ HMIs, remote desktops, or a screen seen through a camera.
 clickable. The operator keys have no readable label; VizDOM reads the glyph and
 names the key (÷ → `Divide`), so a test can say `desc="divide button"`.*
 
-![From the Calculator's pixels to the Visual DOM to a Robot Framework test](https://raw.githubusercontent.com/milanac030988/vizdom/HEAD/docs/img/calculator_to_dom.png)
+[![From the Calculator's pixels to the Visual DOM to a Robot Framework test](https://raw.githubusercontent.com/milanac030988/vizdom/HEAD/docs/img/calculator_to_dom.png)](https://milanac030988.github.io/vizdom/#from-pixels-to-a-test)
 
 *What a test works with: each element in `dom_result.json` (three of the 54
 shown) and the Robot Framework steps that address them. Each locator must match
-exactly one element, or the step fails.*
+exactly one element, or the step fails. Click the picture for a version you can zoom.*
 
 **Documentation:** <https://milanac030988.github.io/vizdom/> ·
 **Downloads:** [Releases](https://github.com/milanac030988/vizdom/releases)
@@ -193,7 +193,9 @@ Studio run detection, capture and input **in process**. Split them up when the
 detector should run on a GPU host, when one warm model should serve many test
 runners, or when the machine under test is a different one from the runner.
 
-![Distributed deployment: test runners, a shared GPU host, and machines under test (a PC, an Android device, a closed device seen by a camera and touched by a robot arm)](https://raw.githubusercontent.com/milanac030988/vizdom/HEAD/docs/img/deployment.png)
+[![Distributed deployment: test runners, a shared GPU host, and machines under test (a PC, an Android device, a closed device seen by a camera and touched by a robot arm)](https://raw.githubusercontent.com/milanac030988/vizdom/HEAD/docs/img/deployment.png)](https://milanac030988.github.io/vizdom/#run-it-on-one-machine-or-across-several)
+
+*Click the diagram for a version you can zoom and pan.*
 
 Any number of test runners share one GPU host. The capture and actuator
 services sit next to whatever shows the application: a Windows or Linux PC, a
