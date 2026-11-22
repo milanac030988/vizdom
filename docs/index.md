@@ -10,6 +10,19 @@ is needed.
 
 ---
 
+## From pixels to a test
+
+![The Windows Calculator, part of the Visual DOM VizDOM builds from its pixels, and the Robot Framework steps that click its keys](img/calculator_to_dom.svg)
+
+*A real analysis of the Windows Calculator. VizDOM finds 54 elements (faint
+outlines) and writes each one to `dom_result.json` with its role, text, label,
+bounds and flags; three of them are shown. A test names an element by its text
+(`text=7`) or describes it (`desc="divide button"`): the ÷ key has no readable
+label, so VizDOM names it `Divide` from its glyph. Each locator must match
+exactly one element, or the step fails.*
+
+---
+
 ## Sound familiar?
 
 | The problem | What VizDOM does about it |

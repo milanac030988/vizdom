@@ -13,6 +13,12 @@ HMIs, remote desktops, or a screen seen through a camera.
 clickable. The operator keys have no readable label; VizDOM reads the glyph and
 names the key (÷ → `Divide`), so a test can say `desc="divide button"`.*
 
+![From the Calculator's pixels to the Visual DOM to a Robot Framework test](https://raw.githubusercontent.com/milanac030988/vizdom/HEAD/docs/img/calculator_to_dom.png)
+
+*What a test works with: each element in `dom_result.json` (three of the 54
+shown) and the Robot Framework steps that address them. Each locator must match
+exactly one element, or the step fails.*
+
 **Documentation:** <https://milanac030988.github.io/vizdom/> ·
 **Downloads:** [Releases](https://github.com/milanac030988/vizdom/releases)
 

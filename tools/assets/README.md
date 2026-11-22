@@ -51,3 +51,20 @@ may also refuse.
 Edit `branding.py`, then **re-run the generator** — the checked-in files do not
 update themselves. Check the small sizes with `--preview` before committing: 16 px
 is the size users actually see in the taskbar, and it is the one that breaks first.
+
+# The "pixels to a test" figure
+
+`docs/img/calculator_to_dom.svg` (docs site) and `.png` (README, which GitHub
+and PyPI show) are drawn by `make_dom_figure.py` from a real VizDOM Studio
+session of the Windows Calculator, copied to `figure_inputs/calculator/`:
+
+```bash
+python tools/assets/make_dom_figure.py
+```
+
+Every value in the figure (ids, text, labels, bounds, element count) comes from
+that `dom_result.json`. The script resolves each Robot step with the library's
+own `ElementFinder` and stops if a locator does not match exactly the element it
+is drawn next to, so a change to the locator rules cannot leave the figure
+quietly wrong. The PNG is rendered with Qt (PyQt5, headless); on Windows it uses
+Segoe UI and Consolas.

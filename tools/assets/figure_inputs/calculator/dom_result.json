@@ -1,0 +1,3031 @@
+{
+  "image_size": {
+    "width": 452,
+    "height": 626
+  },
+  "source": "vizdom-studio",
+  "session_id": "20261117_141157",
+  "cv_stats": {
+    "detector": "grpc",
+    "final_count": 54
+  },
+  "dom": {
+    "version": "1.0",
+    "image_size": [
+      452,
+      626
+    ],
+    "element_count": 54,
+    "hierarchy": {
+      "id": "ROOT",
+      "bounds": [
+        0,
+        1,
+        452,
+        624
+      ],
+      "center": [
+        226,
+        312
+      ],
+      "role": "root",
+      "visual_type": "container",
+      "clickable": false,
+      "editable": false,
+      "scrollable": false,
+      "confidence": 1.0,
+      "children": [
+        {
+          "id": "E1",
+          "bounds": [
+            23,
+            12,
+            41,
+            32
+          ],
+          "center": [
+            32,
+            22
+          ],
+          "role": "image",
+          "visual_type": "icon",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.05,
+          "label": "Calendar",
+          "locators": {
+            "id": "E1",
+            "type_index": "icon[0]",
+            "bounds": "bounds(23,12,41,32)",
+            "center": "point(32,22)"
+          }
+        },
+        {
+          "id": "E2",
+          "bounds": [
+            58,
+            13,
+            130,
+            29
+          ],
+          "center": [
+            94,
+            21
+          ],
+          "role": "staticText",
+          "visual_type": "text",
+          "clickable": false,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.717,
+          "text": "Calculator",
+          "label": "Calculator",
+          "locators": {
+            "id": "E2",
+            "text": "Calculator",
+            "type_index": "text[0]",
+            "bounds": "bounds(58,13,130,29)",
+            "center": "point(94,21)"
+          }
+        },
+        {
+          "id": "E3",
+          "bounds": [
+            284,
+            1,
+            334,
+            50
+          ],
+          "center": [
+            309,
+            25
+          ],
+          "role": "image",
+          "visual_type": "icon",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.122,
+          "text": "-",
+          "label": "Minimize",
+          "locators": {
+            "id": "E3",
+            "text": "-[0]",
+            "type_index": "icon[1]",
+            "bounds": "bounds(284,1,334,50)",
+            "center": "point(309,25)"
+          }
+        },
+        {
+          "id": "E4",
+          "bounds": [
+            351,
+            6,
+            380,
+            42
+          ],
+          "center": [
+            365,
+            24
+          ],
+          "role": "image",
+          "visual_type": "icon",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.329,
+          "label": "Page",
+          "locators": {
+            "id": "E4",
+            "type_index": "icon[2]",
+            "bounds": "bounds(351,6,380,42)",
+            "center": "point(365,24)"
+          }
+        },
+        {
+          "id": "E5",
+          "bounds": [
+            411,
+            8,
+            437,
+            38
+          ],
+          "center": [
+            424,
+            23
+          ],
+          "role": "image",
+          "visual_type": "icon",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.332,
+          "text": "×",
+          "label": "Close",
+          "locators": {
+            "id": "E5",
+            "text": "×[0]",
+            "type_index": "icon[3]",
+            "bounds": "bounds(411,8,437,38)",
+            "center": "point(424,23)"
+          }
+        },
+        {
+          "id": "E6",
+          "bounds": [
+            8,
+            54,
+            50,
+            101
+          ],
+          "center": [
+            29,
+            77
+          ],
+          "role": "image",
+          "visual_type": "icon",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.504,
+          "label": "Filter",
+          "locators": {
+            "id": "E6",
+            "type_index": "icon[4]",
+            "bounds": "bounds(8,54,50,101)",
+            "center": "point(29,77)"
+          }
+        },
+        {
+          "id": "E7",
+          "bounds": [
+            58,
+            58,
+            164,
+            88
+          ],
+          "center": [
+            111,
+            73
+          ],
+          "role": "textField",
+          "visual_type": "input_field",
+          "clickable": false,
+          "editable": true,
+          "scrollable": false,
+          "confidence": 0.387,
+          "text": "Scientific",
+          "label": "Calculator",
+          "locators": {
+            "id": "E7",
+            "text": "Scientific",
+            "type_index": "input_field[0]",
+            "bounds": "bounds(58,58,164,88)",
+            "center": "point(111,73)"
+          }
+        },
+        {
+          "id": "E8",
+          "bounds": [
+            403,
+            53,
+            438,
+            98
+          ],
+          "center": [
+            420,
+            75
+          ],
+          "role": "image",
+          "visual_type": "icon",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.524,
+          "label": "History",
+          "locators": {
+            "id": "E8",
+            "type_index": "icon[5]",
+            "bounds": "bounds(403,53,438,98)",
+            "center": "point(420,75)"
+          }
+        },
+        {
+          "id": "E9",
+          "bounds": [
+            410,
+            139,
+            441,
+            174
+          ],
+          "center": [
+            425,
+            156
+          ],
+          "role": "image",
+          "visual_type": "icon",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.148,
+          "label": "0",
+          "locators": {
+            "id": "E9",
+            "type_index": "icon[6]",
+            "bounds": "bounds(410,139,441,174)",
+            "center": "point(425,156)"
+          }
+        },
+        {
+          "id": "E10",
+          "bounds": [
+            0,
+            183,
+            83,
+            235
+          ],
+          "center": [
+            41,
+            209
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.15,
+          "text": "DEG",
+          "label": "DEG",
+          "locators": {
+            "id": "E10",
+            "text": "DEG",
+            "type_index": "button[0]",
+            "bounds": "bounds(0,183,83,235)",
+            "center": "point(41,209)"
+          }
+        },
+        {
+          "id": "E11",
+          "bounds": [
+            101,
+            199,
+            128,
+            214
+          ],
+          "center": [
+            114,
+            206
+          ],
+          "role": "staticText",
+          "visual_type": "text",
+          "clickable": false,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.993,
+          "text": "F-E",
+          "label": "F-E",
+          "locators": {
+            "id": "E11",
+            "text": "F-E",
+            "type_index": "text[1]",
+            "bounds": "bounds(101,199,128,214)",
+            "center": "point(114,206)"
+          }
+        },
+        {
+          "id": "E12",
+          "bounds": [
+            0,
+            228,
+            82,
+            273
+          ],
+          "center": [
+            41,
+            250
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.493,
+          "text": "MC",
+          "label": "MC",
+          "locators": {
+            "id": "E12",
+            "text": "MC",
+            "type_index": "button[1]",
+            "bounds": "bounds(0,228,82,273)",
+            "center": "point(41,250)"
+          }
+        },
+        {
+          "id": "E13",
+          "bounds": [
+            79,
+            228,
+            152,
+            267
+          ],
+          "center": [
+            115,
+            247
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.41,
+          "text": "MR",
+          "label": "MR",
+          "locators": {
+            "id": "E13",
+            "text": "MR",
+            "type_index": "button[2]",
+            "bounds": "bounds(79,228,152,267)",
+            "center": "point(115,247)"
+          }
+        },
+        {
+          "id": "E14",
+          "bounds": [
+            151,
+            230,
+            225,
+            265
+          ],
+          "center": [
+            188,
+            247
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.703,
+          "text": "M+",
+          "label": "M+",
+          "locators": {
+            "id": "E14",
+            "text": "M+",
+            "type_index": "button[3]",
+            "bounds": "bounds(151,230,225,265)",
+            "center": "point(188,247)"
+          }
+        },
+        {
+          "id": "E15",
+          "bounds": [
+            225,
+            230,
+            298,
+            265
+          ],
+          "center": [
+            261,
+            247
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.722,
+          "text": "M-",
+          "label": "M-",
+          "locators": {
+            "id": "E15",
+            "text": "M-",
+            "type_index": "button[4]",
+            "bounds": "bounds(225,230,298,265)",
+            "center": "point(261,247)"
+          }
+        },
+        {
+          "id": "E16",
+          "bounds": [
+            298,
+            223,
+            376,
+            274
+          ],
+          "center": [
+            337,
+            248
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.855,
+          "text": "MS",
+          "label": "MS",
+          "locators": {
+            "id": "E16",
+            "text": "MS",
+            "type_index": "button[5]",
+            "bounds": "bounds(298,223,376,274)",
+            "center": "point(337,248)"
+          }
+        },
+        {
+          "id": "E17",
+          "bounds": [
+            373,
+            221,
+            452,
+            273
+          ],
+          "center": [
+            412,
+            247
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.84,
+          "text": "Mv",
+          "label": "Mv",
+          "locators": {
+            "id": "E17",
+            "text": "Mv",
+            "type_index": "button[6]",
+            "bounds": "bounds(373,221,452,273)",
+            "center": "point(412,247)"
+          }
+        },
+        {
+          "id": "E18",
+          "bounds": [
+            0,
+            276,
+            178,
+            321
+          ],
+          "center": [
+            89,
+            298
+          ],
+          "role": "textField",
+          "visual_type": "input_field",
+          "clickable": false,
+          "editable": true,
+          "scrollable": false,
+          "confidence": 0.796,
+          "text": "Trigonometry",
+          "label": "Trigonometry",
+          "locators": {
+            "id": "E18",
+            "text": "Trigonometry",
+            "type_index": "input_field[1]",
+            "bounds": "bounds(0,276,178,321)",
+            "center": "point(89,298)"
+          }
+        },
+        {
+          "id": "E19",
+          "bounds": [
+            179,
+            282,
+            310,
+            316
+          ],
+          "center": [
+            244,
+            299
+          ],
+          "role": "textField",
+          "visual_type": "input_field",
+          "clickable": false,
+          "editable": true,
+          "scrollable": false,
+          "confidence": 0.698,
+          "text": "Function",
+          "label": "Function",
+          "locators": {
+            "id": "E19",
+            "text": "Function",
+            "type_index": "input_field[2]",
+            "bounds": "bounds(179,282,310,316)",
+            "center": "point(244,299)"
+          }
+        },
+        {
+          "id": "E20",
+          "bounds": [
+            4,
+            323,
+            92,
+            366
+          ],
+          "center": [
+            48,
+            344
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 1.0,
+          "text": "2nd",
+          "label": "2nd",
+          "locators": {
+            "id": "E20",
+            "text": "2nd",
+            "type_index": "button[7]",
+            "bounds": "bounds(4,323,92,366)",
+            "center": "point(48,344)"
+          }
+        },
+        {
+          "id": "E21",
+          "bounds": [
+            93,
+            323,
+            181,
+            365
+          ],
+          "center": [
+            137,
+            344
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 1.0,
+          "text": "Tt",
+          "label": "Tt",
+          "locators": {
+            "id": "E21",
+            "text": "Tt",
+            "type_index": "button[8]",
+            "bounds": "bounds(93,323,181,365)",
+            "center": "point(137,344)"
+          }
+        },
+        {
+          "id": "E22",
+          "bounds": [
+            182,
+            323,
+            270,
+            366
+          ],
+          "center": [
+            226,
+            344
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.965,
+          "text": "e",
+          "label": "e",
+          "locators": {
+            "id": "E22",
+            "text": "e",
+            "type_index": "button[9]",
+            "bounds": "bounds(182,323,270,366)",
+            "center": "point(226,344)"
+          }
+        },
+        {
+          "id": "E23",
+          "bounds": [
+            271,
+            323,
+            359,
+            366
+          ],
+          "center": [
+            315,
+            344
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 1.0,
+          "text": "C",
+          "label": "C",
+          "locators": {
+            "id": "E23",
+            "text": "C",
+            "type_index": "button[10]",
+            "bounds": "bounds(271,323,359,366)",
+            "center": "point(315,344)"
+          }
+        },
+        {
+          "id": "E24",
+          "bounds": [
+            360,
+            323,
+            448,
+            366
+          ],
+          "center": [
+            404,
+            344
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.918,
+          "label": "Xbox",
+          "locators": {
+            "id": "E24",
+            "type_index": "button[11]",
+            "bounds": "bounds(360,323,448,366)",
+            "center": "point(404,344)"
+          }
+        },
+        {
+          "id": "E25",
+          "bounds": [
+            4,
+            365,
+            92,
+            409
+          ],
+          "center": [
+            48,
+            387
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 1.0,
+          "text": "x2",
+          "label": "x2",
+          "locators": {
+            "id": "E25",
+            "text": "x2",
+            "type_index": "button[12]",
+            "bounds": "bounds(4,365,92,409)",
+            "center": "point(48,387)"
+          }
+        },
+        {
+          "id": "E26",
+          "bounds": [
+            94,
+            365,
+            181,
+            409
+          ],
+          "center": [
+            137,
+            387
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.986,
+          "text": "Yx",
+          "label": "Yx",
+          "locators": {
+            "id": "E26",
+            "text": "Yx",
+            "type_index": "button[13]",
+            "bounds": "bounds(94,365,181,409)",
+            "center": "point(137,387)"
+          }
+        },
+        {
+          "id": "E27",
+          "bounds": [
+            182,
+            365,
+            270,
+            408
+          ],
+          "center": [
+            226,
+            386
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.999,
+          "text": "Ixl",
+          "label": "Ixl",
+          "locators": {
+            "id": "E27",
+            "text": "Ixl",
+            "type_index": "button[14]",
+            "bounds": "bounds(182,365,270,408)",
+            "center": "point(226,386)"
+          }
+        },
+        {
+          "id": "E28",
+          "bounds": [
+            270,
+            365,
+            359,
+            409
+          ],
+          "center": [
+            314,
+            387
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.845,
+          "text": "exp",
+          "label": "exp",
+          "locators": {
+            "id": "E28",
+            "text": "exp",
+            "type_index": "button[15]",
+            "bounds": "bounds(270,365,359,409)",
+            "center": "point(314,387)"
+          }
+        },
+        {
+          "id": "E29",
+          "bounds": [
+            361,
+            365,
+            449,
+            410
+          ],
+          "center": [
+            405,
+            387
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 1.0,
+          "text": "mod",
+          "label": "mod",
+          "locators": {
+            "id": "E29",
+            "text": "mod",
+            "type_index": "button[16]",
+            "bounds": "bounds(361,365,449,410)",
+            "center": "point(405,387)"
+          }
+        },
+        {
+          "id": "E30",
+          "bounds": [
+            4,
+            408,
+            92,
+            451
+          ],
+          "center": [
+            48,
+            429
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.973,
+          "text": "WX",
+          "label": "WX",
+          "locators": {
+            "id": "E30",
+            "text": "WX",
+            "type_index": "button[17]",
+            "bounds": "bounds(4,408,92,451)",
+            "center": "point(48,429)"
+          }
+        },
+        {
+          "id": "E31",
+          "bounds": [
+            93,
+            409,
+            181,
+            451
+          ],
+          "center": [
+            137,
+            430
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.834,
+          "label": "Hide (Ctrl+Shift+F)",
+          "locators": {
+            "id": "E31",
+            "type_index": "button[18]",
+            "bounds": "bounds(93,409,181,451)",
+            "center": "point(137,430)"
+          }
+        },
+        {
+          "id": "E32",
+          "bounds": [
+            182,
+            409,
+            270,
+            452
+          ],
+          "center": [
+            226,
+            430
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.856,
+          "label": "Full screen",
+          "locators": {
+            "id": "E32",
+            "type_index": "button[19]",
+            "bounds": "bounds(182,409,270,452)",
+            "center": "point(226,430)"
+          }
+        },
+        {
+          "id": "E33",
+          "bounds": [
+            272,
+            409,
+            360,
+            451
+          ],
+          "center": [
+            316,
+            430
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.959,
+          "text": "n!",
+          "label": "n!",
+          "locators": {
+            "id": "E33",
+            "text": "n!",
+            "type_index": "button[20]",
+            "bounds": "bounds(272,409,360,451)",
+            "center": "point(316,430)"
+          }
+        },
+        {
+          "id": "E34",
+          "bounds": [
+            360,
+            409,
+            448,
+            452
+          ],
+          "center": [
+            404,
+            430
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.903,
+          "text": "÷",
+          "label": "Divide",
+          "locators": {
+            "id": "E34",
+            "text": "÷",
+            "type_index": "button[21]",
+            "bounds": "bounds(360,409,448,452)",
+            "center": "point(404,430)"
+          }
+        },
+        {
+          "id": "E35",
+          "bounds": [
+            3,
+            451,
+            92,
+            494
+          ],
+          "center": [
+            47,
+            472
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.972,
+          "text": "x?",
+          "label": "x?",
+          "locators": {
+            "id": "E35",
+            "text": "x?",
+            "type_index": "button[22]",
+            "bounds": "bounds(3,451,92,494)",
+            "center": "point(47,472)"
+          }
+        },
+        {
+          "id": "E36",
+          "bounds": [
+            93,
+            452,
+            181,
+            494
+          ],
+          "center": [
+            137,
+            473
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.964,
+          "text": "7",
+          "label": "7",
+          "locators": {
+            "id": "E36",
+            "text": "7",
+            "type_index": "button[23]",
+            "bounds": "bounds(93,452,181,494)",
+            "center": "point(137,473)"
+          }
+        },
+        {
+          "id": "E37",
+          "bounds": [
+            182,
+            452,
+            270,
+            494
+          ],
+          "center": [
+            226,
+            473
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.946,
+          "text": "8",
+          "label": "8",
+          "locators": {
+            "id": "E37",
+            "text": "8",
+            "type_index": "button[24]",
+            "bounds": "bounds(182,452,270,494)",
+            "center": "point(226,473)"
+          }
+        },
+        {
+          "id": "E38",
+          "bounds": [
+            271,
+            451,
+            359,
+            494
+          ],
+          "center": [
+            315,
+            472
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.948,
+          "text": "9",
+          "label": "9",
+          "locators": {
+            "id": "E38",
+            "text": "9",
+            "type_index": "button[25]",
+            "bounds": "bounds(271,451,359,494)",
+            "center": "point(315,472)"
+          }
+        },
+        {
+          "id": "E39",
+          "bounds": [
+            360,
+            451,
+            448,
+            495
+          ],
+          "center": [
+            404,
+            473
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.923,
+          "text": "×",
+          "label": "Multiply",
+          "locators": {
+            "id": "E39",
+            "text": "×[1]",
+            "type_index": "button[26]",
+            "bounds": "bounds(360,451,448,495)",
+            "center": "point(404,473)"
+          }
+        },
+        {
+          "id": "E40",
+          "bounds": [
+            4,
+            494,
+            92,
+            537
+          ],
+          "center": [
+            48,
+            515
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.986,
+          "text": "10*",
+          "label": "10*",
+          "locators": {
+            "id": "E40",
+            "text": "10*",
+            "type_index": "button[27]",
+            "bounds": "bounds(4,494,92,537)",
+            "center": "point(48,515)"
+          }
+        },
+        {
+          "id": "E41",
+          "bounds": [
+            94,
+            495,
+            180,
+            537
+          ],
+          "center": [
+            137,
+            516
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.972,
+          "text": "4",
+          "label": "4",
+          "locators": {
+            "id": "E41",
+            "text": "4",
+            "type_index": "button[28]",
+            "bounds": "bounds(94,495,180,537)",
+            "center": "point(137,516)"
+          }
+        },
+        {
+          "id": "E42",
+          "bounds": [
+            183,
+            495,
+            269,
+            537
+          ],
+          "center": [
+            226,
+            516
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.893,
+          "text": "5",
+          "label": "5",
+          "locators": {
+            "id": "E42",
+            "text": "5",
+            "type_index": "button[29]",
+            "bounds": "bounds(183,495,269,537)",
+            "center": "point(226,516)"
+          }
+        },
+        {
+          "id": "E43",
+          "bounds": [
+            271,
+            494,
+            358,
+            537
+          ],
+          "center": [
+            314,
+            515
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.897,
+          "text": "6",
+          "label": "6",
+          "locators": {
+            "id": "E43",
+            "text": "6",
+            "type_index": "button[30]",
+            "bounds": "bounds(271,494,358,537)",
+            "center": "point(314,515)"
+          }
+        },
+        {
+          "id": "E44",
+          "bounds": [
+            360,
+            495,
+            448,
+            537
+          ],
+          "center": [
+            404,
+            516
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.889,
+          "text": "-",
+          "label": "Minus",
+          "locators": {
+            "id": "E44",
+            "text": "-[1]",
+            "type_index": "button[31]",
+            "bounds": "bounds(360,495,448,537)",
+            "center": "point(404,516)"
+          }
+        },
+        {
+          "id": "E45",
+          "bounds": [
+            4,
+            537,
+            92,
+            581
+          ],
+          "center": [
+            48,
+            559
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 1.0,
+          "text": "log",
+          "label": "log",
+          "locators": {
+            "id": "E45",
+            "text": "log",
+            "type_index": "button[32]",
+            "bounds": "bounds(4,537,92,581)",
+            "center": "point(48,559)"
+          }
+        },
+        {
+          "id": "E46",
+          "bounds": [
+            94,
+            537,
+            180,
+            580
+          ],
+          "center": [
+            137,
+            558
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.99,
+          "text": "1",
+          "label": "1",
+          "locators": {
+            "id": "E46",
+            "text": "1",
+            "type_index": "button[33]",
+            "bounds": "bounds(94,537,180,580)",
+            "center": "point(137,558)"
+          }
+        },
+        {
+          "id": "E47",
+          "bounds": [
+            182,
+            538,
+            269,
+            580
+          ],
+          "center": [
+            225,
+            559
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.981,
+          "text": "2",
+          "label": "2",
+          "locators": {
+            "id": "E47",
+            "text": "2",
+            "type_index": "button[34]",
+            "bounds": "bounds(182,538,269,580)",
+            "center": "point(225,559)"
+          }
+        },
+        {
+          "id": "E48",
+          "bounds": [
+            271,
+            537,
+            358,
+            580
+          ],
+          "center": [
+            314,
+            558
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.993,
+          "text": "3",
+          "label": "3",
+          "locators": {
+            "id": "E48",
+            "text": "3",
+            "type_index": "button[35]",
+            "bounds": "bounds(271,537,358,580)",
+            "center": "point(314,558)"
+          }
+        },
+        {
+          "id": "E49",
+          "bounds": [
+            360,
+            537,
+            448,
+            579
+          ],
+          "center": [
+            404,
+            558
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.916,
+          "text": "+",
+          "label": "Plus",
+          "locators": {
+            "id": "E49",
+            "text": "+",
+            "type_index": "button[36]",
+            "bounds": "bounds(360,537,448,579)",
+            "center": "point(404,558)"
+          }
+        },
+        {
+          "id": "E50",
+          "bounds": [
+            4,
+            581,
+            91,
+            622
+          ],
+          "center": [
+            47,
+            601
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 1.0,
+          "text": "In",
+          "label": "In",
+          "locators": {
+            "id": "E50",
+            "text": "In",
+            "type_index": "button[37]",
+            "bounds": "bounds(4,581,91,622)",
+            "center": "point(47,601)"
+          }
+        },
+        {
+          "id": "E51",
+          "bounds": [
+            94,
+            581,
+            180,
+            621
+          ],
+          "center": [
+            137,
+            601
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 1.0,
+          "text": "+12",
+          "label": "+12",
+          "locators": {
+            "id": "E51",
+            "text": "+12",
+            "type_index": "button[38]",
+            "bounds": "bounds(94,581,180,621)",
+            "center": "point(137,601)"
+          }
+        },
+        {
+          "id": "E52",
+          "bounds": [
+            182,
+            581,
+            270,
+            622
+          ],
+          "center": [
+            226,
+            601
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.988,
+          "text": "0",
+          "label": "0",
+          "locators": {
+            "id": "E52",
+            "text": "0",
+            "type_index": "button[39]",
+            "bounds": "bounds(182,581,270,622)",
+            "center": "point(226,601)"
+          }
+        },
+        {
+          "id": "E53",
+          "bounds": [
+            272,
+            580,
+            359,
+            623
+          ],
+          "center": [
+            315,
+            601
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.85,
+          "label": "Minimize",
+          "locators": {
+            "id": "E53",
+            "type_index": "button[40]",
+            "bounds": "bounds(272,580,359,623)",
+            "center": "point(315,601)"
+          }
+        },
+        {
+          "id": "E54",
+          "bounds": [
+            360,
+            580,
+            448,
+            624
+          ],
+          "center": [
+            404,
+            602
+          ],
+          "role": "button",
+          "visual_type": "button",
+          "clickable": true,
+          "editable": false,
+          "scrollable": false,
+          "confidence": 0.899,
+          "text": "=",
+          "label": "Equals",
+          "locators": {
+            "id": "E54",
+            "text": "=",
+            "type_index": "button[41]",
+            "bounds": "bounds(360,580,448,624)",
+            "center": "point(404,602)"
+          }
+        }
+      ]
+    },
+    "elements": [
+      {
+        "id": "E1",
+        "bounds": [
+          23,
+          12,
+          41,
+          32
+        ],
+        "center": [
+          32,
+          22
+        ],
+        "role": "image",
+        "visual_type": "icon",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.05,
+        "label": "Calendar",
+        "locators": {
+          "id": "E1",
+          "type_index": "icon[0]",
+          "bounds": "bounds(23,12,41,32)",
+          "center": "point(32,22)"
+        }
+      },
+      {
+        "id": "E2",
+        "bounds": [
+          58,
+          13,
+          130,
+          29
+        ],
+        "center": [
+          94,
+          21
+        ],
+        "role": "staticText",
+        "visual_type": "text",
+        "clickable": false,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.717,
+        "text": "Calculator",
+        "label": "Calculator",
+        "locators": {
+          "id": "E2",
+          "text": "Calculator",
+          "type_index": "text[0]",
+          "bounds": "bounds(58,13,130,29)",
+          "center": "point(94,21)"
+        }
+      },
+      {
+        "id": "E3",
+        "bounds": [
+          284,
+          1,
+          334,
+          50
+        ],
+        "center": [
+          309,
+          25
+        ],
+        "role": "image",
+        "visual_type": "icon",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.122,
+        "text": "-",
+        "label": "Minimize",
+        "locators": {
+          "id": "E3",
+          "text": "-[0]",
+          "type_index": "icon[1]",
+          "bounds": "bounds(284,1,334,50)",
+          "center": "point(309,25)"
+        }
+      },
+      {
+        "id": "E4",
+        "bounds": [
+          351,
+          6,
+          380,
+          42
+        ],
+        "center": [
+          365,
+          24
+        ],
+        "role": "image",
+        "visual_type": "icon",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.329,
+        "label": "Page",
+        "locators": {
+          "id": "E4",
+          "type_index": "icon[2]",
+          "bounds": "bounds(351,6,380,42)",
+          "center": "point(365,24)"
+        }
+      },
+      {
+        "id": "E5",
+        "bounds": [
+          411,
+          8,
+          437,
+          38
+        ],
+        "center": [
+          424,
+          23
+        ],
+        "role": "image",
+        "visual_type": "icon",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.332,
+        "text": "×",
+        "label": "Close",
+        "locators": {
+          "id": "E5",
+          "text": "×[0]",
+          "type_index": "icon[3]",
+          "bounds": "bounds(411,8,437,38)",
+          "center": "point(424,23)"
+        }
+      },
+      {
+        "id": "E6",
+        "bounds": [
+          8,
+          54,
+          50,
+          101
+        ],
+        "center": [
+          29,
+          77
+        ],
+        "role": "image",
+        "visual_type": "icon",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.504,
+        "label": "Filter",
+        "locators": {
+          "id": "E6",
+          "type_index": "icon[4]",
+          "bounds": "bounds(8,54,50,101)",
+          "center": "point(29,77)"
+        }
+      },
+      {
+        "id": "E7",
+        "bounds": [
+          58,
+          58,
+          164,
+          88
+        ],
+        "center": [
+          111,
+          73
+        ],
+        "role": "textField",
+        "visual_type": "input_field",
+        "clickable": false,
+        "editable": true,
+        "scrollable": false,
+        "confidence": 0.387,
+        "text": "Scientific",
+        "label": "Calculator",
+        "locators": {
+          "id": "E7",
+          "text": "Scientific",
+          "type_index": "input_field[0]",
+          "bounds": "bounds(58,58,164,88)",
+          "center": "point(111,73)"
+        }
+      },
+      {
+        "id": "E8",
+        "bounds": [
+          403,
+          53,
+          438,
+          98
+        ],
+        "center": [
+          420,
+          75
+        ],
+        "role": "image",
+        "visual_type": "icon",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.524,
+        "label": "History",
+        "locators": {
+          "id": "E8",
+          "type_index": "icon[5]",
+          "bounds": "bounds(403,53,438,98)",
+          "center": "point(420,75)"
+        }
+      },
+      {
+        "id": "E9",
+        "bounds": [
+          410,
+          139,
+          441,
+          174
+        ],
+        "center": [
+          425,
+          156
+        ],
+        "role": "image",
+        "visual_type": "icon",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.148,
+        "label": "0",
+        "locators": {
+          "id": "E9",
+          "type_index": "icon[6]",
+          "bounds": "bounds(410,139,441,174)",
+          "center": "point(425,156)"
+        }
+      },
+      {
+        "id": "E10",
+        "bounds": [
+          0,
+          183,
+          83,
+          235
+        ],
+        "center": [
+          41,
+          209
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.15,
+        "text": "DEG",
+        "label": "DEG",
+        "locators": {
+          "id": "E10",
+          "text": "DEG",
+          "type_index": "button[0]",
+          "bounds": "bounds(0,183,83,235)",
+          "center": "point(41,209)"
+        }
+      },
+      {
+        "id": "E11",
+        "bounds": [
+          101,
+          199,
+          128,
+          214
+        ],
+        "center": [
+          114,
+          206
+        ],
+        "role": "staticText",
+        "visual_type": "text",
+        "clickable": false,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.993,
+        "text": "F-E",
+        "label": "F-E",
+        "locators": {
+          "id": "E11",
+          "text": "F-E",
+          "type_index": "text[1]",
+          "bounds": "bounds(101,199,128,214)",
+          "center": "point(114,206)"
+        }
+      },
+      {
+        "id": "E12",
+        "bounds": [
+          0,
+          228,
+          82,
+          273
+        ],
+        "center": [
+          41,
+          250
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.493,
+        "text": "MC",
+        "label": "MC",
+        "locators": {
+          "id": "E12",
+          "text": "MC",
+          "type_index": "button[1]",
+          "bounds": "bounds(0,228,82,273)",
+          "center": "point(41,250)"
+        }
+      },
+      {
+        "id": "E13",
+        "bounds": [
+          79,
+          228,
+          152,
+          267
+        ],
+        "center": [
+          115,
+          247
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.41,
+        "text": "MR",
+        "label": "MR",
+        "locators": {
+          "id": "E13",
+          "text": "MR",
+          "type_index": "button[2]",
+          "bounds": "bounds(79,228,152,267)",
+          "center": "point(115,247)"
+        }
+      },
+      {
+        "id": "E14",
+        "bounds": [
+          151,
+          230,
+          225,
+          265
+        ],
+        "center": [
+          188,
+          247
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.703,
+        "text": "M+",
+        "label": "M+",
+        "locators": {
+          "id": "E14",
+          "text": "M+",
+          "type_index": "button[3]",
+          "bounds": "bounds(151,230,225,265)",
+          "center": "point(188,247)"
+        }
+      },
+      {
+        "id": "E15",
+        "bounds": [
+          225,
+          230,
+          298,
+          265
+        ],
+        "center": [
+          261,
+          247
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.722,
+        "text": "M-",
+        "label": "M-",
+        "locators": {
+          "id": "E15",
+          "text": "M-",
+          "type_index": "button[4]",
+          "bounds": "bounds(225,230,298,265)",
+          "center": "point(261,247)"
+        }
+      },
+      {
+        "id": "E16",
+        "bounds": [
+          298,
+          223,
+          376,
+          274
+        ],
+        "center": [
+          337,
+          248
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.855,
+        "text": "MS",
+        "label": "MS",
+        "locators": {
+          "id": "E16",
+          "text": "MS",
+          "type_index": "button[5]",
+          "bounds": "bounds(298,223,376,274)",
+          "center": "point(337,248)"
+        }
+      },
+      {
+        "id": "E17",
+        "bounds": [
+          373,
+          221,
+          452,
+          273
+        ],
+        "center": [
+          412,
+          247
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.84,
+        "text": "Mv",
+        "label": "Mv",
+        "locators": {
+          "id": "E17",
+          "text": "Mv",
+          "type_index": "button[6]",
+          "bounds": "bounds(373,221,452,273)",
+          "center": "point(412,247)"
+        }
+      },
+      {
+        "id": "E18",
+        "bounds": [
+          0,
+          276,
+          178,
+          321
+        ],
+        "center": [
+          89,
+          298
+        ],
+        "role": "textField",
+        "visual_type": "input_field",
+        "clickable": false,
+        "editable": true,
+        "scrollable": false,
+        "confidence": 0.796,
+        "text": "Trigonometry",
+        "label": "Trigonometry",
+        "locators": {
+          "id": "E18",
+          "text": "Trigonometry",
+          "type_index": "input_field[1]",
+          "bounds": "bounds(0,276,178,321)",
+          "center": "point(89,298)"
+        }
+      },
+      {
+        "id": "E19",
+        "bounds": [
+          179,
+          282,
+          310,
+          316
+        ],
+        "center": [
+          244,
+          299
+        ],
+        "role": "textField",
+        "visual_type": "input_field",
+        "clickable": false,
+        "editable": true,
+        "scrollable": false,
+        "confidence": 0.698,
+        "text": "Function",
+        "label": "Function",
+        "locators": {
+          "id": "E19",
+          "text": "Function",
+          "type_index": "input_field[2]",
+          "bounds": "bounds(179,282,310,316)",
+          "center": "point(244,299)"
+        }
+      },
+      {
+        "id": "E20",
+        "bounds": [
+          4,
+          323,
+          92,
+          366
+        ],
+        "center": [
+          48,
+          344
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 1.0,
+        "text": "2nd",
+        "label": "2nd",
+        "locators": {
+          "id": "E20",
+          "text": "2nd",
+          "type_index": "button[7]",
+          "bounds": "bounds(4,323,92,366)",
+          "center": "point(48,344)"
+        }
+      },
+      {
+        "id": "E21",
+        "bounds": [
+          93,
+          323,
+          181,
+          365
+        ],
+        "center": [
+          137,
+          344
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 1.0,
+        "text": "Tt",
+        "label": "Tt",
+        "locators": {
+          "id": "E21",
+          "text": "Tt",
+          "type_index": "button[8]",
+          "bounds": "bounds(93,323,181,365)",
+          "center": "point(137,344)"
+        }
+      },
+      {
+        "id": "E22",
+        "bounds": [
+          182,
+          323,
+          270,
+          366
+        ],
+        "center": [
+          226,
+          344
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.965,
+        "text": "e",
+        "label": "e",
+        "locators": {
+          "id": "E22",
+          "text": "e",
+          "type_index": "button[9]",
+          "bounds": "bounds(182,323,270,366)",
+          "center": "point(226,344)"
+        }
+      },
+      {
+        "id": "E23",
+        "bounds": [
+          271,
+          323,
+          359,
+          366
+        ],
+        "center": [
+          315,
+          344
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 1.0,
+        "text": "C",
+        "label": "C",
+        "locators": {
+          "id": "E23",
+          "text": "C",
+          "type_index": "button[10]",
+          "bounds": "bounds(271,323,359,366)",
+          "center": "point(315,344)"
+        }
+      },
+      {
+        "id": "E24",
+        "bounds": [
+          360,
+          323,
+          448,
+          366
+        ],
+        "center": [
+          404,
+          344
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.918,
+        "label": "Xbox",
+        "locators": {
+          "id": "E24",
+          "type_index": "button[11]",
+          "bounds": "bounds(360,323,448,366)",
+          "center": "point(404,344)"
+        }
+      },
+      {
+        "id": "E25",
+        "bounds": [
+          4,
+          365,
+          92,
+          409
+        ],
+        "center": [
+          48,
+          387
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 1.0,
+        "text": "x2",
+        "label": "x2",
+        "locators": {
+          "id": "E25",
+          "text": "x2",
+          "type_index": "button[12]",
+          "bounds": "bounds(4,365,92,409)",
+          "center": "point(48,387)"
+        }
+      },
+      {
+        "id": "E26",
+        "bounds": [
+          94,
+          365,
+          181,
+          409
+        ],
+        "center": [
+          137,
+          387
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.986,
+        "text": "Yx",
+        "label": "Yx",
+        "locators": {
+          "id": "E26",
+          "text": "Yx",
+          "type_index": "button[13]",
+          "bounds": "bounds(94,365,181,409)",
+          "center": "point(137,387)"
+        }
+      },
+      {
+        "id": "E27",
+        "bounds": [
+          182,
+          365,
+          270,
+          408
+        ],
+        "center": [
+          226,
+          386
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.999,
+        "text": "Ixl",
+        "label": "Ixl",
+        "locators": {
+          "id": "E27",
+          "text": "Ixl",
+          "type_index": "button[14]",
+          "bounds": "bounds(182,365,270,408)",
+          "center": "point(226,386)"
+        }
+      },
+      {
+        "id": "E28",
+        "bounds": [
+          270,
+          365,
+          359,
+          409
+        ],
+        "center": [
+          314,
+          387
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.845,
+        "text": "exp",
+        "label": "exp",
+        "locators": {
+          "id": "E28",
+          "text": "exp",
+          "type_index": "button[15]",
+          "bounds": "bounds(270,365,359,409)",
+          "center": "point(314,387)"
+        }
+      },
+      {
+        "id": "E29",
+        "bounds": [
+          361,
+          365,
+          449,
+          410
+        ],
+        "center": [
+          405,
+          387
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 1.0,
+        "text": "mod",
+        "label": "mod",
+        "locators": {
+          "id": "E29",
+          "text": "mod",
+          "type_index": "button[16]",
+          "bounds": "bounds(361,365,449,410)",
+          "center": "point(405,387)"
+        }
+      },
+      {
+        "id": "E30",
+        "bounds": [
+          4,
+          408,
+          92,
+          451
+        ],
+        "center": [
+          48,
+          429
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.973,
+        "text": "WX",
+        "label": "WX",
+        "locators": {
+          "id": "E30",
+          "text": "WX",
+          "type_index": "button[17]",
+          "bounds": "bounds(4,408,92,451)",
+          "center": "point(48,429)"
+        }
+      },
+      {
+        "id": "E31",
+        "bounds": [
+          93,
+          409,
+          181,
+          451
+        ],
+        "center": [
+          137,
+          430
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.834,
+        "label": "Hide (Ctrl+Shift+F)",
+        "locators": {
+          "id": "E31",
+          "type_index": "button[18]",
+          "bounds": "bounds(93,409,181,451)",
+          "center": "point(137,430)"
+        }
+      },
+      {
+        "id": "E32",
+        "bounds": [
+          182,
+          409,
+          270,
+          452
+        ],
+        "center": [
+          226,
+          430
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.856,
+        "label": "Full screen",
+        "locators": {
+          "id": "E32",
+          "type_index": "button[19]",
+          "bounds": "bounds(182,409,270,452)",
+          "center": "point(226,430)"
+        }
+      },
+      {
+        "id": "E33",
+        "bounds": [
+          272,
+          409,
+          360,
+          451
+        ],
+        "center": [
+          316,
+          430
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.959,
+        "text": "n!",
+        "label": "n!",
+        "locators": {
+          "id": "E33",
+          "text": "n!",
+          "type_index": "button[20]",
+          "bounds": "bounds(272,409,360,451)",
+          "center": "point(316,430)"
+        }
+      },
+      {
+        "id": "E34",
+        "bounds": [
+          360,
+          409,
+          448,
+          452
+        ],
+        "center": [
+          404,
+          430
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.903,
+        "text": "÷",
+        "label": "Divide",
+        "locators": {
+          "id": "E34",
+          "text": "÷",
+          "type_index": "button[21]",
+          "bounds": "bounds(360,409,448,452)",
+          "center": "point(404,430)"
+        }
+      },
+      {
+        "id": "E35",
+        "bounds": [
+          3,
+          451,
+          92,
+          494
+        ],
+        "center": [
+          47,
+          472
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.972,
+        "text": "x?",
+        "label": "x?",
+        "locators": {
+          "id": "E35",
+          "text": "x?",
+          "type_index": "button[22]",
+          "bounds": "bounds(3,451,92,494)",
+          "center": "point(47,472)"
+        }
+      },
+      {
+        "id": "E36",
+        "bounds": [
+          93,
+          452,
+          181,
+          494
+        ],
+        "center": [
+          137,
+          473
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.964,
+        "text": "7",
+        "label": "7",
+        "locators": {
+          "id": "E36",
+          "text": "7",
+          "type_index": "button[23]",
+          "bounds": "bounds(93,452,181,494)",
+          "center": "point(137,473)"
+        }
+      },
+      {
+        "id": "E37",
+        "bounds": [
+          182,
+          452,
+          270,
+          494
+        ],
+        "center": [
+          226,
+          473
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.946,
+        "text": "8",
+        "label": "8",
+        "locators": {
+          "id": "E37",
+          "text": "8",
+          "type_index": "button[24]",
+          "bounds": "bounds(182,452,270,494)",
+          "center": "point(226,473)"
+        }
+      },
+      {
+        "id": "E38",
+        "bounds": [
+          271,
+          451,
+          359,
+          494
+        ],
+        "center": [
+          315,
+          472
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.948,
+        "text": "9",
+        "label": "9",
+        "locators": {
+          "id": "E38",
+          "text": "9",
+          "type_index": "button[25]",
+          "bounds": "bounds(271,451,359,494)",
+          "center": "point(315,472)"
+        }
+      },
+      {
+        "id": "E39",
+        "bounds": [
+          360,
+          451,
+          448,
+          495
+        ],
+        "center": [
+          404,
+          473
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.923,
+        "text": "×",
+        "label": "Multiply",
+        "locators": {
+          "id": "E39",
+          "text": "×[1]",
+          "type_index": "button[26]",
+          "bounds": "bounds(360,451,448,495)",
+          "center": "point(404,473)"
+        }
+      },
+      {
+        "id": "E40",
+        "bounds": [
+          4,
+          494,
+          92,
+          537
+        ],
+        "center": [
+          48,
+          515
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.986,
+        "text": "10*",
+        "label": "10*",
+        "locators": {
+          "id": "E40",
+          "text": "10*",
+          "type_index": "button[27]",
+          "bounds": "bounds(4,494,92,537)",
+          "center": "point(48,515)"
+        }
+      },
+      {
+        "id": "E41",
+        "bounds": [
+          94,
+          495,
+          180,
+          537
+        ],
+        "center": [
+          137,
+          516
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.972,
+        "text": "4",
+        "label": "4",
+        "locators": {
+          "id": "E41",
+          "text": "4",
+          "type_index": "button[28]",
+          "bounds": "bounds(94,495,180,537)",
+          "center": "point(137,516)"
+        }
+      },
+      {
+        "id": "E42",
+        "bounds": [
+          183,
+          495,
+          269,
+          537
+        ],
+        "center": [
+          226,
+          516
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.893,
+        "text": "5",
+        "label": "5",
+        "locators": {
+          "id": "E42",
+          "text": "5",
+          "type_index": "button[29]",
+          "bounds": "bounds(183,495,269,537)",
+          "center": "point(226,516)"
+        }
+      },
+      {
+        "id": "E43",
+        "bounds": [
+          271,
+          494,
+          358,
+          537
+        ],
+        "center": [
+          314,
+          515
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.897,
+        "text": "6",
+        "label": "6",
+        "locators": {
+          "id": "E43",
+          "text": "6",
+          "type_index": "button[30]",
+          "bounds": "bounds(271,494,358,537)",
+          "center": "point(314,515)"
+        }
+      },
+      {
+        "id": "E44",
+        "bounds": [
+          360,
+          495,
+          448,
+          537
+        ],
+        "center": [
+          404,
+          516
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.889,
+        "text": "-",
+        "label": "Minus",
+        "locators": {
+          "id": "E44",
+          "text": "-[1]",
+          "type_index": "button[31]",
+          "bounds": "bounds(360,495,448,537)",
+          "center": "point(404,516)"
+        }
+      },
+      {
+        "id": "E45",
+        "bounds": [
+          4,
+          537,
+          92,
+          581
+        ],
+        "center": [
+          48,
+          559
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 1.0,
+        "text": "log",
+        "label": "log",
+        "locators": {
+          "id": "E45",
+          "text": "log",
+          "type_index": "button[32]",
+          "bounds": "bounds(4,537,92,581)",
+          "center": "point(48,559)"
+        }
+      },
+      {
+        "id": "E46",
+        "bounds": [
+          94,
+          537,
+          180,
+          580
+        ],
+        "center": [
+          137,
+          558
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.99,
+        "text": "1",
+        "label": "1",
+        "locators": {
+          "id": "E46",
+          "text": "1",
+          "type_index": "button[33]",
+          "bounds": "bounds(94,537,180,580)",
+          "center": "point(137,558)"
+        }
+      },
+      {
+        "id": "E47",
+        "bounds": [
+          182,
+          538,
+          269,
+          580
+        ],
+        "center": [
+          225,
+          559
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.981,
+        "text": "2",
+        "label": "2",
+        "locators": {
+          "id": "E47",
+          "text": "2",
+          "type_index": "button[34]",
+          "bounds": "bounds(182,538,269,580)",
+          "center": "point(225,559)"
+        }
+      },
+      {
+        "id": "E48",
+        "bounds": [
+          271,
+          537,
+          358,
+          580
+        ],
+        "center": [
+          314,
+          558
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.993,
+        "text": "3",
+        "label": "3",
+        "locators": {
+          "id": "E48",
+          "text": "3",
+          "type_index": "button[35]",
+          "bounds": "bounds(271,537,358,580)",
+          "center": "point(314,558)"
+        }
+      },
+      {
+        "id": "E49",
+        "bounds": [
+          360,
+          537,
+          448,
+          579
+        ],
+        "center": [
+          404,
+          558
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.916,
+        "text": "+",
+        "label": "Plus",
+        "locators": {
+          "id": "E49",
+          "text": "+",
+          "type_index": "button[36]",
+          "bounds": "bounds(360,537,448,579)",
+          "center": "point(404,558)"
+        }
+      },
+      {
+        "id": "E50",
+        "bounds": [
+          4,
+          581,
+          91,
+          622
+        ],
+        "center": [
+          47,
+          601
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 1.0,
+        "text": "In",
+        "label": "In",
+        "locators": {
+          "id": "E50",
+          "text": "In",
+          "type_index": "button[37]",
+          "bounds": "bounds(4,581,91,622)",
+          "center": "point(47,601)"
+        }
+      },
+      {
+        "id": "E51",
+        "bounds": [
+          94,
+          581,
+          180,
+          621
+        ],
+        "center": [
+          137,
+          601
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 1.0,
+        "text": "+12",
+        "label": "+12",
+        "locators": {
+          "id": "E51",
+          "text": "+12",
+          "type_index": "button[38]",
+          "bounds": "bounds(94,581,180,621)",
+          "center": "point(137,601)"
+        }
+      },
+      {
+        "id": "E52",
+        "bounds": [
+          182,
+          581,
+          270,
+          622
+        ],
+        "center": [
+          226,
+          601
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.988,
+        "text": "0",
+        "label": "0",
+        "locators": {
+          "id": "E52",
+          "text": "0",
+          "type_index": "button[39]",
+          "bounds": "bounds(182,581,270,622)",
+          "center": "point(226,601)"
+        }
+      },
+      {
+        "id": "E53",
+        "bounds": [
+          272,
+          580,
+          359,
+          623
+        ],
+        "center": [
+          315,
+          601
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.85,
+        "label": "Minimize",
+        "locators": {
+          "id": "E53",
+          "type_index": "button[40]",
+          "bounds": "bounds(272,580,359,623)",
+          "center": "point(315,601)"
+        }
+      },
+      {
+        "id": "E54",
+        "bounds": [
+          360,
+          580,
+          448,
+          624
+        ],
+        "center": [
+          404,
+          602
+        ],
+        "role": "button",
+        "visual_type": "button",
+        "clickable": true,
+        "editable": false,
+        "scrollable": false,
+        "confidence": 0.899,
+        "text": "=",
+        "label": "Equals",
+        "locators": {
+          "id": "E54",
+          "text": "=",
+          "type_index": "button[41]",
+          "bounds": "bounds(360,580,448,624)",
+          "center": "point(404,602)"
+        }
+      }
+    ]
+  }
+}
