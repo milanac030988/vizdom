@@ -72,32 +72,40 @@ nav:
           - ELAM-7B analysis (VI): discussion/elam-7b-analysis-vi.md
   - Commands: COMMANDS.md
   - Architecture Decisions:
+      # grouped one level down so the sidebar stays short: the theme only
+      # expands the group of the page being read
       - Overview: adr/README.md
-      - 001 Visual DOM Architecture: adr/001-visual-dom-architecture.md
-      - 002 CV Pipeline Design: adr/002-cv-pipeline-design.md
-      - 003 Platform Handler Architecture: adr/003-platform-handler-architecture.md
-      - 004 DOM Compiler / JSON Format: adr/004-dom-compiler-json-format.md
-      - 005 Evaluation Framework: adr/005-evaluation-framework.md
-      - 006 Viewer Workflow Design: adr/006-viewer-workflow-design.md
-      - 007 CV Pipeline with LLM Refinement: adr/007-cv-pipeline-with-llm-refinement.md
-      - 008 Resolution-Aware Thresholds: adr/008-resolution-aware-thresholds.md
-      - 009 SLM Advisor + VLM Support: adr/009-slm-advisor-vlm-support.md
-      - 010 Smart Merge / Split / Dedup: adr/010-smart-merge-split-dedup.md
-      - 011 Symbol Detector: adr/011-symbol-detector.md
-      - 012 OCR Upscale + Dual Engine: adr/012-ocr-upscale-dual-engine.md
-      - 013 Session-Based Output: adr/013-session-based-output.md
-      - 014 Project Restructure: adr/014-project-restructure.md
-      - 015 Pluggable Detector Backends: adr/015-pluggable-detector-backends.md
-      - 016 Reading Order + Labels: adr/016-reading-order-and-labels.md
-      - 017 Distributed Hexagonal + gRPC: adr/017-distributed-hexagonal-grpc.md
-      - 018 Pluggable Capture Service: adr/018-pluggable-capture-service.md
-      - 019 Pluggable Actuator Service: adr/019-pluggable-actuator-service.md
-      - 020 Client Session Config: adr/020-client-session-config.md
-      - 021 Application Targeting and Focus: adr/021-application-targeting-and-focus.md
-      - 022 Description-Based Locator: adr/022-description-based-locator.md
-      - 023 Post-Action Recap: adr/023-post-action-recap.md
-      - 024 Multi-Locator Fallback Chains: adr/024-multi-locator-fallback-chains.md
-      - 025 Session Orchestrator Service: adr/025-session-orchestrator-service.md
-      - 026 Viewer UI Restructure: adr/026-viewer-ui-restructure.md
-      - 027 Modular Three-Stage Detector: adr/027-modular-three-stage-detector.md
-      - 028 Viewer Click via Actuator: adr/028-viewer-try-locator-via-actuator.md
+      - System & services:
+          - 001 Visual DOM Architecture: adr/001-visual-dom-architecture.md
+          - 003 Platform Handler Architecture: adr/003-platform-handler-architecture.md
+          - 014 Project Restructure: adr/014-project-restructure.md
+          - 017 Distributed Hexagonal + gRPC: adr/017-distributed-hexagonal-grpc.md
+          - 018 Pluggable Capture Service: adr/018-pluggable-capture-service.md
+          - 019 Pluggable Actuator Service: adr/019-pluggable-actuator-service.md
+          - 025 Session Orchestrator Service: adr/025-session-orchestrator-service.md
+      - Detection & OCR:
+          - 002 CV Pipeline Design: adr/002-cv-pipeline-design.md
+          - 007 CV Pipeline with LLM Refinement: adr/007-cv-pipeline-with-llm-refinement.md
+          - 008 Resolution-Aware Thresholds: adr/008-resolution-aware-thresholds.md
+          - 009 SLM Advisor + VLM Support: adr/009-slm-advisor-vlm-support.md
+          - 010 Smart Merge / Split / Dedup: adr/010-smart-merge-split-dedup.md
+          - 011 Symbol Detector: adr/011-symbol-detector.md
+          - 012 OCR Upscale + Dual Engine: adr/012-ocr-upscale-dual-engine.md
+          - 015 Pluggable Detector Backends: adr/015-pluggable-detector-backends.md
+          - 027 Modular Three-Stage Detector: adr/027-modular-three-stage-detector.md
+      - DOM output & sessions:
+          - 004 DOM Compiler / JSON Format: adr/004-dom-compiler-json-format.md
+          - 013 Session-Based Output: adr/013-session-based-output.md
+          - 016 Reading Order + Labels: adr/016-reading-order-and-labels.md
+          - 020 Client Session Config: adr/020-client-session-config.md
+      - Locators & test automation:
+          - 021 Application Targeting and Focus: adr/021-application-targeting-and-focus.md
+          - 022 Description-Based Locator: adr/022-description-based-locator.md
+          - 023 Post-Action Recap: adr/023-post-action-recap.md
+          - 024 Multi-Locator Fallback Chains: adr/024-multi-locator-fallback-chains.md
+      - Viewer:
+          - 006 Viewer Workflow Design: adr/006-viewer-workflow-design.md
+          - 026 Viewer UI Restructure: adr/026-viewer-ui-restructure.md
+          - 028 Viewer Click via Actuator: adr/028-viewer-try-locator-via-actuator.md
+      - Evaluation:
+          - 005 Evaluation Framework: adr/005-evaluation-framework.md
