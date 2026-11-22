@@ -89,16 +89,26 @@ if [[ -z "${SKIP_EASYOCR_MODELS:-}" ]]; then
   EASYOCR_MODULE_PATH="$easy" "$py" -c "import easyocr; easyocr.Reader(['en'], gpu=False, verbose=False); print('easyocr models ready')"
 fi
 
-# --- 5. smoke test: the bundle imports what Studio and a Robot suite need -------
+# --- 5. leave out what only building software needs -------------------------------
+step "Remove build-only files (C++ headers, test suites)"
+site="$("$py" -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")"
+rm -rf "$site/torch/include"
+find "$site" -type d -name tests -prune -exec rm -rf {} +
+
+# --- 6. smoke test: the bundle imports what Studio and a Robot suite need -------
 step "Smoke test"
-imports="import VisualGuiLibrary, visual_dom, visual_gui_library, vizdom_bridge.server, easyocr, mss, grpc, robot"
+imports="import VisualGuiLibrary, visual_dom, visual_gui_library, vizdom_bridge.server, easyocr, mss, grpc, robot, pytesseract, cv2"
 if [[ -n "${DISPLAY:-}" ]]; then
   imports="$imports, pyautogui"
 else
   echo "    no DISPLAY: pyautogui not imported (run under xvfb-run -a to include it)"
 fi
 PYTHONPATH="$code/tools" VIZDOM_REPO="$code" VIZDOM_HOME="$bundle/_home" \
-  "$py" -c "$imports; from visual_dom.generated import detector_pb2_grpc; print('imports ok, Robot Framework', robot.__version__)"
+  "$py" -c "$imports; from visual_dom.generated import detector_pb2_grpc; assert cv2.__version__.startswith('4.'), cv2.__version__; print('imports ok, Robot Framework', robot.__version__, 'OpenCV', cv2.__version__)"
+if [[ -z "${SKIP_EASYOCR_MODELS:-}" ]]; then
+  # the models load from the bundle, with the build-only files gone
+  EASYOCR_MODULE_PATH="$easy" "$py" -c "import easyocr; easyocr.Reader(['en'], gpu=False, verbose=False, download_enabled=False); print('easyocr loads offline')"
+fi
 rm -rf "$bundle/_home"
 find "$code" -type d -name __pycache__ -prune -exec rm -rf {} +
 

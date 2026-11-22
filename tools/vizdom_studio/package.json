@@ -15,6 +15,7 @@
     "bundle:python": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/bundle_python.ps1",
     "bundle:python:linux": "bash scripts/bundle_python.sh",
     "dist": "electron-vite build && electron-builder --win nsis --publish never",
+    "dist:online": "electron-vite build && electron-builder --win nsis --publish never -c.nsis.include=resources/installer-online.nsh -c.nsis.artifactName=VizDOM-Studio-Online-Setup-${version}.${ext}",
     "dist:linux": "electron-vite build && electron-builder --linux AppImage deb --publish never"
   },
   "homepage": "https://github.com/milanac030988/vizdom",
@@ -41,7 +42,8 @@
       "icon": "resources/icon.ico",
       "extraResources": [
         { "from": "bundle/tesseract", "to": "tesseract", "filter": ["**/*"] },
-        { "from": "bundle/wheels", "to": "wheels", "filter": ["*.whl"] }
+        { "from": "bundle/wheels", "to": "wheels", "filter": ["*.whl"] },
+        { "from": "bundle/online", "to": "online", "filter": ["**/*"] }
       ]
     },
     "linux": {

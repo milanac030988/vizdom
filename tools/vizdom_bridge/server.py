@@ -36,6 +36,22 @@ from . import sessions as S  # noqa: E402
 from .services import ServiceManager  # noqa: E402
 
 
+def default_ocr_engine(config: Dict[str, Any]) -> None:
+    """With no config file yet, pick an OCR engine that is installed.
+
+    The online Studio installer can leave EasyOCR (and PyTorch) out; the built-in
+    default `easyocr` would then stop the first analysis. Only the default is
+    changed: a config file that names EasyOCR still fails with a clear message.
+    """
+    import importlib.util
+    ocr = config.setdefault("ocr", {})
+    if (ocr.get("engine") or "easyocr") != "easyocr" or importlib.util.find_spec("easyocr"):
+        return
+    if importlib.util.find_spec("pytesseract"):
+        ocr["engine"] = "tesseract"
+        print("EasyOCR is not installed: the default OCR engine is Tesseract", flush=True)
+
+
 class BridgeState:
     def __init__(self, token: str, config_path: Optional[str]):
         from visual_dom.config import VizDomConfig
@@ -44,6 +60,8 @@ class BridgeState:
         self.config_path = Path(config_path) if config_path else default
         source = str(self.config_path) if self.config_path.exists() else None
         self.config: Dict[str, Any] = VizDomConfig.load(source).to_dict()
+        if source is None:
+            default_ocr_engine(self.config)
         self.loop: Optional[asyncio.AbstractEventLoop] = None
         self.sockets: set = set()
         self.executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="vizdom-job")

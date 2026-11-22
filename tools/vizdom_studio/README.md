@@ -52,6 +52,21 @@ npm install
 npm run dist            # -> release/VizDOM-Studio-Setup-<version>.exe
 ```
 
+The online installer leaves PyTorch and EasyOCR out and downloads them during
+the installation (`resources/installer-online.nsh`, `resources/install_easyocr.cmd`),
+pinned to the versions of a full bundle. Build the full one first with
+`-FreezeOut`, then:
+
+```powershell
+./tools/vizdom_studio/scripts/bundle_python.ps1 -Wheel (Get-Item dist/*.whl).FullName -FreezeOut versions.txt
+# npm run dist, as above, then:
+./tools/vizdom_studio/scripts/bundle_python.ps1 -Wheel (Get-Item dist/*.whl).FullName -Lite -Constraints versions.txt
+npm run dist:online     # -> release/VizDOM-Studio-Online-Setup-<version>.exe
+```
+
+Both bundles drop what only building software needs (PyTorch's C++ headers and
+link libraries, the packages' test suites).
+
 On Linux (x86-64; the import check needs an X display, hence `xvfb-run` on a
 headless machine):
 
@@ -74,6 +89,7 @@ into the app's `resources/`:
 | `easyocr/` | EasyOCR's English models (no download on first use) |
 | `tesseract/` | Windows only: a copy of `C:\Program Files\Tesseract-OCR`, when installed on the build machine |
 | `wheels/` | Windows only: the VizDOM wheel, for the installer page that adds the library to another Python |
+| `online/` | online installer only: `install_easyocr.cmd` and the pinned versions it downloads |
 
 The installed Studio uses that Python unless `VIZDOM_PYTHON` or Settings names
 another, runs the bridge with `VIZDOM_REPO` = the `vizdom/` folder, and keeps the

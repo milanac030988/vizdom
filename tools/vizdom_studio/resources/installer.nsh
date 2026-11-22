@@ -17,6 +17,12 @@
 ;      OpenCV, ...) from the package index, so this step needs network access.
 ;
 ; The packages stay in that Python when Studio is uninstalled.
+;
+; The online installer (installer-online.nsh defines VIZDOM_ONLINE) ships without
+; PyTorch and EasyOCR. Its "Text recognition" page, ticked by default, downloads
+; them into Studio's own Python with resources\online\install_easyocr.cmd, at the
+; versions the full installer of the same release carries. Without them Studio
+; reads text with Tesseract; a failed download does not fail the installation.
 
 !include "LogicLib.nsh"
 !include "nsDialogs.nsh"
@@ -421,9 +427,68 @@ Function PY_InstallLibrary
   ${EndIf}
 FunctionEnd
 
+!ifdef VIZDOM_ONLINE
+; ---------------------------------------------------------------------------
+; Online installer: EasyOCR as a download
+; ---------------------------------------------------------------------------
+Var /GLOBAL OCR_Check
+Var /GLOBAL OCR_DoInstall     ; "1" download EasyOCR into Studio's Python
+
+Function OCR_PageCreate
+  !ifmacrodef MUI_HEADER_TEXT
+    !insertmacro MUI_HEADER_TEXT "Text recognition" "Choose how VizDOM Studio reads text on the screen."
+  !endif
+  nsDialogs::Create 1018
+  Pop $R0
+  ${If} $R0 == error
+    Abort
+  ${EndIf}
+
+  ${NSD_CreateLabel} 0 0u 100% 36u "Studio reads text with Tesseract, which this installer includes. EasyOCR reads small and styled text better, and is what the full installer brings. It runs on PyTorch: the installer downloads both and the EasyOCR models, a few hundred MB, from the Python package index and GitHub."
+  Pop $R0
+
+  ${NSD_CreateCheckBox} 0 42u 100% 12u "Download and install EasyOCR (recommended)"
+  Pop $OCR_Check
+  ${If} $OCR_DoInstall == "1"
+    ${NSD_Check} $OCR_Check
+  ${EndIf}
+
+  ${NSD_CreateLabel} 0 62u 100% 44u "Without it, Studio uses Tesseract. If the download fails (no network, a proxy), Studio is still installed. To add EasyOCR later, run install_easyocr.cmd in the resources\online folder of the installation, or use the full installer."
+  Pop $R0
+
+  nsDialogs::Show
+FunctionEnd
+
+Function OCR_PageLeave
+  ${NSD_GetState} $OCR_Check $R0
+  ${If} $R0 == ${BST_CHECKED}
+    StrCpy $OCR_DoInstall "1"
+  ${Else}
+    StrCpy $OCR_DoInstall "0"
+  ${EndIf}
+FunctionEnd
+
+Function OCR_Install
+  DetailPrint "Downloading EasyOCR, CPU PyTorch and the EasyOCR models"
+  nsExec::ExecToLog `"$SYSDIR\cmd.exe" /c ""$INSTDIR\resources\online\install_easyocr.cmd""`
+  Pop $R0
+  ${If} $R0 == "0"
+    DetailPrint "EasyOCR is installed."
+  ${Else}
+    DetailPrint "EasyOCR could not be installed (exit code $R0); Studio reads text with Tesseract."
+    ${IfNot} ${Silent}
+      MessageBox MB_OK|MB_ICONEXCLAMATION "EasyOCR could not be downloaded. The details list shows why.$\n$\nStudio is installed and reads text with Tesseract. To add EasyOCR later, run:$\n$\n$INSTDIR\resources\online\install_easyocr.cmd"
+    ${EndIf}
+  ${EndIf}
+FunctionEnd
+!endif ; VIZDOM_ONLINE
+
 !endif ; BUILD_UNINSTALLER
 
 !macro customInit
+  !ifdef VIZDOM_ONLINE
+    StrCpy $OCR_DoInstall "1"     ; also for a silent install
+  !endif
   StrCpy $PY_DoInstall "0"
   StrCpy $PY_Path ""
   ; A RobotFramework AIO installation is the common case: preselect it.
@@ -442,10 +507,18 @@ FunctionEnd
 !macroend
 
 !macro customPageAfterChangeDir
+  !ifdef VIZDOM_ONLINE
+    Page custom OCR_PageCreate OCR_PageLeave
+  !endif
   Page custom PY_PageCreate PY_PageLeave
 !macroend
 
 !macro customInstall
+  !ifdef VIZDOM_ONLINE
+    ${If} $OCR_DoInstall == "1"
+      Call OCR_Install
+    ${EndIf}
+  !endif
   ${If} $PY_DoInstall == "1"
   ${AndIf} $PY_Path != ""
     Call PY_InstallLibrary

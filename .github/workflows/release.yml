@@ -125,10 +125,10 @@ jobs:
           if-no-files-found: error
 
   studio-windows:
-    name: VizDOM Studio installer (Windows, CPU)
+    name: VizDOM Studio installers (Windows, CPU; full and online)
     needs: [plan, wheel]
     runs-on: windows-2022
-    timeout-minutes: 60
+    timeout-minutes: 90
     defaults:
       run:
         shell: pwsh
@@ -152,9 +152,10 @@ jobs:
       - name: Bundle Python, VizDOM, OCR models
         run: |
           $wheel = (Get-ChildItem dist -Filter *.whl | Select-Object -First 1).FullName
-          ./tools/vizdom_studio/scripts/bundle_python.ps1 -Wheel $wheel
+          # versions.txt: the exact package versions, for the online installer's download
+          ./tools/vizdom_studio/scripts/bundle_python.ps1 -Wheel $wheel -FreezeOut "$env:RUNNER_TEMP/versions.txt"
 
-      - name: Build the installer
+      - name: Build the full (offline) installer
         working-directory: tools/vizdom_studio
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"   # unsigned; see the README
@@ -162,6 +163,27 @@ jobs:
           npm install --no-audit --no-fund
           npm version "${{ needs.plan.outputs.npm_version }}" --no-git-tag-version --allow-same-version
           npm run dist
+
+      - name: Bundle for the online installer (no PyTorch, no EasyOCR)
+        run: |
+          $wheel = (Get-ChildItem dist -Filter *.whl | Select-Object -First 1).FullName
+          ./tools/vizdom_studio/scripts/bundle_python.ps1 -Wheel $wheel -Lite -Constraints "$env:RUNNER_TEMP/versions.txt"
+
+      - name: Build the online installer
+        working-directory: tools/vizdom_studio
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: "false"
+        run: |
+          npm run dist:online
+          Get-ChildItem release -Filter *.exe | ForEach-Object { "{0}  {1:N0} MB" -f $_.Name, ($_.Length / 1MB) }
+
+      - name: The online download works (EasyOCR into the packaged Python)
+        working-directory: tools/vizdom_studio/release/win-unpacked/resources
+        run: |
+          cmd /c online\install_easyocr.cmd
+          if ($LASTEXITCODE -ne 0) { throw "install_easyocr.cmd failed with exit code $LASTEXITCODE" }
+          $env:EASYOCR_MODULE_PATH = "$PWD\easyocr"
+          python\python.exe -c "import easyocr, cv2; easyocr.Reader(['en'], gpu=False, verbose=False, download_enabled=False); assert cv2.__version__.startswith('4.'); print('online EasyOCR ok, OpenCV', cv2.__version__)"
 
       - uses: actions/upload-artifact@v4
         with:

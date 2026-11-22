@@ -14,7 +14,14 @@ There are three ways to install VizDOM. Pick the first one that fits:
 administrator rights are needed. It brings Studio, its own Python 3.12 with the
 VizDOM engine and the Robot Framework library, CPU PyTorch, EasyOCR with its
 English models, and Tesseract. Settings, sessions and plugins go to
-`Documents\VizDOM`. Run Robot suites with the Python it installed:
+`Documents\VizDOM`. `VizDOM-Studio-Online-Setup-<version>.exe` is the smaller
+download without PyTorch and EasyOCR: its *Text recognition* page (ticked by
+default) downloads them during the installation, at the versions the full
+installer ships. Without them Studio reads text with Tesseract (when no config
+file exists yet, Studio picks Tesseract by itself; a config that names EasyOCR
+stops with a message saying so); `resources\online\install_easyocr.cmd` in the
+installation folder adds EasyOCR later. Run Robot suites with the Python it
+installed:
 
 ```bat
 "%LOCALAPPDATA%\Programs\VizDOM Studio\resources\python\python.exe" -m robot my_tests\

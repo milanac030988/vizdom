@@ -12,9 +12,21 @@
     bundle/wheels/     the VizDOM wheel itself, which the installer can pip-install
                        into a Python the user already has (resources/installer.nsh)
 
+  -Lite assembles the online installer instead: no PyTorch, no EasyOCR and no
+  models (Tesseract reads the text), plus
+
+    bundle/online/     install_easyocr.cmd, which the installer runs when EasyOCR is
+                       ticked, with the exact versions to download (constraints.txt,
+                       easyocr-requirements.txt) taken from a full bundle
+
+  so both installers of a release carry the same package versions. Build the full
+  bundle first with -FreezeOut, then the lite one with -Constraints set to that file.
+
 .EXAMPLE
   # after: python scripts/gen_protos.py ; uv build --wheel
-  powershell -File tools/vizdom_studio/scripts/bundle_python.ps1 -Wheel dist\vizdom-0.1.0-py3-none-any.whl
+  powershell -File tools/vizdom_studio/scripts/bundle_python.ps1 -Wheel dist\vizdom-0.1.0-py3-none-any.whl -FreezeOut versions.txt
+  # ... npm run dist, then the online installer:
+  powershell -File tools/vizdom_studio/scripts/bundle_python.ps1 -Wheel dist\vizdom-0.1.0-py3-none-any.whl -Lite -Constraints versions.txt
 
   Needs uv on PATH (https://docs.astral.sh/uv/) and internet access (PyPI, the
   PyTorch CPU index, EasyOCR's model download).
@@ -23,7 +35,10 @@ param(
   [Parameter(Mandatory = $true)][string]$Wheel,
   [string]$PythonVersion = "3.12",
   [string]$TesseractDir = "C:\Program Files\Tesseract-OCR",
-  [switch]$SkipEasyOcrModels
+  [switch]$SkipEasyOcrModels,
+  [switch]$Lite,
+  [string]$Constraints,
+  [string]$FreezeOut
 )
 
 $ErrorActionPreference = "Stop"
@@ -39,6 +54,11 @@ function Run($exe, [string[]]$argv) {
 }
 
 if (-not (Get-Command uv -ErrorAction SilentlyContinue)) { throw "uv is not on PATH: https://docs.astral.sh/uv/" }
+if ($Lite) {
+  if (-not $Constraints) { throw "-Lite needs -Constraints: the version list a full bundle wrote with -FreezeOut" }
+  $Constraints = (Resolve-Path $Constraints).Path
+}
+if ($FreezeOut) { $FreezeOut = [IO.Path]::GetFullPath($FreezeOut) }
 
 Step "Clean $bundle"
 if (Test-Path $bundle) { Remove-Item $bundle -Recurse -Force }
@@ -67,14 +87,39 @@ Get-ChildItem (Join-Path $bundle "python") -Recurse -Filter "EXTERNALLY-MANAGED"
 Run $py @("--version")
 
 # --- 2. packages -----------------------------------------------------------------
-Step "CPU-only torch (EasyOCR's engine)"
-Run uv @("pip", "install", "--python", $py, "--break-system-packages",
-         "--index-url", "https://download.pytorch.org/whl/cpu", "torch", "torchvision")
-
-Step "VizDOM + Robot Framework library from $([IO.Path]::GetFileName($Wheel))"
 $wheelUri = ([Uri]$Wheel).AbsoluteUri
-Run uv @("pip", "install", "--python", $py, "--break-system-packages",
-         "vizdom[robot,studio] @ $wheelUri")
+if ($Lite) {
+  # everything of [robot,studio] except EasyOCR and the PyTorch it runs on
+  Step "VizDOM + Robot Framework library without EasyOCR, versions from $([IO.Path]::GetFileName($Constraints))"
+  Run uv @("pip", "install", "--python", $py, "--break-system-packages", "-c", $Constraints,
+           "vizdom[desktop,grpc,studio] @ $wheelUri", "pytesseract")
+
+  Step "EasyOCR download for the installer (resources/online)"
+  $online = Join-Path $bundle "online"
+  New-Item -ItemType Directory -Force $online | Out-Null
+  Copy-Item $Constraints (Join-Path $online "constraints.txt")
+  $req = @(Get-Content $Constraints | Where-Object { $_ -match '^(easyocr|torch|torchvision)==' })
+  if ($req.Count -ne 3) { throw "$Constraints should pin easyocr, torch and torchvision; found: $($req -join ', ')" }
+  Set-Content -Encoding ascii (Join-Path $online "easyocr-requirements.txt") $req
+  Copy-Item (Join-Path $studio "resources\install_easyocr.cmd") $online
+  Write-Host "    $($req -join ', ')"
+} else {
+  Step "CPU-only torch (EasyOCR's engine)"
+  Run uv @("pip", "install", "--python", $py, "--break-system-packages",
+           "--index-url", "https://download.pytorch.org/whl/cpu", "torch", "torchvision")
+
+  Step "VizDOM + Robot Framework library from $([IO.Path]::GetFileName($Wheel))"
+  Run uv @("pip", "install", "--python", $py, "--break-system-packages",
+           "vizdom[robot,studio] @ $wheelUri")
+
+  if ($FreezeOut) {
+    # the exact versions, for the online installer's download (-Lite -Constraints)
+    Step "Package versions -> $FreezeOut"
+    $frozen = @(& uv pip freeze --python $py | Where-Object { $_ -and $_ -notmatch '^vizdom[ =@]' })
+    if ($LASTEXITCODE -ne 0) { throw "uv pip freeze failed" }
+    Set-Content -Encoding ascii $FreezeOut $frozen
+  }
+}
 
 # The same wheel, for the installer page that adds the Robot Framework library to
 # a Python of the user's own (resources/installer.nsh)
@@ -98,7 +143,7 @@ Get-ChildItem $code -Recurse -Directory -Filter "__pycache__" | Remove-Item -Rec
 # --- 4. OCR models and engine ----------------------------------------------------
 $easy = Join-Path $bundle "easyocr"
 New-Item -ItemType Directory -Force $easy | Out-Null
-if (-not $SkipEasyOcrModels) {
+if (-not $SkipEasyOcrModels -and -not $Lite) {
   Step "EasyOCR English models"
   $env:EASYOCR_MODULE_PATH = $easy
   Run $py @("-c", "import easyocr; easyocr.Reader(['en'], gpu=False, verbose=False); print('easyocr models ready')")
@@ -114,12 +159,32 @@ if (Test-Path (Join-Path $TesseractDir "tesseract.exe")) {
   New-Item -ItemType Directory -Force $tess | Out-Null
 }
 
-# --- 5. smoke test: the bundle imports what Studio and a Robot suite need -------
+# --- 5. leave out what only building software needs -------------------------------
+Step "Remove build-only files (C++ headers, link libraries, test suites)"
+$site = Join-Path $bundle "python\Lib\site-packages"
+$torchDir = Join-Path $site "torch"
+if (Test-Path $torchDir) {
+  Remove-Item (Join-Path $torchDir "include") -Recurse -Force -ErrorAction SilentlyContinue
+  Get-ChildItem (Join-Path $torchDir "lib") -Filter "*.lib" | Remove-Item -Force
+}
+Get-ChildItem $site -Recurse -Directory -Filter "tests" | Sort-Object { $_.FullName.Length } |
+  ForEach-Object { if (Test-Path $_.FullName) { Remove-Item $_.FullName -Recurse -Force } }
+
+# --- 6. smoke test: the bundle imports what Studio and a Robot suite need -------
 Step "Smoke test"
 $env:PYTHONPATH = Join-Path $code "tools"
 $env:VIZDOM_REPO = $code
 $env:VIZDOM_HOME = Join-Path $bundle "_home"
-Run $py @("-c", "import VisualGuiLibrary, visual_dom, visual_gui_library, vizdom_bridge.server, easyocr, mss, pyautogui, grpc, robot; from visual_dom.generated import detector_pb2_grpc; print('imports ok, Robot Framework', robot.__version__)")
+$imports = "import VisualGuiLibrary, visual_dom, visual_gui_library, vizdom_bridge.server, mss, pyautogui, grpc, robot, pytesseract, cv2"
+# the online installer downloads EasyOCR with the bundle's own pip
+if ($Lite) { $imports += ", pip" } else { $imports += ", easyocr" }
+Run $py @("-c", "$imports; from visual_dom.generated import detector_pb2_grpc; assert cv2.__version__.startswith('4.'), cv2.__version__; print('imports ok, Robot Framework', robot.__version__, 'OpenCV', cv2.__version__)")
+if (-not $Lite -and -not $SkipEasyOcrModels) {
+  # the models load from the bundle, with the build-only files gone
+  $env:EASYOCR_MODULE_PATH = $easy
+  Run $py @("-c", "import easyocr; easyocr.Reader(['en'], gpu=False, verbose=False, download_enabled=False); print('easyocr loads offline')")
+  Remove-Item Env:\EASYOCR_MODULE_PATH
+}
 Remove-Item Env:\PYTHONPATH, Env:\VIZDOM_REPO, Env:\VIZDOM_HOME
 if (Test-Path (Join-Path $bundle "_home")) { Remove-Item (Join-Path $bundle "_home") -Recurse -Force }
 

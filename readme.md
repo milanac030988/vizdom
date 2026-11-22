@@ -45,6 +45,13 @@ installer brings:
 - CPU-only PyTorch, EasyOCR with its English models, and Tesseract — so the first
   analysis works offline.
 
+**`VizDOM-Studio-Online-Setup-<version>.exe`** is the smaller download: the same
+installer without PyTorch and EasyOCR. Its *Text recognition* page (ticked by
+default) downloads them during the installation, at the versions the full
+installer ships; untick it, or without network access, Studio reads text with
+Tesseract. To add EasyOCR later, run `resources\online\install_easyocr.cmd` in
+the installation folder.
+
 Your settings, sessions and plugins go to `Documents\VizDOM`. The installer is not
 code-signed yet, so Windows SmartScreen asks once: *More info → Run anyway*.
 

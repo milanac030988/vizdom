@@ -211,3 +211,23 @@ def test_installed_layout_keeps_user_data_apart_from_the_code(tmp_path):
     assert Path(repo) == code and Path(home_) == home
     assert Path(sessions) == home / "output" / "sessions"
     assert Path(prefs) == home / "output" / ".studio" / "services.json"
+
+
+@pytest.mark.parametrize("installed, configured, expected", [
+    ({"easyocr", "pytesseract"}, None, "easyocr"),
+    ({"pytesseract"}, None, "tesseract"),          # online installer without EasyOCR
+    (set(), None, "easyocr"),                      # nothing to switch to: the probe reports it
+    ({"pytesseract"}, "paddleocr", "paddleocr"),   # only the built-in default changes
+])
+def test_default_ocr_engine_falls_back_to_an_installed_one(installed, configured, expected, monkeypatch):
+    import importlib.util
+
+    from vizdom_bridge.server import default_ocr_engine
+
+    real = importlib.util.find_spec
+    monkeypatch.setattr(importlib.util, "find_spec",
+                        lambda name, *a: object() if name in installed else
+                        (None if name in ("easyocr", "pytesseract") else real(name, *a)))
+    config = {"ocr": {"engine": configured}} if configured else {"ocr": {}}
+    default_ocr_engine(config)
+    assert (config["ocr"].get("engine") or "easyocr") == expected
