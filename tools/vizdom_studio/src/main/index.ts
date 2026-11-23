@@ -38,6 +38,7 @@ function savePrefs(p: StudioPrefs): void {
 let prefs: StudioPrefs
 let win: BrowserWindow | null = null
 let bridge: Bridge
+let quitting = false
 
 const OVERLAY = {
   dark: { color: '#0d1117', symbolColor: '#c9d1d9', height: 44 },
@@ -92,6 +93,44 @@ function createWindow(): void {
   } else {
     win.loadFile(join(__dirname, '../renderer/index.html'))
   }
+  // Closing Studio stops the services it started: say so first, and let the
+  // user keep working instead (a test suite may still be using them).
+  let closeConfirmed = false
+  let asking = false
+  win.on('close', (e) => {
+    if (closeConfirmed || quitting || !bridge) return
+    e.preventDefault()
+    if (asking) return
+    asking = true
+    const w = win!
+    bridge
+      .ownedServices()
+      .then(async (running) => {
+        if (running.length) {
+          const r = await dialog.showMessageBox(w, {
+            type: 'warning',
+            title: 'Close VizDOM Studio',
+            message:
+              running.length === 1
+                ? 'A service started by Studio is still running.'
+                : `${running.length} services started by Studio are still running.`,
+            detail:
+              running.join('\n') +
+              (running.length === 1
+                ? '\n\nClosing Studio stops it. Tests and other tools that use it will lose the connection.'
+                : '\n\nClosing Studio stops them. Tests and other tools that use them will lose the connection.'),
+            buttons: ['Stop and close', 'Cancel'],
+            defaultId: 0,
+            cancelId: 1,
+            noLink: true
+          })
+          if (r.response !== 0) return
+        }
+        closeConfirmed = true
+        w.close()
+      })
+      .finally(() => (asking = false))
+  })
   win.on('closed', () => (win = null))
 }
 
@@ -201,7 +240,6 @@ app.on('window-all-closed', () => {
 
 // Services started from Studio must not outlive it: let the bridge stop them
 // before it is ended (a kill on Windows skips the bridge's own cleanup).
-let quitting = false
 app.on('before-quit', (e) => {
   if (quitting || !bridge) return
   e.preventDefault()

@@ -79,6 +79,22 @@ export class Bridge {
     this.set({ log })
   }
 
+  /** The services this bridge started that are still running, e.g. "Detector (port 50051)". */
+  async ownedServices(): Promise<string[]> {
+    const { url, token } = this.info
+    if (!this.proc || !url || !token) return []
+    try {
+      const r = await fetch(`${url}/api/services`, {
+        headers: { 'X-VizDOM-Token': token },
+        signal: AbortSignal.timeout(4000)
+      })
+      const list = (await r.json()) as { title: string; port: number; owned: boolean }[]
+      return list.filter((s) => s.owned).map((s) => `${s.title} (port ${s.port})`)
+    } catch {
+      return []
+    }
+  }
+
   /** Ask the bridge to stop the services it started, then end it. */
   async shutdown(): Promise<void> {
     const { url, token } = this.info
@@ -87,7 +103,7 @@ export class Bridge {
         await fetch(`${url}/api/shutdown`, {
           method: 'POST',
           headers: { 'X-VizDOM-Token': token },
-          signal: AbortSignal.timeout(2000)
+          signal: AbortSignal.timeout(20000)
         })
       } catch {
         /* the bridge may already be gone */
