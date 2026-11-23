@@ -328,6 +328,49 @@ which is most of the run time. The second parse gave the same text on 14 of
 14 held-out screens; on another GPU the text differs, so the scores belong to
 the machine.
 
+### Icon model fine-tune (`train_icon.sh`)
+
+Not a benchmark run: it fine-tunes the stage-1 icon model (OmniParser
+`icon_detect`, YOLO11m, one class) on labelled screens of a new kind. Written
+for automotive HMI screens, where the stock model misses dimmed, inactive
+icons (2026-11-23: a fan icon scored 0.004 against the 0.05 cut-off). The
+model-free alternative is `detector.contour_pass`.
+
+The data is not in the repository. Build the pack where the labelled screens
+are and copy it to the rental; it holds screenshots and boxes only. **The
+screenshots are internal: check that you may put them on a rented machine
+first.** The same script trains on a local GPU without any upload
+(`--batch 2` on 6 GB).
+
+```bash
+# your machine
+python scripts/training/cv/finetune_icon_detect.py pack \
+    --source data/da3/benchmark --out data/da3/icon_pack
+tar -czf da3_icon_pack.tar.gz -C data/da3 icon_pack
+scp -P <port> da3_icon_pack.tar.gz root@<host>:/root/vizdom/
+
+# rental (no setup.sh / prefetch.sh needed; any card of 16 GB or more, 20 GB disk)
+tmux new -s train
+TRAIN_ONLY="prepare smoke" bash deploy/gpu/train_icon.sh
+#   want:  prepare: OK, smoke: OK and "best weights: ..."
+OUT_DIR=benchmarks/results/icon-finetune bash deploy/gpu/train_icon.sh
+```
+
+| Step (`TRAIN_ONLY` name) | What it does |
+|---|---|
+| `prepare` | two dimmed copies of every training screen (a random part of its icons keeps 30 to 60 % of its contrast) and the 167 synthetic training screens labelled by the stock model itself ("replay": keeps desktop behaviour) |
+| `smoke` | one epoch on a tenth of the data |
+| `train` | the fine-tune: 60 epochs at 1280 px, AdamW, `lr0` 0.0003 (`EPOCHS`, `BATCH`, `LR0`, `FREEZE`) |
+| `eval` | stock against fine-tuned at VizDOM's operating point (confidence 0.05): the test split, the test split with its icons dimmed, and three guard sets that were not trained on (synthetic test, real-world, held-out) |
+
+Keep the result only when recall on the test split and on the dimmed icons
+goes up **and** recall on the guard sets holds. The weights are in the
+tarball (`run/weights/best.pt`); use them with
+`detector.omniparser_icon_detect_path` (or `--icon-detect` on the detector
+service). They are AGPL-3.0 as the stock weights are, and trained on internal
+screens: they do not go into the public repository, and no benchmark figure
+may be quoted with them without saying so.
+
 ### Aria-UI on a 48 GB card: offload mode (experimental)
 
 The clean path for Aria-UI is an 80 GB card. The opt-in alternative is
