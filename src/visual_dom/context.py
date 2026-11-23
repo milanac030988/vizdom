@@ -81,6 +81,9 @@ class Session:
             detector_kwargs["box_threshold"] = det.omniparser_box_threshold
             if det.backend == "modular":
                 detector_kwargs["infer_roles"] = det.infer_roles
+                detector_kwargs["contour_pass"] = det.contour_pass
+                if det.icon_library:
+                    detector_kwargs["icon_library"] = det.icon_library
         elif det.backend == "grpc":
             # Detector runs as a remote gRPC service (ADR-017); point at it.
             detector_kwargs["target"] = det.grpc_target

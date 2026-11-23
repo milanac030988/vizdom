@@ -208,6 +208,14 @@ def main():
                     help="OmniParser YOLO confidence cutoff (default 0.05); lower "
                          "to ~0.03 to recover faint glyphs. Applies to omniparser "
                          "and to modular's omniparser region proposer.")
+    ap.add_argument("--icon-library", default=None, metavar="PATH",
+                    help="modular only: folder (or icons.json) of the project's "
+                         "own icons; a detected icon that matches one is named "
+                         "by lookup instead of by the captioner.")
+    ap.add_argument("--contour-pass", action="store_true",
+                    help="modular only: second, model-free look for icon-like "
+                         "shapes the icon model missed (a dimmed icon). Adds "
+                         "boxes only where nothing was detected.")
     args = ap.parse_args()
 
     # Only backends that accept use_gpu get it (UIED is CPU-only, no such arg).
@@ -217,7 +225,9 @@ def main():
         kwargs["use_gpu"] = use_gpu
     if args.backend != "modular":
         for flag, value, default in (("--regions", args.regions, "auto"),
-                                     ("--captioner", args.captioner, "none")):
+                                     ("--captioner", args.captioner, "none"),
+                                     ("--contour-pass", args.contour_pass, False),
+                                     ("--icon-library", args.icon_library, None)):
             if value != default:
                 log.warning("%s applies to --backend modular only; ignored", flag)
     # One meaning for --ocr: an engine name or "none"; omitted -> per-backend default.
@@ -251,11 +261,15 @@ def main():
         # unlike the omniparser backend where it builds the ensemble provider.
         kwargs["ocr_engine"] = ocr
         kwargs["captioner"] = args.captioner
+        kwargs["contour_pass"] = args.contour_pass
+        if args.icon_library:
+            kwargs["icon_library"] = args.icon_library
         if args.captioner == "florence" and "icon_caption_path" not in paths:
             raise SystemExit("--captioner florence needs the OmniParser caption "
                              "weights (--icon-caption or OMNIPARSER_ICON_CAPTION)")
-        log.info("modular stages: regions=%s, ocr=%s, captioner=%s",
-                 args.regions, ocr, args.captioner)
+        log.info("modular stages: regions=%s, ocr=%s, captioner=%s, contour pass=%s",
+                 args.regions, ocr, args.captioner,
+                 "on" if args.contour_pass else "off")
 
     serve(args.backend, args.port, kwargs)
 

@@ -131,6 +131,16 @@ export function SettingsView() {
                 <Input defaultValue={str('detector.grpc_target')} onBlur={(e) => set('detector.grpc_target', e.target.value)} className="w-full" />
               </Field>
             )}
+            {str('detector.backend') === 'modular' && (
+              <Field label="Contour pass" hint="A second look for dim, isolated icons the region model missed.">
+                <Switch checked={Boolean(get(c, 'detector.contour_pass'))} onChange={(v) => set('detector.contour_pass', v)} />
+              </Field>
+            )}
+            {str('detector.backend') === 'modular' && (
+              <Field label="Icon library" hint="Folder with icons.json and the project's own icon images; matching icons get their name from it.">
+                <Input defaultValue={str('detector.icon_library')} onBlur={(e) => set('detector.icon_library', e.target.value || null)} className="w-full" />
+              </Field>
+            )}
             <Field label="Use the GPU" hint="When one is available.">
               <Switch checked={Boolean(get(c, 'detector.use_gpu'))} onChange={(v) => set('detector.use_gpu', v)} />
             </Field>

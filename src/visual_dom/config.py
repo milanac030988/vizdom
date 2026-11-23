@@ -67,6 +67,15 @@ class DetectorConfig:
     # geometry and caption (modular backend). False keeps the raw text/icon
     # split - the ablation column "roles off" (benchmarks/README.md sec. 7).
     infer_roles: bool = True
+    # Modular backend: a model-free second look for icon-like shapes the icon
+    # model did not propose (a dimmed, inactive icon). Adds boxes only where
+    # nothing was detected. Off by default: the benchmark figures were
+    # measured without it.
+    contour_pass: bool = False
+    # Modular backend: folder (or icons.json) with the project's own icons.
+    # A detected icon that matches one is named by lookup, before the
+    # captioner (icon_library.py). None = no lookup.
+    icon_library: Optional[str] = None
 
 
 @dataclass
@@ -323,6 +332,8 @@ _FIELD_HELP: Dict[str, str] = {
     "detector.omniparser_text_ensemble": "feed VizDOM OCR into OmniParser to recover text (ADR-016)",
     "detector.omniparser_box_threshold": "YOLO icon confidence cutoff (default 0.05); lower to ~0.03 to recover faint glyphs like a minimize button",
     "detector.grpc_target": "host:port of a running detector gRPC service (used only when backend == 'grpc', ADR-017)",
+    "detector.icon_library": "modular backend: folder (or icons.json) of the project's own icons - reference images plus name, label and aliases; a detected icon that matches one confidently is named by lookup instead of by the caption model, anything else is left to the captioner; null = no lookup",
+    "detector.contour_pass": "modular backend: second, model-free look for isolated icon-like shapes the icon model missed (a dimmed icon under the confidence cutoff); adds boxes only where nothing was detected; false = the model's proposals only",
     "detector.infer_roles": "modular backend: recover button / input_field / checkbox / icon from interactivity, geometry and caption; false keeps the raw text/icon split (ablation column 'roles off')",
     "ocr": "Stage 1 - text detection engine",
     "ocr.engine": "easyocr | paddleocr | tesseract | none",

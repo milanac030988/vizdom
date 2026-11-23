@@ -283,6 +283,8 @@ function fromConfig(key: string, cfg: Record<string, Record<string, unknown>>): 
       gpu: Boolean(d.use_gpu),
       ocr: s(cfg.ocr?.engine),
       box_threshold: s(d.omniparser_box_threshold),
+      contour_pass: Boolean(d.contour_pass),
+      icon_library: s(d.icon_library),
       yolo_model: s(d.yolo_model_path),
       icon_detect: s(d.omniparser_icon_detect_path),
       icon_caption: s(d.omniparser_icon_caption_path)

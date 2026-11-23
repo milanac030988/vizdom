@@ -38,7 +38,8 @@ from visual_dom.core.ports.outbound.region_proposer_port import (
 )
 from visual_dom.logging_utils import get_logger, log_timing
 
-from .modular_fusion import DEFAULT_REGION_OVERLAP, fuse
+from .contour_pass import CONTOUR_CONFIDENCE, propose_contour_regions
+from .modular_fusion import DEFAULT_REGION_OVERLAP, FusedBox, fuse
 
 log = get_logger(__name__)
 
@@ -397,6 +398,8 @@ class ModularDetectorBackend(DetectorBackend):
         icon_caption_path: Optional[str] = None,
         box_threshold: Optional[float] = None,
         infer_roles: bool = True,
+        contour_pass: bool = False,
+        icon_library: Any = None,
         **_ignored: Any,
     ):
         """
@@ -408,6 +411,16 @@ class ModularDetectorBackend(DetectorBackend):
         recovering button / input_field / checkbox / icon from interactivity,
         geometry and caption: the state of the DOM before that recovery, kept
         as the "roles off" ablation column (benchmarks/README.md sec. 7).
+
+        ``contour_pass=True`` adds a model-free second look for icon-like
+        shapes that stage 1 did not propose (a dimmed icon the icon model
+        scores under its cut-off; contour_pass.py). It only adds boxes where
+        nothing was detected. Off by default.
+
+        ``icon_library`` (a folder or icons.json path, or a loaded
+        ``IconLibrary``) names the project's own icons by lookup before the
+        captioner sees them (icon_library.py). A region the library is not
+        sure about goes to the captioner as before. None = no lookup.
 
         The OmniParser path arguments and ``box_threshold`` are conveniences
         forwarded to the stages that use them (explicit ``region_kwargs`` /
@@ -443,9 +456,17 @@ class ModularDetectorBackend(DetectorBackend):
                                                  **captioner_kwargs))
         self._region_overlap = region_overlap
         self._infer_roles = infer_roles
-        log.info("Modular detector: regions=%s ocr=%s captioner=%s roles=%s",
+        self._contour_pass = bool(contour_pass)
+        if isinstance(icon_library, str):
+            from .icon_library import IconLibrary
+            icon_library = IconLibrary.load(icon_library) if icon_library.strip() else None
+        self._icon_library = icon_library
+        log.info("Modular detector: regions=%s ocr=%s captioner=%s roles=%s "
+                 "contour_pass=%s icon_library=%s",
                  self._proposer.name, getattr(self._text, "ocr_engine", "?"),
-                 self._captioner.name, "inferred" if infer_roles else "raw")
+                 self._captioner.name, "inferred" if infer_roles else "raw",
+                 "on" if self._contour_pass else "off",
+                 "%d icons" % len(self._icon_library) if self._icon_library else "none")
 
     def detect(self, image: np.ndarray) -> List[Detection]:
         height, width = image.shape[:2]
@@ -461,8 +482,40 @@ class ModularDetectorBackend(DetectorBackend):
             region_overlap=self._region_overlap,
         )
 
+        # Optional second look (contour_pass.py): icon-like shapes that no
+        # fused box and no OCR box covers. Added after fusion on purpose:
+        # fusion drops the larger of two nested regions, so a candidate fed
+        # into it could delete a real button around it.
+        if self._contour_pass:
+            covered = [f.bounds for f in fused] + [t.bounds for t in texts]
+            with log_timing(log, "modular: contour pass"):
+                extra = propose_contour_regions(image, covered)
+            fused.extend(
+                FusedBox(bounds=b, kind="icon", content=None, interactable=True,
+                         confidence=CONTOUR_CONFIDENCE,
+                         source="box_contour_content_none")
+                for b in extra)
+            if extra:
+                log.info("modular: contour pass added %d region(s)", len(extra))
+
         # Stage 3: caption only the icon boxes fusion left unlabelled.
         unlabelled = [f for f in fused if f.kind == "icon" and f.content is None]
+        # The project's own icons first, by lookup (icon_library.py): a
+        # confident match is a name the project gave, not a prediction of the
+        # caption model, and the region then skips the captioner.
+        library_named = set()
+        if unlabelled and self._icon_library:
+            with log_timing(log, f"modular: icon library x{len(unlabelled)}"):
+                matches = self._icon_library.match(
+                    image, [f.bounds for f in unlabelled])
+            for f, match in zip(unlabelled, matches):
+                if match is not None:
+                    f.content = match.label
+                    f.source = "box_library_content_" + match.name
+                    library_named.add(id(f))
+            log.info("modular: icon library named %d of %d region(s)",
+                     len(library_named), len(unlabelled))
+            unlabelled = [f for f in unlabelled if id(f) not in library_named]
         if unlabelled:
             with log_timing(log, f"modular: stage 3 (captions x{len(unlabelled)})"):
                 captions = self._captioner.caption(
@@ -490,6 +543,7 @@ class ModularDetectorBackend(DetectorBackend):
                 # captioner's output; a predicting captioner's is a guess
                 literal = (f.source == "box_yolo_content_ocr"
                            or (f.content is not None
+                               and id(f) not in library_named
                                and getattr(self._captioner, "literal", False)))
                 det_text = f.content if literal else None
                 det_label = None if literal else f.content

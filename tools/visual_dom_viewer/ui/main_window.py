@@ -1322,6 +1322,10 @@ class VisualDOMViewerWindow(TryLocatorMixin, QMainWindow):
             self._detector_combo.setCurrentText(detector["backend"])
         if detector.get("grpc_target"):
             self._grpc_target_edit.setText(detector["grpc_target"])
+        if "icon_library" in detector:
+            self._icon_library = detector["icon_library"] or None
+        if "contour_pass" in detector:
+            self._contour_pass = bool(detector["contour_pass"])
         if "omniparser_text_ensemble" in detector:
             self._text_ensemble_checkbox.setChecked(bool(detector["omniparser_text_ensemble"]))
         if ocr.get("engine"):
@@ -2120,6 +2124,10 @@ class VisualDOMViewerWindow(TryLocatorMixin, QMainWindow):
                     # whole detector - the backend decides, not a weights check.
                     captioner = self._captioner_combo.currentText()
                     detector_kwargs["captioner"] = captioner
+                    if getattr(self, "_contour_pass", False):
+                        detector_kwargs["contour_pass"] = True
+                    if getattr(self, "_icon_library", None):
+                        detector_kwargs["icon_library"] = self._icon_library
                     print(f"[Viewer] modular stages: regions=auto, "
                           f"ocr={ocr_engine}, captioner={captioner}")
                 elif detector_mode == "grpc":
