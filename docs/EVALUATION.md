@@ -5,7 +5,8 @@ This document describes the evaluation metrics and methodology used to assess th
 ## Table of Contents
 
 - [Overview](#overview)
-- [Benchmark Results](#benchmark-results)
+- [Full-lifecycle benchmark: the headline results](#full-lifecycle-benchmark-unified-cross-model)
+- [Benchmark Results](#benchmark-results) (per stage, synthetic set)
 - [Improvement: OmniParser Type Mapping](#improvement-omniparser-type-mapping-before--first-fix--now)
 - [Dataset construction & augmentation](#dataset-construction--augmentation)
 - [Quick Start](#quick-start)
@@ -25,6 +26,12 @@ The Visual DOM Evaluation Framework provides comprehensive metrics for evaluatin
 2. **OCR Accuracy** - How accurately text content is recognized
 3. **Hierarchy Structure** - How well the parent-child relationships are captured
 4. **Locator Quality** - How useful the generated locators are for automation
+
+The headline results are end to end: does a test step click the right element,
+and does a check fail when the element is absent. They are summarised under
+[Full-lifecycle benchmark](#full-lifecycle-benchmark-unified-cross-model); the
+method, every run and the analysis are on
+[Benchmark: method, results, analysis](benchmarks/index.md).
 
 ## Benchmark Results
 
@@ -378,10 +385,11 @@ Shows the count of each locator type:
 
 ## Full-lifecycle benchmark (unified, cross-model)
 
-> The complete methodology — mechanism, test plan, flow diagram, and metric
-> definitions — is in
-> [`benchmarks/README.md`](https://github.com/milanac030988/vizdom/blob/main/benchmarks/README.md);
-> this section is the summary.
+> The complete methodology — mechanism, test plan, flow diagram, metric
+> definitions, every run and the analysis — is on
+> [Benchmark: method, results, analysis](benchmarks/index.md); this section is
+> the summary. Charts: [GPU benchmark report](benchmarks/report_gpu_20261026_run3.html)
+> and [lifecycle summary](benchmarks/report_lifecycle_summary.html).
 
 Per-stage metrics grade a component; a test suite lives or dies on the **whole
 lifecycle** — locate → act → verify. The lifecycle benchmark
@@ -422,8 +430,10 @@ python -m visual_dom.evaluation.lifecycle.runner --executors elam-7b
 stage's Tesseract retry present; runs 3 and 6 (RTX 6000 Ada) measured them
 without it at 0.822 / 0.883 / 0.883 action-hit and 0.934 verify, the chain at
 0.934 / 0.964. Grounders from run 3 (`82f0b45`), reproduced bit for bit by run 6;
-Aria-UI from a 96 GB card. Full analysis, run history, the stage ablation and
-raw files: `benchmarks/README.md` §6–7 and `benchmarks/report_gpu_20261026_run3.html`.
+Aria-UI from a 96 GB card. Full analysis, run history and the stage ablation:
+[test plan](benchmarks/index.md#6-test-plan) and
+[ablation](benchmarks/index.md#7-ablation-what-each-stage-of-vizdoms-own-pipeline-adds);
+charts in the [GPU benchmark report](benchmarks/report_gpu_20261026_run3.html).
 
 | executor | action-hit | verify acc | false-pass (of 88) | cost per step |
 |---|---|---|---|---|
@@ -468,15 +478,32 @@ an absent element is plausible rather than obviously out of place.
 
 On clicks the 7B vision chain is level with both grounders; on absent elements
 the grounders accept most of the plausible negatives, while no VizDOM chain
-passes any on this set. Per-application results, statistics and the run details are in
-[`benchmarks/README.md`](https://github.com/milanac030988/vizdom/blob/HEAD/benchmarks/README.md).
+passes any on this set. Per-application results, statistics and the run details are on
+[Real-world set](benchmarks/realworld.md); how its ground truth and negatives
+were checked is in the [real-world set audit](benchmarks/realworld-audit.md).
 
 **Held-out applications.** `benchmarks/lifecycle-realworld-heldout-v1` has 14
 states of 5 applications that played no part in tuning. `text=` clicks on target
 0.765 with 0 / 28 false passes; `desc=` lexical → small LM clicks 0.815 with
 1 / 28 false pass. The click and verdict figures carry over to unseen
 applications; the zero false passes do not quite
-([held-out README](https://github.com/milanac030988/vizdom/blob/HEAD/benchmarks/lifecycle-realworld-heldout-v1/README.md)).
+([Held-out applications](benchmarks/heldout.md)).
+
+**Near-miss negatives.** `benchmarks/lifecycle-realworld-nearmiss-v1` has 168
+negatives on 35 of the real-world screens, each a caption that shares words with
+one that is shown (`Save` where only `Save As` is). These are the hardest
+negatives, and VizDOM's substring `text=` and keyword `desc=` rules pass 39 and
+45 of them. The grounders asked to point pass 137 to 168; UI-TARS asked a
+yes/no question passes 2, a stronger verifier than VizDOM on this set. Exact-match
+rules close the gap offline (1 and 0 of 168) but are not in the product yet
+([Near-miss negatives](benchmarks/nearmiss.md)).
+
+**Another screen parser.** ScreenVLM (316 M parameters, trained on web pages)
+parses a whole screen as VizDOM does, so it runs under the same contract: one
+parse per state, the same element finder. It clicks 0.643 on the synthetic set
+and 0.042 on the real applications, where it often writes a web page that is not
+there; a result about transfer from web pages, not about the model on its own
+ground ([details](benchmarks/index.md#another-screen-parser-screenvlm-gpu-run-10-2026-11-15)).
 
 ## Interpreting Results
 

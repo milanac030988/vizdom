@@ -32,6 +32,11 @@ plugins:
 # (corporate proxy blocks plantuml.com) and no Graphviz (diagrams use the built-in
 # Smetana layout via `!pragma layout smetana`). Only Java is required.
 # base_dir lets `!include diagrams/*.puml` resolve from the docs/ folder.
+# Publishes the benchmark write-ups in benchmarks/ (README, set READMEs and
+# audits, HTML reports) as pages under Evaluation, without a copy in docs/.
+hooks:
+  - tools/docs_hooks/benchmark_pages.py
+
 markdown_extensions:
   - admonition
   - attr_list   # { #c-rf } anchors of the system overview, { .btn } links
@@ -58,7 +63,16 @@ nav:
   - CV Pipeline: PIPELINE.md
   - Algorithms & Improvements: IMPROVEMENTS.md
   - OmniParser Setup: omniparser-setup.md
-  - Evaluation: EVALUATION.md
+  - Evaluation:
+      # benchmarks/* pages are built from the files under benchmarks/ by
+      # tools/docs_hooks/benchmark_pages.py
+      - Metrics & summary: EVALUATION.md
+      - "Benchmark: method, results, analysis": benchmarks/index.md
+      - Real-world set: benchmarks/realworld.md
+      - Held-out applications: benchmarks/heldout.md
+      - Near-miss negatives: benchmarks/nearmiss.md
+      - Synthetic set audit: benchmarks/synthetic-audit.md
+      - Real-world set audit: benchmarks/realworld-audit.md
   - Research:
       - VLM Study: RESEARCH.md
       - Related Work: related_work.md
