@@ -81,7 +81,8 @@ def test_pack_keeps_interactable_boxes_only_and_no_provenance(tmp_path):
     assert some.read_text(encoding="utf-8").split("\n") == [
         "0 0.150000 0.300000 0.100000 0.200000", "0 0.500000 0.325000 0.500000 0.250000"]
     assert (out / "images" / "train" / (some.stem + ".png")).is_file()
-    assert "path: ." in (out / "data.yaml").read_text(encoding="utf-8")
+    yaml = (out / "data.yaml").read_text(encoding="utf-8")
+    assert "train: images/train" in yaml and "path:" not in yaml, "root = the yaml folder"
     everything = "".join(p.read_text(encoding="utf-8", errors="ignore")
                          for p in out.rglob("*") if p.suffix in (".txt", ".json", ".yaml"))
     assert "example.com" not in everything and "annotator" not in everything

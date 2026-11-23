@@ -144,10 +144,12 @@ def split_of(name: str, val: float, test: float, seed: int = 0) -> str:
 
 
 def write_data_yaml(out: Path) -> None:
-    # A relative 'path: .' is resolved by ultralytics against the yaml's own
-    # folder, so the dataset can be moved between machines as it is.
+    # No 'path' key on purpose: ultralytics then takes the yaml's own folder as
+    # the root, so the dataset can be moved between machines as it is. A
+    # relative 'path: .' is NOT that: it resolves against the ultralytics
+    # datasets directory, and training stops with "images not found".
     (out / "data.yaml").write_text(
-        "path: .\ntrain: images/train\nval: images/val\ntest: images/test\n"
+        "train: images/train\nval: images/val\ntest: images/test\n"
         "nc: 1\nnames:\n  0: icon\n", encoding="utf-8")
 
 
@@ -485,6 +487,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             print("replay screens added: %d" % made)
         write_data_yaml(Path(args.data))
     elif args.command == "train":
+        write_data_yaml(Path(args.data))      # a pack made by an older version
         best = train(Path(args.data) / "data.yaml", args.weights, Path(args.out), args.epochs,
                      args.imgsz, args.batch, args.lr0, args.freeze, args.device,
                      args.fraction, args.workers)
