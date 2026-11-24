@@ -358,14 +358,21 @@ OUT_DIR=benchmarks/results/icon-finetune bash deploy/gpu/train_icon.sh
 
 | Step (`TRAIN_ONLY` name) | What it does |
 |---|---|
-| `prepare` | two dimmed copies of every training screen (a random part of its icons keeps 30 to 60 % of its contrast) and the 167 synthetic training screens labelled by the stock model itself ("replay": keeps desktop behaviour) |
+| `prepare` | two dimmed copies of every training screen (a random part of its icons keeps 30 to 60 % of its contrast) and "replay" screens labelled by the stock model itself at its operating point 0.05, which keep desktop behaviour: the 46 real-world screens four times each and the 167 synthetic training screens (`REPLAY_IMAGES="DIR:N DIR"`, `REPLAY_CONF`) |
 | `smoke` | one epoch on a tenth of the data |
-| `train` | the fine-tune: 60 epochs at 1280 px, AdamW, `lr0` 0.0003 (`EPOCHS`, `BATCH`, `LR0`, `FREEZE`) |
-| `eval` | stock against fine-tuned at VizDOM's operating point (confidence 0.05): the test split, the test split with its icons dimmed, and three guard sets that were not trained on (synthetic test, real-world, held-out) |
+| `train` | one fine-tune per variant, 60 epochs at 1280 px, AdamW (`EPOCHS`, `BATCH`); `VARIANTS="name:freeze:lr0 ..."`, by default `frozen:10:0.0003` (backbone fixed), `full:0:0.0003` and `gentle:0:0.0001` |
+| `eval` | stock against every variant at VizDOM's operating point (confidence 0.05): the test split, the test split with its icons dimmed, and three guard sets (synthetic test, real-world, held-out); a guard set that is also replayed is marked "(in replay)" and no longer judges, so with the defaults the held-out set is the judge |
 
-Keep the result only when recall on the test split and on the dimmed icons
+Run 1 (2026-11-24: one variant, replay of the synthetic screens only, labelled
+at 0.3) raised recall on the HMI test split from 0.45 to 0.92 and on its dimmed
+icons from 0.30 to 0.93, and lowered it on the real-world desktop set from
+0.575 to 0.312: a model for that HMI only. The defaults above are the answer
+to that; the stock model has a fifth of its desktop recall between confidence
+0.05 and 0.3, and labels at 0.3 taught the model to drop it.
+
+Keep a variant only when recall on the test split and on the dimmed icons
 goes up **and** recall on the guard sets holds. The weights are in the
-tarball (`run/weights/best.pt`); use them with
+tarball (`<variant>/weights/best.pt`); use them with
 `detector.omniparser_icon_detect_path` (or `--icon-detect` on the detector
 service). They are AGPL-3.0 as the stock weights are, and trained on internal
 screens: they do not go into the public repository, and no benchmark figure

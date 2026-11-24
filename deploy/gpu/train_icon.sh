@@ -29,11 +29,19 @@
 # instance when the tarball is downloaded.
 #
 # Steps (TRAIN_ONLY names): prepare smoke train eval
-#   prepare  dimmed copies of the training screens + replay screens (synthetic
-#            train, labelled by the stock model) so desktop screens are kept
+#   prepare  dimmed copies of the training screens + replay screens (desktop
+#            screens labelled by the stock model) so desktop screens are kept
 #   smoke    one epoch on a tenth of the data: does training start at all
-#   train    the fine-tune (EPOCHS, BATCH, LR0, FREEZE)
-#   eval     stock against fine-tuned: test split, dimmed icons, guard sets
+#   train    one fine-tune per entry of VARIANTS (name:freeze:lr0)
+#   eval     stock against every variant: test split, dimmed icons, guard sets
+#
+# Run 1 (2026-11-24, one variant, replay = synthetic train labelled at 0.3):
+# HMI recall 0.45 -> 0.92, dimmed 0.30 -> 0.93, but real-world desktop
+# 0.575 -> 0.312. Hence the defaults below: real desktop screens in the replay
+# (four copies each, they are few), replay labels at the operating point 0.05,
+# and three variants side by side: backbone frozen, as run 1, and a third of
+# the learning rate. The real-world set is then trained on, so its row is
+# marked "(in replay)"; the held-out set is the one that still judges.
 #
 # Needs no setup.sh / prefetch.sh: it builds .venv-train (torch + ultralytics)
 # and downloads the 40 MB stock weights. Any card of 16 GB or more; 20 GB disk.
@@ -49,10 +57,11 @@ PACK="${DATA_PACK:-da3_icon_pack.tar.gz}"
 DATA="${DATA_DIR:-data/da3/icon_pack}"          # under data/da3: ignored by git
 EPOCHS="${EPOCHS:-60}"
 BATCH="${BATCH:-8}"
-LR0="${LR0:-0.0003}"
-FREEZE="${FREEZE:-0}"
+VARIANTS="${VARIANTS:-frozen:10:0.0003 full:0:0.0003 gentle:0:0.0001}"   # name:freeze:lr0, one training each
 DIM_COPIES="${DIM_COPIES:-2}"
-REPLAY="${REPLAY_IMAGES-data/synthetic/train/images}"   # REPLAY_IMAGES= (empty) turns it off
+# folders of screens to replay, DIR or DIR:N (N copies); REPLAY_IMAGES= (empty) turns it off
+REPLAY="${REPLAY_IMAGES-data/realworld/images:4 data/synthetic/train/images}"
+REPLAY_CONF="${REPLAY_CONF:-0.05}"
 ULTRALYTICS_VERSION="${ULTRALYTICS_VERSION:-8.4.104}"   # the version on the laptop that will load the result
 STOCK="models/omniparser/icon_detect/model.pt"
 STOCK_SHA="dab3d4351ad00b035db829909a4db98354d5a90f6990e4ac00222a9a95d4bf57"
@@ -65,7 +74,8 @@ echo "icon fine-tune -> $OUT   (steps: ${STEPS:-all})"
 nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv > "$OUT/gpu.txt" || {
     echo "FATAL: no NVIDIA driver visible"; exit 1; }
 { echo "commit: $(git rev-parse --short HEAD 2>/dev/null)"; date -u
-  echo "epochs $EPOCHS, batch $BATCH, lr0 $LR0, freeze $FREEZE, dim copies $DIM_COPIES, replay ${REPLAY:-off}"
+  echo "epochs $EPOCHS, batch $BATCH, variants (name:freeze:lr0) $VARIANTS"
+  echo "dim copies $DIM_COPIES, replay ${REPLAY:-off} (labels at $REPLAY_CONF)"
 } >> "$OUT/gpu.txt"
 
 # --- data: the pack you copied here ------------------------------------------
@@ -146,42 +156,59 @@ step() {   # step <name> <command...>
 # --- prepare: dimmed copies + replay (safe to repeat: existing files are kept)
 if wanted prepare; then
     REPLAY_ARGS=()
-    if [ -n "$REPLAY" ] && [ -d "$REPLAY" ]; then
-        REPLAY_ARGS=(--replay-images "$REPLAY")
-    else
-        echo "replay: off (${REPLAY:-no folder given})"
-    fi
+    for source in $REPLAY; do
+        if [ -d "${source%:*}" ] || [ -d "$source" ]; then
+            REPLAY_ARGS+=("$source")
+        else
+            echo "replay: $source not found - left out"
+        fi
+    done
+    [ "${#REPLAY_ARGS[@]}" -gt 0 ] || echo "replay: off"
     step prepare "$PY" "$TOOL" prepare --data "$DATA" --dim-copies "$DIM_COPIES" \
-        --weights "$STOCK" "${REPLAY_ARGS[@]+"${REPLAY_ARGS[@]}"}"
+        --weights "$STOCK" --replay-conf "$REPLAY_CONF" \
+        --replay-images "${REPLAY_ARGS[@]+"${REPLAY_ARGS[@]}"}"
     echo "  train now: $(find "$DATA/images/train" -name '*.png' | wc -l) screens"
 fi
 
 # --- smoke: one epoch on a tenth, before the real run -------------------------
 if wanted smoke; then
     step smoke "$PY" "$TOOL" train --data "$DATA" --weights "$STOCK" --out "$OUT/smoke_run" \
-        --epochs 1 --fraction 0.1 --batch "$BATCH"
+        --epochs 1 --fraction 0.1 --batch "$BATCH" --freeze 10
     echo "want: 'smoke: OK' and a line 'best weights: ...'. CUDA out of memory -> BATCH=4"
 fi
 
-# --- train ---------------------------------------------------------------------
+# --- train: one run per variant -------------------------------------------------
 if wanted train; then
-    step train "$PY" "$TOOL" train --data "$DATA" --weights "$STOCK" --out "$OUT/run" \
-        --epochs "$EPOCHS" --batch "$BATCH" --lr0 "$LR0" --freeze "$FREEZE"
+    for variant in $VARIANTS; do
+        IFS=: read -r v_name v_freeze v_lr0 <<< "$variant"
+        step "train-$v_name" "$PY" "$TOOL" train --data "$DATA" --weights "$STOCK" \
+            --out "$OUT/$v_name" --epochs "$EPOCHS" --batch "$BATCH" \
+            --lr0 "${v_lr0:-0.0003}" --freeze "${v_freeze:-0}"
+    done
 fi
 
-# --- eval: stock against fine-tuned --------------------------------------------
-BEST="$OUT/run/weights/best.pt"
+# --- eval: stock against every variant that finished -----------------------------
 if wanted eval; then
-    if [ -f "$BEST" ]; then
+    MODELS=("stock=$STOCK")
+    for variant in $VARIANTS; do
+        v_name="${variant%%:*}"
+        if [ -f "$OUT/$v_name/weights/best.pt" ]; then
+            MODELS+=("$v_name=$OUT/$v_name/weights/best.pt")
+        else
+            echo "eval: no weights for '$v_name' (its training did not finish)"
+        fi
+    done
+    if [ "${#MODELS[@]}" -gt 1 ]; then
+        seen() { [[ " $REPLAY " == *" $1"[:\ ]* ]] && echo " (in replay)"; }
         GUARDS=()
         [ -d data/synthetic/test/images ]      && GUARDS+=("synthetic-test=data/synthetic/test")
-        [ -d data/realworld/images ]           && GUARDS+=("real-world=data/realworld")
-        [ -d data/realworld-heldout/images ]   && GUARDS+=("held-out=data/realworld-heldout")
-        STEP_TAIL=40 step eval "$PY" "$TOOL" eval --data "$DATA" \
-            --weights "stock=$STOCK" "fine-tuned=$BEST" \
+        [ -d data/realworld/images ]           && GUARDS+=("real-world$(seen data/realworld/images)=data/realworld")
+        [ -d data/realworld-heldout/images ]   && GUARDS+=("held-out$(seen data/realworld-heldout/images)=data/realworld-heldout")
+        STEP_TAIL=60 step eval "$PY" "$TOOL" eval --data "$DATA" \
+            --weights "${MODELS[@]}" \
             --guard "${GUARDS[@]+"${GUARDS[@]}"}" --out "$OUT/eval"
     else
-        echo "eval: SKIPPED - no $BEST (the train step did not finish)"
+        echo "eval: SKIPPED - no variant produced weights"
         FAILED_STEPS="$FAILED_STEPS eval"
     fi
 fi
@@ -193,9 +220,10 @@ fi
     if [ -f "$DATA/pack_info.json" ]; then echo '```'; cat "$DATA/pack_info.json"; echo; echo '```'; echo; fi
     [ -f "$OUT/eval.md" ] && cat "$OUT/eval.md"
     echo
-    echo "How to read it: the fine-tune is worth keeping when recall on the test split and"
+    echo "How to read it: a variant is worth keeping when recall on the test split and"
     echo "on the dimmed icons goes up AND recall on the guard sets does not go down by more"
-    echo "than a point or two with a similar number of boxes per screen."
+    echo "than a point or two with a similar number of boxes per screen. A guard set marked"
+    echo "'(in replay)' was trained on: it shows what was kept, not what generalises."
 } > "$OUT/summary.md"
 echo; cat "$OUT/summary.md"
 
@@ -208,6 +236,6 @@ TARBALL="$OUT.tar.gz"
 if tar -czf "$TARBALL" --exclude='smoke_run' --exclude='last.pt' --exclude='epoch*.pt' \
         -C "$(dirname "$OUT")" "$(basename "$OUT")" 2>/dev/null; then
     echo; echo "done: $TARBALL ($(du -h "$TARBALL" | cut -f1))"
-    echo "  the fine-tuned weights are inside: $(basename "$OUT")/run/weights/best.pt"
+    echo "  the fine-tuned weights are inside: $(basename "$OUT")/<variant>/weights/best.pt"
     echo "  download it, then destroy the instance (the screens are on its disk)"
 fi

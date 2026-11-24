@@ -258,35 +258,66 @@ def predict_boxes(model, image, conf: float = BOX_THRESHOLD) -> Tuple[List[List[
     return result.boxes.xyxy.cpu().numpy().tolist(), result.boxes.conf.cpu().numpy().tolist()
 
 
-def add_replay(dataset: Path, images: Path, weights: str, conf: float = 0.3,
-               limit: int = 0) -> int:
+def replay_source(spec: str) -> Tuple[Path, int]:
+    """'DIR' or 'DIR:N' (N copies of every screen) -> (folder, copies)."""
+    folder, sep, count = str(spec).rpartition(":")
+    if sep and count.isdigit() and folder and len(folder) > 1:
+        return Path(folder), max(1, int(count))
+    return Path(spec), 1
+
+
+def replay_set_name(folder: Path) -> str:
+    """data/realworld/images -> 'realworld'; data/synthetic/train/images -> 'synthetic-train'."""
+    folder = Path(folder)
+    parts = [p for p in folder.parts if p not in ("images", "..", folder.anchor)]
+    if "data" in parts:                       # what follows the last 'data' names the set
+        parts = parts[len(parts) - parts[::-1].index("data"):]
+    return "-".join(parts[-2:]) or "set"
+
+
+def add_replay(dataset: Path, images: Path, weights: str, conf: float = BOX_THRESHOLD,
+               limit: int = 0, copies: int = 1, model=None) -> int:
     """
-    Add screens of another kind, labelled by the stock model itself (its
-    confident boxes). They teach nothing new; they keep the fine-tuned model
-    from drifting on the screens the stock model already handles.
+    Add screens of another kind, labelled by the stock model itself. They
+    teach nothing new; they keep the fine-tuned model from drifting on the
+    screens the stock model already handles.
+
+    ``conf`` is the operating point on purpose (0.05). Run 1 (2026-11-24)
+    labelled at 0.3: every box the stock model gives between 0.05 and 0.3 was
+    then taught as background, and on desktop screens that band holds a fifth
+    of its recall (real-world 0.575 at 0.05, 0.449 at 0.3).
+
+    ``copies`` repeats each screen: a small set of real screens beside
+    several hundred HMI screens would otherwise hardly count.
     """
     import cv2
-    from ultralytics import YOLO
 
     dataset = Path(dataset)
-    model = YOLO(weights)
+    if model is None:
+        from ultralytics import YOLO
+        model = YOLO(weights)
+    set_name = replay_set_name(images)
     files = sorted(Path(images).glob("*.png"))
     if limit:
         files = files[:limit]
     made = 0
     for image_file in files:
-        target = dataset / "images" / "train" / ("replay__%s.png" % image_file.stem)
-        if target.is_file():
+        stems = ["replay__%s__%s" % (set_name, image_file.stem)]
+        stems += ["%s__r%d" % (stems[0], n) for n in range(2, copies + 1)]
+        missing = [s for s in stems
+                   if not (dataset / "images" / "train" / (s + ".png")).is_file()]
+        if not missing:
             continue
         image = cv2.imread(str(image_file))
         if image is None:
             continue
         height, width = image.shape[:2]
         boxes, _scores = predict_boxes(model, image, conf=conf)
-        shutil.copyfile(str(image_file), str(target))
-        (dataset / "labels" / "train" / (target.stem + ".txt")).write_text(
-            "\n".join(to_yolo_lines(boxes, width, height)), encoding="utf-8")
-        made += 1
+        lines = "\n".join(to_yolo_lines(boxes, width, height))
+        for stem in missing:
+            shutil.copyfile(str(image_file), str(dataset / "images" / "train" / (stem + ".png")))
+            (dataset / "labels" / "train" / (stem + ".txt")).write_text(lines, encoding="utf-8")
+            made += 1
     return made
 
 
@@ -439,10 +470,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p = sub.add_parser("prepare", help="add dimmed copies and replay screens to train")
     p.add_argument("--data", required=True, help="the packed dataset folder")
     p.add_argument("--dim-copies", type=int, default=2)
-    p.add_argument("--replay-images", default=None,
-                   help="screens of another kind, labelled by the stock model")
+    p.add_argument("--replay-images", nargs="*", default=[], metavar="DIR[:N]",
+                   help="folders of screens of another kind, labelled by the stock model; "
+                        ":N adds every screen N times")
     p.add_argument("--replay-limit", type=int, default=0)
-    p.add_argument("--replay-conf", type=float, default=0.3)
+    p.add_argument("--replay-conf", type=float, default=BOX_THRESHOLD,
+                   help="boxes of the stock model kept as labels (the operating point)")
     p.add_argument("--weights", default="models/omniparser/icon_detect/model.pt")
     p.add_argument("--seed", type=int, default=0)
 
@@ -481,10 +514,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     elif args.command == "prepare":
         made = add_dim_copies(Path(args.data), args.dim_copies, args.seed) if args.dim_copies else 0
         print("dimmed copies added: %d" % made)
-        if args.replay_images:
-            made = add_replay(Path(args.data), Path(args.replay_images), args.weights,
-                              args.replay_conf, args.replay_limit)
-            print("replay screens added: %d" % made)
+        for spec in args.replay_images:
+            folder, copies = replay_source(spec)
+            if not folder.is_dir():
+                raise SystemExit("replay folder not found: %s" % folder)
+            made = add_replay(Path(args.data), folder, args.weights,
+                              args.replay_conf, args.replay_limit, copies)
+            print("replay screens added from %s (x%d, labels at %.2f): %d" % (
+                folder, copies, args.replay_conf, made))
         write_data_yaml(Path(args.data))
     elif args.command == "train":
         write_data_yaml(Path(args.data))      # a pack made by an older version

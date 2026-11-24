@@ -136,3 +136,61 @@ def test_report_table_and_named_arguments():
     assert ft._named(["a=x/y.pt", "b=C:/z=1.pt"], "--weights") == {"a": "x/y.pt", "b": "C:/z=1.pt"}
     with pytest.raises(SystemExit):
         ft._named(["nopath"], "--weights")
+
+
+class _StockModel:
+    """Stands in for the stock model: one box per screen."""
+
+    class _Array:
+        def __init__(self, rows):
+            self._rows = rows
+
+        def cpu(self):
+            return self
+
+        def numpy(self):
+            return np.array(self._rows)
+
+    def __init__(self):
+        self.asked_conf = []
+
+    def predict(self, image, conf, iou, verbose):
+        self.asked_conf.append(conf)
+        result = type("R", (), {})()
+        result.boxes = type("B", (), {})()
+        result.boxes.xyxy = self._Array([[40.0, 40.0, 80.0, 80.0]])
+        result.boxes.conf = self._Array([0.07])
+        return [result]
+
+
+def test_replay_screens_are_labelled_at_the_operating_point_and_can_be_repeated(tmp_path):
+    source, out = tmp_path / "set", tmp_path / "pack"
+    _layout(source, ["app__s%d" % i for i in range(3)])
+    ft.pack(source, out, val=0.0, test=0.0)
+    desktop = tmp_path / "data" / "realworld" / "images"
+    desktop.mkdir(parents=True)
+    for name in ("editor__main", "editor__find"):
+        cv2.imwrite(str(desktop / (name + ".png")), np.full((H, W, 3), 240, dtype=np.uint8))
+    model = _StockModel()
+    assert ft.add_replay(out, desktop, "unused.pt", copies=3, model=model) == 6
+    assert model.asked_conf == [ft.BOX_THRESHOLD] * 2, "one prediction per screen, at 0.05"
+    assert ft.add_replay(out, desktop, "unused.pt", copies=3, model=model) == 0, "added once"
+    train = out / "images" / "train"
+    names = sorted(f.stem for f in train.glob("replay__*.png"))
+    assert names[:3] == ["replay__realworld__editor__find", "replay__realworld__editor__find__r2",
+                         "replay__realworld__editor__find__r3"]
+    label = (out / "labels" / "train" / "replay__realworld__editor__main__r2.txt").read_text(
+        encoding="utf-8")
+    assert ft.from_yolo_file(out / "labels" / "train" / "replay__realworld__editor__main__r2.txt",
+                             W, H)[0] == pytest.approx([40, 40, 80, 80], abs=0.5) and label
+    assert ft.add_dim_copies(out, copies=1) == 3, "replay screens get no dimmed copies"
+
+
+def test_a_replay_source_is_a_folder_with_an_optional_repeat_count():
+    assert ft.replay_source("data/realworld/images:4") == (Path("data/realworld/images"), 4)
+    assert ft.replay_source("data/realworld/images") == (Path("data/realworld/images"), 1)
+    assert ft.replay_source("D:/sets/desktop") == (Path("D:/sets/desktop"), 1)
+    assert ft.replay_source("D:/sets/desktop:2") == (Path("D:/sets/desktop"), 2)
+    assert ft.replay_set_name(Path("data/realworld/images")) == "realworld"
+    assert ft.replay_set_name(Path("data/synthetic/train/images")) == "synthetic-train"
+    assert ft.replay_set_name(Path("D:/sets/desktop")) == "sets-desktop"
