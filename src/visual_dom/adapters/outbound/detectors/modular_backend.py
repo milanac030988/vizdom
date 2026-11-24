@@ -400,6 +400,7 @@ class ModularDetectorBackend(DetectorBackend):
         infer_roles: bool = True,
         contour_pass: bool = False,
         icon_library: Any = None,
+        icon_library_search: bool = True,
         **_ignored: Any,
     ):
         """
@@ -421,6 +422,9 @@ class ModularDetectorBackend(DetectorBackend):
         ``IconLibrary``) names the project's own icons by lookup before the
         captioner sees them (icon_library.py). A region the library is not
         sure about goes to the captioner as before. None = no lookup.
+        With a library, the screen is also searched for its icons that have
+        no box at all (``IconLibrary.search``); ``icon_library_search=False``
+        keeps the lookup to the boxes the earlier stages produced.
 
         The OmniParser path arguments and ``box_threshold`` are conveniences
         forwarded to the stages that use them (explicit ``region_kwargs`` /
@@ -461,6 +465,7 @@ class ModularDetectorBackend(DetectorBackend):
             from .icon_library import IconLibrary
             icon_library = IconLibrary.load(icon_library) if icon_library.strip() else None
         self._icon_library = icon_library
+        self._icon_library_search = bool(icon_library_search)
         log.info("Modular detector: regions=%s ocr=%s captioner=%s roles=%s "
                  "contour_pass=%s icon_library=%s",
                  self._proposer.name, getattr(self._text, "ocr_engine", "?"),
@@ -516,6 +521,21 @@ class ModularDetectorBackend(DetectorBackend):
             log.info("modular: icon library named %d of %d region(s)",
                      len(library_named), len(unlabelled))
             unlabelled = [f for f in unlabelled if id(f) not in library_named]
+        # ... and the library icons that have no box at all (IconLibrary.search).
+        # Added after fusion, like the contour pass, and already named. The
+        # confidence is the lookup's own score.
+        if self._icon_library and self._icon_library_search:
+            marked = [f.bounds for f in fused] + [t.bounds for t in texts]
+            with log_timing(log, "modular: icon library search"):
+                found = self._icon_library.search(image, marked)
+            for bounds, match in found:
+                box = FusedBox(bounds=bounds, kind="icon", content=match.label,
+                               interactable=True, confidence=round(match.score, 4),
+                               source="box_librarysearch_content_" + match.name)
+                fused.append(box)
+                library_named.add(id(box))
+            if found:
+                log.info("modular: icon library search added %d region(s)", len(found))
         if unlabelled:
             with log_timing(log, f"modular: stage 3 (captions x{len(unlabelled)})"):
                 captions = self._captioner.caption(

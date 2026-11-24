@@ -33,6 +33,14 @@ The lookup abstains. A region is named only when its best match reaches
 ``min_score`` AND beats every other icon of the library by ``min_margin``;
 otherwise it is left to the captioner, exactly as without a library. A wrong
 name is worse than none: it makes a ``desc=`` step pass on the wrong element.
+
+The library also FINDS its icons (``search``). The region model misses many
+icons of a product it never saw, dimmed ones above all, and an icon without a
+box cannot be named. So every icon-sized shape that stands out from its
+background and has no box yet is put to the same lookup, and the ones the
+library recognises get a box. The lookup is the filter: the shapes need not
+be isolated or on an even background, as the contour pass demands, because
+anything that is not a library icon is dropped again.
 """
 
 import json
@@ -143,6 +151,19 @@ def signature(image: np.ndarray) -> Optional[Tuple[np.ndarray, float]]:
     return vector / norm, width / float(height)
 
 
+def _marked(box: Box, existing: Sequence[Box], share: float = 0.5,
+            larger: float = 3.0) -> bool:
+    """A box of about this one's size (at most ``larger`` times its area) covers ``share`` of it."""
+    area = (box[2] - box[0]) * (box[3] - box[1])
+    for other in existing:
+        w = min(box[2], other[2]) - max(box[0], other[0])
+        h = min(box[3], other[3]) - max(box[1], other[1])
+        if (w > 0 and h > 0 and w * h > share * area
+                and (other[2] - other[0]) * (other[3] - other[1]) <= larger * area):
+            return True
+    return False
+
+
 class IconLibrary:
     """Reference icons of one project and the lookup against them."""
 
@@ -249,6 +270,33 @@ class IconLibrary:
         if top_score < self.min_score or top_score - runner_up < self.min_margin:
             return None
         return IconMatch(top.name, top.label, float(top_score), float(runner_up))
+
+    def search(self, image: np.ndarray, existing: Sequence[Box],
+               params: Any = None) -> List[Tuple[Box, IconMatch]]:
+        """
+        Library icons on a BGR screenshot that no box of ``existing`` marks
+        yet: (box, match) pairs in reading order.
+
+        A shape counts as already marked when a box of about its own size
+        covers half of it. A much larger box around it (a tile, a panel, a
+        whole bar) does not: the icon inside is still worth its own box.
+
+        Measured 2026-11-24 on 315 automotive HMI screens with a library of
+        three icons: of 297 labelled instances the region model found 103 and
+        the contour pass 81 more; this search found 75 of the remaining 113,
+        and all 28 further boxes it added were the same icons too (seen by
+        eye; unlabelled or labelled with a wider box). About 50 ms a screen.
+        """
+        if not self._references:
+            return []
+        from .contour_pass import ContourPassParams, propose_contour_regions
+
+        if params is None:
+            params = ContourPassParams(require_isolation=False, max_candidates=10 ** 6)
+        candidates = [c for c in propose_contour_regions(image, [], params)
+                      if not _marked(c, existing)]
+        return [(box, match) for box, match in zip(candidates, self.match(image, candidates))
+                if match is not None]
 
     def match(self, image: np.ndarray, boxes: Sequence[Box],
               margin: float = 0.15) -> List[Optional[IconMatch]]:

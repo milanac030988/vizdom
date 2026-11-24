@@ -223,7 +223,7 @@ described here".
 | `grpc_target` | str | `"localhost:50051"` | host:port of a running detector gRPC service (used only when backend == 'grpc', ADR-017) |
 | `infer_roles` | bool | `true` | modular backend: recover button / input_field / checkbox / icon from interactivity, geometry and caption; false keeps the raw text/icon split (ablation column 'roles off') |
 | `contour_pass` | bool | `false` | modular backend: second, model-free look for isolated icon-like shapes the icon model missed (a dimmed icon under the confidence cutoff); adds boxes only where nothing was detected; false = the model's proposals only |
-| `icon_library` | str | `null` | modular backend: folder (or icons.json) of the project's own icons - reference images plus name, label and aliases; a detected icon that matches one confidently is named by lookup instead of by the caption model, anything else is left to the captioner; null = no lookup |
+| `icon_library` | str | `null` | modular backend: folder (or icons.json) of the project's own icons - reference images plus name, label and aliases; a detected icon that matches one confidently is named by lookup instead of by the caption model, anything else is left to the captioner; the screen is also searched for library icons that got no box at all (a dimmed icon the region model missed), and those are added already named; null = no lookup |
 
 ### `ocr` — Stage 1 - text detection engine
 

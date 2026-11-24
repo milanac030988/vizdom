@@ -56,6 +56,9 @@ class ContourPassParams:
     ring_spread_ratio: float = 0.3  # ... or this share of the shape's own contrast, if larger
     covered: float = 0.2           # overlap with an existing box that rules a candidate out
     max_candidates: int = 25       # more than this is a picture or a texture, not icons
+    # False skips test 3 (the ring). Only for a caller that verifies every
+    # candidate itself, as the icon library's search does by lookup.
+    require_isolation: bool = True
 
 
 def _odd(value: float, minimum: int = 3) -> int:
@@ -134,6 +137,11 @@ def propose_contour_regions(
         outer = cv2.countNonZero(mask[y1:y2, x1:x2])
         inner = cv2.countNonZero(mask[y:y + h, x:x + w])
         ring_area = (x2 - x1) * (y2 - y1) - w * h
+        if not params.require_isolation:
+            area = w * h
+            if not any(_intersection(box, other) > params.covered * area for other in existing):
+                out.append(box)
+            continue
         if ring_area <= 0 or (outer - inner) / float(ring_area) > params.max_ring_fill:
             continue
         # ... and the ring is ONE background. The mask alone cannot tell: at

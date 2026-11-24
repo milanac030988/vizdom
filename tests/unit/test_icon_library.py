@@ -222,3 +222,56 @@ def test_a_library_name_is_a_label_even_beside_a_reading_captioner(folder):
     fan, cross = backend.detect(image)
     assert (fan.label, fan.text) == ("Climate fan (blower)", None)
     assert (cross.label, cross.text) == (None, "a guess")
+
+
+# --------------------------------------------------------------------------
+# search: library icons that have no box yet
+# --------------------------------------------------------------------------
+
+def _hmi():
+    """A dimmed fan nobody detected, a fan inside a detected tile, a detected seat, a stranger."""
+    image = np.full((400, 800, 3), BG, dtype=np.uint8)
+    _fan(image, 100, 100, grey=90)
+    cv2.rectangle(image, (250, 40), (550, 160), (60, 60, 60), 1)        # a tile ...
+    _fan(image, 300, 100, grey=255, filled=True)                        # ... with a fan in it
+    _seat(image, 650, 100)
+    cv2.drawMarker(image, (100, 300), (255, 255, 255), cv2.MARKER_TILTED_CROSS, 30, 3)
+    return image
+
+
+def _near(box, centre, tolerance=6):
+    return (abs((box[0] + box[2]) / 2 - centre[0]) <= tolerance
+            and abs((box[1] + box[3]) / 2 - centre[1]) <= tolerance)
+
+
+def test_search_finds_library_icons_that_have_no_box(folder):
+    library = IconLibrary.load(str(folder))
+    tile, seat = (250, 40, 550, 160), (630, 80, 670, 120)
+    found = library.search(_hmi(), [tile, seat])
+    assert [m.name for _box, m in found] == ["climate_fan", "climate_fan"]
+    assert _near(found[0][0], (100, 100)), "the dimmed one"
+    assert _near(found[1][0], (300, 100)), "a far larger box around an icon does not hide it"
+    everything = library.search(_hmi(), [])
+    assert sorted(m.name for _box, m in everything) == ["climate_fan", "climate_fan", "seat_airflow"]
+    assert not any(_near(box, (100, 300)) for box, _m in everything), "the stranger gets no box"
+    assert library.search(np.full((400, 800, 3), BG, dtype=np.uint8), []) == []
+
+
+def test_the_backend_adds_the_found_icons_already_named(folder):
+    image = _hmi()
+    tile, seat = (250, 40, 550, 160), (630, 80, 670, 120)
+    captioner = _Recorder()
+    backend = ModularDetectorBackend(region_proposer=_Regions([tile, seat]), text_detector=_Text(),
+                                     captioner=captioner, icon_library=str(folder))
+    detections = backend.detect(image)
+    added = [d for d in detections
+             if d.extra["fusion_source"] == "box_librarysearch_content_climate_fan"]
+    assert len(added) == 2 and all(d.label == "Climate fan (blower)" and d.text is None
+                                   and d.confidence >= 0.70 for d in added)
+    assert len(detections) == 4
+    assert captioner.asked == [[tile]], "only the tile needed a caption"
+
+    off = ModularDetectorBackend(region_proposer=_Regions([tile, seat]), text_detector=_Text(),
+                                 captioner=_Recorder(), icon_library=str(folder),
+                                 icon_library_search=False)
+    assert len(off.detect(image)) == 2
